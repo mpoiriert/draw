@@ -1,0 +1,1094 @@
+{
+    "assertArrayHasKey": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "array",
+        "parameters": [
+            "key",
+            "array",
+            "message"
+        ]
+    },
+    "assertArraySubset": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "array",
+        "parameters": [
+            "subset",
+            "array",
+            "strict",
+            "message"
+        ]
+    },
+    "assertArrayNotHasKey": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "array",
+        "parameters": [
+            "key",
+            "array",
+            "message"
+        ]
+    },
+    "assertContains": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "haystack",
+        "parameters": [
+            "needle",
+            "haystack",
+            "message",
+            "ignoreCase",
+            "checkForObjectIdentity",
+            "checkForNonObjectIdentity"
+        ]
+    },
+    "assertAttributeContains": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "needle",
+            "haystackAttributeName",
+            "haystackClassOrObject",
+            "message",
+            "ignoreCase",
+            "checkForObjectIdentity",
+            "checkForNonObjectIdentity"
+        ]
+    },
+    "assertNotContains": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "haystack",
+        "parameters": [
+            "needle",
+            "haystack",
+            "message",
+            "ignoreCase",
+            "checkForObjectIdentity",
+            "checkForNonObjectIdentity"
+        ]
+    },
+    "assertAttributeNotContains": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "needle",
+            "haystackAttributeName",
+            "haystackClassOrObject",
+            "message",
+            "ignoreCase",
+            "checkForObjectIdentity",
+            "checkForNonObjectIdentity"
+        ]
+    },
+    "assertContainsOnly": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "haystack",
+        "parameters": [
+            "type",
+            "haystack",
+            "isNativeType",
+            "message"
+        ]
+    },
+    "assertContainsOnlyInstancesOf": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "haystack",
+        "parameters": [
+            "classname",
+            "haystack",
+            "message"
+        ]
+    },
+    "assertAttributeContainsOnly": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "type",
+            "haystackAttributeName",
+            "haystackClassOrObject",
+            "isNativeType",
+            "message"
+        ]
+    },
+    "assertNotContainsOnly": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "haystack",
+        "parameters": [
+            "type",
+            "haystack",
+            "isNativeType",
+            "message"
+        ]
+    },
+    "assertAttributeNotContainsOnly": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "type",
+            "haystackAttributeName",
+            "haystackClassOrObject",
+            "isNativeType",
+            "message"
+        ]
+    },
+    "assertCount": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "haystack",
+        "parameters": [
+            "expectedCount",
+            "haystack",
+            "message"
+        ]
+    },
+    "assertAttributeCount": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "expectedCount",
+            "haystackAttributeName",
+            "haystackClassOrObject",
+            "message"
+        ]
+    },
+    "assertNotCount": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "haystack",
+        "parameters": [
+            "expectedCount",
+            "haystack",
+            "message"
+        ]
+    },
+    "assertAttributeNotCount": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "expectedCount",
+            "haystackAttributeName",
+            "haystackClassOrObject",
+            "message"
+        ]
+    },
+    "assertEquals": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message",
+            "delta",
+            "maxDepth",
+            "canonicalize",
+            "ignoreCase"
+        ]
+    },
+    "assertAttributeEquals": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualClassOrObject",
+        "parameters": [
+            "expected",
+            "actualAttributeName",
+            "actualClassOrObject",
+            "message",
+            "delta",
+            "maxDepth",
+            "canonicalize",
+            "ignoreCase"
+        ]
+    },
+    "assertNotEquals": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message",
+            "delta",
+            "maxDepth",
+            "canonicalize",
+            "ignoreCase"
+        ]
+    },
+    "assertAttributeNotEquals": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualClassOrObject",
+        "parameters": [
+            "expected",
+            "actualAttributeName",
+            "actualClassOrObject",
+            "message",
+            "delta",
+            "maxDepth",
+            "canonicalize",
+            "ignoreCase"
+        ]
+    },
+    "assertEmpty": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeEmpty": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "haystackAttributeName",
+            "haystackClassOrObject",
+            "message"
+        ]
+    },
+    "assertNotEmpty": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeNotEmpty": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "haystackAttributeName",
+            "haystackClassOrObject",
+            "message"
+        ]
+    },
+    "assertGreaterThan": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeGreaterThan": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualClassOrObject",
+        "parameters": [
+            "expected",
+            "actualAttributeName",
+            "actualClassOrObject",
+            "message"
+        ]
+    },
+    "assertGreaterThanOrEqual": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeGreaterThanOrEqual": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualClassOrObject",
+        "parameters": [
+            "expected",
+            "actualAttributeName",
+            "actualClassOrObject",
+            "message"
+        ]
+    },
+    "assertLessThan": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeLessThan": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualClassOrObject",
+        "parameters": [
+            "expected",
+            "actualAttributeName",
+            "actualClassOrObject",
+            "message"
+        ]
+    },
+    "assertLessThanOrEqual": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeLessThanOrEqual": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualClassOrObject",
+        "parameters": [
+            "expected",
+            "actualAttributeName",
+            "actualClassOrObject",
+            "message"
+        ]
+    },
+    "assertFileEquals": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message",
+            "canonicalize",
+            "ignoreCase"
+        ]
+    },
+    "assertFileNotEquals": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message",
+            "canonicalize",
+            "ignoreCase"
+        ]
+    },
+    "assertStringEqualsFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualString",
+        "parameters": [
+            "expectedFile",
+            "actualString",
+            "message",
+            "canonicalize",
+            "ignoreCase"
+        ]
+    },
+    "assertStringNotEqualsFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualString",
+        "parameters": [
+            "expectedFile",
+            "actualString",
+            "message",
+            "canonicalize",
+            "ignoreCase"
+        ]
+    },
+    "assertIsReadable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertNotIsReadable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertIsWritable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertNotIsWritable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertDirectoryExists": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertDirectoryNotExists": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertDirectoryIsReadable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertDirectoryNotIsReadable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertDirectoryIsWritable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertDirectoryNotIsWritable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertFileExists": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertFileNotExists": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertFileIsReadable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "file",
+        "parameters": [
+            "file",
+            "message"
+        ]
+    },
+    "assertFileNotIsReadable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "file",
+        "parameters": [
+            "file",
+            "message"
+        ]
+    },
+    "assertFileIsWritable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "file",
+        "parameters": [
+            "file",
+            "message"
+        ]
+    },
+    "assertFileNotIsWritable": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "file",
+        "parameters": [
+            "file",
+            "message"
+        ]
+    },
+    "assertTrue": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "condition",
+        "parameters": [
+            "condition",
+            "message"
+        ]
+    },
+    "assertNotTrue": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "condition",
+        "parameters": [
+            "condition",
+            "message"
+        ]
+    },
+    "assertFalse": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "condition",
+        "parameters": [
+            "condition",
+            "message"
+        ]
+    },
+    "assertNotFalse": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "condition",
+        "parameters": [
+            "condition",
+            "message"
+        ]
+    },
+    "assertNull": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertNotNull": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertFinite": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertInfinite": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertNan": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertClassHasAttribute": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "className",
+        "parameters": [
+            "attributeName",
+            "className",
+            "message"
+        ]
+    },
+    "assertClassNotHasAttribute": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "className",
+        "parameters": [
+            "attributeName",
+            "className",
+            "message"
+        ]
+    },
+    "assertClassHasStaticAttribute": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "className",
+        "parameters": [
+            "attributeName",
+            "className",
+            "message"
+        ]
+    },
+    "assertClassNotHasStaticAttribute": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "className",
+        "parameters": [
+            "attributeName",
+            "className",
+            "message"
+        ]
+    },
+    "assertObjectHasAttribute": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "object",
+        "parameters": [
+            "attributeName",
+            "object",
+            "message"
+        ]
+    },
+    "assertObjectNotHasAttribute": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "object",
+        "parameters": [
+            "attributeName",
+            "object",
+            "message"
+        ]
+    },
+    "assertSame": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeSame": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualClassOrObject",
+        "parameters": [
+            "expected",
+            "actualAttributeName",
+            "actualClassOrObject",
+            "message"
+        ]
+    },
+    "assertNotSame": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeNotSame": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualClassOrObject",
+        "parameters": [
+            "expected",
+            "actualAttributeName",
+            "actualClassOrObject",
+            "message"
+        ]
+    },
+    "assertInstanceOf": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeInstanceOf": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "expected",
+            "attributeName",
+            "classOrObject",
+            "message"
+        ]
+    },
+    "assertNotInstanceOf": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeNotInstanceOf": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "expected",
+            "attributeName",
+            "classOrObject",
+            "message"
+        ]
+    },
+    "assertInternalType": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeInternalType": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "expected",
+            "attributeName",
+            "classOrObject",
+            "message"
+        ]
+    },
+    "assertNotInternalType": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertAttributeNotInternalType": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "expected",
+            "attributeName",
+            "classOrObject",
+            "message"
+        ]
+    },
+    "assertRegExp": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "pattern",
+            "string",
+            "message"
+        ]
+    },
+    "assertNotRegExp": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "pattern",
+            "string",
+            "message"
+        ]
+    },
+    "assertSameSize": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertNotSameSize": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertStringMatchesFormat": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "format",
+            "string",
+            "message"
+        ]
+    },
+    "assertStringNotMatchesFormat": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "format",
+            "string",
+            "message"
+        ]
+    },
+    "assertStringMatchesFormatFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "string",
+        "parameters": [
+            "formatFile",
+            "string",
+            "message"
+        ]
+    },
+    "assertStringNotMatchesFormatFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "string",
+        "parameters": [
+            "formatFile",
+            "string",
+            "message"
+        ]
+    },
+    "assertStringStartsWith": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "string",
+        "parameters": [
+            "prefix",
+            "string",
+            "message"
+        ]
+    },
+    "assertStringStartsNotWith": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "prefix",
+            "string",
+            "message"
+        ]
+    },
+    "assertStringEndsWith": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "suffix",
+            "string",
+            "message"
+        ]
+    },
+    "assertStringEndsNotWith": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "suffix",
+            "string",
+            "message"
+        ]
+    },
+    "assertXmlFileEqualsXmlFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualFile",
+        "parameters": [
+            "expectedFile",
+            "actualFile",
+            "message"
+        ]
+    },
+    "assertXmlFileNotEqualsXmlFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualFile",
+        "parameters": [
+            "expectedFile",
+            "actualFile",
+            "message"
+        ]
+    },
+    "assertXmlStringEqualsXmlFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualXml",
+        "parameters": [
+            "expectedFile",
+            "actualXml",
+            "message"
+        ]
+    },
+    "assertXmlStringNotEqualsXmlFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualXml",
+        "parameters": [
+            "expectedFile",
+            "actualXml",
+            "message"
+        ]
+    },
+    "assertXmlStringEqualsXmlString": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualXml",
+        "parameters": [
+            "expectedXml",
+            "actualXml",
+            "message"
+        ]
+    },
+    "assertXmlStringNotEqualsXmlString": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualXml",
+        "parameters": [
+            "expectedXml",
+            "actualXml",
+            "message"
+        ]
+    },
+    "assertEqualXMLStructure": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualElement",
+        "parameters": [
+            "expectedElement",
+            "actualElement",
+            "checkAttributes",
+            "message"
+        ]
+    },
+    "assertThat": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "IGNORE",
+        "parameters": [
+            "value",
+            "constraint",
+            "message"
+        ]
+    },
+    "assertJson": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actualJson",
+        "parameters": [
+            "actualJson",
+            "message"
+        ]
+    },
+    "assertJsonStringEqualsJsonString": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actualJson",
+        "parameters": [
+            "expectedJson",
+            "actualJson",
+            "message"
+        ]
+    },
+    "assertJsonStringNotEqualsJsonString": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actualJson",
+        "parameters": [
+            "expectedJson",
+            "actualJson",
+            "message"
+        ]
+    },
+    "assertJsonStringEqualsJsonFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualJson",
+        "parameters": [
+            "expectedFile",
+            "actualJson",
+            "message"
+        ]
+    },
+    "assertJsonStringNotEqualsJsonFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualJson",
+        "parameters": [
+            "expectedFile",
+            "actualJson",
+            "message"
+        ]
+    },
+    "assertJsonFileEqualsJsonFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualFile",
+        "parameters": [
+            "expectedFile",
+            "actualFile",
+            "message"
+        ]
+    },
+    "assertJsonFileNotEqualsJsonFile": {
+        "validated": false,
+        "ignore": true,
+        "dataParameter": "actualFile",
+        "parameters": [
+            "expectedFile",
+            "actualFile",
+            "message"
+        ]
+    }
+}
