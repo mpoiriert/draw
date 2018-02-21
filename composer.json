@@ -2,9 +2,6 @@
     "name": "draw/draw",
     "description": "Monolitic repository for draw components",
     "type": "project",
-    "require-dev": {
-        "phpunit/phpunit": "^7.0"
-    },
     "license": "MIT",
     "authors": [
         {
@@ -13,5 +10,15 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "Draw\\DataTester\\": "src//DataTester//src//"
+        }
+    },
+    "require": {
+        "symfony/property-access": "^3.0|^2.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    }
 }
