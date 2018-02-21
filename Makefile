@@ -51,4 +51,8 @@ test-coverage:
 	cd laradock && docker-compose exec --user=laradock workspace vendor/bin/phpunit --coverage-html ./app/storage/phpunit/report
 
 subsplit:
-	git subsplit publish src/Component/DataTester:https://github.com/mpoiriert/php-data-tester.git
+	rm -rf .subsplit
+	git subsplit init https://github.com/mpoiriert/draw
+	git subsplit publish " \
+	    src/DataTester:https://github.com/mpoiriert/php-data-tester.git \
+	"
