@@ -12,8 +12,11 @@ class Client implements ClientInterface
 
     private $requestExecutioner = null;
 
-    public function __construct(RequestFactoryInterface $requestFactory = null)
-    {
+    public function __construct(
+        RequestExecutionerInterface $requestExecutioner = null,
+        RequestFactoryInterface $requestFactory = null
+    ) {
+        $this->requestExecutioner = $requestExecutioner ?: new CurlRequestExecutioner();
         $this->requestFactory = $requestFactory ?: new RequestFactory();
     }
 
@@ -117,7 +120,10 @@ class Client implements ClientInterface
      */
     public function send(RequestInterface $request)
     {
-        return new TestResponse($request, new Response());
+        return new TestResponse(
+            $request,
+            $this->requestExecutioner->executeRequest($request)
+        );
     }
 
     /**

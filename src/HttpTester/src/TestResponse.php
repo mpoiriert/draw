@@ -30,4 +30,12 @@ class TestResponse
     {
         return $this->request;
     }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
 }

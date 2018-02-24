@@ -3,7 +3,6 @@
 namespace Draw\HttpTester;
 
 use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\StreamInterface;
 
 class RequestFactory implements RequestFactoryInterface
 {

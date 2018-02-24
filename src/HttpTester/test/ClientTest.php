@@ -3,15 +3,37 @@
 namespace Draw\HttpTester;
 
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class ClientTest extends TestCase
 {
     public function testConstruct()
     {
-        $client = new Client();
+        $requestExecutioner = $this->getMockBuilder(RequestExecutionerInterface::class)
+            ->setMethods(['executeRequest'])
+            ->getMock();
+
+        $requestExecutioner->method('executeRequest')
+            ->willReturnCallback(function (RequestInterface $request) {
+                return new Response(
+                    200,
+                    [],
+                    json_encode(
+                        [
+                            'method' => $request->getMethod(),
+                            'uri' => $request->getUri()->__toString(),
+                            'body' => $request->getBody()->getContents(),
+                            'headers' => $request->getHeaders(),
+                            'version' => $request->getProtocolVersion()
+                        ]
+                    )
+                );
+            });
+
+        $client = new Client($requestExecutioner);
 
         $this->assertInstanceOf(ClientInterface::class, $client);
 
@@ -27,7 +49,7 @@ class ClientTest extends TestCase
     {
         $testResponse = $client->get(
             $uri = '/test',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $version = '1.0'
         );
 
@@ -50,7 +72,7 @@ class ClientTest extends TestCase
     {
         $testResponse = $client->head(
             $uri = '/test',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $version = '1.0'
         );
 
@@ -74,7 +96,7 @@ class ClientTest extends TestCase
         $testResponse = $client->put(
             $uri = '/test',
             $body = 'body',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $version = '1.0'
         );
 
@@ -98,7 +120,7 @@ class ClientTest extends TestCase
         $testResponse = $client->post(
             $uri = '/test',
             $body = 'body',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $version = '1.0'
         );
 
@@ -121,7 +143,7 @@ class ClientTest extends TestCase
     {
         $testResponse = $client->delete(
             $uri = '/test',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $version = '1.0'
         );
 
@@ -144,7 +166,7 @@ class ClientTest extends TestCase
     {
         $testResponse = $client->options(
             $uri = '/test',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $version = '1.0'
         );
 
@@ -169,7 +191,7 @@ class ClientTest extends TestCase
         $testResponse = $client->patch(
             $uri = '/test',
             $body = 'body',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $version = '1.0'
         );
 
@@ -193,7 +215,7 @@ class ClientTest extends TestCase
         $request = new Request(
             $method = 'POST',
             $uri = '/test',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $body = 'body',
             $version = '1.0'
         );
@@ -221,7 +243,7 @@ class ClientTest extends TestCase
             $method = 'POST',
             $uri = '/test',
             $body = 'body',
-            $headers = ['header' => 'value'],
+            $headers = ['header' => ['value']],
             $version = '1.0'
         );
 
@@ -243,6 +265,19 @@ class ClientTest extends TestCase
         array $headers = [],
         $version = '1.1'
     ) {
+        $body = $body ?: '';
+        $response = $testResponse->getResponse();
+
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+
+        //We seek at the beginning of the body to be sure that nobody change the position before
+        $response->getBody()->seek(0);
+
+        $this->assertJsonStringEqualsJsonString(
+            json_encode(compact('method', 'uri', 'body', 'headers', 'version')),
+            $response->getBody()->getContents()
+        );
+
         $this->assertValidRequest(
             $testResponse->getRequest(),
             $method,
@@ -261,14 +296,15 @@ class ClientTest extends TestCase
         array $headers = [],
         $version = '1.1'
     ) {
-        $this->assertInstanceOf(RequestInterface::class, $request);
+        //We seek at the beginning of the body to be sure that nobody change the position before
+        $request->getBody()->seek(0);
 
         $this->assertSame($method, $request->getMethod());
         $this->assertSame($uri, $request->getUri()->__toString());
         $this->assertSame($body ?: '', $request->getBody()->getContents());
 
-        foreach ($headers as $key => $value) {
-            $this->assertContains($value, $request->getHeader($key));
+        foreach ($headers as $key => $values) {
+            $this->assertSame($values, $request->getHeader($key));
         }
 
         $this->assertSame($version, $request->getProtocolVersion());
