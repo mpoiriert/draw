@@ -9,14 +9,17 @@
             "email": "mpoiriert@gmail.com"
         }
     ],
+    "prefer-stable": true,
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Draw\\DataTester\\": "src//DataTester//src//"
+            "Draw\\DataTester\\": "src//DataTester//src//",
+            "Draw\\HttpTester\\": "src//HttpTester//src//"
         }
     },
     "require": {
-        "symfony/property-access": "^3.0|^2.8"
+        "symfony/property-access": "^3.0|^2.8",
+        "guzzlehttp/psr7": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0"

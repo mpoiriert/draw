@@ -55,4 +55,5 @@ subsplit:
 	git subsplit init https://github.com/mpoiriert/draw
 	git subsplit publish " \
 	    src/DataTester:https://github.com/mpoiriert/php-data-tester.git \
+	    src/HttpTester:https://github.com/mpoiriert/php-http-tester.git \
 	"
