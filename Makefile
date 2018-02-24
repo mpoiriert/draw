@@ -48,7 +48,7 @@ test:
 	cd laradock && docker-compose exec --user=laradock workspace vendor/bin/phpunit
 
 test-coverage:
-	cd laradock && docker-compose exec --user=laradock workspace vendor/bin/phpunit --coverage-html ./app/storage/phpunit/report
+	cd laradock && docker-compose exec --user=laradock workspace vendor/bin/phpunit --coverage-html ./tmp/phpunit/report
 
 subsplit:
 	rm -rf .subsplit

@@ -7,4 +7,13 @@
             <directory>./src/*/test</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src/*</directory>
+            <exclude>
+                <directory>./src/*/test</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

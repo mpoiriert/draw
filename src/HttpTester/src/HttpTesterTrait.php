@@ -11,6 +11,6 @@ trait HttpTesterTrait
      */
     static public function createClient()
     {
-        static::$client = new Client();
+        return static::$client = new Client();
     }
 }
