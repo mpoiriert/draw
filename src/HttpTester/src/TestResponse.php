@@ -97,15 +97,7 @@ class TestResponse
         );
 
         if (!is_null($uri)) {
-            PHPUnit::assertContains(
-                $uri,
-                $this->getResponse()->getHeader('location'),
-                sprintf(
-                    "The header location does not contain the uri [%s]. Values are:\n%s",
-                    $uri,
-                    implode("\n", $this->getResponse()->getHeader('location'))
-                )
-            );
+            $this->assertHeader('location', $uri);
         }
 
         return $this;
@@ -121,15 +113,19 @@ class TestResponse
     public function assertHeader($headerName, $value = null)
     {
         PHPUnit::assertTrue(
-            $this->headers->has($headerName), "Header [{$headerName}] not present on response."
+            $this->getResponse()->hasHeader($headerName), "Header [{$headerName}] not present on response."
         );
 
-        $actual = $this->headers->get($headerName);
-
         if (!is_null($value)) {
-            PHPUnit::assertEquals(
-                $value, $this->headers->get($headerName),
-                "Header [{$headerName}] was found, but value [{$actual}] does not match [{$value}]."
+            PHPUnit::assertContains(
+                $value,
+                $this->getResponse()->getHeader($headerName),
+                sprintf(
+                    "The header [%s] does not contain the value [%s]. Values are:\n%s",
+                    $headerName,
+                    $value,
+                    implode("\n", $this->getResponse()->getHeader($headerName))
+                )
             );
         }
 

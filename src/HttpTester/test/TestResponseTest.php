@@ -187,9 +187,64 @@ class TestResponseTest extends TestCase
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage(
-            "The header location does not contain the uri [/redirect-to]. Values are:\n/redirect-elsewhere"
+            "The header [location] does not contain the value [/redirect-to]. Values are:\n/redirect-elsewhere"
         );
 
         $testResponse->assertRedirect('/redirect-to');
+    }
+
+    public function provideAssertHeader()
+    {
+        return [
+            'pass-one-value' =>
+                ['header', 'value', ['header' => ['value']], true],
+            'fail-no-value' =>
+                ['header', 'value', ['header' => []], false],
+            'fail-no-header' =>
+                ['header', 'value', [], false],
+            'fail-wrong-header' =>
+                ['header', 'value', ['wrong-header' => []], false],
+            'fail-wrong-value' =>
+                ['header', 'value', ['header' => ['wrong-value']], false],
+            'fail-multiple-wrong-value' =>
+                ['header', 'value', ['header' => ['wrong-value-1', 'wrong-value-2']], false],
+            'pass-multiple-value' =>
+                ['header', 'value', ['header' => ['value', 'other-value']], true],
+            'pass-multiple-header' =>
+                ['header', 'value', ['header' => ['value'], 'other-header' => []], true],
+            'fail-multiple-wrong-header' =>
+                ['header', 'value', ['wrong-header-1' => ['value'], 'wrong-header-2' => []], false],
+        ];
+    }
+
+    /**
+     * @dataProvider provideAssertHeader
+     *
+     * @param $headerName
+     * @param $value
+     * @param $headers
+     * @param $expectedPass
+     */
+    public function testAssertHeader($headerName, $value, $headers, $expectedPass)
+    {
+        $testResponse = $this->createTestResponse(new Response(200, $headers));
+
+        if (!$expectedPass) {
+            $this->expectException(ExpectationFailedException::class);
+            if (!$testResponse->getResponse()->hasHeader($headerName)) {
+                $this->expectExceptionMessage("Header [{$headerName}] not present on response.");
+            } else {
+                $this->expectExceptionMessage(
+                    sprintf(
+                        "The header [%s] does not contain the value [%s]. Values are:\n%s",
+                        $headerName,
+                        $value,
+                        implode("\n", $testResponse->getResponse()->getHeader($headerName))
+                    )
+                );
+            }
+        }
+
+        $testResponse->assertHeader($headerName, $value);
     }
 }
