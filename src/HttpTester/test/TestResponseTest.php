@@ -169,4 +169,27 @@ class TestResponseTest extends TestCase
 
         $testResponse->assertRedirect();
     }
+
+    public function testAssertRedirectUriPass()
+    {
+        $testResponse = $this->createTestResponse(
+            new Response(301, ['location' => ['/redirect-to']])
+        );
+
+        $testResponse->assertRedirect('/redirect-to');
+    }
+
+    public function testAssertRedirectUriFail()
+    {
+        $testResponse = $this->createTestResponse(
+            new Response(301, ['location' => ['/redirect-elsewhere']])
+        );
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            "The header location does not contain the uri [/redirect-to]. Values are:\n/redirect-elsewhere"
+        );
+
+        $testResponse->assertRedirect('/redirect-to');
+    }
 }

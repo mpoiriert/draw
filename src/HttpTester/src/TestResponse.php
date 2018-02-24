@@ -57,8 +57,8 @@ class TestResponse
     {
         $statusCode = (string)$this->getStatusCode();
         PHPUnit::assertTrue(
-            strlen($statusCode) === 3 && in_array($statusCode{0}, [2,3]),
-            'Response status code ['.$this->getStatusCode().'] is not a successful status code.'
+            strlen($statusCode) === 3 && in_array($statusCode{0}, [2, 3]),
+            'Response status code [' . $this->getStatusCode() . '] is not a successful status code.'
         );
 
         return $this;
@@ -67,7 +67,7 @@ class TestResponse
     /**
      * Assert that the response has the given status code.
      *
-     * @param  int  $status
+     * @param  int $status
      * @return $this
      */
     public function assertStatus($status)
@@ -86,21 +86,25 @@ class TestResponse
     /**
      * Assert whether the response is redirecting to a given URI.
      *
-     * @param  string  $uri
+     * @param  string $uri
      * @return $this
      */
     public function assertRedirect($uri = null)
     {
         PHPUnit::assertTrue(
-            in_array($this->getStatusCode(), [301,302,303,307,308]),
-            'Response status code ['.$this->getStatusCode().'] is not a redirect status code.'
+            in_array($this->getStatusCode(), [301, 302, 303, 307, 308]),
+            'Response status code [' . $this->getStatusCode() . '] is not a redirect status code.'
         );
 
-        if (! is_null($uri)) {
+        if (!is_null($uri)) {
             PHPUnit::assertContains(
                 $uri,
                 $this->getResponse()->getHeader('location'),
-                'The header location does not contain the uri [' . $uri . ']'
+                sprintf(
+                    "The header location does not contain the uri [%s]. Values are:\n%s",
+                    $uri,
+                    implode("\n", $this->getResponse()->getHeader('location'))
+                )
             );
         }
 
@@ -110,8 +114,8 @@ class TestResponse
     /**
      * Asserts that the response contains the given header and equals the optional value.
      *
-     * @param  string  $headerName
-     * @param  mixed  $value
+     * @param  string $headerName
+     * @param  mixed $value
      * @return $this
      */
     public function assertHeader($headerName, $value = null)
@@ -122,7 +126,7 @@ class TestResponse
 
         $actual = $this->headers->get($headerName);
 
-        if (! is_null($value)) {
+        if (!is_null($value)) {
             PHPUnit::assertEquals(
                 $value, $this->headers->get($headerName),
                 "Header [{$headerName}] was found, but value [{$actual}] does not match [{$value}]."
@@ -135,8 +139,8 @@ class TestResponse
     /**
      * Asserts that the response contains the given cookie and equals the optional value.
      *
-     * @param  string  $cookieName
-     * @param  mixed  $value
+     * @param  string $cookieName
+     * @param  mixed $value
      * @return $this
      */
     public function assertPlainCookie($cookieName, $value = null)
@@ -149,9 +153,9 @@ class TestResponse
     /**
      * Asserts that the response contains the given cookie and equals the optional value.
      *
-     * @param  string  $cookieName
-     * @param  mixed  $value
-     * @param  bool  $encrypted
+     * @param  string $cookieName
+     * @param  mixed $value
+     * @param  bool $encrypted
      * @return $this
      */
     public function assertCookie($cookieName, $value = null, $encrypted = true)
@@ -161,7 +165,7 @@ class TestResponse
             "Cookie [{$cookieName}] not present on response."
         );
 
-        if (! $cookie || is_null($value)) {
+        if (!$cookie || is_null($value)) {
             return $this;
         }
 
@@ -181,7 +185,7 @@ class TestResponse
     /**
      * Get the given cookie from the response.
      *
-     * @param  string  $cookieName
+     * @param  string $cookieName
      * @return \Symfony\Component\HttpFoundation\Cookie|null
      */
     protected function getCookie($cookieName)
