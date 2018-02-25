@@ -9,17 +9,16 @@ class Cookie
 {
     /** @var array */
     private static $defaults = [
-        'Name'     => null,
-        'Value'    => null,
-        'Domain'   => null,
-        'Path'     => '/',
-        'Max-Age'  => null,
-        'Expires'  => null,
-        'Secure'   => false,
-        'Discard'  => false,
+        'Name' => null,
+        'Value' => null,
+        'Domain' => null,
+        'Path' => '/',
+        'Max-Age' => null,
+        'Expires' => null,
+        'Secure' => false,
+        'Discard' => false,
         'HttpOnly' => false
     ];
-
     /** @var array Cookie data */
     private $data;
 
@@ -28,7 +27,7 @@ class Cookie
      *
      * @param string $cookie Set-Cookie header string
      *
-     * @return static
+     * @return self
      */
     public static function fromString($cookie)
     {
@@ -38,7 +37,7 @@ class Cookie
         $pieces = array_filter(array_map('trim', explode(';', $cookie)));
         // The name of the cookie (first kvp) must include an equal sign.
         if (empty($pieces) || !strpos($pieces[0], '=')) {
-            return new static($data);
+            return new self($data);
         }
         // Add the cookie pieces into the parsed data array
         foreach ($pieces as $part) {
@@ -51,17 +50,18 @@ class Cookie
             if (empty($data['Name'])) {
                 $data['Name'] = $key;
                 $data['Value'] = $value;
-            } else {
-                foreach (array_keys(self::$defaults) as $search) {
-                    if (!strcasecmp($search, $key)) {
-                        $data[$search] = $value;
-                        continue 2;
-                    }
-                }
-                $data[$key] = $value;
+                continue;
             }
+
+            foreach (array_keys(self::$defaults) as $search) {
+                if (!strcasecmp($search, $key)) {
+                    $data[$search] = $value;
+                    continue 2;
+                }
+            }
+            $data[$key] = $value;
         }
-        return new static($data);
+        return new self($data);
     }
 
     /**
@@ -83,15 +83,14 @@ class Cookie
     {
         $str = $this->data['Name'] . '=' . $this->data['Value'] . '; ';
         foreach ($this->data as $k => $v) {
-            if ($k != 'Name' && $k != 'Value' && $v !== null && $v !== false) {
-                if ($k == 'Expires') {
+            if ($k !== 'Name' && $k !== 'Value' && $v !== null && $v !== false) {
+                if ($k === 'Expires') {
                     $str .= 'Expires=' . gmdate('D, d M Y H:i:s \G\M\T', $v) . '; ';
                 } else {
                     $str .= ($v === true ? $k : "{$k}={$v}") . '; ';
                 }
             }
         }
-
         return rtrim($str, '; ');
     }
 
@@ -218,7 +217,7 @@ class Cookie
     public function setExpires($timestamp)
     {
         $this->data['Expires'] = is_numeric($timestamp)
-            ? (int) $timestamp
+            ? (int)$timestamp
             : strtotime($timestamp);
     }
 
@@ -283,7 +282,17 @@ class Cookie
     }
 
     /**
-     * Check if the cookie matches a path value
+     * Check if the cookie matches a path value.
+     *
+     * A request-path path-matches a given cookie-path if at least one of
+     * the following conditions holds:
+     *
+     * - The cookie-path and the request-path are identical.
+     * - The cookie-path is a prefix of the request-path, and the last
+     *   character of the cookie-path is %x2F ("/").
+     * - The cookie-path is a prefix of the request-path, and the first
+     *   character of the request-path that is not included in the cookie-
+     *   path is a %x2F ("/") character.
      *
      * @param string $requestPath Path to check against
      *
@@ -297,7 +306,7 @@ class Cookie
             return true;
         }
         // Ensure that the cookie-path is a prefix of the request path.
-        if (0 !== strpos($requestPath, $cookiePath)) {
+        if ($cookiePath && 0 !== strpos($requestPath, $cookiePath)) {
             return false;
         }
         // Match if the last character of the cookie-path is "/"
@@ -320,19 +329,16 @@ class Cookie
         // Remove the leading '.' as per spec in RFC 6265.
         // http://tools.ietf.org/html/rfc6265#section-5.2.3
         $cookieDomain = ltrim($this->getDomain(), '.');
-
         // Domain not set or exact match.
         if (!$cookieDomain || !strcasecmp($domain, $cookieDomain)) {
             return true;
         }
-
         // Matching the subdomain according to RFC 6265.
         // http://tools.ietf.org/html/rfc6265#section-5.1.3
         if (filter_var($domain, FILTER_VALIDATE_IP)) {
             return false;
         }
-
-        return (bool) preg_match('/\.' . preg_quote($cookieDomain) . '$/i', $domain);
+        return (bool)preg_match('/\.' . preg_quote($cookieDomain) . '$/', $domain);
     }
 
     /**

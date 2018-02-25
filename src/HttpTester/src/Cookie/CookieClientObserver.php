@@ -17,7 +17,7 @@ class CookieClientObserver extends ClientObserver
 
     public function preSendRequest(RequestInterface $request)
     {
-        return $this->cookieJar->addCookieHeader($request);
+        return $this->cookieJar->withCookieHeader($request);
     }
 
     public function postSendRequest(RequestInterface $request, ResponseInterface $response)

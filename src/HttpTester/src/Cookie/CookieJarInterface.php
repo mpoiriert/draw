@@ -24,8 +24,10 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
      * header is added to the request.
      *
      * @param RequestInterface $request Request object to update
+     *
+     * @return RequestInterface
      */
-    public function addCookieHeader(RequestInterface $request);
+    public function withCookieHeader(RequestInterface $request);
 
     /**
      * Extract cookies from an HTTP response and store them in the CookieJar.
