@@ -28,7 +28,7 @@ class Cookie
      *
      * @param string $cookie Set-Cookie header string
      *
-     * @return self
+     * @return static
      */
     public static function fromString($cookie)
     {
@@ -38,18 +38,15 @@ class Cookie
         $pieces = array_filter(array_map('trim', explode(';', $cookie)));
         // The name of the cookie (first kvp) must include an equal sign.
         if (empty($pieces) || !strpos($pieces[0], '=')) {
-            return new self($data);
+            return new static($data);
         }
-
         // Add the cookie pieces into the parsed data array
         foreach ($pieces as $part) {
-
             $cookieParts = explode('=', $part, 2);
             $key = trim($cookieParts[0]);
             $value = isset($cookieParts[1])
-                ? trim($cookieParts[1], " \n\r\t\0\x0B\"")
+                ? trim($cookieParts[1], " \n\r\t\0\x0B")
                 : true;
-
             // Only check for non-cookies when cookies have been found
             if (empty($data['Name'])) {
                 $data['Name'] = $key;
@@ -64,8 +61,7 @@ class Cookie
                 $data[$key] = $value;
             }
         }
-
-        return new self($data);
+        return new static($data);
     }
 
     /**
@@ -289,13 +285,27 @@ class Cookie
     /**
      * Check if the cookie matches a path value
      *
-     * @param string $path Path to check against
+     * @param string $requestPath Path to check against
      *
      * @return bool
      */
-    public function matchesPath($path)
+    public function matchesPath($requestPath)
     {
-        return !$this->getPath() || 0 === stripos($path, $this->getPath());
+        $cookiePath = $this->getPath();
+        // Match on exact matches or when path is the default empty "/"
+        if ($cookiePath === '/' || $cookiePath == $requestPath) {
+            return true;
+        }
+        // Ensure that the cookie-path is a prefix of the request path.
+        if (0 !== strpos($requestPath, $cookiePath)) {
+            return false;
+        }
+        // Match if the last character of the cookie-path is "/"
+        if (substr($cookiePath, -1, 1) === '/') {
+            return true;
+        }
+        // Match if the first character not included in cookie path is "/"
+        return substr($requestPath, strlen($cookiePath), 1) === '/';
     }
 
     /**
@@ -347,18 +357,20 @@ class Cookie
         if (empty($name) && !is_numeric($name)) {
             return 'The cookie name must not be empty';
         }
-
         // Check if any of the invalid characters are present in the cookie name
-        if (preg_match("/[=,; \t\r\n\013\014]/", $name)) {
-            return "Cookie name must not cannot invalid characters: =,; \\t\\r\\n\\013\\014";
+        if (preg_match(
+            '/[\x00-\x20\x22\x28-\x29\x2c\x2f\x3a-\x40\x5c\x7b\x7d\x7f]/',
+            $name)
+        ) {
+            return 'Cookie name must not contain invalid characters: ASCII '
+                . 'Control characters (0-31;127), space, tab and the '
+                . 'following characters: ()<>@,;:\"/?={}';
         }
-
         // Value must not be empty, but can be 0
         $value = $this->getValue();
         if (empty($value) && !is_numeric($value)) {
             return 'The cookie value must not be empty';
         }
-
         // Domains must not be empty, but can be 0
         // A "0" is not a valid internet domain, but may be used as server name
         // in a private network.
@@ -366,7 +378,6 @@ class Cookie
         if (empty($domain) && !is_numeric($domain)) {
             return 'The cookie domain must not be empty';
         }
-
         return true;
     }
 }
