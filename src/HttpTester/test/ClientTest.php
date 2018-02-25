@@ -257,6 +257,37 @@ class ClientTest extends TestCase
         );
     }
 
+    /**
+     * @depends testConstruct
+     *
+     * @param Client $client
+     */
+    public function testRegisterObserver(Client $client)
+    {
+        $mockClientObserver = $this->getMockBuilder(ClientObserver::class)
+            ->setMethodsExcept([])
+            ->getMockForAbstractClass();
+
+        $mockClientObserver
+            ->expects($this->once())
+            ->method('preSendRequest')
+            ->willReturnCallback(function(RequestInterface $request) {
+                return $request;
+            });
+
+        $mockClientObserver
+            ->expects($this->once())
+            ->method('postSendRequest')
+            ->willReturnCallback(function(RequestInterface $request, ResponseInterface $response) {
+                return $response;
+            });
+
+        /** @var ClientObserver $mockClientObserver */
+        $client->registerObserver($mockClientObserver);
+
+        $client->send(new Request('GET', '/test'));
+    }
+
     public function assertValidTestResponse(
         TestResponse $testResponse,
         $method,

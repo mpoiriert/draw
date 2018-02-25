@@ -2,7 +2,7 @@
 
 namespace Draw\HttpTester;
 
-use GuzzleHttp\Psr7\Response;
+use Draw\HttpTester\Cookie\CookieClientObserver;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -12,12 +12,23 @@ class Client implements ClientInterface
 
     private $requestExecutioner = null;
 
+    /**
+     * @var ClientObserver[]
+     */
+    private $observers = [];
+
     public function __construct(
         RequestExecutionerInterface $requestExecutioner = null,
         RequestFactoryInterface $requestFactory = null
     ) {
         $this->requestExecutioner = $requestExecutioner ?: new CurlRequestExecutioner();
         $this->requestFactory = $requestFactory ?: new RequestFactory();
+        $this->registerObserver(new CookieClientObserver());
+    }
+
+    public function registerObserver(ClientObserver $observer)
+    {
+        $this->observers[] = $observer;
     }
 
     /**
@@ -120,10 +131,17 @@ class Client implements ClientInterface
      */
     public function send(RequestInterface $request)
     {
-        return new TestResponse(
-            $request,
-            $this->requestExecutioner->executeRequest($request)
-        );
+        foreach($this->observers as $observer) {
+            $request = $observer->preSendRequest($request);
+        }
+
+        $response = $this->requestExecutioner->executeRequest($request);
+
+        foreach ($this->observers as $observer) {
+            $response = $observer->postSendRequest($request, $response);
+        }
+
+        return new TestResponse($request, $response);
     }
 
     /**

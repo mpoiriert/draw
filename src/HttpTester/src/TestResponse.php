@@ -177,19 +177,4 @@ class TestResponse
 
         return $this;
     }
-
-    /**
-     * Get the given cookie from the response.
-     *
-     * @param  string $cookieName
-     * @return \Symfony\Component\HttpFoundation\Cookie|null
-     */
-    protected function getCookie($cookieName)
-    {
-        foreach ($this->headers->getCookies() as $cookie) {
-            if ($cookie->getName() === $cookieName) {
-                return $cookie;
-            }
-        }
-    }
 }

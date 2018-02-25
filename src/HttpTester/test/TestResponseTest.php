@@ -83,13 +83,22 @@ class TestResponseTest extends TestCase
             $this->expectExceptionMessage('Response status code [' . $statusCode . '] is not a successful status code.');
         }
 
-        $testResponse->assertSuccessful();
+        // We check fluent interface
+        $this->assertSame(
+            $testResponse,
+            $testResponse->assertSuccessful()
+        );
     }
 
     public function testAssertStatusPass()
     {
         $testResponse = $this->createTestResponse(new Response(999));
-        $testResponse->assertStatus(999);
+
+        // We check fluent interface
+        $this->assertSame(
+            $testResponse,
+            $testResponse->assertStatus(999)
+        );
     }
 
     public function testAssertStatusFail()
@@ -176,7 +185,11 @@ class TestResponseTest extends TestCase
             new Response(301, ['location' => ['/redirect-to']])
         );
 
-        $testResponse->assertRedirect('/redirect-to');
+        // We check fluent interface
+        $this->assertSame(
+            $testResponse,
+            $testResponse->assertRedirect('/redirect-to')
+        );
     }
 
     public function testAssertRedirectUriFail()
@@ -245,6 +258,10 @@ class TestResponseTest extends TestCase
             }
         }
 
-        $testResponse->assertHeader($headerName, $value);
+        // We check fluent interface
+        $this->assertSame(
+            $testResponse,
+            $testResponse->assertHeader($headerName, $value)
+        );
     }
 }
