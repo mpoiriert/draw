@@ -264,4 +264,83 @@ class TestResponseTest extends TestCase
             $testResponse->assertHeader($headerName, $value)
         );
     }
+
+    public function testGetResponseBodyContents()
+    {
+        $testResponse = $this->createTestResponse(new Response(200, [], 'body'));
+
+        $this->assertSame(
+            'body',
+            $testResponse->getResponseBodyContents()
+        );
+
+        // Multiple call should return the same content
+        $this->assertSame(
+            'body',
+            $testResponse->getResponseBodyContents()
+        );
+    }
+
+    public function testAssertCookie()
+    {
+        $testResponse = $this->createTestResponse(
+            new Response(200, ['Set-Cookie' => ['name=value']])
+        );
+
+        // We check fluent interface
+        $this->assertSame(
+            $testResponse,
+            $testResponse->assertCookie('name')
+        );
+    }
+
+    public function testAssertCookieValue()
+    {
+        $testResponse = $this->createTestResponse(
+            new Response(200, ['Set-Cookie' => ['name=value']])
+        );
+
+        // We check fluent interface
+        $this->assertSame(
+            $testResponse,
+            $testResponse->assertCookie('name', 'value')
+        );
+    }
+
+    public function testAssertCookieNotFound()
+    {
+        $testResponse = $this->createTestResponse(
+            new Response(200, ['Set-Cookie' => ['name=value']])
+        );
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                "Cookie [%s] not present on response. Possible cookies name are:\n%s",
+                'other-cookie',
+                'name'
+            )
+        );
+
+        $testResponse->assertCookie('other-cookie');
+    }
+
+    public function testAssertCookieValueNotMatch()
+    {
+        $testResponse = $this->createTestResponse(
+            new Response(200, ['Set-Cookie' => ['name=value']])
+        );
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                "Cookie [%s] was found, but value [%s] does not match [%s].",
+                'name',
+                'value',
+                'other-value'
+            )
+        );
+
+        $testResponse->assertCookie('name', 'other-value');
+    }
 }

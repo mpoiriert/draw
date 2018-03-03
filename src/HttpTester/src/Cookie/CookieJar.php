@@ -20,72 +20,10 @@ class CookieJar implements CookieJarInterface
     /**
      * @param bool $strictMode Set to true to throw exceptions when invalid
      *                           cookies are added to the cookie jar.
-     * @param array $cookieArray Array of Cookie objects or a hash of
-     *                           arrays that can be used with the Cookie
-     *                           constructor
      */
-    public function __construct($strictMode = false, $cookieArray = [])
+    public function __construct($strictMode = false)
     {
         $this->strictMode = $strictMode;
-
-        foreach ($cookieArray as $cookie) {
-            if (!($cookie instanceof Cookie)) {
-                $cookie = new Cookie($cookie);
-            }
-            $this->setCookie($cookie);
-        }
-    }
-
-    /**
-     * Create a new Cookie jar from an associative array and domain.
-     *
-     * @param array $cookies Cookies to create the jar from
-     * @param string $domain Domain to set the cookies to
-     *
-     * @return self
-     */
-    public static function fromArray(array $cookies, $domain)
-    {
-        $cookieJar = new self();
-        foreach ($cookies as $name => $value) {
-            $cookieJar->setCookie(new Cookie([
-                'Domain' => $domain,
-                'Name' => $name,
-                'Value' => $value,
-                'Discard' => true
-            ]));
-        }
-
-        return $cookieJar;
-    }
-
-    /**
-     * @deprecated
-     */
-    public static function getCookieValue($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Evaluate if this cookie should be persisted to storage
-     * that survives between requests.
-     *
-     * @param Cookie $cookie Being evaluated.
-     * @param bool $allowSessionCookies If we should persist session cookies
-     * @return bool
-     */
-    public static function shouldPersist(
-        Cookie $cookie,
-        $allowSessionCookies = false
-    ) {
-        if ($cookie->getExpires() || $allowSessionCookies) {
-            if (!$cookie->getDiscard()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -105,13 +43,6 @@ class CookieJar implements CookieJarInterface
                 return $cookie;
             }
         }
-    }
-
-    public function toArray()
-    {
-        return array_map(function (Cookie $cookie) {
-            return $cookie->toArray();
-        }, $this->getIterator()->getArrayCopy());
     }
 
     public function clear($domain = null, $path = null, $name = null)
@@ -238,7 +169,7 @@ class CookieJar implements CookieJarInterface
                     $sc->setDomain($request->getUri()->getHost());
                 }
                 if (0 !== strpos($sc->getPath(), '/')) {
-                    $sc->setPath($this->getCookiePathFromRequest($request));
+                    $sc->setPath(static::getCookiePathFromRequest($request));
                 }
                 $this->setCookie($sc);
             }
@@ -253,7 +184,7 @@ class CookieJar implements CookieJarInterface
      * @param RequestInterface $request
      * @return string
      */
-    private function getCookiePathFromRequest(RequestInterface $request)
+    public static function getCookiePathFromRequest(RequestInterface $request)
     {
         $uriPath = $request->getUri()->getPath();
         if ('' === $uriPath) {

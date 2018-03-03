@@ -2,6 +2,8 @@
 
 namespace Draw\HttpTester;
 
+use Draw\HttpTester\Cookie\Cookie;
+use Draw\HttpTester\Cookie\CookieJar;
 use PHPUnit\Framework\TestCase as PHPUnit;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -38,6 +40,20 @@ class TestResponse
     public function getResponse()
     {
         return $this->response;
+    }
+
+    /**
+     * Return the body contents of the response.
+     *
+     * Always seek the stream back to the beginning first in case of multiple call
+     *
+     * @return string
+     */
+    public function getResponseBodyContents()
+    {
+        $body = $this->getResponse()->getBody();
+        $body->seek(0);
+        return $body->getContents();
     }
 
     /**
@@ -139,42 +155,45 @@ class TestResponse
      * @param  mixed $value
      * @return $this
      */
-    public function assertPlainCookie($cookieName, $value = null)
+    public function assertCookie($cookieName, $value = null)
     {
-        $this->assertCookie($cookieName, $value, false);
+        $cookies = $this->getCookies();
+        $cookie = array_key_exists($cookieName, $cookies) ? $cookies[$cookieName]: null;
+
+        PHPUnit::assertNotNull(
+            $cookie,
+            sprintf(
+                "Cookie [%s] not present on response. Possible cookies name are:\n%s",
+                $cookieName,
+                implode("\n", array_keys($cookies))
+            )
+        );
+
+        if (is_null($value)) {
+            return $this;
+        }
+
+        PHPUnit::assertEquals(
+            $value,
+            $cookieValue = $cookie->getValue(),
+            "Cookie [{$cookieName}] was found, but value [{$cookieValue}] does not match [{$value}]."
+        );
 
         return $this;
     }
 
     /**
-     * Asserts that the response contains the given cookie and equals the optional value.
-     *
-     * @param  string $cookieName
-     * @param  mixed $value
-     * @param  bool $encrypted
-     * @return $this
+     * @return Cookie[]
      */
-    public function assertCookie($cookieName, $value = null, $encrypted = true)
+    private function getCookies()
     {
-        PHPUnit::assertNotNull(
-            $cookie = $this->getCookie($cookieName),
-            "Cookie [{$cookieName}] not present on response."
-        );
-
-        if (!$cookie || is_null($value)) {
-            return $this;
+        $cookies = [];
+        if ($cookieHeader = $this->getResponse()->getHeader('Set-Cookie')) {
+            foreach ($cookieHeader as $cookieString) {
+                $cookie = Cookie::fromString($cookieString);
+                $cookies[$cookie->getName()] = $cookie;
+            }
         }
-
-        $cookieValue = $cookie->getValue();
-
-        $actual = $encrypted
-            ? app('encrypter')->decrypt($cookieValue) : $cookieValue;
-
-        PHPUnit::assertEquals(
-            $value, $actual,
-            "Cookie [{$cookieName}] was found, but value [{$actual}] does not match [{$value}]."
-        );
-
-        return $this;
+        return $cookies;
     }
 }
