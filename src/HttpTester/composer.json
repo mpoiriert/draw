@@ -18,6 +18,7 @@
     "prefer-stable": true,
     "require": {
         "phpunit/phpunit": "^6.0|^5.7",
-        "guzzlehttp/psr7": "^1.4"
+        "guzzlehttp/psr7": "^1.4",
+        "pdeans/http": "^1.1"
     }
 }
