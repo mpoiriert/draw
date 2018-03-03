@@ -57,3 +57,4 @@ subsplit:
 	    src/DataTester:https://github.com/mpoiriert/php-data-tester.git \
 	    src/HttpTester:https://github.com/mpoiriert/php-http-tester.git \
 	"
+	rm -rf .subsplit
