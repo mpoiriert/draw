@@ -1,8 +1,7 @@
 {
-    "name": "draw/data-tester",
-    "description": "Library base on phpunit to test your data with a fluent interface.",
+    "name": "draw/http-tester",
     "type": "library",
-    "keywords": ["draw", "test", "phpunit"],
+    "keywords": ["draw", "test", "phpunit", "http"],
     "license": "MIT",
     "authors": [
         {
@@ -10,18 +9,15 @@
             "email": "mpoiriert@gmail.com"
         }
     ],
-    "support": {
-      "docs": "http://php-data-tester.readthedocs.io"
-    },
     "autoload": {
         "psr-4": {
-            "Draw\\DataTester\\": "src//"
+            "Draw\\HttpTester\\": "src//"
         }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "phpunit/phpunit": "^6.0|^5.7",
-        "symfony/property-access": "^3.0|^2.8"
+        "guzzlehttp/psr7": "^1.4"
     }
 }
