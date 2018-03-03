@@ -26,7 +26,7 @@ class CurlRequestExecutionerTest extends TestCase
     {
         $request = new Request(
             'GET',
-            'https://jsonplaceholder.typicode.com/posts/1'
+            'http://jsonplaceholder.typicode.com/posts/1'
         );
 
         $response = $curlRequestExecutioner->executeRequest($request);
