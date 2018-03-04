@@ -19,7 +19,7 @@ class BridgeClientFactory
     {
         switch (true) {
             case $this->testCase instanceof Laravel4TestContextInterface:
-                $requestExecutioner = new Laravel4RequestExecutioner($this);
+                $requestExecutioner = new Laravel4RequestExecutioner($this->testCase);
                 break;
             default:
                 $requestExecutioner = new CurlRequestExecutioner();
