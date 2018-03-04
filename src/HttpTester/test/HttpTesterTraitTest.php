@@ -4,60 +4,51 @@ namespace Draw\HttpTester;
 
 use PHPUnit\Framework\TestCase;
 
-class HttpTesterTraitTest extends TestCase
+class HttpTesterTraitTest extends TestCase implements ClientFactoryInterface
 {
-    use HttpTesterTrait {
-        createClient as parentCreateClient;
+    use HttpTesterTrait;
+
+    private $createClientHasBeenCalled = false;
+
+    public function createClient()
+    {
+        $this->createClientHasBeenCalled = true;
+        return $this->getBridgeClientFactory()->createClient();
     }
 
-    public static function createClient()
+    public function testSeUp()
     {
-        return self::parentCreateClient();
-    }
-
-    public function testBeforeClass()
-    {
+        $this->assertTrue($this->createClientHasBeenCalled);
         $this->assertInstanceOf(ClientInterface::class, static::$client);
 
         return static::$client;
     }
 
     /**
-     * @depends testBeforeClass
+     * @depends testSeUp
      *
-     * @param Client $oldClient
+     * @param Client $client
      * @return Client
      */
-    public function testSetUpClient(Client $oldClient)
+    public function testSetUpClient(Client $client)
     {
-        $client = static::setUpClient();
-
-        $this->assertInstanceOf(ClientInterface::class, $client);
-
-        $this->assertNotSame(
-            $oldClient,
-            $client
-        );
-
         $this->assertSame(
-            static::$client,
-            $client
+            $client,
+            $this->setUpClient()
         );
-
-        return $client;
     }
 
-    public function testCreateClient()
+    public function testNewClient()
     {
         $this->assertInstanceOf(ClientInterface::class, static::$client);
 
-        $client = static::createClient();
+        $client = $this->newClient();
 
         $this->assertInstanceOf(ClientInterface::class, $client);
 
         $this->assertNotSame(
             static::$client,
-            static::createClient()
+            $client
         );
     }
 }

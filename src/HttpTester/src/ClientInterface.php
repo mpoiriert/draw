@@ -8,6 +8,14 @@ use Psr\Http\Message\StreamInterface;
 interface ClientInterface
 {
     /**
+     * Register a observer that can be hooked in different step of the request flow
+     *
+     * @param ClientObserver $clientObserver
+     * @return void
+     */
+    public function registerObserver(ClientObserver $clientObserver);
+
+    /**
      * This is a shortcut method that chain the ClientInterface::createRequest and the ClientInterface::send execution
      * for a GET method
      *

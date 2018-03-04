@@ -10,15 +10,40 @@ trait HttpTesterTrait
     protected static $client;
 
     /**
-     * @beforeClass
+     * @var BridgeClientFactory;
      */
-    static public function setUpClient()
+    private $bridgeClientFactory;
+
+    /**
+     * @before
+     */
+    public function setUpClient()
     {
-        return static::$client = static::createClient();
+        if (is_null(static::$client)) {
+            static::$client = $this->newClient();
+        }
+
+        return static::$client;
     }
 
-    static public function createClient()
+    protected function newClient()
     {
-        return new Client();
+        if ($this instanceof ClientFactoryInterface) {
+            return $this->createClient();
+        }
+
+        return $this->getBridgeClientFactory()->createClient();
+    }
+
+    /**
+     * @return BridgeClientFactory
+     */
+    private function getBridgeClientFactory()
+    {
+        if (is_null($this->bridgeClientFactory)) {
+            $this->bridgeClientFactory = new BridgeClientFactory($this);
+        }
+
+        return $this->bridgeClientFactory;
     }
 }
