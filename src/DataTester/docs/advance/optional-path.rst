@@ -19,7 +19,7 @@ a list of users object that don't have the same properties available:
 .. literalinclude:: ../../test/ExampleTest.php
    :name: example-if-path-is-readable-and-each
    :caption: Example If Path Is Readable And Each
-   :emphasize-lines: 6,29
+   :emphasize-lines: 5,17
    :start-after: //example-start: IfPathIsReadableAndEach
    :end-before: //example-end: IfPathIsReadableAndEach
    :dedent: 8

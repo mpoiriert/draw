@@ -1,14 +1,14 @@
 Transform
 =========
 If you need to **transform** the *data* during the test you can call the **transform** method with a **callable** as
-the first argument for the transformation and another **callable** for the test as the second argument.
+the first argument for the transformation. It will return a new **Tester** with the transformed data to test.
 
 Let's you have a **json** string as *data*, that you want to test the content, it will look like this:
 
 .. literalinclude:: ../../test/ExampleTest.php
    :name: example-transform
    :caption: Example: Transform
-   :emphasize-lines: 3
+   :emphasize-lines: 2
    :start-after: //example-start: Transform
    :end-before: //example-end: Transform
    :dedent: 8
@@ -19,7 +19,7 @@ Ideally you should **test** your *data* before transforming it:
 .. literalinclude:: ../../test/ExampleTest.php
    :name: example-assert-before-transform
    :caption: Example: Assert Before Transform
-   :emphasize-lines: 3
+   :emphasize-lines: 2-3
    :start-after: //example-start: AssertTransform
    :end-before: //example-end: AssertTransform
    :dedent: 8
@@ -32,7 +32,7 @@ array:
 .. literalinclude:: ../../test/ExampleTest.php
    :name: example-assert-before-transform-custom
    :caption: Example: Assert Before Transform-custom
-   :emphasize-lines: 5-7,9
+   :emphasize-lines: 4-6
    :start-after: //example-start: AssertTransformCustom
    :end-before: //example-end: AssertTransformCustom
    :dedent: 8

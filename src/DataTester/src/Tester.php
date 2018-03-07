@@ -20,26 +20,21 @@ class Tester
     /**
      * @var \Symfony\Component\PropertyAccess\PropertyAccessorInterface
      */
-    static private $propertyAccessor;
-
-    /**
-     * @var \ReflectionClass
-     */
-    static private $assertReflectionClass;
+    private static $propertyAccessor;
 
     /**
      * A private static property accessor so we do not need to initialize it more than once
      *
      * @return \Symfony\Component\PropertyAccess\PropertyAccessorInterface
      */
-    static protected function getPropertyAccessor()
+    protected static function getPropertyAccessor()
     {
-        if (is_null(static::$propertyAccessor)) {
-            static::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+        if (is_null(self::$propertyAccessor)) {
+            self::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
                 ->enableExceptionOnInvalidIndex()
                 ->getPropertyAccessor();
         }
-        return static::$propertyAccessor;
+        return self::$propertyAccessor;
     }
 
     public function __construct($data)
@@ -58,38 +53,34 @@ class Tester
     }
 
     /**
+     * Return a new Tester instance with the path value as data.
+     *
      * @see http://symfony.com/doc/2.3/components/property_access/introduction.html
      *
      * @param string $path path compatible with Symfony\Component\PropertyAccess\PropertyAccessor
-     * @param $callable A callable that will receive a tester with the value path for data.
      *
      * @return static
      */
-    public function path($path, $callable = null)
+    public function path($path)
     {
         $this->assertPathIsReadable($path);
 
-        if ($callable) {
-            call_user_func(
-                $callable,
-                new static(static::getPropertyAccessor()->getValue($this->data, $path))
-            );
-        }
-
-        return $this;
+        return new static(static::getPropertyAccessor()->getValue($this->data, $path));
     }
 
     /**
      * Execute the callable if the path is readable. Useful to test array|object with optional key|property.
      *
+     *
+     *
      * @param $path
-     * @param $callable
+     * @param callable $callable
      * @return $this
      */
-    public function ifPathIsReadable($path, $callable)
+    public function ifPathIsReadable($path, callable $callable)
     {
         if ($this->isReadable($path)) {
-            $this->path($path, $callable);
+            $callable($this->path($path));
         }
 
         return $this;
@@ -109,37 +100,27 @@ class Tester
     /**
      * Loop trough the current data and call the callable with a independent tester
      *
-     * @param $callable
+     * @param callable $callable
      * @return $this
      */
-    public function each($callable)
+    public function each(callable $callable)
     {
         foreach ($this->data as $value) {
-            call_user_func(
-                $callable,
-                new static($value)
-            );
+            $callable(new static($value));
         }
 
         return $this;
     }
 
     /**
-     * @param callable $transformCallable The callable that will transform the data
-     * @param callable $callable The callable that will be call with the new tester
+     * Transform the data and return a new instance of Tester with the transformed data.
+     *
+     * @param callable $callable The callable that will transform the data
      * @return $this
      */
-    public function transform(callable $transformCallable, callable $callable)
+    public function transform(callable $callable)
     {
-        call_user_func(
-            $transformCallable,
-            call_user_func(
-                $callable,
-                new static(call_user_func($transformCallable, $this->getData()))
-            )
-        );
-
-        return $this;
+        return new static($callable($this->getData()));
     }
 
     /**
@@ -187,18 +168,7 @@ class Tester
     public function test(callable $callable)
     {
         call_user_func($callable, $this);
+
         return $this;
-    }
-
-    /**
-     * @return \ReflectionClass
-     */
-    private static function getAssertReflectionClass()
-    {
-        if (is_null(static::$assertReflectionClass)) {
-            static::$assertReflectionClass = new \ReflectionClass(TestCase::class);
-        }
-
-        return static::$assertReflectionClass;
     }
 }

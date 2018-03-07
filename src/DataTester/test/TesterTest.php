@@ -31,30 +31,14 @@ class TesterTest extends TestCase
     {
         $tester = new Tester((object)["key" => "value"]);
 
-        $this->assertSame(
+        $this->assertNotSame(
             $tester,
-            $tester->path('key'),
-            'Return value of path must be the object itself for the fluent interface.'
+            $newTester = $tester->path('key'),
+            'Return value of path must be a new object.'
         );
 
-        $callableHasBeenCalled = false;
-
-        $tester->path('key',
-            function (Tester $pathTester) use ($tester, &$callableHasBeenCalled) {
-                $callableHasBeenCalled = true;
-                $this->assertNotSame(
-                    $tester,
-                    $pathTester,
-                    'A new tester for the path must be pass to callable.');
-
-                $this->assertEquals(
-                    'value',
-                    $pathTester->getData(),
-                    'Path tester must have the path data in it.');
-            }
-        );
-
-        $this->assertTrue($callableHasBeenCalled, 'Path callable has not been called.');
+        $this->assertInstanceOf(Tester::class, $tester);
+        $this->assertSame('value', $newTester->getData());
     }
 
     /**
@@ -66,54 +50,35 @@ class TesterTest extends TestCase
         $data->key1 = 'value1';
         $data->key2 = ['arrayValue0', 'arrayValue1'];
 
-        $callbackCount = 0;
-        (new Tester($data))
-            ->assertPathIsNotReadable('[key1]', 'The data is a object, should not be read like a array.')
-            ->path(
-                'key1',
-                function (Tester $tester) use (&$callbackCount) {
-                    $callbackCount++;
-                    $tester->assertSame('value1');
-                }
-            )
-            ->path(
-                'key2',
-                function (Tester $tester) use (&$callbackCount) {
-                    $callbackCount++;
-                    $tester
-                        ->assertInternalType('array')
-                        ->assertCount(2)
-                        ->path(
-                            '[0]',
-                            function (Tester $tester) use (&$callbackCount) {
-                                $callbackCount++;
-                                $tester->assertSame('arrayValue0');
-                            }
-                        );
-                }
-            )
-            ->path(
-                'key2[1]',
-                function (Tester $tester) use (&$callbackCount) {
-                    $callbackCount++;
-                    $tester->assertSame('arrayValue1');
-                }
-            );
+        $tester = new Tester($data);
+        $tester->assertPathIsNotReadable('[key1]', 'The data is a object, should not be read like a array.');
 
-        $this->assertSame(4, $callbackCount);
+        $tester->path('key1')->assertSame('value1');
+        $tester->path('key2')
+            ->assertInternalType('array')
+            ->assertCount(2)
+            ->path('[0]')->assertSame('arrayValue0');
+
+        $tester->path('key2[1]')->assertSame('arrayValue1');
     }
 
     public function testIfPathIsReadable()
     {
         $hasBeenCalled = false;
 
-        (new Tester(null))
-            ->ifPathIsReadable(
+        $tester = new Tester(null);
+
+        $this->assertSame(
+            $tester,
+            $tester->ifPathIsReadable(
                 'toto',
                 function (Tester $tester) use (&$hasBeenCalled) {
-                    $hasBeenCalled = true;
+                    // To remove the warning of the ide we use the variable
+                    // assigning true would have been enough
+                    $hasBeenCalled = !is_null($tester);
                 }
-            );
+            )
+        );
 
         $this->assertFalse($hasBeenCalled, 'The path is not readable the callable should not have been called.');
     }
@@ -131,53 +96,41 @@ class TesterTest extends TestCase
 
         $callbackCount = 0;
 
-        (new Tester($users))
-            ->each(
+        $tester = new Tester($users);
+
+        $this->assertSame(
+            $tester,
+            $tester->each(
                 function (Tester $tester) use (&$callbackCount) {
                     $callbackCount++;
-                    $tester
-                        ->path(
-                            '[firstName]',
-                            function (Tester $tester) {
-                                $tester->assertInternalType('string');
-                            }
-                        )
-                        ->path(
-                            '[active]',
-                            function (Tester $tester) {
-                                $tester->assertInternalType('boolean');
-                            }
-                        )
-                        ->ifPathIsReadable(
-                            '[referral]',
-                            function (Tester $tester) {
-                                $tester->assertInternalType('string');
-                            }
-                        );
+                    $tester->path('[firstName]')->assertInternalType('string');
+                    $tester->path('[active]')->assertInternalType('boolean');
+                    $tester->ifPathIsReadable(
+                        '[referral]',
+                        function (Tester $tester) {
+                            $tester->assertInternalType('string');
+                        }
+                    );
                 }
-            );
+            )
+        );
 
         $this->assertSame(count($users), $callbackCount);
     }
 
+    /**
+     * @depends testPath
+     */
     public function testTransform()
     {
-        $callbackCount = 0;
+        $tester = new Tester('{"key":"value"}');
 
-        (new Tester('{"key":"value"}'))
-            ->assertJson()
-            ->transform('json_decode',
-                function (Tester $tester) use (&$callbackCount) {
-                    $tester->path(
-                        'key',
-                        function (Tester $tester) use (&$callbackCount) {
-                            $callbackCount++;
-                            $tester->assertEquals('value');
-                        }
-                    );
-                }
-            );
+        $this->assertNotSame(
+            $tester,
+            $newTester = $tester->assertJson()->transform('json_decode')
+        );
 
-        $this->assertSame(1, $callbackCount);
+        $this->assertInstanceOf(Tester::class, $newTester);
+        $newTester->path('key')->assertSame('value');
     }
 }

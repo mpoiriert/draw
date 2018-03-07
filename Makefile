@@ -14,41 +14,41 @@ help:
 
 .ONESHELL:
 down:
-	if [ -d laradock ]; then
-		cd laradock && docker-compose down
+	if [ -d laradock-draw ]; then
+		cd laradock-draw && docker-compose down
 	fi
 
 up:
-	cd laradock && docker-compose up -d workspace
+	cd laradock-draw && docker-compose up -d workspace
 
 test:
-	cd laradock && docker-compose exec --user=laradock workspace vendor/bin/phpunit
+	cd laradock-draw && docker-compose exec --user=laradock workspace vendor/bin/phpunit
 
 workspace:
-	cd laradock && docker-compose exec --user=laradock workspace bash
+	cd laradock-draw && docker-compose exec --user=laradock workspace bash
 
 install: clear setup build provision
 
 setup:
-	git clone --branch v5.9.0 https://github.com/laradock/laradock.git laradock
-	cp laradock.env-dist laradock/.env
+	git clone --branch v5.9.0 https://github.com/laradock/laradock.git laradock-draw
+	cp laradock.env-dist laradock-draw/.env
 
 build:
-	cd laradock && docker-compose build workspace
+	cd laradock-draw && docker-compose build workspace
 
 clear: down
-	sudo rm -Rf ~/.laradock/data
-	sudo rm -Rf laradock
-	sudo rm -Rf vendor
+	sudo rm -Rf ./tmp
+	sudo rm -Rf ./laradock-draw
+	sudo rm -Rf ./vendor
 
 provision: up
-	cd laradock && docker-compose exec --user=laradock workspace composer install
+	cd laradock-draw && docker-compose exec --user=laradock workspace composer install
 
 test:
-	cd laradock && docker-compose exec --user=laradock workspace vendor/bin/phpunit
+	cd laradock-draw && docker-compose exec --user=laradock workspace vendor/bin/phpunit
 
 test-coverage:
-	cd laradock && docker-compose exec --user=laradock workspace vendor/bin/phpunit --coverage-html ./tmp/phpunit/report
+	cd laradock-draw && docker-compose exec --user=laradock workspace vendor/bin/phpunit --coverage-html ./tmp/phpunit/report
 
 subsplit:
 	rm -rf .subsplit

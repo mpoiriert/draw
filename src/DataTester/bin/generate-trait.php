@@ -36,7 +36,7 @@ foreach($methods as $methodName => $information) {
     $callParameters = [];
     $parameters = [];
     foreach($method->getParameters() as $parameter) {
-        if($information['dataParameter'] === $parameter->getName()) {
+        if($information['dataParameter'] === $parameter->name) {
             $callParameters[] = '$this->getData()';
             continue;
         }
@@ -44,13 +44,13 @@ foreach($methods as $methodName => $information) {
         if($parameter->hasType()) {
             $parameterString .= $parameter->getType() . ' ';
         }
-        $parameterString .= '$' . $parameter->getName();
+        $parameterString .= '$' . $parameter->name;
 
         if($parameter->isDefaultValueAvailable()) {
             $parameterString .= ' = ' . var_export($parameter->getDefaultValue(), true);
         }
         $parameters[] = $parameterString;
-        $callParameters[] = '$' . $parameter->getName();
+        $callParameters[] = '$' . $parameter->name;
     }
 
     $callParametersString = implode(', ', $callParameters);

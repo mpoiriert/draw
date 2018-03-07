@@ -26,22 +26,11 @@ Here is a quick example of how to use it in a **PHPUnit TestCase**:
               'key2' => (object)['toto' => 'value']
             ];
 
-            (new Tester($data))
-                ->assertInternalType('array')
+            $tester = new Tester($data);
+            $tester->assertInternalType('array')
                 ->assertCount(2)
-                ->path(
-                    '[key1]',
-                    function (Tester $tester) {
-                        $tester->assertSame('value1');
-                    }
-                )
-                ->path(
-                    '[key2].toto',
-                    function (Tester $tester) {
-                        $tester->assertSame('value');
-                    }
-                );
-        }
+                ->path('[key1]')->assertSame('value1');
+            $tester->path('[key2].toto')->assertSame('value');
     }
 
 There is a lot more features available, just `Read the Docs <http://php-data-tester.readthedocs.io/en/latest/>`_!
