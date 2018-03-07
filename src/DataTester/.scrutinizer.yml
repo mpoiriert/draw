@@ -1,2 +1,15 @@
 checks:
     php: true
+
+build:
+    environment:
+        php:
+            version: '7.2'
+
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit --coverage-clover ./tmp/phpunit/report-clover.xml'
+                coverage:
+                    file: 'tmp/phpunit/report-clover.xml'
+                    format: 'clover'
