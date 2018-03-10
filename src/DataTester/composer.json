@@ -23,5 +23,8 @@
     "require": {
         "phpunit/phpunit": "^6.0|^5.7",
         "symfony/property-access": "^3.0|^2.8"
+    },
+    "branch-alias": {
+        "dev-master": "0.3.x-dev"
     }
 }
