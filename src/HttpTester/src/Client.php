@@ -3,6 +3,7 @@
 namespace Draw\HttpTester;
 
 use Draw\HttpTester\Cookie\CookieClientObserver;
+use Exception;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -39,9 +40,9 @@ class Client implements ClientInterface
      */
     public function get($uri, array $headers = [], $version = '1.1')
     {
-       return $this->send(
-           $this->createRequest('GET', $uri, null, $headers, $version)
-       );
+        return $this->send(
+            $this->createRequest('GET', $uri, null, $headers, $version)
+        );
     }
 
     /**
@@ -128,14 +129,32 @@ class Client implements ClientInterface
     /**
      * @param RequestInterface $request
      * @return TestResponse
+     * @throws Exception
      */
     public function send(RequestInterface $request)
     {
-        foreach($this->observers as $observer) {
+        foreach ($this->observers as $observer) {
             $request = $observer->preSendRequest($request);
         }
 
-        $response = $this->requestExecutioner->executeRequest($request);
+        foreach ($this->observers as $observer) {
+            $observer->preExecute($request, $this->requestExecutioner);
+        }
+
+        $e = null;
+        try {
+            $response = $this->requestExecutioner->executeRequest($request);
+        } catch (\Exception $exception) {
+            foreach ($this->observers as $observer) {
+                $observer->postExecutionError($request, $exception, $this->requestExecutioner);
+            }
+
+            throw $exception;
+        }
+
+        foreach ($this->observers as $observer) {
+            $observer->postExecute($request, $response, $this->requestExecutioner);
+        }
 
         foreach ($this->observers as $observer) {
             $response = $observer->postSendRequest($request, $response);

@@ -41,6 +41,10 @@ class Laravel4RequestExecutioner implements RequestExecutionerInterface
         $this->app->setRequestForConsoleEnvironment();
 
         $this->app->boot();
+
+        // We re-enable the filters since laravel disable them
+        // We want a full integration testing, not just the controller
+        $this->app['router']->enableFilters();
     }
 
     public function executeRequest(RequestInterface $request)
