@@ -33,8 +33,8 @@ class DefaultValueObserver extends ClientObserver
     {
         if($this->queryParameters) {
             $uri = $request->getUri();
-            $query = $uri->getQuery() . '&'. http_build_query($this->queryParameters);
-            $uri = $uri->withQuery(ltrim('&', $query));
+            $query = http_build_query($this->queryParameters) . '&' . $uri->getQuery();
+            $uri = $uri->withQuery(rtrim($query, '&'));
             $request = $request->withUri($uri);
         }
 

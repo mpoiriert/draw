@@ -49,9 +49,7 @@ class Laravel4RequestExecutioner implements RequestExecutionerInterface
 
     public function executeRequest(RequestInterface $request)
     {
-        if(is_null($this->app)) {
-            $this->refreshApplication();
-        }
+        $this->refreshApplication();
 
         $this->client->request(
             $request->getMethod(),
