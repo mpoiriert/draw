@@ -75,4 +75,37 @@ Here is a quick example of how to use it in a **PHPUnit TestCase**:
         }
     }
 
+If you need to use it in another context and can still relay on PHPUnit Assertion you can simply create your the client
+manually and use it:
+
+.. code-block:: php
+
+    <?php
+
+    use Draw\HttpTester\Client;
+
+    $client = new Client();
+
+    $client->post(
+        'http://your.domain.com/api/tokens',
+        json_encode([
+            'username' => 'my-username',
+            'password' => 'my-password'
+        ])
+    );
+
+By default the client will use the **Draw\HttpTester\CurlRequestExecutioner** but you can make your own by implementing
+the **Draw\HttpTester\RequestExecutionerInterface**.
+
+## Currently Supported Request Executioner
+
+=========== ========================================================== ================
+Executioner Class                                                      Package
+=========== ========================================================== ================
+Curl        Draw\HttpTester\CurlRequestExecutioner                     draw/http-tester
+Laravel 4.2 Draw\HttpTester\Bridge\Laravel4\Laravel4RequestExecutioner draw/http-tester
+
+
+
+** Not available yet **
 There is a lot more features available, just `Read the Docs <http://php-http-tester.readthedocs.io/en/latest/>`_!

@@ -4,22 +4,21 @@ namespace Draw\HttpTester;
 
 use Draw\HttpTester\Bridge\Laravel4\Laravel4RequestExecutioner;
 use Draw\HttpTester\Bridge\Laravel4\Laravel4TestContextInterface;
-use PHPUnit\Framework\TestCase;
 
 class BridgeClientFactory
 {
-    private $testCase;
+    private $context;
 
-    public function __construct(TestCase $testCase)
+    public function __construct($context)
     {
-        $this->testCase = $testCase;
+        $this->context = $context;
     }
 
     public function createClient()
     {
         switch (true) {
-            case $this->testCase instanceof Laravel4TestContextInterface:
-                $requestExecutioner = new Laravel4RequestExecutioner($this->testCase);
+            case $this->context instanceof Laravel4TestContextInterface:
+                $requestExecutioner = new Laravel4RequestExecutioner($this->context);
                 break;
             default:
                 $requestExecutioner = new CurlRequestExecutioner();
