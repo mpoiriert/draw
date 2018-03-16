@@ -2,6 +2,7 @@
 
 namespace Draw\HttpTester;
 
+use Draw\DataTester\Tester;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -342,5 +343,17 @@ class TestResponseTest extends TestCase
         );
 
         $testResponse->assertCookie('name', 'other-value');
+    }
+
+    public function testCreateJsonDataTester()
+    {
+        $testResponse = $this->createTestResponse(
+            new Response(200, [], '{}')
+        );
+
+        $this->assertInstanceOf(
+            Tester::class,
+            $testResponse->toJsonDataTester()
+        );
     }
 }

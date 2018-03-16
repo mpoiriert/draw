@@ -2,6 +2,7 @@
 
 namespace Draw\HttpTester;
 
+use Draw\DataTester\Tester;
 use Draw\HttpTester\Cookie\Cookie;
 use Draw\HttpTester\Cookie\CookieJar;
 use PHPUnit\Framework\TestCase as PHPUnit;
@@ -195,5 +196,19 @@ class TestResponse
             }
         }
         return $cookies;
+    }
+
+    /**
+     * @return Tester
+     */
+    public function toJsonDataTester()
+    {
+        if(!class_exists('Draw\DataTester\Tester')) {
+            throw new \RuntimeException('Draw\\DataTester\\Tester class not found. It require package draw/data-tester.');
+        }
+
+        return (new Tester($this->getResponseBodyContents()))
+            ->assertJson()
+            ->transform('json_decode');
     }
 }
