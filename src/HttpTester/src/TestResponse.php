@@ -94,7 +94,12 @@ class TestResponse
         PHPUnit::assertSame(
             $status,
             $this->getStatusCode(),
-            "Expected status code [{$status}] but received [{$actual}]."
+            sprintf(
+                "Expected status code [%s] but received [%s]. Response Content:\n%s",
+                $status,
+                $actual,
+                $this->getResponseBodyContents()
+            )
         );
 
         return $this;

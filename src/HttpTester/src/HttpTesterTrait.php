@@ -15,6 +15,14 @@ trait HttpTesterTrait
     private $bridgeClientFactory;
 
     /**
+     * @beforeClass
+     */
+    public static function clearClient()
+    {
+        static::$client = null;
+    }
+
+    /**
      * @before
      */
     public function setUpClient()
