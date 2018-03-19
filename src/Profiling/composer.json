@@ -1,0 +1,26 @@
+{
+    "name": "draw/profiling",
+    "type": "library",
+    "keywords": ["draw", "profiling", "laravel", "test", "phpunit"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Poirier Theoret",
+            "email": "mpoiriert@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Draw\\Profiling\\": "src//"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {},
+    "require-dev": {
+        "draw/data-tester": "*",
+        "laravel/laravel": "^4.2",
+        "orchestra/testbench": "^2.2",
+        "phpunit/phpunit": "^7.0|^6.0|^5.7"
+    }
+}

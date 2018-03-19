@@ -56,5 +56,6 @@ subsplit:
 	git subsplit publish " \
 	    src/DataTester:https://github.com/mpoiriert/php-data-tester.git \
 	    src/HttpTester:https://github.com/mpoiriert/php-http-tester.git \
+	    src/Profiling:https://github.com/mpoiriert/php-profiling.git \
 	"
 	rm -rf .subsplit
