@@ -30,22 +30,26 @@ class Laravel4SqlProfiler extends SqlProfiler
         if(!$this->started) {
             return;
         }
+        
+        if($bindings) {
+            // Format binding data for sql insertion
+            foreach ($bindings as $i => $binding)
+            {
+                if ($binding instanceof \DateTime)
+                {
+                    $bindings[$i] = $binding->format('\'Y-m-d H:i:s\'');
+                }
+                else if (is_string($binding))
+                {
+                    $bindings[$i] = "'$binding'";
+                }
+            }
 
-        // Format binding data for sql insertion
-        foreach ($bindings as $i => $binding)
-        {
-            if ($binding instanceof \DateTime)
-            {
-                $bindings[$i] = $binding->format('\'Y-m-d H:i:s\'');
-            }
-            else if (is_string($binding))
-            {
-                $bindings[$i] = "'$binding'";
-            }
+            $realQuery = str_replace(array('%', '?'), array('%%', '%s'), $query);
+            $realQuery = vsprintf($realQuery, $bindings);
+        } else {
+            $realQuery = $query;
         }
-
-        $realQuery = str_replace(array('%', '?'), array('%%', '%s'), $query);
-        $realQuery = vsprintf($realQuery, $bindings);
 
         $this->getMetricBuilder()->addLog(
             new SqlLog($realQuery)
