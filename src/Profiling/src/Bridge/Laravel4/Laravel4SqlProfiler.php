@@ -27,21 +27,19 @@ class Laravel4SqlProfiler extends SqlProfiler
 
     public function logQuery($query, $bindings, $time, $name)
     {
-        if(!$this->started) {
+        if (!$this->started) {
             return;
         }
-        
-        if($bindings) {
+
+        if ($bindings) {
             // Format binding data for sql insertion
-            foreach ($bindings as $i => $binding)
-            {
-                if ($binding instanceof \DateTime)
-                {
+            foreach ($bindings as $i => $binding) {
+                if ($binding instanceof \DateTime) {
                     $bindings[$i] = $binding->format('\'Y-m-d H:i:s\'');
-                }
-                else if (is_string($binding))
-                {
+                } elseif (is_string($binding)) {
                     $bindings[$i] = "'$binding'";
+                } elseif (is_array($binding)) {
+                    $bindings[$i] = '"' . implode('","', $binding) . '"';
                 }
             }
 
