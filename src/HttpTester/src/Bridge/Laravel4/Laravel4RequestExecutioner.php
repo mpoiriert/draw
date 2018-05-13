@@ -34,6 +34,10 @@ class Laravel4RequestExecutioner implements RequestExecutionerInterface
 
     private function refreshApplication()
     {
+        if(!is_null($this->app)) {
+            $this->app->shutdown();
+        }
+
         $this->app = $this->context->createApplication();
 
         $this->client = new \Illuminate\Foundation\Testing\Client($this->app);
