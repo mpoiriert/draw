@@ -127,7 +127,8 @@ class BodyParser
                 }
                 $temp = $value;
             });
-            $result[key($tempArray)][$key] = reset($tempArray);
+            reset($tempArray);
+            $result[key($tempArray)][$key] = current($tempArray);
         }
 
         return $result;
