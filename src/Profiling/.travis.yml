@@ -18,6 +18,9 @@ matrix:
   - env: PHP_UNIT_VERSION="7.0"
     php: 7.0
 
+before_install:
+  - echo "extension=mcript.so" >> ~/.phpenv/versions/7.2/etc/php.ini
+
 before_script:
   - composer require phpunit/phpunit:${PHP_UNIT_VERSION}
   - composer install --dev
