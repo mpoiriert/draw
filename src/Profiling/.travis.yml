@@ -19,7 +19,7 @@ matrix:
     php: 7.0
 
 before_install:
-   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then pecl install mcrypt ; fi
+   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then pear config-set preferred_state snapshot && yes "" | pecl install mcrypt ; fi
 
 before_script:
   - composer require phpunit/phpunit:${PHP_UNIT_VERSION}
