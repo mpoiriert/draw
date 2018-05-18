@@ -19,8 +19,7 @@ matrix:
     php: 7.0
 
 before_install:
-   - sudo apt-get -qq update
-   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then sudo apt-get install php7.2-dev; fi
+   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "7.2" ]]; then pecl install mcrypt ; fi
 
 before_script:
   - composer require phpunit/phpunit:${PHP_UNIT_VERSION}
