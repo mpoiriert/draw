@@ -2,8 +2,8 @@
 
 namespace Draw\HttpTester;
 
-use Draw\HttpTester\Bridge\Laravel4\Laravel4RequestExecutioner;
-use Draw\HttpTester\Bridge\Laravel4\Laravel4TestContextInterface;
+use Draw\HttpTester\Bridge\Symfony4;
+use Draw\HttpTester\Bridge\Laravel4;
 
 class BridgeClientFactory
 {
@@ -17,8 +17,11 @@ class BridgeClientFactory
     public function createClient()
     {
         switch (true) {
-            case $this->context instanceof Laravel4TestContextInterface:
-                $requestExecutioner = new Laravel4RequestExecutioner($this->context);
+            case $this->context instanceof Laravel4\Laravel4TestContextInterface:
+                $requestExecutioner = new Laravel4\Laravel4RequestExecutioner($this->context);
+                break;
+            case $this->context instanceof Symfony4\Symfony4TestContextInterface:
+                $requestExecutioner = new Symfony4\Symfony4RequestExecutioner($this->context);
                 break;
             default:
                 $requestExecutioner = new CurlRequestExecutioner();
