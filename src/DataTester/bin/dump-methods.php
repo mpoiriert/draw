@@ -1,6 +1,6 @@
 <?php
 
-require "vendor/autoload.php";
+require "../../../vendor/autoload.php";
 
 $reflectionClass = new ReflectionClass(PHPUnit\Framework\Assert::class);
 

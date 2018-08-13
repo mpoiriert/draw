@@ -903,7 +903,7 @@
     },
     "assertStringStartsWith": {
         "validated": false,
-        "ignore": true,
+        "ignore": false,
         "dataParameter": "string",
         "parameters": [
             "prefix",

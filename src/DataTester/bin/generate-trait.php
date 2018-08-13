@@ -1,6 +1,6 @@
 <?php
 
-require "vendor/autoload.php";
+require "../../../vendor/autoload.php";
 
 $reflectionClass = new ReflectionClass(PHPUnit\Framework\Assert::class);
 $methods = json_decode(file_get_contents(__DIR__ . '/../resources/methods.json'), true);
@@ -41,7 +41,7 @@ foreach($methods as $methodName => $information) {
             continue;
         }
         $parameterString = '';
-        if($parameter->hasType()) {
+        if(method_exists($parameter, 'hasType') && $parameter->hasType()) {
             $parameterString .= $parameter->getType() . ' ';
         }
         $parameterString .= '$' . $parameter->name;

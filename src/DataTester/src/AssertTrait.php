@@ -47,9 +47,15 @@ trait AssertTrait
      * @param bool $checkForNonObjectIdentity
      * @return $this
      */
-    public function assertContains($needle, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
-    {
-        Assert::assertContains($needle, $this->getData(), $message, $ignoreCase, $checkForObjectIdentity, $checkForNonObjectIdentity);
+    public function assertContains(
+        $needle,
+        $message = '',
+        $ignoreCase = false,
+        $checkForObjectIdentity = true,
+        $checkForNonObjectIdentity = false
+    ) {
+        Assert::assertContains($needle, $this->getData(), $message, $ignoreCase, $checkForObjectIdentity,
+            $checkForNonObjectIdentity);
 
         return $this;
     }
@@ -66,9 +72,15 @@ trait AssertTrait
      * @param bool $checkForNonObjectIdentity
      * @return $this
      */
-    public function assertNotContains($needle, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
-    {
-        Assert::assertNotContains($needle, $this->getData(), $message, $ignoreCase, $checkForObjectIdentity, $checkForNonObjectIdentity);
+    public function assertNotContains(
+        $needle,
+        $message = '',
+        $ignoreCase = false,
+        $checkForObjectIdentity = true,
+        $checkForNonObjectIdentity = false
+    ) {
+        Assert::assertNotContains($needle, $this->getData(), $message, $ignoreCase, $checkForObjectIdentity,
+            $checkForNonObjectIdentity);
 
         return $this;
     }
@@ -83,7 +95,7 @@ trait AssertTrait
      * @param string $message
      * @return $this
      */
-    public function assertContainsOnly($type, $isNativeType = NULL, $message = '')
+    public function assertContainsOnly($type, $isNativeType = null, $message = '')
     {
         Assert::assertContainsOnly($type, $this->getData(), $isNativeType, $message);
 
@@ -116,7 +128,7 @@ trait AssertTrait
      * @param string $message
      * @return $this
      */
-    public function assertNotContainsOnly($type, $isNativeType = NULL, $message = '')
+    public function assertNotContainsOnly($type, $isNativeType = null, $message = '')
     {
         Assert::assertNotContainsOnly($type, $this->getData(), $isNativeType, $message);
 
@@ -168,8 +180,14 @@ trait AssertTrait
      * @param bool $ignoreCase
      * @return $this
      */
-    public function assertEquals($expected, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
-    {
+    public function assertEquals(
+        $expected,
+        $message = '',
+        $delta = 0,
+        $maxDepth = 10,
+        $canonicalize = false,
+        $ignoreCase = false
+    ) {
         Assert::assertEquals($expected, $this->getData(), $message, $delta, $maxDepth, $canonicalize, $ignoreCase);
 
         return $this;
@@ -188,8 +206,14 @@ trait AssertTrait
      * @param bool $ignoreCase
      * @return $this
      */
-    public function assertNotEquals($expected, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
-    {
+    public function assertNotEquals(
+        $expected,
+        $message = '',
+        $delta = 0,
+        $maxDepth = 10,
+        $canonicalize = false,
+        $ignoreCase = false
+    ) {
         Assert::assertNotEquals($expected, $this->getData(), $message, $delta, $maxDepth, $canonicalize, $ignoreCase);
 
         return $this;
@@ -628,6 +652,22 @@ trait AssertTrait
         return $this;
     }
     //example-end: assertStringNotMatchesFormat  
+
+    //example-start: assertStringStartsWith    
+    /**
+     * Asserts that a string starts with a given prefix.
+     *
+     * @param string $prefix
+     * @param string $message
+     * @return $this
+     */
+    public function assertStringStartsWith($prefix, $message = '')
+    {
+        Assert::assertStringStartsWith($prefix, $this->getData(), $message);
+
+        return $this;
+    }
+    //example-end: assertStringStartsWith  
 
     //example-start: assertStringStartsNotWith    
     /**

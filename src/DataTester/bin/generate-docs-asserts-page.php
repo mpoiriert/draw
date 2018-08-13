@@ -1,6 +1,6 @@
 <?php
 
-require "vendor/autoload.php";
+require "../../../vendor/autoload.php";
 
 $reflectionClass = new ReflectionClass(PHPUnit\Framework\Assert::class);
 $methods = json_decode(file_get_contents(__DIR__ . '/../resources/methods.json'), true);

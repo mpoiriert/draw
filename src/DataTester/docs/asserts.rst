@@ -382,6 +382,16 @@ assertStringNotMatchesFormat
    :dedent: 4
    :prepend: <?php
 
+assertStringStartsWith
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../src/AssertTrait.php
+   :name: assert-StringStartsWith
+   :start-after: //example-start: assertStringStartsWith
+   :end-before: //example-end: assertStringStartsWith
+   :dedent: 4
+   :prepend: <?php
+
 assertStringStartsNotWith
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
