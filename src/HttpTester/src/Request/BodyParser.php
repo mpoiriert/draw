@@ -33,7 +33,7 @@ class BodyParser
         ];
 
         if(strpos($contentType, 'application/x-www-form-urlencoded') !== false) {
-            parse_str(urldecode($body), $post);
+            parse_str($body, $post);
             $results['post'] = $post;
             return $results;
         }

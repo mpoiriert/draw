@@ -2,12 +2,18 @@
 
 namespace Draw\HttpTester\Bridge\Symfony4;
 
+use Draw\HttpTester\Request\BodyParser;
 use Draw\HttpTester\RequestExecutionerInterface;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 
 class Symfony4RequestExecutioner implements RequestExecutionerInterface
 {
+    /**
+     * @var BodyParser
+     */
+    private $bodyParser;
+
     /**
      * @var Symfony4TestContextInterface
      */
@@ -21,6 +27,7 @@ class Symfony4RequestExecutioner implements RequestExecutionerInterface
     public function __construct(Symfony4TestContextInterface $context)
     {
         $this->context = $context;
+        $this->bodyParser = new BodyParser();
     }
 
     private function refreshApplication()
@@ -32,13 +39,19 @@ class Symfony4RequestExecutioner implements RequestExecutionerInterface
     {
         $this->refreshApplication();
 
+        $content = $request->getBody()->getContents();
+
+        $contentTypes = $request->getHeader('Content-Type');
+
+        $parsedBody = $this->bodyParser->parse($content, $contentTypes ? $contentTypes[0] : null);
+
         $this->client->request(
             $request->getMethod(),
             (string)$request->getUri(),
-            [],
-            [],
+            $parsedBody['post'],
+            $parsedBody['files'],
             $this->extractServerData($request),
-            $request->getBody()->getContents(),
+            $content,
             true
         );
 
