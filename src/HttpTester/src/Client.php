@@ -27,6 +27,22 @@ class Client implements ClientInterface
         $this->registerObserver(new CookieClientObserver());
     }
 
+    /**
+     * @return RequestExecutionerInterface
+     */
+    public function getRequestExecutioner()
+    {
+        return $this->requestExecutioner;
+    }
+
+    /**
+     * @param RequestExecutionerInterface $requestExecutioner
+     */
+    public function setRequestExecutioner(RequestExecutionerInterface $requestExecutioner)
+    {
+        $this->requestExecutioner = $requestExecutioner;
+    }
+
     public function registerObserver(ClientObserver $observer)
     {
         $this->observers[] = $observer;

@@ -35,6 +35,14 @@ class Symfony4RequestExecutioner implements RequestExecutionerInterface
         $this->client = $this->context->getTestClient();
     }
 
+    /**
+     * @return \Symfony\Bundle\FrameworkBundle\Client|null
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
     public function executeRequest(RequestInterface $request)
     {
         $this->refreshApplication();

@@ -8,6 +8,15 @@ use Psr\Http\Message\StreamInterface;
 interface ClientInterface
 {
     /**
+     * @return RequestExecutionerInterface
+     */
+    public function getRequestExecutioner();
+    /**
+     * @param RequestExecutionerInterface $requestExecutioner
+     */
+    public function setRequestExecutioner(RequestExecutionerInterface $requestExecutioner);
+
+    /**
      * Register a observer that can be hooked in different step of the request flow
      *
      * @param ClientObserver $clientObserver
