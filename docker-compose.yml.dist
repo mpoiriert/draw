@@ -1,0 +1,37 @@
+version: '3'
+services:
+    mysql:
+        image: mysql:5.7.12
+        container_name: draw_mysql
+        command: mysqld --sql_mode=""
+        volumes:
+            - data_mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: draw
+            MYSQL_USER: draw
+            MYSQL_PASSWORD: draw
+
+    php:
+        build: .docker/php
+        container_name: draw_php
+        volumes:
+          - .:/home/wwwroot
+        depends_on:
+          - mysql
+        ports:
+          - "22:22"
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: draw_phpmyadmin
+        environment:
+          PMA_HOST: mysql
+          PMA_PORT: 3306
+        ports:
+            - 8080:80
+        links:
+            - mysql
+
+volumes:
+    data_mysql:

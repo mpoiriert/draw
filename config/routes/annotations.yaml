@@ -1,0 +1,3 @@
+controllers:
+    resource: '../../src/Acme/Controller/'
+    type: 'annotation'

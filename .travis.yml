@@ -1,0 +1,14 @@
+language: php
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+env:
+  - PHP_UNIT_VERSION="7.0"
+  - PHP_UNIT_VERSION="8.0"
+  - PHP_UNIT_VERSION="9.0"
+
+before_script:
+  - composer require phpunit/phpunit:${PHP_UNIT_VERSION}
+  - composer install --dev
