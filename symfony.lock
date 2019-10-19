@@ -1,4 +1,7 @@
 {
+    "aws/aws-sdk-php": {
+        "version": "3.112.25"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -78,11 +81,20 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.3.3"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "mtdowling/jmespath.php": {
+        "version": "2.4.0"
     },
     "myclabs/deep-copy": {
         "version": "1.9.3"
