@@ -29,7 +29,13 @@ abstract class ExtensionTestCase extends TestCase
     public function testHasServiceDefinition(string $id, string $aliasOf = null)
     {
         $containerBuilder = $this->load([]);
-        $this->assertTrue($containerBuilder->{$aliasOf ? 'hasAlias' : 'hasDefinition'}($id));
+        $this->assertTrue(
+            $containerBuilder->{$aliasOf ? 'hasAlias' : 'hasDefinition'}($id),
+            sprintf(
+                'Service id [%s] is not found',
+                $id
+            )
+        );
 
         if ($aliasOf) {
             $this->assertEquals($aliasOf, $containerBuilder->getAlias($id));

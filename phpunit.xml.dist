@@ -19,6 +19,10 @@
         <!-- IMPORTANT: You MUST also configure your db driver and server_version in config/packages/doctrine.yaml -->
         <env name="DATABASE_URL" value="mysql://draw:draw@mysql:3306/draw"/>
         <!-- ###- doctrine/doctrine-bundle ### -->
+
+        <!-- ###+ symfony/mailer ### -->
+        <!-- MAILER_DSN=smtp://localhost -->
+        <!-- ###- symfony/mailer ### -->
     </php>
     <testsuites>
         <testsuite name="all">
