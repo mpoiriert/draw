@@ -14,12 +14,15 @@ class DrawPostOfficeExtension extends ConfigurableExtension
 {
     protected function loadInternal(array $config, ContainerBuilder $container)
     {
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.xml');
+
         $container
             ->registerForAutoconfiguration(EmailWriterInterface::class)
             ->addTag(EmailWriterInterface::class);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.xml');
+        // This is to remove singly implemented aliases
+        $container->removeAlias(EmailWriterInterface::class);
 
         $this->configureDefaultFrom($config['default_from'], $container);
     }

@@ -6,6 +6,9 @@
 
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
-        <prototype namespace="Draw\Bundle\CronBundle\" resource="../.." exclude="../../{DependencyInjection,Model,Tests}" />
+        <prototype namespace="Draw\Bundle\CronBundle\" resource="../..">
+            <exclude>../../{DependencyInjection,Model,Tests}</exclude>
+            <exclude>../../DrawCronBundle.php</exclude>
+        </prototype>
     </services>
 </container>

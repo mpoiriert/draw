@@ -5,6 +5,9 @@
 
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
-        <prototype namespace="Draw\Bundle\PostOfficeBundle\" resource="../.." exclude="../../{DependencyInjection,Tests}" />
+        <prototype namespace="Draw\Bundle\PostOfficeBundle\" resource="../..">
+            <exclude>../../{DependencyInjection,Tests}</exclude>
+            <exclude>../../DrawPostOfficeBundle.php</exclude>
+        </prototype>
     </services>
 </container>

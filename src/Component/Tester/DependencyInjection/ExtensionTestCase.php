@@ -6,6 +6,9 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 abstract class ExtensionTestCase extends TestCase
 {
+    protected static $definitions = [];
+    protected static $aliases = [];
+
     /**
      * @var Extension
      */
@@ -20,6 +23,12 @@ abstract class ExtensionTestCase extends TestCase
         $this->extension = $this->createExtension();
     }
 
+    public static function setUpBeforeClass(): void
+    {
+        self::$definitions = [];
+        self::$aliases = [];
+    }
+
     /**
      * @dataProvider provideTestHasServiceDefinition
      *
@@ -28,6 +37,12 @@ abstract class ExtensionTestCase extends TestCase
      */
     public function testHasServiceDefinition(string $id, string $aliasOf = null)
     {
+        if ($aliasOf) {
+            self::$aliases[] = $id;
+        } else {
+            self::$definitions[] = $id;
+        }
+
         $containerBuilder = $this->load([]);
         $this->assertTrue(
             $containerBuilder->{$aliasOf ? 'hasAlias' : 'hasDefinition'}($id),
@@ -40,6 +55,50 @@ abstract class ExtensionTestCase extends TestCase
         if ($aliasOf) {
             $this->assertEquals($aliasOf, $containerBuilder->getAlias($id));
         }
+    }
+
+    /**
+     * @depends testHasServiceDefinition
+     */
+    public function testDefinitionsMatchChecks()
+    {
+        $expectedIds = array_values(
+            array_diff(
+                array_keys($this->load([])->getDefinitions()),
+                array_keys((new ContainerBuilder())->getDefinitions())
+            )
+        );
+        asort($expectedIds);
+
+        $currentIds = self::$definitions;
+        asort($currentIds);
+
+        $this->assertSame(
+            array_values($expectedIds),
+            array_values($currentIds)
+        );
+    }
+
+    /**
+     * @depends testHasServiceDefinition
+     */
+    public function testAliasesMatchChecks()
+    {
+        $expectedIds = array_values(
+            array_diff(
+                array_keys($this->load([])->getAliases()),
+                array_keys((new ContainerBuilder())->getAliases())
+            )
+        );
+        asort($expectedIds);
+
+        $currentIds = self::$aliases;
+        asort($currentIds);
+
+        $this->assertSame(
+            array_values($expectedIds),
+            array_values($currentIds)
+        );
     }
 
     /**
