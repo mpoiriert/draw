@@ -38,7 +38,7 @@ class SqlAssertionBuilder
     public function __invoke(DataTester $tester)
     {
         if(!$this->countAssertion) {
-            return;
+            throw new \RuntimeException('No assertion configured.');
         }
 
         if($tester->isReadable(SqlProfiler::PROFILER_TYPE)) {

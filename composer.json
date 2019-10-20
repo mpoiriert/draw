@@ -32,6 +32,13 @@
         "symfony/orm-pack": "^1.0",
         "aws/aws-sdk-php": "^3.112"
     },
+    "replace": {
+        "draw/aws-tool-kit-bundle": "self.version",
+        "draw/cron-bundle": "self.version",
+        "draw/tester-bundle": "self.version",
+        "draw/profiling": "self.version",
+        "draw/tester": "self.version"
+    },
     "require-dev": {
         "phpunit/phpunit": "^7.0"
     },

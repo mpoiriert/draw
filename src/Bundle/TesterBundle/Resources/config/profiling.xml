@@ -16,5 +16,6 @@
         </service>
 
         <service id="Draw\Bundle\TesterBundle\Profiling\SqlProfiler" />
+        <service id="Draw\Component\Profiling\Sql\SqlProfiler" alias="Draw\Bundle\TesterBundle\Profiling\SqlProfiler"/>
     </services>
 </container>

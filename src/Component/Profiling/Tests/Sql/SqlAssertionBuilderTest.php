@@ -90,6 +90,16 @@ Failed asserting that 2 matches expected 0.');
             ->test(SqlAssertionBuilder::create(0));
     }
 
+
+    public function testInvoke_noAssertionException()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No assertion configured.');
+
+        (new DataTester(new SqlMetric([])))
+            ->test(SqlAssertionBuilder::create());
+    }
+
     private function invoke(DataTester $dataTester, $shouldFail)
     {
         $exception = null;
