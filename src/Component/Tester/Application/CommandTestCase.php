@@ -26,6 +26,8 @@ abstract class CommandTestCase extends TestCase
 
     abstract public function getCommandName(): string;
 
+    abstract public function getCommandDescription(): string;
+
     abstract public function provideTestArgument(): iterable;
 
     abstract public function provideTestOption(): iterable;
@@ -43,6 +45,11 @@ abstract class CommandTestCase extends TestCase
         $this->commandTester = new CommandTester($this->command);
     }
 
+    public function testGetDescription()
+    {
+        $this->assertSame($this->getCommandDescription(), $this->command->getDescription());
+    }
+
     /**
      * @dataProvider provideTestArgument
      *
@@ -51,7 +58,7 @@ abstract class CommandTestCase extends TestCase
      * @param $description
      * @param $default
      */
-    public function testArgument($name, $mode, $description, $default)
+    public function testArgument(string $name, ?int $mode, string $description, $default = null)
     {
         $argumentPosition = self::$argumentsCount;
         self::$argumentsCount++;
@@ -90,12 +97,16 @@ abstract class CommandTestCase extends TestCase
      * @param $description
      * @param $default
      */
-    public function testOption($name, $shortcut, $mode, $description, $default)
+    public function testOption($name, $shortcut, ?int $mode, string $description, $default = null)
     {
         $definition = $this->command->getDefinition();
         $option = $definition->getOption($name);
 
         $this->assertSame($shortcut, $option->getShortcut());
+
+        if(is_null($default) && !$option->acceptValue()) {
+            $default = false;
+        }
 
         $this->assertSame($default, $option->getDefault());
         $this->assertSame($description, $option->getDescription());
@@ -125,11 +136,11 @@ abstract class CommandTestCase extends TestCase
      *  * verbosity:                 Sets the output verbosity flag
      *  * capture_stderr_separately: Make output of stdOut and stdErr separately available
      *
-     * @param array $input   An array of command arguments and options
+     * @param array $input An array of command arguments and options
      * @param array $options An array of execution options
      *
-     * @see CommandDataTester
      * @return DataTester The data tester with the command tester as data
+     * @see CommandDataTester
      */
     public function execute(array $input, array $options = []): DataTester
     {
