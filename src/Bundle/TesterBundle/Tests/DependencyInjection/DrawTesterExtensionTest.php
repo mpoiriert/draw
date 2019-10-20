@@ -3,6 +3,7 @@
 use Draw\Bundle\TesterBundle\DependencyInjection\DrawTesterExtension;
 use Draw\Bundle\TesterBundle\Profiling\SqlProfiler;
 use Draw\Component\Profiling\ProfilerCoordinator;
+use Draw\Component\Profiling\ProfilerInterface;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
@@ -18,5 +19,12 @@ class DrawTesterExtensionTest extends ExtensionTestCase
         yield [SqlProfiler::class];
         yield [\Draw\Component\Profiling\Sql\SqlProfiler::class, SqlProfiler::class];
         yield [ProfilerCoordinator::class];
+    }
+
+    public function testProfilerInterfaceIsAutoConfigured()
+    {
+        $container = $this->load([]);
+        $childDefinition = $container->getAutoconfiguredInstanceof()[ProfilerInterface::class];
+        $this->assertTrue($childDefinition->hasTag(ProfilerInterface::class));
     }
 }
