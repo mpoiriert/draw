@@ -3,13 +3,13 @@
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
-use Draw\Component\Tester\Application\CommandTest;
+use Draw\Component\Tester\Application\CommandTestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class CloudWatchLogsDownloadCommandTest extends CommandTest
+class CloudWatchLogsDownloadCommandTest extends CommandTestCase
 {
     /**
      * @var ObjectProphecy

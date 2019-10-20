@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Tester\CommandTester;
 
-abstract class CommandTest extends TestCase
+abstract class CommandTestCase extends TestCase
 {
     private static $argumentsCount;
 
