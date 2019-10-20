@@ -3,47 +3,19 @@
 use Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand;
 use Draw\Bundle\AwsToolKitBundle\DependencyInjection\DrawAwsToolKitExtension;
 use Draw\Bundle\AwsToolKitBundle\Listener\NewestInstanceRoleListener;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
-class DrawAwsToolKitExtensionTest extends TestCase
+class DrawAwsToolKitExtensionTest extends ExtensionTestCase
 {
-    /**
-     * @var DrawAwsToolKitExtension
-     */
-    private $extension;
-
-    public function setUp()
+    public function createExtension(): Extension
     {
-        $this->extension = new DrawAwsToolKitExtension();
+        return new DrawAwsToolKitExtension();
     }
 
-    public function provideTestHasServiceDefinition()
+    public function provideTestHasServiceDefinition(): iterable
     {
-        return [
-            [CloudWatchLogsDownloadCommand::class],
-            [NewestInstanceRoleListener::class]
-        ];
-    }
-
-    /**
-     * @dataProvider provideTestHasServiceDefinition
-     *
-     * @param $id
-     */
-    public function testHasServiceDefinition($id)
-    {
-        $this->assertTrue($this->load([])->hasDefinition($id));
-    }
-
-    /**
-     * @param array $config
-     * @return ContainerBuilder
-     */
-    private function load(array $config)
-    {
-        $containerBuilder = new ContainerBuilder();
-        $this->extension->load($config, $containerBuilder);
-        return $containerBuilder;
+        yield [CloudWatchLogsDownloadCommand::class];
+        yield [NewestInstanceRoleListener::class];
     }
 }

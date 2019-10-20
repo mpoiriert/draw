@@ -4,11 +4,12 @@ use Draw\Bundle\CronBundle\Command\DumpToFileCommand;
 use Draw\Bundle\CronBundle\CronManager;
 use Draw\Bundle\CronBundle\DependencyInjection\DrawCronExtension;
 use Draw\Bundle\CronBundle\Model\Job;
-use PHPUnit\Framework\TestCase;
+use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 
-class DrawCronExtensionTest extends TestCase
+class DrawCronExtensionTest extends ExtensionTestCase
 {
     private static $defaultJobConfiguration = [
         'name' => 'test',
@@ -16,32 +17,15 @@ class DrawCronExtensionTest extends TestCase
         'expression' => '* * * * *'
     ];
 
-    /**
-     * @var DrawCronExtension
-     */
-    private $extension;
-
-    public function setUp()
+    public function createExtension(): Extension
     {
-        $this->extension = new DrawCronExtension();
+        return new DrawCronExtension();
     }
 
-    public function provideTestHasServiceDefinition()
+    public function provideTestHasServiceDefinition(): iterable
     {
-        return [
-            [CronManager::class],
-            [DumpToFileCommand::class]
-        ];
-    }
-
-    /**
-     * @dataProvider provideTestHasServiceDefinition
-     *
-     * @param $id
-     */
-    public function testHasServiceDefinition($id)
-    {
-        $this->assertTrue($this->load([])->hasDefinition($id));
+        yield [CronManager::class];
+        yield [DumpToFileCommand::class];
     }
 
     public function testLoadNoJob()
@@ -123,16 +107,5 @@ class DrawCronExtensionTest extends TestCase
             $this->assertSame('setOutput', $jobMethodCalls[0][0]);
             $this->assertSame($jobConfiguration['output'], $jobMethodCalls[0][1][0]);
         }
-    }
-
-    /**
-     * @param array $config
-     * @return ContainerBuilder
-     */
-    private function load(array $config)
-    {
-        $containerBuilder = new ContainerBuilder();
-        $this->extension->load($config, $containerBuilder);
-        return $containerBuilder;
     }
 }

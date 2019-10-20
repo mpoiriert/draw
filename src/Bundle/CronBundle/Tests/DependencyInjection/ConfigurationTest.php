@@ -1,14 +1,11 @@
 <?php namespace Draw\Bundle\CronBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\CronBundle\DependencyInjection\Configuration;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Config\Definition\Processor;
+use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class ConfigurationTest extends TestCase
+class ConfigurationTest extends ConfigurationTestCase
 {
-    private $configuration;
-
     private const JOB_MINIMUM = [
         'name' => 'test',
         'expression' => '* * * * *',
@@ -21,19 +18,57 @@ class ConfigurationTest extends TestCase
         'enabled' => true
     ];
 
-    public function setUp()
+    public function createConfiguration(): ConfigurationInterface
     {
-        $this->configuration = new Configuration();
+        return new Configuration();
     }
 
-    public function testDefault()
+    public function getDefaultConfiguration(): array
     {
-        $config = $this->processConfiguration([[]]);
+        return ['jobs' => []];
+    }
 
-        $this->assertEquals(
-            ['jobs' => []],
-            $config
-        );
+    public function provideTestInvalidConfiguration(): iterable
+    {
+        yield [
+            ['jobs' => [['expression' => '* * * * *', 'command' => 'echo']]],
+            'Invalid configuration for path "draw_cron.jobs.0.name": You must specify a name for the job. Can be via the attribute or the key.'
+        ];
+
+        yield [
+            ['jobs' => [['name' => 'test', 'command' => 'echo']]],
+            'The child node "expression" at path "draw_cron.jobs.test" must be configured.'
+        ];
+
+        yield [
+            ['jobs' => [['name' => 'test', 'expression' => '* * * * *']]],
+            'The child node "command" at path "draw_cron.jobs.test" must be configured.'
+        ];
+
+        yield [
+            ['jobs' => [array_merge(self::JOB_MINIMUM, ['enabled' => []])]],
+            'Invalid type for path "draw_cron.jobs.test.enabled". Expected boolean, but got array.'
+        ];
+
+        yield [
+            ['jobs' => [array_merge(self::JOB_MINIMUM, ['command' => []])]],
+            'Invalid type for path "draw_cron.jobs.test.command". Expected scalar, but got array.'
+        ];
+
+        yield [
+            ['jobs' => [array_merge(self::JOB_MINIMUM, ['output' => []])]],
+            'Invalid type for path "draw_cron.jobs.test.output". Expected scalar, but got array.'
+        ];
+
+        yield [
+            ['jobs' => [array_merge(self::JOB_MINIMUM, ['expression' => []])]],
+            'Invalid type for path "draw_cron.jobs.test.expression". Expected scalar, but got array.'
+        ];
+
+        yield [
+            ['jobs' => [array_merge(self::JOB_MINIMUM, ['description' => []])]],
+            'Invalid type for path "draw_cron.jobs.test.description". Expected scalar, but got array.'
+        ];
     }
 
     public function testJobNameAsKey()
@@ -74,68 +109,5 @@ class ConfigurationTest extends TestCase
             $name,
             reset($config['jobs'])['name']
         );
-    }
-
-    public function provideTestInvalidJobConfiguration()
-    {
-        yield [
-            ['expression' => '* * * * *', 'command' => 'echo'],
-            'Invalid configuration for path "draw_cron.jobs.0.name": You must specify a name for the job. Can be via the attribute or the key.'
-        ];
-
-        yield [
-            ['name' => 'test', 'command' => 'echo'],
-            'The child node "expression" at path "draw_cron.jobs.test" must be configured.'
-        ];
-
-        yield [
-            ['name' => 'test', 'expression' => '* * * * *'],
-            'The child node "command" at path "draw_cron.jobs.test" must be configured.'
-        ];
-
-        yield [
-            array_merge(self::JOB_MINIMUM, ['enabled' => []]),
-            'Invalid type for path "draw_cron.jobs.test.enabled". Expected boolean, but got array.'
-        ];
-
-        yield [
-            array_merge(self::JOB_MINIMUM, ['command' => []]),
-            'Invalid type for path "draw_cron.jobs.test.command". Expected scalar, but got array.'
-        ];
-
-        yield [
-            array_merge(self::JOB_MINIMUM, ['output' => []]),
-            'Invalid type for path "draw_cron.jobs.test.output". Expected scalar, but got array.'
-        ];
-
-        yield [
-            array_merge(self::JOB_MINIMUM, ['expression' => []]),
-            'Invalid type for path "draw_cron.jobs.test.expression". Expected scalar, but got array.'
-        ];
-
-        yield [
-            array_merge(self::JOB_MINIMUM, ['description' => []]),
-            'Invalid type for path "draw_cron.jobs.test.description". Expected scalar, but got array.'
-        ];
-    }
-
-    /**
-     * @dataProvider provideTestInvalidJobConfiguration
-     *
-     * @param $jobConfiguration
-     * @param $expectedMessage
-     */
-    public function testInvalidJobConfiguration($jobConfiguration, $expectedMessage)
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage($expectedMessage);
-
-        $this->processConfiguration([['jobs' => [$jobConfiguration]]]);
-    }
-
-    public function processConfiguration(array $configs)
-    {
-        $processor = new Processor();
-        return $processor->processConfiguration($this->configuration, $configs);
     }
 }
