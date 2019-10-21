@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+            <trans-unit id="no_command_available">
+                <source>no_command_available</source>
+                <target>No Command Available</target>
+            </trans-unit>
+            <trans-unit id="title_select_command">
+                <source>title_select_command</source>
+                <target>Select Command to Execute</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
