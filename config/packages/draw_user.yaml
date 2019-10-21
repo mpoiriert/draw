@@ -1,0 +1,6 @@
+sonata_block:
+  blocks:
+    Draw\UserBundle\Sonata\Block\UserCountBlock: ~
+
+draw_user:
+  sonata: ~

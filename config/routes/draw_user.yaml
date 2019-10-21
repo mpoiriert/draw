@@ -1,0 +1,4 @@
+sonata:
+    resource: "@DrawUserBundle/Sonata/Controller"
+    type: "annotation"
+    prefix: "/admin"

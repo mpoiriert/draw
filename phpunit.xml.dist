@@ -6,7 +6,7 @@
     <php>
         <ini name="error_reporting" value="-1" />
         <ini name="memory_limit" value="4096M" />
-        <env name="KERNEL_CLASS" value="Draw\Acme\Kernel" />
+        <env name="KERNEL_CLASS" value="App\Kernel" />
         <env name="APP_ENV" value="test" />
         <env name="APP_DEBUG" value="1" />
         <env name="SHELL_VERBOSITY" value="-1" />

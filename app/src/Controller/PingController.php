@@ -1,4 +1,4 @@
-<?php namespace Draw\Acme\Controller;
+<?php namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;

@@ -81,9 +81,6 @@ abstract class ExtensionTestCase extends TestCase
         }
     }
 
-    /**
-     * @depends testHasServiceDefinition
-     */
     public function testDefinitionsMatchChecks()
     {
         $expectedIds = array_values(
@@ -104,9 +101,6 @@ abstract class ExtensionTestCase extends TestCase
         );
     }
 
-    /**
-     * @depends testHasServiceDefinition
-     */
     public function testAliasesMatchChecks()
     {
         $expectedIds = array_values(

@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    bind:
+      $userAdminCode: '%draw_user.sonata.user_admin_code%'
+
+  Draw\Bundle\UserBundle\Sonata\:
+    resource: '../../Sonata'
+
+  Draw\Bundle\UserBundle\Sonata\Controller\:
+    resource: '../../Sonata/Controller'
+    tags: ['controller.service_arguments']
+
+  Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock:
+    tags: ['sonata.block']
+    public: true
+    arguments:
+      $twigOrName: '@twig'

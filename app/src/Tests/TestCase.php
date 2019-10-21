@@ -1,4 +1,4 @@
-<?php namespace Draw\Acme\Tests;
+<?php namespace App\Tests;
 
 use Draw\Bundle\TesterBundle\Http\BrowserFactoryInterface;
 use Draw\Bundle\TesterBundle\Http\HttpTesterTrait;

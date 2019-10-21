@@ -1,11 +1,36 @@
 security:
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: 'App\Entity\User'
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        admin:
+            pattern:            /admin(.*)
+            context:            user
+            form_login:
+                provider:       app_user_provider
+                login_path:     admin_login
+                use_forward:    false
+                check_path:     admin_login
+                failure_path:   null
+            logout:
+                path:           admin_logout
+                target:         admin_login
+            anonymous:          true
+            guard:
+                authenticators:
+                    - Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator
         main:
             anonymous: true
 
@@ -18,5 +43,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

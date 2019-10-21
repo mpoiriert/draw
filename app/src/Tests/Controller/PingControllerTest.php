@@ -1,6 +1,6 @@
-<?php namespace Draw\Acme\Tests\Controller;
+<?php namespace App\Tests\Controller;
 
-use Draw\Acme\Tests\TestCase;
+use App\Tests\TestCase;
 use Draw\Component\Profiling\Sql\SqlAssertionBuilder;
 
 class PingControllerTest extends TestCase

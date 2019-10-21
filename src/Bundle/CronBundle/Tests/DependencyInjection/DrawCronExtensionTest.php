@@ -43,10 +43,8 @@ class DrawCronExtensionTest extends ExtensionTestCase
     public function testLoadDefaultJob()
     {
         $containerBuilder = $this->load([
-            [
-                'jobs' => [
-                    self::$defaultJobConfiguration
-                ]
+            'jobs' => [
+                self::$defaultJobConfiguration
             ]
         ]);
 
@@ -69,10 +67,8 @@ class DrawCronExtensionTest extends ExtensionTestCase
             + ['output' => 'other', 'enabled' => false, 'description' => 'description'];
 
         $containerBuilder = $this->load([
-            [
-                'jobs' => [
-                    $jobConfiguration
-                ]
+            'jobs' => [
+                $jobConfiguration
             ]
         ]);
 

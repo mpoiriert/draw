@@ -21,6 +21,6 @@ doctrine:
             App:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Acme/Entity'
-                prefix: 'Draw\Acme\Entity'
+                dir: '%kernel.project_dir%/app/src/Entity'
+                prefix: 'App\Entity'
                 alias: App
