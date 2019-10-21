@@ -16,11 +16,6 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
      */
     private $cloudWatchLogsClientProphecy;
 
-    /**
-     * @var CloudWatchLogsClient
-     */
-    private $cloudWatchLogsClient;
-
     public function getCommandName(): string
     {
         return 'draw:aws:cloud-watch-logs:download';
@@ -34,8 +29,9 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
     public function createCommand(): Command
     {
         $this->cloudWatchLogsClientProphecy = $this->prophesize(CloudWatchLogsClient::class);
-        $this->cloudWatchLogsClient = $this->cloudWatchLogsClientProphecy->reveal();
-        return new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
+        return new CloudWatchLogsDownloadCommand(
+            $this->cloudWatchLogsClientProphecy->reveal(CloudWatchLogsClient::class)
+        );
     }
 
     public function provideTestArgument(): iterable

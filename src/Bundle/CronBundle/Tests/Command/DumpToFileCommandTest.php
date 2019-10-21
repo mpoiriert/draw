@@ -16,17 +16,10 @@ class DumpToFileCommandTest extends CommandTestCase
      */
     private $cronManagerProphecy;
 
-    /**
-     * @var CronManager
-     */
-    private $cronManager;
-
     public function createCommand(): Command
     {
         $this->cronManagerProphecy = $this->prophesize(CronManager::class);
-        $this->cronManager = $this->cronManagerProphecy->reveal();
-
-        return new DumpToFileCommand($this->cronManager);
+        return new DumpToFileCommand($this->cronManagerProphecy->reveal(CronManager::class));
     }
 
     public function getCommandName(): string
