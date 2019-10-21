@@ -21,7 +21,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'log_execution' => true,
             ],
             'sonata' => [
-                'enabled' => false,
+                'enabled' => true,
                 'group' => 'Command',
                 'controller_class' => ExecutionController::class,
                 'icon' => "<i class='fa fa-terminal'></i>",

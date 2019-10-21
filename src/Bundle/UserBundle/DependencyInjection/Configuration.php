@@ -2,6 +2,9 @@
 
 use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
+use Sonata\AdminBundle\SonataAdminBundle;
+use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -22,14 +25,7 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
-                ->arrayNode('sonata')
-                    ->canBeEnabled()
-                    ->children()
-                        ->scalarNode('user_admin_code')
-                            ->defaultValue(UserAdmin::class)
-                        ->end()
-                    ->end()
-                ->end()
+                ->append($this->createSonataNode())
                 ->booleanNode('encrypt_password_listener')
                     ->defaultTrue()
                 ->end()
@@ -43,5 +39,14 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
         return $treeBuilder;
+    }
+
+    private function createSonataNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('sonata'))
+            ->{class_exists(SonataDoctrineORMAdminBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}()
+            ->children()
+                ->scalarNode('user_admin_code')->defaultValue(UserAdmin::class)->end()
+            ->end();
     }
 }

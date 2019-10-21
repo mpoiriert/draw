@@ -21,14 +21,14 @@ abstract class ExtensionTestCase extends TestCase
 
     abstract public function createExtension(): Extension;
 
-    abstract public function provideTestHasServiceDefinition(): iterable;
-
     /**
      * Return the configuration that will be tested by this extension
      *
      * @return array
      */
     abstract public function getConfiguration(): array;
+
+    abstract public function provideTestHasServiceDefinition(): iterable;
 
     protected function removeProvidedService(array $idsToRemove, iterable $providedServices): iterable
     {

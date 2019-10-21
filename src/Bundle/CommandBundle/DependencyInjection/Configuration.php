@@ -3,6 +3,7 @@
 use Doctrine\ORM\Version;
 use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticator;
 use Draw\Bundle\CommandBundle\Sonata\Controller\ExecutionController;
+use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -74,7 +75,7 @@ class Configuration implements ConfigurationInterface
     private function createSonataNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('sonata'))
-            ->canBeEnabled()
+            ->{class_exists(SonataDoctrineORMAdminBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}()
             ->children()
                 ->scalarNode('group')->defaultValue('Command')->end()
                 ->scalarNode('controller_class')->defaultValue(ExecutionController::class)->end()

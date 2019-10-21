@@ -1,6 +1,7 @@
-<?php namespace Draw\Bundle\UserBundle\Email;
+<?php namespace Draw\Bundle\UserBundle\EmailWriter;
 
 use Draw\Bundle\PostOfficeBundle\Email\EmailWriterInterface;
+use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 
 class ForgotPasswordEmailWriter implements EmailWriterInterface
 {
