@@ -16,6 +16,11 @@ class DrawPostOfficeExtensionTest extends ExtensionTestCase
         return new DrawPostOfficeExtension();
     }
 
+    public function getConfiguration(): array
+    {
+        return [];
+    }
+
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [EmailEventListener::class];

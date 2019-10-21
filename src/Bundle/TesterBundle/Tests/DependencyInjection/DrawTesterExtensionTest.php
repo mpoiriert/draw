@@ -14,6 +14,11 @@ class DrawTesterExtensionTest extends ExtensionTestCase
         return new DrawTesterExtension();
     }
 
+    public function getConfiguration(): array
+    {
+        return [];
+    }
+
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [SqlProfiler::class];

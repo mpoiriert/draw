@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 class DrawTesterExtension extends ConfigurableExtension
 {
-    protected function loadInternal(array $mergedConfig, ContainerBuilder $container)
+    protected function loadInternal(array $config, ContainerBuilder $container)
     {
         $container
             ->registerForAutoconfiguration(ProfilerInterface::class)
@@ -16,8 +16,16 @@ class DrawTesterExtension extends ConfigurableExtension
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $fileLoader = new Loader\XmlFileLoader($container, $fileLocator);
-        if ($mergedConfig['profiling']['enabled']) {
-            $fileLoader->load('profiling.xml');
+
+        $this->configureProfiling($config['profiling'], $fileLoader, $container);
+    }
+
+    private function configureProfiling($config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
+    {
+        if(!$config['enabled']) {
+            return;
         }
+
+        $fileLoader->load('profiling.xml');
     }
 }

@@ -14,6 +14,11 @@ class DrawCommandExtensionTest extends ExtensionTestCase
         return new DrawCommandExtension();
     }
 
+    public function getConfiguration(): array
+    {
+        return [];
+    }
+
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [CommandRegistry::class];

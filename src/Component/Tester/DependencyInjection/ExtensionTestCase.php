@@ -14,17 +14,42 @@ abstract class ExtensionTestCase extends TestCase
      */
     private $extension;
 
+    /**
+     * @var ContainerBuilder
+     */
+    private static $containerBuilder;
+
     abstract public function createExtension(): Extension;
 
     abstract public function provideTestHasServiceDefinition(): iterable;
 
+    /**
+     * Return the configuration that will be tested by this extension
+     *
+     * @return array
+     */
+    abstract public function getConfiguration(): array;
+
+    protected function removeProvidedService(array $idsToRemove, iterable $providedServices): iterable
+    {
+        foreach($providedServices as $providedService) {
+            if(!in_array($providedService[0], $idsToRemove)) {
+                yield $providedService;
+            }
+        }
+    }
+
     public function setUp(): void
     {
         $this->extension = $this->createExtension();
+        if(is_null(self::$containerBuilder)) {
+            self::$containerBuilder = $this->load($this->getConfiguration());
+        }
     }
 
     public static function setUpBeforeClass(): void
     {
+        self::$containerBuilder = null;
         self::$definitions = [];
         self::$aliases = [];
     }
@@ -43,9 +68,8 @@ abstract class ExtensionTestCase extends TestCase
             self::$definitions[] = $id;
         }
 
-        $containerBuilder = $this->load([]);
         $this->assertTrue(
-            $containerBuilder->{$aliasOf ? 'hasAlias' : 'hasDefinition'}($id),
+            self::$containerBuilder->{$aliasOf ? 'hasAlias' : 'hasDefinition'}($id),
             sprintf(
                 'Service id [%s] is not found',
                 $id
@@ -53,7 +77,7 @@ abstract class ExtensionTestCase extends TestCase
         );
 
         if ($aliasOf) {
-            $this->assertEquals($aliasOf, $containerBuilder->getAlias($id));
+            $this->assertEquals($aliasOf, self::$containerBuilder->getAlias($id));
         }
     }
 
@@ -64,7 +88,7 @@ abstract class ExtensionTestCase extends TestCase
     {
         $expectedIds = array_values(
             array_diff(
-                array_keys($this->load([])->getDefinitions()),
+                array_keys(self::$containerBuilder->getDefinitions()),
                 array_keys((new ContainerBuilder())->getDefinitions())
             )
         );
@@ -75,7 +99,8 @@ abstract class ExtensionTestCase extends TestCase
 
         $this->assertSame(
             array_values($expectedIds),
-            array_values($currentIds)
+            array_values($currentIds),
+            'Services available do not match.'
         );
     }
 
@@ -86,7 +111,7 @@ abstract class ExtensionTestCase extends TestCase
     {
         $expectedIds = array_values(
             array_diff(
-                array_keys($this->load([])->getAliases()),
+                array_keys(self::$containerBuilder->getAliases()),
                 array_keys((new ContainerBuilder())->getAliases())
             )
         );
@@ -97,18 +122,19 @@ abstract class ExtensionTestCase extends TestCase
 
         $this->assertSame(
             array_values($expectedIds),
-            array_values($currentIds)
+            array_values($currentIds),
+            'Alias available do not match.'
         );
     }
 
     /**
-     * @param array $config
+     * @param array $config The configuration will be pass as Extension::load([$config])
      * @return ContainerBuilder
      */
     protected function load(array $config): ContainerBuilder
     {
         $containerBuilder = new ContainerBuilder();
-        $this->extension->load($config, $containerBuilder);
+        $this->extension->load([$config], $containerBuilder);
         return $containerBuilder;
     }
 }

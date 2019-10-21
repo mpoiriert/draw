@@ -57,7 +57,7 @@ class DrawCommandExtension extends ConfigurableExtension
             ->getDefinition(CommandLineAuthenticatorListener::class)
             ->setArgument('$systemAutoLogin', $config['system_auto_login']);
 
-        $container->setAlias(SystemAuthenticatorInterface::class, $container['system_authentication_service']);
+        $container->setAlias(SystemAuthenticatorInterface::class, $config['system_authentication_service']);
     }
 
     private function configureSonata(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container)

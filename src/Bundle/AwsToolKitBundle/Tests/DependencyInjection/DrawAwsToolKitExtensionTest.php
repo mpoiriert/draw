@@ -13,6 +13,11 @@ class DrawAwsToolKitExtensionTest extends ExtensionTestCase
         return new DrawAwsToolKitExtension();
     }
 
+    public function getConfiguration(): array
+    {
+        return [];
+    }
+
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [CloudWatchLogsDownloadCommand::class];

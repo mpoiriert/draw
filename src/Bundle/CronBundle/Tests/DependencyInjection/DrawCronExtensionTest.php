@@ -22,6 +22,11 @@ class DrawCronExtensionTest extends ExtensionTestCase
         return new DrawCronExtension();
     }
 
+    public function getConfiguration(): array
+    {
+        return [];
+    }
+
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [CronManager::class];
