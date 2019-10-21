@@ -8,9 +8,11 @@
                 service('Symfony\Bridge\Doctrine\RegistryInterface').getEntityManagerForClass(Draw\Bundle\CommandBundle\Entity\Execution).getConnection()
             </bind>
         </defaults>
-        <prototype namespace="Draw\Bundle\CommandBundle" resource="../..">
-            <exclude>../../{DependencyInjection,Entity,Tests,Sonata}</exclude>
-            <exclude>../../{DrawCommandBundle.php,Command.php}</exclude>
+        <prototype namespace="Draw\Bundle\CommandBundle\" resource="../..">
+            <exclude>../../{DependencyInjection,Entity,Model,Console,Tests}</exclude>
+            <exclude>../../{Sonata}</exclude>
+            <exclude>../../{Authentication}</exclude>
+            <exclude>../../{DrawCommandBundle.php}</exclude>
         </prototype>
     </services>
 </container>

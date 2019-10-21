@@ -1,4 +1,4 @@
-<?php namespace Draw\Bundle\CommandBundle;
+<?php namespace Draw\Bundle\CommandBundle\Model;
 
 class Command
 {

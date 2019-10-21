@@ -1,13 +1,15 @@
 <?php namespace Draw\Bundle\CommandBundle;
 
-class CommandFactory
+use Draw\Bundle\CommandBundle\Model\Command;
+
+class CommandRegistry
 {
     /**
      * @var Command[]
      */
     private $commands;
 
-    public function addCommand(Command $command)
+    public function setCommand(Command $command)
     {
         $this->commands[$command->getName()] = $command;
     }

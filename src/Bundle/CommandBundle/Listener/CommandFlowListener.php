@@ -6,7 +6,6 @@ use Doctrine\DBAL\DBALException;
 use Draw\Bundle\CommandBundle\Entity\Execution;
 use ErrorException;
 use Exception;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Console\Event;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -45,11 +44,9 @@ class CommandFlowListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(RegistryInterface $entityManager)
+    public function __construct(Connection $executionConnection)
     {
-        $this->connection = $entityManager
-            ->getEntityManagerForClass(Execution::class)
-            ->getConnection();
+        $this->connection = $executionConnection;
     }
 
     public function addOptions(Event\ConsoleCommandEvent $consoleCommandEvent): void

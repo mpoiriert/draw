@@ -31,7 +31,10 @@
         "symfony/flex": "^1.4",
         "symfony/orm-pack": "^1.0",
         "aws/aws-sdk-php": "^3.112",
-        "symfony/mailer": "^4.3"
+        "symfony/mailer": "^4.3",
+        "symfony/security": "^4.3",
+        "symfony/expression-language": "^4.3",
+        "sensiolabs/ansi-to-html": "^1.1"
     },
     "replace": {
         "draw/aws-tool-kit-bundle": "self.version",

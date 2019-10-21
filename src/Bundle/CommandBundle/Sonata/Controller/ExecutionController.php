@@ -1,6 +1,6 @@
 <?php namespace Draw\Bundle\CommandBundle\Sonata\Controller;
 
-use Draw\Bundle\CommandBundle\CommandFactory;
+use Draw\Bundle\CommandBundle\CommandRegistry;
 use Draw\Bundle\CommandBundle\Entity\Execution;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
@@ -8,16 +8,16 @@ use Symfony\Component\HttpFoundation\Request;
 class ExecutionController extends CRUDController
 {
     /**
-     * @var CommandFactory
+     * @var CommandRegistry
      */
     private $commandFactory;
 
     /**
      * @required
      *
-     * @param CommandFactory $commandFactory
+     * @param CommandRegistry $commandFactory
      */
-    public function setCommandFactory(CommandFactory $commandFactory)
+    public function setCommandFactory(CommandRegistry $commandFactory)
     {
         $this->commandFactory = $commandFactory;
     }

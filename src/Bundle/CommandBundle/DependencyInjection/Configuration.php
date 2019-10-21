@@ -1,5 +1,7 @@
 <?php namespace Draw\Bundle\CommandBundle\DependencyInjection;
 
+use Doctrine\ORM\Version;
+use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticator;
 use Draw\Bundle\CommandBundle\Sonata\Controller\ExecutionController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,12 +19,14 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('draw_sonata_command');
+        $treeBuilder = new TreeBuilder('draw_command');
         $node = $treeBuilder->getRootNode();
 
         $node
             ->children()
+                ->append($this->createDoctrineNode())
                 ->append($this->createSonataNode())
+                ->append($this->createAuthenticationNode())
                 ->arrayNode('commands')
                     ->beforeNormalization()
                         ->always(function ($commands) {
@@ -48,6 +52,25 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
+    private function createDoctrineNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('doctrine'))
+            ->{class_exists(Version::class) ? 'canBeDisabled' : 'canBeEnabled'}()
+            ->children()
+                ->scalarNode('log_execution')->defaultTrue()->end()
+            ->end();
+    }
+
+    private function createAuthenticationNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('authentication'))
+            ->canBeEnabled()
+            ->children()
+                ->scalarNode('system_authentication_service')->defaultValue(SystemAuthenticator::class)->end()
+                ->booleanNode('system_auto_login')->defaultFalse()->end()
+            ->end();
+    }
+
     private function createSonataNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('sonata'))
@@ -57,7 +80,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('controller_class')->defaultValue(ExecutionController::class)->end()
                 ->scalarNode('icon')->defaultValue("<i class='fa fa-terminal'></i>")->end()
                 ->scalarNode('label')->defaultValue("Execution")->end()
-                ->scalarNode('pager_type')->defaultValue("simple")->end()
+                ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
             ->end();
     }
 }

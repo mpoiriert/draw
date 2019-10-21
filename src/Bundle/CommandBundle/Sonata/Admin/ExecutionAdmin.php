@@ -1,6 +1,6 @@
 <?php namespace Draw\Bundle\CommandBundle\Sonata\Admin;
 
-use Draw\Bundle\CommandBundle\CommandFactory;
+use Draw\Bundle\CommandBundle\CommandRegistry;
 use Draw\Bundle\CommandBundle\Entity\Execution;
 use Draw\Bundle\CommandBundle\Listener\CommandFlowListener;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -26,7 +26,7 @@ class ExecutionAdmin extends AbstractAdmin
     ];
 
     /**
-     * @var CommandFactory
+     * @var CommandRegistry
      */
     private $commandFactory;
 
@@ -40,9 +40,9 @@ class ExecutionAdmin extends AbstractAdmin
     /**
      * @required
      *
-     * @param CommandFactory $commandFactory
+     * @param CommandRegistry $commandFactory
      */
-    public function setCommandFactory(CommandFactory $commandFactory)
+    public function setCommandFactory(CommandRegistry $commandFactory)
     {
         $this->commandFactory = $commandFactory;
     }
