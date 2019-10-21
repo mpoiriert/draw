@@ -44,7 +44,9 @@
         "draw/tester": "self.version"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^7.0",
+        "sonata-project/admin-bundle": "^3.54",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.10"
     },
     "scripts": {
         "auto-scripts": {
