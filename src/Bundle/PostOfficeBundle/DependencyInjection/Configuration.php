@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\PostOfficeBundle\DependencyInjection;
 
+use Pelago\Emogrifier\CssInliner;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -20,6 +21,15 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->arrayNode('css_inliner')
+                    ->canBeEnabled()
+                    ->validate()
+                        ->ifTrue(function($value) {
+                            return $value['enabled'] && !class_exists(CssInliner::class);
+                        })
+                        ->thenInvalid('The css inliner is base on the [pelago/emogrifier] package. Install it if you want to enable this feature.')
+                    ->end()
+                ->end()
                 ->scalarNode('default_communication_locale')
                     ->defaultValue('en')
                 ->end()

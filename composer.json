@@ -55,7 +55,8 @@
         "ramsey/uuid": "^3.8",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "symfony/debug-pack": "^1.0",
-        "kunicmarko/sonata-auto-configure-bundle": "^0.7.1"
+        "kunicmarko/sonata-auto-configure-bundle": "^0.7.1",
+        "pelago/emogrifier": "^3.0"
     },
     "scripts": {
         "auto-scripts": {
