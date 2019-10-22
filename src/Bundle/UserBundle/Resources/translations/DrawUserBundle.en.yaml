@@ -1,4 +1,10 @@
 forgot_password:
   email:
-    subject: 'You have forgotten your password !'
+    subject: 'You have forgotten your password!'
+    top_section: |
+      <p>You have request a link to reset your password.<p>
+      <p>Please click on the link bellow to reset your password.</p>
     call_to_action_text: 'Reset my password'
+    bottom_section: |
+      <p>If you didn't do this request, maybe someone made a type in their email.
+      Your password will not be affected and you can still login to your account.</p>

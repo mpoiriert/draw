@@ -16,15 +16,18 @@ class DrawUserExtension extends ConfigurableExtension
 
         $this->configureSonata($config['sonata'], $loader, $container);
 
+        $userClass = $config['user_entity_class'];
+        if (!class_exists($userClass)) {
+            throw new \RuntimeException(sprintf(
+                'The class [%s] does not exists. Make sure you configured the [%s] node properly.',
+                $userClass,
+                'draw_user.user_entity_class'
+            ));
+        }
+
+        $container->setParameter('draw_user.user_entity_class', $userClass);
+
         if ($config['encrypt_password_listener']) {
-            $userClass = $config['user_entity_class'];
-            if (!class_exists($userClass)) {
-                throw new \RuntimeException(sprintf(
-                    'The class [%s] does not exists. Make sure you configured the [%s] node properly.',
-                    $userClass,
-                    'draw_user.user_entity_class'
-                ));
-            }
             $container->getDefinition(EncryptPasswordUserEntityListener::class)
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'preUpdate'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist'])

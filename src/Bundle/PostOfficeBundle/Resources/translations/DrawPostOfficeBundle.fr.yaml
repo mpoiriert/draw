@@ -1,0 +1,7 @@
+email:
+  default:
+    salutation: '<p>Bonjour,</p>'
+    signature: '<p>Mercie !</p>'
+    company_address: 'Company Inc, 3 Abbey Road, San Francisco CA 94102'
+    unsubscribe: '<br />Vous ne voulez pas recevoir ces courriels ? <a href="%link%">Se désabonner</a>.'
+    call_to_action_text: 'Cliquer ici'

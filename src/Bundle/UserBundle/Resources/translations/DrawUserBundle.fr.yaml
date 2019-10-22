@@ -1,0 +1,10 @@
+forgot_password:
+  email:
+    subject: 'Vous avez oubliez votre mot de passe !'
+    top_section: |
+      <p>Vous avez demandé un lien pour réinitialiser votre mot de passe.<p>
+      <p>Cliquer sur le lien plus ci-base pour le réinitialiser.</p>
+    call_to_action_text: 'Réinitialiser'
+    bottom_section: |
+      <p>Si vous n'êtes pas l'auteur de cette demande, peut-être que quelqu'un à fait une erreur.
+      Votre mot de3 passe ne sera pas affecté et vous pouvez toujours vous connecter à votre compte.</p>

@@ -3,10 +3,16 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <defaults public="false" autoconfigure="true" autowire="true" />
+        <defaults public="false" autoconfigure="true" autowire="true">
+            <bind key="Doctrine\ORM\EntityRepository $userEntityRepository" type="service" id="draw_user.user_repository" />
+        </defaults>
         <prototype namespace="Draw\Bundle\UserBundle\" resource="../..">
             <exclude>../../{DependencyInjection,Entity,Tests,Sonata,Email}</exclude>
             <exclude>../../{DrawUserBundle.php}</exclude>
         </prototype>
+        <service id="draw_user.user_repository" class="Doctrine\ORM\EntityRepository">
+            <factory service="doctrine" method="getRepository" />
+            <argument>%draw_user.user_entity_class%</argument>
+        </service>
     </services>
 </container>

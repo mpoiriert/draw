@@ -1,10 +1,16 @@
 <?php namespace Draw\Bundle\UserBundle\Email;
 
+use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 class ForgotPasswordEmail extends TemplatedEmail
 {
     private $emailAddress;
+
+    /**
+     * @var SecurityUserInterface
+     */
+    private $user;
 
     public function __construct(string $emailAddress)
     {
@@ -15,7 +21,32 @@ class ForgotPasswordEmail extends TemplatedEmail
 
     public function getContext(): array
     {
-        return parent::getContext() + ['email_address' => $this->emailAddress];
+        $context = parent::getContext();
+        $extraContexts[] = ['email_address' => $this->emailAddress];
+        if ($this->user) {
+            $extraContexts[] = ['user' => $this->user];
+        }
+
+        return array_merge($context, ...$extraContexts);
+    }
+
+    /**
+     * @return SecurityUserInterface
+     */
+    public function getUser(): ?SecurityUserInterface
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param SecurityUserInterface $user
+     * @return ForgotPasswordEmail
+     */
+    public function user(SecurityUserInterface $user): ForgotPasswordEmail
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     /**
