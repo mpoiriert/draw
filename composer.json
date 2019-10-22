@@ -39,7 +39,9 @@
         "symfony/mailer": "^4.3",
         "symfony/security": "^4.3",
         "symfony/expression-language": "^4.3",
-        "sensiolabs/ansi-to-html": "^1.1"
+        "sensiolabs/ansi-to-html": "^1.1",
+        "symfony/dom-crawler": "^4.3",
+        "symfony/css-selector": "^4.3"
     },
     "replace": {
         "draw/aws-tool-kit-bundle": "self.version",

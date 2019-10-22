@@ -1,8 +1,10 @@
 <?php namespace Draw\Bundle\PostOfficeBundle\Listener;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 
 class EmailEventListener implements EventSubscriberInterface
@@ -19,8 +21,10 @@ class EmailEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            MessageEvent::class =>
-                ['composeMessage', 200]
+            MessageEvent::class => [
+                ['composeMessage', 200],
+                ['assignSubjectFromHtmlTitle', -2]
+            ]
         ];
     }
 
@@ -66,6 +70,23 @@ class EmailEventListener implements EventSubscriberInterface
                 call_user_func([$service, $writerMethod], $message, $envelope);
             }
         }
+    }
+
+    public function assignSubjectFromHtmlTitle(MessageEvent $messageEvent)
+    {
+        $message = $messageEvent->getMessage();
+        if(!$message instanceof Email) {
+            return;
+        }
+
+        switch(true) {
+            case !($body = $message->getHtmlBody()):
+            case !count($crawler = (new Crawler($body))->filter('html > head > title')->first()):
+            case !($subject = $crawler->text()):
+                return;
+        }
+
+        $message->subject($subject);
     }
 
     private function getTypes(RawMessage $message)

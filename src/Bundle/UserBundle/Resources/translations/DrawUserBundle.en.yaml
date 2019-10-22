@@ -1,0 +1,4 @@
+forgot_password:
+  email:
+    subject: 'You have forgotten your password !'
+    call_to_action_text: 'Reset my password'

@@ -13,7 +13,6 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
     public function compose(ForgotPasswordEmail $forgotPasswordEmail)
     {
         $forgotPasswordEmail
-            ->to($forgotPasswordEmail->getEmailAddress())
-            ->subject('You have forgotten your password.');
+            ->to($forgotPasswordEmail->getEmailAddress());
     }
 }
