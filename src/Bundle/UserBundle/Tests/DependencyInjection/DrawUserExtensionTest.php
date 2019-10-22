@@ -7,6 +7,8 @@ use Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock;
 use Draw\Bundle\UserBundle\Sonata\Controller\LoginController;
 use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
 use Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator;
+use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
+use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminRuntime;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
@@ -30,5 +32,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
         yield [LoginController::class];
         yield [AdminLoginForm::class];
         yield [AdminLoginAuthenticator::class];
+        yield [UserAdminExtension::class];
+        yield [UserAdminRuntime::class];
     }
 }

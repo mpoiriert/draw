@@ -1,0 +1,4 @@
+draw_post_office:
+  default_from:
+    email: 'support@example.com'
+    name: 'Example - Support'

@@ -8,11 +8,6 @@ use Symfony\Component\Mime\RawMessage;
 class EmailEventListener implements EventSubscriberInterface
 {
     /**
-     * @var string
-     */
-    private $defaultFrom;
-
-    /**
      * @var ContainerInterface
      */
     private $serviceLocator;
@@ -26,12 +21,8 @@ class EmailEventListener implements EventSubscriberInterface
         return [MessageEvent::class => 'composeMessage'];
     }
 
-    public function __construct(
-        ContainerInterface $serviceLocator,
-        $defaultFrom
-    ) {
+    public function __construct(ContainerInterface $serviceLocator) {
         $this->serviceLocator = $serviceLocator;
-        $this->defaultFrom = $defaultFrom;
     }
 
     public function addWriter(string $email, $writerName, $writerMethod, $priority = 0)

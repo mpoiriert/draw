@@ -24,6 +24,7 @@ class CompilerPass implements CompilerPassInterface
                     $methodName = $priority;
                     $priority = 0;
                 }
+
                 $emailType = $reflectionClass->getMethod($methodName)->getParameters()[0]->getClass()->name;
                 $emailEventListener
                     ->addMethodCall('addWriter', [$emailType, $id, $methodName, $priority]);

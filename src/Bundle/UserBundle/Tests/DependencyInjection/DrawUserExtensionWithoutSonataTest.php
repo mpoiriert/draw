@@ -5,6 +5,8 @@ use Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock;
 use Draw\Bundle\UserBundle\Sonata\Controller\LoginController;
 use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
 use Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator;
+use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
+use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminRuntime;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawUserExtensionWithoutSonataTest extends DrawUserExtensionTest
@@ -26,7 +28,9 @@ class DrawUserExtensionWithoutSonataTest extends DrawUserExtensionTest
                 UserCountBlock::class,
                 LoginController::class,
                 AdminLoginForm::class,
-                AdminLoginAuthenticator::class
+                AdminLoginAuthenticator::class,
+                UserAdminRuntime::class,
+                UserAdminExtension::class
             ],
             parent::provideTestHasServiceDefinition()
         );

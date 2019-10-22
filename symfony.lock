@@ -132,6 +132,9 @@
     "knplabs/knp-menu-bundle": {
         "version": "v2.3.0"
     },
+    "kunicmarko/sonata-auto-configure-bundle": {
+        "version": "0.7.1"
+    },
     "monolog/monolog": {
         "version": "1.25.1"
     },

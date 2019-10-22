@@ -1,6 +1,10 @@
+sonata_admin:
+  templates:
+    user_block: '@DrawUser/Sonata/Block/user_block.html.twig'
+
 sonata_block:
   blocks:
-    Draw\UserBundle\Sonata\Block\UserCountBlock: ~
+    Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
 
 draw_user:
   sonata: ~

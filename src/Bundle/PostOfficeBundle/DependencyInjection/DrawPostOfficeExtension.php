@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\NamedAddress;
@@ -33,6 +34,9 @@ class DrawPostOfficeExtension extends ConfigurableExtension
             $container->removeDefinition(DefaultFromEmailWriter::class);
             return;
         }
+
+        $container->getDefinition(DefaultFromEmailWriter::class)
+            ->setArgument('$defaultFrom', new Reference('draw_post_office.default_from'));
 
         if (!empty($config['name'])) {
             $definition = (new Definition(NamedAddress::class))

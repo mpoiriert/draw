@@ -8,8 +8,9 @@ class ForgotPasswordEmail extends TemplatedEmail
 
     public function __construct(string $emailAddress)
     {
-        $this->emailAddress = $emailAddress;
         parent::__construct();
+        $this->emailAddress = $emailAddress;
+        $this->htmlTemplate('@DrawUser/Email/reset_password_email.twig.html');
     }
 
     /**
