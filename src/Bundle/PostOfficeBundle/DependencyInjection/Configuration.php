@@ -20,6 +20,9 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->scalarNode('default_communication_locale')
+                    ->defaultValue('en')
+                ->end()
                 ->arrayNode('default_from')
                     ->canBeEnabled()
                     ->children()

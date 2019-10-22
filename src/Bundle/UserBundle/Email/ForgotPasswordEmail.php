@@ -10,7 +10,12 @@ class ForgotPasswordEmail extends TemplatedEmail
     {
         parent::__construct();
         $this->emailAddress = $emailAddress;
-        $this->htmlTemplate('@DrawUser/Email/reset_password_email.twig.html');
+        $this->htmlTemplate('@DrawUser/Email/reset_password_email.html.twig');
+    }
+
+    public function getContext(): array
+    {
+        return parent::getContext() + ['email_address' => $this->emailAddress];
     }
 
     /**

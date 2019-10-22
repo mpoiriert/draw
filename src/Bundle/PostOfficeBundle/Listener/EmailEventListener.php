@@ -18,7 +18,10 @@ class EmailEventListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [MessageEvent::class => 'composeMessage'];
+        return [
+            MessageEvent::class =>
+                ['composeMessage', 200]
+        ];
     }
 
     public function __construct(ContainerInterface $serviceLocator) {

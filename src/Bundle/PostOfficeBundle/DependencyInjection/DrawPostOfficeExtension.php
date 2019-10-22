@@ -25,6 +25,11 @@ class DrawPostOfficeExtension extends ConfigurableExtension
         // This is to remove singly implemented aliases
         $container->removeAlias(EmailWriterInterface::class);
 
+        $container->setParameter(
+            'draw_post_office.default_communication_locale',
+            $config['default_communication_locale']
+        );
+
         $this->configureDefaultFrom($config['default_from'], $container);
     }
 
