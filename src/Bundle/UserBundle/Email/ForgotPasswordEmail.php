@@ -12,6 +12,11 @@ class ForgotPasswordEmail extends TemplatedEmail
      */
     private $user;
 
+    /**
+     * @var string
+     */
+    private $callToActionLink;
+
     public function __construct(string $emailAddress)
     {
         parent::__construct();
@@ -22,7 +27,10 @@ class ForgotPasswordEmail extends TemplatedEmail
     public function getContext(): array
     {
         $context = parent::getContext();
-        $extraContexts[] = ['email_address' => $this->emailAddress];
+        $extraContexts[] = [
+            'email_address' => $this->emailAddress,
+            'call_to_action_link' => $this->callToActionLink
+        ];
         if ($this->user) {
             $extraContexts[] = ['user' => $this->user];
         }
@@ -45,7 +53,24 @@ class ForgotPasswordEmail extends TemplatedEmail
     public function user(SecurityUserInterface $user): ForgotPasswordEmail
     {
         $this->user = $user;
+        return $this;
+    }
 
+    /**
+     * @return string
+     */
+    public function getCallToActionLink(): ?string
+    {
+        return $this->callToActionLink;
+    }
+
+    /**
+     * @param string $callToActionLink
+     * @return ForgotPasswordEmail
+     */
+    public function callToActionLink(string $callToActionLink): ForgotPasswordEmail
+    {
+        $this->callToActionLink = $callToActionLink;
         return $this;
     }
 

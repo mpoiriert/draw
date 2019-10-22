@@ -2,3 +2,6 @@ sonata:
     resource: "@DrawUserBundle/Sonata/Controller"
     type: "annotation"
     prefix: "/admin"
+
+invite_create_account:
+    path: '/'
