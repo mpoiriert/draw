@@ -6,6 +6,9 @@
         \Draw\Component\Tester\ServiceTesterTrait::getService('') => [
             "" == "@",
         ],
+        \Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch('') => [
+            "" == "@"
+        ]
     ];
 }
 

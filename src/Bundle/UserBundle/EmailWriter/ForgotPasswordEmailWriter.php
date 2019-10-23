@@ -62,7 +62,10 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
             $url = $this->urlGenerator
                 ->generate(
                     'message_click',
-                    [MessageController::MESSAGE_ID_PARAMETER_NAME => $messageId],
+                    [
+                        MessageController::MESSAGE_ID_PARAMETER_NAME => $messageId,
+                        'type' => 'reset_password'
+                    ],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );
 
