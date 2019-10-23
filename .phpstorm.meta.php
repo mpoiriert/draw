@@ -1,7 +1,9 @@
 <?php namespace PHPSTORM_META {
-
     $STATIC_METHOD_TYPES = [
         \Prophecy\Prophecy\ObjectProphecy::reveal('') => [
+            "" == "@",
+        ],
+        \Draw\Component\Tester\ServiceTesterTrait::getService('') => [
             "" == "@",
         ],
     ];

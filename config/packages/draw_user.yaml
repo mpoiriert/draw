@@ -8,3 +8,8 @@ sonata_block:
 
 draw_user:
   sonata: ~
+
+framework:
+  messenger:
+    routing:
+      Draw\Bundle\UserBundle\Message\ResetPassword: 'draw'

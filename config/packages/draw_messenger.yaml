@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autoconfigure: true
+    autowire: true
+
+  Draw\Component\Messenger\Transport\DrawTransportFactory: ~
+
+framework:
+  messenger:
+    transports:
+      draw: 'draw://default'
