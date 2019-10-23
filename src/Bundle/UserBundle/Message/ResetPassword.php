@@ -1,9 +1,8 @@
 <?php namespace Draw\Bundle\UserBundle\Message;
 
-use Draw\Bundle\MessengerBundle\Message\RedirectMessageInterface;
 use Draw\Component\Messenger\Message\ManuallyTriggeredInterface;
 
-class ResetPassword implements ManuallyTriggeredInterface, RedirectMessageInterface
+class ResetPassword implements ManuallyTriggeredInterface, AutoLoginInterface
 {
     private $userId;
 

@@ -11,17 +11,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MessageController
 {
+    const MESSAGE_ID_PARAMETER_NAME = 'dMUuid';
     /**
-     * @Route(name="message-click", methods={"GET"}, path="/message-click/{id}")
+     * @Route(name="message-click", methods={"GET"}, path="/message-click/{dMUuid}")
      *
      * @param MessageBus $messengerBusDraw
      * @param $id
      *
      * @return Response
      */
-    public function click($id, DrawTransport $drawTransport, MessageBusInterface $messengerBusDraw)
+    public function click($dMUuid, DrawTransport $drawTransport, MessageBusInterface $messengerBusDraw)
     {
-        $envelope = $drawTransport->find($id);
+        $envelope = $drawTransport->find($dMUuid);
         $envelope = $messengerBusDraw->dispatch($envelope->with(new ReceivedStamp('messenger.transport.draw')));
 
         $message = $envelope->getMessage();
