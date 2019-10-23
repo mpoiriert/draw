@@ -37,7 +37,6 @@ security:
                 entry_point: Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticato
         main:
             context: user
-            stateless: true
             anonymous: true
             guard:
                 authenticators:

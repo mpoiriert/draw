@@ -29,12 +29,12 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        return $request->attributes->has(MessageController::MESSAGE_ID_PARAMETER_NAME);
+        return $request->get(MessageController::MESSAGE_ID_PARAMETER_NAME);
     }
 
     public function getCredentials(Request $request)
     {
-        return ['messageId' => $request->attributes->get(MessageController::MESSAGE_ID_PARAMETER_NAME)];
+        return ['messageId' => $request->get(MessageController::MESSAGE_ID_PARAMETER_NAME)];
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)

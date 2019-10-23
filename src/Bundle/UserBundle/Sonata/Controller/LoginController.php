@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -58,6 +59,10 @@ final class LoginController extends AbstractController
      */
     public function loginAction(): Response
     {
+        if ($this->getUser() instanceof UserInterface) {
+            return $this->redirectToRoute('sonata_admin_dashboard');
+        }
+
         $form = $this->createForm(
             AdminLoginForm::class,
             ['email' => $this->authenticationUtils->getLastUsername()]
