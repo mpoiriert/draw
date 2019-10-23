@@ -4,6 +4,7 @@ use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -32,19 +33,29 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
      */
     private $passwordEncoder;
 
+    /**
+     * @var UrlGeneratorInterface
+     */
+    private $urlGenerator;
+
     public function __construct(
         FormFactoryInterface $formFactory,
         RouterInterface $router,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordEncoderInterface $passwordEncoder,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->passwordEncoder = $passwordEncoder;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function supports(Request $request): bool
     {
-        if ($request->getPathInfo() != '/admin/login' || $request->getMethod() != 'POST') {
+
+        if ($request->getMethod() != 'POST'
+            || $request->getPathInfo() != $this->urlGenerator->generate('admin_login')
+        ) {
             return false;
         }
 

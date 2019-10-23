@@ -1,12 +1,30 @@
 <?php namespace Draw\Bundle\UserBundle\Message;
 
-class ResetPassword
+use Draw\Bundle\MessengerBundle\Message\RedirectMessageInterface;
+use Draw\Component\Messenger\Message\ManuallyTriggeredInterface;
+
+class ResetPassword implements ManuallyTriggeredInterface, RedirectMessageInterface
 {
     private $userId;
+
+    private $urlToRedirectTo;
 
     public function __construct($userId)
     {
         $this->userId = $userId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUrlToRedirectTo(): ?string
+    {
+        return $this->urlToRedirectTo;
+    }
+
+    public function setUrlToRedirectTo(string $url)
+    {
+        $this->urlToRedirectTo = $url;
     }
 
     public function getUserId()
