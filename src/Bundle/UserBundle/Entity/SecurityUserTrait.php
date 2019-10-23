@@ -1,5 +1,7 @@
 <?php namespace Draw\Bundle\UserBundle\Entity;
 
+use DateTimeInterface;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -25,6 +27,13 @@ trait SecurityUserTrait
      * @var string The plain password to update the password itself
      */
     private $plainPassword;
+
+    /**
+     * @var DateTimeImmutable
+     *
+     * @ORM\Column(name="last_password_updated_at", type="datetime_immutable", nullable=true)
+     */
+    private $passwordUpdatedAt;
 
     public function getEmail(): ?string
     {
@@ -90,6 +99,28 @@ trait SecurityUserTrait
     public function setPlainPassword(?string $plainPassword)
     {
         $this->plainPassword = $plainPassword;
+        if($this->plainPassword) {
+            //This is needed to flag a property modified to trigger what's is needed for the flush
+            $this->setPasswordUpdatedAt(new DateTimeImmutable());
+        }
+    }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getPasswordUpdatedAt(): ?DateTimeInterface
+    {
+        return $this->passwordUpdatedAt;
+    }
+
+    /**
+     * @param \DateTimeImmutable $passwordUpdatedAt
+     * @return SecurityUserTrait
+     */
+    public function setPasswordUpdatedAt(DateTimeInterface $passwordUpdatedAt)
+    {
+        $this->passwordUpdatedAt = \DateTimeImmutable::createFromFormat('U', $passwordUpdatedAt->getTimestamp());
+        return $this;
     }
 
     /**
