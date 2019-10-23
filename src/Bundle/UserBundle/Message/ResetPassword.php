@@ -1,38 +1,23 @@
 <?php namespace Draw\Bundle\UserBundle\Message;
 
+use Draw\Bundle\MessengerBundle\Message\RedirectToRouteMessageInterface;
+use Draw\Bundle\MessengerBundle\Message\RedirectToRouteMessageTrait;
 use Draw\Component\Messenger\Message\ManuallyTriggeredInterface;
 
-class ResetPassword implements ManuallyTriggeredInterface, AutoConnectInterface
+class ResetPassword implements ManuallyTriggeredInterface, AutoConnectInterface, RedirectToRouteMessageInterface
 {
+    use RedirectToRouteMessageTrait;
+
     private $userId;
 
-    private $urlToRedirectTo;
-
-    public function __construct($userId)
+    public function __construct($userId, $route = 'admin_change_password')
     {
+        $this->route = $route;
         $this->userId = $userId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUrlToRedirectTo(): ?string
-    {
-        return $this->urlToRedirectTo;
-    }
-
-    public function setUrlToRedirectTo(string $url)
-    {
-        $this->urlToRedirectTo = $url;
     }
 
     public function getUserId()
     {
         return $this->userId;
-    }
-
-    public function isSingleUseToken(): bool
-    {
-        return true;
     }
 }

@@ -5,6 +5,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Synchronizer\SingleDatabaseSynchronizer;
 use Doctrine\DBAL\Types\Type;
+use Draw\Component\Messenger\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\Stamp\ManualTriggerStamp;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
@@ -44,9 +45,15 @@ class DrawTransport extends DoctrineTransport
         $delayStamp = $envelope->last(DelayStamp::class);
         $delay = null !== $delayStamp ? $delayStamp->getDelay() : null;
         $delay = $delay ?? $envelope->last(ManualTriggerStamp::class) ? null : 0;
-
+        $expirationStamp = $envelope->last(ExpirationStamp::class);
+        $expiresAt = $expirationStamp ? $expirationStamp->getDateTime() : null;
         try {
-            $id = $this->insert($encodedMessage['body'], $encodedMessage['headers'] ?? [], $delay);
+            $id = $this->insert(
+                $encodedMessage['body'],
+                $encodedMessage['headers'] ?? [],
+                $delay,
+                $expiresAt
+            );
         } catch (DBALException $exception) {
             throw new TransportException($exception->getMessage(), 0, $exception);
         }
@@ -54,7 +61,7 @@ class DrawTransport extends DoctrineTransport
         return $envelope->with(new TransportMessageIdStamp($id));
     }
 
-    private function insert(string $body, array $headers, int $delay = null)
+    private function insert(string $body, array $headers, int $delay = null, \DateTimeInterface $expiresAt = null)
     {
         $id = Uuid::uuid4()->toString();
         $now = new \DateTime();
@@ -72,6 +79,7 @@ class DrawTransport extends DoctrineTransport
                 'queue_name' => '?',
                 'created_at' => '?',
                 'available_at' => '?',
+                'expires_at' => '?',
             ]);
 
         $this->executeQuery($queryBuilder->getSQL(), [
@@ -80,7 +88,8 @@ class DrawTransport extends DoctrineTransport
             json_encode($headers),
             $this->connection->getConfiguration()['queue_name'],
             Connection::formatDateTime($now),
-            $availableAt ? Connection::formatDateTime($availableAt) : null
+            $availableAt ? Connection::formatDateTime($availableAt) : null,
+            $expiresAt ? Connection::formatDateTime($expiresAt) : null
         ]);
 
         return $id;
@@ -133,6 +142,8 @@ class DrawTransport extends DoctrineTransport
         $table->addColumn('available_at', Type::DATETIME)
             ->setNotnull(false);
         $table->addColumn('delivered_at', Type::DATETIME)
+            ->setNotnull(false);
+        $table->addColumn('expires_at', Type::DATETIME)
             ->setNotnull(false);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['queue_name']);

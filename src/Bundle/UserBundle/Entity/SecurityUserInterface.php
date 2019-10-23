@@ -4,6 +4,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface SecurityUserInterface extends UserInterface
 {
+    public function getId();
+
     public function getPlainPassword(): ?string;
 
     /**
