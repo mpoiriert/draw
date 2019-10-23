@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Transport\Doctrine\Connection;
 use Symfony\Component\Messenger\Transport\Doctrine\DoctrineTransport;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
-class DrawTransport extends DoctrineTransport
+class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInterface
 {
     private $driverConnection;
 
@@ -123,6 +123,30 @@ class DrawTransport extends DoctrineTransport
         } else {
             $this->driverConnection->getConfiguration()->setFilterSchemaAssetsExpression($assetFilter);
         }
+    }
+
+    public function purgeObsoleteMessages(\DateTimeInterface $since): int
+    {
+        $tableName = $this->connection->getConfiguration()['table_name'];
+        $batchSize = 1000;
+        $seconds = 10;
+
+        $total = 0;
+        do {
+            $total += $affectedRows = $this->driverConnection->executeUpdate(
+                'DELETE FROM ' . $tableName . ' WHERE expires_at < ? LIMIT ?',
+                [$since, $batchSize],
+                [Type::DATETIME, Type::INTEGER]
+            );
+
+            if ($affectedRows < $batchSize) {
+                break;
+            }
+
+            usleep($seconds * 1000000);
+        } while ($affectedRows >= $batchSize);
+
+        return $total;
     }
 
     private function getSchema(): Schema

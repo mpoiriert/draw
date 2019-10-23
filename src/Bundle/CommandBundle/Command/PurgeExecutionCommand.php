@@ -1,6 +1,7 @@
 <?php namespace Draw\Bundle\CommandBundle\Command;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Type;
 use Draw\Bundle\CommandBundle\Entity\Execution;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -120,7 +121,8 @@ class PurgeExecutionCommand extends Command implements LoggerAwareInterface
     {
         return $this->connection->executeUpdate(
             'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
-            [Execution::STATE_TERMINATED, $before->format('Y-m-d H:i:s'), $batchSize]
+            [Execution::STATE_TERMINATED, $before, $batchSize],
+            [Type::STRING, Type::DATETIME, Type::INTEGER]
         );
     }
 }

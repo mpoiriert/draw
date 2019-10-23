@@ -12,5 +12,9 @@
         <prototype namespace="Draw\Bundle\MessengerBundle\Controller\" resource="../../Controller">
             <tag name="controller.service_arguments"/>
         </prototype>
+        <service id="Draw\Bundle\MessengerBundle\Command\PurgeExpiredMessageCommand">
+            <argument key="$transportLocator" type="service" id="messenger.receiver_locator" />
+            <argument key="$transportNames">%draw.messenger.transport_names%</argument>
+        </service>
     </services>
 </container>
