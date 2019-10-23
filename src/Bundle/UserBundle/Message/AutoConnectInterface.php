@@ -1,6 +1,6 @@
 <?php namespace Draw\Bundle\UserBundle\Message;
 
-interface AutoLoginInterface
+interface AutoConnectInterface
 {
     public function getUserId();
 }

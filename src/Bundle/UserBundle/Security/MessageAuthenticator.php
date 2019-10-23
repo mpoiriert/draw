@@ -2,7 +2,7 @@
 
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\MessengerBundle\Controller\MessageController;
-use Draw\Bundle\UserBundle\Message\AutoLoginInterface;
+use Draw\Bundle\UserBundle\Message\AutoConnectInterface;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,7 +49,7 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
         }
 
         $message = $envelope->getMessage();
-        if(!$message instanceof AutoLoginInterface) {
+        if(!$message instanceof AutoConnectInterface) {
             return null;
         }
 

@@ -13,3 +13,4 @@ framework:
   messenger:
     routing:
       Draw\Bundle\UserBundle\Message\ResetPassword: 'draw'
+      Draw\Bundle\UserBundle\Message\AutoConnect: 'draw'

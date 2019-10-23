@@ -2,7 +2,7 @@
 
 use Draw\Component\Messenger\Message\ManuallyTriggeredInterface;
 
-class ResetPassword implements ManuallyTriggeredInterface, AutoLoginInterface
+class ResetPassword implements ManuallyTriggeredInterface, AutoConnectInterface
 {
     private $userId;
 
