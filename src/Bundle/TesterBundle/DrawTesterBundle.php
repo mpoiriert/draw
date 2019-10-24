@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\TesterBundle;
 
+use Draw\Bundle\TesterBundle\Config\ServiceIdsResourceCheck;
 use Draw\Component\Profiling\ProfilerCoordinator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -8,12 +9,12 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class DrawTesterBundle extends Bundle implements CompilerPassInterface
 {
-    private static $ids = [];
+    public static $ids = [];
 
     public static function addServicesToTest($ids)
     {
         $ids = (array)$ids;
-        self::$ids+=$ids;
+        self::$ids += $ids;
     }
 
     public function build(ContainerBuilder $container)
@@ -23,12 +24,15 @@ class DrawTesterBundle extends Bundle implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        foreach(self::$ids as $id) {
-            if($container->hasDefinition($id)) {
+        $file = $container->getParameter('kernel.cache_dir') . '/serviceIdsToTest.json';
+        $container->addResource(new ServiceIdsResourceCheck($file));
+        self::$ids = array_unique(self::$ids);
+        foreach (self::$ids as $id) {
+            if ($container->hasDefinition($id)) {
                 $container->getDefinition($id)->setPublic(true);
             }
 
-            if($container->hasAlias($id)) {
+            if ($container->hasAlias($id)) {
                 $container->getAlias($id)->setPublic(true);
             }
         }

@@ -28,4 +28,8 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <listeners>
+        <listener class="Draw\Bundle\TesterBundle\PhpUnit\ServiceTestsListener" />
+    </listeners>
 </phpunit>
