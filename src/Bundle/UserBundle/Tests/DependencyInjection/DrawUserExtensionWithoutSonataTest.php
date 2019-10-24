@@ -4,6 +4,7 @@ use Draw\Bundle\UserBundle\DependencyInjection\DrawUserExtension;
 use Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock;
 use Draw\Bundle\UserBundle\Sonata\Controller\LoginController;
 use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
+use Draw\Bundle\UserBundle\Sonata\Form\ChangePasswordForm;
 use Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminRuntime;
@@ -28,6 +29,7 @@ class DrawUserExtensionWithoutSonataTest extends DrawUserExtensionTest
                 UserCountBlock::class,
                 LoginController::class,
                 AdminLoginForm::class,
+                ChangePasswordForm::class,
                 AdminLoginAuthenticator::class,
                 UserAdminRuntime::class,
                 UserAdminExtension::class

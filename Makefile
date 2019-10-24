@@ -51,9 +51,16 @@ subsplit:
 	rm -rf .subsplit
 	git subsplit init https://github.com/mpoiriert/draw
 	git subsplit publish " \
-	    src/DataTester:https://github.com/mpoiriert/php-data-tester.git \
-	    src/HttpTester:https://github.com/mpoiriert/php-http-tester.git \
-	    src/Profiling:https://github.com/mpoiriert/php-profiling.git \
+	    src/Component/Tester:https://github.com/mpoiriert/tester.git \
+	    src/Component/Profiling:https://github.com/mpoiriert/profiling.git \
+	    src/Component/Messenger:https://github.com/mpoiriert/messenger.git \
+	    src/Bundle/AwsToolKitBundle:https://github.com/mpoiriert/aws-tool-kit-bundle.git \
+		src/Bundle/CommandBundle:https://github.com/mpoiriert/command-bundle.git \
+		src/Bundle/CronBundle:https://github.com/mpoiriert/cron-bundle.git \
+		src/Bundle/MessengerBundle:https://github.com/mpoiriert/messenger-bundle.git \
+        src/Bundle/PostOfficeBundle:https://github.com/mpoiriert/post-office-bundle.git \
+        src/Bundle/TesterBundle:https://github.com/mpoiriert/tester-bundle.git \
+        src/Bundle/UserBundle:https://github.com/mpoiriert/user-bundle.git \
 	"
 	rm -rf .subsplit
 

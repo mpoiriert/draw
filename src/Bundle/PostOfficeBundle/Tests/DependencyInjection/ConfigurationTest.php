@@ -13,7 +13,10 @@ class ConfigurationTest extends ConfigurationTestCase
 
     public function getDefaultConfiguration(): array
     {
-        return ['default_from' => ['enabled' => false]];
+        return [
+            'default_from' => ['enabled' => false],
+            'css_inliner' => ['enabled' => false]
+        ];
     }
 
     public function provideTestInvalidConfiguration(): iterable

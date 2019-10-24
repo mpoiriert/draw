@@ -9,8 +9,5 @@
             <exclude>../../{DependencyInjection,Tests}</exclude>
             <exclude>../../DrawPostOfficeBundle.php</exclude>
         </prototype>
-        <service id="Draw\Bundle\PostOfficeBundle\Email\CommunicationLocaleWriter">
-            <argument key="$defaultCommunicationLocale">%draw_post_office.default_communication_locale%</argument>
-        </service>
     </services>
 </container>

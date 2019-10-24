@@ -113,7 +113,8 @@ class PurgeExecutionCommandTest extends CommandTestCase
                 'executeUpdate',
                 [
                     'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
-                    ['terminated', $date, 1000]
+                    ['terminated', new \DateTime($date), 1000],
+                    ["string", "datetime", "integer"]
                 ]
             )
             ->shouldBeCalledTimes(2)
