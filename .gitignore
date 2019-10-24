@@ -1,11 +1,7 @@
 /tmp
-/vendor
 /.idea
 /.subsplit
-/var
-.composer.lock
-.phpunit.result.cache
-.env
+/composer.lock
 
 ###> symfony/framework-bundle ###
 /.env.local

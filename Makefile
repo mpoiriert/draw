@@ -74,6 +74,7 @@ test-reset-db:
 	docker-compose exec php php bin/console doctrine:database:drop --if-exists --no-interaction --force
 	docker-compose exec php php bin/console doctrine:database:create --no-interaction
 	docker-compose exec php php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --quiet
+	docker-compose exec php php bin/console messenger:setup-transports --no-interaction
 	docker-compose exec php php bin/console doctrine:fixtures:load --no-interaction
 
 tester-dump-assert-methods:
