@@ -91,3 +91,6 @@ tester-generate-all: tester-dump-assert-methods tester-generate-trait tester-gen
 monorepo-merge:
 	docker-compose exec php vendor/bin/monorepo-builder merge
 
+monorepo-split:
+	docker-compose exec php vendor/bin/monorepo-builder split
+
