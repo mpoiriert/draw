@@ -21,6 +21,9 @@ RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
 	mv composer.phar /usr/local/bin/composer
 ENV COMPOSER_MEMORY_LIMIT -1
 
+#SYMFONY
+RUN curl -sSk https://get.symfony.com/cli/installer -O - | bash
+
 #XDEBUG
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
