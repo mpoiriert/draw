@@ -16,7 +16,7 @@ return [
     Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle::class => ['dev' => true, 'test' => true],
     Draw\Bundle\PostOfficeBundle\DrawPostOfficeBundle::class => ['all' => true],
     Draw\Bundle\UserBundle\DrawUserBundle::class => ['all' => true],
-    Draw\Bundle\MessengerBundle\DrawMessageBundle::class => ['all' => true],
+    Draw\Bundle\MessengerBundle\DrawMessengerBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],

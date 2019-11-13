@@ -1,4 +1,4 @@
 site:
-    resource: "@DrawMessageBundle/Controller"
+    resource: "@DrawMessengerBundle/Controller"
     type: "annotation"
     prefix: "/"
