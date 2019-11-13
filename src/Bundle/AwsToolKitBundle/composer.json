@@ -1,0 +1,11 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Draw\\Bundle\\AwsToolKitBundle\\": ""
+    }
+  },
+  "require": {
+    "aws/aws-sdk-php": "^3.112",
+    "symfony/css-selector": "^4.3"
+  }
+}

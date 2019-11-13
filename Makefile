@@ -87,3 +87,7 @@ tester-generate-doc:
 	docker-compose exec php bin/console draw:tester:generate-asserts-documentation-page
 
 tester-generate-all: tester-dump-assert-methods tester-generate-trait tester-generate-doc
+
+monorepo-merge:
+	docker-compose exec php vendor/bin/monorepo-builder merge
+

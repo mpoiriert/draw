@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Draw\\Profiling\\": "src//"
+            "Draw\\Component\\Profiling\\": ""
         }
     },
     "minimum-stability": "dev",
@@ -19,6 +19,6 @@
     "require": {},
     "require-dev": {
         "draw/data-tester": "*",
-        "phpunit/phpunit": "^7.0|^6.0|^5.7"
+        "phpunit/phpunit": "^7.0"
     }
 }

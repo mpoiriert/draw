@@ -1,29 +1,39 @@
 {
-    "name": "draw/data-tester",
-    "description": "Library base on phpunit to test your data with a fluent interface.",
-    "type": "library",
-    "keywords": ["draw", "test", "phpunit"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Martin Poirier Theoret",
-            "email": "mpoiriert@gmail.com"
-        }
-    ],
-    "support": {
-      "docs": "http://php-data-tester.readthedocs.io"
-    },
-    "autoload": {
-        "psr-4": {
-            "Draw\\DataTester\\": "src//"
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "phpunit/phpunit": "^7.0|^6.0|^5.7",
-        "symfony/property-access": "^4.0|^3.0|^2.8",
-        "guzzlehttp/psr7": "^1.4",
-        "pdeans/http": "^1.1"
+  "name": "draw/tester",
+  "description": "Library base on phpunit to test your data with a fluent interface.",
+  "type": "library",
+  "keywords": [
+    "draw",
+    "test",
+    "http",
+    "phpunit"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Martin Poirier Theoret",
+      "email": "mpoiriert@gmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Draw\\Component\\Tester\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require-dev": {
+    "symfony/console": "^4.3",
+    "symfony/dependency-injection": "^4.3"
+  },
+  "require": {
+    "phpunit/phpunit": "^7.0",
+    "symfony/property-access": "^4.0|^3.0|^2.8",
+    "guzzlehttp/psr7": "^1.4",
+    "psr/http-message": "^1.0",
+    "pdeans/http": "^1.1"
+  },
+  "suggest": {
+    "symfony/dependency-injection": "If you want to test extension/configuration"
+  }
 }

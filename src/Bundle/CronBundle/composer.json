@@ -1,0 +1,10 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Draw\\Bundle\\CronBundle\\": ""
+    }
+  },
+  "require": {
+    "symfony/console": "^4.3"
+  }
+}

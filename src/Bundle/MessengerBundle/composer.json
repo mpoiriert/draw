@@ -1,0 +1,12 @@
+{
+  "require": {
+    "draw/messenger": "^0.5",
+    "symfony/css-selector": "^4.3",
+    "symfony/mailer": "^4.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "Draw\\Bundle\\MessengerBundle\\": ""
+    }
+  }
+}
