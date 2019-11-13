@@ -1,0 +1,55 @@
+version: '3'
+services:
+    apache:
+        build: .docker/apache
+        container_name: draw_apache
+        ports:
+            - 80:80
+        volumes:
+            - .docker/config/vhosts:/etc/apache2/sites-enabled
+            - .:/home/wwwroot
+        depends_on:
+            - php
+
+    mysql:
+        image: mysql:5.7.12
+        container_name: draw_mysql
+        command: mysqld --sql_mode=""
+        volumes:
+            - data_mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: draw
+            MYSQL_USER: draw
+            MYSQL_PASSWORD: draw
+
+    php:
+        build: .docker/php
+        container_name: draw_php
+        volumes:
+            - .:/home/wwwroot
+        depends_on:
+            - mysql
+            - maildev
+        ports:
+            - "22:22"
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: draw_phpmyadmin
+        environment:
+            PMA_HOST: mysql
+            PMA_PORT: 3306
+        ports:
+            - 8080:80
+        links:
+            - mysql
+
+    maildev:
+        image: djfarrelly/maildev
+        container_name: draw_maildev
+        ports:
+            - 8001:80
+
+volumes:
+    data_mysql:

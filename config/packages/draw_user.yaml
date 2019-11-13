@@ -1,0 +1,16 @@
+sonata_admin:
+  templates:
+    user_block: '@DrawUser/Sonata/Block/user_block.html.twig'
+
+sonata_block:
+  blocks:
+    Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
+
+draw_user:
+  sonata: ~
+
+framework:
+  messenger:
+    routing:
+      Draw\Bundle\UserBundle\Message\ResetPassword: 'draw'
+      Draw\Bundle\UserBundle\Message\AutoConnect: 'draw'

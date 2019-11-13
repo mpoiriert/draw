@@ -1,0 +1,28 @@
+language: php
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+services:
+  - mysql
+
+env:
+  global:
+    - COMPOSER_MEMORY_LIMIT=-1 APP_ENV=test
+
+install:
+  - cp -f .travis/.env.test.local ./.env.test.local
+
+before_script:
+#  - composer require phpunit/phpunit:${PHP_UNIT_VERSION}
+  - composer install --dev
+
+script:
+  - echo "Starting script."
+  - |
+    php bin/console doctrine:database:create --no-interaction ; \
+    php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -q ; \
+    php bin/console doctrine:fixtures:load --no-interaction ; \
+    php bin/console messenger:setup-transports --no-interaction ; \
+    TRAVIS=1 vendor/bin/phpunit ;

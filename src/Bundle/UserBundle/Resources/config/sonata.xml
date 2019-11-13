@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false" autoconfigure="true" autowire="true">
+            <bind key="$userAdminCode" type="string">%draw_user.sonata.user_admin_code%</bind>
+        </defaults>
+        <prototype namespace="Draw\Bundle\UserBundle\Sonata\" resource="../../Sonata" />
+        <prototype namespace="Draw\Bundle\UserBundle\Sonata\Controller\" resource="../../Sonata/Controller">
+            <tag name="controller.service_arguments" />
+        </prototype>
+
+        <service id="Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock" public="true">
+            <tag name="sonata.block"/>
+        </service>
+    </services>
+</container>
