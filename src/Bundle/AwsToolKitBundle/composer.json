@@ -1,11 +1,16 @@
 {
-  "autoload": {
-    "psr-4": {
-      "Draw\\Bundle\\AwsToolKitBundle\\": ""
+    "autoload": {
+        "psr-4": {
+            "Draw\\Bundle\\AwsToolKitBundle\\": ""
+        }
+    },
+    "require": {
+        "aws/aws-sdk-php": "^3.112",
+        "symfony/css-selector": "^4.3"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.5-dev"
+        }
     }
-  },
-  "require": {
-    "aws/aws-sdk-php": "^3.112",
-    "symfony/css-selector": "^4.3"
-  }
 }

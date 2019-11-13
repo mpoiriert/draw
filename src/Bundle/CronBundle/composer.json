@@ -1,10 +1,15 @@
 {
-  "autoload": {
-    "psr-4": {
-      "Draw\\Bundle\\CronBundle\\": ""
+    "autoload": {
+        "psr-4": {
+            "Draw\\Bundle\\CronBundle\\": ""
+        }
+    },
+    "require": {
+        "symfony/console": "^4.3"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.5-dev"
+        }
     }
-  },
-  "require": {
-    "symfony/console": "^4.3"
-  }
 }

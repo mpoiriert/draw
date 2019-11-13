@@ -16,9 +16,14 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "require": {},
+    "require": [],
     "require-dev": {
         "draw/data-tester": "*",
         "phpunit/phpunit": "^7.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.5-dev"
+        }
     }
 }
