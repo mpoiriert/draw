@@ -28,6 +28,7 @@ services:
         container_name: draw_php
         volumes:
             - .:/home/wwwroot
+            - ~/.ssh:/root/.ssh
         depends_on:
             - mysql
             - maildev
