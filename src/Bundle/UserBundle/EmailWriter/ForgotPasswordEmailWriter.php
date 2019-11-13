@@ -35,7 +35,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
 
     public function __construct(
         EntityRepository $userEntityRepository,
-        MessageBusInterface $messageBus,
+        ?MessageBusInterface $messageBus,
         UrlGeneratorInterface $urlGenerator
     )
     {
@@ -54,24 +54,27 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
             ->findOneBy(['email' => $email]);
 
         if($user) {
-            $messageId = $this->messageBus
-                ->dispatch(new ResetPassword($user->getId()), [new ExpirationStamp(new \DateTime('+ 1 days'))])
-                ->last(TransportMessageIdStamp::class)
-                ->getId();
-
-            $url = $this->urlGenerator
-                ->generate(
-                    'message_click',
-                    [
-                        MessageController::MESSAGE_ID_PARAMETER_NAME => $messageId,
-                        'type' => 'reset_password'
-                    ],
-                    UrlGeneratorInterface::ABSOLUTE_URL
-                );
-
             $forgotPasswordEmail
-                ->user($user)
-                ->callToActionLink($url);
+                ->user($user);
+
+            if($this->messageBus) {
+                $messageId = $this->messageBus
+                    ->dispatch(new ResetPassword($user->getId()), [new ExpirationStamp(new \DateTime('+ 1 days'))])
+                    ->last(TransportMessageIdStamp::class)
+                    ->getId();
+
+                $url = $this->urlGenerator
+                    ->generate(
+                        'message_click',
+                        [
+                            MessageController::MESSAGE_ID_PARAMETER_NAME => $messageId,
+                            'type' => 'reset_password'
+                        ],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    );
+
+                $forgotPasswordEmail->callToActionLink($url);
+            }
         } else {
             $forgotPasswordEmail
                 ->htmlTemplate('@DrawUser/Email/reset_password_email_user_not_found.html.twig')

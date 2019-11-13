@@ -1,4 +1,9 @@
 {
+  "name": "draw/messenger-bundle",
+  "type": "symfony-bundle",
+  "keywords": ["symfony", "messenger", "bundle"],
+  "license": "MIT",
+  "description": "",
     "require": {
         "draw/messenger": "^0.5",
         "symfony/css-selector": "^4.3",
