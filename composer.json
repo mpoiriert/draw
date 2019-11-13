@@ -79,7 +79,8 @@
         "draw/tester": "self.version",
         "draw/data-tester": "self.version",
         "draw/user-bundle": "self.version",
-        "draw/messenger": "self.version"
+        "draw/messenger": "self.version",
+        "draw/post-office-bundle": "self.version"
     },
     "scripts": {
         "auto-scripts": {
