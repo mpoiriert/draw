@@ -4,11 +4,15 @@ use DateTimeInterface;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait SecurityUserTrait
 {
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     *
+     * @Assert\Email()
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -42,7 +46,7 @@ trait SecurityUserTrait
 
     public function setEmail(string $email)
     {
-        $this->email = $email;
+        $this->email = strtolower($email);
     }
 
     /**
