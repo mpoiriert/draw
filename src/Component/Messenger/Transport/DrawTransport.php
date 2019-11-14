@@ -87,12 +87,17 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
             $body,
             json_encode($headers),
             $this->connection->getConfiguration()['queue_name'],
-            Connection::formatDateTime($now),
-            $availableAt ? Connection::formatDateTime($availableAt) : null,
-            $expiresAt ? Connection::formatDateTime($expiresAt) : null
+            self::formatDateTime($now),
+            $availableAt ? self::formatDateTime($availableAt) : null,
+            $expiresAt ? self::formatDateTime($expiresAt) : null
         ]);
 
         return $id;
+    }
+
+    private static function formatDateTime(\DateTimeInterface $dateTime)
+    {
+        return $dateTime->format('Y-m-d\TH:i:s');
     }
 
     private function executeQuery(string $sql, array $parameters = [])
