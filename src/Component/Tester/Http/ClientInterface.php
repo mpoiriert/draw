@@ -13,9 +13,10 @@ interface ClientInterface
      * Register a observer that can be hooked in different step of the request flow
      *
      * @param ClientObserver $clientObserver
+     * @param int $position The position in which the observer must be registered. Lower number are executed first
      * @return void
      */
-    public function registerObserver(ClientObserver $clientObserver): void;
+    public function registerObserver(ClientObserver $clientObserver, $position = 0): void;
 
     /**
      * This is a shortcut method that chain the ClientInterface::createRequest and the ClientInterface::send execution

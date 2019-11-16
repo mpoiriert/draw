@@ -1,6 +1,6 @@
 <?php namespace Draw\Component\Tester\Http\Observer;
 
-use Draw\HttpTester\ClientObserver;
+use Draw\Component\Tester\Http\ClientObserver;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
 
@@ -13,7 +13,7 @@ class DefaultBaseUriObserver extends ClientObserver
         $this->baseUri = $baseUri;
     }
 
-    public function preSendRequest(RequestInterface $request)
+    public function preSendRequest(RequestInterface $request): RequestInterface
     {
         $uri = $request->getUri();
         if(empty($uri->getHost())) {

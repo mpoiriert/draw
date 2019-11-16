@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\BrowserKit\Cookie;
 
 class RequestExecutioner implements RequestExecutionerInterface
 {
@@ -67,6 +68,15 @@ class RequestExecutioner implements RequestExecutionerInterface
     ): \Symfony\Component\HttpFoundation\Response
     {
         $this->lastBrowser = $browser = $this->browserFactory->createBrowser();
+
+        $cookies = array_filter(explode(';', $server['HTTP_COOKIE'] ?? ''));
+
+        foreach($cookies as $cookie) {
+            list($name, $value) = explode('=', $cookie);
+            $this->lastBrowser->getCookieJar()
+                ->set(new Cookie($name, $value));
+        }
+
         $browser->request(...func_get_args());
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response = $browser->getResponse();

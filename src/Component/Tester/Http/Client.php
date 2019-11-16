@@ -22,7 +22,7 @@ class Client implements ClientInterface
     ) {
         $this->requestExecutioner = $requestExecutioner ?: new CurlRequestExecutioner();
         $this->requestFactory = $requestFactory ?: new RequestFactory();
-        $this->registerObserver(new CookieClientObserver());
+        $this->registerObserver(new CookieClientObserver(), 200);
     }
 
     public function getRequestExecutioner(): RequestExecutionerInterface
@@ -38,9 +38,9 @@ class Client implements ClientInterface
         $this->requestExecutioner = $requestExecutioner;
     }
 
-    public function registerObserver(ClientObserver $observer): void
+    public function registerObserver(ClientObserver $observer, $position = 0): void
     {
-        $this->observers[] = $observer;
+        $this->observers[$position][] = $observer;
     }
 
     /**
@@ -144,11 +144,17 @@ class Client implements ClientInterface
      */
     public function send(RequestInterface $request): TestResponse
     {
-        foreach ($this->observers as $observer) {
+        $observers = $this->observers;
+        ksort($observers);
+
+        /** @var ClientObserver[] $observers */
+        $observers = array_merge(...$observers);
+
+        foreach ($observers as $observer) {
             $request = $observer->preSendRequest($request);
         }
 
-        foreach ($this->observers as $observer) {
+        foreach ($observers as $observer) {
             $observer->preExecute($request, $this->requestExecutioner);
         }
 
@@ -163,11 +169,11 @@ class Client implements ClientInterface
             throw $exception;
         }
 
-        foreach ($this->observers as $observer) {
+        foreach ($observers as $observer) {
             $observer->postExecute($request, $response, $this->requestExecutioner);
         }
 
-        foreach ($this->observers as $observer) {
+        foreach ($observers as $observer) {
             $response = $observer->postSendRequest($request, $response);
         }
 
