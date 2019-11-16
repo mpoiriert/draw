@@ -22,6 +22,11 @@ class EncryptPasswordUserEntityListener
         $this->updatePassword($user);
     }
 
+    public function postPersist(SecurityUserInterface $user)
+    {
+        $user->setPlainPassword(null);
+    }
+
     public function postUpdate(SecurityUserInterface $user)
     {
         $user->setPlainPassword(null);

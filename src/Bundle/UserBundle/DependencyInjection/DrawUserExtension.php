@@ -31,6 +31,7 @@ class DrawUserExtension extends ConfigurableExtension
             $container->getDefinition(EncryptPasswordUserEntityListener::class)
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'preUpdate'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist'])
+                ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'postPersist'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'postUpdate']);
         } else {
             $container->removeDefinition(EncryptPasswordUserEntityListener::class);
