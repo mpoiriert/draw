@@ -26,6 +26,11 @@ class User implements SecurityUserInterface
     private $id;
 
     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
      * @return string
      *
      * @ORM\PrePersist()
@@ -45,5 +50,20 @@ class User implements SecurityUserInterface
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        return ['ROLE_USER'];
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
     }
 }
