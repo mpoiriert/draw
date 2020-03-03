@@ -14,6 +14,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MessageController extends AbstractController
 {
@@ -32,7 +33,8 @@ class MessageController extends AbstractController
         Request $request,
         DrawTransport $drawTransport,
         MessageBusInterface $messengerBusDraw,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        TranslatorInterface $translator
     ) {
         try {
             if (is_null($envelope = $drawTransport->find($dMUuid))) {
@@ -52,7 +54,7 @@ class MessageController extends AbstractController
             if ($message instanceof ResponseGeneratorMessageInterface) {
                 return $message->generateResponse();
             }
-            $this->addFlash('success', 'Link have been processed properly.');
+            $this->addFlash('success', $translator->trans('link.processed', [], 'DrawMessengerBundle'));
         } catch (\Throwable $error) {
             $response = $eventDispatcher
                 ->dispatch(new ErroredMessageLinkEvent($request, $dMUuid, $error))
@@ -61,9 +63,9 @@ class MessageController extends AbstractController
                 return $response;
             }
             if ($error instanceof MessageNotFoundException) {
-                $this->addFlash('error', 'The link is invalid.');
+                $this->addFlash('error', $translator->trans('link.invalid', [], 'DrawMessengerBundle'));
             } elseif ($error instanceof MessageExpiredException) {
-                $this->addFlash('error', 'The this link is expired.');
+                $this->addFlash('error', $translator->trans('link.expired', [], 'DrawMessengerBundle'));
             }
         }
 

@@ -1,0 +1,4 @@
+link:
+  processed: 'The link have been processed properly.'
+  invalid: 'The link is invalid.'
+  expired: 'The this link is expired.'
