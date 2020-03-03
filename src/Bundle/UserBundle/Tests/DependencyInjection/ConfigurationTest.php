@@ -21,7 +21,9 @@ class ConfigurationTest extends ConfigurationTestCase
                 'user_admin_code' => UserAdmin::class,
             ],
             'encrypt_password_listener' => true,
-            'user_entity_class' => User::class
+            'user_entity_class' => User::class,
+            'reset_password_route' => 'admin_change_password',
+            'invite_create_account_route' => 'home'
         ];
     }
 

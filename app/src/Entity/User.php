@@ -58,8 +58,8 @@ class User implements SecurityUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        return ['ROLE_USER'];
+        $roles[] = 'ROLE_USER'; // guarantee every user at least has ROLE_USER
+        return $roles;
     }
 
     public function setRoles(array $roles)

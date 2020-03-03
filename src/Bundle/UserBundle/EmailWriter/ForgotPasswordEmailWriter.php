@@ -23,6 +23,10 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
      */
     private $userEntityRepository;
 
+    private $resetPasswordRoute;
+
+    private $inviteCreateAccountRoute;
+
     /**
      * @var UrlGeneratorInterface
      */
@@ -36,11 +40,14 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
     public function __construct(
         EntityRepository $userEntityRepository,
         ?MessageBusInterface $messageBus,
-        UrlGeneratorInterface $urlGenerator
-    )
-    {
+        UrlGeneratorInterface $urlGenerator,
+        string $resetPasswordRoute,
+        string $inviteCreateAccountRoute
+    ) {
         $this->messageBus = $messageBus;
         $this->urlGenerator = $urlGenerator;
+        $this->inviteCreateAccountRoute = $inviteCreateAccountRoute;
+        $this->resetPasswordRoute = $resetPasswordRoute;
         $this->userEntityRepository = $userEntityRepository;
     }
 
@@ -53,13 +60,16 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
         $user = $this->userEntityRepository
             ->findOneBy(['email' => $email]);
 
-        if($user) {
+        if ($user) {
             $forgotPasswordEmail
                 ->user($user);
 
-            if($this->messageBus) {
+            if ($this->messageBus) {
                 $messageId = $this->messageBus
-                    ->dispatch(new ResetPassword($user->getId()), [new ExpirationStamp(new \DateTime('+ 1 days'))])
+                    ->dispatch(
+                        new ResetPassword($user->getId(), $this->resetPasswordRoute),
+                        [new ExpirationStamp(new \DateTime('+ 1 days'))]
+                    )
                     ->last(TransportMessageIdStamp::class)
                     ->getId();
 
@@ -79,7 +89,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
             $forgotPasswordEmail
                 ->htmlTemplate('@DrawUser/Email/reset_password_email_user_not_found.html.twig')
                 ->callToActionLink(
-                    $this->urlGenerator->generate('invite_create_account', [], UrlGeneratorInterface::ABSOLUTE_URL)
+                    $this->urlGenerator->generate($this->inviteCreateAccountRoute, [], UrlGeneratorInterface::ABSOLUTE_URL)
                 );
         }
     }

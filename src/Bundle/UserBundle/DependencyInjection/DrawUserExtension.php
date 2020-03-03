@@ -25,7 +25,7 @@ class DrawUserExtension extends ConfigurableExtension
             ));
         }
 
-        $container->setParameter('draw_user.user_entity_class', $userClass);
+        $this->assignParameters($config, $container);
 
         if ($config['encrypt_password_listener']) {
             $container->getDefinition(EncryptPasswordUserEntityListener::class)
@@ -35,6 +35,19 @@ class DrawUserExtension extends ConfigurableExtension
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'postUpdate']);
         } else {
             $container->removeDefinition(EncryptPasswordUserEntityListener::class);
+        }
+    }
+
+    private function assignParameters($config, ContainerBuilder $container)
+    {
+        $parameterNames = [
+            'user_entity_class',
+            'reset_password_route',
+            'invite_create_account_route'
+        ];
+
+        foreach($parameterNames as $parameterName) {
+            $container->setParameter('draw_user.' . $parameterName, $config[$parameterName]);
         }
     }
 

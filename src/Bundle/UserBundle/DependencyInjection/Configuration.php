@@ -36,6 +36,12 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->defaultValue(User::class)
                 ->end()
+                ->scalarNode('reset_password_route')
+                    ->defaultValue('admin_change_password')
+                ->end()
+                ->scalarNode('invite_create_account_route')
+                    ->defaultValue('home')
+                ->end()
             ->end()
         ;
         return $treeBuilder;

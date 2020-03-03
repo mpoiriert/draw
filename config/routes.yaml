@@ -4,3 +4,6 @@ index:
   defaults:
     path: '/admin/login'
     permanent: true
+
+home:
+  path: '/'
