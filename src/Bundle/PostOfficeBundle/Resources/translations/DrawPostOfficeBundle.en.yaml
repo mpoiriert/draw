@@ -1,7 +1,10 @@
 email:
   default:
+    subject: 'Subject'
     salutation: '<p>Hi,</p>'
+    top_section: ''
+    call_to_action_text: 'Click Here'
+    bottom_section: ''
     signature: '<p>Thanks!</p>'
     company_address: 'Company Inc, 3 Abbey Road, San Francisco CA 94102'
     unsubscribe: '<br />Don''t like these emails? <a href="%link%">Unsubscribe</a>.'
-    call_to_action_text: 'Click Here'

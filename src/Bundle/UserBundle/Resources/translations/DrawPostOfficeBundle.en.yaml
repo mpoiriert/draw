@@ -1,5 +1,5 @@
-forgot_password:
-  email:
+email:
+  forgot_password:
     subject: 'You have forgotten your password!'
     top_section: |
       <p>You have request a link to reset your password.<p>
