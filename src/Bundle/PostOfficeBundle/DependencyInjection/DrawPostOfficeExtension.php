@@ -10,7 +10,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\NamedAddress;
 
 class DrawPostOfficeExtension extends ConfigurableExtension
 {
@@ -31,7 +30,7 @@ class DrawPostOfficeExtension extends ConfigurableExtension
 
     private function configureCssInliner(array $config, ContainerBuilder $container)
     {
-        if(!$config['enabled']) {
+        if (!$config['enabled']) {
             $container->removeDefinition(EmailCssInlinerListener::class);
             return;
         }
@@ -39,7 +38,7 @@ class DrawPostOfficeExtension extends ConfigurableExtension
 
     private function configureDefaultFrom($config, ContainerBuilder $container)
     {
-        if(!$config['enabled']) {
+        if (!$config['enabled']) {
             $container->removeDefinition(DefaultFromEmailWriter::class);
             return;
         }
@@ -47,13 +46,8 @@ class DrawPostOfficeExtension extends ConfigurableExtension
         $container->getDefinition(DefaultFromEmailWriter::class)
             ->setArgument('$defaultFrom', new Reference('draw_post_office.default_from'));
 
-        if (!empty($config['name'])) {
-            $definition = (new Definition(NamedAddress::class))
-                ->setArguments([$config['email'], $config['name']]);
-        } else {
-            $definition = (new Definition(Address::class))
-                ->setArguments([$config['email']]);
-        }
+        $definition = (new Definition(Address::class))
+            ->setArguments([$config['email'], (string)$config['name']]);
 
         $container->setDefinition('draw_post_office.default_from', $definition);
     }

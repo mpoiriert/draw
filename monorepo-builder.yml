@@ -22,6 +22,7 @@ parameters:
       kunicmarko/sonata-auto-configure-bundle: "^0.7.1"
       pelago/emogrifier: "^3.0"
       symfony/dotenv: "^4.3"
+      symplify/monorepo-builder: "^7.2"
 
   package_directories:
     - 'src/Bundle'

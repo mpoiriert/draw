@@ -8,7 +8,6 @@ use Draw\Bundle\PostOfficeBundle\Twig\TranslationExtension;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\NamedAddress;
 
 class DrawPostOfficeExtensionTest extends ExtensionTestCase
 {
@@ -45,7 +44,7 @@ class DrawPostOfficeExtensionTest extends ExtensionTestCase
         $definition = $container->getDefinition('draw_post_office.default_from');
         $this->assertSame(Address::class, $definition->getClass());
         $this->assertSame(
-            [$email],
+            [$email, ''],
             $definition->getArguments()
         );
 
@@ -61,7 +60,7 @@ class DrawPostOfficeExtensionTest extends ExtensionTestCase
         ]);
 
         $definition = $container->getDefinition('draw_post_office.default_from');
-        $this->assertSame(NamedAddress::class, $definition->getClass());
+        $this->assertSame(Address::class, $definition->getClass());
         $this->assertSame(
             [$email, $name],
             $definition->getArguments()

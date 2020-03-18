@@ -25,7 +25,7 @@ up:
 	docker-compose up -d
 
 build:
-	docker-compose build
+	docker-compose build --pull
 
 install: clear copy-docker-compose-dist build provision
 

@@ -19,7 +19,7 @@
         "symfony/security": "^4.3",
         "symfony/yaml": "*"
     },
-    "require-dev": [],
+    "require-dev": {},
     "suggest": {
       "draw/messenger-bundle": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand"
     },
