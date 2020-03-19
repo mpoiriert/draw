@@ -1,0 +1,21 @@
+form:
+  change_password:
+    header: 'Change password'
+    field:
+      new_password: 'New password'
+      new_password_confirmation: 'Confirm password'
+      submit: 'Save'
+
+  authenticate:
+    header: 'Authentication'
+    forgot_password: 'Forgotten password?'
+    field:
+      email: 'Email'
+      password: 'Password'
+      submit: 'Login'
+
+  forgot_password:
+    header: 'Reset password'
+    field:
+      email: 'Email'
+      submit: 'Reset password'
