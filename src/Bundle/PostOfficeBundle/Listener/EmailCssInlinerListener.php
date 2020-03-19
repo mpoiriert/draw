@@ -18,7 +18,8 @@ class EmailCssInlinerListener implements EventSubscriberInterface
     public function inlineEmailCss(MessageEvent $event)
     {
         $message = $event->getMessage();
-        if($message instanceof Email) {
+
+        if($message instanceof Email && $message->getHtmlBody()) {
             $message->html(CssInliner::fromHtml($message->getHtmlBody())->inlineCss()->render());
         }
     }

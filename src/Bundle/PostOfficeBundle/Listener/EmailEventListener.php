@@ -5,6 +5,8 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Header\UnstructuredHeader;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\RawMessage;
 
 class EmailEventListener implements EventSubscriberInterface
@@ -62,7 +64,18 @@ class EmailEventListener implements EventSubscriberInterface
     public function composeMessage(MessageEvent $messageEvent)
     {
         $message = $messageEvent->getMessage();
+        if(!$message instanceof Message) {
+            return;
+        }
+
+        if($message->getHeaders()->has('X-DrawPostOffice')) {
+            return;
+        }
+
+        $message->getHeaders()->add(new UnstructuredHeader('X-DrawPostOffice', 1));
+
         $envelope = $messageEvent->getEnvelope();
+
         foreach($this->getTypes($message) as $type) {
             foreach($this->getWriters($type) as $writer) {
                 list($writerName, $writerMethod) = $writer;
