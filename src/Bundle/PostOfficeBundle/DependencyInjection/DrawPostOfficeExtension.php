@@ -47,7 +47,7 @@ class DrawPostOfficeExtension extends ConfigurableExtension
             ->setArgument('$defaultFrom', new Reference('draw_post_office.default_from'));
 
         $definition = (new Definition(Address::class))
-            ->setArguments([$config['email'], (string)$config['name']]);
+            ->setArguments([$config['email'], $config['name'] ?? '']);
 
         $container->setDefinition('draw_post_office.default_from', $definition);
     }
