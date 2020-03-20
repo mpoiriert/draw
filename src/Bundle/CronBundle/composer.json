@@ -1,4 +1,9 @@
 {
+    "name": "draw/cron-bundle",
+    "type": "symfony-bundle",
+    "keywords": ["symfony", "cron"],
+    "license": "MIT",
+    "description": "This bundle allow cron configuration that can be dump into a compatible cron job file format.",
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\CronBundle\\": ""
