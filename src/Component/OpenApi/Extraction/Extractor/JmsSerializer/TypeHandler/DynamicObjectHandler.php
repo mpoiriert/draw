@@ -1,7 +1,6 @@
 <?php namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\Metadata\PropertyMetadata;
 
@@ -29,7 +28,7 @@ class DynamicObjectHandler implements TypeToSchemaHandlerInterface
             case !isset($item->type['name']):
             case !in_array($item->type['name'], array('array', 'ArrayCollection')):
             case !isset($item->type['params'][0]['name']):
-            case isset($item->type['params'][0]['name']) != 'string':
+            case $item->type['params'][0]['name'] != 'string':
             case !isset($item->type['params'][1]['name']):
                 return null;
         }

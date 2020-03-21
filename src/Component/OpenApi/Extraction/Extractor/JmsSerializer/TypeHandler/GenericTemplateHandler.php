@@ -1,7 +1,6 @@
 <?php namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\Metadata\PropertyMetadata;
 

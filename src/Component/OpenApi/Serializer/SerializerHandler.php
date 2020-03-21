@@ -92,10 +92,10 @@ class SerializerHandler implements SubscribingHandlerInterface
 
     /**
      * @param JsonDeserializationVisitor $visitor
-     * @param SecurityRequirement $data
+     * @param mixed $data
      * @param array $type
      * @param Context $context
-     * @return Mixed
+     * @return mixed
      */
     public function deserializeMixedToJson(
         JsonDeserializationVisitor $visitor,
@@ -103,6 +103,6 @@ class SerializerHandler implements SubscribingHandlerInterface
         array $type,
         Context $context
     ) {
-        return new Mixed($data);
+        return $data;
     }
 }

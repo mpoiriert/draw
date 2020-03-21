@@ -1,0 +1,10 @@
+App\Entity\User:
+  properties:
+    plainPassword:
+      expose: true
+      type: 'string'
+      read_only: true
+    roles:
+      exclude: true
+    password:
+      exclude: true

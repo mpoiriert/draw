@@ -8,12 +8,9 @@ class OpenApiTest extends TestCase
 {
     public function provideTestExtractSwaggerSchema()
     {
-        $result = array();
         foreach(glob(__DIR__ . '/fixture/schema/*.json') as $file) {
-            $result[] = array($file);
+            yield basename($file) => [$file];
         }
-
-        return $result;
     }
 
     /**

@@ -3,6 +3,7 @@
 use DateTimeInterface;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,6 +14,14 @@ trait SecurityUserTrait
      *
      * @Assert\Email()
      * @Assert\NotBlank()
+     *
+     * @Dashboard\Column(
+     *     label="Email",
+     *     visible=true,
+     *     type="email",
+     *     isActive=true,
+     *     sortable=true
+     * )
      */
     private $email;
 

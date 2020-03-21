@@ -1,0 +1,4 @@
+dashboard_options:
+  resource: 'Draw\Bundle\DashboardBundle\Controller\OptionsController'
+  type: 'annotation'
+  prefix: '/api'

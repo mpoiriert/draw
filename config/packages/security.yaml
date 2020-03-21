@@ -32,15 +32,18 @@ security:
             anonymous:          true
             guard:
                 authenticators:
-                    - Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator
+                    - 'Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator'
                     - 'Draw\Bundle\UserBundle\Security\MessageAuthenticator'
-                entry_point: Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticato
+                entry_point: Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator
         main:
             context: user
             anonymous: true
             guard:
                 authenticators:
+                    - 'Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator'
+                    - 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'
                     - 'Draw\Bundle\UserBundle\Security\MessageAuthenticator'
+                entry_point: 'Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator'
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

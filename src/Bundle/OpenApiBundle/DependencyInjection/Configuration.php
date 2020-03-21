@@ -20,91 +20,122 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('draw_open_api');
-        $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
-            ->beforeNormalization()
-            ->always(
-                function ($nodes) {
-                    if(!isset($nodes['requestBodyParamConverter'])) {
-                        $nodes['requestBodyParamConverter'] = null;
-                    }
-                    return $nodes;
-                }
-            )
-            ->end()
+        $treeBuilder->getRootNode()
             ->children()
-            ->booleanNode('cleanOnDump')
-                ->defaultTrue()
-            ->end()
-            ->append($this->createDoctrineNode())
-            ->booleanNode('convertQueryParameterToAttribute')
-                ->defaultFalse()
-            ->end()
-            ->arrayNode('requestBodyParamConverter')
-                ->beforeNormalization()
-                    ->always(
-                        function ($nodes) {
-                            if (is_null($nodes)) {
-                                $nodes = ['defaultDeserializationConfiguration' => []];
-                            }
-                            return $nodes;
-                        }
-                    )
+                ->append($this->createOpenApiNode())
+                ->append($this->createDoctrineNode())
+                ->append($this->createCorsNode())
+                ->append($this->createRequestNode())
+                ->append($this->createResponseNode())
+            ->end();
+
+        return $treeBuilder;
+    }
+
+    private function createOpenApiNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('openApi'))
+            ->canBeDisabled()
+            ->children()
+                ->booleanNode('cleanOnDump')->defaultTrue()->end()
+                ->append($this->createSchemaNode())
+                ->append($this->createDefinitionAliasesNode())
+            ->end();
+    }
+
+    private function createCorsNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('cors'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('exposedHeaders')
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
                 ->end()
-                ->children()
-                    ->arrayNode('defaultDeserializationConfiguration')
-                        ->children()
-                            ->arrayNode('deserializationGroups')
-                                ->prototype('variable')
+                ->arrayNode('allowedHeaders')
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
+                ->end()
+                ->booleanNode('allowCredentials')->defaultTrue()->end()
+                ->booleanNode('allowAllOrigins')->defaultTrue()->end()
+                ->booleanNode('allowAllHeaders')->defaultFalse()->end()
+            ->end();
+    }
+
+    private function createRequestNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('request'))
+            ->canBeDisabled()
+            ->children()
+                ->arrayNode('queryParameter')
+                    ->canBeDisabled()
+                ->end()
+                ->arrayNode('bodyDeserialization')
+                    ->canBeDisabled()
+                ->end()
+            ->end();
+    }
+
+    private function createResponseNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('response'))
+            ->canBeDisabled()
+            ->children()
+                ->booleanNode('serializeNull')->defaultTrue()->end()
+                ->arrayNode('exceptionHandler')
+                    ->canBeDisabled()
+                    ->children()
+                        ->booleanNode('useDefaultExceptionsStatusCodes')->defaultTrue()->end()
+                        ->arrayNode('exceptionsStatusCodes')
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode("class")->isRequired()->end()
+                                    ->integerNode("code")->isRequired()->end()
                                 ->end()
                             ->end()
                         ->end()
+                        ->scalarNode('violationKey')->defaultValue('errors')->end()
                     ->end()
                 ->end()
-            ->end()
-            ->arrayNode('responseConverter')
-                ->canBeEnabled()
-                ->children()
-                    ->booleanNode('serializeNull')
-                        ->defaultTrue()
-                    ->end()
-                ->end()
-            ->end()
-            ->arrayNode('definitionAliases')
-                ->defaultValue(array())
-                ->arrayPrototype()
-                    ->children()
-                        ->scalarNode("class")->isRequired()->end()
-                        ->scalarNode("alias")->isRequired()->end()
-                    ->end()
-                ->end()
-            ->end()
-            ->arrayNode('schema')
-            ->normalizeKeys(false)
-            ->ignoreExtraKeys(false)
-                ->children()
-                    ->arrayNode("info")
-                        ->children()
-                            ->scalarNode("version")->defaultValue("1.0")->end()
-                            ->scalarNode("contact")->end()
-                            ->scalarNode("termsOfService")->end()
-                            ->scalarNode("description")->end()
-                            ->scalarNode("title")->end()
-                        ->end()
-                    ->end()
-                    ->scalarNode("basePath")->end()
-                    ->scalarNode("swagger")->defaultValue("2.0")->end()
-                ->end()
-            ->end()
-        ->end();
-
-        return $treeBuilder;
+            ->end();
     }
 
     private function createDoctrineNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('doctrine'))
             ->{class_exists(DoctrineBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}();
+    }
+
+    private function createDefinitionAliasesNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('definitionAliases'))
+            ->defaultValue([])
+            ->arrayPrototype()
+                ->children()
+                    ->scalarNode("class")->isRequired()->end()
+                    ->scalarNode("alias")->isRequired()->end()
+                ->end()
+            ->end();
+    }
+
+    private function createSchemaNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('schema'))
+            ->normalizeKeys(false)
+            ->ignoreExtraKeys(false)
+            ->children()
+                ->arrayNode("info")
+                    ->children()
+                        ->scalarNode("version")->defaultValue("1.0")->end()
+                        ->scalarNode("contact")->end()
+                        ->scalarNode("termsOfService")->end()
+                        ->scalarNode("description")->end()
+                        ->scalarNode("title")->end()
+                    ->end()
+                ->end()
+                ->scalarNode("basePath")->end()
+                ->scalarNode("swagger")->defaultValue("2.0")->end()
+            ->end();
     }
 }

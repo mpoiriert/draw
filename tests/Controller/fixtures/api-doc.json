@@ -1,0 +1,562 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "test",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/connection-tokens": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Create a token base on the username/password of a user.",
+                "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp**\u00a0attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
+                "operationId": "createConnectionToken",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Credential"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The newly created token",
+                        "schema": {
+                            "$ref": "#/definitions/ConnectionToken"
+                        }
+                    }
+                },
+                "x-symfony-route": "connection_token_create",
+                "x-draw-action": {
+                    "type": "create",
+                    "options": {
+                        "button": {
+                            "label": "Connect",
+                            "icon": "power_settings_new",
+                            "behaviours": []
+                        },
+                        "flow": {
+                            "type": "form",
+                            "buttons": [
+                                {
+                                    "label": "Save",
+                                    "behaviours": [
+                                        "submit"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/connection-tokens/refresh": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "operationId": "refreshConnectionToken",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The refreshed token",
+                        "schema": {
+                            "$ref": "#/definitions/ConnectionToken"
+                        }
+                    }
+                },
+                "x-symfony-route": "connection_token_refresh"
+            }
+        },
+        "/api/connection-tokens/current": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "operationId": "deleteConnectionToken",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Nothing to be returned"
+                    }
+                },
+                "x-symfony-route": "connection_clear",
+                "x-draw-action": {
+                    "type": "delete",
+                    "options": {
+                        "button": {
+                            "label": "Disconnect",
+                            "icon": "exit_to_app",
+                            "behaviours": []
+                        },
+                        "flow": {
+                            "type": "confirm",
+                            "title": "",
+                            "message": "Are you sure ?"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tags": {
+            "get": {
+                "operationId": "tagList",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Tags Paginator",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "totalCount": {
+                                    "format": "int32",
+                                    "type": "integer",
+                                    "readOnly": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Tag"
+                                    },
+                                    "readOnly": true
+                                },
+                                "pageSize": {
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "pageSizeOptions": {
+                                    "type": "array",
+                                    "items": {
+                                        "format": "int32",
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-symfony-route": "app_api_tags_list",
+                "x-draw-action": {
+                    "type": "list",
+                    "options": {
+                        "paginated": true
+                    }
+                }
+            },
+            "post": {
+                "operationId": "tagCreate",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The newly created tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                },
+                "x-symfony-route": "app_api_tags_create",
+                "x-draw-action": {
+                    "type": "create",
+                    "options": {
+                        "button": {
+                            "label": "Create",
+                            "behaviours": []
+                        },
+                        "flow": {
+                            "type": "form",
+                            "buttons": [
+                                {
+                                    "label": "Save",
+                                    "behaviours": [
+                                        "submit"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tags/{id}": {
+            "delete": {
+                "operationId": "tagDelete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No result mean a success"
+                    }
+                },
+                "x-symfony-route": "app_api_tags_delete",
+                "x-draw-action": {
+                    "type": "delete",
+                    "options": {
+                        "button": {
+                            "label": "Delete",
+                            "icon": "delete",
+                            "behaviours": []
+                        },
+                        "flow": {
+                            "type": "confirm",
+                            "title": "",
+                            "message": "Are you sure you want to delete the tag {{tag.label}} ?"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "summary": "Return a paginator list of users",
+                "operationId": "userList",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "A paginated user list",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "totalCount": {
+                                    "format": "int32",
+                                    "type": "integer",
+                                    "readOnly": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/User"
+                                    },
+                                    "readOnly": true
+                                },
+                                "pageSize": {
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "pageSizeOptions": {
+                                    "type": "array",
+                                    "items": {
+                                        "format": "int32",
+                                        "type": "integer"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-symfony-route": "app_api_users_list",
+                "x-draw-action": {
+                    "type": "list",
+                    "options": {
+                        "paginated": true
+                    }
+                }
+            },
+            "post": {
+                "operationId": "userCreate",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The newly created user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                },
+                "x-symfony-route": "app_api_users_create",
+                "x-draw-action": {
+                    "type": "create",
+                    "options": {
+                        "button": {
+                            "label": "Create",
+                            "behaviours": []
+                        },
+                        "flow": {
+                            "type": "form",
+                            "buttons": [
+                                {
+                                    "label": "Save",
+                                    "behaviours": [
+                                        "submit"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "operationId": "userGet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                },
+                "x-symfony-route": "user_get",
+                "x-draw-action": {
+                    "type": "show",
+                    "options": {
+                        "button": {
+                            "label": "Show",
+                            "behaviours": []
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "userDelete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Empty response mean success."
+                    }
+                },
+                "x-symfony-route": "user_delete",
+                "x-draw-action": {
+                    "type": "delete",
+                    "options": {
+                        "button": {
+                            "label": "Delete",
+                            "icon": "delete",
+                            "behaviours": []
+                        },
+                        "flow": {
+                            "type": "confirm",
+                            "title": "",
+                            "message": "Are you sure you want to delete the user {{user.email}} ?"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/reset-password-email": {
+            "post": {
+                "summary": "Send a reset password email to the user",
+                "operationId": "userSendResetPasswordEmail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No return value mean email has been sent"
+                    }
+                },
+                "x-symfony-route": "app_api_users_sendresetpasswordemail",
+                "x-draw-action": {
+                    "type": "generic",
+                    "options": {
+                        "button": {
+                            "label": "Send forgot password email",
+                            "icon": "email",
+                            "behaviours": []
+                        }
+                    }
+                }
+            }
+        },
+        "/tests": {
+            "post": {
+                "tags": [
+                    "test"
+                ],
+                "operationId": "createTest",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "param1",
+                        "in": "query"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The created test entity",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+                        },
+                        "headers": {
+                            "X-Draw": {
+                                "description": "Description of the header",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "x-symfony-route": "draw_openapi_tests_mock_test_create",
+                "x-test": {
+                    "key": "value",
+                    "object": {
+                        "property": "value"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ConnectionToken": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "Credential": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-form-input": {
+                        "id": "username",
+                        "type": "email",
+                        "label": "Email"
+                    }
+                },
+                "password": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-form-input": {
+                        "id": "password",
+                        "type": "password",
+                        "label": "Password"
+                    }
+                }
+            }
+        },
+        "Tag": {
+            "required": [
+                "label"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "label": {
+                    "maxLength": 255,
+                    "minLength": 3,
+                    "type": "string",
+                    "x-draw-column": {
+                        "id": "label",
+                        "isActive": true,
+                        "label": "Label",
+                        "visible": true,
+                        "type": "simple"
+                    },
+                    "x-draw-form-input": {
+                        "id": "label",
+                        "type": "string",
+                        "label": "Label"
+                    }
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "x-draw-column": {
+                        "id": "id",
+                        "isActive": true,
+                        "label": "#",
+                        "sortable": true,
+                        "visible": true,
+                        "type": "simple"
+                    }
+                },
+                "email": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-column": {
+                        "id": "email",
+                        "isActive": true,
+                        "label": "Email",
+                        "sortable": true,
+                        "visible": true,
+                        "type": "email"
+                    }
+                },
+                "plain_password": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "password_updated_at": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            }
+        },
+        "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
+            "type": "object",
+            "properties": {
+                "property": {
+                    "description": "Property description",
+                    "type": "string"
+                },
+                "property_from_body": {
+                    "description": "Property deserialize from body in test",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

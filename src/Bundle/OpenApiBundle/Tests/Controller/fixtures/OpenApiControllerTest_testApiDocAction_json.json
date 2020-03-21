@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "\/tests": {
+    "/tests": {
       "post": {
         "tags": [
           "test"
@@ -21,7 +21,7 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#\/definitions\/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+              "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
             }
           }
         ],
@@ -29,7 +29,7 @@
           "201": {
             "description": "The created test entity",
             "schema": {
-              "$ref": "#\/definitions\/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+              "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
             },
             "headers": {
               "X-Draw": {
@@ -37,6 +37,13 @@
                 "type": "string"
               }
             }
+          }
+        },
+        "x-symfony-route": "draw_openapi_tests_mock_test_create",
+        "x-test": {
+          "key": "value",
+          "object": {
+            "property": "value"
           }
         }
       }

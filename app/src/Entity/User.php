@@ -1,6 +1,7 @@
 <?php namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Ramsey\Uuid\Uuid;
@@ -22,6 +23,11 @@ class User implements SecurityUserInterface
      *
      * @ORM\Id()
      * @ORM\Column(name="id", type="guid")
+     *
+     * @Dashboard\Column(
+     *      sortable=true,
+     *      label="#"
+     * )
      */
     private $id;
 

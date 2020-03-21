@@ -12,6 +12,8 @@ use JMS\Serializer\Annotation as JMS;
  */
 class Root implements VendorExtensionSupportInterface
 {
+    use VendorExtensionSupportTrait;
+
     /**
      * Specifies the Swagger Specification version being used.
      * It can be used by the Swagger UI and other clients to interpret the API listing.
@@ -184,27 +186,6 @@ class Root implements VendorExtensionSupportInterface
      */
     public $externalDocs;
 
-    /**
-     * @var Mixed[]
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Mixed>")
-     * @JMS\Accessor(getter="getFakeVendor")
-     */
-    public $vendor;
-
-    public function getFakeVendor()
-    {
-        return null;
-    }
-
-    public function getVendorData()
-    {
-        if(!$this->vendor) {
-            return array();
-        }
-
-        return $this->vendor;
-    }
-
     public function hasDefinition($name)
     {
         if(is_null($this->definitions)) {
@@ -221,6 +202,18 @@ class Root implements VendorExtensionSupportInterface
         $name = $this->sanitizeReferenceName($name);
         $this->definitions[$name] = $schema;
         return $this->getDefinitionReference($name);
+    }
+
+    public function resolveSchema(Schema $schema): Schema
+    {
+        if(!$schema->ref) {
+            return $schema;
+        }
+
+        // E.g.: '#' 'definitions' 'ClassName'
+        list(, $section, $name) = explode('/', $schema->ref, 3);
+
+        return $this->{$section}[$name];
     }
 
     public function getDefinitionReference($name)

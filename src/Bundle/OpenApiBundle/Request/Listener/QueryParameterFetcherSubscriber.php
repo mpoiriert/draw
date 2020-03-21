@@ -1,4 +1,4 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Listener;
+<?php namespace Draw\Bundle\OpenApiBundle\Request\Listener;
 
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Schema\QueryParameter;
@@ -52,10 +52,6 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
         );
 
         foreach ($annotations as $annotation) {
-            if (!$annotation instanceof QueryParameter) {
-                continue;
-            }
-
             if (!$annotation instanceof QueryParameter) {
                 continue;
             }

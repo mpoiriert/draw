@@ -25,4 +25,20 @@ class AppKernel extends Kernel
     {
         $loader->load(__DIR__ . '/fixtures/config/config.yml');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheDir()
+    {
+        return sys_get_temp_dir() . '/open_api_bundle/var/cache/' . $this->environment;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+        return sys_get_temp_dir() . '/open_api_bundle/var/log';
+    }
 }

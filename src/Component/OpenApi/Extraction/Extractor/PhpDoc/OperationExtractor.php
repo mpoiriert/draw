@@ -205,7 +205,10 @@ class OperationExtractor implements ExtractorInterface
                         $subContext
                     );
                 } elseif (!$parameter->type) {
-                    $parameter->type = TypeSchemaExtractor::getPrimitiveType((string)$paramTag->getType())['type'];
+                    $parameter->type = TypeSchemaExtractor::getPrimitiveType(
+                        (string)$paramTag->getType(),
+                        $extractionContext
+                    )['type'];
                 }
                 continue;
             }

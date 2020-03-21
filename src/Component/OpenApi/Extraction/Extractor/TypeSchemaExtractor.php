@@ -41,7 +41,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return false;
         }
 
-        if (is_null(self::getPrimitiveType($source))) {
+        if (is_null(self::getPrimitiveType($source, $extractionContext))) {
             return false;
         }
 
@@ -66,7 +66,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        $primitiveType = self::getPrimitiveType($source);
+        $primitiveType = self::getPrimitiveType($source, $extractionContext);
 
         $target->type = $primitiveType['type'];
 
@@ -165,7 +165,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         return array_search($hash, $this->definitionHashes[$modelName]);
     }
 
-    public static function getPrimitiveType($type)
+    public static function getPrimitiveType($type, ExtractionContextInterface $extractionContext = null)
     {
         if (!is_string($type)) {
             return null;
@@ -173,6 +173,10 @@ class TypeSchemaExtractor implements ExtractorInterface
 
         if(is_null(self::$typeResolver)) {
             self::$typeResolver = new TypeResolver();
+        }
+
+        if($type == 'generic') {
+            $type = $extractionContext->getParameter('generic-template');
         }
 
         $result = self::$typeResolver->resolve($type);
@@ -209,9 +213,10 @@ class TypeSchemaExtractor implements ExtractorInterface
             'boolean' => array('type' => 'boolean'),
             'date' => array('type' => 'string', 'format' => 'date'),
             'DateTime' => array('type' => 'string', 'format' => 'date-time'),
+            'DateTimeImmutable' => array('type' => 'string', 'format' => 'date-time'),
             'dateTime' => array('type' => 'string', 'format' => 'date-time'),
             'password' => array('type' => 'string', 'format' => 'password'),
-            'array' => array('type' => 'array')
+            'array' => array('type' => 'array'),
         );
 
         if (array_key_exists($type, $types)) {

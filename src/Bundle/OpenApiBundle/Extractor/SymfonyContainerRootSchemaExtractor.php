@@ -66,7 +66,7 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
 
     private function triggerRouteExtraction(RouterInterface $router, Root $schema, ExtractionContextInterface $extractionContext)
     {
-        foreach ($router->getRouteCollection() as $operationId => $route) {
+        foreach ($router->getRouteCollection() as $routeName => $route) {
             /* @var Route $route */
             if(!($path = $route->getPath())) {
                 continue;
@@ -93,11 +93,13 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
             }
 
             if(!$operation->operationId) {
-                $operation->operationId = $operationId;
+                $operation->operationId = $routeName;
             }
+            $subContext = $extractionContext->createSubContext();
+            $subContext->setParameter('symfony-route-name', $routeName);
 
-            $extractionContext->getOpenApi()->extract($route, $operation, $extractionContext);
-            $extractionContext->getOpenApi()->extract($reflectionMethod, $operation, $extractionContext);
+            $extractionContext->getOpenApi()->extract($route, $operation, $subContext);
+            $extractionContext->getOpenApi()->extract($reflectionMethod, $operation, $subContext);
 
             if(!isset($schema->paths[$path])) {
                 $schema->paths[$path] = new PathItem();

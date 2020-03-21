@@ -1,12 +1,12 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Listener;
+<?php namespace Draw\Bundle\OpenApiBundle\Response\Listener;
 
-use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Event\PreSerializerResponseEvent;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -111,10 +111,29 @@ class ResponseConverterSubscriber implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $responseEvent)
     {
-        if ($responseHeaderBag = $responseEvent->getRequest()->attributes->get('_responseHeaderBag', [])) {
+        if ($responseHeaderBag = $responseEvent->getRequest()->attributes->get('_responseHeaderBag')) {
             if ($responseHeaderBag instanceof ResponseHeaderBag) {
                 $responseEvent->getResponse()->headers->add($responseHeaderBag->allPreserveCase());
             }
         }
+    }
+
+    /**
+     * @see ResponseHeaderBag::set
+     *
+     * @param Request $request
+     * @param $key
+     * @param $values
+     * @param bool $replace
+     */
+    public static function setResponseHeader(Request $request, $key, $values, $replace= true)
+    {
+        $responseHeaderBag = $request->attributes->get('_responseHeaderBag', new ResponseHeaderBag());
+        if(!$responseHeaderBag instanceof ResponseHeaderBag) {
+            throw new \RuntimeException('The current attribute value of [_responseHeaderBag] is invalid');
+        }
+
+        $responseHeaderBag->set($key, $values, $replace);
+        $request->attributes->set('_responseHeaderBag', $responseHeaderBag);
     }
 }

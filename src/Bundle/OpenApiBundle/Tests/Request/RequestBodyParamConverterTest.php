@@ -1,6 +1,5 @@
 <?php namespace Draw\Bundle\OpenApiBundle\Tests\Request;
 
-use Draw\DataTester\Tester;
 use Draw\Bundle\OpenApiBundle\Tests\TestCase;
 
 /**

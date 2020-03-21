@@ -4,6 +4,7 @@ use Draw\Bundle\UserBundle\DependencyInjection\DrawUserExtension;
 use Draw\Bundle\UserBundle\EmailWriter\ForgotPasswordEmailWriter;
 use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
+use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\MessageHandler\AutoConnectMessageHandler;
 use Draw\Bundle\UserBundle\Security\MessageAuthenticator;
@@ -34,6 +35,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
     {
         yield [ForgotPasswordEmailWriter::class];
         yield [SessionUserFeed::class];
+        yield [JwtAuthenticator::class];
         yield [EncryptPasswordUserEntityListener::class];
         yield [AutoConnectMessageHandler::class];
         yield [MessageAuthenticator::class];

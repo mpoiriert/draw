@@ -1,0 +1,44 @@
+{
+  "HEAD": {},
+  "GET": {
+    "x-draw-action": {
+      "type": "list",
+      "options": {
+        "paginated": true,
+        "button": null,
+        "flow": null,
+        "columns": [
+          {
+            "id": "id",
+            "isActive": true,
+            "label": "#",
+            "sortable": true,
+            "visible": true,
+            "type": "simple",
+            "options": null
+          },
+          {
+            "id": "email",
+            "isActive": true,
+            "label": "Email",
+            "sortable": true,
+            "visible": true,
+            "type": "email",
+            "options": null
+          },
+          {
+            "id": "_actions",
+            "type": "actions",
+            "label": "Actions"
+          }
+        ]
+      }
+    }
+  },
+  "POST": {
+    "x-draw-action": {
+      "accessDenied": true
+    }
+  },
+  "OPTIONS": {}
+}

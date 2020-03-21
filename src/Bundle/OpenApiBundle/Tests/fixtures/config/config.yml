@@ -7,13 +7,10 @@ framework:
     enabled: false
   validation: { enable_annotations: true }
 
-draw:
-  use_doctrine_repository_factory: false
-
 draw_open_api:
-  convertQueryParameterToAttribute: true
-  responseConverter: true
-  schema:
-    info:
-      title: "test"
+  openApi:
+    schema:
+      info:
+        title: "test"
+  doctrine: false
 

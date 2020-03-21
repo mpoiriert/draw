@@ -1,4 +1,4 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Listener;
+<?php namespace Draw\Bundle\OpenApiBundle\Response\Listener;
 
 use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
 use Psr\Log\LoggerAwareInterface;
@@ -8,7 +8,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInterface
@@ -27,14 +26,12 @@ class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInt
     const DEFAULT_STATUS_CODE = 500;
 
     public function __construct(
-        $debug,
+        $debug = false,
         $exceptionCodes = [],
         $violationKey = 'errors'
     ) {
         $this->debug = $debug;
         $this->exceptionCodes = $exceptionCodes;
-        $this->exceptionCodes[ConstraintViolationListException::class] = 400;
-        $this->exceptionCodes[AccessDeniedException::class] = 403;
         $this->violationKey = $violationKey;
     }
 
@@ -95,13 +92,13 @@ class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInt
 
         $statusCode = $this->getStatusCode($error);
 
-        $data = array(
+        $data = [
             "code" => $statusCode,
             "message" => $error->getMessage()
-        );
+        ];
 
         if ($error instanceof ConstraintViolationListException) {
-            $errors = array();
+            $errors = [];
             foreach ($error->getViolationList() as $constraintViolation) {
                 /* @var $constraintViolation ConstraintViolationInterface */
                 $errorData = [

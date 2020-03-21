@@ -1,0 +1,19 @@
+draw_dashboard:
+  menu:
+    user:
+      label: 'Users'
+      icon: 'person'
+      operationId: 'userList'
+    create_user:
+      label: 'User create'
+      icon: 'person'
+      operationId: 'userCreate'
+    tag:
+      label: 'Tags'
+      icon: 'tag'
+      operationId: 'tagList'
+  toolbar:
+    connect:
+      operationId: 'createConnectionToken'
+    disconnect:
+      operationId: 'deleteConnectionToken'

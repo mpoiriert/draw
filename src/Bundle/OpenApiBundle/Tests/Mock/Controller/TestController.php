@@ -18,6 +18,8 @@ class TestController
      *
      * @OpenApi\QueryParameter(name="param1")
      *
+     * @OpenApi\Vendor(name="x-test", value={"key":"value", "object":{"property":"value"}})
+     *
      * @Deserialization(
      *     name="test",
      *     deserializationGroups={"Included"}

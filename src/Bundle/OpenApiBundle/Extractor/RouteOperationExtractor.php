@@ -49,6 +49,8 @@ class RouteOperationExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
+        $type->setVendorDataKey('x-symfony-route', $extractionContext->getParameter('symfony-route-name'));
+
         foreach($source->compile()->getPathVariables() as $pathVariable) {
             foreach($type->parameters as $parameter) {
                 if($parameter->name == $pathVariable) {

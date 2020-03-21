@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="false" autoconfigure="true" autowire="true" />
+        <prototype namespace="Draw\Bundle\OpenApiBundle\Request\" resource="../../Request" />
+        <service id="Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter">
+            <tag name="request.param_converter" converter="draw_open_api.request_body" />
+        </service>
+    </services>
+</container>

@@ -36,7 +36,7 @@ clear: down
 	sudo rm -Rf .docker/data ./vendor
 
 test:
-	docker-compose exec php php vendor/bin/phpunit --stop-on-failure
+	docker-compose exec php php vendor/bin/phpunit
 
 test-coverage:
 	docker-compose exec php php vendor/bin/phpunit --coverage-html ./tmp/phpunit/report

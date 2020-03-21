@@ -1,5 +1,6 @@
 <?php namespace Draw\Component\OpenApi\Serializer;
 
+use Draw\Component\OpenApi\Schema\Vendor;
 use Draw\Component\OpenApi\Schema\VendorExtensionSupportInterface;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\Events;
@@ -41,36 +42,32 @@ class SerializerListener implements EventSubscriberInterface
 
         $type = $event->getType();
 
-        if(!class_exists($type['name'])) {
-           return;
-        }
-
-        if(!is_array($data)) {
+        if (!class_exists($type['name'])) {
             return;
         }
 
-        $vendorData = array();
+        if (!is_array($data)) {
+            return;
+        }
 
-        foreach($data as $key => $value) {
-            if(!is_string($key)) {
+        $reflectionClass = new ReflectionClass($type['name']);
+        if (!$reflectionClass->implementsInterface(VendorExtensionSupportInterface::class)) {
+            return;
+        }
+
+        $vendorData = [];
+
+        foreach ($data as $key => $value) {
+            if (!is_string($key)) {
                 continue;
             }
 
-            if(strpos($key,'x-') !== 0) {
+            if (strpos($key, 'x-') !== 0) {
                 continue;
             }
 
             unset($data[$key]);
             $vendorData[$key] = $value;
-        }
-
-        if(!$vendorData) {
-            return;
-        }
-
-        $reflectionClass = new ReflectionClass($type['name']);
-        if(!$reflectionClass->implementsInterface(VendorExtensionSupportInterface::class)) {
-            return;
         }
 
         $data['vendor'] = $vendorData;
@@ -84,11 +81,13 @@ class SerializerListener implements EventSubscriberInterface
         $visitor = $event->getVisitor();
         /* @var $visitor JsonSerializationVisitor */
 
-        if($object instanceof VendorExtensionSupportInterface) {
-            foreach($object->getVendorData() as $key => $value) {
-                //The context argument is there for older version of JMS, new version don't have a third argument
-                $visitor->visitProperty(new StaticPropertyMetadata("", $key, $value), $value);
-            }
+        if (!$object instanceof VendorExtensionSupportInterface) {
+            return;
+        }
+
+        $vendorData = json_decode(json_encode($object->getVendorData()), true);
+        foreach ($vendorData as $key => $value) {
+            $visitor->visitProperty(new StaticPropertyMetadata("", $key, $value), $value);
         }
     }
 }

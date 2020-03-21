@@ -8,4 +8,8 @@ namespace Draw\Component\OpenApi\Schema;
 interface VendorExtensionSupportInterface
 {
     public function getVendorData();
+
+    public function setVendorData(array $data = null);
+
+    public function setVendorDataKey($name, $data);
 } 

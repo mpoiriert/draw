@@ -1,18 +1,19 @@
 <?php namespace Draw\Bundle\OpenApiBundle\DependencyInjection;
 
+use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
+use Draw\Bundle\OpenApiBundle\Request\Listener\QueryParameterFetcherSubscriber;
+use Draw\Bundle\OpenApiBundle\Response\Listener\ApiExceptionSubscriber;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\OpenApi;
-use Draw\Bundle\OpenApiBundle\Listener\ResponseConverterSubscriber;
-use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class DrawOpenApiExtension extends ConfigurableExtension
 {
@@ -23,13 +24,21 @@ class DrawOpenApiExtension extends ConfigurableExtension
      */
     public function loadInternal(array $config, ContainerBuilder $container)
     {
-        $container
-            ->registerForAutoconfiguration(ExtractorInterface::class)
-            ->addTag(ExtractorInterface::class);
+        $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
+        $loader = new XmlFileLoader($container, $fileLocator);
 
-        $container
-            ->registerForAutoconfiguration(TypeToSchemaHandlerInterface::class)
-            ->addTag(TypeToSchemaHandlerInterface::class);
+        $this->configOpenApi($config['openApi'], $loader, $container);
+        $this->configDoctrine($config['doctrine'], $loader, $container);
+        $this->configResponse($config['response'], $loader, $container);
+        $this->configRequest($config['request'], $loader, $container);
+        $this->configCors($config['cors'], $loader, $container);
+    }
+
+    private function configOpenApi(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    {
+        if (!$config['enabled']) {
+            return;
+        }
 
         $container->setParameter("draw_open_api.root_schema", $config['schema']);
         $container->setParameter(
@@ -37,8 +46,13 @@ class DrawOpenApiExtension extends ConfigurableExtension
             dirname((new \ReflectionClass(OpenApi::class))->getFileName())
         );
 
-        $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
-        $loader = new XmlFileLoader($container, $fileLocator);
+        $container
+            ->registerForAutoconfiguration(ExtractorInterface::class)
+            ->addTag(ExtractorInterface::class);
+
+        $container
+            ->registerForAutoconfiguration(TypeToSchemaHandlerInterface::class)
+            ->addTag(TypeToSchemaHandlerInterface::class);
 
         $loader->load('open-api.xml');
 
@@ -54,29 +68,79 @@ class DrawOpenApiExtension extends ConfigurableExtension
                 [$alias['class'], $alias['alias']]
             );
         }
+    }
 
-        $this->configDoctrine($config['doctrine'], $loader, $container);
-
-        if ($config['convertQueryParameterToAttribute']) {
-            $loader->load('query_parameter_fetcher.xml');
+    private function configResponse(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    {
+        if (!$config['enabled']) {
+            return;
         }
 
-        if ($config['responseConverter']['enabled']) {
-            $loader->load('response_converter.xml');
-            $container
-                ->getDefinition(ResponseConverterSubscriber::class)
-                ->setArgument('$serializeNull', $config['responseConverter']['serializeNull']);
+        $container->setParameter('draw_open_api.response.serialize_null', $config['serializeNull']);
+        $loader->load('response.xml');
+
+        $this->configResponseExceptionHandler($config['exceptionHandler'], $loader, $container);
+    }
+
+    private function configResponseExceptionHandler(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    {
+        if (!$config['enabled']) {
+            $container->removeDefinition(ApiExceptionSubscriber::class);
+            return;
         }
 
-        $container
-            ->getDefinition(RequestBodyParamConverter::class)
+        $codes = [];
+        foreach ($config['exceptionsStatusCodes'] as $exceptionsStatusCodes) {
+            $codes[$exceptionsStatusCodes['class']] = $exceptionsStatusCodes['code'];
+        }
+
+        if ($config['useDefaultExceptionsStatusCodes']) {
+            $codes[ConstraintViolationListException::class] = 400;
+            $codes[AccessDeniedException::class] = 403;
+        }
+
+        $container->setParameter('draw_open_api.response.exception_status_codes', $codes);
+
+        $container->getDefinition(ApiExceptionSubscriber::class)
             ->setArgument(
-                '$defaultConfiguration',
-                new Definition(
-                    Deserialization::class,
-                    [$config['requestBodyParamConverter']['defaultDeserializationConfiguration']]
-                )
+                '$exceptionCodes',
+                $codes
+            )
+            ->setArgument(
+                '$violationKey',
+                $config['violationKey']
             );
+    }
+
+    private function configRequest(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('request.xml');
+
+        if (!$config['queryParameter']['enabled']) {
+            $container->removeDefinition(QueryParameterFetcherSubscriber::class);
+        }
+
+        if (!$config['bodyDeserialization']['enabled']) {
+            $container->removeDefinition(RequestBodyParamConverter::class);
+        }
+    }
+
+    private function configCors(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $container->setParameter('draw_open_api.cors.exposed_headers', $config['exposedHeaders']);
+        $container->setParameter('draw_open_api.cors.allowed_headers', $config['allowedHeaders']);
+        $container->setParameter('draw_open_api.cors.allow_credentials', $config['allowCredentials']);
+        $container->setParameter('draw_open_api.cors.allow_all_origins', $config['allowAllOrigins']);
+        $container->setParameter('draw_open_api.cors.allow_all_headers', $config['allowAllHeaders']);
+        $loader->load('cors.xml');
     }
 
     private function configDoctrine(array $config, LoaderInterface $loader, ContainerBuilder $container)

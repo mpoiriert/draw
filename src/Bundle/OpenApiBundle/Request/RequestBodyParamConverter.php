@@ -29,30 +29,46 @@ class RequestBodyParamConverter implements ParamConverterInterface
     private $validator;
 
     /**
-     * @var Deserialization
-     */
-    private $defaultConfiguration;
-
-    /**
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
-     * @param Deserialization $defaultConfiguration
      */
     public function __construct(
         SerializerInterface $serializer,
-        ValidatorInterface $validator,
-        Deserialization $defaultConfiguration
+        ValidatorInterface $validator
     ) {
         $this->serializer = $serializer;
         $this->validator = $validator;
-        $this->defaultConfiguration = $defaultConfiguration;
     }
 
     public function apply(Request $request, ParamConverter $configuration)
     {
+        $object = $this->deserialize(
+            $this->getBodyData($request, $configuration),
+            $configuration
+        );
+
+        $request->attributes->set($configuration->getName(), $object);
+
+        if(!$request->attributes->get('_draw_dummy_execution')) {
+            $violations = $this->validate($object, $configuration);
+
+            if (count($violations)) {
+                $exception = new ConstraintViolationListException();
+                $exception->setViolationList($violations);
+                throw $exception;
+            }
+        }
+
+        return true;
+    }
+
+    private function getBodyData(Request $request, ParamConverter $configuration)
+    {
         $options = (array)$configuration->getOptions();
 
-        switch(true) {
+        switch (true) {
+            case $request->attributes->get('_draw_dummy_execution'):
+                return '{}';
             case strpos($request->headers->get('Content-Type'), 'application/json') === 0:
                 //This allow a empty body to be consider as '{}'
                 if (is_null($requestData = json_decode($request->getContent(), true))) {
@@ -97,18 +113,14 @@ class RequestBodyParamConverter implements ParamConverterInterface
             throw $exception;
         }
 
-        return true;
+        return json_encode($requestData);
     }
 
     private function deserialize($data, ParamConverter $configuration)
     {
-        $defaultOptions = $this->defaultConfiguration->getOptions();
         $options = $configuration->getOptions();
 
-        $arrayContext = array_merge(
-            $defaultOptions['deserializationContext'] ?? [],
-            $options['deserializationContext'] ?? []
-        );
+        $arrayContext =  $options['deserializationContext'] ?? [];
 
         $this->configureContext($context = new DeserializationContext(), $arrayContext);
 
@@ -134,7 +146,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
     private function validate($object, ParamConverter $paramConverter)
     {
         $options = $paramConverter->getOptions();
-        if($options['validate'] ?? true) {
+        if ($options['validate'] ?? true) {
             $validatorOptions = $paramConverter->getOptions()['validator'] ?? [];
             $groups = $validatorOptions['groups'] ?? ['Default'];
             return $this->validator->validate($object, null, $groups);
@@ -153,14 +165,14 @@ class RequestBodyParamConverter implements ParamConverterInterface
 
     /**
      * @param DeserializationContext $context
-     * @param array   $options
+     * @param array $options
      */
     protected function configureContext(DeserializationContext $context, array $options)
     {
         foreach ($options as $key => $value) {
-            switch($key) {
+            switch ($key) {
                 case 'groups':
-                    if($value) {
+                    if ($value) {
                         $context->setGroups($value);
                     }
                     break;
@@ -169,7 +181,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
                     break;
                 case 'maxDepth':
                 case 'enableMaxDepth':
-                    if($value) {
+                    if ($value) {
                         $context->enableMaxDepthChecks();
                     }
                     break;

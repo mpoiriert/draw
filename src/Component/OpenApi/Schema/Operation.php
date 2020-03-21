@@ -10,8 +10,10 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Annotation
  */
-class Operation
+class Operation implements VendorExtensionSupportInterface
 {
+    use VendorExtensionSupportTrait;
+
     /**
      * A list of tags for API documentation control.
      * Tags can be used for logical grouping of operations by resources or any other qualifier.

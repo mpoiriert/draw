@@ -8,6 +8,7 @@ parameters:
     src/Bundle/AwsToolKitBundle: 'git@github.com:mpoiriert/aws-tool-kit-bundle.git'
     src/Bundle/CommandBundle: 'git@github.com:mpoiriert/command-bundle.git'
     src/Bundle/CronBundle: 'git@github.com:mpoiriert/cron-bundle.git'
+    src/Bundle/DashboardBundle: 'git@github.com:mpoiriert/dashboard-bundle.git'
     src/Bundle/MessengerBundle: 'git@github.com:mpoiriert/messenger-bundle.git'
     src/Bundle/OpenApiBundle: 'git@github.com:mpoiriert/open-api-bundle.git'
     src/Bundle/PostOfficeBundle: 'git@github.com:mpoiriert/post-office-bundle.git'

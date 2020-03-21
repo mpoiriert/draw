@@ -22,9 +22,12 @@
     "symfony/security": "^4.3",
     "symfony/yaml": "*"
   },
-  "require-dev": {},
+  "require-dev": {
+    "firebase/php-jwt": "^5.1"
+  },
   "suggest": {
-    "draw/messenger-bundle": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand"
+    "draw/messenger-bundle": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",
+    "firebase/php-jwt": "Use for the jwt connection token system"
   },
   "autoload": {
     "psr-4": {

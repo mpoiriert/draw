@@ -1,7 +1,18 @@
+parameters:
+    jms_serializer.json.visitors.options:
+        - JSON_PRETTY_PRINT
+        - JSON_UNESCAPED_SLASHES
+        - JSON_PRESERVE_ZERO_FRACTION
+
 jms_serializer:
     visitors:
-        xml_serialization:
-            format_output: '%kernel.debug%'
+        json_serialization:
+            options: '%jms_serializer.json.visitors.options%'
+    metadata:
+        directories:
+            app-entity:
+                namespace_prefix: "App\\Entity"
+                path: "%kernel.project_dir%/config/serializer/Entity"
 #    metadata:
 #        auto_detection: false
 #        directories:

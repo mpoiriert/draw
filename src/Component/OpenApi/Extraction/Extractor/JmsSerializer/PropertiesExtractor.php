@@ -2,6 +2,7 @@
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event\PropertyExtractedEvent;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\ArrayHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\DynamicObjectHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\GenericTemplateHandler;
@@ -20,10 +21,16 @@ use phpDocumentor\Reflection\DocBlockFactory;
 use ReflectionClass;
 use ReflectionException;
 use RuntimeException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class PropertiesExtractor implements ExtractorInterface
 {
     const CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY = 'jms-enable-version-exclusion-strategy';
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * @var MetadataFactoryInterface
@@ -42,10 +49,12 @@ class PropertiesExtractor implements ExtractorInterface
 
     public function __construct(
         MetadataFactoryInterface $factory,
-        PropertyNamingStrategyInterface $namingStrategy
+        PropertyNamingStrategyInterface $namingStrategy,
+        EventDispatcherInterface $eventDispatcher = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
+        $this->eventDispatcher = $eventDispatcher;
 
         $this->registerTypeToSchemaHandler(new DynamicObjectHandler());
         $this->registerTypeToSchemaHandler(new ArrayHandler());
@@ -116,38 +125,46 @@ class PropertiesExtractor implements ExtractorInterface
             $exclusionStrategies[] = new VersionExclusionStrategy($extractionContext->getRootSchema()->info->version);
         }
 
-        /** @var PropertyMetadata $item */
-        foreach ($meta->propertyMetadata as $item) {
+        /** @var PropertyMetadata $propertyMetadata */
+        foreach ($meta->propertyMetadata as $propertyMetadata) {
             // This is to prevent property of discriminator field name to not being complete
             if (isset($meta->discriminatorFieldName)
-                && $item->name == $meta->discriminatorFieldName
-                && !isset($item->type['name'])
+                && $propertyMetadata->name == $meta->discriminatorFieldName
+                && !isset($propertyMetadata->type['name'])
             ) {
-                $item->type = ['name' => 'string', 'params' => []];
+                $propertyMetadata->type = ['name' => 'string', 'params' => []];
             }
 
-            if ($this->shouldSkipProperty($exclusionStrategies, $item, $subContext)) {
+            if ($this->shouldSkipProperty($exclusionStrategies, $propertyMetadata, $subContext)) {
                 continue;
             }
 
             $propertySchema = null;
             foreach ($this->typeToSchemaHandlers as $typeToSchemaHandler) {
-                if ($propertySchema = $typeToSchemaHandler->extractSchemaFromType($item, $subContext)) {
+                if ($propertySchema = $typeToSchemaHandler->extractSchemaFromType($propertyMetadata, $subContext)) {
                     break;
                 }
             }
 
             if (!$propertySchema) {
-                $propertySchema = $this->extractTypeSchema($item->type['name'], $subContext, $item);
+                $propertySchema = $this->extractTypeSchema(
+                    $propertyMetadata->type['name'],
+                    $subContext,
+                    $propertyMetadata
+                );
             }
 
-            if ($item->readOnly) {
+            if ($propertyMetadata->readOnly) {
                 $propertySchema->readOnly = true;
             }
 
-            $name = $this->namingStrategy->translateName($item);
+            $name = $this->namingStrategy->translateName($propertyMetadata);
             $schema->properties[$name] = $propertySchema;
-            $propertySchema->description = (string)$this->getDescription($item) ?: null;
+            $propertySchema->description = (string)$this->getDescription($propertyMetadata) ?: null;
+
+            if ($this->eventDispatcher) {
+                $this->eventDispatcher->dispatch(new PropertyExtractedEvent($propertyMetadata, $propertySchema));
+            }
         }
     }
 

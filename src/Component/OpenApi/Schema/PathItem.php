@@ -113,6 +113,9 @@ class PathItem
      */
     public $ref;
 
+    /**
+     * @return array|Operation[]
+     */
     public function getOperations()
     {
         $operations = [];

@@ -14,6 +14,13 @@ class AppFixtures extends Fixture
         $user->setRoles(['ROLE_ADMIN']);
         $manager->persist($user);
 
+        foreach (range(1, 49) as $number) {
+            $user = new User();
+            $user->setEmail('user-' . str_pad($number, 4, '0', STR_PAD_LEFT) . '@example.com');
+            $user->setPlainPassword('password');
+            $manager->persist($user);
+        }
+
         $manager->flush();
     }
 }

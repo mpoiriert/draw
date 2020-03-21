@@ -11,8 +11,10 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
  *
  * @Assert\GroupSequenceProvider()
  */
-class Schema implements GroupSequenceProviderInterface
+class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportInterface
 {
+    use VendorExtensionSupportTrait;
+
     /**
      * @var string
      *

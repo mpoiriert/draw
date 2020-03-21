@@ -1,6 +1,7 @@
 <?php namespace Draw\Bundle\OpenApiBundle\Controller;
 
 use Draw\Component\OpenApi\OpenApi;
+use Draw\Component\OpenApi\Schema\Root;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -10,12 +11,25 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OpenApiController
 {
-    public function apiDocAction(
+    private $openApi;
+    private $parameterBag;
+    private $container;
+    private $openApiSchema;
+
+    public function __construct(
         OpenApi $openApi,
-        Request $request,
-        UrlGeneratorInterface $urlGenerator,
         ParameterBagInterface $parameterBag,
         ContainerInterface $container
+    )
+    {
+        $this->openApi = $openApi;
+        $this->parameterBag = $parameterBag;
+        $this->container = $container;
+    }
+
+    public function apiDocAction(
+        Request $request,
+        UrlGeneratorInterface $urlGenerator
     ) {
         if ($request->getRequestFormat() != 'json') {
             $currentRoute = $request->attributes->get('_route');
@@ -23,10 +37,23 @@ class OpenApiController
             return new RedirectResponse('http://petstore.swagger.io/?url=' . $currentUrl);
         }
 
-        $schema = $openApi->extract(json_encode($parameterBag->get("draw_open_api.root_schema")));
-        $schema = $openApi->extract($container, $schema);
-        $jsonSchema = $openApi->dump($schema);
+        return new JsonResponse(
+            $this->openApi->dump($this->loadOpenApiSchema()), 200, [], true
+        );
+    }
 
-        return new JsonResponse($jsonSchema, 200, [], true);
+    public function loadOpenApiSchema(): Root
+    {
+        if(is_null($this->openApiSchema)) {
+            $schema = $this->openApi->extract(json_encode($this->parameterBag->get("draw_open_api.root_schema")));
+            $this->openApiSchema = $this->openApi->extract($this->container, $schema);
+        }
+
+        return $this->openApiSchema;
+    }
+
+    public function getOpenApi(): OpenApi
+    {
+        return $this->openApi;
     }
 }

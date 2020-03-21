@@ -1,6 +1,4 @@
-jms_serializer:
-    visitors:
-        json_serialization:
-            options:
-                - JSON_UNESCAPED_SLASHES
-                - JSON_PRESERVE_ZERO_FRACTION
+parameters:
+    jms_serializer.json.visitors.options:
+        - JSON_UNESCAPED_SLASHES
+        - JSON_PRESERVE_ZERO_FRACTION
