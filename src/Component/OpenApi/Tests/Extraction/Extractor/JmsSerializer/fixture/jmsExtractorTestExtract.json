@@ -1,0 +1,41 @@
+{
+  "swagger": "2.0",
+  "definitions": {
+    "Draw.Component.OpenApi.Tests.Extraction.Extractor.JmsSerializer.JmsExtractorStubModel": {
+      "properties": {
+        "virtual": {
+          "description": "The virtual property.",
+          "readOnly": true,
+          "$ref": "#\/definitions\/Draw.Component.OpenApi.Tests.Extraction.Extractor.JmsSerializer.JmsExtractorStubModel"
+        },
+        "name": {
+          "description": "The name",
+          "type": "string",
+          "readOnly": true
+        },
+        "generic": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "The generic property.",
+              "type": "string",
+              "readOnly": true
+            }
+          },
+          "readOnly": true
+        },
+        "serializeProperty": {
+          "description": "Serialized property",
+          "type": "string"
+        },
+        "array": {
+          "description": "The array",
+          "type": "array",
+          "items": {
+            "$ref": "#\/definitions\/Draw.Component.OpenApi.Tests.Extraction.Extractor.JmsSerializer.JmsExtractorStubModel"
+          }
+        }
+      }
+    }
+  }
+}

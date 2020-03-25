@@ -1,0 +1,4 @@
+draw_open_api.api_doc:
+    path: '/api-doc.{_format}'
+    controller: 'Draw\Bundle\OpenApiBundle\Controller\OpenApiController::apiDocAction'
+    defaults: { _format: 'html' }

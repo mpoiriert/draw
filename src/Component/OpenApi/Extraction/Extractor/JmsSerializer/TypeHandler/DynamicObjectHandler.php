@@ -1,0 +1,39 @@
+<?php namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler;
+
+use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
+use Draw\Component\OpenApi\Schema\Schema;
+use JMS\Serializer\Metadata\PropertyMetadata;
+
+class DynamicObjectHandler implements TypeToSchemaHandlerInterface
+{
+    public function extractSchemaFromType(
+        PropertyMetadata $propertyMetadata,
+        ExtractionContextInterface $extractionContext
+    ) {
+        if (!($type = $this->getDynamicObjectType($propertyMetadata))) {
+            return null;
+        }
+
+        $propertySchema = new Schema();
+        $propertySchema->type = 'object';
+        $propertySchema->additionalProperties = new Schema();
+        $propertySchema->additionalProperties->type = $type;
+
+        return $propertySchema;
+    }
+
+    private function getDynamicObjectType(PropertyMetadata $item)
+    {
+        switch (true) {
+            case !isset($item->type['name']):
+            case !in_array($item->type['name'], array('array', 'ArrayCollection')):
+            case !isset($item->type['params'][0]['name']):
+            case isset($item->type['params'][0]['name']) != 'string':
+            case !isset($item->type['params'][1]['name']):
+                return null;
+        }
+
+        return $item->type['params'][1]['name'];
+    }
+}

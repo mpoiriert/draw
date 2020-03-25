@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.5/phpunit.xsd"
         backupGlobals="false"
         colors="true"
-        bootstrap="config/bootstrap.php"
+        bootstrap="tests/bootstrap.php"
     >
     <php>
         <ini name="memory_limit" value="4096M" />

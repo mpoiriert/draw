@@ -1,0 +1,19 @@
+framework:
+  secret: fos
+  router:
+    resource: "%kernel.root_dir%/fixtures/config/routing.yml"
+  test: true
+  session:
+    enabled: false
+  validation: { enable_annotations: true }
+
+draw:
+  use_doctrine_repository_factory: false
+
+draw_open_api:
+  convertQueryParameterToAttribute: true
+  responseConverter: true
+  schema:
+    info:
+      title: "test"
+

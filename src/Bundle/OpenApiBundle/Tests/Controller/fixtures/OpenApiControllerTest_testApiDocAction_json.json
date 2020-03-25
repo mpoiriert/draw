@@ -1,0 +1,60 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "test",
+    "version": "1.0"
+  },
+  "paths": {
+    "\/tests": {
+      "post": {
+        "tags": [
+          "test"
+        ],
+        "operationId": "createTest",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "param1",
+            "in": "query"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#\/definitions\/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The created test entity",
+            "schema": {
+              "$ref": "#\/definitions\/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+            },
+            "headers": {
+              "X-Draw": {
+                "description": "Description of the header",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "description": "Property description",
+          "type": "string"
+        },
+        "property_from_body": {
+          "description": "Property deserialize from body in test",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,25 +1,22 @@
 {
     "name": "draw/draw",
-    "type": "project",
     "description": "Monolitic repository for draw components",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Martin Poirier-Theoret",
-            "email": "mpoiriert@gmail.com"
-        }
-    ],
     "require": {
-        "aws/aws-sdk-php": "^3.112",
-        "doctrine/dbal": "^2.9",
-        "doctrine/doctrine-bundle": "^1.6.10",
-        "doctrine/orm": "^2.5.11",
+        "php": "^7.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "aws/aws-sdk-php": "^3.112",
+        "doctrine/annotations": "~1.0",
+        "doctrine/dbal": "^2.9",
+        "doctrine/doctrine-bundle": "^1.6.10",
+        "draw/draw-bundle": "dev-master",
         "guzzlehttp/psr7": "^1.4",
+        "jms/serializer": "^3.0",
+        "jms/serializer-bundle": "@stable",
         "pdeans/http": "^1.1",
-        "php": "^7.1.3",
+        "phpdocumentor/reflection-docblock": "^4.0|^5.0",
         "phpunit/phpunit": "^7.0",
         "psr/http-message": "^1.0",
         "sensiolabs/ansi-to-html": "^1.1",
@@ -37,19 +34,23 @@
         "symfony/property-access": "^4.0|^3.0|^2.8",
         "symfony/security": "^4.3",
         "symfony/translation": "^4.3",
+        "symfony/validator": "^3.4|^4.3|^5.0",
         "symfony/yaml": "*"
     },
     "require-dev": {
-        "draw/data-tester": "*",
-        "symfony/dependency-injection": "^4.3",
-        "phpunit/phpunit": "^7.0",
-        "sonata-project/admin-bundle": "^3.54",
-        "sonata-project/doctrine-orm-admin-bundle": "^3.10",
-        "ramsey/uuid": "^3.8",
+        "doctrine/common": "^2.12",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
-        "symfony/debug-pack": "^1.0",
+        "doctrine/orm": "^2.7",
+        "draw/data-tester": "*",
         "kunicmarko/sonata-auto-configure-bundle": "^0.7.1",
         "pelago/emogrifier": "^3.0",
+        "phpunit/phpunit": "^7.0",
+        "ramsey/uuid": "^3.8",
+        "sensio/framework-extra-bundle": "^5.0",
+        "sonata-project/admin-bundle": "^3.54",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.10",
+        "symfony/debug-pack": "^1.0",
+        "symfony/dependency-injection": "^4.3",
         "symfony/dotenv": "^4.3",
         "symplify/monorepo-builder": "^7.2"
     },
@@ -59,10 +60,12 @@
             "Draw\\Bundle\\CommandBundle\\": "src/Bundle/CommandBundle/",
             "Draw\\Bundle\\CronBundle\\": "src/Bundle/CronBundle/",
             "Draw\\Bundle\\MessengerBundle\\": "src/Bundle/MessengerBundle/",
+            "Draw\\Bundle\\OpenApiBundle\\": "src/Bundle/OpenApiBundle/",
             "Draw\\Bundle\\PostOfficeBundle\\": "src/Bundle/PostOfficeBundle/",
             "Draw\\Bundle\\TesterBundle\\": "src/Bundle/TesterBundle/",
             "Draw\\Bundle\\UserBundle\\": "src/Bundle/UserBundle/",
             "Draw\\Component\\Messenger\\": "src/Component/Messenger/",
+            "Draw\\Component\\OpenApi\\": "src/Component/OpenApi/",
             "Draw\\Component\\Profiling\\": "src/Component/Profiling/",
             "Draw\\Component\\Tester\\": "src/Component/Tester/"
         }
@@ -76,14 +79,16 @@
     "replace": {
         "draw/aws-tool-kit-bundle": "self.version",
         "draw/cron-bundle": "self.version",
-        "draw/tester-bundle": "self.version",
+        "draw/data-tester": "self.version",
+        "draw/messenger": "self.version",
+        "draw/messenger-bundle": "self.version",
+        "draw/open-api": "self.version",
+        "draw/open-api-bundle": "self.version",
+        "draw/post-office-bundle": "self.version",
         "draw/profiling": "self.version",
         "draw/tester": "self.version",
-        "draw/data-tester": "self.version",
-        "draw/user-bundle": "self.version",
-        "draw/messenger": "self.version",
-        "draw/post-office-bundle": "self.version",
-        "draw/messenger-bundle": "self.version"
+        "draw/tester-bundle": "self.version",
+        "draw/user-bundle": "self.version"
     },
     "scripts": {
         "auto-scripts": {
@@ -96,11 +101,6 @@
         "post-update-cmd": [
             "@auto-scripts"
         ]
-    },
-    "suggest": {
-        "draw/messenger-bundle": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",
-        "symfony/dependency-injection": "If you want to test extension/configuration",
-        "symfony/security": "If you want to user authentication in command line"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

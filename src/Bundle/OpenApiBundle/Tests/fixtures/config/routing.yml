@@ -1,0 +1,7 @@
+draw_open_api:
+    resource: '@DrawOpenApiBundle/Resources/config/routing.yaml'
+
+test:
+    resource: '@DrawOpenApiBundle/Tests/Mock/Controller/TestController.php'
+    type: 'annotation'
+    format: 'json'

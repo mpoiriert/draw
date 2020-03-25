@@ -162,7 +162,7 @@ class Client implements ClientInterface
         try {
             $response = $this->requestExecutioner->executeRequest($request);
         } catch (Throwable $exception) {
-            foreach ($this->observers as $observer) {
+            foreach ($observers as $observer) {
                 $observer->postExecutionError($request, $exception, $this->requestExecutioner);
             }
 

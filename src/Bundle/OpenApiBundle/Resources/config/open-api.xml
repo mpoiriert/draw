@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false" autoconfigure="true" autowire="true" />
+        <instanceof id="Draw\Component\OpenApi\Extraction\Extractor\Constraint\ConstraintExtractor">
+            <call method="setMetadataFactory">
+                <argument type="service" id="validator.mapping.class_metadata_factory" />
+            </call>
+        </instanceof>
+
+        <prototype namespace="Draw\Bundle\OpenApiBundle\Controller\" resource="../../Controller">
+            <tag name="controller.service_arguments" />
+        </prototype>
+
+        <service id="JMS\Serializer\Naming\PropertyNamingStrategyInterface" alias="jms_serializer.naming_strategy" />
+
+        <service id="Draw\Component\OpenApi\Serializer\SerializerHandler" />
+        <service id="Draw\Component\OpenApi\Serializer\SerializerListener" />
+        <service id="Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter">
+            <tag name="request.param_converter" converter="draw_open_api.request_body" />
+        </service>
+        <service id="Draw\Component\OpenApi\OpenApi" public="true" />
+
+        <service id="Draw\Bundle\OpenApiBundle\Extractor\SymfonyContainerRootSchemaExtractor" />
+        <service id="Draw\Component\OpenApi\Extraction\Extractor\OpenApi\TagExtractor" />
+        <service id="Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor" />
+        <service id="Draw\Bundle\OpenApiBundle\Extractor\RouteOperationExtractor" />
+        <service id="Draw\Bundle\OpenApiBundle\Extractor\ViewExtractor" />
+        <service id="Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor" />
+
+        <prototype namespace="Draw\Component\OpenApi\Extraction\Extractor\Constraint\"
+                   resource="%draw_open_api.component_dir%/Extraction/Extractor/Constraint" />
+
+        <service id="Draw\Component\OpenApi\Extraction\Extractor\OpenApi\ParameterExtractor" />
+        <service id="Draw\Component\OpenApi\Extraction\Extractor\PhpDoc\OperationExtractor" />
+        <service id="Draw\Bundle\OpenApiBundle\Extractor\ParamConverterExtractor" />
+    </services>
+
+
+</container>
