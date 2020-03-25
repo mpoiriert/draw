@@ -5,7 +5,7 @@ use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Bundle\OpenApiBundle\Listener\ResponseConverterSubscriber;
-use Draw\Bundle\OpenApiBundle\Request\DeserializeBody;
+use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -73,7 +73,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
             ->setArgument(
                 '$defaultConfiguration',
                 new Definition(
-                    DeserializeBody::class,
+                    Deserialization::class,
                     [$config['requestBodyParamConverter']['defaultDeserializationConfiguration']]
                 )
             );

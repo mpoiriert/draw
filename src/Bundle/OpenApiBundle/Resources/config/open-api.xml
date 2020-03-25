@@ -29,7 +29,7 @@
         <service id="Draw\Component\OpenApi\Extraction\Extractor\OpenApi\TagExtractor" />
         <service id="Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor" />
         <service id="Draw\Bundle\OpenApiBundle\Extractor\RouteOperationExtractor" />
-        <service id="Draw\Bundle\OpenApiBundle\Extractor\ViewExtractor" />
+        <service id="Draw\Bundle\OpenApiBundle\Extractor\ResponseSerializationExtractor" />
         <service id="Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor" />
 
         <prototype namespace="Draw\Component\OpenApi\Extraction\Extractor\Constraint\"

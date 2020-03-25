@@ -1,16 +1,16 @@
 <?php namespace Draw\Bundle\OpenApiBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
+use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
-use Draw\Bundle\OpenApiBundle\View\View;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use ReflectionMethod;
 
-class ViewExtractor implements ExtractorInterface
+class ResponseSerializationExtractor implements ExtractorInterface
 {
     /**
      * @var Reader
@@ -40,7 +40,7 @@ class ViewExtractor implements ExtractorInterface
             return false;
         }
 
-        if (!$this->getView($extractionContext->getParameter('controller-reflection-method'))) {
+        if (!$this->getSerialization($extractionContext->getParameter('controller-reflection-method'))) {
             return false;
         }
 
@@ -53,7 +53,7 @@ class ViewExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param \ReflectionMethod $source
+     * @param ReflectionMethod $source
      * @param Schema $target
      * @param ExtractionContextInterface $extractionContext
      */
@@ -65,15 +65,15 @@ class ViewExtractor implements ExtractorInterface
 
         $groups = [];
 
-        if ($view = $this->getView($extractionContext->getParameter('controller-reflection-method'))) {
-            $groups = $view->getSerializerGroups();
-            if($statusCode = $view->getStatusCode()) {
+        if ($serialization = $this->getSerialization($extractionContext->getParameter('controller-reflection-method'))) {
+            $groups = $serialization->getSerializerGroups();
+            if($statusCode = $serialization->getStatusCode()) {
                 $extractionContext->setParameter('response-status-code', $statusCode);
             }
 
             /** @var Response $response */
             if($response = $extractionContext->getParameter('response')) {
-                foreach($view->getHeaders() as $name => $header) {
+                foreach($serialization->getHeaders() as $name => $header) {
                     $response->headers[$name] = $header;
                 }
             }
@@ -90,12 +90,12 @@ class ViewExtractor implements ExtractorInterface
 
     /**
      * @param ReflectionMethod $reflectionMethod
-     * @return View|null
+     * @return Serialization|null
      */
-    private function getView(ReflectionMethod $reflectionMethod)
+    private function getSerialization(ReflectionMethod $reflectionMethod)
     {
-        /** @var View|null $view */
-        $view = $this->annotationReader->getMethodAnnotation($reflectionMethod, View::class);
-        return $view;
+        /** @var Serialization|null $serialization */
+        $serialization = $this->annotationReader->getMethodAnnotation($reflectionMethod, Serialization::class);
+        return $serialization;
     }
 }

@@ -1,4 +1,4 @@
-<?php namespace Draw\Bundle\OpenApiBundle\View;
+<?php namespace Draw\Bundle\OpenApiBundle\Response;
 
 use Draw\Component\OpenApi\Schema\Header;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
  * @Annotation
  * @Target({"METHOD","CLASS"})
  */
-class View extends ConfigurationAnnotation
+class Serialization extends ConfigurationAnnotation
 {
     /**
      * @var int
@@ -123,7 +123,7 @@ class View extends ConfigurationAnnotation
      */
     public function getAliasName()
     {
-        return 'draw_open_api';
+        return 'draw_open_api_serialization';
     }
 
     public function allowArray()

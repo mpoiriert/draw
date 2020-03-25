@@ -98,17 +98,17 @@ draw_open_api:
 ````
 
 The will detect if the return value of your controller is not a response and will serialized it according
-to the **Draw\Bundle\OpenApiBundle\View\View** annotation.
+to the **Draw\Bundle\OpenApiBundle\Response\Serialization** annotation.
 
 By default if there is not annotation the serializer context will not have any value and the response will be 200.
 Using the view allow to override the serializer groups and version, the status code of the response.
-The View annotation is also use for the Open Api documentation, the headers attribute is use for that.
+The Serialization annotation is also use for the Open Api documentation, the headers attribute is use for that.
 
 If your controller return null the status code will be set to 204 by default (not content).
 
 ```
 /**
- * @Draw\Bundle\OpenApiBundle\View\View(
+ * @Draw\Bundle\OpenApiBundle\Response\Serialization(
  *     statusCode=201,
  *     serializerGroups={"MyGroup"},
  *     headers={
@@ -122,8 +122,8 @@ public function createAction()
 }
 ```
 
-The **Draw\Bundle\OpenApiBundle\View\View** extends from **Sensio\Bundle\FrameworkExtraBundle\Configuration\Template**
-so you can access it the same way by using the ```$request->attributes->get('_template');```.
+The **Draw\Bundle\OpenApiBundle\Response\Serialization** implement **Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface**
+with a alias *draw_open_api_serialization* ```$request->attributes->get('_draw_open_api_serialization');```.
 
 Instead of putting a **serializerVersion** on each header you can create a listener that will set the
 version base on something else. Here is a example of a listener that will take from the url path
@@ -132,7 +132,7 @@ version base on something else. Here is a example of a listener that will take f
 ```PHP
 <?php namespace App\Listener;
 
-use Draw\Bundle\OpenApiBundle\View\View;
+use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -164,13 +164,13 @@ class VersionListener implements EventSubscriberInterface
             return;
         }
 
-        $view = $request->attributes->get('_template', new View([]));
+        $view = $request->attributes->get('_draw_open_api_serialization', new Serialization([]));
 
-        if($view instanceof View && is_null($view->getSerializerVersion())) {
+        if($view instanceof Serialization && is_null($view->getSerializerVersion())) {
             $view->setSerializerVersion($version);
         }
 
-        $request->attributes->set('_template', $view);
+        $request->attributes->set('_draw_open_api_serialization', $view);
     }
 }
 ```

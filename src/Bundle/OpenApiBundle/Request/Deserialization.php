@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
  *
  * @Annotation
  */
-class DeserializeBody extends ParamConverter
+class Deserialization extends ParamConverter
 {
     /**
      * The groups use for deserialization

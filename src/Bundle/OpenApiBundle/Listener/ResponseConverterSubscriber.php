@@ -1,7 +1,8 @@
 <?php namespace Draw\Bundle\OpenApiBundle\Listener;
 
+use Draw\Bundle\OpenApiBundle\Request\Deserialization;
+use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Event\PreSerializerResponseEvent;
-use Draw\Bundle\OpenApiBundle\View\View;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -69,7 +70,6 @@ class ResponseConverterSubscriber implements EventSubscriberInterface
 
         switch ($requestFormat = $request->getRequestFormat()) {
             case 'json':
-            case 'xml':
                 break;
             default:
                 return;
@@ -83,25 +83,27 @@ class ResponseConverterSubscriber implements EventSubscriberInterface
         $context = $this->serializationContextFactory->createSerializationContext();
         $context->setSerializeNull($this->serializeNull);
 
-        $view = $request->attributes->get('_draw_open_api');
+        $serialization = $request->attributes->get('_draw_open_api_serialization');
 
-        if ($view instanceof View) {
-            if ($version = $view->getSerializerVersion()) {
+        if ($serialization instanceof Serialization) {
+            if ($version = $serialization->getSerializerVersion()) {
                 $context->setVersion($version);
             }
 
-            if ($groups = $view->getSerializerGroups()) {
+            if ($groups = $serialization->getSerializerGroups()) {
                 $context->setGroups($groups);
             }
         }
 
-        $this->eventDispatcher->dispatch(new PreSerializerResponseEvent($result, $view, $context));
+        $this->eventDispatcher->dispatch(new PreSerializerResponseEvent($result, $serialization, $context));
 
         $data = $this->serializer->serialize($result, $requestFormat, $context);
         $response = new JsonResponse($data, 200, ['Content-Type' => 'application/' . $requestFormat], true);
 
-        if ($view instanceof View && $view->getStatusCode()) {
-            $response->setStatusCode($view->getStatusCode());
+        if ($serialization instanceof Serialization
+            && $serialization->getStatusCode()
+        ) {
+            $response->setStatusCode($serialization->getStatusCode());
         }
 
         $event->setResponse($response);
@@ -109,8 +111,8 @@ class ResponseConverterSubscriber implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $responseEvent)
     {
-        if($responseHeaderBag = $responseEvent->getRequest()->attributes->get('_responseHeaderBag', [])) {
-            if($responseHeaderBag instanceof ResponseHeaderBag) {
+        if ($responseHeaderBag = $responseEvent->getRequest()->attributes->get('_responseHeaderBag', [])) {
+            if ($responseHeaderBag instanceof ResponseHeaderBag) {
                 $responseEvent->getResponse()->headers->add($responseHeaderBag->allPreserveCase());
             }
         }

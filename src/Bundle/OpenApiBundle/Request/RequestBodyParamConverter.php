@@ -28,19 +28,19 @@ class RequestBodyParamConverter implements ParamConverterInterface
     private $validator;
 
     /**
-     * @var DeserializeBody
+     * @var Deserialization
      */
     private $defaultConfiguration;
 
     /**
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
-     * @param DeserializeBody $defaultConfiguration
+     * @param Deserialization $defaultConfiguration
      */
     public function __construct(
         SerializerInterface $serializer,
         ValidatorInterface $validator,
-        DeserializeBody $defaultConfiguration
+        Deserialization $defaultConfiguration
     ) {
         $this->serializer = $serializer;
         $this->validator = $validator;

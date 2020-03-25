@@ -1,8 +1,8 @@
 <?php namespace Draw\Bundle\OpenApiBundle\Tests\Mock\Controller;
 
-use Draw\Bundle\OpenApiBundle\Request\DeserializeBody;
+use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Tests\Mock\Model\Test;
-use Draw\Bundle\OpenApiBundle\View\View;
+use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,12 +18,12 @@ class TestController
      *
      * @OpenApi\QueryParameter(name="param1")
      *
-     * @DeserializeBody(
+     * @Deserialization(
      *     name="test",
      *     deserializationGroups={"Included"}
      * )
      *
-     * @View(
+     * @Serialization(
      *     statusCode=201,
      *     serializerGroups={"Included"},
      *     headers={
