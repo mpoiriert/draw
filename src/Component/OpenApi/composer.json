@@ -1,6 +1,6 @@
 {
   "name": "draw/open-api",
-  "type": "project",
+  "type": "library",
   "description": "Open Api PHP manipulation library. Only support v 2.0",
   "minimum-stability": "dev",
   "prefer-stable": true,

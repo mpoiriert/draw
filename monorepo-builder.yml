@@ -1,12 +1,15 @@
 parameters:
   directories_to_repositories:
-    src/Component/Tester: 'git@github.com:mpoiriert/tester.git'
-    src/Component/Profiling: 'git@github.com:mpoiriert/profiling.git'
     src/Component/Messenger: 'git@github.com:mpoiriert/messenger.git'
+    src/Component/OpenApi: 'git@github.com:mpoiriert/open-api.git'
+    src/Component/Profiling: 'git@github.com:mpoiriert/profiling.git'
+    src/Component/Tester: 'git@github.com:mpoiriert/tester.git'
+
     src/Bundle/AwsToolKitBundle: 'git@github.com:mpoiriert/aws-tool-kit-bundle.git'
     src/Bundle/CommandBundle: 'git@github.com:mpoiriert/command-bundle.git'
     src/Bundle/CronBundle: 'git@github.com:mpoiriert/cron-bundle.git'
     src/Bundle/MessengerBundle: 'git@github.com:mpoiriert/messenger-bundle.git'
+    src/Bundle/OpenApiBundle: 'git@github.com:mpoiriert/open-api-bundle.git'
     src/Bundle/PostOfficeBundle: 'git@github.com:mpoiriert/post-office-bundle.git'
     src/Bundle/TesterBundle: 'git@github.com:mpoiriert/tester-bundle.git'
     src/Bundle/UserBundle: 'git@github.com:mpoiriert/user-bundle.git'
