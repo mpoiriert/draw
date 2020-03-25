@@ -62,7 +62,7 @@ class TestResponse
     {
         $statusCode = (string)$this->getStatusCode();
         PHPUnit::assertTrue(
-            strlen($statusCode) === 3 && in_array($statusCode{0}, [2, 3]),
+            strlen($statusCode) === 3 && in_array(substr($statusCode, 0, 1), [2, 3]),
             'Response status code [' . $this->getStatusCode() . '] is not a successful status code.'
         );
 
