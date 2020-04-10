@@ -1,11 +1,12 @@
 <?php namespace Draw\Bundle\OpenApiBundle\Request;
 
-use Draw\DrawBundle\PropertyAccess\DynamicArrayObject;
-use Draw\DrawBundle\Request\Exception\RequestValidationException;
+use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
+use Draw\Bundle\OpenApiBundle\Util\DynamicArrayObject;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Exception\Exception as JMSSerializerException;
 use JMS\Serializer\Exception\UnsupportedFormatException;
 use JMS\Serializer\SerializerInterface;
+use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +63,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
                 $requestData = $request->request->all();
                 break;
             default:
-                throw new \RuntimeException('Invalid request format');
+                throw new RuntimeException('Invalid request format');
         }
 
         if (isset($options['propertiesMap'])) {
@@ -91,7 +92,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
         $violations = $this->validate($object, $configuration);
 
         if(count($violations)) {
-            $exception = new RequestValidationException();
+            $exception = new ConstraintViolationListException();
             $exception->setViolationList($violations);
             throw $exception;
         }

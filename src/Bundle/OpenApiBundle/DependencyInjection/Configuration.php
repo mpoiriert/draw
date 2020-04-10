@@ -3,7 +3,6 @@
 namespace Draw\Bundle\OpenApiBundle\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Draw\DrawBundle\Config\Definition\Builder\AllowExtraPropertiesNodeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -22,7 +21,6 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('draw_open_api');
         $rootNode = $treeBuilder->getRootNode();
-        $rootNode->setBuilder(new AllowExtraPropertiesNodeBuilder());
 
         $rootNode
             ->beforeNormalization()
@@ -84,7 +82,7 @@ class Configuration implements ConfigurationInterface
             ->end()
             ->arrayNode('schema')
             ->normalizeKeys(false)
-            ->acceptExtraKeys(true)
+            ->ignoreExtraKeys(false)
                 ->children()
                     ->arrayNode("info")
                         ->children()

@@ -20,7 +20,6 @@
         "php": "^7.2",
         "ext-json": "*",
         "draw/open-api": "dev-master",
-        "draw/draw-bundle": "dev-master",
         "doctrine/annotations": "~1.0",
         "symfony/framework-bundle": "^4.3",
         "jms/serializer-bundle": "@stable"

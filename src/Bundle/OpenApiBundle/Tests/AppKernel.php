@@ -13,7 +13,6 @@ class AppKernel extends Kernel
         return array(
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Draw\Bundle\OpenApiBundle\DrawOpenApiBundle(),
-            new \Draw\DrawBundle\DrawDrawBundle(),
             new \JMS\SerializerBundle\JMSSerializerBundle(),
             new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
         );

@@ -1,6 +1,3 @@
-draw:
-  use_doctrine_repository_factory: false
-
 draw_open_api:
   convertQueryParameterToAttribute: true
   responseConverter: true

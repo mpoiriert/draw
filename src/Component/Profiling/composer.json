@@ -18,7 +18,7 @@
     "prefer-stable": true,
     "require": [],
     "require-dev": {
-        "draw/data-tester": "*",
+        "draw/tester": "^0.5",
         "phpunit/phpunit": "^7.0"
     },
     "extra": {
