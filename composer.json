@@ -83,6 +83,7 @@
     "replace": {
         "draw/aws-tool-kit-bundle": "self.version",
         "draw/cron-bundle": "self.version",
+        "draw/dashboard-bundle": "self.version",
         "draw/data-tester": "self.version",
         "draw/messenger": "self.version",
         "draw/messenger-bundle": "self.version",
