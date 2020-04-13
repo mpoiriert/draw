@@ -3,6 +3,7 @@
 use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -29,10 +30,16 @@ class DashboardController extends AbstractController
         $menu = $parameterBag->get('draw_dashboard.menu');
 
         foreach ($menu as $index => &$menuEntry) {
+            if($menuEntry['security'] && !$this->isGranted(new Expression($menuEntry['security']))) {
+                unset($menu[$index]);
+                continue;
+            }
+
             if ($menuEntry['operationId']) {
                 $routeInformation = $this->getRouteInformation($menuEntry['operationId'], $request);
                 if (!$routeInformation) {
                     unset($menu[$index]);
+                    continue;
                 } else {
                     unset($menuEntry['operationId']);
                     $menuEntry['link'] = $routeInformation;
@@ -40,6 +47,11 @@ class DashboardController extends AbstractController
             }
 
             foreach ($menuEntry['children'] as $index2 => &$menuItem) {
+                if($menuItem['security'] && !$this->isGranted(new Expression($menuItem['security']))) {
+                    unset($menuEntry['children'][$index2]);
+                    continue;
+                }
+
                 if (!$menuItem['operationId']) {
                     continue;
                 }

@@ -1,5 +1,8 @@
 draw_dashboard:
   menu:
+    visible_by_admin_only:
+      label: 'Visible by admin only'
+      security: "is_granted('ROLE_ADMIN')"
     user:
       label: 'Users'
       icon: 'person'

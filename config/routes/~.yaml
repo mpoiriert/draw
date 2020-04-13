@@ -3,3 +3,4 @@ dashboard:
   resource: '@DrawDashboardBundle/Controller/'
   type: 'annotation'
   prefix: '/api'
+  format: 'json'
