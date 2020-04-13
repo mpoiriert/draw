@@ -1,6 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Client;
 
-use Draw\Bundle\OpenApiBundle\Listener\ResponseConverterSubscriber;
+use Draw\Bundle\OpenApiBundle\Response\Listener\ResponseConverterSubscriber;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class FeedbackNotifier
