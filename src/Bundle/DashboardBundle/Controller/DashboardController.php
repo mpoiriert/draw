@@ -1,6 +1,5 @@
-<?php namespace App\Controller\Api;
+<?php namespace Draw\Bundle\DashboardBundle\Controller;
 
-use Draw\Bundle\DashboardBundle\Controller\OptionsController;
 use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -14,6 +13,8 @@ class DashboardController extends AbstractController
 
     private $optionsController;
 
+    private $basePath = null;
+
     public function __construct(OpenApiController $openApiController, OptionsController $optionsController)
     {
         $this->openApiController = $openApiController;
@@ -21,7 +22,7 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route(methods={"GET"}, path="")
+     * @Route(name="draw_dashboard", methods={"GET"}, path="/dashboard")
      */
     public function index(ParameterBagInterface $parameterBag, Request $request)
     {
@@ -51,6 +52,8 @@ class DashboardController extends AbstractController
                 unset($menuItem['operationId']);
                 $menuItem['link'] = $routeInformation;
             }
+
+            $menuEntry['children'] = array_values($menuEntry['children']);
         }
 
         // Return value must be json array not a json object
@@ -88,6 +91,8 @@ class DashboardController extends AbstractController
 
     private function getActionInformation($operationId, Request $request)
     {
+        $basePath = $this->getBasePath();
+
         $schema = $this->openApiController->loadOpenApiSchema();
         foreach ($schema->paths as $path => $pathItem) {
             foreach ($pathItem->getOperations() as $method => $operation) {
@@ -107,12 +112,25 @@ class DashboardController extends AbstractController
                     }
 
                     return [
-                        'href' => trim($this->generateUrl('home', [], UrlGeneratorInterface::ABSOLUTE_URL), '/') . $path,
+                        'href' => $basePath . $path,
                         'method' => strtoupper($method),
                         'x-draw-action' => $information['x-draw-action']
                     ];
                 }
             }
         }
+    }
+
+    private function getBasePath()
+    {
+        if(is_null($this->basePath)) {
+            $this->basePath = str_replace(
+                $this->generateUrl('draw_dashboard'),
+                '',
+                $this->generateUrl('draw_dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL)
+            );
+        }
+
+        return $this->basePath;
     }
 }
