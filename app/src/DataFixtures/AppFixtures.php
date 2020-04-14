@@ -1,17 +1,23 @@
 <?php namespace App\DataFixtures;
 
+use App\Entity\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\User;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $tag = new Tag();
+        $tag->setLabel('Admin');
+        $manager->persist($tag);
+
         $user = new User();
         $user->setEmail('admin@example.com');
         $user->setPlainPassword('admin');
         $user->setRoles(['ROLE_ADMIN']);
+        $user->setTags([$tag]);
         $manager->persist($user);
 
         foreach (range(1, 49) as $number) {

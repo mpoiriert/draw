@@ -19,3 +19,8 @@ services:
   App\Controller\:
     resource: '../app/src/Controller'
     tags: ['controller.service_arguments']
+
+  jms_serializer.serialized_name_annotation_strategy:
+    class: 'JMS\Serializer\Naming\SerializedNameAnnotationStrategy'
+    arguments:
+      - '@jms_serializer.identical_property_naming_strategy'

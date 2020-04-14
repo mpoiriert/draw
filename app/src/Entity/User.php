@@ -1,5 +1,7 @@
 <?php namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
@@ -37,6 +39,32 @@ class User implements SecurityUserInterface
     private $roles = [];
 
     /**
+     * @var Tag[]|Collection
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Tag"
+     * )
+     *
+     * @Dashboard\Column(
+     *     type="list",
+     *     label="Tags",
+     *     sortable=false,
+     *     options={"list": {"attribute":"label"}}
+     * )
+     *
+     * @Dashboard\FormInputChoices(
+     *     label="Tags",
+     *     multiple=true
+     * )
+     */
+    private $tags;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
+    /**
      * @return string
      *
      * @ORM\PrePersist()
@@ -71,5 +99,21 @@ class User implements SecurityUserInterface
     public function setRoles(array $roles)
     {
         $this->roles = $roles;
+    }
+
+    /**
+     * @return Tag[]|Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Tag[]|Collection $tags
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
     }
 }

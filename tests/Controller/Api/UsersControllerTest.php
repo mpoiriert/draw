@@ -28,6 +28,26 @@ class UsersControllerTest extends TestCase
 
     }
 
+    public function testUsersCreateAction()
+    {
+        $this->connect();
+        return $this->httpTester()
+            ->post(
+                '/api/users',
+                json_encode([
+                    'email' => 'test@example.com',
+                    'plainPassword' => 'test',
+                    'tags' => [
+                        ['id' => 1]
+                    ]
+                ])
+            )
+            ->assertStatus(200)
+            ->toJsonDataTester()
+            ->getData();
+
+    }
+
     /**
      * @depends testUsersAction
      */

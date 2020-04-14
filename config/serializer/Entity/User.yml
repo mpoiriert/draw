@@ -3,7 +3,6 @@ App\Entity\User:
     plainPassword:
       expose: true
       type: 'string'
-      read_only: true
     roles:
       exclude: true
     password:
