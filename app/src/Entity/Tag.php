@@ -59,4 +59,9 @@ class Tag
     {
         $this->label = $label;
     }
+
+    public function __toString()
+    {
+        return (string)$this->getLabel();
+    }
 }

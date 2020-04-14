@@ -1,9 +1,13 @@
 <?php namespace Draw\Bundle\DashboardBundle\Listener;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\DashboardBundle\Annotations\ActionCreate;
 use Draw\Bundle\DashboardBundle\Annotations\ConfirmFlow;
 use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
 use Draw\Component\OpenApi\Schema\BodyParameter;
+use Draw\Component\OpenApi\Schema\Root;
+use Draw\Component\OpenApi\Schema\Schema;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Twig\Environment;
 
@@ -11,9 +15,15 @@ class OptionActionListener implements EventSubscriberInterface
 {
     private $twig;
 
-    public function __construct(Environment $environment)
+    /**
+     * @var ManagerRegistry
+     */
+    private $managerRegistry;
+
+    public function __construct(Environment $environment, ManagerRegistry $managerRegistry)
     {
         $this->twig = $environment;
+        $this->managerRegistry = $managerRegistry;
     }
 
     public static function getSubscribedEvents()
@@ -120,10 +130,36 @@ class OptionActionListener implements EventSubscriberInterface
             if (!$input) {
                 continue;
             }
+
+            if($input['type'] === 'choices') {
+                $input['choices'] = $this->loadChoices($item, $property, $openApiSchema);
+                $input['sourceCompareKeys'] = ['id']; //todo make this dynamic
+            }
+
             $inputs[] = $input;
         }
 
         $event->getOptions()->set('inputs', $inputs);
+    }
+
+    private function loadChoices(Schema $schema, Schema $property, Root $openApiSchema)
+    {
+        $target = $openApiSchema->resolveSchema($property->items);
+        $targetClass = $target->getVendorData()['x-draw-dashboard-class-name'];
+        $objects = $this->managerRegistry
+            ->getManagerForClass($targetClass)
+            ->getRepository($targetClass)
+            ->findAll();
+
+        $choices = [];
+        foreach($objects as $object) {
+            $choices[] = [
+                'value' => ['id' => $object->getId()],//todo make this dynamic
+                'label' => (string)$object
+            ];
+        }
+
+        return $choices;
     }
 
     private function renderStringTemplate($template, array $context)

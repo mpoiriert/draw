@@ -60,8 +60,15 @@ class UsersControllerTest extends TestCase
 
     public function testOptionsCreateUser()
     {
+        $this->connect();
         $this->httpTester()
             ->options('/api/users')
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->toJsonDataTester()
+            ->test(
+                new AgainstJsonFileTester(
+                    __DIR__ . '/fixtures/UsersControllerTest_testOptionsCreateUser.json'
+                )
+            );
     }
 }
