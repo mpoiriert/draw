@@ -1,6 +1,5 @@
 <?php namespace Draw\Bundle\DashboardBundle\Listener;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\DashboardBundle\Annotations\ActionCreate;
 use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;

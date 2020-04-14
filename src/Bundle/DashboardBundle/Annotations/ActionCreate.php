@@ -13,10 +13,17 @@ class ActionCreate extends Action
         $this->button->label = 'Create';
         $this->flow = new FormFlow();
         $this->flow->buttons = [
+            $cancel = new Button(),
             $save = new Button()
         ];
 
+        $cancel->label = 'Cancel';
+        $cancel->style = 'stroked-button';
+        $cancel->behaviours[] = 'cancel';
+
         $save->label = 'Save';
+        $save->style = 'flat-button';
+        $save->color = 'primary';
         $save->behaviours[] = 'submit';
     }
 

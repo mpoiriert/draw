@@ -3,23 +3,15 @@
 /**
  * @Annotation
  */
-class ActionEdit extends Action
+class ActionEdit extends ActionCreate
 {
     const TYPE = 'edit';
 
     public function __construct()
     {
-        $this->button = new Button();
+        parent::__construct();
         $this->button->label = 'Edit';
         $this->button->icon = 'edit';
-
-        $this->flow = new FormFlow();
-        $this->flow->buttons = [
-            $save = new Button()
-        ];
-
-        $save->label = 'Save';
-        $save->behaviours[] = 'submit';
     }
 
     public function getType()
