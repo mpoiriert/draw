@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false" autoconfigure="true" autowire="true" />
+        <prototype namespace="Draw\Bundle\OpenApiBundle\JmsSerializer\" resource="../../JmsSerializer" />
+        <service id="Draw\Bundle\OpenApiBundle\JmsSerializer\Construction\DoctrineObjectConstructor">
+            <argument key="$fallbackConstructor" type="service" id="jms_serializer.unserialize_object_constructor" />
+        </service>
+        <service id="jms_serializer.object_constructor"
+                 alias="Draw\Bundle\OpenApiBundle\JmsSerializer\Construction\DoctrineObjectConstructor" />
+        <service id="jms_serializer.unserialize_object_constructor"
+                 alias="Draw\Bundle\OpenApiBundle\JmsSerializer\Construction\SimpleObjectConstructor" />
+    </services>
+</container>

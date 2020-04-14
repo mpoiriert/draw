@@ -55,6 +55,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
             ->addTag(TypeToSchemaHandlerInterface::class);
 
         $loader->load('open-api.xml');
+        $loader->load('jms-serializer.xml');
 
         $container
             ->getDefinition(OpenApi::class)
