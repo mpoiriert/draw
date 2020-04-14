@@ -39,6 +39,31 @@ class UsersController extends AbstractController
         return $user;
     }
 
+    /**
+     * @Route(methods={"PUT"}, path="/users/{id}")
+     *
+     * @OpenApi\Operation(operationId="userEdit")
+     *
+     * @Deserialization(
+     *     name="user",
+     *     propertiesMap={"id":"id"}
+     * )
+     *
+     * @Dashboard\ActionEdit(
+     *   targets={User::class}
+     * )
+     *
+     * @IsGranted("ROLE_ADMIN")
+     *
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @return User The update user
+     */
+    public function editAction(User $user, EntityManagerInterface $entityManager)
+    {
+        $entityManager->flush();
+        return $user;
+    }
 
     /**
      * @Route(name="user_get", methods={"GET"}, path="/users/{id}")

@@ -36,6 +36,13 @@ class Deserialization extends ParamConverter
      */
     private $validationGroups;
 
+    /**
+     * A mapping from attribute to property path
+     *
+     * @var array
+     */
+    private $propertiesMap = [];
+
     public function __construct(array $values)
     {
         $values['converter'] = $values['converter'] ?? 'draw_open_api.request_body';
@@ -60,10 +67,26 @@ class Deserialization extends ParamConverter
                     $values['options']['validator']['groups'] = $value;
                     unset($values[$key]);
                     break;
+                case 'propertiesMap':
+                    $values['options']['propertiesMap'] = $value;
+                    unset($values[$key]);
+                    break;
             }
         }
 
         parent::__construct($values);
+    }
+
+    public function getPropertiesMap(): array
+    {
+        return $this->getOptions()['propertiesMap'] ?? [];
+    }
+
+    public function setPropertiesMap(array $propertiesMap)
+    {
+        $options = $this->getOptions();
+        $options['propertiesMap'] = $propertiesMap;
+        $this->setOptions($options);
     }
 
     /**

@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
+use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -30,6 +31,8 @@ class User implements SecurityUserInterface
      *      sortable=true,
      *      label="#"
      * )
+     *
+     * @Serializer\ReadOnly()
      */
     private $id;
 

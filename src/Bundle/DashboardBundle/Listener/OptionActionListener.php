@@ -3,6 +3,7 @@
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\DashboardBundle\Annotations\ActionCreate;
+use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;
 use Draw\Bundle\DashboardBundle\Annotations\ConfirmFlow;
 use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
 use Draw\Component\OpenApi\Schema\BodyParameter;
@@ -32,7 +33,7 @@ class OptionActionListener implements EventSubscriberInterface
             OptionBuilderEvent::class => [
                 ['buildOption'],
                 ['buildOptionForList'],
-                ['buildOptionForCreate'],
+                ['buildOptionForCreateEdit'],
             ]
         ];
     }
@@ -47,7 +48,7 @@ class OptionActionListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        if($action->flow instanceof ConfirmFlow) {
+        if ($action->flow instanceof ConfirmFlow) {
             $action->flow->message = $this->renderStringTemplate(
                 $action->flow->message,
                 $request->attributes->all()
@@ -100,24 +101,24 @@ class OptionActionListener implements EventSubscriberInterface
         $event->getOptions()->set('columns', $columns);
     }
 
-    public function buildOptionForCreate(OptionBuilderEvent $event)
+    public function buildOptionForCreateEdit(OptionBuilderEvent $event)
     {
         $action = $event->getAction();
-        if ($action->getType() !== ActionCreate::TYPE) {
+        if (!in_array($action->getType(), [ActionCreate::TYPE, ActionEdit::TYPE])) {
             return;
         }
 
         $operation = $event->getOperation();
 
         $bodyParameter = null;
-        foreach($operation->parameters as $parameter) {
-            if($parameter instanceof BodyParameter) {
+        foreach ($operation->parameters as $parameter) {
+            if ($parameter instanceof BodyParameter) {
                 $bodyParameter = $parameter;
                 break;
             }
         }
 
-        if(!$bodyParameter) {
+        if (!$bodyParameter) {
             return;
         }
 
@@ -131,7 +132,7 @@ class OptionActionListener implements EventSubscriberInterface
                 continue;
             }
 
-            if($input['type'] === 'choices') {
+            if ($input['type'] === 'choices') {
                 $input['choices'] = $this->loadChoices($item, $property, $openApiSchema);
                 $input['sourceCompareKeys'] = ['id']; //todo make this dynamic
             }
@@ -152,7 +153,7 @@ class OptionActionListener implements EventSubscriberInterface
             ->findAll();
 
         $choices = [];
-        foreach($objects as $object) {
+        foreach ($objects as $object) {
             $choices[] = [
                 'value' => ['id' => $object->getId()],//todo make this dynamic
                 'label' => (string)$object
@@ -164,7 +165,7 @@ class OptionActionListener implements EventSubscriberInterface
 
     private function renderStringTemplate($template, array $context)
     {
-        if(!$template) {
+        if (!$template) {
             return '';
         }
 
