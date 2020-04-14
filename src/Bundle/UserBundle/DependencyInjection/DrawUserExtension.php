@@ -27,8 +27,9 @@ class DrawUserExtension extends ConfigurableExtension
 
         $this->assignParameters($config, $container);
 
-        if ($config['encrypt_password_listener']) {
+        if ($config['encrypt_password_listener']['enabled']) {
             $container->getDefinition(EncryptPasswordUserEntityListener::class)
+                ->setArgument('$autoGeneratePassword', $config['encrypt_password_listener']['auto_generate_password'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'preUpdate'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'postPersist'])

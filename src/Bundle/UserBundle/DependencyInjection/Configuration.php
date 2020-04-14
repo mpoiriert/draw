@@ -26,8 +26,11 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->append($this->createSonataNode())
-                ->booleanNode('encrypt_password_listener')
-                    ->defaultTrue()
+                ->arrayNode('encrypt_password_listener')
+                    ->canBeDisabled()
+                    ->children()
+                        ->booleanNode('auto_generate_password')->defaultTrue()->end()
+                    ->end()
                 ->end()
                 ->scalarNode('user_entity_class')
                     ->validate()

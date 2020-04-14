@@ -22,6 +22,11 @@ trait SecurityUserTrait
      *     isActive=true,
      *     sortable=true
      * )
+     *
+     * @Dashboard\FormInput(
+     *     label="Email",
+     *     type="email"
+     * )
      */
     private $email;
 

@@ -6,10 +6,14 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class EncryptPasswordUserEntityListener
 {
     private $passwordEncoder;
+    private $autoGeneratePassword;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        $autoGeneratePassword = true
+    ) {
         $this->passwordEncoder = $passwordEncoder;
+        $this->autoGeneratePassword = $autoGeneratePassword;
     }
 
     public function preUpdate(SecurityUserInterface $user)
@@ -34,6 +38,10 @@ class EncryptPasswordUserEntityListener
 
     private function updatePassword(SecurityUserInterface $user)
     {
+        if(!$user->getPassword() && $this->autoGeneratePassword) {
+            $user->setPlainPassword(uniqid());
+        }
+
         if ($user->getPlainPassword()) {
             $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
         }
