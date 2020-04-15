@@ -132,7 +132,7 @@ class OptionActionListener implements EventSubscriberInterface
             }
 
             if ($input['type'] === 'choices') {
-                $input['choices'] = $this->loadChoices($item, $property, $openApiSchema);
+                $input['choices'] = $this->loadChoices($input, $item, $property, $openApiSchema);
                 $input['sourceCompareKeys'] = ['id']; //todo make this dynamic
             }
 
@@ -142,14 +142,14 @@ class OptionActionListener implements EventSubscriberInterface
         $event->getOptions()->set('inputs', $inputs);
     }
 
-    private function loadChoices(Schema $schema, Schema $property, Root $openApiSchema)
+    private function loadChoices(array $input, Schema $schema, Schema $property, Root $openApiSchema)
     {
         $target = $openApiSchema->resolveSchema($property->items);
         $targetClass = $target->getVendorData()['x-draw-dashboard-class-name'];
         $objects = $this->managerRegistry
             ->getManagerForClass($targetClass)
             ->getRepository($targetClass)
-            ->findAll();
+            ->{$input['repositoryMethod'] ?? 'findAll'}();
 
         $choices = [];
         foreach ($objects as $object) {

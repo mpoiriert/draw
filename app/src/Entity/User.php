@@ -57,7 +57,8 @@ class User implements SecurityUserInterface
      *
      * @Dashboard\FormInputChoices(
      *     label="Tags",
-     *     multiple=true
+     *     multiple=true,
+     *     repositoryMethod="findActive"
      * )
      */
     private $tags;

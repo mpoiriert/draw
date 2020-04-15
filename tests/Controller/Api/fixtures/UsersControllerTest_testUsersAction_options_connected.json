@@ -108,7 +108,8 @@
             ],
             "sourceCompareKeys": [
               "id"
-            ]
+            ],
+            "repositoryMethod": null
           },
           {
             "id": "email",

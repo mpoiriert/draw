@@ -13,6 +13,11 @@ class AppFixtures extends Fixture
         $tag->setLabel('Admin');
         $manager->persist($tag);
 
+        $tag = new Tag();
+        $tag->setLabel('Inactive');
+        $tag->setActive(false);
+        $manager->persist($tag);
+
         $user = new User();
         $user->setEmail('admin@example.com');
         $user->setPlainPassword('admin');

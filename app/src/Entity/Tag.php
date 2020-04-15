@@ -6,7 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  * @ORM\Table(name="draw_acme__tag")
  *
  * @UniqueEntity(fields={"label"})
@@ -21,6 +21,19 @@ class Tag
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean", options={"default":"1"})
+     *
+     * @Dashboard\Column(
+     *     type="boolean",
+     *     label="Active",
+     *     sortable=true
+     * )
+     */
+    private $active = true;
 
     /**
      * @var string
@@ -58,6 +71,16 @@ class Tag
     public function setLabel(string $label)
     {
         $this->label = $label;
+    }
+
+    public function getActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active)
+    {
+        $this->active = $active;
     }
 
     public function __toString()

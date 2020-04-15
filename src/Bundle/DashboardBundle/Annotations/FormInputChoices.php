@@ -14,4 +14,9 @@ class FormInputChoices extends FormInput
      * @var bool
      */
     public $multiple = false;
+
+    /**
+     * @var string
+     */
+    public $repositoryMethod = null;
 }
