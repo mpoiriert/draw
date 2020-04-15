@@ -17,7 +17,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 {
     private $algorithm = 'HS256';
 
-    private $key = 'innodem-ask@df515e';
+    private $key;
 
     /**
      * @var EntityManagerInterface
@@ -25,8 +25,10 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
     private $entityManager;
 
     public function __construct(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        $key
     ) {
+        $this->key = $key;
         $this->entityManager = $entityManager;
     }
 

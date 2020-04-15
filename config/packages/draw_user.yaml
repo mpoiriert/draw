@@ -9,6 +9,9 @@ sonata_block:
 draw_user:
   sonata: ~
 
+  jwt_authenticator:
+    key: 'acme'
+
 framework:
   messenger:
     routing:

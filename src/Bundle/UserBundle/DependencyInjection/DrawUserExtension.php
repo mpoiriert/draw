@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\UserBundle\DependencyInjection;
 
+use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,6 +16,7 @@ class DrawUserExtension extends ConfigurableExtension
         $loader->load('services.xml');
 
         $this->configureSonata($config['sonata'], $loader, $container);
+        $this->configureJwtAuthenticator($config['jwt_authenticator'], $loader, $container);
 
         $userClass = $config['user_entity_class'];
         if (!class_exists($userClass)) {
@@ -60,5 +62,17 @@ class DrawUserExtension extends ConfigurableExtension
 
         $container->setParameter('draw_user.sonata.user_admin_code', $config['user_admin_code']);
         $loader->load('sonata.xml');
+    }
+
+    private function configureJwtAuthenticator(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    {
+        if (!$config['enabled']) {
+            $container->removeDefinition(JwtAuthenticator::class);
+            return;
+        }
+
+        $container
+            ->getDefinition(JwtAuthenticator::class)
+            ->setArgument('$key', $config['key']);
     }
 }
