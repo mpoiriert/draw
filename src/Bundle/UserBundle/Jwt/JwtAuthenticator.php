@@ -1,17 +1,17 @@
 <?php namespace Draw\Bundle\UserBundle\Jwt;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class JwtAuthenticator extends AbstractGuardAuthenticator
 {
@@ -19,17 +19,18 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 
     private $key;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private $userProvider;
+
+    private $translator;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
+        UserProviderInterface $userProvider,
+        ?TranslatorInterface $translator,
         $key
     ) {
+        $this->userProvider = $userProvider;
+        $this->translator = $translator;
         $this->key = $key;
-        $this->entityManager = $entityManager;
     }
 
     public function supports(Request $request)
@@ -37,7 +38,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         return !is_null($this->getToken($request));
     }
 
-    public function encode(User $user): string
+    public function encode(UserInterface $user): string
     {
         return JWT::encode(
             [
@@ -81,9 +82,9 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        return $this->entityManager->getRepository(User::class)->find($data->id);
+        return $this->userProvider->loadUserByUsername($data->id);
     }
-    
+
     public function decode($token)
     {
         return JWT::decode($token, $this->key, [$this->algorithm]);
@@ -102,11 +103,19 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $data = [
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-        ];
+        throw new HttpException(
+            Response::HTTP_FORBIDDEN,
+            $this->translate($exception->getMessageKey(), $exception->getMessageData())
+        );
+    }
 
-        return new JsonResponse($data, Response::HTTP_FORBIDDEN);
+    private function translate($message, array $data = [])
+    {
+        if (!$this->translator) {
+            return strtr($message, $data);
+        }
+
+        return $this->translator->trans($message, $data, 'security');
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
