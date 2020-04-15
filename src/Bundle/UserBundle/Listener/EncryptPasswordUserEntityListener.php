@@ -38,7 +38,7 @@ class EncryptPasswordUserEntityListener
 
     private function updatePassword(SecurityUserInterface $user)
     {
-        if(!$user->getPassword() && $this->autoGeneratePassword) {
+        if(!$user->getPlainPassword() && !$user->getPassword() && $this->autoGeneratePassword) {
             $user->setPlainPassword(uniqid());
         }
 
