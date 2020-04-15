@@ -29,6 +29,7 @@ services:
         volumes:
             - .:/home/wwwroot
             - ~/.ssh:/root/.ssh
+            - ~/.gitconfig:/etc/gitconfig
         depends_on:
             - mysql
             - maildev
