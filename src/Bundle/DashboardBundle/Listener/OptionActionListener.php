@@ -8,6 +8,7 @@ use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Twig\Environment;
 
@@ -20,10 +21,16 @@ class OptionActionListener implements EventSubscriberInterface
      */
     private $managerRegistry;
 
-    public function __construct(Environment $environment, ManagerRegistry $managerRegistry)
-    {
+    private $serializer;
+
+    public function __construct(
+        Environment $environment,
+        ManagerRegistry $managerRegistry,
+        SerializerInterface $serializer
+    ) {
         $this->twig = $environment;
         $this->managerRegistry = $managerRegistry;
+        $this->serializer = $serializer;
     }
 
     public static function getSubscribedEvents()
@@ -137,6 +144,13 @@ class OptionActionListener implements EventSubscriberInterface
             }
 
             $inputs[] = $input;
+        }
+
+        if ($action->getType() === ActionCreate::TYPE) {
+            $object = (new \ReflectionClass($item->getVendorData()['x-draw-dashboard-class-name']))->newInstance();
+            $event
+                ->getOptions()
+                ->set('default', json_decode($this->serializer->serialize($object, 'json')));
         }
 
         $event->getOptions()->set('inputs', $inputs);

@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Serializer;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Controller\OptionsController;
 use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
@@ -20,6 +21,8 @@ class EntityActionsSubscriber implements EventSubscriberInterface
 
     private $optionsController;
 
+    private $managerRegistry;
+
     public static function getSubscribedEvents()
     {
         return [
@@ -34,11 +37,13 @@ class EntityActionsSubscriber implements EventSubscriberInterface
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         OptionsController $optionsController,
-        OpenApiController $openApiController
+        OpenApiController $openApiController,
+        ManagerRegistry $managerRegistry
     ) {
         $this->optionsController = $optionsController;
         $this->urlGenerator = $urlGenerator;
         $this->openApiController = $openApiController;
+        $this->managerRegistry = $managerRegistry;
     }
 
     public function postSerialize(ObjectEvent $objectEvent): void
@@ -47,8 +52,16 @@ class EntityActionsSubscriber implements EventSubscriberInterface
         /** @var JsonSerializationVisitor $visitor */
         $visitor = $objectEvent->getVisitor();
 
-        $actionsInfo = $this->getActions($object, $this->openApiController->loadOpenApiSchema());
+        $isManaged = false;
+        if($manager = $this->managerRegistry->getManagerForClass(get_class($object))) {
+            $isManaged = $manager->contains($object);
+        }
 
+        if(!$isManaged) {
+            return;
+        }
+
+        $actionsInfo = $this->getActions($object, $this->openApiController->loadOpenApiSchema());
         $links = [];
 
         foreach ($actionsInfo as $actionInfo) {

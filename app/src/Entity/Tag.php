@@ -32,6 +32,11 @@ class Tag
      *     label="Active",
      *     sortable=true
      * )
+     *
+     * @Dashboard\FormInput(
+     *     type="checkbox",
+     *     label="Active"
+     * )
      */
     private $active = true;
 
@@ -46,7 +51,7 @@ class Tag
      * @Dashboard\Column(label="Label")
      *
      * @Dashboard\FormInput(
-     *     type="string",
+     *     type="text",
      *     label="Label"
      * )
      */

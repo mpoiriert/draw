@@ -1,6 +1,7 @@
 <?php namespace App\Controller\Api;
 
 use App\Entity\Tag;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DashboardBundle\Doctrine\Paginator;
@@ -32,6 +33,48 @@ class TagsController
     {
         $entityManager->persist($tag);
         $entityManager->flush();
+        return $tag;
+    }
+
+    /**
+     * @Route(methods={"PUT"}, path="/tags/{id}")
+     *
+     * @OpenApi\Operation(operationId="tagEdit")
+     *
+     * @Deserialization(
+     *     name="tag",
+     *     propertiesMap={"id":"id"}
+     * )
+     *
+     * @Dashboard\ActionEdit(
+     *   targets={Tag::class}
+     * )
+     *
+     * @param Tag $tag
+     * @param EntityManagerInterface $entityManager
+     * @return Tag The update tag
+     */
+    public function editAction(Tag $tag, EntityManagerInterface $entityManager)
+    {
+        $entityManager->flush();
+        return $tag;
+    }
+
+    /**
+     * @Route(name="tag_get", methods={"GET"}, path="/tags/{id}")
+     *
+     * @OpenApi\Operation(operationId="tagGet")
+     *
+     * @Dashboard\ActionShow(
+     *     targets={Tag::class}
+     * )
+     *
+     * @param Tag $tag
+     *
+     * @return Tag The tag
+     */
+    public function getAction(Tag $tag)
+    {
         return $tag;
     }
 
