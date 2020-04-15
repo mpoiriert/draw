@@ -20,10 +20,17 @@ class ConfigurationTest extends ConfigurationTestCase
                 'enabled' => true,
                 'user_admin_code' => UserAdmin::class,
             ],
-            'encrypt_password_listener' => true,
+            'encrypt_password_listener' => [
+                'enabled' => true,
+                'auto_generate_password' => true,
+            ],
             'user_entity_class' => User::class,
             'reset_password_route' => 'admin_change_password',
-            'invite_create_account_route' => 'home'
+            'invite_create_account_route' => 'home',
+            'jwt_authenticator' => [
+                'enabled' => true,
+                'key' => 'to-replace',
+            ],
         ];
     }
 
@@ -35,8 +42,8 @@ class ConfigurationTest extends ConfigurationTestCase
         ];
 
         yield [
-            ['encrypt_password_listener' => []],
-            'Invalid type for path "draw_user.encrypt_password_listener". Expected boolean, but got array.'
+            ['encrypt_password_listener' => 'string-not-supported'],
+            'Invalid type for path "draw_user.encrypt_password_listener". Expected array, but got string'
         ];
 
         yield [

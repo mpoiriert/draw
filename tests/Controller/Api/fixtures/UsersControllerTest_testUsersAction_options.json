@@ -18,6 +18,19 @@
             "options": null
           },
           {
+            "id": "tags",
+            "isActive": true,
+            "label": "Tags",
+            "sortable": false,
+            "visible": true,
+            "type": "list",
+            "options": {
+              "list": {
+                "attribute": "label"
+              }
+            }
+          },
+          {
             "id": "email",
             "isActive": true,
             "label": "Email",

@@ -1,0 +1,124 @@
+{
+  "HEAD": {},
+  "GET": {
+    "x-draw-action": {
+      "type": "list",
+      "options": {
+        "paginated": true,
+        "button": null,
+        "flow": null,
+        "columns": [
+          {
+            "id": "id",
+            "isActive": true,
+            "label": "#",
+            "sortable": true,
+            "visible": true,
+            "type": "simple",
+            "options": null
+          },
+          {
+            "id": "tags",
+            "isActive": true,
+            "label": "Tags",
+            "sortable": false,
+            "visible": true,
+            "type": "list",
+            "options": {
+              "list": {
+                "attribute": "label"
+              }
+            }
+          },
+          {
+            "id": "email",
+            "isActive": true,
+            "label": "Email",
+            "sortable": true,
+            "visible": true,
+            "type": "email",
+            "options": null
+          },
+          {
+            "id": "_actions",
+            "type": "actions",
+            "label": "Actions"
+          }
+        ]
+      }
+    }
+  },
+  "POST": {
+    "x-draw-action": {
+      "type": "create",
+      "options": {
+        "button": {
+          "label": "Create",
+          "icon": null,
+          "style": null,
+          "color": null,
+          "showLabel": null,
+          "tooltip": null,
+          "tooltipPosition": null,
+          "behaviours": []
+        },
+        "flow": {
+          "type": "form",
+          "buttons": [
+            {
+              "label": "Cancel",
+              "icon": null,
+              "style": "stroked-button",
+              "color": null,
+              "showLabel": null,
+              "tooltip": null,
+              "tooltipPosition": null,
+              "behaviours": [
+                "cancel"
+              ]
+            },
+            {
+              "label": "Save",
+              "icon": null,
+              "style": "flat-button",
+              "color": "primary",
+              "showLabel": null,
+              "tooltip": null,
+              "tooltipPosition": null,
+              "behaviours": [
+                "submit"
+              ]
+            }
+          ]
+        },
+        "inputs": [
+          {
+            "type": "choices",
+            "multiple": true,
+            "id": "tags",
+            "label": "Tags",
+            "icon": null,
+            "choices": [
+              {
+                "value": {
+                  "id": 1
+                },
+                "label": "Admin"
+              }
+            ],
+            "sourceCompareKeys": [
+              "id"
+            ]
+          },
+          {
+            "id": "email",
+            "type": "email",
+            "label": "Email",
+            "icon": null
+          }
+        ]
+      }
+    }
+  },
+  "OPTIONS": {}
+}

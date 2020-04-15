@@ -1,0 +1,80 @@
+{
+  "menu": [
+    {
+      "label": "Users",
+      "icon": "person",
+      "security": null,
+      "children": [],
+      "link": "http://localhost/api/users/list"
+    },
+    {
+      "label": "Tags",
+      "icon": "tag",
+      "security": null,
+      "children": [],
+      "link": "http://localhost/api/tags/list"
+    }
+  ],
+  "toolbar": [
+    {
+      "href": "http://localhost/api/connection-tokens",
+      "method": "POST",
+      "type": "create",
+      "options": {
+        "button": {
+          "label": "Connect",
+          "icon": "power_settings_new",
+          "style": null,
+          "color": null,
+          "showLabel": null,
+          "tooltip": null,
+          "tooltipPosition": null,
+          "behaviours": []
+        },
+        "flow": {
+          "type": "form",
+          "buttons": [
+            {
+              "label": "Cancel",
+              "icon": null,
+              "style": "stroked-button",
+              "color": null,
+              "showLabel": null,
+              "tooltip": null,
+              "tooltipPosition": null,
+              "behaviours": [
+                "cancel"
+              ]
+            },
+            {
+              "label": "Save",
+              "icon": null,
+              "style": "flat-button",
+              "color": "primary",
+              "showLabel": null,
+              "tooltip": null,
+              "tooltipPosition": null,
+              "behaviours": [
+                "submit"
+              ]
+            }
+          ]
+        },
+        "inputs": [
+          {
+            "id": "username",
+            "type": "email",
+            "label": "Email",
+            "icon": null
+          },
+          {
+            "id": "password",
+            "type": "password",
+            "label": "Password",
+            "icon": null
+          }
+        ]
+      }
+    }
+  ]
+}

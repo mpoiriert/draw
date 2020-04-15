@@ -43,7 +43,16 @@
                             "type": "form",
                             "buttons": [
                                 {
+                                    "label": "Cancel",
+                                    "style": "stroked-button",
+                                    "behaviours": [
+                                        "cancel"
+                                    ]
+                                },
+                                {
                                     "label": "Save",
+                                    "style": "flat-button",
+                                    "color": "primary",
                                     "behaviours": [
                                         "submit"
                                     ]
@@ -135,7 +144,8 @@
                                         "type": "integer"
                                     }
                                 }
-                            }
+                            },
+                            "x-draw-dashboard-class-name": "Draw\\Bundle\\DashboardBundle\\Doctrine\\Paginator"
                         }
                     }
                 },
@@ -178,7 +188,16 @@
                             "type": "form",
                             "buttons": [
                                 {
+                                    "label": "Cancel",
+                                    "style": "stroked-button",
+                                    "behaviours": [
+                                        "cancel"
+                                    ]
+                                },
+                                {
                                     "label": "Save",
+                                    "style": "flat-button",
+                                    "color": "primary",
                                     "behaviours": [
                                         "submit"
                                     ]
@@ -257,7 +276,8 @@
                                         "type": "integer"
                                     }
                                 }
-                            }
+                            },
+                            "x-draw-dashboard-class-name": "Draw\\Bundle\\DashboardBundle\\Doctrine\\Paginator"
                         }
                     }
                 },
@@ -300,7 +320,16 @@
                             "type": "form",
                             "buttons": [
                                 {
+                                    "label": "Cancel",
+                                    "style": "stroked-button",
+                                    "behaviours": [
+                                        "cancel"
+                                    ]
+                                },
+                                {
                                     "label": "Save",
+                                    "style": "flat-button",
+                                    "color": "primary",
                                     "behaviours": [
                                         "submit"
                                     ]
@@ -337,6 +366,63 @@
                         "button": {
                             "label": "Show",
                             "behaviours": []
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "userEdit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The update user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                },
+                "x-symfony-route": "app_api_users_edit",
+                "x-draw-action": {
+                    "type": "edit",
+                    "options": {
+                        "button": {
+                            "label": "Edit",
+                            "icon": "edit",
+                            "behaviours": []
+                        },
+                        "flow": {
+                            "type": "form",
+                            "buttons": [
+                                {
+                                    "label": "Cancel",
+                                    "style": "stroked-button",
+                                    "behaviours": [
+                                        "cancel"
+                                    ]
+                                },
+                                {
+                                    "label": "Save",
+                                    "style": "flat-button",
+                                    "color": "primary",
+                                    "behaviours": [
+                                        "submit"
+                                    ]
+                                }
+                            ]
                         }
                     }
                 }
@@ -455,7 +541,8 @@
                 "token": {
                     "type": "string"
                 }
-            }
+            },
+            "x-draw-dashboard-class-name": "App\\DTO\\ConnectionToken"
         },
         "Credential": {
             "type": "object",
@@ -478,7 +565,8 @@
                         "label": "Password"
                     }
                 }
-            }
+            },
+            "x-draw-dashboard-class-name": "App\\DTO\\Credential"
         },
         "Tag": {
             "required": [
@@ -507,7 +595,8 @@
                         "label": "Label"
                     }
                 }
-            }
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\Tag"
         },
         "User": {
             "type": "object",
@@ -523,6 +612,31 @@
                         "type": "simple"
                     }
                 },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Tag"
+                    },
+                    "x-draw-column": {
+                        "id": "tags",
+                        "isActive": true,
+                        "label": "Tags",
+                        "sortable": false,
+                        "visible": true,
+                        "type": "list",
+                        "options": {
+                            "list": {
+                                "attribute": "label"
+                            }
+                        }
+                    },
+                    "x-draw-form-input": {
+                        "type": "choices",
+                        "multiple": true,
+                        "id": "tags",
+                        "label": "Tags"
+                    }
+                },
                 "email": {
                     "format": "not empty",
                     "type": "string",
@@ -533,17 +647,22 @@
                         "sortable": true,
                         "visible": true,
                         "type": "email"
+                    },
+                    "x-draw-form-input": {
+                        "id": "email",
+                        "type": "email",
+                        "label": "Email"
                     }
                 },
-                "plain_password": {
-                    "type": "string",
-                    "readOnly": true
+                "plainPassword": {
+                    "type": "string"
                 },
-                "password_updated_at": {
+                "passwordUpdatedAt": {
                     "format": "date-time",
                     "type": "string"
                 }
-            }
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\User"
         },
         "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
             "type": "object",
@@ -552,11 +671,12 @@
                     "description": "Property description",
                     "type": "string"
                 },
-                "property_from_body": {
+                "propertyFromBody": {
                     "description": "Property deserialize from body in test",
                     "type": "string"
                 }
-            }
+            },
+            "x-draw-dashboard-class-name": "Draw\\Bundle\\OpenApiBundle\\Tests\\Mock\\Model\\Test"
         }
     }
 }

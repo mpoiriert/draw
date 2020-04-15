@@ -191,6 +191,13 @@ class TestResponse
         return $cookies;
     }
 
+    public function test(callable $test): self
+    {
+        (new DataTester($this))->test($test);
+
+        return $this;
+    }
+
     public function toJsonDataTester(): DataTester
     {
         return (new DataTester($this->getResponseBodyContents()))

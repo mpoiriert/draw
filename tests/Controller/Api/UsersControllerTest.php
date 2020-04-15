@@ -35,6 +35,20 @@ class UsersControllerTest extends TestCase
             );
     }
 
+    public function testOptionsCreateUser_connected()
+    {
+        $this->connect();
+        $this->httpTester()
+            ->options('/api/users')
+            ->assertStatus(200)
+            ->toJsonDataTester()
+            ->test(
+                new AgainstJsonFileTester(
+                    __DIR__ . '/fixtures/UsersControllerTest_testUsersAction_options_connected.json'
+                )
+            );
+    }
+
     public function testUsersAction()
     {
         return $this->httpTester()
@@ -105,19 +119,5 @@ class UsersControllerTest extends TestCase
         $this->httpTester()
             ->options('/api/users/' . $pagers->data[0]->id)
             ->assertStatus(200);
-    }
-
-    public function testOptionsCreateUser()
-    {
-        $this->connect();
-        $this->httpTester()
-            ->options('/api/users')
-            ->assertStatus(200)
-            ->toJsonDataTester()
-            ->test(
-                new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/UsersControllerTest_testOptionsCreateUser.json'
-                )
-            );
     }
 }

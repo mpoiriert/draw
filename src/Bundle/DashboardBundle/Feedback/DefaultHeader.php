@@ -4,6 +4,8 @@ use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 
 class DefaultHeader implements FeedbackInterface
 {
+    const FEEDBACK_TYPE = 'default-header';
+
     /**
      * @var string
      */
@@ -24,10 +26,13 @@ class DefaultHeader implements FeedbackInterface
         $this->name = $name;
         $this->value = $value;
         $this->clear = $clear;
+        if($this->clear) {
+            $this->value = null;
+        }
     }
 
     public function getFeedbackType(): string
     {
-        return 'default-header';
+        return static::FEEDBACK_TYPE;
     }
 }

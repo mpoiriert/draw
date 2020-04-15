@@ -8,6 +8,7 @@ use Draw\Bundle\DashboardBundle\Doctrine\Paginator;
 use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;
 use Draw\Bundle\DashboardBundle\Notification\Notification;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
+use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -96,12 +97,13 @@ class UsersController extends AbstractController
      *     targets={User::class},
      *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the user {{user.email}} ?")
      * )
+     *
+     * @Serialization(statusCode=204)
      */
     public function deleteAction(User $user, EntityManagerInterface $entityManager)
     {
         $entityManager->remove($user);
         $entityManager->flush();
-        return new Response();
     }
 
     /**

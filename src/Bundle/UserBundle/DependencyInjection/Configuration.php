@@ -35,7 +35,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('jwt_authenticator')
                     ->canBeDisabled()
                     ->children()
-                        ->scalarNode('key')->isRequired()->end()
+                        ->scalarNode('key')->defaultValue('to-replace')->end()
                     ->end()
                 ->end()
                 ->scalarNode('user_entity_class')
