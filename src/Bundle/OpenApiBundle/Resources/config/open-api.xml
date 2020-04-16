@@ -27,6 +27,7 @@
         <service id="Draw\Component\OpenApi\OpenApi" public="true" />
 
         <service id="Draw\Bundle\OpenApiBundle\Extractor\SymfonyContainerRootSchemaExtractor" />
+        <service id="Draw\Bundle\OpenApiBundle\Extractor\CacheResourceExtractor" />
         <service id="Draw\Component\OpenApi\Extraction\Extractor\OpenApi\TagExtractor" />
         <service id="Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VendorExtractor" />
         <service id="Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor" />

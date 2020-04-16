@@ -1,8 +1,10 @@
 <?php namespace Draw\Bundle\OpenApiBundle\Controller;
 
+use Draw\Bundle\OpenApiBundle\Extractor\CacheResourceExtractor;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,16 +17,18 @@ class OpenApiController
     private $parameterBag;
     private $container;
     private $openApiSchema;
+    private $cacheResourceExtractor;
 
     public function __construct(
         OpenApi $openApi,
         ParameterBagInterface $parameterBag,
-        ContainerInterface $container
-    )
-    {
+        ContainerInterface $container,
+        CacheResourceExtractor $cacheResourceExtractor
+    ) {
         $this->openApi = $openApi;
         $this->parameterBag = $parameterBag;
         $this->container = $container;
+        $this->cacheResourceExtractor = $cacheResourceExtractor;
     }
 
     public function apiDocAction(
@@ -44,9 +48,20 @@ class OpenApiController
 
     public function loadOpenApiSchema(): Root
     {
-        if(is_null($this->openApiSchema)) {
-            $schema = $this->openApi->extract(json_encode($this->parameterBag->get("draw_open_api.root_schema")));
-            $this->openApiSchema = $this->openApi->extract($this->container, $schema);
+        if (is_null($this->openApiSchema)) {
+            $debug = $this->parameterBag->get('kernel.debug');
+            $path = $this->parameterBag->get('kernel.cache_dir') . '/openApi.php';
+            $configCache = new ConfigCache($path, $debug);
+            if (!$configCache->isFresh()) {
+                $schema = $this->openApi->extract(json_encode($this->parameterBag->get("draw_open_api.root_schema")));
+                $openApi = $this->openApi->extract($this->container, $schema);
+                $configCache->write(
+                    serialize($openApi),
+                    $this->cacheResourceExtractor->getResources()
+                );
+            }
+
+            $this->openApiSchema = unserialize(file_get_contents($path));
         }
 
         return $this->openApiSchema;

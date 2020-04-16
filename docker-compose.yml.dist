@@ -24,7 +24,10 @@ services:
             MYSQL_PASSWORD: draw
 
     php:
-        build: .docker/php
+        build:
+            context: .docker/php
+            args:
+                xdebug: 1
         container_name: draw_php
         volumes:
           - .:/home/wwwroot

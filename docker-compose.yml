@@ -24,12 +24,16 @@ services:
             MYSQL_PASSWORD: draw
 
     php:
-        build: .docker/php
+        build:
+            context: .docker/php
+            args:
+                xdebug: 1
         container_name: draw_php
         volumes:
             - .:/home/wwwroot
             - ~/.ssh:/root/.ssh
             - ~/.gitconfig:/etc/gitconfig
+            - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
         depends_on:
             - mysql
             - maildev
