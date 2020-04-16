@@ -21,6 +21,10 @@ class User implements SecurityUserInterface
 {
     use SecurityUserTrait;
 
+    const LEVEL_USER = 'user';
+
+    const LEVEL_ADMIN = 'admin';
+
     /**
      * @var string
      *
@@ -62,6 +66,24 @@ class User implements SecurityUserInterface
      * )
      */
     private $tags;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="level", type="string", nullable=false, options={"default":"user"})
+     *
+     * @Dashboard\Column(
+     *     type="choices",
+     *     label="Level",
+     *     options={"choices"={"user":"User", "admin":"Admin"}}
+     * )
+     *
+     * @Dashboard\FormInputChoices(
+     *     label="Level",
+     *     choices={"User":"user", "Admin":"admin"}
+     * )
+     */
+    private $level = 'user';
 
     public function __construct()
     {

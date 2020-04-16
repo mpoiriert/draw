@@ -138,7 +138,7 @@ class OptionActionListener implements EventSubscriberInterface
                 continue;
             }
 
-            if ($input['type'] === 'choices') {
+            if ($input['type'] === 'choices' && empty($input['choices'])) {
                 $input['choices'] = $this->loadChoices($input, $item, $property, $openApiSchema);
                 $input['sourceCompareKeys'] = ['id']; //todo make this dynamic
             }
@@ -167,10 +167,7 @@ class OptionActionListener implements EventSubscriberInterface
 
         $choices = [];
         foreach ($objects as $object) {
-            $choices[] = [
-                'value' => ['id' => $object->getId()],//todo make this dynamic
-                'label' => (string)$object
-            ];
+            $choices[(string)$object] = ['id' => $object->getId()];//todo make this dynamic
         }
 
         return $choices;

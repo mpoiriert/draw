@@ -19,4 +19,9 @@ class FormInputChoices extends FormInput
      * @var string
      */
     public $repositoryMethod = null;
+
+    /**
+     * @var array
+     */
+    public $choices = null;
 }
