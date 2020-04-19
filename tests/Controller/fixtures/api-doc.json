@@ -209,6 +209,92 @@
             }
         },
         "/api/tags/{id}": {
+            "get": {
+                "operationId": "tagGet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                },
+                "x-symfony-route": "tag_get",
+                "x-draw-action": {
+                    "type": "show",
+                    "options": {
+                        "button": {
+                            "label": "Show",
+                            "behaviours": []
+                        }
+                    }
+                }
+            },
+            "put": {
+                "operationId": "tagEdit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The update tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                },
+                "x-symfony-route": "app_api_tags_edit",
+                "x-draw-action": {
+                    "type": "edit",
+                    "options": {
+                        "button": {
+                            "label": "Edit",
+                            "icon": "edit",
+                            "behaviours": []
+                        },
+                        "flow": {
+                            "type": "form",
+                            "buttons": [
+                                {
+                                    "label": "Cancel",
+                                    "style": "stroked-button",
+                                    "behaviours": [
+                                        "cancel"
+                                    ]
+                                },
+                                {
+                                    "label": "Save",
+                                    "style": "flat-button",
+                                    "color": "primary",
+                                    "behaviours": [
+                                        "submit"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
             "delete": {
                 "operationId": "tagDelete",
                 "parameters": [
@@ -578,6 +664,22 @@
                     "format": "int32",
                     "type": "integer"
                 },
+                "active": {
+                    "type": "boolean",
+                    "x-draw-column": {
+                        "id": "active",
+                        "isActive": true,
+                        "label": "Active",
+                        "sortable": true,
+                        "visible": true,
+                        "type": "boolean"
+                    },
+                    "x-draw-form-input": {
+                        "id": "active",
+                        "type": "checkbox",
+                        "label": "Active"
+                    }
+                },
                 "label": {
                     "maxLength": 255,
                     "minLength": 3,
@@ -591,7 +693,7 @@
                     },
                     "x-draw-form-input": {
                         "id": "label",
-                        "type": "string",
+                        "type": "text",
                         "label": "Label"
                     }
                 }
@@ -633,8 +735,43 @@
                     "x-draw-form-input": {
                         "type": "choices",
                         "multiple": true,
+                        "repositoryMethod": "findActive",
                         "id": "tags",
                         "label": "Tags"
+                    }
+                },
+                "level": {
+                    "type": "string",
+                    "x-draw-column": {
+                        "id": "level",
+                        "isActive": true,
+                        "label": "Level",
+                        "visible": true,
+                        "type": "choices",
+                        "options": {
+                            "choices": {
+                                "user": "User",
+                                "admin": "Admin"
+                            }
+                        }
+                    },
+                    "x-draw-form-input": {
+                        "type": "choices",
+                        "multiple": false,
+                        "choices": {
+                            "User": "user",
+                            "Admin": "admin"
+                        },
+                        "id": "level",
+                        "label": "Level"
+                    }
+                },
+                "address": {
+                    "$ref": "#/definitions/Address",
+                    "x-draw-form-input": {
+                        "id": "address",
+                        "type": "composite",
+                        "label": "Address"
                     }
                 },
                 "email": {
@@ -663,6 +800,44 @@
                 }
             },
             "x-draw-dashboard-class-name": "App\\Entity\\User"
+        },
+        "Address": {
+            "type": "object",
+            "properties": {
+                "street": {
+                    "type": "string",
+                    "x-draw-form-input": {
+                        "id": "street",
+                        "type": "text",
+                        "label": "Street"
+                    }
+                },
+                "postalCode": {
+                    "type": "string",
+                    "x-draw-form-input": {
+                        "id": "postalCode",
+                        "type": "text",
+                        "label": "Postal Code"
+                    }
+                },
+                "city": {
+                    "type": "string",
+                    "x-draw-form-input": {
+                        "id": "city",
+                        "type": "text",
+                        "label": "City"
+                    }
+                },
+                "country": {
+                    "type": "string",
+                    "x-draw-form-input": {
+                        "id": "country",
+                        "type": "text",
+                        "label": "Country"
+                    }
+                }
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\Address"
         },
         "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
             "type": "object",

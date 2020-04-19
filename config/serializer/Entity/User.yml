@@ -7,3 +7,5 @@ App\Entity\User:
       exclude: true
     password:
       exclude: true
+    address:
+      type: 'App\Entity\Address'

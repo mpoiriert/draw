@@ -23,6 +23,9 @@ class AppFixtures extends Fixture
         $user->setPlainPassword('admin');
         $user->setRoles(['ROLE_ADMIN']);
         $user->setTags([$tag]);
+
+        $user->getAddress()->setStreet('200 Acme');
+
         $manager->persist($user);
 
         foreach (range(1, 49) as $number) {

@@ -131,29 +131,43 @@ class OptionActionListener implements EventSubscriberInterface
         $openApiSchema = $event->getOpenApiSchema();
         $item = $openApiSchema->resolveSchema($bodyParameter->schema);
 
+        $options = $event->getOptions();
+
+        foreach($this->loadFormInputs($item, $openApiSchema) as $key => $value) {
+            $options->set($key, $value);
+        }
+    }
+
+    private function loadFormInputs(Schema $objectSchema, Root $openApiSchema)
+    {
+        $objectSchema = $openApiSchema->resolveSchema($objectSchema);
         $inputs = [];
-        foreach ($item->properties as $property) {
+        foreach ($objectSchema->properties as $property) {
             $input = $property->vendor['x-draw-form-input'] ?? null;
             if (!$input) {
                 continue;
             }
 
             if ($input['type'] === 'choices' && empty($input['choices'])) {
-                $input['choices'] = $this->loadChoices($input, $item, $property, $openApiSchema);
+                $input['choices'] = $this->loadChoices($input, $objectSchema, $property, $openApiSchema);
                 $input['sourceCompareKeys'] = ['id']; //todo make this dynamic
+            }
+
+            if($input['type'] === 'composite') {
+                $input['subForm'] = $this->loadSubForm($input, $objectSchema, $property, $openApiSchema);
             }
 
             $inputs[] = $input;
         }
 
-        if ($action->getType() === ActionCreate::TYPE) {
-            $object = (new \ReflectionClass($item->getVendorData()['x-draw-dashboard-class-name']))->newInstance();
-            $event
-                ->getOptions()
-                ->set('default', json_decode($this->serializer->serialize($object, 'json')));
-        }
+        $object = (new \ReflectionClass($objectSchema->getVendorData()['x-draw-dashboard-class-name']))->newInstance();
+        $default = json_decode($this->serializer->serialize($object, 'json'));
+        return compact('inputs', 'default');
+    }
 
-        $event->getOptions()->set('inputs', $inputs);
+    private function loadSubForm(array $input, Schema $schema, Schema $property, Root $openApiSchema)
+    {
+        return $this->loadFormInputs($property, $openApiSchema);
     }
 
     private function loadChoices(array $input, Schema $schema, Schema $property, Root $openApiSchema)

@@ -1,0 +1,101 @@
+<?php namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
+use JMS\Serializer\Annotation as Serializer;
+
+/**
+ * @ORM\Embeddable()
+ */
+class Address
+{
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="street", type="string", options={"default": ""})
+     *
+     * @Dashboard\FormInput(
+     *     type="text",
+     *     label="Street"
+     * )
+     *
+     * @Serializer\Type("string")
+     */
+    private $street = '';
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="postal_code", type="string", options={"default": ""})
+     *
+     * @Dashboard\FormInput(
+     *     type="text",
+     *     label="Postal Code"
+     * )
+     */
+    private $postalCode = '';
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="city", type="string", options={"default": ""})
+     *
+     * @Dashboard\FormInput(
+     *     type="text",
+     *     label="City"
+     * )
+     */
+    private $city = '';
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="country", type="string", options={"default": ""})
+     *
+     * @Dashboard\FormInput(
+     *     type="text",
+     *     label="Country"
+     * )
+     */
+    private $country = '';
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): void
+    {
+        $this->street = $street;
+    }
+
+    public function getPostalCode(): ?string
+    {
+        return $this->postalCode;
+    }
+
+    public function setPostalCode(?string $postalCode): void
+    {
+        $this->postalCode = $postalCode;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): void
+    {
+        $this->city = $city;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): void
+    {
+        $this->country = $country;
+    }
+}

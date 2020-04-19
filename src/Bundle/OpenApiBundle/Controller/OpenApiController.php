@@ -56,12 +56,12 @@ class OpenApiController
                 $schema = $this->openApi->extract(json_encode($this->parameterBag->get("draw_open_api.root_schema")));
                 $openApi = $this->openApi->extract($this->container, $schema);
                 $configCache->write(
-                    serialize($openApi),
+                    '<?php return unserialize(' . var_export(serialize($openApi), true) . ');',
                     $this->cacheResourceExtractor->getResources()
                 );
             }
 
-            $this->openApiSchema = unserialize(file_get_contents($path));
+            $this->openApiSchema = require ($path);
         }
 
         return $this->openApiSchema;

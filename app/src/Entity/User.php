@@ -9,6 +9,7 @@ use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -85,8 +86,23 @@ class User implements SecurityUserInterface
      */
     private $level = 'user';
 
+    /**
+     * @var Address
+     *
+     * @ORM\Embedded(class="App\Entity\Address", columnPrefix="address_")
+     *
+     * @Assert\Valid()
+     *
+     * @Dashboard\FormInput(
+     *     type="composite",
+     *     label="Address"
+     * )
+     */
+    private $address;
+
     public function __construct()
     {
+        $this->address = new Address();
         $this->tags = new ArrayCollection();
     }
 
@@ -141,5 +157,15 @@ class User implements SecurityUserInterface
     public function setTags($tags)
     {
         $this->tags = $tags;
+    }
+
+    public function getAddress(): Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(Address $address): void
+    {
+        $this->address = $address;
     }
 }

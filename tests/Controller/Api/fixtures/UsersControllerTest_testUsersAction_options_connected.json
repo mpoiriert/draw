@@ -31,6 +31,20 @@
             }
           },
           {
+            "id": "level",
+            "isActive": true,
+            "label": "Level",
+            "sortable": null,
+            "visible": true,
+            "type": "choices",
+            "options": {
+              "choices": {
+                "user": "User",
+                "admin": "Admin"
+              }
+            }
+          },
+          {
             "id": "email",
             "isActive": true,
             "label": "Email",
@@ -95,21 +109,70 @@
           {
             "type": "choices",
             "multiple": true,
+            "repositoryMethod": "findActive",
+            "choices": {
+              "Admin": {
+                "id": 1
+              }
+            },
             "id": "tags",
             "label": "Tags",
             "icon": null,
-            "choices": [
-              {
-                "value": {
-                  "id": 1
-                },
-                "label": "Admin"
-              }
-            ],
             "sourceCompareKeys": [
               "id"
-            ],
-            "repositoryMethod": null
+            ]
+          },
+          {
+            "type": "choices",
+            "multiple": false,
+            "repositoryMethod": null,
+            "choices": {
+              "User": "user",
+              "Admin": "admin"
+            },
+            "id": "level",
+            "label": "Level",
+            "icon": null
+          },
+          {
+            "id": "address",
+            "type": "composite",
+            "label": "Address",
+            "icon": null,
+            "subForm": {
+              "inputs": [
+                {
+                  "id": "street",
+                  "type": "text",
+                  "label": "Street",
+                  "icon": null
+                },
+                {
+                  "id": "postalCode",
+                  "type": "text",
+                  "label": "Postal Code",
+                  "icon": null
+                },
+                {
+                  "id": "city",
+                  "type": "text",
+                  "label": "City",
+                  "icon": null
+                },
+                {
+                  "id": "country",
+                  "type": "text",
+                  "label": "Country",
+                  "icon": null
+                }
+              ],
+              "default": {
+                "street": "",
+                "postalCode": "",
+                "city": "",
+                "country": ""
+              }
+            }
           },
           {
             "id": "email",
@@ -117,7 +180,17 @@
             "label": "Email",
             "icon": null
           }
-        ]
+        ],
+        "default": {
+          "tags": [],
+          "level": "user",
+          "address": {
+            "street": "",
+            "postalCode": "",
+            "city": "",
+            "country": ""
+          }
+        }
       }
     }
   },
