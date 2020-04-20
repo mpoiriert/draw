@@ -382,7 +382,7 @@
                         "in": "body",
                         "name": "body",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/User?1"
                         }
                     }
                 ],
@@ -469,7 +469,7 @@
                         "in": "body",
                         "name": "body",
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/User?1"
                         }
                     }
                 ],
@@ -774,6 +774,17 @@
                         "label": "Address"
                     }
                 },
+                "userAddresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserAddress"
+                    },
+                    "x-draw-form-input": {
+                        "id": "userAddresses",
+                        "type": "collection",
+                        "label": "Addresses"
+                    }
+                },
                 "email": {
                     "format": "not empty",
                     "type": "string",
@@ -838,6 +849,166 @@
                 }
             },
             "x-draw-dashboard-class-name": "App\\Entity\\Address"
+        },
+        "UserAddress": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer",
+                    "x-draw-form-input": {
+                        "id": "id",
+                        "type": "hidden"
+                    }
+                },
+                "user": {
+                    "$ref": "#/definitions/User"
+                },
+                "address": {
+                    "$ref": "#/definitions/Address",
+                    "x-draw-form-input": {
+                        "id": "address",
+                        "type": "composite"
+                    }
+                }
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\UserAddress"
+        },
+        "User?1": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "x-draw-column": {
+                        "id": "id",
+                        "isActive": true,
+                        "label": "#",
+                        "sortable": true,
+                        "visible": true,
+                        "type": "simple"
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Tag"
+                    },
+                    "x-draw-column": {
+                        "id": "tags",
+                        "isActive": true,
+                        "label": "Tags",
+                        "sortable": false,
+                        "visible": true,
+                        "type": "list",
+                        "options": {
+                            "list": {
+                                "attribute": "label"
+                            }
+                        }
+                    },
+                    "x-draw-form-input": {
+                        "type": "choices",
+                        "multiple": true,
+                        "repositoryMethod": "findActive",
+                        "id": "tags",
+                        "label": "Tags"
+                    }
+                },
+                "level": {
+                    "type": "string",
+                    "x-draw-column": {
+                        "id": "level",
+                        "isActive": true,
+                        "label": "Level",
+                        "visible": true,
+                        "type": "choices",
+                        "options": {
+                            "choices": {
+                                "user": "User",
+                                "admin": "Admin"
+                            }
+                        }
+                    },
+                    "x-draw-form-input": {
+                        "type": "choices",
+                        "multiple": false,
+                        "choices": {
+                            "User": "user",
+                            "Admin": "admin"
+                        },
+                        "id": "level",
+                        "label": "Level"
+                    }
+                },
+                "address": {
+                    "$ref": "#/definitions/Address",
+                    "x-draw-form-input": {
+                        "id": "address",
+                        "type": "composite",
+                        "label": "Address"
+                    }
+                },
+                "userAddresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserAddress?1"
+                    },
+                    "x-draw-form-input": {
+                        "id": "userAddresses",
+                        "type": "collection",
+                        "label": "Addresses"
+                    }
+                },
+                "email": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-column": {
+                        "id": "email",
+                        "isActive": true,
+                        "label": "Email",
+                        "sortable": true,
+                        "visible": true,
+                        "type": "email"
+                    },
+                    "x-draw-form-input": {
+                        "id": "email",
+                        "type": "email",
+                        "label": "Email"
+                    }
+                },
+                "plainPassword": {
+                    "type": "string"
+                },
+                "passwordUpdatedAt": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\User"
+        },
+        "UserAddress?1": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer",
+                    "x-draw-form-input": {
+                        "id": "id",
+                        "type": "hidden"
+                    }
+                },
+                "user": {
+                    "$ref": "#/definitions/User?1"
+                },
+                "address": {
+                    "$ref": "#/definitions/Address",
+                    "x-draw-form-input": {
+                        "id": "address",
+                        "type": "composite"
+                    }
+                }
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\UserAddress"
         },
         "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
             "type": "object",

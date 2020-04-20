@@ -175,6 +175,70 @@
             }
           },
           {
+            "id": "userAddresses",
+            "type": "collection",
+            "label": "Addresses",
+            "icon": null,
+            "subForm": {
+              "inputs": [
+                {
+                  "id": "id",
+                  "type": "hidden",
+                  "label": null,
+                  "icon": null
+                },
+                {
+                  "id": "address",
+                  "type": "composite",
+                  "label": null,
+                  "icon": null,
+                  "subForm": {
+                    "inputs": [
+                      {
+                        "id": "street",
+                        "type": "text",
+                        "label": "Street",
+                        "icon": null
+                      },
+                      {
+                        "id": "postalCode",
+                        "type": "text",
+                        "label": "Postal Code",
+                        "icon": null
+                      },
+                      {
+                        "id": "city",
+                        "type": "text",
+                        "label": "City",
+                        "icon": null
+                      },
+                      {
+                        "id": "country",
+                        "type": "text",
+                        "label": "Country",
+                        "icon": null
+                      }
+                    ],
+                    "default": {
+                      "street": "",
+                      "postalCode": "",
+                      "city": "",
+                      "country": ""
+                    }
+                  }
+                }
+              ],
+              "default": {
+                "address": {
+                  "street": "",
+                  "postalCode": "",
+                  "city": "",
+                  "country": ""
+                }
+              }
+            }
+          },
+          {
             "id": "email",
             "type": "email",
             "label": "Email",
@@ -189,7 +253,8 @@
             "postalCode": "",
             "city": "",
             "country": ""
-          }
+          },
+          "userAddresses": []
         }
       }
     }

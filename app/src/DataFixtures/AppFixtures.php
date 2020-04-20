@@ -1,6 +1,7 @@
 <?php namespace App\DataFixtures;
 
 use App\Entity\Tag;
+use App\Entity\UserAddress;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -25,6 +26,9 @@ class AppFixtures extends Fixture
         $user->setTags([$tag]);
 
         $user->getAddress()->setStreet('200 Acme');
+
+        $user->addUserAddress($userAddress = new UserAddress());
+        $userAddress->getAddress()->setStreet('201 Secondary Acme');
 
         $manager->persist($user);
 

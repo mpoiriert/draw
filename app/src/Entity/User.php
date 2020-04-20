@@ -2,10 +2,12 @@
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
+use Draw\Component\OpenApi\Doctrine\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -100,10 +102,28 @@ class User implements SecurityUserInterface
      */
     private $address;
 
+    /**
+     * @var UserAddress[]|Collection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\UserAddress",
+     *     cascade={"persist"},
+     *     mappedBy="user",
+     *     orphanRemoval=true
+     * )
+     *
+     * @Dashboard\FormInput(
+     *     type="collection",
+     *     label="Addresses"
+     * )
+     */
+    private $userAddresses;
+
     public function __construct()
     {
         $this->address = new Address();
         $this->tags = new ArrayCollection();
+        $this->userAddresses = new ArrayCollection();
     }
 
     /**
@@ -167,5 +187,43 @@ class User implements SecurityUserInterface
     public function setAddress(Address $address): void
     {
         $this->address = $address;
+    }
+
+    public function setUserAddresses($userAddresses)
+    {
+        CollectionUtil::replace(
+            $this,
+            'userAddresses',
+            $userAddresses
+        );
+    }
+
+    /**
+     * @return UserAddress[]|Collection
+     */
+    public function getUserAddresses()
+    {
+        return $this->userAddresses;
+    }
+
+    /**
+     * @param UserAddress $userAddress
+     */
+    public function addUserAddress(UserAddress $userAddress)
+    {
+        if (!$this->userAddresses->contains($userAddress)) {
+            $this->userAddresses->add($userAddress);
+            $userAddress->setUser($this);
+        }
+    }
+
+    /**
+     * @param UserAddress $userAddress
+     */
+    public function removeUserAddress(UserAddress $userAddress)
+    {
+        if ($this->userAddresses->contains($userAddress)) {
+            $this->userAddresses->removeElement($userAddress);
+        }
     }
 }

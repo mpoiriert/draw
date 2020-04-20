@@ -5,7 +5,7 @@ use Draw\Component\Tester\Data\AgainstJsonFileTester;
 
 class OpenApiControllerTest extends TestCase
 {
-    private $writeFile = true;
+    private $writeFile = false;
 
     public function testApiDoc()
     {

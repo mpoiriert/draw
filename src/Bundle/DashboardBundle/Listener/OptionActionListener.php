@@ -157,6 +157,15 @@ class OptionActionListener implements EventSubscriberInterface
                 $input['subForm'] = $this->loadSubForm($input, $objectSchema, $property, $openApiSchema);
             }
 
+            if($input['type'] === 'collection') {
+                $input['subForm'] = $this->loadSubForm(
+                    $input,
+                    $objectSchema,
+                    $openApiSchema->resolveSchema($property->items),
+                    $openApiSchema
+                );
+            }
+
             $inputs[] = $input;
         }
 
