@@ -780,8 +780,9 @@
                         "$ref": "#/definitions/UserAddress"
                     },
                     "x-draw-form-input": {
-                        "id": "userAddresses",
                         "type": "collection",
+                        "orderBy": "position",
+                        "id": "userAddresses",
                         "label": "Addresses"
                     }
                 },
@@ -870,6 +871,14 @@
                         "id": "address",
                         "type": "composite"
                     }
+                },
+                "position": {
+                    "format": "int32",
+                    "type": "integer",
+                    "x-draw-form-input": {
+                        "id": "position",
+                        "type": "hidden"
+                    }
                 }
             },
             "x-draw-dashboard-class-name": "App\\Entity\\UserAddress"
@@ -954,8 +963,9 @@
                         "$ref": "#/definitions/UserAddress?1"
                     },
                     "x-draw-form-input": {
-                        "id": "userAddresses",
                         "type": "collection",
+                        "orderBy": "position",
+                        "id": "userAddresses",
                         "label": "Addresses"
                     }
                 },
@@ -1005,6 +1015,14 @@
                     "x-draw-form-input": {
                         "id": "address",
                         "type": "composite"
+                    }
+                },
+                "position": {
+                    "format": "int32",
+                    "type": "integer",
+                    "x-draw-form-input": {
+                        "id": "position",
+                        "type": "hidden"
                     }
                 }
             },

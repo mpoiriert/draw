@@ -175,8 +175,9 @@
             }
           },
           {
-            "id": "userAddresses",
             "type": "collection",
+            "orderBy": "position",
+            "id": "userAddresses",
             "label": "Addresses",
             "icon": null,
             "subForm": {
@@ -226,6 +227,12 @@
                       "country": ""
                     }
                   }
+                },
+                {
+                  "id": "position",
+                  "type": "hidden",
+                  "label": null,
+                  "icon": null
                 }
               ],
               "default": {

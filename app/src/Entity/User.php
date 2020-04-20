@@ -112,10 +112,12 @@ class User implements SecurityUserInterface
      *     orphanRemoval=true
      * )
      *
-     * @Dashboard\FormInput(
-     *     type="collection",
-     *     label="Addresses"
+     * @Dashboard\FormInputCollection(
+     *     label="Addresses",
+     *     orderBy="position"
      * )
+     *
+     * @ORM\OrderBy({"position":"ASC"})
      */
     private $userAddresses;
 
@@ -212,6 +214,7 @@ class User implements SecurityUserInterface
     public function addUserAddress(UserAddress $userAddress)
     {
         if (!$this->userAddresses->contains($userAddress)) {
+            CollectionUtil::assignPosition($userAddress, $this->userAddresses);
             $this->userAddresses->add($userAddress);
             $userAddress->setUser($this);
         }

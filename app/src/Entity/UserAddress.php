@@ -48,6 +48,17 @@ class UserAddress
      */
     private $address;
 
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="position", type="integer", options={"default":"0"}, nullable=false)
+     *
+     * @Dashboard\FormInput(
+     *     type="hidden"
+     * )
+     */
+    private $position;
+
     public function __construct()
     {
         $this->address = new Address();
@@ -83,8 +94,13 @@ class UserAddress
         $this->address = $address;
     }
 
-    public function __toString()
+    public function getPosition(): ?int
     {
-        return $this->getAddress()->getStreet();
+        return $this->position;
+    }
+
+    public function setPosition(int $position): void
+    {
+        $this->position = $position;
     }
 }
