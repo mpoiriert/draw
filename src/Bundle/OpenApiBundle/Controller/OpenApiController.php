@@ -37,7 +37,12 @@ class OpenApiController
     ) {
         if ($request->getRequestFormat() != 'json') {
             $currentRoute = $request->attributes->get('_route');
-            $currentUrl = $urlGenerator->generate($currentRoute, array('_format' => 'json'), true);
+            $currentUrl = $urlGenerator
+                ->generate(
+                    $currentRoute,
+                    ['_format' => 'json'],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
             return new RedirectResponse('http://petstore.swagger.io/?url=' . $currentUrl);
         }
 
@@ -61,7 +66,7 @@ class OpenApiController
                 );
             }
 
-            $this->openApiSchema = require ($path);
+            $this->openApiSchema = require($path);
         }
 
         return $this->openApiSchema;
