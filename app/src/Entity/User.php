@@ -2,7 +2,6 @@
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
@@ -35,8 +34,7 @@ class User implements SecurityUserInterface
      * @ORM\Column(name="id", type="guid")
      *
      * @Dashboard\Column(
-     *      sortable=true,
-     *      label="#"
+     *      sortable=true
      * )
      *
      * @Serializer\ReadOnly()
@@ -57,13 +55,11 @@ class User implements SecurityUserInterface
      *
      * @Dashboard\Column(
      *     type="list",
-     *     label="Tags",
      *     sortable=false,
      *     options={"list": {"attribute":"label"}}
      * )
      *
      * @Dashboard\FormInputChoices(
-     *     label="Tags",
      *     multiple=true,
      *     repositoryMethod="findActive"
      * )
@@ -77,12 +73,10 @@ class User implements SecurityUserInterface
      *
      * @Dashboard\Column(
      *     type="choices",
-     *     label="Level",
      *     options={"choices"={"user":"User", "admin":"Admin"}}
      * )
      *
      * @Dashboard\FormInputChoices(
-     *     label="Level",
      *     choices={"User":"user", "Admin":"admin"}
      * )
      */
@@ -96,8 +90,7 @@ class User implements SecurityUserInterface
      * @Assert\Valid()
      *
      * @Dashboard\FormInput(
-     *     type="composite",
-     *     label="Address"
+     *     type="composite"
      * )
      */
     private $address;
@@ -113,7 +106,6 @@ class User implements SecurityUserInterface
      * )
      *
      * @Dashboard\FormInputCollection(
-     *     label="Addresses",
      *     orderBy="position"
      * )
      *

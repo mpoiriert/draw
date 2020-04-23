@@ -16,7 +16,6 @@ trait SecurityUserTrait
      * @Assert\NotBlank()
      *
      * @Dashboard\Column(
-     *     label="Email",
      *     visible=true,
      *     type="email",
      *     isActive=true,
@@ -24,7 +23,6 @@ trait SecurityUserTrait
      * )
      *
      * @Dashboard\FormInput(
-     *     label="Email",
      *     type="email"
      * )
      */

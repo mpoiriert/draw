@@ -28,7 +28,6 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
             ])
         );
 
-        $client->registerObserver(new DefaultBaseUriObserver('https://yeswecantravel.com'));
         return $client;
     }
 

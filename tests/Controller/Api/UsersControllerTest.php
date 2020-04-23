@@ -35,6 +35,19 @@ class UsersControllerTest extends TestCase
             );
     }
 
+    public function testUsersAction_options_fr()
+    {
+        $this->httpTester()
+            ->options('/api/users', ['X-Locale' => 'fr'])
+            ->assertStatus(200)
+            ->toJsonDataTester()
+            ->test(
+                new AgainstJsonFileTester(
+                    __DIR__ . '/fixtures/UsersControllerTest_testUsersAction_options_fr.json'
+                )
+            );
+    }
+
     public function testOptionsCreateUser_connected()
     {
         $this->connect();

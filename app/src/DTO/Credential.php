@@ -13,7 +13,7 @@ class Credential
      *
      * @Dashboard\FormInput(
      *     type="email",
-     *     label="Email"
+     *     label="email"
      * )
      *
      * @Serializer\Type("string")
@@ -26,8 +26,7 @@ class Credential
      * @Assert\NotBlank()
      *
      * @Dashboard\FormInput(
-     *     type="password",
-     *     label="Password"
+     *     type="password"
      * )
      *
      * @Serializer\Type("string")

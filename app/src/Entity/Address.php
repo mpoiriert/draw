@@ -14,10 +14,7 @@ class Address
      *
      * @ORM\Column(name="street", type="string", options={"default": ""})
      *
-     * @Dashboard\FormInput(
-     *     type="text",
-     *     label="Street"
-     * )
+     * @Dashboard\FormInput()
      *
      * @Serializer\Type("string")
      */
@@ -28,10 +25,7 @@ class Address
      *
      * @ORM\Column(name="postal_code", type="string", options={"default": ""})
      *
-     * @Dashboard\FormInput(
-     *     type="text",
-     *     label="Postal Code"
-     * )
+     * @Dashboard\FormInput()
      */
     private $postalCode = '';
 
@@ -40,10 +34,7 @@ class Address
      *
      * @ORM\Column(name="city", type="string", options={"default": ""})
      *
-     * @Dashboard\FormInput(
-     *     type="text",
-     *     label="City"
-     * )
+     * @Dashboard\FormInput()
      */
     private $city = '';
 
@@ -52,10 +43,7 @@ class Address
      *
      * @ORM\Column(name="country", type="string", options={"default": ""})
      *
-     * @Dashboard\FormInput(
-     *     type="text",
-     *     label="Country"
-     * )
+     * @Dashboard\FormInput()
      */
     private $country = '';
 

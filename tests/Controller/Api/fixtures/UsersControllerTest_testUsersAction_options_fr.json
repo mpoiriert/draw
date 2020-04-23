@@ -33,7 +33,7 @@
           {
             "id": "level",
             "isActive": true,
-            "label": "Access Level",
+            "label": "Niveau d'accès",
             "sortable": null,
             "visible": true,
             "type": "choices",

@@ -33,7 +33,7 @@
           {
             "id": "level",
             "isActive": true,
-            "label": "Level",
+            "label": "Access Level",
             "sortable": null,
             "visible": true,
             "type": "choices",
@@ -131,7 +131,7 @@
               "Admin": "admin"
             },
             "id": "level",
-            "label": "Level",
+            "label": "Access Level",
             "icon": null
           },
           {
@@ -178,20 +178,20 @@
             "type": "collection",
             "orderBy": "position",
             "id": "userAddresses",
-            "label": "Addresses",
+            "label": "Secondary Addresses",
             "icon": null,
             "subForm": {
               "inputs": [
                 {
                   "id": "id",
                   "type": "hidden",
-                  "label": null,
+                  "label": "#",
                   "icon": null
                 },
                 {
                   "id": "address",
                   "type": "composite",
-                  "label": null,
+                  "label": "Address",
                   "icon": null,
                   "subForm": {
                     "inputs": [
@@ -231,7 +231,7 @@
                 {
                   "id": "position",
                   "type": "hidden",
-                  "label": null,
+                  "label": "Position",
                   "icon": null
                 }
               ],

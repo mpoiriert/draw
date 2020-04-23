@@ -29,13 +29,11 @@ class Tag
      *
      * @Dashboard\Column(
      *     type="boolean",
-     *     label="Active",
      *     sortable=true
      * )
      *
      * @Dashboard\FormInput(
-     *     type="checkbox",
-     *     label="Active"
+     *     type="checkbox"
      * )
      */
     private $active = true;
@@ -48,12 +46,9 @@ class Tag
      * @Assert\NotNull()
      * @Assert\Length(min=3, max=255, allowEmptyString=false)
      *
-     * @Dashboard\Column(label="Label")
+     * @Dashboard\Column()
      *
-     * @Dashboard\FormInput(
-     *     type="text",
-     *     label="Label"
-     * )
+     * @Dashboard\FormInput()
      */
     private $label;
 

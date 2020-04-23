@@ -95,6 +95,9 @@ class OptionActionListener implements EventSubscriberInterface
             if (!$column) {
                 continue;
             }
+            if(!isset($column['label'])) {
+                $column['label'] = $column['id'];
+            }
             $columns[] = $column;
         }
 
@@ -146,6 +149,10 @@ class OptionActionListener implements EventSubscriberInterface
             $input = $property->vendor['x-draw-form-input'] ?? null;
             if (!$input) {
                 continue;
+            }
+
+            if(!isset($input['label'])) {
+                $input['label'] = $input['id'];
             }
 
             if ($input['type'] === 'choices' && empty($input['choices'])) {

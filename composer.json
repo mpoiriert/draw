@@ -36,7 +36,8 @@
         "symfony/security": "^4.3",
         "symfony/translation": "^4.3",
         "symfony/validator": "^3.4|^4.3|^5.0",
-        "symfony/yaml": "*"
+        "symfony/yaml": "*",
+        "galbar/jsonpath": "^1.0"
     },
     "require-dev": {
         "doctrine/common": "^2.12",

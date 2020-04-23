@@ -639,7 +639,7 @@
                     "x-draw-form-input": {
                         "id": "username",
                         "type": "email",
-                        "label": "Email"
+                        "label": "email"
                     }
                 },
                 "password": {
@@ -647,8 +647,7 @@
                     "type": "string",
                     "x-draw-form-input": {
                         "id": "password",
-                        "type": "password",
-                        "label": "Password"
+                        "type": "password"
                     }
                 }
             },
@@ -669,15 +668,13 @@
                     "x-draw-column": {
                         "id": "active",
                         "isActive": true,
-                        "label": "Active",
                         "sortable": true,
                         "visible": true,
                         "type": "boolean"
                     },
                     "x-draw-form-input": {
                         "id": "active",
-                        "type": "checkbox",
-                        "label": "Active"
+                        "type": "checkbox"
                     }
                 },
                 "label": {
@@ -687,14 +684,12 @@
                     "x-draw-column": {
                         "id": "label",
                         "isActive": true,
-                        "label": "Label",
                         "visible": true,
                         "type": "simple"
                     },
                     "x-draw-form-input": {
                         "id": "label",
-                        "type": "text",
-                        "label": "Label"
+                        "type": "text"
                     }
                 }
             },
@@ -708,7 +703,6 @@
                     "x-draw-column": {
                         "id": "id",
                         "isActive": true,
-                        "label": "#",
                         "sortable": true,
                         "visible": true,
                         "type": "simple"
@@ -722,7 +716,6 @@
                     "x-draw-column": {
                         "id": "tags",
                         "isActive": true,
-                        "label": "Tags",
                         "sortable": false,
                         "visible": true,
                         "type": "list",
@@ -736,8 +729,7 @@
                         "type": "choices",
                         "multiple": true,
                         "repositoryMethod": "findActive",
-                        "id": "tags",
-                        "label": "Tags"
+                        "id": "tags"
                     }
                 },
                 "level": {
@@ -745,7 +737,6 @@
                     "x-draw-column": {
                         "id": "level",
                         "isActive": true,
-                        "label": "Level",
                         "visible": true,
                         "type": "choices",
                         "options": {
@@ -762,16 +753,14 @@
                             "User": "user",
                             "Admin": "admin"
                         },
-                        "id": "level",
-                        "label": "Level"
+                        "id": "level"
                     }
                 },
                 "address": {
                     "$ref": "#/definitions/Address",
                     "x-draw-form-input": {
                         "id": "address",
-                        "type": "composite",
-                        "label": "Address"
+                        "type": "composite"
                     }
                 },
                 "userAddresses": {
@@ -782,8 +771,7 @@
                     "x-draw-form-input": {
                         "type": "collection",
                         "orderBy": "position",
-                        "id": "userAddresses",
-                        "label": "Addresses"
+                        "id": "userAddresses"
                     }
                 },
                 "email": {
@@ -792,15 +780,13 @@
                     "x-draw-column": {
                         "id": "email",
                         "isActive": true,
-                        "label": "Email",
                         "sortable": true,
                         "visible": true,
                         "type": "email"
                     },
                     "x-draw-form-input": {
                         "id": "email",
-                        "type": "email",
-                        "label": "Email"
+                        "type": "email"
                     }
                 },
                 "plainPassword": {
@@ -820,32 +806,28 @@
                     "type": "string",
                     "x-draw-form-input": {
                         "id": "street",
-                        "type": "text",
-                        "label": "Street"
+                        "type": "text"
                     }
                 },
                 "postalCode": {
                     "type": "string",
                     "x-draw-form-input": {
                         "id": "postalCode",
-                        "type": "text",
-                        "label": "Postal Code"
+                        "type": "text"
                     }
                 },
                 "city": {
                     "type": "string",
                     "x-draw-form-input": {
                         "id": "city",
-                        "type": "text",
-                        "label": "City"
+                        "type": "text"
                     }
                 },
                 "country": {
                     "type": "string",
                     "x-draw-form-input": {
                         "id": "country",
-                        "type": "text",
-                        "label": "Country"
+                        "type": "text"
                     }
                 }
             },
@@ -891,7 +873,6 @@
                     "x-draw-column": {
                         "id": "id",
                         "isActive": true,
-                        "label": "#",
                         "sortable": true,
                         "visible": true,
                         "type": "simple"
@@ -905,7 +886,6 @@
                     "x-draw-column": {
                         "id": "tags",
                         "isActive": true,
-                        "label": "Tags",
                         "sortable": false,
                         "visible": true,
                         "type": "list",
@@ -919,8 +899,7 @@
                         "type": "choices",
                         "multiple": true,
                         "repositoryMethod": "findActive",
-                        "id": "tags",
-                        "label": "Tags"
+                        "id": "tags"
                     }
                 },
                 "level": {
@@ -928,7 +907,6 @@
                     "x-draw-column": {
                         "id": "level",
                         "isActive": true,
-                        "label": "Level",
                         "visible": true,
                         "type": "choices",
                         "options": {
@@ -945,16 +923,14 @@
                             "User": "user",
                             "Admin": "admin"
                         },
-                        "id": "level",
-                        "label": "Level"
+                        "id": "level"
                     }
                 },
                 "address": {
                     "$ref": "#/definitions/Address",
                     "x-draw-form-input": {
                         "id": "address",
-                        "type": "composite",
-                        "label": "Address"
+                        "type": "composite"
                     }
                 },
                 "userAddresses": {
@@ -965,8 +941,7 @@
                     "x-draw-form-input": {
                         "type": "collection",
                         "orderBy": "position",
-                        "id": "userAddresses",
-                        "label": "Addresses"
+                        "id": "userAddresses"
                     }
                 },
                 "email": {
@@ -975,15 +950,13 @@
                     "x-draw-column": {
                         "id": "email",
                         "isActive": true,
-                        "label": "Email",
                         "sortable": true,
                         "visible": true,
                         "type": "email"
                     },
                     "x-draw-form-input": {
                         "id": "email",
-                        "type": "email",
-                        "label": "Email"
+                        "type": "email"
                     }
                 },
                 "plainPassword": {
