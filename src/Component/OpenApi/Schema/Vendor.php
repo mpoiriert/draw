@@ -1,39 +1,25 @@
 <?php namespace Draw\Component\OpenApi\Schema;
 
-use JsonSerializable;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Annotation use for documenting via extractor. This is not directly use in the schema itself.
  *
  * @Annotation
  */
-class Vendor implements JsonSerializable
+class Vendor implements VendorInterface
 {
     /**
      * @var string
+     *
+     * @Serializer\Exclude()
      */
     public $name;
 
     public $value;
 
-    public function jsonSerialize()
+    public function getVendorName(): string
     {
-        $data = [];
-        foreach($this as $key => $value) {
-            $data[$key] = $value;
-        }
-
-        unset($data['name']);
-        unset($data['value']);
-
-        if(!empty($data) && !empty($this->value) && !is_array($this->value)) {
-            throw new \RuntimeException('Incompatible value');
-        }
-
-        if($this->value) {
-            $data = array_merge($this->value, $data);
-        }
-
-        return $data;
+        return $this->name;
     }
 }

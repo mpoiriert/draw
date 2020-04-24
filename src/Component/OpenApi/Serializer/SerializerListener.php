@@ -76,6 +76,7 @@ class SerializerListener implements EventSubscriberInterface
 
     public function onPostSerialize(ObjectEvent $event)
     {
+
         $object = $event->getObject();
 
         $visitor = $event->getVisitor();
@@ -85,8 +86,7 @@ class SerializerListener implements EventSubscriberInterface
             return;
         }
 
-        $vendorData = json_decode(json_encode($object->getVendorData()), true);
-        foreach ($vendorData as $key => $value) {
+        foreach ($object->getVendorData() as $key => $value) {
             $visitor->visitProperty(new StaticPropertyMetadata("", $key, $value), $value);
         }
     }

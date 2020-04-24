@@ -1,31 +1,85 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use Draw\Component\OpenApi\Schema\Vendor;
+use Draw\Bundle\DashboardBundle\BaseAnnotation;
 
 /**
  * @Annotation
  */
-class FormInput extends Vendor
+class FormInput extends BaseAnnotation implements VendorPropertyInterface
 {
-    public $name = 'x-draw-form-input';
+    const TYPE = 'text';
+
+    /**
+     * @var string|null
+     */
+    private $id;
 
     /**
      * @var string
      */
-    public $id;
+    private $type = 'text';
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $type = 'text';
+    private $label;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $label;
+    private $icon;
 
-    /**
-     * @var string
-     */
-    public $icon;
+    public function __construct(array $values = [])
+    {
+        if (!array_key_exists('type', $values)) {
+            $values['type'] = static::TYPE;
+        }
+
+        parent::__construct($values);
+    }
+
+    public function getVendorName(): string
+    {
+        return 'x-draw-dashboard-form-input';
+    }
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    public function setLabel($label): void
+    {
+        $this->label = Translatable::set($this->label, $label);
+    }
+
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?string $icon): void
+    {
+        $this->icon = $icon;
+    }
 }

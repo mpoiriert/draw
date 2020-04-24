@@ -5,14 +5,14 @@
  */
 class ActionShow extends Action
 {
-    public function __construct()
-    {
-        $this->button = new Button();
-        $this->button->label = 'Show';
-    }
+    const TYPE = 'show';
 
-    public function getType()
+    public function __construct(array $values = [])
     {
-        return 'show';
+        if(!array_key_exists('button', $values)) {
+            $values['button'] = $button = new Button(['label' => 'show']);
+        }
+
+        parent::__construct($values);
     }
 }

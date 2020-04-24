@@ -7,28 +7,63 @@ class ActionCreate extends Action
 {
     const TYPE = 'create';
 
-    public function __construct()
+    /**
+     * @var array
+     */
+    private $inputs;
+
+    private $default;
+
+    public function __construct(array $values = [])
     {
-        $this->button = new Button();
-        $this->button->label = 'Create';
-        $this->flow = new FormFlow();
-        $this->flow->buttons = [
-            $cancel = new Button(),
-            $save = new Button()
-        ];
+        if (!array_key_exists('button', $values)) {
+            $values['button'] = $button = new Button(['label' => 'create']);
+        }
 
-        $cancel->label = 'Cancel';
-        $cancel->style = 'stroked-button';
-        $cancel->behaviours[] = 'cancel';
+        if (!array_key_exists('flow', $values)) {
+            $values['flow'] = $button = new FormFlow(
+                [
+                    'buttons' => [
+                        new Button(
+                            [
+                                'label' => 'cancel',
+                                'style' => 'stroked-button',
+                                'behaviours' => ['cancel']
+                            ]
+                        ),
+                        new Button(
+                            [
+                                'label' => 'save',
+                                'style' => 'flat-button',
+                                'color' => 'primary',
+                                'behaviours' => ['submit']
+                            ]
+                        )
+                    ]
+                ]
+            );
+        }
 
-        $save->label = 'Save';
-        $save->style = 'flat-button';
-        $save->color = 'primary';
-        $save->behaviours[] = 'submit';
+        parent::__construct($values);
     }
 
-    public function getType()
+    public function getInputs(): array
     {
-        return ActionCreate::TYPE;
+        return $this->inputs;
+    }
+
+    public function setInputs(array $inputs): void
+    {
+        $this->inputs = $inputs;
+    }
+
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    public function setDefault($default): void
+    {
+        $this->default = $default;
     }
 }

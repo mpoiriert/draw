@@ -1,71 +1,68 @@
 {
-  "HEAD": {},
   "GET": {
-    "x-draw-action": {
+    "x-draw-dashboard-action": {
       "type": "list",
-      "options": {
-        "paginated": true,
-        "button": null,
-        "flow": null,
-        "columns": [
-          {
-            "id": "id",
-            "isActive": true,
-            "label": "#",
-            "sortable": true,
-            "visible": true,
-            "type": "simple",
-            "options": null
-          },
-          {
-            "id": "tags",
-            "isActive": true,
-            "label": "Tags",
-            "sortable": false,
-            "visible": true,
-            "type": "list",
-            "options": {
-              "list": {
-                "attribute": "label"
-              }
+      "button": null,
+      "flow": null,
+      "href": "http://localhost/api/users",
+      "method": "GET",
+      "paginated": true,
+      "columns": [
+        {
+          "id": "id",
+          "isActive": true,
+          "label": "#",
+          "sortable": true,
+          "visible": true,
+          "type": "simple",
+          "options": null
+        },
+        {
+          "id": "tags",
+          "isActive": true,
+          "label": "Tags",
+          "sortable": false,
+          "visible": true,
+          "type": "list",
+          "options": {
+            "list": {
+              "attribute": "label"
             }
-          },
-          {
-            "id": "level",
-            "isActive": true,
-            "label": "Niveau d'accès",
-            "sortable": null,
-            "visible": true,
-            "type": "choices",
-            "options": {
-              "choices": {
-                "user": "User",
-                "admin": "Admin"
-              }
-            }
-          },
-          {
-            "id": "email",
-            "isActive": true,
-            "label": "Email",
-            "sortable": true,
-            "visible": true,
-            "type": "email",
-            "options": null
-          },
-          {
-            "id": "_actions",
-            "type": "actions",
-            "label": "Actions"
           }
-        ]
-      }
+        },
+        {
+          "id": "level",
+          "isActive": true,
+          "label": "Niveau d'acc\u00e8s",
+          "sortable": null,
+          "visible": true,
+          "type": "choices",
+          "options": {
+            "choices": {
+              "user": "User",
+              "admin": "Admin"
+            }
+          }
+        },
+        {
+          "id": "email",
+          "isActive": true,
+          "label": "Email",
+          "sortable": true,
+          "visible": true,
+          "type": "email",
+          "options": null
+        },
+        {
+          "id": "_actions",
+          "isActive": true,
+          "label": "Actions",
+          "sortable": null,
+          "visible": true,
+          "type": "actions",
+          "options": null
+        }
+      ]
     }
-  },
-  "POST": {
-    "x-draw-action": {
-      "accessDenied": true
-    }
-  },
-  "OPTIONS": {}
+  }
 }

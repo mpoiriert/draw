@@ -1,7 +1,7 @@
 {
   "HEAD": {},
   "GET": {
-    "x-draw-action": {
+    "x-draw-dashboard-action": {
       "type": "list",
       "options": {
         "paginated": true,
@@ -63,7 +63,7 @@
     }
   },
   "POST": {
-    "x-draw-action": {
+    "x-draw-dashboard-action": {
       "type": "create",
       "options": {
         "button": {
@@ -109,7 +109,6 @@
           {
             "type": "choices",
             "multiple": true,
-            "repositoryMethod": "findActive",
             "choices": {
               "Admin": {
                 "id": 1
@@ -125,7 +124,6 @@
           {
             "type": "choices",
             "multiple": false,
-            "repositoryMethod": null,
             "choices": {
               "User": "user",
               "Admin": "admin"

@@ -1,41 +1,135 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use Draw\Component\OpenApi\Schema\Vendor;
+use Draw\Bundle\DashboardBundle\BaseAnnotation;
+use Draw\Component\OpenApi\Schema\VendorInterface;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @Annotation
  */
-abstract class Action extends Vendor
+class Action extends BaseAnnotation implements VendorInterface
 {
-    public $name = 'x-draw-action';
+    const TYPE = 'generic';
 
     /**
-     * @var \Draw\Bundle\DashboardBundle\Annotations\Button
+     * @var string|null
      */
-    public $button;
+    private $type = self::TYPE;
 
     /**
-     * @var \Draw\Bundle\DashboardBundle\Annotations\Flow
+     * @var \Draw\Bundle\DashboardBundle\Annotations\Button|null
      */
-    public $flow;
+    private $button;
 
     /**
-     * The class that are a target of this action
+     * @var \Draw\Bundle\DashboardBundle\Annotations\Flow|null
+     */
+    private $flow;
+
+    /**
+     * @var boolean
+     *
+     * @Serializer\Exclude()
+     */
+    private $accessDenied = false;
+
+    /**
+     * @var string|null
+     */
+    private $href = null;
+
+    /**
+     * @var string|null
+     */
+    private $method = null;
+
+    /**
+     * The class that are a target of this action. Only use by the backend.
      *
      * @var string[]
+     *
+     * @Serializer\Exclude()
      */
-    public $targets = [];
+    private $targets = [];
 
-    public function jsonSerialize()
+    public function __construct(array $values = [])
     {
-        $options = parent::jsonSerialize();
-
-        unset($options['targets']);
-
-        $type = $this->getType();
-
-        return compact('type', 'options');
+        $values['type'] = static::TYPE;
+        parent::__construct($values);
     }
 
-    abstract function getType();
+    public function getVendorName(): string
+    {
+        return 'x-draw-dashboard-action';
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
+    }
+
+    public function getButton(): ?Button
+    {
+        return $this->button;
+    }
+
+    public function setButton(?Button $button): void
+    {
+        $this->button = $button;
+    }
+
+    public function getFlow(): ?Flow
+    {
+        return $this->flow;
+    }
+
+    public function setFlow(?Flow $flow): void
+    {
+        $this->flow = $flow;
+    }
+
+    public function getAccessDenied(): bool
+    {
+        return $this->accessDenied;
+    }
+
+    public function setAccessDenied(bool $accessDenied): void
+    {
+        $this->accessDenied = $accessDenied;
+    }
+
+    public function getHref(): ?string
+    {
+        return $this->href;
+    }
+
+    public function setHref(?string $href): void
+    {
+        $this->href = $href;
+    }
+
+    public function getMethod(): ?string
+    {
+        return $this->method;
+    }
+
+    public function setMethod(?string $method): void
+    {
+        $this->method = $method;
+    }
+
+    public function getTargets(): array
+    {
+        return $this->targets;
+    }
+
+    public function setTargets(array $targets): void
+    {
+        $this->targets = $targets;
+    }
 }

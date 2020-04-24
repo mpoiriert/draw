@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class OptionsController
@@ -28,31 +29,38 @@ class OptionsController
 
     private $requestStack;
 
+    private $basePath;
+
+    private $urlGenerator;
+
     public function __construct(
         OpenApiController $openApiController,
         RouterInterface $router,
         HttpKernelInterface $kernel,
         EventDispatcherInterface $eventDispatcher,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->openApiController = $openApiController;
         $this->router = $router;
         $this->kernel = $kernel;
         $this->eventDispatcher = $eventDispatcher;
         $this->requestStack = $requestStack;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
-     * @Route(methods={"OPTIONS"}, path="/{req}", requirements={"req":".+"})
+     * @Route(name="draw_dashboard_options", methods={"OPTIONS"}, path="/{req}", requirements={"req":".+"})
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request)
     {
+        if ($methods = $request->headers->get('X-Draw-Dashboard-Methods', null)) {
+            $methods = explode(',', $methods);
+        }
+
         $originalContext = $this->router->getContext();
         try {
-            $body = $this->loadOption($request->getPathInfo(), $request);
-            $response = new JsonResponse($body);
-
-            return $response;
+            return $this->loadOption($request->getPathInfo(), $request, $methods);
         } finally {
             $this->router->setContext($originalContext);
         }
@@ -60,7 +68,7 @@ class OptionsController
 
     public function dummyHandling($method, $path, Request $fromRequest = null)
     {
-        if(is_null($fromRequest)) {
+        if (is_null($fromRequest)) {
             $fromRequest = $this->requestStack->getMasterRequest();
         }
 
@@ -93,7 +101,7 @@ class OptionsController
         return [$subRequest, $response];
     }
 
-    public function loadOption($pathInfo, Request $request)
+    public function loadOption($pathInfo, Request $request, array $methods = null)
     {
         $openApiSchema = $this->openApiController->loadOpenApiSchema();
 
@@ -102,7 +110,7 @@ class OptionsController
         /** @var \Symfony\Component\Routing\Route[] $validRoutes */
         $validRoutes = [];
 
-        $methods = [
+        $methods = $methods ?: [
             Request::METHOD_HEAD,
             Request::METHOD_GET,
             Request::METHOD_POST,
@@ -130,8 +138,6 @@ class OptionsController
         $body = [];
         foreach ($validRoutes as $method => $route) {
             $context->setMethod($method);
-            // For sure the method is available
-            $body[$method] = new \stdClass(); // Putting a object make sure serialization give {} instead of []
 
             if (is_null($pathItem = $openApiSchema->paths[$route->getPath()] ?? null)) {
                 continue;
@@ -141,26 +147,23 @@ class OptionsController
                 continue;
             }
 
-            $action = $operation->vendor['x-draw-action'] ?? null;
+            $action = $operation->vendor['x-draw-dashboard-action'] ?? null;
             if (!$action instanceof Action) {
                 continue;
             }
 
-            $body[$method] = [];
-
             list($subRequest, $response) = $this->dummyHandling($method, $pathInfo, $request);
 
-            if($response->getStatusCode() === 403) {
-                $body[$method]['x-draw-action']['accessDenied'] = true;
+            if ($response->getStatusCode() === 403) {
+                $action->setAccessDenied(true);
                 continue;
             }
 
-            $actionValue = $action->jsonSerialize();
+            $body[$method] = ['x-draw-dashboard-action' => $action];
 
-            $event = $this->eventDispatcher->dispatch(
+            $this->eventDispatcher->dispatch(
                 new OptionBuilderEvent(
                     $action,
-                    $actionValue['options'] ?? [],
                     $operation,
                     $openApiSchema,
                     $subRequest,
@@ -168,13 +171,31 @@ class OptionsController
                 )
             );
 
-            $actionValue['options'] = $event->getOptions()->all();
-
-            $body[$method] = [];
-            $body[$method]['x-draw-action'] = $actionValue;
+            $action->setHref($this->getBasePath() . $pathInfo);
+            $action->setMethod($method);
         }
 
         return $body;
+    }
+
+    private function getBasePath(): string
+    {
+        if (is_null($this->basePath)) {
+            $this->basePath = str_replace(
+                $this->urlGenerator->generate(
+                    'draw_dashboard_options',
+                    ['req' => 'dummy']
+                ),
+                '',
+                $this->urlGenerator->generate(
+                    'draw_dashboard_options',
+                    ['req' => 'dummy'],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                )
+            );
+        }
+
+        return $this->basePath;
     }
 
     private function createSubRequest(Request $request, $uri, $method): Request

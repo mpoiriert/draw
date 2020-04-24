@@ -85,7 +85,7 @@ class EntityActionsSubscriber implements EventSubscriberInterface
                 'rel' => 'self',
                 'href' => $path,
                 'method' => strtoupper($method),
-                'x-draw-action' => $action->jsonSerialize()
+                'x-draw-dashboard-action' => $action
             ];
         }
 
@@ -106,18 +106,18 @@ class EntityActionsSubscriber implements EventSubscriberInterface
     {
         foreach ($rootSchema->paths as $pathItem) {
             foreach ($pathItem->getOperations() as $method => $operation) {
-                $routeName = $operation->getVendorData()['x-symfony-route'] ?? null;
+                $routeName = $operation->getVendorData()['x-draw-open-api-symfony-route'] ?? null;
                 if (is_null($routeName)) {
                     continue;
                 }
 
                 /** @var Action $action */
-                $action = $operation->getVendorData()['x-draw-action'] ?? null;
+                $action = $operation->getVendorData()['x-draw-dashboard-action'] ?? null;
                 if (is_null($action) || !$action instanceof Action) {
                     continue;
                 }
 
-                foreach ($action->targets as $target) {
+                foreach ($action->getTargets() as $target) {
                     if (!$object instanceof $target) {
                         continue;
                     }

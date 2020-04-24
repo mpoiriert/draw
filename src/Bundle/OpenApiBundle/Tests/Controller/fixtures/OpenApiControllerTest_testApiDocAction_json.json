@@ -39,7 +39,7 @@
             }
           }
         },
-        "x-symfony-route": "draw_openapi_tests_mock_test_create",
+        "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_create",
         "x-test": {
           "key": "value",
           "object": {

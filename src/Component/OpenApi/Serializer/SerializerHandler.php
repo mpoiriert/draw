@@ -2,6 +2,7 @@
 
 use Draw\Component\OpenApi\Schema\Mixed;
 use Draw\Component\OpenApi\Schema\SecurityRequirement;
+use Draw\Component\OpenApi\Schema\Vendor;
 use JMS\Serializer\Context;
 use JMS\Serializer\GraphNavigatorInterface;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
@@ -36,6 +37,12 @@ class SerializerHandler implements SubscribingHandlerInterface
                 'format' => 'json',
                 'type' => Mixed::class,
                 'method' => 'deserializeMixedToJson',
+            ],
+            [
+                'direction' => GraphNavigatorInterface::DIRECTION_SERIALIZATION,
+                'format' => 'json',
+                'type' => Vendor::class,
+                'method' => 'serializeVendorToJson',
             ],
         ];
     }
@@ -104,5 +111,21 @@ class SerializerHandler implements SubscribingHandlerInterface
         Context $context
     ) {
         return $data;
+    }
+
+    /**
+     * @param JsonSerializationVisitor $visitor
+     * @param Vendor $vendor
+     * @param array $type
+     * @param Context $context
+     * @return mixed
+     */
+    public function serializeVendorToJson(
+        JsonSerializationVisitor $visitor,
+        Vendor $vendor,
+        array $type,
+        Context $context
+    ) {
+        return $vendor->value;
     }
 }

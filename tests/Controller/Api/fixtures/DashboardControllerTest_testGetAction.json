@@ -20,61 +20,62 @@
       "href": "http://localhost/api/connection-tokens",
       "method": "POST",
       "type": "create",
-      "options": {
-        "button": {
-          "label": "Connect",
-          "icon": "power_settings_new",
-          "style": null,
-          "color": null,
-          "showLabel": null,
-          "tooltip": null,
-          "tooltipPosition": null,
-          "behaviours": []
-        },
-        "flow": {
-          "type": "form",
-          "buttons": [
-            {
-              "label": "Cancel",
-              "icon": null,
-              "style": "stroked-button",
-              "color": null,
-              "showLabel": null,
-              "tooltip": null,
-              "tooltipPosition": null,
-              "behaviours": [
-                "cancel"
-              ]
-            },
-            {
-              "label": "Save",
-              "icon": null,
-              "style": "flat-button",
-              "color": "primary",
-              "showLabel": null,
-              "tooltip": null,
-              "tooltipPosition": null,
-              "behaviours": [
-                "submit"
-              ]
-            }
-          ]
-        },
-        "inputs": [
+      "button": {
+        "label": "Connect",
+        "icon": "power_settings_new",
+        "style": null,
+        "color": null,
+        "showLabel": null,
+        "tooltip": null,
+        "tooltipPosition": null,
+        "behaviours": []
+      },
+      "flow": {
+        "type": "form",
+        "buttons": [
           {
-            "id": "username",
-            "type": "email",
-            "label": "Email",
-            "icon": null
+            "label": "Cancel",
+            "icon": null,
+            "style": "stroked-button",
+            "color": null,
+            "showLabel": null,
+            "tooltip": null,
+            "tooltipPosition": null,
+            "behaviours": [
+              "cancel"
+            ]
           },
           {
-            "id": "password",
-            "type": "password",
-            "label": "Password",
-            "icon": null
+            "label": "Save",
+            "icon": null,
+            "style": "flat-button",
+            "color": "primary",
+            "showLabel": null,
+            "tooltip": null,
+            "tooltipPosition": null,
+            "behaviours": [
+              "submit"
+            ]
           }
-        ],
-        "default": {}
+        ]
+      },
+      "inputs": [
+        {
+          "id": "username",
+          "type": "email",
+          "label": "Email",
+          "icon": null
+        },
+        {
+          "id": "password",
+          "type": "password",
+          "label": "Password",
+          "icon": null
+        }
+      ],
+      "default": {
+        "username": null,
+        "password": null
       }
     }
   ]

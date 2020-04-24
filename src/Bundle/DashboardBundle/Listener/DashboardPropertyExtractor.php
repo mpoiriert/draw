@@ -1,15 +1,14 @@
 <?php namespace Draw\Bundle\DashboardBundle\Listener;
 
 use Doctrine\Common\Annotations\Reader;
-use Draw\Bundle\DashboardBundle\Annotations\Column;
-use Draw\Bundle\DashboardBundle\Annotations\FormInput;
+use Draw\Bundle\DashboardBundle\Annotations\VendorPropertyInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event\PropertyExtractedEvent;
-use Draw\Component\OpenApi\Schema\Vendor;
+use Draw\Component\OpenApi\Schema\VendorInterface;
 use JMS\Serializer\Metadata\VirtualPropertyMetadata;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 
-class DashboardColumnExtractor implements EventSubscriberInterface
+class DashboardPropertyExtractor implements EventSubscriberInterface
 {
     private $annotationReader;
 
@@ -30,7 +29,7 @@ class DashboardColumnExtractor implements EventSubscriberInterface
     {
         $propertyMetadata = $propertyExtractedEvent->getPropertyMetadata();
 
-        if($propertyMetadata instanceof VirtualPropertyMetadata) {
+        if ($propertyMetadata instanceof VirtualPropertyMetadata) {
             $reflection = new \ReflectionMethod($propertyMetadata->class, $propertyMetadata->getter);
             $annotations = $this->annotationReader->getMethodAnnotations($reflection);
         } else {
@@ -38,16 +37,16 @@ class DashboardColumnExtractor implements EventSubscriberInterface
             $annotations = $this->annotationReader->getPropertyAnnotations($reflection);
         }
 
-        foreach($annotations as $annotation) {
-            if(!$annotation instanceof Vendor) {
+        foreach ($annotations as $annotation) {
+            if (!$annotation instanceof VendorPropertyInterface) {
                 continue;
             }
 
-            if(!$annotation->id) {
-                $annotation->id = $propertyMetadata->serializedName;
+            if (!$annotation->getId()) {
+                $annotation->setId($propertyMetadata->serializedName);
             }
 
-            $propertyExtractedEvent->getSchema()->vendor[$annotation->name] = $annotation->jsonSerialize();
+            $propertyExtractedEvent->getSchema()->vendor[$annotation->getVendorName()] = $annotation;
         }
     }
 }

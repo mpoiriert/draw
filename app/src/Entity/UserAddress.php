@@ -42,9 +42,7 @@ class UserAddress
      *
      * @Serializer\Type("App\Entity\Address")
      *
-     * @Dashboard\FormInput(
-     *     type="composite"
-     * )
+     * @Dashboard\FormInputComposite()
      */
     private $address;
 

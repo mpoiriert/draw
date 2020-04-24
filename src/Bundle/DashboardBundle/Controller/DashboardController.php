@@ -1,20 +1,18 @@
 <?php namespace Draw\Bundle\DashboardBundle\Controller;
 
+use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DashboardController extends AbstractController
 {
     private $openApiController;
 
     private $optionsController;
-
-    private $basePath = null;
 
     public function __construct(OpenApiController $openApiController, OptionsController $optionsController)
     {
@@ -30,7 +28,7 @@ class DashboardController extends AbstractController
         $menu = $parameterBag->get('draw_dashboard.menu');
 
         foreach ($menu as $index => &$menuEntry) {
-            if($menuEntry['security'] && !$this->isGranted(new Expression($menuEntry['security']))) {
+            if ($menuEntry['security'] && !$this->isGranted(new Expression($menuEntry['security']))) {
                 unset($menu[$index]);
                 continue;
             }
@@ -47,7 +45,7 @@ class DashboardController extends AbstractController
             }
 
             foreach ($menuEntry['children'] as $index2 => &$menuItem) {
-                if($menuItem['security'] && !$this->isGranted(new Expression($menuItem['security']))) {
+                if ($menuItem['security'] && !$this->isGranted(new Expression($menuItem['security']))) {
                     unset($menuEntry['children'][$index2]);
                     continue;
                 }
@@ -74,14 +72,9 @@ class DashboardController extends AbstractController
         $toolbar = $parameterBag->get('draw_dashboard.toolbar');
 
         foreach ($toolbar as $index => &$action) {
-            $actionInformation = $this->getActionInformation($action['operationId'], $request);
-            if (!$actionInformation) {
+            $action = $this->getActionInformation($action['operationId'], $request);
+            if (!$action) {
                 unset($toolbar[$index]);
-            } else {
-                unset($action['operationId']);
-                $action = $actionInformation;
-                $action = array_merge($action, $action['x-draw-action']);
-                unset($action['x-draw-action']);
             }
         }
 
@@ -91,58 +84,44 @@ class DashboardController extends AbstractController
         return compact('menu', 'toolbar');
     }
 
-    private function getRouteInformation($operationId, Request $request)
+    private function getRouteInformation($operationId, Request $request): ?string
     {
         $action = $this->getActionInformation($operationId, $request);
         if (is_null($action)) {
             return null;
         }
 
-        return $action['href'] . '/' . $action['x-draw-action']['type'];
+        return $action->getHref() . '/'.  $action->getType();
     }
 
-    private function getActionInformation($operationId, Request $request)
+    private function getActionInformation($operationId, Request $request): ?Action
     {
-        $basePath = $this->getBasePath();
-
         $schema = $this->openApiController->loadOpenApiSchema();
         foreach ($schema->paths as $path => $pathItem) {
             foreach ($pathItem->getOperations() as $method => $operation) {
-                if ($operation->operationId === $operationId) {
-                    $routeInformation = $this->optionsController->loadOption(
-                        $path,
-                        $request
-                    );
-
-                    $information = $routeInformation[strtoupper($method)] ?? null;
-                    if (!$information) {
-                        return null;
-                    }
-
-                    if ($information['x-draw-action']['accessDenied'] ?? false) {
-                        return null;
-                    }
-
-                    return [
-                        'href' => $basePath . $path,
-                        'method' => strtoupper($method),
-                        'x-draw-action' => $information['x-draw-action']
-                    ];
+                if ($operation->operationId !== $operationId) {
+                    continue;
                 }
+
+                $method = strtoupper($method);
+
+                $routeInformation = $this->optionsController->loadOption(
+                    $path,
+                    $request,
+                    [$method]
+                );
+
+                /** @var Action $action */
+                switch (true) {
+                    case is_null($information = $routeInformation[$method] ?? null):
+                    case is_null($action = $information['x-draw-dashboard-action'] ?? null):
+                    case !$action instanceof Action:
+                    case $action->getAccessDenied():
+                        return null;
+                }
+
+                return $action;
             }
         }
-    }
-
-    private function getBasePath()
-    {
-        if(is_null($this->basePath)) {
-            $this->basePath = str_replace(
-                $this->generateUrl('draw_dashboard'),
-                '',
-                $this->generateUrl('draw_dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL)
-            );
-        }
-
-        return $this->basePath;
     }
 }

@@ -1,0 +1,212 @@
+{
+  "POST": {
+    "x-draw-dashboard-action": {
+      "type": "create",
+      "button": {
+        "label": "Create",
+        "icon": null,
+        "style": null,
+        "color": null,
+        "showLabel": null,
+        "tooltip": null,
+        "tooltipPosition": null,
+        "behaviours": []
+      },
+      "flow": {
+        "type": "form",
+        "buttons": [
+          {
+            "label": "Cancel",
+            "icon": null,
+            "style": "stroked-button",
+            "color": null,
+            "showLabel": null,
+            "tooltip": null,
+            "tooltipPosition": null,
+            "behaviours": [
+              "cancel"
+            ]
+          },
+          {
+            "label": "Save",
+            "icon": null,
+            "style": "flat-button",
+            "color": "primary",
+            "showLabel": null,
+            "tooltip": null,
+            "tooltipPosition": null,
+            "behaviours": [
+              "submit"
+            ]
+          }
+        ]
+      },
+      "href": "http://localhost/api/users",
+      "method": "POST",
+      "inputs": [
+        {
+          "id": "tags",
+          "type": "choices",
+          "label": "Tags",
+          "icon": null,
+          "multiple": true,
+          "choices": {
+            "Admin": {
+              "id": 1
+            }
+          },
+          "sourceCompareKeys": [
+            "id"
+          ]
+        },
+        {
+          "id": "level",
+          "type": "choices",
+          "label": "Access Level",
+          "icon": null,
+          "multiple": false,
+          "choices": {
+            "User": "user",
+            "Admin": "admin"
+          },
+          "sourceCompareKeys": null
+        },
+        {
+          "id": "address",
+          "type": "composite",
+          "label": "Address",
+          "icon": null,
+          "subForm": {
+            "inputs": [
+              {
+                "id": "street",
+                "type": "text",
+                "label": "Street",
+                "icon": null
+              },
+              {
+                "id": "postalCode",
+                "type": "text",
+                "label": "Postal Code",
+                "icon": null
+              },
+              {
+                "id": "city",
+                "type": "text",
+                "label": "City",
+                "icon": null
+              },
+              {
+                "id": "country",
+                "type": "text",
+                "label": "Country",
+                "icon": null
+              }
+            ],
+            "default": {
+              "street": "",
+              "postalCode": "",
+              "city": "",
+              "country": ""
+            }
+          }
+        },
+        {
+          "id": "userAddresses",
+          "type": "collection",
+          "label": "Secondary Addresses",
+          "icon": null,
+          "orderBy": "position",
+          "subForm": {
+            "inputs": [
+              {
+                "id": "id",
+                "type": "hidden",
+                "label": "#",
+                "icon": null
+              },
+              {
+                "id": "address",
+                "type": "composite",
+                "label": "Address",
+                "icon": null,
+                "subForm": {
+                  "inputs": [
+                    {
+                      "id": "street",
+                      "type": "text",
+                      "label": "Street",
+                      "icon": null
+                    },
+                    {
+                      "id": "postalCode",
+                      "type": "text",
+                      "label": "Postal Code",
+                      "icon": null
+                    },
+                    {
+                      "id": "city",
+                      "type": "text",
+                      "label": "City",
+                      "icon": null
+                    },
+                    {
+                      "id": "country",
+                      "type": "text",
+                      "label": "Country",
+                      "icon": null
+                    }
+                  ],
+                  "default": {
+                    "street": "",
+                    "postalCode": "",
+                    "city": "",
+                    "country": ""
+                  }
+                }
+              },
+              {
+                "id": "position",
+                "type": "hidden",
+                "label": "Position",
+                "icon": null
+              }
+            ],
+            "default": {
+              "id": null,
+              "user": null,
+              "address": {
+                "street": "",
+                "postalCode": "",
+                "city": "",
+                "country": ""
+              },
+              "position": null
+            }
+          }
+        },
+        {
+          "id": "email",
+          "type": "email",
+          "label": "Email",
+          "icon": null
+        }
+      ],
+      "default": {
+        "id": null,
+        "tags": [],
+        "level": "user",
+        "address": {
+          "street": "",
+          "postalCode": "",
+          "city": "",
+          "country": ""
+        },
+        "userAddresses": [],
+        "email": null,
+        "plainPassword": null,
+        "passwordUpdatedAt": null
+      }
+    }
+  }
+}

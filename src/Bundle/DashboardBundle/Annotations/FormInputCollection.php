@@ -5,13 +5,32 @@
  */
 class FormInputCollection extends FormInput
 {
-    /**
-     * @var string
-     */
-    public $type = 'collection';
+    const TYPE = 'collection';
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $orderBy = null;
+    private $orderBy = null;
+
+    private $subForm;
+
+    public function getOrderBy(): ?string
+    {
+        return $this->orderBy;
+    }
+
+    public function setOrderBy(?string $orderBy): void
+    {
+        $this->orderBy = $orderBy;
+    }
+
+    public function getSubForm()
+    {
+        return $this->subForm;
+    }
+
+    public function setSubForm($subForm): void
+    {
+        $this->subForm = $subForm;
+    }
 }

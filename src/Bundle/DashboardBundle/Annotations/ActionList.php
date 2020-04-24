@@ -5,10 +5,35 @@
  */
 class ActionList extends Action
 {
-    public $paginated = true;
+    const TYPE = 'list';
 
-    public function getType()
+    /**
+     * @var bool
+     */
+    private $paginated = true;
+
+    /**
+     * @var array
+     */
+    private $columns;
+
+    public function isPaginated(): bool
     {
-        return 'list';
+        return $this->paginated;
+    }
+
+    public function setPaginated(bool $paginated): void
+    {
+        $this->paginated = $paginated;
+    }
+
+    public function getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    public function setColumns(array $columns): void
+    {
+        $this->columns = $columns;
     }
 }

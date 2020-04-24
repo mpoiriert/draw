@@ -7,15 +7,39 @@ class ActionEdit extends ActionCreate
 {
     const TYPE = 'edit';
 
-    public function __construct()
+    /**
+     * @var array
+     */
+    private $inputs;
+
+    private $default;
+
+    public function __construct(array $values = [])
     {
-        parent::__construct();
-        $this->button->label = 'Edit';
-        $this->button->icon = 'edit';
+        if (!array_key_exists('button', $values)) {
+            $values['button'] = $button = new Button(['label' => 'edit', 'icon' => 'edit']);
+        }
+
+        parent::__construct($values);
     }
 
-    public function getType()
+    public function getInputs(): array
     {
-        return ActionEdit::TYPE;
+        return $this->inputs;
+    }
+
+    public function setInputs(array $inputs): void
+    {
+        $this->inputs = $inputs;
+    }
+
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    public function setDefault($default): void
+    {
+        $this->default = $default;
     }
 }

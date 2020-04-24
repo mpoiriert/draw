@@ -5,17 +5,20 @@
  */
 class ActionDelete extends Action
 {
-    public function __construct()
-    {
-        $this->button = new Button();
-        $this->button->label = 'Delete';
-        $this->button->icon = 'delete';
-        $this->flow = new ConfirmFlow();
-        $this->flow->message = 'Are you sure you want to delete this ?';
-    }
+    const TYPE = 'delete';
 
-    public function getType()
+    public function __construct(array $values = [])
     {
-        return 'delete';
+        if(!array_key_exists('button', $values)) {
+            $values['button'] = $button = new Button(['label' => 'delete', 'icon' => 'delete']);
+        }
+
+        if(!array_key_exists('flow', $values)) {
+            $values['flow'] = $button = new ConfirmFlow([
+                'message' => 'Are you sure you want to delete this ?'
+            ]);
+        }
+
+        parent::__construct($values);
     }
 }

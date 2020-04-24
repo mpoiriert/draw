@@ -1,21 +1,33 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use JsonSerializable;
+use Draw\Bundle\DashboardBundle\BaseAnnotation;
 
 /**
  * @Annotation
  */
-abstract class Flow implements JsonSerializable
+abstract class Flow extends BaseAnnotation
 {
-    public $type;
+    const TYPE = null;
 
-    public function jsonSerialize()
+    /**
+     * @var string|null
+     */
+    private $type;
+
+    public function __construct(array $values)
     {
-        $data = [];
-        foreach ($this as $key => $value) {
-            $data[$key] = $value;
-        }
+        $values['type'] = static::TYPE;
 
-        return $data;
+        parent::__construct($values);
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
     }
 }

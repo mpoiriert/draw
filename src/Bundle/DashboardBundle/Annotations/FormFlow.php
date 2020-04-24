@@ -5,10 +5,20 @@
  */
 class FormFlow extends Flow
 {
-    public $type = 'form';
+    const TYPE = 'form';
 
     /**
      * @var array<\Draw\Bundle\DashboardBundle\Annotations\Button>
      */
     public $buttons;
+
+    public function getButtons(): array
+    {
+        return $this->buttons;
+    }
+
+    public function setButtons(array $buttons): void
+    {
+        $this->buttons = $buttons;
+    }
 }

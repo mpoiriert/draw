@@ -4,8 +4,8 @@ use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
-use Draw\Component\OpenApi\Schema\Vendor;
 use Draw\Component\OpenApi\Schema\VendorExtensionSupportInterface;
+use Draw\Component\OpenApi\Schema\VendorInterface;
 use Reflector;
 use RuntimeException;
 
@@ -48,13 +48,13 @@ class VendorExtractor implements ExtractorInterface
         }
 
         foreach($this->getAnnotations($source) as $annotation) {
-            $target->setVendorDataKey($annotation->name, $annotation);
+            $target->setVendorDataKey($annotation->getVendorName(), $annotation);
         }
     }
 
     /**
      * @param Reflector $reflector
-     * @return array|Vendor[]
+     * @return array|VendorInterface[]
      */
     private function getAnnotations(Reflector $reflector): array
     {
@@ -71,11 +71,10 @@ class VendorExtractor implements ExtractorInterface
             default:
                 throw new RuntimeException('Not supported reflection class [' . get_class($reflector) . ']');
                 break;
-
         }
 
         return array_filter($annotations, function ($annotation) {
-            return $annotation instanceof Vendor;
+            return $annotation instanceof VendorInterface;
         });
     }
 }

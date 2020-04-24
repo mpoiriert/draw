@@ -6,14 +6,12 @@ use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Doctrine\Paginator;
 use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;
-use Draw\Bundle\DashboardBundle\Notification\Notification;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UsersController extends AbstractController
@@ -132,7 +130,7 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userSendResetPasswordEmail")
      *
-     * @Dashboard\ActionGeneric(
+     * @Dashboard\Action(
      *     targets={User::class},
      *     button=@Dashboard\Button(label="Send forgot password email", icon="email")
      * )

@@ -30,35 +30,33 @@
                         }
                     }
                 },
-                "x-symfony-route": "connection_token_create",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "connection_token_create",
+                "x-draw-dashboard-action": {
                     "type": "create",
-                    "options": {
-                        "button": {
-                            "label": "Connect",
-                            "icon": "power_settings_new",
-                            "behaviours": []
-                        },
-                        "flow": {
-                            "type": "form",
-                            "buttons": [
-                                {
-                                    "label": "Cancel",
-                                    "style": "stroked-button",
-                                    "behaviours": [
-                                        "cancel"
-                                    ]
-                                },
-                                {
-                                    "label": "Save",
-                                    "style": "flat-button",
-                                    "color": "primary",
-                                    "behaviours": [
-                                        "submit"
-                                    ]
-                                }
-                            ]
-                        }
+                    "button": {
+                        "label": "Connect",
+                        "icon": "power_settings_new",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit"
+                                ]
+                            }
+                        ]
                     }
                 }
             }
@@ -78,7 +76,7 @@
                         }
                     }
                 },
-                "x-symfony-route": "connection_token_refresh"
+                "x-draw-open-api-symfony-route": "connection_token_refresh"
             }
         },
         "/api/connection-tokens/current": {
@@ -93,20 +91,18 @@
                         "description": "Nothing to be returned"
                     }
                 },
-                "x-symfony-route": "connection_clear",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "connection_clear",
+                "x-draw-dashboard-action": {
                     "type": "delete",
-                    "options": {
-                        "button": {
-                            "label": "Disconnect",
-                            "icon": "exit_to_app",
-                            "behaviours": []
-                        },
-                        "flow": {
-                            "type": "confirm",
-                            "title": "",
-                            "message": "Are you sure ?"
-                        }
+                    "button": {
+                        "label": "Disconnect",
+                        "icon": "exit_to_app",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "confirm",
+                        "title": "",
+                        "message": "Are you sure ?"
                     }
                 }
             }
@@ -149,12 +145,10 @@
                         }
                     }
                 },
-                "x-symfony-route": "app_api_tags_list",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "app_api_tags_list",
+                "x-draw-dashboard-action": {
                     "type": "list",
-                    "options": {
-                        "paginated": true
-                    }
+                    "paginated": true
                 }
             },
             "post": {
@@ -176,34 +170,32 @@
                         }
                     }
                 },
-                "x-symfony-route": "app_api_tags_create",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "app_api_tags_create",
+                "x-draw-dashboard-action": {
                     "type": "create",
-                    "options": {
-                        "button": {
-                            "label": "Create",
-                            "behaviours": []
-                        },
-                        "flow": {
-                            "type": "form",
-                            "buttons": [
-                                {
-                                    "label": "Cancel",
-                                    "style": "stroked-button",
-                                    "behaviours": [
-                                        "cancel"
-                                    ]
-                                },
-                                {
-                                    "label": "Save",
-                                    "style": "flat-button",
-                                    "color": "primary",
-                                    "behaviours": [
-                                        "submit"
-                                    ]
-                                }
-                            ]
-                        }
+                    "button": {
+                        "label": "Create",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit"
+                                ]
+                            }
+                        ]
                     }
                 }
             }
@@ -227,14 +219,12 @@
                         }
                     }
                 },
-                "x-symfony-route": "tag_get",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "tag_get",
+                "x-draw-dashboard-action": {
                     "type": "show",
-                    "options": {
-                        "button": {
-                            "label": "Show",
-                            "behaviours": []
-                        }
+                    "button": {
+                        "label": "Show",
+                        "behaviours": []
                     }
                 }
             },
@@ -263,35 +253,33 @@
                         }
                     }
                 },
-                "x-symfony-route": "app_api_tags_edit",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "app_api_tags_edit",
+                "x-draw-dashboard-action": {
                     "type": "edit",
-                    "options": {
-                        "button": {
-                            "label": "Edit",
-                            "icon": "edit",
-                            "behaviours": []
-                        },
-                        "flow": {
-                            "type": "form",
-                            "buttons": [
-                                {
-                                    "label": "Cancel",
-                                    "style": "stroked-button",
-                                    "behaviours": [
-                                        "cancel"
-                                    ]
-                                },
-                                {
-                                    "label": "Save",
-                                    "style": "flat-button",
-                                    "color": "primary",
-                                    "behaviours": [
-                                        "submit"
-                                    ]
-                                }
-                            ]
-                        }
+                    "button": {
+                        "label": "Edit",
+                        "icon": "edit",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit"
+                                ]
+                            }
+                        ]
                     }
                 }
             },
@@ -310,20 +298,18 @@
                         "description": "No result mean a success"
                     }
                 },
-                "x-symfony-route": "app_api_tags_delete",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "app_api_tags_delete",
+                "x-draw-dashboard-action": {
                     "type": "delete",
-                    "options": {
-                        "button": {
-                            "label": "Delete",
-                            "icon": "delete",
-                            "behaviours": []
-                        },
-                        "flow": {
-                            "type": "confirm",
-                            "title": "",
-                            "message": "Are you sure you want to delete the tag {{tag.label}} ?"
-                        }
+                    "button": {
+                        "label": "Delete",
+                        "icon": "delete",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "confirm",
+                        "title": "",
+                        "message": "Are you sure you want to delete the tag {{tag.label}} ?"
                     }
                 }
             }
@@ -367,12 +353,10 @@
                         }
                     }
                 },
-                "x-symfony-route": "app_api_users_list",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "app_api_users_list",
+                "x-draw-dashboard-action": {
                     "type": "list",
-                    "options": {
-                        "paginated": true
-                    }
+                    "paginated": true
                 }
             },
             "post": {
@@ -394,34 +378,32 @@
                         }
                     }
                 },
-                "x-symfony-route": "app_api_users_create",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "app_api_users_create",
+                "x-draw-dashboard-action": {
                     "type": "create",
-                    "options": {
-                        "button": {
-                            "label": "Create",
-                            "behaviours": []
-                        },
-                        "flow": {
-                            "type": "form",
-                            "buttons": [
-                                {
-                                    "label": "Cancel",
-                                    "style": "stroked-button",
-                                    "behaviours": [
-                                        "cancel"
-                                    ]
-                                },
-                                {
-                                    "label": "Save",
-                                    "style": "flat-button",
-                                    "color": "primary",
-                                    "behaviours": [
-                                        "submit"
-                                    ]
-                                }
-                            ]
-                        }
+                    "button": {
+                        "label": "Create",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit"
+                                ]
+                            }
+                        ]
                     }
                 }
             }
@@ -445,14 +427,12 @@
                         }
                     }
                 },
-                "x-symfony-route": "user_get",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "user_get",
+                "x-draw-dashboard-action": {
                     "type": "show",
-                    "options": {
-                        "button": {
-                            "label": "Show",
-                            "behaviours": []
-                        }
+                    "button": {
+                        "label": "Show",
+                        "behaviours": []
                     }
                 }
             },
@@ -481,35 +461,33 @@
                         }
                     }
                 },
-                "x-symfony-route": "app_api_users_edit",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "app_api_users_edit",
+                "x-draw-dashboard-action": {
                     "type": "edit",
-                    "options": {
-                        "button": {
-                            "label": "Edit",
-                            "icon": "edit",
-                            "behaviours": []
-                        },
-                        "flow": {
-                            "type": "form",
-                            "buttons": [
-                                {
-                                    "label": "Cancel",
-                                    "style": "stroked-button",
-                                    "behaviours": [
-                                        "cancel"
-                                    ]
-                                },
-                                {
-                                    "label": "Save",
-                                    "style": "flat-button",
-                                    "color": "primary",
-                                    "behaviours": [
-                                        "submit"
-                                    ]
-                                }
-                            ]
-                        }
+                    "button": {
+                        "label": "Edit",
+                        "icon": "edit",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit"
+                                ]
+                            }
+                        ]
                     }
                 }
             },
@@ -528,20 +506,18 @@
                         "description": "Empty response mean success."
                     }
                 },
-                "x-symfony-route": "user_delete",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "user_delete",
+                "x-draw-dashboard-action": {
                     "type": "delete",
-                    "options": {
-                        "button": {
-                            "label": "Delete",
-                            "icon": "delete",
-                            "behaviours": []
-                        },
-                        "flow": {
-                            "type": "confirm",
-                            "title": "",
-                            "message": "Are you sure you want to delete the user {{user.email}} ?"
-                        }
+                    "button": {
+                        "label": "Delete",
+                        "icon": "delete",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "confirm",
+                        "title": "",
+                        "message": "Are you sure you want to delete the user {{user.email}} ?"
                     }
                 }
             }
@@ -563,15 +539,13 @@
                         "description": "No return value mean email has been sent"
                     }
                 },
-                "x-symfony-route": "app_api_users_sendresetpasswordemail",
-                "x-draw-action": {
+                "x-draw-open-api-symfony-route": "app_api_users_sendresetpasswordemail",
+                "x-draw-dashboard-action": {
                     "type": "generic",
-                    "options": {
-                        "button": {
-                            "label": "Send forgot password email",
-                            "icon": "email",
-                            "behaviours": []
-                        }
+                    "button": {
+                        "label": "Send forgot password email",
+                        "icon": "email",
+                        "behaviours": []
                     }
                 }
             }
@@ -610,7 +584,7 @@
                         }
                     }
                 },
-                "x-symfony-route": "draw_openapi_tests_mock_test_create",
+                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_create",
                 "x-test": {
                     "key": "value",
                     "object": {
@@ -636,16 +610,16 @@
                 "username": {
                     "format": "not empty",
                     "type": "string",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "username",
                         "type": "email",
-                        "label": "email"
+                        "label": "Email"
                     }
                 },
                 "password": {
                     "format": "not empty",
                     "type": "string",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "password",
                         "type": "password"
                     }
@@ -665,14 +639,14 @@
                 },
                 "active": {
                     "type": "boolean",
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "active",
                         "isActive": true,
                         "sortable": true,
                         "visible": true,
                         "type": "boolean"
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "active",
                         "type": "checkbox"
                     }
@@ -681,13 +655,13 @@
                     "maxLength": 255,
                     "minLength": 3,
                     "type": "string",
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "label",
                         "isActive": true,
                         "visible": true,
                         "type": "simple"
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "label",
                         "type": "text"
                     }
@@ -700,7 +674,7 @@
             "properties": {
                 "id": {
                     "type": "string",
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "id",
                         "isActive": true,
                         "sortable": true,
@@ -713,7 +687,7 @@
                     "items": {
                         "$ref": "#/definitions/Tag"
                     },
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "tags",
                         "isActive": true,
                         "sortable": false,
@@ -725,16 +699,15 @@
                             }
                         }
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
+                        "id": "tags",
                         "type": "choices",
-                        "multiple": true,
-                        "repositoryMethod": "findActive",
-                        "id": "tags"
+                        "multiple": true
                     }
                 },
                 "level": {
                     "type": "string",
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "level",
                         "isActive": true,
                         "visible": true,
@@ -746,19 +719,32 @@
                             }
                         }
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
+                        "id": "level",
                         "type": "choices",
                         "multiple": false,
                         "choices": {
                             "User": "user",
                             "Admin": "admin"
+                        }
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "level",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "choices",
+                            "multiple": false,
+                            "choices": {
+                                "User": "user",
+                                "Admin": "admin"
+                            }
                         },
-                        "id": "level"
+                        "comparison": "="
                     }
                 },
                 "address": {
                     "$ref": "#/definitions/Address",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "address",
                         "type": "composite"
                     }
@@ -768,23 +754,23 @@
                     "items": {
                         "$ref": "#/definitions/UserAddress"
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
+                        "id": "userAddresses",
                         "type": "collection",
-                        "orderBy": "position",
-                        "id": "userAddresses"
+                        "orderBy": "position"
                     }
                 },
                 "email": {
                     "format": "not empty",
                     "type": "string",
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "email",
                         "isActive": true,
                         "sortable": true,
                         "visible": true,
                         "type": "email"
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "email",
                         "type": "email"
                     }
@@ -804,28 +790,28 @@
             "properties": {
                 "street": {
                     "type": "string",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "street",
                         "type": "text"
                     }
                 },
                 "postalCode": {
                     "type": "string",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "postalCode",
                         "type": "text"
                     }
                 },
                 "city": {
                     "type": "string",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "city",
                         "type": "text"
                     }
                 },
                 "country": {
                     "type": "string",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "country",
                         "type": "text"
                     }
@@ -839,7 +825,7 @@
                 "id": {
                     "format": "int32",
                     "type": "integer",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "id",
                         "type": "hidden"
                     }
@@ -849,7 +835,7 @@
                 },
                 "address": {
                     "$ref": "#/definitions/Address",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "address",
                         "type": "composite"
                     }
@@ -857,7 +843,7 @@
                 "position": {
                     "format": "int32",
                     "type": "integer",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "position",
                         "type": "hidden"
                     }
@@ -870,7 +856,7 @@
             "properties": {
                 "id": {
                     "type": "string",
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "id",
                         "isActive": true,
                         "sortable": true,
@@ -883,7 +869,7 @@
                     "items": {
                         "$ref": "#/definitions/Tag"
                     },
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "tags",
                         "isActive": true,
                         "sortable": false,
@@ -895,16 +881,15 @@
                             }
                         }
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
+                        "id": "tags",
                         "type": "choices",
-                        "multiple": true,
-                        "repositoryMethod": "findActive",
-                        "id": "tags"
+                        "multiple": true
                     }
                 },
                 "level": {
                     "type": "string",
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "level",
                         "isActive": true,
                         "visible": true,
@@ -916,19 +901,32 @@
                             }
                         }
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
+                        "id": "level",
                         "type": "choices",
                         "multiple": false,
                         "choices": {
                             "User": "user",
                             "Admin": "admin"
+                        }
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "level",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "choices",
+                            "multiple": false,
+                            "choices": {
+                                "User": "user",
+                                "Admin": "admin"
+                            }
                         },
-                        "id": "level"
+                        "comparison": "="
                     }
                 },
                 "address": {
                     "$ref": "#/definitions/Address",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "address",
                         "type": "composite"
                     }
@@ -938,23 +936,23 @@
                     "items": {
                         "$ref": "#/definitions/UserAddress?1"
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
+                        "id": "userAddresses",
                         "type": "collection",
-                        "orderBy": "position",
-                        "id": "userAddresses"
+                        "orderBy": "position"
                     }
                 },
                 "email": {
                     "format": "not empty",
                     "type": "string",
-                    "x-draw-column": {
+                    "x-draw-dashboard-column": {
                         "id": "email",
                         "isActive": true,
                         "sortable": true,
                         "visible": true,
                         "type": "email"
                     },
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "email",
                         "type": "email"
                     }
@@ -975,7 +973,7 @@
                 "id": {
                     "format": "int32",
                     "type": "integer",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "id",
                         "type": "hidden"
                     }
@@ -985,7 +983,7 @@
                 },
                 "address": {
                     "$ref": "#/definitions/Address",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "address",
                         "type": "composite"
                     }
@@ -993,7 +991,7 @@
                 "position": {
                     "format": "int32",
                     "type": "integer",
-                    "x-draw-form-input": {
+                    "x-draw-dashboard-form-input": {
                         "id": "position",
                         "type": "hidden"
                     }

@@ -3,7 +3,14 @@
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\DashboardBundle\Annotations\ActionCreate;
 use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;
+use Draw\Bundle\DashboardBundle\Annotations\ActionList;
+use Draw\Bundle\DashboardBundle\Annotations\Column;
 use Draw\Bundle\DashboardBundle\Annotations\ConfirmFlow;
+use Draw\Bundle\DashboardBundle\Annotations\Filter;
+use Draw\Bundle\DashboardBundle\Annotations\FormInput;
+use Draw\Bundle\DashboardBundle\Annotations\FormInputChoices;
+use Draw\Bundle\DashboardBundle\Annotations\FormInputCollection;
+use Draw\Bundle\DashboardBundle\Annotations\FormInputComposite;
 use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Root;
@@ -47,32 +54,33 @@ class OptionActionListener implements EventSubscriberInterface
     public function buildOption(OptionBuilderEvent $event)
     {
         $action = $event->getAction();
-        $options = $event->getOptions();
 
-        if (empty($action->flow)) {
+        if (is_null($flow = $action->getFlow())) {
             return;
         }
 
         $request = $event->getRequest();
-        if ($action->flow instanceof ConfirmFlow) {
-            $action->flow->message = $this->renderStringTemplate(
-                $action->flow->message,
-                $request->attributes->all()
+        if ($flow instanceof ConfirmFlow) {
+            $flow->setMessage(
+                $this->renderStringTemplate(
+                    $flow->getMessage(),
+                    $request->attributes->all()
+                )
             );
 
-            $action->flow->title = $this->renderStringTemplate(
-                $action->flow->title,
-                $request->attributes->all()
+            $flow->setTitle(
+                $this->renderStringTemplate(
+                    $flow->getTitle(),
+                    $request->attributes->all()
+                )
             );
         }
-
-        $options->set('flow', $action->flow);
     }
 
     public function buildOptionForList(OptionBuilderEvent $event)
     {
         $action = $event->getAction();
-        if ($action->getType() !== 'list') {
+        if (!$action instanceof ActionList) {
             return;
         }
 
@@ -90,30 +98,39 @@ class OptionActionListener implements EventSubscriberInterface
         $item = $openApiSchema->resolveSchema($item);
 
         $columns = [];
+        $filters = [];
         foreach ($item->properties as $property) {
-            $column = $property->vendor['x-draw-column'] ?? null;
-            if (!$column) {
-                continue;
+            $column = $property->vendor['x-draw-dashboard-column'] ?? null;
+            if ($column instanceof Column) {
+                if (is_null($column->getLabel())) {
+                    $column->setLabel($column->getId());
+                }
+                $columns[] = $column;
             }
-            if(!isset($column['label'])) {
-                $column['label'] = $column['id'];
+
+            $filter = $property->vendor['x-draw-dashboard-filter'] ?? null;
+            if ($filter instanceof Filter) {
+                if ($input = $filter->getInput()) {
+                    if (is_null($input->getId())) {
+                        $input->setId($filter->getId());
+                    }
+                    if (is_null($input->getLabel())) {
+                        $input->setLabel($input->getId());
+                    }
+                }
+                $filters[] = $filter;
             }
-            $columns[] = $column;
         }
 
-        $columns[] = [
-            'id' => '_actions',
-            'type' => 'actions',
-            'label' => 'Actions'
-        ];
+        $columns[] = new Column(['id' => '_actions', 'type' => 'actions', 'label' => 'actions']);
 
-        $event->getOptions()->set('columns', $columns);
+        $action->setColumns($columns);
     }
 
     public function buildOptionForCreateEdit(OptionBuilderEvent $event)
     {
         $action = $event->getAction();
-        if (!in_array($action->getType(), [ActionCreate::TYPE, ActionEdit::TYPE])) {
+        if (!$action instanceof ActionCreate && !$action instanceof ActionEdit) {
             return;
         }
 
@@ -134,10 +151,8 @@ class OptionActionListener implements EventSubscriberInterface
         $openApiSchema = $event->getOpenApiSchema();
         $item = $openApiSchema->resolveSchema($bodyParameter->schema);
 
-        $options = $event->getOptions();
-
-        foreach($this->loadFormInputs($item, $openApiSchema) as $key => $value) {
-            $options->set($key, $value);
+        foreach ($this->loadFormInputs($item, $openApiSchema) as $key => $value) {
+            $action->{'set' . $key}($value);
         }
     }
 
@@ -146,54 +161,56 @@ class OptionActionListener implements EventSubscriberInterface
         $objectSchema = $openApiSchema->resolveSchema($objectSchema);
         $inputs = [];
         foreach ($objectSchema->properties as $property) {
-            $input = $property->vendor['x-draw-form-input'] ?? null;
-            if (!$input) {
+            $input = $property->vendor['x-draw-dashboard-form-input'] ?? null;
+            if (!$input instanceof FormInput) {
                 continue;
             }
 
-            if(!isset($input['label'])) {
-                $input['label'] = $input['id'];
+            if (!$input->getLabel()) {
+                $input->setLabel($input->getId());
             }
 
-            if ($input['type'] === 'choices' && empty($input['choices'])) {
-                $input['choices'] = $this->loadChoices($input, $objectSchema, $property, $openApiSchema);
-                $input['sourceCompareKeys'] = ['id']; //todo make this dynamic
+            if ($input instanceof FormInputChoices && is_null($input->getChoices())) {
+                $input->setChoices($this->loadChoices($input, $objectSchema, $property, $openApiSchema));
+                $input->setSourceCompareKeys(['id']); //todo make this dynamic
             }
 
-            if($input['type'] === 'composite') {
-                $input['subForm'] = $this->loadSubForm($input, $objectSchema, $property, $openApiSchema);
+            if ($input instanceof FormInputComposite) {
+                $input->setSubForm($this->loadSubForm($input, $objectSchema, $property, $openApiSchema));
             }
 
-            if($input['type'] === 'collection') {
-                $input['subForm'] = $this->loadSubForm(
+            if ($input instanceof FormInputCollection) {
+                $input->setSubForm($this->loadSubForm(
                     $input,
                     $objectSchema,
                     $openApiSchema->resolveSchema($property->items),
                     $openApiSchema
-                );
+                ));
             }
 
             $inputs[] = $input;
         }
 
-        $object = (new \ReflectionClass($objectSchema->getVendorData()['x-draw-dashboard-class-name']))->newInstance();
-        $default = json_decode($this->serializer->serialize($object, 'json'));
+        $default = (new \ReflectionClass($objectSchema->getVendorData()['x-draw-dashboard-class-name']))->newInstance();
         return compact('inputs', 'default');
     }
 
-    private function loadSubForm(array $input, Schema $schema, Schema $property, Root $openApiSchema)
+    private function loadSubForm(FormInput $input, Schema $schema, Schema $property, Root $openApiSchema)
     {
         return $this->loadFormInputs($property, $openApiSchema);
     }
 
-    private function loadChoices(array $input, Schema $schema, Schema $property, Root $openApiSchema)
+    private function loadChoices(FormInputChoices $input, Schema $schema, Schema $property, Root $openApiSchema)
     {
+        if (is_null($input->getRepositoryMethod())) {
+            $input->setRepositoryMethod('findAll');
+        }
         $target = $openApiSchema->resolveSchema($property->items);
         $targetClass = $target->getVendorData()['x-draw-dashboard-class-name'];
         $objects = $this->managerRegistry
             ->getManagerForClass($targetClass)
             ->getRepository($targetClass)
-            ->{$input['repositoryMethod'] ?? 'findAll'}();
+            ->{$input->getRepositoryMethod()}();
 
         $choices = [];
         foreach ($objects as $object) {

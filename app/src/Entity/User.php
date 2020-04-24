@@ -79,6 +79,11 @@ class User implements SecurityUserInterface
      * @Dashboard\FormInputChoices(
      *     choices={"User":"user", "Admin":"admin"}
      * )
+     *
+     * @Dashboard\Filter(
+     *     input=@Dashboard\FormInputChoices(choices={"User":"user", "Admin":"admin"}),
+     *     comparison="="
+     * )
      */
     private $level = 'user';
 
@@ -89,9 +94,7 @@ class User implements SecurityUserInterface
      *
      * @Assert\Valid()
      *
-     * @Dashboard\FormInput(
-     *     type="composite"
-     * )
+     * @Dashboard\FormInputComposite()
      */
     private $address;
 

@@ -25,7 +25,10 @@ class UsersControllerTest extends TestCase
     public function testUsersAction_options()
     {
         $this->httpTester()
-            ->options('/api/users')
+            ->options(
+                '/api/users',
+                ['X-Draw-Dashboard-Methods' => 'GET,POST']
+            )
             ->assertStatus(200)
             ->toJsonDataTester()
             ->test(
@@ -52,12 +55,12 @@ class UsersControllerTest extends TestCase
     {
         $this->connect();
         $this->httpTester()
-            ->options('/api/users')
+            ->options('/api/users', ['X-Draw-Dashboard-Methods' => 'POST'])
             ->assertStatus(200)
             ->toJsonDataTester()
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/UsersControllerTest_testUsersAction_options_connected.json'
+                    __DIR__ . '/fixtures/UsersControllerTest_testOptionsCreateUser_connected.json'
                 )
             );
     }
