@@ -1,6 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use Draw\Bundle\DashboardBundle\BaseAnnotation;
+use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
+use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\VendorInterface;
 use JMS\Serializer\Annotation as Serializer;
 
@@ -35,13 +36,34 @@ class Action extends BaseAnnotation implements VendorInterface
 
     /**
      * @var string|null
+     *
+     * @Serializer\Exclude()
+     */
+    private $routeName;
+
+    /**
+     * @var string|null
      */
     private $href = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Exclude()
+     */
+    private $path = null;
+
+    /**
+     * @var string|null
      */
     private $method = null;
+
+    /**
+     * @var Operation|null
+     *
+     * @Serializer\Exclude()
+     */
+    private $operation;
 
     /**
      * The class that are a target of this action. Only use by the backend.
@@ -120,7 +142,7 @@ class Action extends BaseAnnotation implements VendorInterface
 
     public function setMethod(?string $method): void
     {
-        $this->method = $method;
+        $this->method = ($method ? strtoupper($method) : null);
     }
 
     public function getTargets(): array
@@ -131,5 +153,35 @@ class Action extends BaseAnnotation implements VendorInterface
     public function setTargets(array $targets): void
     {
         $this->targets = $targets;
+    }
+
+    public function getRouteName(): ?string
+    {
+        return $this->routeName;
+    }
+
+    public function setRouteName(?string $routeName): void
+    {
+        $this->routeName = $routeName;
+    }
+
+    public function getOperation(): ?Operation
+    {
+        return $this->operation;
+    }
+
+    public function setOperation(?Operation $operation): void
+    {
+        $this->operation = $operation;
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): void
+    {
+        $this->path = $path;
     }
 }

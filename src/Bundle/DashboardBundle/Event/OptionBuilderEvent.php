@@ -13,23 +13,17 @@ class OptionBuilderEvent extends Event
 
     private $openApiSchema;
 
-    private $operation;
-
-    private $options;
-
     private $request;
 
     private $response;
 
     public function __construct(
         Action $action,
-        Operation $operation,
         Root $openApiSchema,
         Request $request,
         Response $response
     ) {
         $this->action = $action;
-        $this->operation = $operation;
         $this->openApiSchema = $openApiSchema;
         $this->request = $request;
         $this->response = $response;
@@ -47,7 +41,7 @@ class OptionBuilderEvent extends Event
 
     public function getOperation(): Operation
     {
-        return $this->operation;
+        return $this->getAction()->getOperation();
     }
 
     public function getRequest(): Request

@@ -1,10 +1,8 @@
 <?php namespace Draw\Bundle\DashboardBundle\Serializer;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Draw\Bundle\DashboardBundle\Annotations\Action;
+use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Controller\OptionsController;
-use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
-use Draw\Component\OpenApi\Schema\Root;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
@@ -15,7 +13,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EntityActionsSubscriber implements EventSubscriberInterface
 {
-    private $openApiController;
+    private $actionFinder;
 
     private $urlGenerator;
 
@@ -37,13 +35,13 @@ class EntityActionsSubscriber implements EventSubscriberInterface
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         OptionsController $optionsController,
-        OpenApiController $openApiController,
-        ManagerRegistry $managerRegistry
+        ManagerRegistry $managerRegistry,
+        ActionFinder $actionFinder
     ) {
         $this->optionsController = $optionsController;
         $this->urlGenerator = $urlGenerator;
-        $this->openApiController = $openApiController;
         $this->managerRegistry = $managerRegistry;
+        $this->actionFinder = $actionFinder;
     }
 
     public function postSerialize(ObjectEvent $objectEvent): void
@@ -53,21 +51,19 @@ class EntityActionsSubscriber implements EventSubscriberInterface
         $visitor = $objectEvent->getVisitor();
 
         $isManaged = false;
-        if($manager = $this->managerRegistry->getManagerForClass(get_class($object))) {
+        if ($manager = $this->managerRegistry->getManagerForClass(get_class($object))) {
             $isManaged = $manager->contains($object);
         }
 
-        if(!$isManaged) {
+        if (!$isManaged) {
             return;
         }
 
-        $actionsInfo = $this->getActions($object, $this->openApiController->loadOpenApiSchema());
-        $links = [];
+        $actions = [];
 
-        foreach ($actionsInfo as $actionInfo) {
-            /** @var Action $action */
-            list($method, $routeName, $action, $operation) = $actionInfo;
-
+        foreach ($this->actionFinder->findAllByByTarget($object) as $action) {
+            $routeName = $action->getRouteName();
+            $method = strtoupper($action->getMethod());
             $path = $this->urlGenerator->generate(
                 $routeName,
                 ['id' => $object->getId()],
@@ -75,57 +71,19 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             );
 
             /** @var Response $response */
-            list(,$response) = $this->optionsController->dummyHandling($method, $path);
+            list(, $response) = $this->optionsController->dummyHandling($method, $path);
 
-            if($response->getStatusCode() === 403) {
+            if ($response->getStatusCode() === 403) {
                 continue;
             }
 
-            $links[] = [
-                'rel' => 'self',
-                'href' => $path,
-                'method' => strtoupper($method),
-                'x-draw-dashboard-action' => $action
-            ];
+            $action->setHref($path);
+            $actions[] = $action;
         }
 
-        if ($links) {
-            $visitor->visitProperty(
-                new StaticPropertyMetadata('', '_links', $links),
-                $links
-            );
-        }
-    }
-
-    /**
-     * @param $object
-     * @param Root $rootSchema
-     * @return array
-     */
-    private function getActions($object, Root $rootSchema): iterable
-    {
-        foreach ($rootSchema->paths as $pathItem) {
-            foreach ($pathItem->getOperations() as $method => $operation) {
-                $routeName = $operation->getVendorData()['x-draw-open-api-symfony-route'] ?? null;
-                if (is_null($routeName)) {
-                    continue;
-                }
-
-                /** @var Action $action */
-                $action = $operation->getVendorData()['x-draw-dashboard-action'] ?? null;
-                if (is_null($action) || !$action instanceof Action) {
-                    continue;
-                }
-
-                foreach ($action->getTargets() as $target) {
-                    if (!$object instanceof $target) {
-                        continue;
-                    }
-
-                    yield [$method, $routeName, $action, $operation];
-                    break;
-                }
-            }
-        }
+        $visitor->visitProperty(
+            new StaticPropertyMetadata('', '_actions', $actions),
+            $actions
+        );
     }
 }

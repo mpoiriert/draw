@@ -1,7 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
-use Draw\Bundle\DashboardBundle\BaseAnnotation;
+use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
 use JMS\Serializer\Annotation as Serializer;
 
 /**

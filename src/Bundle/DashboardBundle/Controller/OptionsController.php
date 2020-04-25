@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Controller;
 
+use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
 use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
@@ -32,8 +33,11 @@ class OptionsController
 
     private $urlGenerator;
 
+    private $actionFinder;
+
     public function __construct(
         OpenApiController $openApiController,
+        ActionFinder $actionFinder,
         RouterInterface $router,
         HttpKernelInterface $kernel,
         EventDispatcherInterface $eventDispatcher,
@@ -41,6 +45,7 @@ class OptionsController
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->openApiController = $openApiController;
+        $this->actionFinder = $actionFinder;
         $this->router = $router;
         $this->kernel = $kernel;
         $this->eventDispatcher = $eventDispatcher;
@@ -139,20 +144,12 @@ class OptionsController
 
         $body = [];
         foreach ($validRoutes as $method => $route) {
-            $context->setMethod($method);
-
-            if (is_null($pathItem = $openApiSchema->paths[$route->getPath()] ?? null)) {
-                continue;
-            }
-
-            if (is_null($operation = $pathItem->getOperations()[strtolower($method)] ?? null)) {
-                continue;
-            }
-
-            $action = $operation->vendor['x-draw-dashboard-action'] ?? null;
+            $action = $this->actionFinder->findOneByPath($method, $route->getPath());
             if (!$action instanceof Action) {
                 continue;
             }
+
+            $context->setMethod($method);
 
             list($subRequest, $response) = $this->dummyHandling($method, $pathInfo, $request);
 
@@ -160,20 +157,18 @@ class OptionsController
                 continue;
             }
 
+            $action->setHref($this->getBasePath() . $pathInfo);
+
             $body[$method] = ['x-draw-dashboard-action' => $action];
 
             $this->eventDispatcher->dispatch(
                 new OptionBuilderEvent(
                     $action,
-                    $operation,
                     $openApiSchema,
                     $subRequest,
                     $response
                 )
             );
-
-            $action->setHref($this->getBasePath() . $pathInfo);
-            $action->setMethod($method);
         }
 
         return $body;

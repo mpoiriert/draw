@@ -1,7 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Controller;
 
+use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
-use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -10,13 +10,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
 {
-    private $openApiController;
+    private $actionFinder;
 
     private $optionsController;
 
-    public function __construct(OpenApiController $openApiController, OptionsController $optionsController)
+    public function __construct(
+        OptionsController $optionsController,
+        ActionFinder $actionFinder
+    )
     {
-        $this->openApiController = $openApiController;
+        $this->actionFinder = $actionFinder;
         $this->optionsController = $optionsController;
     }
 
@@ -96,32 +99,26 @@ class DashboardController extends AbstractController
 
     private function getActionInformation($operationId, Request $request): ?Action
     {
-        $schema = $this->openApiController->loadOpenApiSchema();
-        foreach ($schema->paths as $path => $pathItem) {
-            foreach ($pathItem->getOperations() as $method => $operation) {
-                if ($operation->operationId !== $operationId) {
-                    continue;
-                }
-
-                $method = strtoupper($method);
-
-                $routeInformation = $this->optionsController->loadOption(
-                    $path,
-                    $request,
-                    [$method]
-                );
-
-                /** @var Action $action */
-                switch (true) {
-                    case is_null($information = $routeInformation[$method] ?? null):
-                    case is_null($action = $information['x-draw-dashboard-action'] ?? null):
-                    case !$action instanceof Action:
-                    case $action->getAccessDenied():
-                        return null;
-                }
-
-                return $action;
-            }
+        $action = $this->actionFinder->findOneByOperationId($operationId);
+        if(is_null($action)) {
+            return null;
         }
+
+        $routeInformation = $this->optionsController->loadOption(
+            $action->getPath(),
+            $request,
+            [$action->getMethod()]
+        );
+
+        /** @var Action $action */
+        switch (true) {
+            case is_null($information = $routeInformation[$action->getMethod()] ?? null):
+            case is_null($action = $information['x-draw-dashboard-action'] ?? null):
+            case !$action instanceof Action:
+            case $action->getAccessDenied():
+                return null;
+        }
+
+        return $action;
     }
 }

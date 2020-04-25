@@ -1,4 +1,4 @@
-<?php namespace Draw\Bundle\DashboardBundle;
+<?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
 class BaseAnnotation
 {
