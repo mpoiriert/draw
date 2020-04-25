@@ -106,7 +106,7 @@ class ConnectionTokensController extends AbstractController
     }
 
     /**
-     * @Route(name="connection_clear", methods={"POST"}, path="/connection-tokens/current")
+     * @Route(name="connection_clear", methods={"DELETE"}, path="/connection-tokens/current")
      *
      * @OpenApi\Operation(
      *     tags="Security",

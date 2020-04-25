@@ -28,5 +28,8 @@
         "phpunit/phpunit": "^7.0",
         "sensio/framework-extra-bundle": "^5.0",
         "draw/tester": "^0.6"
+    },
+    "suggest": {
+        "nelmio/cors-bundle": "If you have a api exposed for browser on different domain/sub-domain you might need cors."
     }
 }

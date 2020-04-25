@@ -4,7 +4,6 @@ use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
 use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,13 +49,16 @@ class OptionsController
     }
 
     /**
-     * @Route(name="draw_dashboard_options", methods={"OPTIONS"}, path="/{req}", requirements={"req":".+"})
+     * @Route(
+     *     name="draw_dashboard_options",
+     *     methods={"OPTIONS"},
+     *     path="/{req}",
+     *     requirements={"req":".+"}
+     * )
      */
     public function __invoke(Request $request)
     {
-        if ($methods = $request->headers->get('X-Draw-Dashboard-Methods', null)) {
-            $methods = explode(',', $methods);
-        }
+        $methods = array_filter(explode(',', $request->headers->get('X-Draw-Dashboard-Methods', '')));
 
         $originalContext = $this->router->getContext();
         try {
@@ -155,7 +157,6 @@ class OptionsController
             list($subRequest, $response) = $this->dummyHandling($method, $pathInfo, $request);
 
             if ($response->getStatusCode() === 403) {
-                $action->setAccessDenied(true);
                 continue;
             }
 

@@ -25,7 +25,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->append($this->createOpenApiNode())
                 ->append($this->createDoctrineNode())
-                ->append($this->createCorsNode())
                 ->append($this->createRequestNode())
                 ->append($this->createResponseNode())
             ->end();
@@ -41,25 +40,6 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('cleanOnDump')->defaultTrue()->end()
                 ->append($this->createSchemaNode())
                 ->append($this->createDefinitionAliasesNode())
-            ->end();
-    }
-
-    private function createCorsNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('cors'))
-            ->canBeEnabled()
-            ->children()
-                ->arrayNode('exposedHeaders')
-                    ->defaultValue([])
-                    ->scalarPrototype()->end()
-                ->end()
-                ->arrayNode('allowedHeaders')
-                    ->defaultValue([])
-                    ->scalarPrototype()->end()
-                ->end()
-                ->booleanNode('allowCredentials')->defaultTrue()->end()
-                ->booleanNode('allowAllOrigins')->defaultTrue()->end()
-                ->booleanNode('allowAllHeaders')->defaultFalse()->end()
             ->end();
     }
 

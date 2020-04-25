@@ -1,13 +1,4 @@
 draw_open_api:
-  cors:
-    exposedHeaders:
-      - 'location'
-      - 'X-Draw-Feedback'
-    allowedHeaders:
-      - 'X-Client-Version'
-      - 'Content-Type'
-      - 'Authorization'
-      -
   openApi:
     schema:
       info:

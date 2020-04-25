@@ -31,7 +31,6 @@ class DrawOpenApiExtension extends ConfigurableExtension
         $this->configDoctrine($config['doctrine'], $loader, $container);
         $this->configResponse($config['response'], $loader, $container);
         $this->configRequest($config['request'], $loader, $container);
-        $this->configCors($config['cors'], $loader, $container);
     }
 
     private function configOpenApi(array $config, LoaderInterface $loader, ContainerBuilder $container)
@@ -128,20 +127,6 @@ class DrawOpenApiExtension extends ConfigurableExtension
         if (!$config['bodyDeserialization']['enabled']) {
             $container->removeDefinition(RequestBodyParamConverter::class);
         }
-    }
-
-    private function configCors(array $config, LoaderInterface $loader, ContainerBuilder $container)
-    {
-        if (!$config['enabled']) {
-            return;
-        }
-
-        $container->setParameter('draw_open_api.cors.exposed_headers', $config['exposedHeaders']);
-        $container->setParameter('draw_open_api.cors.allowed_headers', $config['allowedHeaders']);
-        $container->setParameter('draw_open_api.cors.allow_credentials', $config['allowCredentials']);
-        $container->setParameter('draw_open_api.cors.allow_all_origins', $config['allowAllOrigins']);
-        $container->setParameter('draw_open_api.cors.allow_all_headers', $config['allowAllHeaders']);
-        $loader->load('cors.xml');
     }
 
     private function configDoctrine(array $config, LoaderInterface $loader, ContainerBuilder $container)

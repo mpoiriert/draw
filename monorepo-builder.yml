@@ -27,6 +27,7 @@ parameters:
       pelago/emogrifier: "^3.0"
       symfony/dotenv: "^4.3"
       symplify/monorepo-builder: "^7.2"
+      nelmio/cors-bundle: "^2.0"
 
   package_directories:
     - 'src/Bundle'

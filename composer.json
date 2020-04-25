@@ -54,7 +54,8 @@
         "symfony/debug-pack": "^1.0",
         "symfony/dependency-injection": "^4.3",
         "symfony/dotenv": "^4.3",
-        "symplify/monorepo-builder": "^7.2"
+        "symplify/monorepo-builder": "^7.2",
+        "nelmio/cors-bundle": "^2.0"
     },
     "autoload": {
         "psr-4": {
