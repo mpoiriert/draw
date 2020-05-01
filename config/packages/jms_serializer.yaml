@@ -5,6 +5,10 @@ parameters:
         - JSON_PRESERVE_ZERO_FRACTION
 
 jms_serializer:
+    handlers:
+        datetime:
+            default_format: 'Y-m-d\TH:i:s.u\Z'
+
     visitors:
         json_serialization:
             options: '%jms_serializer.json.visitors.options%'

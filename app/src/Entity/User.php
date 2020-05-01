@@ -116,6 +116,15 @@ class User implements SecurityUserInterface
      */
     private $userAddresses;
 
+    /**
+     * @var \DateTimeImmutable|null
+     *
+     * @ORM\Column(name="date_of_birth", type="datetime_immutable", nullable=true)
+     *
+     * @Dashboard\FormInputDatePicker()
+     */
+    private $dateOfBirth;
+
     public function __construct()
     {
         $this->address = new Address();
@@ -223,5 +232,15 @@ class User implements SecurityUserInterface
         if ($this->userAddresses->contains($userAddress)) {
             $this->userAddresses->removeElement($userAddress);
         }
+    }
+
+    public function getDateOfBirth(): ?\DateTimeImmutable
+    {
+        return $this->dateOfBirth;
+    }
+
+    public function setDateOfBirth(?\DateTimeImmutable $dateOfBirth): void
+    {
+        $this->dateOfBirth = $dateOfBirth;
     }
 }
