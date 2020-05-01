@@ -214,7 +214,12 @@ class OptionActionListener implements EventSubscriberInterface
 
         $choices = [];
         foreach ($objects as $object) {
-            $choices[(string)$object] = ['id' => $object->getId()];//todo make this dynamic
+            $choices[] = [
+                'label' => (string)$object,
+                'value' => [
+                    'id' => $object->getId()//todo make this dynamic
+                ]
+            ];
         }
 
         return $choices;

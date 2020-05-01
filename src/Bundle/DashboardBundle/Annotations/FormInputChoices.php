@@ -28,6 +28,8 @@ class FormInputChoices extends FormInput
 
     /**
      * @var array|null
+     *
+     * @Serializer\SerializedName("sourceCompareKeys")
      */
     private $sourceCompareKeys = null;
 

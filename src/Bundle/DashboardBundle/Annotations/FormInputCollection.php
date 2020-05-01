@@ -1,5 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * @Annotation
  */
@@ -9,9 +11,14 @@ class FormInputCollection extends FormInput
 
     /**
      * @var string|null
+     *
+     * @Serializer\SerializedName("orderBy")
      */
     private $orderBy = null;
 
+    /**
+     * @Serializer\SerializedName("subForm")
+     */
     private $subForm;
 
     public function getOrderBy(): ?string
