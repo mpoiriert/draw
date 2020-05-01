@@ -205,7 +205,13 @@ class OptionActionListener implements EventSubscriberInterface
         if (is_null($input->getRepositoryMethod())) {
             $input->setRepositoryMethod('findAll');
         }
-        $target = $openApiSchema->resolveSchema($property->items);
+
+        if(!is_null($property->items)) {
+            $target = $openApiSchema->resolveSchema($property->items);
+        } else {
+            $target = $openApiSchema->resolveSchema($property);
+        }
+
         $targetClass = $target->getVendorData()['x-draw-dashboard-class-name'];
         $objects = $this->managerRegistry
             ->getManagerForClass($targetClass)
