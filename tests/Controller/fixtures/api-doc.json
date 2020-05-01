@@ -80,7 +80,7 @@
             }
         },
         "/api/connection-tokens/current": {
-            "post": {
+            "delete": {
                 "tags": [
                     "Security"
                 ],
@@ -760,6 +760,14 @@
                         "orderBy": "position"
                     }
                 },
+                "dateOfBirth": {
+                    "format": "date-time",
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "dateOfBirth",
+                        "type": "date-picker"
+                    }
+                },
                 "email": {
                     "format": "not empty",
                     "type": "string",
@@ -940,6 +948,14 @@
                         "id": "userAddresses",
                         "type": "collection",
                         "orderBy": "position"
+                    }
+                },
+                "dateOfBirth": {
+                    "format": "date-time",
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "dateOfBirth",
+                        "type": "date-picker"
                     }
                 },
                 "email": {

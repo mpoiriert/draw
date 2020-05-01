@@ -50,11 +50,14 @@
           "label": "Tags",
           "icon": null,
           "multiple": true,
-          "choices": {
-            "Admin": {
-              "id": 1
+          "choices": [
+            {
+              "label": "Admin",
+              "value": {
+                "id": 1
+              }
             }
-          },
+          ],
           "sourceCompareKeys": [
             "id"
           ]
@@ -186,6 +189,12 @@
           }
         },
         {
+          "id": "dateOfBirth",
+          "type": "date-picker",
+          "label": "dateOfBirth",
+          "icon": null
+        },
+        {
           "id": "email",
           "type": "email",
           "label": "Email",
@@ -203,6 +212,7 @@
           "country": ""
         },
         "userAddresses": [],
+        "dateOfBirth": null,
         "email": null,
         "plainPassword": null,
         "passwordUpdatedAt": null
