@@ -62,6 +62,42 @@
           "type": "actions",
           "options": null
         }
+      ],
+      "filters": [
+        {
+          "id": "id",
+          "alwaysShow": true,
+          "input": {
+            "id": "id",
+            "type": "text",
+            "label": "#",
+            "icon": null
+          },
+          "comparison": "="
+        },
+        {
+          "id": "level",
+          "alwaysShow": true,
+          "input": {
+            "id": "level",
+            "type": "choices",
+            "label": "Niveau d'acc\u00e8s",
+            "icon": null,
+            "multiple": true,
+            "choices": [
+              {
+                "label": "User",
+                "value": "user"
+              },
+              {
+                "label": "Admin",
+                "value": "admin"
+              }
+            ],
+            "sourceCompareKeys": null
+          },
+          "comparison": "IN"
+        }
       ]
     }
   }

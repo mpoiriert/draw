@@ -148,7 +148,9 @@
                 "x-draw-open-api-symfony-route": "app_api_tags_list",
                 "x-draw-dashboard-action": {
                     "type": "list",
-                    "paginated": true
+                    "paginated": true,
+                    "columns": [],
+                    "filters": []
                 }
             },
             "post": {
@@ -356,7 +358,9 @@
                 "x-draw-open-api-symfony-route": "app_api_users_list",
                 "x-draw-dashboard-action": {
                     "type": "list",
-                    "paginated": true
+                    "paginated": true,
+                    "columns": [],
+                    "filters": []
                 }
             },
             "post": {
@@ -680,6 +684,14 @@
                         "sortable": true,
                         "visible": true,
                         "type": "simple"
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "id",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "text"
+                        },
+                        "comparison": "="
                     }
                 },
                 "tags": {
@@ -723,23 +735,35 @@
                         "id": "level",
                         "type": "choices",
                         "multiple": false,
-                        "choices": {
-                            "User": "user",
-                            "Admin": "admin"
-                        }
+                        "choices": [
+                            {
+                                "label": "User",
+                                "value": "user"
+                            },
+                            {
+                                "label": "Admin",
+                                "value": "admin"
+                            }
+                        ]
                     },
                     "x-draw-dashboard-filter": {
                         "id": "level",
                         "alwaysShow": true,
                         "input": {
                             "type": "choices",
-                            "multiple": false,
-                            "choices": {
-                                "User": "user",
-                                "Admin": "admin"
-                            }
+                            "multiple": true,
+                            "choices": [
+                                {
+                                    "label": "User",
+                                    "value": "user"
+                                },
+                                {
+                                    "label": "Admin",
+                                    "value": "admin"
+                                }
+                            ]
                         },
-                        "comparison": "="
+                        "comparison": "IN"
                     }
                 },
                 "address": {
@@ -790,6 +814,19 @@
                     "format": "date-time",
                     "type": "string"
                 }
+            },
+            "x-draw-dashboard-form-layout": {
+                "type": "grid-list",
+                "cols": 1,
+                "tiles": [
+                    {
+                        "colspan": 1,
+                        "rowspan": 1,
+                        "inputs": [
+                            "*"
+                        ]
+                    }
+                ]
             },
             "x-draw-dashboard-class-name": "App\\Entity\\User"
         },
@@ -870,6 +907,14 @@
                         "sortable": true,
                         "visible": true,
                         "type": "simple"
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "id",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "text"
+                        },
+                        "comparison": "="
                     }
                 },
                 "tags": {
@@ -913,23 +958,35 @@
                         "id": "level",
                         "type": "choices",
                         "multiple": false,
-                        "choices": {
-                            "User": "user",
-                            "Admin": "admin"
-                        }
+                        "choices": [
+                            {
+                                "label": "User",
+                                "value": "user"
+                            },
+                            {
+                                "label": "Admin",
+                                "value": "admin"
+                            }
+                        ]
                     },
                     "x-draw-dashboard-filter": {
                         "id": "level",
                         "alwaysShow": true,
                         "input": {
                             "type": "choices",
-                            "multiple": false,
-                            "choices": {
-                                "User": "user",
-                                "Admin": "admin"
-                            }
+                            "multiple": true,
+                            "choices": [
+                                {
+                                    "label": "User",
+                                    "value": "user"
+                                },
+                                {
+                                    "label": "Admin",
+                                    "value": "admin"
+                                }
+                            ]
                         },
-                        "comparison": "="
+                        "comparison": "IN"
                     }
                 },
                 "address": {
@@ -980,6 +1037,19 @@
                     "format": "date-time",
                     "type": "string"
                 }
+            },
+            "x-draw-dashboard-form-layout": {
+                "type": "grid-list",
+                "cols": 1,
+                "tiles": [
+                    {
+                        "colspan": 1,
+                        "rowspan": 1,
+                        "inputs": [
+                            "*"
+                        ]
+                    }
+                ]
             },
             "x-draw-dashboard-class-name": "App\\Entity\\User"
         },

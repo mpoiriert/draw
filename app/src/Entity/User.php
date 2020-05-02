@@ -18,6 +18,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  *
  * @UniqueEntity(fields={"email"})
+ *
+ * @Dashboard\FormLayout\GridList(
+ *     cols=1,
+ *     tiles={
+ *       @Dashboard\FormLayout\GridListTile(inputs={"*"})
+ *     }
+ * )
  */
 class User implements SecurityUserInterface
 {
@@ -38,6 +45,8 @@ class User implements SecurityUserInterface
      * )
      *
      * @Serializer\ReadOnly()
+     *
+     * @Dashboard\Filter()
      */
     private $id;
 
@@ -81,8 +90,8 @@ class User implements SecurityUserInterface
      * )
      *
      * @Dashboard\Filter(
-     *     input=@Dashboard\FormInputChoices(choices={"User":"user", "Admin":"admin"}),
-     *     comparison="="
+     *     input=@Dashboard\FormInputChoices(choices={"User":"user", "Admin":"admin"}, multiple=true),
+     *     comparison="IN"
      * )
      */
     private $level = 'user';
@@ -139,7 +148,7 @@ class User implements SecurityUserInterface
      */
     public function getId()
     {
-        if(is_null($this->id)) {
+        if (is_null($this->id)) {
             $this->id = Uuid::uuid4()->toString();
         }
 

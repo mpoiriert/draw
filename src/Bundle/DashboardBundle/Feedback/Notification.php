@@ -1,4 +1,4 @@
-<?php namespace Draw\Bundle\DashboardBundle\Feedback\Notification;
+<?php namespace Draw\Bundle\DashboardBundle\Feedback;
 
 use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 use JsonSerializable;

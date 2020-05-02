@@ -60,6 +60,16 @@ class FormInputChoices extends FormInput
 
     public function setChoices(?array $choices): void
     {
+        if(is_array($choices) && count($choices) && !is_numeric(array_keys($choices)[0])) {
+            $newChoices = [];
+            foreach($choices as $label => $value) {
+                $newChoices[] = [
+                    'label' => $label,
+                    'value' => $value
+                ];
+            }
+            $choices = $newChoices;
+        }
         $this->choices = $choices;
     }
 

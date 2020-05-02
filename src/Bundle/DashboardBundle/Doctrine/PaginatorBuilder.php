@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Doctrine;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +16,15 @@ class PaginatorBuilder
 
     public function fromRequest($class, Request $request, Query $query = null): Paginator
     {
+        if (is_null($query)) {
+            $query = $this->buildQuery(
+                $class,
+                $request->query->get('orderBy', []),
+                $request->query->get('filters', [])
+            );
+        }
         $paginator = new Paginator(
-            $query ?:  $this->buildQuery($class, $request->query->get('orderBy', [])),
+            $query,
             $request->query->getInt('pageSize')
         );
 
@@ -25,25 +33,46 @@ class PaginatorBuilder
         return $paginator;
     }
 
-    private function buildQuery($class, array $orderBy): Query
+    private function buildQuery($class, array $orderBy, array $filters): Query
     {
-        $query = 'SELECT o FROM ' . $class . ' o';
+        /** @var EntityManagerInterface $manager */
+        $manager = $this->managerRegistry->getManagerForClass($class);
 
-        if ($orderBy) {
-            $query .= ' ORDER BY';
-        }
+        $queryBuilder = $manager->createQueryBuilder()
+            ->from($class, 'o')
+            ->select('o');
 
-        $orderByQuery = '';
         foreach ($orderBy as $key => $direction) {
-            $orderByQuery .= sprintf(
-                ' o.%s %s, ',
-                $key,
-                $direction
-            );
+            $queryBuilder->addOrderBy('o.' . $key, $direction);
         }
 
-        $query .= rtrim($orderByQuery, ', ');
+        foreach ($filters as $filter) {
+            $value = $filter['value'];
+            if ($value === '') {
+                continue;
+            }
 
-        return $this->managerRegistry->getManagerForClass($class)->createQuery($query);
+            $key = $filter['id'];
+            $comparison = $filter['comparison'];
+
+            switch (true) {
+                case is_array($value):
+                    $whereString =  'o.%s %s (:%s)';
+                    break;
+                default:
+                    $whereString =  'o.%s %s :%s';
+                    break;
+            }
+
+            $queryBuilder
+                ->andWhere(sprintf(
+                    $whereString,
+                    $key,
+                    $comparison,
+                    $key))
+                ->setParameter($key, $value);
+        }
+
+        return $queryBuilder->getQuery();
     }
 }

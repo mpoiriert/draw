@@ -15,9 +15,14 @@ class ActionList extends Action
     /**
      * @var array
      */
-    private $columns;
+    private $columns = [];
 
-    public function isPaginated(): bool
+    /**
+     * @var array
+     */
+    private $filters = [];
+
+    public function getPaginated(): bool
     {
         return $this->paginated;
     }
@@ -35,5 +40,15 @@ class ActionList extends Action
     public function setColumns(array $columns): void
     {
         $this->columns = $columns;
+    }
+
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
+    public function setFilters(array $filters): void
+    {
+        $this->filters = $filters;
     }
 }

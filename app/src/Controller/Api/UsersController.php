@@ -6,6 +6,7 @@ use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Doctrine\Paginator;
 use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;
+use Draw\Bundle\DashboardBundle\Feedback\Notification;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;

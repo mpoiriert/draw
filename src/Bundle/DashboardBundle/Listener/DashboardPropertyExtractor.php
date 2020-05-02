@@ -3,10 +3,8 @@
 use Doctrine\Common\Annotations\Reader;
 use Draw\Bundle\DashboardBundle\Annotations\VendorPropertyInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event\PropertyExtractedEvent;
-use Draw\Component\OpenApi\Schema\VendorInterface;
 use JMS\Serializer\Metadata\VirtualPropertyMetadata;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 
 class DashboardPropertyExtractor implements EventSubscriberInterface
 {

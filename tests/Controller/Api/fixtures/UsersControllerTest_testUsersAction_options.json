@@ -2,11 +2,11 @@
   "GET": {
     "x-draw-dashboard-action": {
       "type": "list",
-      "method": "GET",
-      "href": "http://localhost/api/users",
-      "paginated": true,
       "button": null,
       "flow": null,
+      "href": "http://localhost/api/users",
+      "method": "GET",
+      "paginated": true,
       "columns": [
         {
           "id": "id",
@@ -55,12 +55,48 @@
         },
         {
           "id": "_actions",
-          "type": "actions",
-          "label": "Actions",
           "isActive": true,
+          "label": "Actions",
           "sortable": null,
           "visible": true,
+          "type": "actions",
           "options": null
+        }
+      ],
+      "filters": [
+        {
+          "id": "id",
+          "alwaysShow": true,
+          "input": {
+            "id": "id",
+            "type": "text",
+            "label": "#",
+            "icon": null
+          },
+          "comparison": "="
+        },
+        {
+          "id": "level",
+          "alwaysShow": true,
+          "input": {
+            "id": "level",
+            "type": "choices",
+            "label": "Access Level",
+            "icon": null,
+            "multiple": true,
+            "choices": [
+              {
+                "label": "User",
+                "value": "user"
+              },
+              {
+                "label": "Admin",
+                "value": "admin"
+              }
+            ],
+            "sourceCompareKeys": null
+          },
+          "comparison": "IN"
         }
       ]
     }

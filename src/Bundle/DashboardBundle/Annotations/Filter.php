@@ -1,7 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
 
 /**
  * @Annotation
@@ -26,9 +25,17 @@ class Filter extends BaseAnnotation implements VendorPropertyInterface
     /**
      * @var string|null
      *
-     * @Enum({"=", "!=", ">", ">=", "<", "<=", "like", "not like"})
+     * @Enum({"=", "<>", ">", ">=", "<", "<=", "LIKE", "NOT LIKE", "IN", "NOT IN"})
      */
-    private $comparison;
+    private $comparison = '=';
+
+    public function __construct(array $values = [])
+    {
+        if(!isset($values['input'])) {
+            $values['input'] = new FormInput();
+        }
+        parent::__construct($values);
+    }
 
     public function getVendorName(): string
     {

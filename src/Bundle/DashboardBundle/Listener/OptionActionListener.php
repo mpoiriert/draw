@@ -125,6 +125,7 @@ class OptionActionListener implements EventSubscriberInterface
         $columns[] = new Column(['id' => '_actions', 'type' => 'actions', 'label' => 'actions']);
 
         $action->setColumns($columns);
+        $action->setFilters($filters);
     }
 
     public function buildOptionForCreateEdit(OptionBuilderEvent $event)

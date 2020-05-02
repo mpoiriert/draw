@@ -68,10 +68,16 @@
           "label": "Access Level",
           "icon": null,
           "multiple": false,
-          "choices": {
-            "User": "user",
-            "Admin": "admin"
-          },
+          "choices": [
+            {
+              "label": "User",
+              "value": "user"
+            },
+            {
+              "label": "Admin",
+              "value": "admin"
+            }
+          ],
           "sourceCompareKeys": null
         },
         {
