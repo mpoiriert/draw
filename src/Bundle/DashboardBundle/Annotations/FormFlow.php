@@ -10,7 +10,12 @@ class FormFlow extends Flow
     /**
      * @var array<\Draw\Bundle\DashboardBundle\Annotations\Button>
      */
-    public $buttons;
+    private $buttons;
+
+    /**
+     * @var boolean
+     */
+    private $dialog = false;
 
     public function getButtons(): array
     {
@@ -20,5 +25,15 @@ class FormFlow extends Flow
     public function setButtons(array $buttons): void
     {
         $this->buttons = $buttons;
+    }
+
+    public function isDialog(): bool
+    {
+        return $this->dialog;
+    }
+
+    public function setDialog(bool $dialog): void
+    {
+        $this->dialog = $dialog;
     }
 }

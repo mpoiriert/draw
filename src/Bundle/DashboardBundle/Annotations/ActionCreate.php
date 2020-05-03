@@ -14,6 +14,11 @@ class ActionCreate extends Action
 
     private $default;
 
+    /**
+     * @var boolean
+     */
+    private $dialog = false;
+
     public function __construct(array $values = [])
     {
         if (!array_key_exists('button', $values)) {
@@ -21,7 +26,7 @@ class ActionCreate extends Action
         }
 
         if (!array_key_exists('flow', $values)) {
-            $values['flow'] = $button = new FormFlow(
+            $values['flow'] = $flow = new FormFlow(
                 [
                     'buttons' => [
                         new Button(
@@ -39,7 +44,8 @@ class ActionCreate extends Action
                                 'behaviours' => ['submit']
                             ]
                         )
-                    ]
+                    ],
+                    'dialog' => $values['dialog'] ?? $this->dialog
                 ]
             );
         }
@@ -65,5 +71,15 @@ class ActionCreate extends Action
     public function setDefault($default): void
     {
         $this->default = $default;
+    }
+
+    public function isDialog(): bool
+    {
+        return $this->dialog;
+    }
+
+    public function setDialog(bool $dialog): void
+    {
+        $this->dialog = $dialog;
     }
 }

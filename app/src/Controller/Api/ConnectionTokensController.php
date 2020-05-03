@@ -45,7 +45,8 @@ class ConnectionTokensController extends AbstractController
      * @Serialization(statusCode=201)
      *
      * @Dashboard\ActionCreate(
-     *     button=@Dashboard\Button(label="Connect", icon="power_settings_new")
+     *     button=@Dashboard\Button(label="Connect", icon="power_settings_new"),
+     *     dialog=true
      * )
      *
      * @Security("not is_granted('ROLE_USER')")
