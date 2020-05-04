@@ -3,7 +3,7 @@
 /**
  * @Annotation
  */
-class FormFlow extends Flow
+class FormFlow extends Flow implements FlowWithButtonsInterface
 {
     const TYPE = 'form';
 

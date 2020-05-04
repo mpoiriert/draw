@@ -17,10 +17,9 @@
   ],
   "toolbar": [
     {
-      "href": "http://localhost/api/connection-tokens",
-      "method": "POST",
       "type": "create",
       "button": {
+        "id": null,
         "label": "Connect",
         "icon": "power_settings_new",
         "style": null,
@@ -34,6 +33,7 @@
         "type": "form",
         "buttons": [
           {
+            "id": "cancel",
             "label": "Cancel",
             "icon": null,
             "style": "stroked-button",
@@ -46,6 +46,7 @@
             ]
           },
           {
+            "id": "save",
             "label": "Save",
             "icon": null,
             "style": "flat-button",
@@ -54,11 +55,16 @@
             "tooltip": null,
             "tooltipPosition": null,
             "behaviours": [
-              "submit"
+              "submit",
+              "save",
+              "then-edit"
             ]
           }
-        ]
+        ],
+        "dialog": true
       },
+      "href": "http://localhost/api/connection-tokens",
+      "method": "POST",
       "inputs": [
         {
           "id": "username",

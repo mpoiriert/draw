@@ -1,5 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * @Annotation
  */
@@ -16,6 +18,8 @@ class ActionCreate extends Action
 
     /**
      * @var boolean
+     *
+     * @Serializer\Exclude()
      */
     private $dialog = false;
 
@@ -31,6 +35,7 @@ class ActionCreate extends Action
                     'buttons' => [
                         new Button(
                             [
+                                'id' => 'cancel',
                                 'label' => 'cancel',
                                 'style' => 'stroked-button',
                                 'behaviours' => ['cancel']
@@ -38,10 +43,11 @@ class ActionCreate extends Action
                         ),
                         new Button(
                             [
+                                'id' => 'save',
                                 'label' => 'save',
                                 'style' => 'flat-button',
                                 'color' => 'primary',
-                                'behaviours' => ['submit']
+                                'behaviours' => ['submit', 'save', 'then-edit']
                             ]
                         )
                     ],

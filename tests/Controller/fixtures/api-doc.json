@@ -42,6 +42,7 @@
                         "type": "form",
                         "buttons": [
                             {
+                                "id": "cancel",
                                 "label": "Cancel",
                                 "style": "stroked-button",
                                 "behaviours": [
@@ -49,14 +50,18 @@
                                 ]
                             },
                             {
+                                "id": "save",
                                 "label": "Save",
                                 "style": "flat-button",
                                 "color": "primary",
                                 "behaviours": [
-                                    "submit"
+                                    "submit",
+                                    "save",
+                                    "then-edit"
                                 ]
                             }
-                        ]
+                        ],
+                        "dialog": true
                     }
                 }
             }
@@ -183,6 +188,7 @@
                         "type": "form",
                         "buttons": [
                             {
+                                "id": "cancel",
                                 "label": "Cancel",
                                 "style": "stroked-button",
                                 "behaviours": [
@@ -190,14 +196,18 @@
                                 ]
                             },
                             {
+                                "id": "save",
                                 "label": "Save",
                                 "style": "flat-button",
                                 "color": "primary",
                                 "behaviours": [
-                                    "submit"
+                                    "submit",
+                                    "save",
+                                    "then-edit"
                                 ]
                             }
-                        ]
+                        ],
+                        "dialog": false
                     }
                 }
             }
@@ -267,6 +277,7 @@
                         "type": "form",
                         "buttons": [
                             {
+                                "id": "cancel",
                                 "label": "Cancel",
                                 "style": "stroked-button",
                                 "behaviours": [
@@ -274,14 +285,18 @@
                                 ]
                             },
                             {
+                                "id": "save",
                                 "label": "Save",
                                 "style": "flat-button",
                                 "color": "primary",
                                 "behaviours": [
-                                    "submit"
+                                    "submit",
+                                    "save",
+                                    "then-edit"
                                 ]
                             }
-                        ]
+                        ],
+                        "dialog": false
                     }
                 }
             },
@@ -393,6 +408,7 @@
                         "type": "form",
                         "buttons": [
                             {
+                                "id": "cancel",
                                 "label": "Cancel",
                                 "style": "stroked-button",
                                 "behaviours": [
@@ -400,14 +416,18 @@
                                 ]
                             },
                             {
+                                "id": "save",
                                 "label": "Save",
                                 "style": "flat-button",
                                 "color": "primary",
                                 "behaviours": [
-                                    "submit"
+                                    "submit",
+                                    "save",
+                                    "then-edit"
                                 ]
                             }
-                        ]
+                        ],
+                        "dialog": false
                     }
                 }
             }
@@ -477,6 +497,7 @@
                         "type": "form",
                         "buttons": [
                             {
+                                "id": "cancel",
                                 "label": "Cancel",
                                 "style": "stroked-button",
                                 "behaviours": [
@@ -484,14 +505,18 @@
                                 ]
                             },
                             {
+                                "id": "save",
                                 "label": "Save",
                                 "style": "flat-button",
                                 "color": "primary",
                                 "behaviours": [
-                                    "submit"
+                                    "submit",
+                                    "save",
+                                    "then-edit"
                                 ]
                             }
-                        ]
+                        ],
+                        "dialog": false
                     }
                 }
             },

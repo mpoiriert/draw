@@ -43,6 +43,26 @@ class ActionFinder
         return $this->getAction($operation, $method, $path);
     }
 
+    public function findOneByRoute($route): ?Action
+    {
+        $openApiSchema = $this->openApiController->loadOpenApiSchema();
+
+        foreach ($openApiSchema->paths as $path => $pathItem) {
+            foreach ($pathItem->getOperations() as $method => $operation) {
+                $operationRoute = $operation->vendor['x-draw-open-api-symfony-route'] ?? null;
+                if ($operationRoute === $route) {
+                    return $this->getAction(
+                        $operation,
+                        $method,
+                        $path
+                    );
+                }
+            }
+        }
+
+        return null;
+    }
+
     private function getAction(Operation $operation, $method, $path): ?Action
     {
         /** @var Action $action */

@@ -1,7 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
@@ -9,6 +8,11 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class Button extends BaseAnnotation
 {
+    /**
+     * @var string|null
+     */
+    private $id;
+
     private $label;
 
     /**
@@ -51,6 +55,16 @@ class Button extends BaseAnnotation
      * @var array<string>
      */
     public $behaviours = [];
+
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
 
     public function getLabel()
     {

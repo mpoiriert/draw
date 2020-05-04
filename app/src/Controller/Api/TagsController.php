@@ -1,7 +1,6 @@
 <?php namespace App\Controller\Api;
 
 use App\Entity\Tag;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DashboardBundle\Doctrine\Paginator;

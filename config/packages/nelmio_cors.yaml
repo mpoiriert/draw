@@ -6,6 +6,7 @@ nelmio_cors:
         allow_headers:
             - 'X-Client-Version'
             - 'X-Draw-Dashboard-Methods'
+            - 'X-Draw-Dashboard-Button-Id'
             - 'X-Locale'
             - 'Content-Type'
             - 'Authorization'
