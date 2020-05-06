@@ -45,6 +45,10 @@ class Deserialization extends ParamConverter
 
     public function __construct(array $values)
     {
+        if(!isset($values['name'])) {
+            $values['name'] = 'object';
+        }
+
         $values['converter'] = $values['converter'] ?? 'draw_open_api.request_body';
 
         // We set the properties in the options array since they would be overriden by
