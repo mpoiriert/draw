@@ -64,6 +64,13 @@ class PaginatorBuilder
                     break;
             }
 
+            switch ($comparison) {
+                case 'LIKE':
+                case 'NOT LIKE':
+                    $value = '%' . $value . '%';
+                    break;
+            }
+
             $queryBuilder
                 ->andWhere(sprintf(
                     $whereString,
