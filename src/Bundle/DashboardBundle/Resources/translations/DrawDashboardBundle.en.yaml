@@ -5,3 +5,7 @@ delete: "Delete"
 edit: "Edit"
 save: "Save"
 show: "Show"
+
+notification:
+  save: "The entry <b>%entry%</b> has been saved properly."
+  connect: "You are connected."

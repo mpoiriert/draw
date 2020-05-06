@@ -46,7 +46,10 @@ class ConnectionTokensController extends AbstractController
      *
      * @Dashboard\ActionCreate(
      *     button=@Dashboard\Button(label="Connect", icon="power_settings_new"),
-     *     dialog=true
+     *     dialog=true,
+     *     templates={
+     *       "notification_save":"{{ 'notification.connect'|trans({}, 'DrawDashboardBundle')|raw }}"
+     *     }
      * )
      *
      * @Security("not is_granted('ROLE_USER')")

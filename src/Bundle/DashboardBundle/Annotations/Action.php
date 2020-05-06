@@ -74,6 +74,20 @@ class Action extends BaseAnnotation implements VendorInterface
      */
     private $targets = [];
 
+    /**
+     * @var string
+     *
+     * @Serializer\Exclude()
+     */
+    private $requestAttribute = 'object';
+
+    /**
+     * @var array
+     *
+     * @Serializer\Exclude()
+     */
+    private $templates = [];
+
     public function __construct(array $values = [])
     {
         $values['type'] = static::TYPE;
@@ -183,5 +197,30 @@ class Action extends BaseAnnotation implements VendorInterface
     public function setPath(?string $path): void
     {
         $this->path = $path;
+    }
+
+    public function getRequestAttribute(): string
+    {
+        return $this->requestAttribute;
+    }
+
+    public function setRequestAttribute(string $requestAttribute): void
+    {
+        $this->requestAttribute = $requestAttribute;
+    }
+
+    public function getTemplates(): array
+    {
+        return $this->templates;
+    }
+
+    public function setTemplates(array $templates): void
+    {
+        $this->templates = $templates;
+    }
+
+    public function getTemplate($name, $default = null)
+    {
+        return $this->templates[$name] ?? $default;
     }
 }

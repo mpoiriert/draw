@@ -1,9 +1,9 @@
 <?php namespace Draw\Bundle\DashboardBundle\Listener;
 
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
+use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;
 use Draw\Bundle\DashboardBundle\Annotations\Button;
-use Draw\Bundle\DashboardBundle\Annotations\Flow;
 use Draw\Bundle\DashboardBundle\Annotations\FlowWithButtonsInterface;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Feedback\Navigate;
@@ -12,6 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 
 class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
 {
@@ -20,6 +21,8 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
     private $feedbackNotifier;
 
     private $urlGenerator;
+
+    private $twig;
 
     public static function getSubscribedEvents()
     {
@@ -35,11 +38,13 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
     public function __construct(
         ActionFinder $actionFinder,
         UrlGeneratorInterface $urlGenerator,
-        FeedbackNotifier $feedbackNotifier
+        FeedbackNotifier $feedbackNotifier,
+        Environment $twig
     ) {
         $this->actionFinder = $actionFinder;
         $this->feedbackNotifier = $feedbackNotifier;
         $this->urlGenerator = $urlGenerator;
+        $this->twig = $twig;
     }
 
     public function thenEdit(ViewEvent $viewEvent): void
@@ -68,44 +73,76 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
 
     public function saveNotification(ViewEvent $viewEvent)
     {
+        $request = $viewEvent->getRequest();
+        $controllerResult = $viewEvent->getControllerResult();
+
         switch (true) {
-            case !($controllerResult = $viewEvent->getControllerResult()):
-            case is_null($button = $this->getButtonToProcess($viewEvent->getRequest())):
+            case is_null($button = $this->getButtonToProcess($request)):
             case !in_array('save', $button->getBehaviours()):
+            case is_null($action = $this->getActionToProcess($request)):
                 return;
+        }
+
+        $template = $action->getTemplate(
+            'notification_save',
+            "{{ 'notification.save'|trans({'%entry%': request.get('object')}, 'DrawDashboardBundle')|raw }}"
+        );
+
+        if(!$template) {
+            return;
         }
 
         $this->feedbackNotifier->sendFeedback(
             new Notification(
                 Notification::TYPE_SUCCESS,
-                'The entry have been saved properly'
+                $this->twig->render(
+                    $this->twig->createTemplate($template),
+                    ['request' => $request]
+                )
             )
         );
     }
 
-    private function getButtonToProcess(
-        Request $request
-    ): ?Button {
-
-        switch (true) {
-            case !($buttonId = $request->headers->get('X-Draw-Dashboard-Button-Id')):
-            case !($route = $request->attributes->get('_route')):
-            case is_null($action = $this->actionFinder->findOneByRoute($route)):
-            case is_null($flow = $action->getFlow()):
-                return null;
-        }
-
-        if (!$flow instanceof FlowWithButtonsInterface) {
-            return null;
-        }
-
-        $buttonToProcess = null;
-        foreach ($flow->getButtons() as $button) {
-            if ($button->getId() === $buttonId) {
-                return $button;
+    private function getButtonToProcess(Request $request): ?Button
+    {
+        if (!$request->attributes->has('_draw_dashboard_button')) {
+            $flow = null;
+            $buttonToProcess = null;
+            switch (true) {
+                case !($buttonId = $request->headers->get('X-Draw-Dashboard-Button-Id')):
+                case is_null($action = $this->getActionToProcess($request)):
+                case ($flow = $action->getFlow()):
+                    break;
             }
+
+            if ($flow instanceof FlowWithButtonsInterface) {
+                foreach ($flow->getButtons() as $button) {
+                    if ($button->getId() === $buttonId) {
+                        $buttonToProcess = $button;
+                        break;
+                    }
+                }
+            }
+
+            $request->attributes->set('_draw_dashboard_button', $buttonToProcess);
         }
 
-        return null;
+        return $request->attributes->get('_draw_dashboard_button');
+    }
+
+    private function getActionToProcess(Request $request): ?Action
+    {
+        if (!$request->attributes->has('_draw_dashboard_action')) {
+            $action = null;
+            switch (true) {
+                case !($route = $request->attributes->get('_route')):
+                case ($action = $this->actionFinder->findOneByRoute($route)):
+                    break;
+            }
+
+            $request->attributes->set('_draw_dashboard_action', $action);
+        }
+
+        return $request->attributes->get('_draw_dashboard_action');
     }
 }

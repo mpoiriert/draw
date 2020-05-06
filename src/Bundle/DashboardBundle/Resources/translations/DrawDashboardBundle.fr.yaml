@@ -1,3 +1,11 @@
 cancel: "Annuler"
 save: "Sauvegarder"
 actions: "Actions"
+create: "Créer"
+delete: "Supprimer"
+edit: "Éditer"
+show: "Afficher"
+
+notification:
+  save: "L'entrée <b>%entry%</b> a bien été sauvegardé."
+  connect: "Vous êtes connecté."
