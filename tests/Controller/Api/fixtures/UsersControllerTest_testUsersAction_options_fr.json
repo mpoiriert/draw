@@ -76,6 +76,35 @@
           "comparison": "="
         },
         {
+          "id": "tags",
+          "alwaysShow": true,
+          "input": {
+            "id": "tags",
+            "type": "choices",
+            "label": "Tags",
+            "icon": null,
+            "multiple": false,
+            "choices": [
+              {
+                "label": "Admin",
+                "value": {
+                  "id": 1
+                }
+              },
+              {
+                "label": "Inactive",
+                "value": {
+                  "id": 2
+                }
+              }
+            ],
+            "sourceCompareKeys": [
+              "id"
+            ]
+          },
+          "comparison": "="
+        },
+        {
           "id": "level",
           "alwaysShow": true,
           "input": {

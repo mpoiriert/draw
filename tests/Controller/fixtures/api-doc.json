@@ -740,6 +740,15 @@
                         "id": "tags",
                         "type": "choices",
                         "multiple": true
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "tags",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "choices",
+                            "multiple": false
+                        },
+                        "comparison": "="
                     }
                 },
                 "level": {
@@ -963,6 +972,15 @@
                         "id": "tags",
                         "type": "choices",
                         "multiple": true
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "tags",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "choices",
+                            "multiple": false
+                        },
+                        "comparison": "="
                     }
                 },
                 "level": {

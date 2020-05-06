@@ -72,6 +72,10 @@ class User implements SecurityUserInterface
      *     multiple=true,
      *     repositoryMethod="findActive"
      * )
+     *
+     * @Dashboard\Filter(
+     *     input=@Dashboard\FormInputChoices()
+     * )
      */
     private $tags;
 
@@ -251,5 +255,15 @@ class User implements SecurityUserInterface
     public function setDateOfBirth(?\DateTimeImmutable $dateOfBirth): void
     {
         $this->dateOfBirth = $dateOfBirth;
+    }
+
+    public function getLevel(): string
+    {
+        return $this->level;
+    }
+
+    public function setLevel(string $level): void
+    {
+        $this->level = $level;
     }
 }

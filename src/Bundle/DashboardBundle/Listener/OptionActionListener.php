@@ -12,6 +12,7 @@ use Draw\Bundle\DashboardBundle\Annotations\FormInputChoices;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputCollection;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputComposite;
 use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
+use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
@@ -94,8 +95,7 @@ class OptionActionListener implements EventSubscriberInterface
         }
 
         $openApiSchema = $event->getOpenApiSchema();
-        $item = $responseSchema->properties['data']->items;
-        $item = $openApiSchema->resolveSchema($item);
+        $item = $openApiSchema->resolveSchema($responseSchema->properties['data']->items);
 
         $columns = [];
         $filters = [];
@@ -114,9 +114,7 @@ class OptionActionListener implements EventSubscriberInterface
                     if (is_null($input->getId())) {
                         $input->setId($filter->getId());
                     }
-                    if (is_null($input->getLabel())) {
-                        $input->setLabel($input->getId());
-                    }
+                    $this->configureInput($input, $item, $property, $openApiSchema);
                 }
                 $filters[] = $filter;
             }
@@ -167,33 +165,38 @@ class OptionActionListener implements EventSubscriberInterface
                 continue;
             }
 
-            if (!$input->getLabel()) {
-                $input->setLabel($input->getId());
-            }
-
-            if ($input instanceof FormInputChoices && is_null($input->getChoices())) {
-                $input->setChoices($this->loadChoices($input, $objectSchema, $property, $openApiSchema));
-                $input->setSourceCompareKeys(['id']); //todo make this dynamic
-            }
-
-            if ($input instanceof FormInputComposite) {
-                $input->setSubForm($this->loadSubForm($input, $objectSchema, $property, $openApiSchema));
-            }
-
-            if ($input instanceof FormInputCollection) {
-                $input->setSubForm($this->loadSubForm(
-                    $input,
-                    $objectSchema,
-                    $openApiSchema->resolveSchema($property->items),
-                    $openApiSchema
-                ));
-            }
+            $this->configureInput($input, $objectSchema, $property, $openApiSchema);
 
             $inputs[] = $input;
         }
 
         $default = (new \ReflectionClass($objectSchema->getVendorData()['x-draw-dashboard-class-name']))->newInstance();
         return compact('inputs', 'default');
+    }
+
+    private function configureInput(FormInput $input, Schema $objectSchema, Schema $property, Root $openApiSchema)
+    {
+        if (!$input->getLabel()) {
+            $input->setLabel($input->getId());
+        }
+
+        if ($input instanceof FormInputChoices && is_null($input->getChoices())) {
+            $input->setChoices($this->loadChoices($input, $objectSchema, $property, $openApiSchema));
+            $input->setSourceCompareKeys(['id']); //todo make this dynamic
+        }
+
+        if ($input instanceof FormInputComposite) {
+            $input->setSubForm($this->loadSubForm($input, $objectSchema, $property, $openApiSchema));
+        }
+
+        if ($input instanceof FormInputCollection) {
+            $input->setSubForm($this->loadSubForm(
+                $input,
+                $objectSchema,
+                $openApiSchema->resolveSchema($property->items),
+                $openApiSchema
+            ));
+        }
     }
 
     private function loadSubForm(FormInput $input, Schema $schema, Schema $property, Root $openApiSchema)

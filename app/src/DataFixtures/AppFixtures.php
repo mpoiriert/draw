@@ -10,11 +10,11 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $tag = new Tag();
+        $tag = $adminTag = new Tag();
         $tag->setLabel('Admin');
         $manager->persist($tag);
 
-        $tag = new Tag();
+        $tag = $inactiveTag = new Tag();
         $tag->setLabel('Inactive');
         $tag->setActive(false);
         $manager->persist($tag);
@@ -22,8 +22,9 @@ class AppFixtures extends Fixture
         $user = new User();
         $user->setEmail('admin@example.com');
         $user->setPlainPassword('admin');
+        $user->setLevel(User::LEVEL_ADMIN);
         $user->setRoles(['ROLE_ADMIN']);
-        $user->setTags([$tag]);
+        $user->setTags([$adminTag]);
 
         $user->getAddress()->setStreet('200 Acme');
 
@@ -36,6 +37,9 @@ class AppFixtures extends Fixture
             $user = new User();
             $user->setEmail('user-' . str_pad($number, 4, '0', STR_PAD_LEFT) . '@example.com');
             $user->setPlainPassword('password');
+            if($number === 1) {
+                $user->setTags([$inactiveTag]);
+            }
             $manager->persist($user);
         }
 
