@@ -1,0 +1,25 @@
+{
+    "name": "draw/core",
+    "type": "library",
+    "description": "Core library for draw component and bundle.",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Draw\\Component\\Core\\": ""
+        },
+        "files": [
+            "ignore_annotations.php"
+        ]
+    },
+    "require": {
+        "php": "^7.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "doctrine/annotations": "^1.3"
+    },
+    "conflict": {
+        "doctrine/annotations": "<1.3"
+    }
+}

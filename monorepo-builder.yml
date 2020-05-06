@@ -1,5 +1,6 @@
 parameters:
   directories_to_repositories:
+    src/Component/Core: 'git@github.com:mpoiriert/core.git'
     src/Component/Messenger: 'git@github.com:mpoiriert/messenger.git'
     src/Component/OpenApi: 'git@github.com:mpoiriert/open-api.git'
     src/Component/Profiling: 'git@github.com:mpoiriert/profiling.git'

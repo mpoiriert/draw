@@ -8,7 +8,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "aws/aws-sdk-php": "^3.112",
-        "doctrine/annotations": "~1.0",
+        "doctrine/annotations": "^1.3",
         "doctrine/dbal": "^2.9",
         "doctrine/doctrine-bundle": "^1.6.10",
         "guzzlehttp/psr7": "^1.4",
@@ -45,6 +45,7 @@
         "draw/data-tester": "*",
         "firebase/php-jwt": "^5.1",
         "kunicmarko/sonata-auto-configure-bundle": "^0.7.1",
+        "nelmio/cors-bundle": "^2.0",
         "pelago/emogrifier": "^3.0",
         "phpunit/phpunit": "^7.0",
         "ramsey/uuid": "^3.8",
@@ -54,10 +55,12 @@
         "symfony/debug-pack": "^1.0",
         "symfony/dependency-injection": "^4.3",
         "symfony/dotenv": "^4.3",
-        "symplify/monorepo-builder": "^7.2",
-        "nelmio/cors-bundle": "^2.0"
+        "symplify/monorepo-builder": "^7.2"
     },
     "autoload": {
+        "files": [
+            "src/Component/Core/ignore_annotations.php"
+        ],
         "psr-4": {
             "Draw\\Bundle\\AwsToolKitBundle\\": "src/Bundle/AwsToolKitBundle/",
             "Draw\\Bundle\\CommandBundle\\": "src/Bundle/CommandBundle/",
@@ -69,6 +72,7 @@
             "Draw\\Bundle\\TesterBundle\\": "src/Bundle/TesterBundle/",
             "Draw\\Bundle\\UserBundle\\": "src/Bundle/UserBundle/",
             "Draw\\Component\\ClassInfo\\": "src/Component/ClassInfo/",
+            "Draw\\Component\\Core\\": "src/Component/Core/",
             "Draw\\Component\\Messenger\\": "src/Component/Messenger/",
             "Draw\\Component\\OpenApi\\": "src/Component/OpenApi/",
             "Draw\\Component\\Profiling\\": "src/Component/Profiling/",
@@ -83,6 +87,7 @@
     },
     "replace": {
         "draw/aws-tool-kit-bundle": "self.version",
+        "draw/core": "self.version",
         "draw/cron-bundle": "self.version",
         "draw/dashboard-bundle": "self.version",
         "draw/data-tester": "self.version",

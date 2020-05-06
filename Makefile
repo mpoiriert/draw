@@ -94,3 +94,9 @@ monorepo-merge:
 monorepo-split:
 	docker-compose exec php vendor/bin/monorepo-builder split
 
+monorepo-release:
+	DRY_RUN=--dry-run
+ifeq ($(run),1)
+	DRY_RUN=
+endif
+	docker-compose exec php vendor/bin/monorepo-builder release $(version) $$DRY_RUN
