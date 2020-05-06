@@ -12,6 +12,7 @@ class DrawDashboardExtension extends ConfigurableExtension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
 
+        $container->setParameter('draw_dashboard.title', $config['title']);
         $container->setParameter('draw_dashboard.menu', $config['menu']);
         $container->setParameter('draw_dashboard.toolbar', $config['toolbar']);
     }

@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->scalarNode('title')->defaultValue('Draw Dashboard')->end()
                 ->arrayNode('menu')
                     ->arrayPrototype()
                         ->children()

@@ -84,7 +84,9 @@ class DashboardController extends AbstractController
         // Return value must be json array not a json object
         $toolbar = array_values($toolbar);
 
-        return compact('menu', 'toolbar');
+        $title = $parameterBag->get('draw_dashboard.title');
+
+        return compact('title', 'menu', 'toolbar');
     }
 
     private function getRouteInformation($operationId, Request $request): ?string
