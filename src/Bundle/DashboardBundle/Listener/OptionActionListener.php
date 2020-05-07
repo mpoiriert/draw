@@ -185,7 +185,7 @@ class OptionActionListener implements EventSubscriberInterface
             $input->setSourceCompareKeys(['id']); //todo make this dynamic
         }
 
-        if ($input instanceof FormInputComposite) {
+        if ($input instanceof FormInputComposite && is_null($input->getSubForm())) {
             $input->setSubForm($this->loadSubForm($input, $objectSchema, $property, $openApiSchema));
         }
 
