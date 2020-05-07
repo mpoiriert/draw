@@ -39,8 +39,8 @@
           "type": "choices",
           "options": {
             "choices": {
-              "user": "User",
-              "admin": "Admin"
+              "user": "Utilisateur",
+              "admin": "Administrateur"
             }
           }
         },
@@ -115,11 +115,11 @@
             "multiple": true,
             "choices": [
               {
-                "label": "User",
+                "label": "Utilisateur",
                 "value": "user"
               },
               {
-                "label": "Admin",
+                "label": "Administrateur",
                 "value": "admin"
               }
             ],

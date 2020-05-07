@@ -34,6 +34,11 @@ class User implements SecurityUserInterface
 
     const LEVEL_ADMIN = 'admin';
 
+    const LEVELS = [
+        User::LEVEL_USER,
+        User::LEVEL_ADMIN
+    ];
+
     /**
      * @var string
      *
@@ -86,15 +91,13 @@ class User implements SecurityUserInterface
      *
      * @Dashboard\Column(
      *     type="choices",
-     *     options={"choices"={"user":"User", "admin":"Admin"}}
+     *     options={"choices"=@Dashboard\Choices(User::LEVELS, assoc=true)}
      * )
      *
-     * @Dashboard\FormInputChoices(
-     *     choices={"User":"user", "Admin":"admin"}
-     * )
+     * @Dashboard\FormInputChoices(choices=User::LEVELS)
      *
      * @Dashboard\Filter(
-     *     input=@Dashboard\FormInputChoices(choices={"User":"user", "Admin":"admin"}, multiple=true),
+     *     input=@Dashboard\FormInputChoices(choices=User::LEVELS, multiple=true),
      *     comparison="IN"
      * )
      */

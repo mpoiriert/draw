@@ -58,19 +58,13 @@ class FormInputChoices extends FormInput
         return $this->choices;
     }
 
-    public function setChoices(?array $choices): void
+    public function setChoices($choices): void
     {
-        if(is_array($choices) && count($choices) && !is_numeric(array_keys($choices)[0])) {
-            $newChoices = [];
-            foreach($choices as $label => $value) {
-                $newChoices[] = [
-                    'label' => $label,
-                    'value' => $value
-                ];
-            }
-            $choices = $newChoices;
+        if(!$choices instanceof Choices) {
+            $choices = new Choices(['choices' => $choices]);
         }
-        $this->choices = $choices;
+
+        $this->choices = $choices->toArray();
     }
 
     public function getSourceCompareKeys(): ?array
