@@ -75,6 +75,8 @@ class PaginatorBuilder
 
             $whereString = '%s.%s %s :%s';
 
+            $parameterName = $alias . '_' . $key;
+
             switch (true) {
                 case ($comparison === 'BETWEEN'):
                     $value = array_filter($value, function ($value) {
@@ -106,8 +108,8 @@ class PaginatorBuilder
                             '%s.%s BETWEEN :%sFrom AND :%sTo',
                             $alias,
                             $key,
-                            $key,
-                            $key
+                            $parameterName,
+                            $parameterName
                         ));
                     break;
 
@@ -121,22 +123,22 @@ class PaginatorBuilder
                             $alias,
                             $key,
                             $comparison,
-                            $key
+                            $parameterName
                         ));
                     break;
             }
 
             switch ($comparison) {
                 case 'BETWEEN':
-                    $queryBuilder->setParameter($key . 'From', $value['from']);
-                    $queryBuilder->setParameter($key . 'To', $value['to']);
+                    $queryBuilder->setParameter($parameterName . 'From', $value['from']);
+                    $queryBuilder->setParameter($parameterName . 'To', $value['to']);
                     break;
                 case 'LIKE':
                 case 'NOT LIKE':
-                    $queryBuilder->setParameter($key, '%' . $value . '%');
+                    $queryBuilder->setParameter($parameterName, '%' . $value . '%');
                     break;
                 default:
-                    $queryBuilder->setParameter($key, $value);
+                    $queryBuilder->setParameter($parameterName, $value);
                     break;
             }
         }
