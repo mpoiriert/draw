@@ -35,6 +35,11 @@ class Serialization extends ConfigurationAnnotation
     protected $headers = [];
 
     /**
+     * @var array
+     */
+    protected $contextAttributes = [];
+
+    /**
      * @param int $statusCode
      */
     public function setStatusCode($statusCode)
@@ -124,6 +129,16 @@ class Serialization extends ConfigurationAnnotation
     public function getAliasName()
     {
         return 'draw_open_api_serialization';
+    }
+
+    public function getContextAttributes(): array
+    {
+        return $this->contextAttributes;
+    }
+
+    public function setContextAttributes(array $contextAttributes): void
+    {
+        $this->contextAttributes = $contextAttributes;
     }
 
     public function allowArray()

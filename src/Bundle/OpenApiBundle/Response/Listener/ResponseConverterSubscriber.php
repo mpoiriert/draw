@@ -93,6 +93,10 @@ class ResponseConverterSubscriber implements EventSubscriberInterface
             if ($groups = $serialization->getSerializerGroups()) {
                 $context->setGroups($groups);
             }
+
+            foreach($serialization->getContextAttributes() as $key => $value) {
+                $context->setAttribute($key, $value);
+            }
         }
 
         $this->eventDispatcher->dispatch(new PreSerializerResponseEvent($result, $serialization, $context));
