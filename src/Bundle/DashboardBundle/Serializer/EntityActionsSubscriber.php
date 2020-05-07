@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EntityActionsSubscriber implements EventSubscriberInterface
 {
+    private $actionGroups = ['Default', 'DrawDashboard:Actions'];
+
     private $actionFinder;
 
     private $urlGenerator;
@@ -59,8 +61,17 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $actions = [];
+        $context = $objectEvent->getContext();
 
+        // We test if we must scrip the property before the processing so we can save some time
+        $propertyMetadata = new StaticPropertyMetadata('', '_actions', [],  $this->actionGroups);
+        if($exclusionStrategy = $context->getExclusionStrategy()) {
+            if($exclusionStrategy->shouldSkipProperty($propertyMetadata, $context)) {
+                return;
+            }
+        }
+
+        $actions = [];
         foreach ($this->actionFinder->findAllByByTarget($object) as $action) {
             $routeName = $action->getRouteName();
             $method = strtoupper($action->getMethod());
@@ -73,6 +84,7 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             /** @var Response $response */
             list(, $response) = $this->optionsController->dummyHandling($method, $path);
 
+            // We skip action that we do not have access
             if ($response->getStatusCode() === 403) {
                 continue;
             }
@@ -81,9 +93,12 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             $actions[] = $action;
         }
 
-        $visitor->visitProperty(
-            new StaticPropertyMetadata('', '_actions', $actions),
-            $actions
-        );
+        // Since there is no setter for the value we create a new property
+        $propertyMetadata = new StaticPropertyMetadata('', '_actions', [],  $this->actionGroups);
+
+        // Pushing the property metadata replicate the flow and make sure any call to Context::getCurrentPath will work
+        $context->pushPropertyMetadata($propertyMetadata);
+        $visitor->visitProperty($propertyMetadata, $actions);
+        $context->popPropertyMetadata();
     }
 }
