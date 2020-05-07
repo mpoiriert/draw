@@ -73,30 +73,72 @@ class PaginatorBuilder
                 continue;
             }
 
+            $whereString = '%s.%s %s :%s';
+
             switch (true) {
+                case ($comparison === 'BETWEEN'):
+                    $value = array_filter($value, function ($value) {
+                        return $value !== '';
+                    });
+
+                    if (!$value) {
+                        return;
+                    }
+
+                    if (count($value) === 1) {
+                        $this->addFilters(
+                            $queryBuilder,
+                            [
+                                [
+                                    'id' => $key,
+                                    'comparison' => key($value) === 'from' ? '>=' : '<=',
+                                    'value' => current($value)
+                                ]
+                            ],
+                            $class,
+                            $alias
+                        );
+                        return;
+                    }
+
+                    $queryBuilder
+                        ->andWhere(sprintf(
+                            '%s.%s BETWEEN :%sFrom AND :%sTo',
+                            $alias,
+                            $key,
+                            $key,
+                            $key
+                        ));
+                    break;
+
+                /** @noinspection PhpMissingBreakStatementInspection */
                 case is_array($value):
                     $whereString = '%s.%s %s (:%s)';
-                    break;
                 default:
-                    $whereString = '%s.%s %s :%s';
+                    $queryBuilder
+                        ->andWhere(sprintf(
+                            $whereString,
+                            $alias,
+                            $key,
+                            $comparison,
+                            $key
+                        ));
                     break;
             }
 
             switch ($comparison) {
+                case 'BETWEEN':
+                    $queryBuilder->setParameter($key . 'From', $value['from']);
+                    $queryBuilder->setParameter($key . 'To', $value['to']);
+                    break;
                 case 'LIKE':
                 case 'NOT LIKE':
-                    $value = '%' . $value . '%';
+                    $queryBuilder->setParameter($key, '%' . $value . '%');
+                    break;
+                default:
+                    $queryBuilder->setParameter($key, $value);
                     break;
             }
-
-            $queryBuilder
-                ->andWhere(sprintf(
-                    $whereString,
-                    $alias,
-                    $key,
-                    $comparison,
-                    $key))
-                ->setParameter($key, $value);
         }
     }
 
