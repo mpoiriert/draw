@@ -84,7 +84,7 @@ class PropertiesExtractor implements ExtractorInterface
             return false;
         }
 
-        return $this->factory->getMetadataForClass($source->getName()) !== null;
+        return !is_null($this->factory->getMetadataForClass($source->getName()));
     }
 
     /**
@@ -193,19 +193,19 @@ class PropertiesExtractor implements ExtractorInterface
         $ref = new ReflectionClass($item->class);
         try {
             if ($item instanceof VirtualPropertyMetadata) {
-                $docBlock = $factory->create($ref->getMethod($item->getter)->getDocComment());
+                $docComment = $ref->getMethod($item->getter)->getDocComment();
             } else {
-                if ($docComment = $ref->getProperty($item->name)->getDocComment()) {
-                    $docBlock = $factory->create($docComment);
-                } else {
-                    return '';
-                }
+                $docComment = $ref->getProperty($item->name)->getDocComment();
             }
+
+            if(!$docComment) {
+                return '';
+            }
+
+            return $factory->create($docComment)->getSummary();
         } catch (ReflectionException $e) {
             return '';
         }
-
-        return $docBlock->getSummary();
     }
 
     /**
