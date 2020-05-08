@@ -34,7 +34,7 @@ class TranslatableHandler implements SubscribingHandlerInterface
         array $type,
         Context $context
     ) {
-        if (is_null($translatable) || empty($translatable->getToken())) {
+        if ($translatable === null || empty($translatable->getToken())) {
             return null;
         }
 

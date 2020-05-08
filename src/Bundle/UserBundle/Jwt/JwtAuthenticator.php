@@ -35,7 +35,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        return !is_null($this->getToken($request));
+        return $this->getToken($request) !== null;
     }
 
     public function encode(UserInterface $user): string

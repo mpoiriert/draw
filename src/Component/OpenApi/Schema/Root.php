@@ -188,7 +188,7 @@ class Root implements VendorExtensionSupportInterface
 
     public function hasDefinition($name)
     {
-        if(is_null($this->definitions)) {
+        if ($this->definitions === null) {
             return false;
         }
 

@@ -8,7 +8,7 @@ class DynamicArrayObject extends ArrayObject
     {
         parent::__construct($input, $flags, $iterator_class);
 
-        if(is_null($input)) {
+        if ($input === null) {
             return;
         }
 

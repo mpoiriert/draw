@@ -108,7 +108,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInt
                     'code' => $constraintViolation->getCode()
                 ];
 
-                if ($constraintViolation->getConstraint() && !is_null($payload = $constraintViolation->getConstraint()->payload)) {
+                if ($constraintViolation->getConstraint() && null !== ($payload = $constraintViolation->getConstraint()->payload)) {
                     $errorData['payload'] = $payload;
                 }
 

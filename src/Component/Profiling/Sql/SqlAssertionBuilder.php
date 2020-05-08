@@ -13,7 +13,7 @@ class SqlAssertionBuilder
     public static function create($count = null)
     {
         $builder = new static();
-        if(!is_null($count)) {
+        if ($count !== null) {
             $builder->assertCountEquals($count);
         }
 

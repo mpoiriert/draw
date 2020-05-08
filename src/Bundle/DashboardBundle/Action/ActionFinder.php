@@ -52,11 +52,11 @@ class ActionFinder
             $openApiSchema = $this->openApiController->loadOpenApiSchema();
 
             $method = strtolower($method);
-            if (is_null($pathItem = $openApiSchema->paths[$path] ?? null)) {
+            if (null === ($pathItem = $openApiSchema->paths[$path] ?? null)) {
                 return null;
             }
 
-            if (is_null($operation = $pathItem->getOperations()[$method] ?? null)) {
+            if (null === ($operation = $pathItem->getOperations()[$method] ?? null)) {
                 return null;
             }
 
@@ -95,7 +95,7 @@ class ActionFinder
     private function getAction(Operation $operation, $method, $path): ?Action
     {
         /** @var Action $action */
-        if (is_null($action = $operation->vendor['x-draw-dashboard-action'] ?? null)) {
+        if (null === ($action = $operation->vendor['x-draw-dashboard-action'] ?? null)) {
             return null;
         }
 

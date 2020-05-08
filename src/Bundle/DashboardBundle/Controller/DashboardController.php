@@ -17,8 +17,7 @@ class DashboardController extends AbstractController
     public function __construct(
         OptionsController $optionsController,
         ActionFinder $actionFinder
-    )
-    {
+    ) {
         $this->actionFinder = $actionFinder;
         $this->optionsController = $optionsController;
     }
@@ -92,17 +91,17 @@ class DashboardController extends AbstractController
     private function getRouteInformation($operationId, Request $request): ?string
     {
         $action = $this->getActionInformation($operationId, $request);
-        if (is_null($action)) {
+        if ($action === null) {
             return null;
         }
 
-        return $action->getHref() . '/'.  $action->getType();
+        return $action->getHref() . '/' . $action->getType();
     }
 
     private function getActionInformation($operationId, Request $request): ?Action
     {
         $action = $this->actionFinder->findOneByOperationId($operationId);
-        if(is_null($action)) {
+        if ($action === null) {
             return null;
         }
 
@@ -114,8 +113,8 @@ class DashboardController extends AbstractController
 
         /** @var Action $action */
         switch (true) {
-            case is_null($information = $routeInformation[$action->getMethod()] ?? null):
-            case is_null($action = $information['x-draw-dashboard-action'] ?? null):
+            case null === ($information = $routeInformation[$action->getMethod()] ?? null):
+            case null === ($action = $information['x-draw-dashboard-action'] ?? null):
             case !$action instanceof Action:
             case $action->getAccessDenied():
                 return null;

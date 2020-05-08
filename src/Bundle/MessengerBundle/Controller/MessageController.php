@@ -37,7 +37,7 @@ class MessageController extends AbstractController
         TranslatorInterface $translator
     ) {
         try {
-            if (is_null($envelope = $drawTransport->find($dMUuid))) {
+            if (null === ($envelope = $drawTransport->find($dMUuid))) {
                 throw new MessageNotFoundException($dMUuid);
             }
 

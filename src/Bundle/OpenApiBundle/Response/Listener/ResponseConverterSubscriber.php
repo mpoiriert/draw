@@ -75,7 +75,7 @@ class ResponseConverterSubscriber implements EventSubscriberInterface
                 return;
         }
 
-        if (is_null($result)) {
+        if ($result === null) {
             $event->setResponse(new Response('', 204));
             return;
         }

@@ -40,11 +40,11 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $messageId = $credentials['messageId'] ?? null;
-        if(is_null($messageId)) {
+        if ($messageId === null) {
             return null;
         }
 
-        if(is_null($envelope = $this->transport->find($messageId))) {
+        if (null === ($envelope = $this->transport->find($messageId))) {
             return null;
         }
 

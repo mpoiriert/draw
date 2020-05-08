@@ -23,7 +23,7 @@ class ResponseContainFeedbackTester
                 continue;
             }
 
-            if (is_null($this->metadata)) {
+            if ($this->metadata === null) {
                 return;
             }
 

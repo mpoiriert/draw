@@ -166,7 +166,7 @@ class VersionListener implements EventSubscriberInterface
 
         $view = $request->attributes->get('_draw_open_api_serialization', new Serialization([]));
 
-        if($view instanceof Serialization && is_null($view->getSerializerVersion())) {
+        if($view instanceof Serialization && $view->getSerializerVersion() === null) {
             $view->setSerializerVersion($version);
         }
 

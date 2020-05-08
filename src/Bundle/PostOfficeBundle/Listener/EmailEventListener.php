@@ -42,17 +42,19 @@ class EmailEventListener implements EventSubscriberInterface
 
     public function getWriters(string $email = null)
     {
-        if(!is_null($email)) {
-            if (empty($this->writers[$email])) {
-                return [];
-            }
-
-            if(!isset($this->sortedWriters[$email])) {
-                $this->sortWriters($email);
-            }
-
-            return $this->sortedWriters[$email];
+        if($email === null) {
+            return null;
         }
+
+        if (empty($this->writers[$email])) {
+            return [];
+        }
+
+        if(!isset($this->sortedWriters[$email])) {
+            $this->sortWriters($email);
+        }
+
+        return $this->sortedWriters[$email];
     }
 
     private function sortWriters(string $email)

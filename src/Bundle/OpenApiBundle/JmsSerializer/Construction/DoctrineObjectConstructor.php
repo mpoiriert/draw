@@ -64,7 +64,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         }
 
         //If the object is not found we relay on the fallback constructor
-        if (is_null($object = $this->loadObject($metadata->name, $data, $context, $context->getCurrentPath()))) {
+        if (null === ($object = $this->loadObject($metadata->name, $data, $context, $context->getCurrentPath()))) {
             $constructionFallbackStrategy = null;
             if($context->hasAttribute('constructionFallbackStrategy')) {
                 $constructionFallbackStrategy = $context->getAttribute('constructionFallbackStrategy');
@@ -111,7 +111,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             }
         }
 
-        if(is_null($doctrineFindByFields)) {
+        if ($doctrineFindByFields === null) {
             $doctrineFindByFields = $classMetadata->getIdentifierFieldNames();
             $findByIdentifier = true;
         }

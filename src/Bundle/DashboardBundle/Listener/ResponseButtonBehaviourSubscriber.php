@@ -51,7 +51,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
     {
         switch (true) {
             case !($controllerResult = $viewEvent->getControllerResult()):
-            case is_null($button = $this->getButtonToProcess($viewEvent->getRequest())):
+            case null === ($button = $this->getButtonToProcess($viewEvent->getRequest())):
             case !in_array('then-edit', $button->getBehaviours()):
                 return;
         }
@@ -74,12 +74,11 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
     public function saveNotification(ViewEvent $viewEvent)
     {
         $request = $viewEvent->getRequest();
-        $controllerResult = $viewEvent->getControllerResult();
 
         switch (true) {
-            case is_null($button = $this->getButtonToProcess($request)):
+            case null === ($button = $this->getButtonToProcess($request)):
             case !in_array('save', $button->getBehaviours()):
-            case is_null($action = $this->getActionToProcess($request)):
+            case null === ($action = $this->getActionToProcess($request)):
                 return;
         }
 
@@ -110,7 +109,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
             $buttonToProcess = null;
             switch (true) {
                 case !($buttonId = $request->headers->get('X-Draw-Dashboard-Button-Id')):
-                case is_null($action = $this->getActionToProcess($request)):
+                case null === ($action = $this->getActionToProcess($request)):
                 case ($flow = $action->getFlow()):
                     break;
             }

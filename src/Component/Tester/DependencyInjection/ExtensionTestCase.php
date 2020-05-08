@@ -42,7 +42,7 @@ abstract class ExtensionTestCase extends TestCase
     public function setUp(): void
     {
         $this->extension = $this->createExtension();
-        if(is_null(self::$containerBuilder)) {
+        if (self::$containerBuilder === null) {
             self::$containerBuilder = $this->load($this->getConfiguration());
         }
     }

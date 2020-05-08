@@ -41,7 +41,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return false;
         }
 
-        if (is_null(self::getPrimitiveType($source, $extractionContext))) {
+        if (self::getPrimitiveType($source, $extractionContext) === null) {
             return false;
         }
 
@@ -148,9 +148,7 @@ class TypeSchemaExtractor implements ExtractorInterface
 
     private function getHash($modelName, array $context = null)
     {
-        if (is_null($context)) {
-            $context = [];
-        }
+        $context = $context ?: [];
 
         $hash = md5(http_build_query($context));
 
@@ -171,7 +169,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return null;
         }
 
-        if(is_null(self::$typeResolver)) {
+        if (self::$typeResolver === null) {
             self::$typeResolver = new TypeResolver();
         }
 

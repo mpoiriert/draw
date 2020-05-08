@@ -188,7 +188,7 @@ class OperationExtractor implements ExtractorInterface
                 }
             }
 
-            if (!is_null($parameter)) {
+            if ($parameter !== null) {
                 if (!$parameter->description) {
                     $parameter->description = (string)$paramTag->getDescription() ?: null;
                 }
@@ -213,7 +213,7 @@ class OperationExtractor implements ExtractorInterface
                 continue;
             }
 
-            if (!is_null($bodyParameter)) {
+            if ($bodyParameter !== null) {
                 /* @var BodyParameter $bodyParameter */
                 if (isset($bodyParameter->schema->properties[$parameterName])) {
                     $parameter = $bodyParameter->schema->properties[$parameterName];

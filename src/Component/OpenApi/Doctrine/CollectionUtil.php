@@ -26,26 +26,18 @@ class CollectionUtil
 
         $currentCollection = call_user_func([$collectionOwner, 'get' . $propertyName]);
 
-        if (is_null($add)) {
-            $addMethod = 'add' . Inflector::singularize($propertyName);
-            if (method_exists($collectionOwner, $addMethod)) {
-                $add = function ($collectionItem) use ($collectionOwner, $addMethod) {
-                    call_user_func([$collectionOwner, $addMethod], $collectionItem);
-                };
-            } else {
+        if ($add === null) {
+            $add = self::createMutatorMethod('add', $collectionOwner, $propertyName);
+            if ($add === null) {
                 $add = function ($collectionItem) use ($currentCollection) {
                     $currentCollection->add($collectionItem);
                 };
             }
         }
 
-        if (is_null($remove)) {
-            $removeMethod = 'remove' . Inflector::singularize($propertyName);
-            if (method_exists($collectionOwner, $removeMethod)) {
-                $remove = function ($collectionItem) use ($collectionOwner, $removeMethod) {
-                    call_user_func([$collectionOwner, $removeMethod], $collectionItem);
-                };
-            } else {
+        if ($remove === null) {
+            $remove = self::createMutatorMethod('remove', $collectionOwner, $propertyName);
+            if ($remove === null) {
                 $remove = function ($collectionItem) use ($currentCollection) {
                     $currentCollection->removeElement($collectionItem);
                 };
@@ -65,11 +57,23 @@ class CollectionUtil
         }
     }
 
+    private static function createMutatorMethod($methodPrefix, $collectionOwner, $propertyName): ?callable
+    {
+        $methodName = $methodPrefix . Inflector::singularize($propertyName);
+        if (!method_exists($collectionOwner, $methodName)) {
+            return null;
+        }
+
+        return function ($collectionItem) use ($collectionOwner, $methodName) {
+            call_user_func([$collectionOwner, $methodName], $collectionItem);
+        };
+    }
+
     public static function assignPosition($element, Collection $collection, $attribute = 'position')
     {
         $method = 'get' . $attribute;
         $currentPosition = call_user_func([$element, $method]);
-        if (!is_null($currentPosition)) {
+        if ($currentPosition !== null) {
             return;
         }
 

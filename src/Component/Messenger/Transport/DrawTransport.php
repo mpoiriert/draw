@@ -66,7 +66,7 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         $id = Uuid::uuid4()->toString();
         $now = new \DateTime();
         $availableAt = null;
-        if(!is_null($delay)) {
+        if($delay !== null) {
             $availableAt = (clone $now)->modify(sprintf('+%d seconds', $delay / 1000));
         }
 

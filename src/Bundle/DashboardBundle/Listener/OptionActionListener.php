@@ -55,7 +55,7 @@ class OptionActionListener implements EventSubscriberInterface
     {
         $action = $event->getAction();
 
-        if (is_null($flow = $action->getFlow())) {
+        if (null === ($flow = $action->getFlow())) {
             return;
         }
 
@@ -88,7 +88,7 @@ class OptionActionListener implements EventSubscriberInterface
 
         switch (true) {
             case !isset($operation->responses[200]):
-            case is_null($responseSchema = $operation->responses[200]->schema):
+            case null === ($responseSchema = $operation->responses[200]->schema):
             case !isset($responseSchema->properties['data']):
                 return;
         }
@@ -102,10 +102,10 @@ class OptionActionListener implements EventSubscriberInterface
             $column = $property->vendor['x-draw-dashboard-column'] ?? null;
             $columnPosition = 0;
             if ($column instanceof Column) {
-                if (is_null($column->getLabel())) {
+                if ($column->getLabel() === null) {
                     $column->setLabel($column->getId());
                 }
-                if (!is_null($column->getPosition())) {
+                if ($column->getPosition() !== null) {
                     $columnPosition = $column->getPosition();
                 }
                 $columns[$columnPosition][] = $column;
@@ -114,12 +114,12 @@ class OptionActionListener implements EventSubscriberInterface
             $filter = $property->vendor['x-draw-dashboard-filter'] ?? null;
             if ($filter instanceof Filter) {
                 if ($input = $filter->getInput()) {
-                    if (is_null($input->getId())) {
+                    if ($input->getId() === null) {
                         $input->setId($filter->getId());
                     }
                     $this->configureInput($input, $item, $property, $openApiSchema);
                 }
-                !is_null($filterPosition = $filter->getPosition()) || ($filterPosition = $columnPosition);
+                null !== ($filterPosition = $filter->getPosition()) || ($filterPosition = $columnPosition);
                 $filters[$filterPosition][] = $filter;
             }
         }
@@ -194,12 +194,12 @@ class OptionActionListener implements EventSubscriberInterface
             $input->setLabel($input->getId());
         }
 
-        if ($input instanceof FormInputChoices && is_null($input->getChoices())) {
+        if ($input instanceof FormInputChoices && $input->getChoices() === null) {
             $input->setChoices($this->loadChoices($input, $objectSchema, $property, $openApiSchema));
             $input->setSourceCompareKeys(['id']); //todo make this dynamic
         }
 
-        if ($input instanceof FormInputComposite && is_null($input->getSubForm())) {
+        if ($input instanceof FormInputComposite && $input->getSubForm() === null) {
             $input->setSubForm($this->loadSubForm($input, $objectSchema, $property, $openApiSchema));
         }
 
@@ -220,11 +220,11 @@ class OptionActionListener implements EventSubscriberInterface
 
     private function loadChoices(FormInputChoices $input, Schema $schema, Schema $property, Root $openApiSchema)
     {
-        if (is_null($input->getRepositoryMethod())) {
+        if ($input->getRepositoryMethod() === null) {
             $input->setRepositoryMethod('findAll');
         }
 
-        if (!is_null($property->items)) {
+        if ($property->items !== null) {
             $target = $openApiSchema->resolveSchema($property->items);
         } else {
             $target = $openApiSchema->resolveSchema($property);

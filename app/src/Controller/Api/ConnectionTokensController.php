@@ -72,7 +72,7 @@ class ConnectionTokensController extends AbstractController
 
         $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $credential->getUsername()]);
 
-        if (is_null($user)) {
+        if ($user === null) {
             throw new HttpException(400, 'User not found');
         }
 

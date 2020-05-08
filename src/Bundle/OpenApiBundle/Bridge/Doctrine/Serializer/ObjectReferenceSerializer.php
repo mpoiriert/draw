@@ -44,7 +44,7 @@ class ObjectReferenceSerializer implements SubscribingHandlerInterface
         array $type,
         Context $context
     ) {
-        if(is_null($value)) {
+        if ($value === null) {
             return null;
         }
 

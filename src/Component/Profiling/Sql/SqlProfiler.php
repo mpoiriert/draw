@@ -16,7 +16,7 @@ abstract class SqlProfiler implements ProfilerInterface
      */
     public function getMetricBuilder(): SqlMetricBuilder
     {
-        if (is_null($this->metricBuilder)) {
+        if ($this->metricBuilder === null) {
             $this->metricBuilder = new SqlMetricBuilder();
         }
 

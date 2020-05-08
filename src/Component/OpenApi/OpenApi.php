@@ -55,7 +55,7 @@ class OpenApi
 
     public function __construct(SerializerInterface $serializer = null, SchemaCleaner $schemaCleaner = null)
     {
-        if (is_null($serializer)) {
+        if ($serializer === null) {
             $serializer = SerializerBuilder::create()
                 ->configureListeners(
                     function (EventDispatcher $dispatcher) {
@@ -68,11 +68,9 @@ class OpenApi
                     }
                 )
                 ->build();
-
         }
 
         $this->serializer = $serializer;
-
         $this->schemaCleaner = $schemaCleaner ?: new SchemaCleaner();
 
         $this->registerExtractor(new RootSchemaExtractor($this->serializer), -1, 'open_api');
@@ -156,11 +154,11 @@ class OpenApi
      */
     public function extract($source, $type = null, ExtractionContextInterface $extractionContext = null)
     {
-        if (is_null($type)) {
+        if ($type === null) {
             $type = new Schema();
         }
 
-        if (is_null($extractionContext)) {
+        if ($extractionContext === null) {
             $extractionContext = new ExtractionContext($this, $type);
         }
 
@@ -178,7 +176,7 @@ class OpenApi
      */
     private function getSortedExtractors()
     {
-        if (is_null($this->sortedExtractors)) {
+        if ($this->sortedExtractors === null) {
             $this->sortedExtractors = array();
             foreach ($this->extractors as $section => $extractors) {
                 ksort($extractors);

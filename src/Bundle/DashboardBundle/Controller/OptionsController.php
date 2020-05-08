@@ -75,7 +75,7 @@ class OptionsController
 
     public function dummyHandling($method, $path, Request $fromRequest = null)
     {
-        if (is_null($fromRequest)) {
+        if ($fromRequest === null) {
             $fromRequest = $this->requestStack->getMasterRequest();
         }
 
@@ -176,7 +176,7 @@ class OptionsController
 
     private function getBasePath(): string
     {
-        if (is_null($this->basePath)) {
+        if ($this->basePath === null) {
             $this->basePath = str_replace(
                 $this->urlGenerator->generate(
                     'draw_dashboard_options',

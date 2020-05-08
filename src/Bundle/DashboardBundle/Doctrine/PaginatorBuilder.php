@@ -18,7 +18,7 @@ class PaginatorBuilder
 
     public function fromRequest($class, Request $request, Query $query = null): Paginator
     {
-        if (is_null($query)) {
+        if ($query === null) {
             $query = $this->buildQuery(
                 $class,
                 $request->query->get('orderBy', []),

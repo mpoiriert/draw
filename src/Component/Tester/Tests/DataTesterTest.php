@@ -73,7 +73,7 @@ class DataTesterTest extends TestCase
                 function (DataTester $tester) use (&$hasBeenCalled) {
                     // To remove the warning of the ide we use the variable
                     // assigning true would have been enough
-                    $hasBeenCalled = !is_null($tester);
+                    $hasBeenCalled = $tester !== null;
                 }
             )
         );

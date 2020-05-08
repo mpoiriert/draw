@@ -266,11 +266,11 @@ class Execution
      */
     public function ensureTimestamp(LifecycleEventArgs $eventArgs)
     {
-        if (is_null($this->createdAt)) {
+        if ($this->createdAt === null) {
             $this->createdAt = new DateTime();
         }
 
-        if (is_null($this->updatedAt)) {
+        if ($this->updatedAt === null) {
             $this->updatedAt = $this->createdAt;
         }
     }

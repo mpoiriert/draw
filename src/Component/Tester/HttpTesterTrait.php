@@ -11,7 +11,7 @@ trait HttpTesterTrait
 
     public function httpTester(): ClientInterface
     {
-        if (is_null(static::$httpTesterClient)) {
+        if (static::$httpTesterClient === null) {
             static::$httpTesterClient = $this->createHttpTesterClient();
         }
 

@@ -77,14 +77,14 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
     {
         $class = $reflectionClass->getName();
         if (!$this->metadataFactory->hasMetadataFor($class)) {
-            return array();
+            return [];
         }
 
-        if (is_null($groups)) {
-            $groups = array(Constraint::DEFAULT_GROUP);
+        if ($groups === null) {
+            $groups = [Constraint::DEFAULT_GROUP];
         }
 
-        $constraints = array();
+        $constraints = [];
 
         /* @var ClassMetadataInterface $classMetadata */
         $classMetadata = $this->metadataFactory->getMetadataFor($class);
@@ -95,11 +95,11 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
                 continue;
             }
 
-            $constraints[$propertyName] = array();
+            $constraints[$propertyName] = [];
             foreach ($classMetadata->getPropertyMetadata($propertyName) as $propertyMetadata) {
                 /* @var $propertyMetadata */
 
-                $propertyConstraints = array();
+                $propertyConstraints = [];
                 foreach ($groups as $group) {
                     $propertyConstraints = array_merge(
                         $propertyConstraints,
@@ -107,7 +107,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
                     );
                 }
 
-                $finalPropertyConstraints = array();
+                $finalPropertyConstraints = [];
 
                 foreach ($propertyConstraints as $current) {
                     if (!in_array($current, $finalPropertyConstraints)) {
@@ -117,7 +117,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
 
                 $finalPropertyConstraints = array_filter(
                     $finalPropertyConstraints,
-                    array($this, 'supportConstraint')
+                    [$this, 'supportConstraint']
                 );
 
                 $constraints[$propertyName] = array_merge($constraints[$propertyName], $finalPropertyConstraints);

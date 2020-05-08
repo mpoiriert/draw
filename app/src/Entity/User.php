@@ -155,7 +155,7 @@ class User implements SecurityUserInterface
      */
     public function getId()
     {
-        if (is_null($this->id)) {
+        if ($this->id === null) {
             $this->id = Uuid::uuid4()->toString();
         }
 

@@ -27,7 +27,7 @@ class DataTester
      */
     protected static function getPropertyAccessor()
     {
-        if (is_null(self::$propertyAccessor)) {
+        if (self::$propertyAccessor === null) {
             self::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
                 ->enableExceptionOnInvalidIndex()
                 ->getPropertyAccessor();

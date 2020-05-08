@@ -106,7 +106,7 @@ class TestResponse
             'Response status code [' . $this->getStatusCode() . '] is not a redirect status code.'
         );
 
-        if (!is_null($uri)) {
+        if ($uri !== null) {
             $this->assertHeader('location', $uri);
         }
 
@@ -126,7 +126,7 @@ class TestResponse
             $this->getResponse()->hasHeader($headerName), "Header [{$headerName}] not present on response."
         );
 
-        if (!is_null($value)) {
+        if ($value !== null) {
             PHPUnit::assertContains(
                 $value,
                 $this->getResponse()->getHeader($headerName),
@@ -163,7 +163,7 @@ class TestResponse
             )
         );
 
-        if (is_null($value)) {
+        if ($value === null) {
             return $this;
         }
 

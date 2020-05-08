@@ -88,7 +88,7 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
 
             $operation = $this->getOperation($route, $reflectionMethod);
 
-            if(is_null($operation)) {
+            if ($operation === null) {
                 continue;
             }
 

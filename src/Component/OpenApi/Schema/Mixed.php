@@ -11,8 +11,8 @@ class Mixed
 
     public static function convert($value, $valueIsArray = false)
     {
-        if(is_null($value)) {
-            return $value;
+        if($value === null) {
+            return null;
         }
 
         if($valueIsArray && is_array($value)) {

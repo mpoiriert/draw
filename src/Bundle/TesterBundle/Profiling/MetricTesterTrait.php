@@ -27,7 +27,7 @@ trait MetricTesterTrait
             ));
         }
 
-        if(is_null($lastBrowser = $requestExecutioner->getLastBrowser())) {
+        if (null === ($lastBrowser = $requestExecutioner->getLastBrowser())) {
             Assert::fail('No request executed to assert metrics.');
         }
 

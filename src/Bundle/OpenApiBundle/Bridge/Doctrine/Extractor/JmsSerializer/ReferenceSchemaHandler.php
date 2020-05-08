@@ -22,7 +22,7 @@ class ReferenceSchemaHandler implements TypeToSchemaHandlerInterface
         PropertyMetadata $propertyMetadata,
         ExtractionContextInterface $extractionContext
     ) {
-        if (is_null($type = $this->getReferenceType($propertyMetadata))) {
+        if (null === ($type = $this->getReferenceType($propertyMetadata))) {
             return null;
         }
 

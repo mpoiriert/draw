@@ -41,14 +41,17 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
 
         $this->debugLogger = new DebugStack();
 
-        if(!is_null($this->logger)) {
-            $logger = new LoggerChain();
-            $logger->addLogger($this->debugLogger);
-            $logger->addLogger($this->logger);
-            $configuration->setSQLLogger($logger);
-        } else {
+        if($this->logger === null) {
             $configuration->setSQLLogger($this->debugLogger);
+            return;
         }
+
+        $configuration->setSQLLogger(
+            new LoggerChain([
+                $this->debugLogger,
+                $this->logger
+            ])
+        );
     }
 
     public function stop()

@@ -53,7 +53,7 @@ class PropertiesExtractorTest extends TestCase
      */
     public function testCanExtract($source, $type, $canBeExtract)
     {
-        if (!is_null($source)) {
+        if ($source !== null) {
             $source = new ReflectionClass($source);
         }
 

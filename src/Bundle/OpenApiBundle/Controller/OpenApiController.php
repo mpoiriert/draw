@@ -53,7 +53,7 @@ class OpenApiController
 
     public function loadOpenApiSchema(): Root
     {
-        if (is_null($this->openApiSchema)) {
+        if ($this->openApiSchema === null) {
             $debug = $this->parameterBag->get('kernel.debug');
             $path = $this->parameterBag->get('kernel.cache_dir') . '/openApi.php';
             $configCache = new ConfigCache($path, $debug);

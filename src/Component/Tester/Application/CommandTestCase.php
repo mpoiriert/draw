@@ -104,7 +104,7 @@ abstract class CommandTestCase extends TestCase
 
         $this->assertSame($shortcut, $option->getShortcut());
 
-        if(is_null($default) && !$option->acceptValue()) {
+        if($default === null && !$option->acceptValue()) {
             $default = false;
         }
 
