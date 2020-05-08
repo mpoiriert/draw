@@ -18,7 +18,6 @@ Here are the change to guide you trough your upgrade.
  - The folder tree map the structure of Symfony: Component, Bridge, Bundle
  - Draw\DataTester and Draw\HttpTester have been merge under Draw\Component\Tester (see more under class mapping)
 
-
 ## Class Mapping
 
 Here is a mapping of old class name to new class name.
