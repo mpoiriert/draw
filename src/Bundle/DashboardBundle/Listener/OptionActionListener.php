@@ -12,7 +12,6 @@ use Draw\Bundle\DashboardBundle\Annotations\FormInputChoices;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputCollection;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputComposite;
 use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
-use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
@@ -101,11 +100,15 @@ class OptionActionListener implements EventSubscriberInterface
         $filters = [];
         foreach ($item->properties as $property) {
             $column = $property->vendor['x-draw-dashboard-column'] ?? null;
+            $columnPosition = 0;
             if ($column instanceof Column) {
                 if (is_null($column->getLabel())) {
                     $column->setLabel($column->getId());
                 }
-                $columns[] = $column;
+                if (!is_null($column->getPosition())) {
+                    $columnPosition = $column->getPosition();
+                }
+                $columns[$columnPosition][] = $column;
             }
 
             $filter = $property->vendor['x-draw-dashboard-filter'] ?? null;
@@ -116,10 +119,21 @@ class OptionActionListener implements EventSubscriberInterface
                     }
                     $this->configureInput($input, $item, $property, $openApiSchema);
                 }
-                $filters[] = $filter;
+                !is_null($filterPosition = $filter->getPosition()) || ($filterPosition = $columnPosition);
+                $filters[$filterPosition][] = $filter;
             }
         }
 
+        if ($filters) {
+            ksort($filters);
+            $filters = call_user_func_array('array_merge', $filters);
+        }
+
+        if ($columns) {
+            ksort($columns);
+            $columns = call_user_func_array('array_merge', $columns);
+        }
+        
         $columns[] = new Column(['id' => '_actions', 'type' => 'actions', 'label' => 'actions']);
 
         $action->setColumns($columns);
@@ -210,7 +224,7 @@ class OptionActionListener implements EventSubscriberInterface
             $input->setRepositoryMethod('findAll');
         }
 
-        if(!is_null($property->items)) {
+        if (!is_null($property->items)) {
             $target = $openApiSchema->resolveSchema($property->items);
         } else {
             $target = $openApiSchema->resolveSchema($property);

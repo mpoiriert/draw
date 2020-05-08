@@ -1,6 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @Annotation
@@ -16,6 +17,13 @@ class Filter extends BaseAnnotation implements VendorPropertyInterface
      * @var bool
      */
     private $alwaysShow = true;
+
+    /**
+     * @var null|int
+     *
+     * @Serializer\Exclude()
+     */
+    private $position;
 
     /**
      * @var \Draw\Bundle\DashboardBundle\Annotations\FormInput
@@ -80,5 +88,15 @@ class Filter extends BaseAnnotation implements VendorPropertyInterface
     public function setComparison(?string $comparison): void
     {
         $this->comparison = $comparison;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
     }
 }

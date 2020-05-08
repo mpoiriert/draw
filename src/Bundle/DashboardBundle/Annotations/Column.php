@@ -1,6 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @Annotation
@@ -36,6 +36,13 @@ class Column extends BaseAnnotation implements VendorPropertyInterface
      * @var string
      */
     private $type = 'simple';
+
+    /**
+     * @var int|null
+     *
+     * @Serializer\Exclude()
+     */
+    private $position;
 
     /**
      * @var array
@@ -115,5 +122,15 @@ class Column extends BaseAnnotation implements VendorPropertyInterface
     public function setOptions(array $options): void
     {
         $this->options = $options;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
     }
 }
