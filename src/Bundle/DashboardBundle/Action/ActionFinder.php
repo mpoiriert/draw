@@ -45,7 +45,7 @@ class ActionFinder
 
     public function findOneByPath($method, $path): ?Action
     {
-        $key = $method . ' ' . $path;
+        $key = strtolower($method . ' ' . $path);
         if (!array_key_exists($key, $this->actionsByPath)) {
             // Doesn't exists until proof otherwise
             $this->actionsByPath[$key] = null;
@@ -108,7 +108,7 @@ class ActionFinder
         $action->setOperation($operation);
 
         $this->actionsByRoute[$routeName] = $action;
-        $this->actionsByPath[$method . ' ' . $path] = $action;
+        $this->actionsByPath[strtolower($method . ' ' . $path)] = $action;
         $this->actionsByOperationId[$operation->operationId] = $action;
 
         return $action;
