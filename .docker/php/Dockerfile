@@ -72,6 +72,6 @@ WORKDIR /home/wwwroot/
 
 EXPOSE 9000
 
-ADD run.sh /usr/local/bin/run.sh
+COPY run.sh /usr/local/bin/run.sh
 
 CMD ["/usr/local/bin/run.sh"]
