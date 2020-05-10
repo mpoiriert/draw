@@ -2,7 +2,6 @@
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Mapping\ClassMetadata;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,17 +15,20 @@ class PaginatorBuilder
         $this->managerRegistry = $managerRegistry;
     }
 
-    public function fromRequest($class, Request $request, Query $query = null): Paginator
+    public function fromRequest($class, Request $request, callable $queryBuilderCallback = null): Paginator
     {
-        if ($query === null) {
-            $query = $this->buildQuery(
-                $class,
-                $request->query->get('orderBy', []),
-                $request->query->get('filters', [])
-            );
+        $queryBuilder = $this->buildQueryBuilder(
+            $class,
+            $request->query->get('orderBy', []),
+            $request->query->get('filters', [])
+        );
+
+        if($queryBuilderCallback) {
+            call_user_func($queryBuilderCallback, $queryBuilder);
         }
+
         $paginator = new Paginator(
-            $query,
+            $queryBuilder->getQuery(),
             $request->query->getInt('pageSize')
         );
 
@@ -35,7 +37,7 @@ class PaginatorBuilder
         return $paginator;
     }
 
-    private function buildQuery($class, array $orderBy, array $filters): Query
+    private function buildQueryBuilder($class, array $orderBy, array $filters): QueryBuilder
     {
         /** @var EntityManagerInterface $manager */
         $manager = $this->managerRegistry->getManagerForClass($class);
@@ -51,7 +53,7 @@ class PaginatorBuilder
 
         $this->addFilters($queryBuilder, $filters, $class, $alias);
 
-        return $queryBuilder->getQuery();
+        return $queryBuilder;
     }
 
     private function addFilters(QueryBuilder $queryBuilder, array $filters, string $class, string $alias)
