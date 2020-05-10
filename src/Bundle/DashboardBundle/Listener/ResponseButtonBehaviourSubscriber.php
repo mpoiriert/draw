@@ -6,6 +6,7 @@ use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;
 use Draw\Bundle\DashboardBundle\Annotations\Button;
 use Draw\Bundle\DashboardBundle\Annotations\FlowWithButtonsInterface;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
+use Draw\Bundle\DashboardBundle\Feedback\CloseDialog;
 use Draw\Bundle\DashboardBundle\Feedback\Navigate;
 use Draw\Bundle\DashboardBundle\Feedback\Notification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,7 +32,8 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
             ViewEvent::class => [
                 ['thenEdit', 31],
                 ['saveNotification', 31],
-            ]
+                ['closeDialog', 31],
+            ],
         ];
     }
 
@@ -71,7 +73,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function saveNotification(ViewEvent $viewEvent)
+    public function saveNotification(ViewEvent $viewEvent): void
     {
         $request = $viewEvent->getRequest();
 
@@ -87,7 +89,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
             "{{ 'notification.save'|trans({'%entry%': request.get('object')}, 'DrawDashboardBundle')|raw }}"
         );
 
-        if(!$template) {
+        if (!$template) {
             return;
         }
 
@@ -100,6 +102,17 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
                 )
             )
         );
+    }
+
+    public function closeDialog(ViewEvent $viewEvent): void
+    {
+        $request = $viewEvent->getRequest();
+
+        if (!($dialogId = $request->headers->get('X-Draw-Dashboard-Dialog-Id'))) {
+            return;
+        }
+
+        $this->feedbackNotifier->sendFeedback(new CloseDialog($dialogId));
     }
 
     private function getButtonToProcess(Request $request): ?Button

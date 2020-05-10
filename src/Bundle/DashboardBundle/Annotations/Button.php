@@ -22,11 +22,15 @@ class Button extends BaseAnnotation
 
     /**
      * @var string|null
+     *
+     * @Enum({"raised-button", "stroked-button", "flat-button", "icon-button", "fab", "mini-fab"})
      */
     private $style;
 
     /**
      * @var string|null
+     *
+     * @Enum({"primary", "accent", "warn"})
      */
     private $color;
 

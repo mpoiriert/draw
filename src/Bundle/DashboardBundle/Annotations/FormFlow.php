@@ -8,6 +8,14 @@ class FormFlow extends Flow implements FlowWithButtonsInterface
     const TYPE = 'form';
 
     /**
+     * @Serializer\Accessor(getter="getId")
+     *
+     * @internal
+     */
+    private $id;
+
+
+    /**
      * @var array<\Draw\Bundle\DashboardBundle\Annotations\Button>
      */
     private $buttons;
@@ -35,5 +43,14 @@ class FormFlow extends Flow implements FlowWithButtonsInterface
     public function setDialog(bool $dialog): void
     {
         $this->dialog = $dialog;
+    }
+
+    public function getId()
+    {
+        if(is_null($this->id)) {
+            $this->id = uniqid();
+        }
+
+        return $this->id;
     }
 }
