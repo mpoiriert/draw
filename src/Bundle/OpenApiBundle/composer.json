@@ -31,5 +31,10 @@
     },
     "suggest": {
         "nelmio/cors-bundle": "If you have a api exposed for browser on different domain/sub-domain you might need cors."
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6-dev"
+        }
     }
 }

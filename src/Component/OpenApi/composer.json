@@ -23,5 +23,10 @@
     },
     "conflict": {
         "draw/swagger": "*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6-dev"
+        }
     }
 }

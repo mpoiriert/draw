@@ -21,5 +21,10 @@
     },
     "conflict": {
         "doctrine/annotations": "<1.3"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6-dev"
+        }
     }
 }
