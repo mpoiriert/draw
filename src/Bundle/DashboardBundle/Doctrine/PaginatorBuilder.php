@@ -23,7 +23,7 @@ class PaginatorBuilder
             $request->query->get('filters', [])
         );
 
-        if($queryBuilderCallback) {
+        if ($queryBuilderCallback) {
             call_user_func($queryBuilderCallback, $queryBuilder);
         }
 
@@ -67,81 +67,100 @@ class PaginatorBuilder
                 continue;
             }
 
-            $key = $filter['id'];
+            $paths = explode('.', $filter['id']);
             $comparison = $filter['comparison'];
 
-            if ($classMetadata->hasAssociation($key)) {
-                $this->buildAssociationFilter($queryBuilder, $alias, $classMetadata, $filter);
-                continue;
-            }
+            while ($path = array_shift($paths)) {
+                if ($classMetadata->hasAssociation($path)) {
+                    $this->buildAssociationFilter(
+                        $queryBuilder,
+                        $alias,
+                        $classMetadata,
+                        $path,
+                        array_merge(
+                            $filter,
+                            ['id' => (count($paths) ? implode('.', $paths) : '')]
+                        )
+                    );
+                    break;
+                }
 
-            $whereString = '%s.%s %s :%s';
+                if (count($paths)) {
+                    throw new \RuntimeException(sprintf(
+                        'Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
+                        $path,
+                        $filter['id']
+                    ));
+                }
 
-            $parameterName = $alias . '_' . $key;
+                $whereString = '%s.%s %s :%s';
 
-            switch (true) {
-                case ($comparison === 'BETWEEN'):
-                    $value = array_filter($value, function ($value) {
-                        return $value !== '';
-                    });
+                $parameterName = $alias . '_' . $path;
 
-                    if (!$value) {
-                        return;
-                    }
+                switch (true) {
+                    case ($comparison === 'BETWEEN'):
+                        $value = array_filter($value, function ($value) {
+                            return $value !== '';
+                        });
 
-                    if (count($value) === 1) {
-                        $this->addFilters(
-                            $queryBuilder,
-                            [
+                        if (!$value) {
+                            return;
+                        }
+
+                        if (count($value) === 1) {
+                            $this->addFilters(
+                                $queryBuilder,
                                 [
-                                    'id' => $key,
-                                    'comparison' => key($value) === 'from' ? '>=' : '<=',
-                                    'value' => current($value)
-                                ]
-                            ],
-                            $class,
-                            $alias
-                        );
-                        return;
-                    }
+                                    [
+                                        'id' => $path,
+                                        'comparison' => key($value) === 'from' ? '>=' : '<=',
+                                        'value' => current($value)
+                                    ]
+                                ],
+                                $class,
+                                $alias
+                            );
+                            return;
+                        }
 
-                    $queryBuilder
-                        ->andWhere(sprintf(
-                            '%s.%s BETWEEN :%sFrom AND :%sTo',
-                            $alias,
-                            $key,
-                            $parameterName,
-                            $parameterName
-                        ));
-                    break;
+                        $queryBuilder
+                            ->andWhere(sprintf(
+                                '%s.%s BETWEEN :%sFrom AND :%sTo',
+                                $alias,
+                                $path,
+                                $parameterName,
+                                $parameterName
+                            ));
+                        break;
 
-                /** @noinspection PhpMissingBreakStatementInspection */
-                case is_array($value):
-                    $whereString = '%s.%s %s (:%s)';
-                default:
-                    $queryBuilder
-                        ->andWhere(sprintf(
-                            $whereString,
-                            $alias,
-                            $key,
-                            $comparison,
-                            $parameterName
-                        ));
-                    break;
-            }
+                    /** @noinspection PhpMissingBreakStatementInspection */
+                    case is_array($value):
+                        $whereString = '%s.%s %s (:%s)';
+                    default:
+                        $queryBuilder
+                            ->andWhere(sprintf(
+                                $whereString,
+                                $alias,
+                                $path,
+                                $comparison,
+                                $parameterName
+                            ));
+                        break;
+                }
 
-            switch ($comparison) {
-                case 'BETWEEN':
-                    $queryBuilder->setParameter($parameterName . 'From', $value['from']);
-                    $queryBuilder->setParameter($parameterName . 'To', $value['to']);
-                    break;
-                case 'LIKE':
-                case 'NOT LIKE':
-                    $queryBuilder->setParameter($parameterName, '%' . $value . '%');
-                    break;
-                default:
-                    $queryBuilder->setParameter($parameterName, $value);
-                    break;
+                switch ($comparison) {
+                    case 'BETWEEN':
+                        $queryBuilder->setParameter($parameterName . 'From', $value['from']);
+                        $queryBuilder->setParameter($parameterName . 'To', $value['to']);
+                        break;
+                    case 'LIKE':
+                    case 'NOT LIKE':
+                        $queryBuilder->setParameter($parameterName, '%' . $value . '%');
+                        break;
+                    default:
+                        $queryBuilder->setParameter($parameterName, $value);
+                        break;
+                }
             }
         }
     }
@@ -150,40 +169,57 @@ class PaginatorBuilder
         QueryBuilder $queryBuilder,
         $alias,
         ClassMetadata $classMetadata,
+        $associationName,
         array $filter
     ) {
-        $value = $filter['value'];
-        $key = $filter['id'];
-        $comparison = $filter['comparison'];
-
         $associationClassMetadata = $this->managerRegistry
             ->getManagerForClass($classMetadata->getName())
-            ->getClassMetadata($classMetadata->getAssociationTargetClass($key));
+            ->getClassMetadata($classMetadata->getAssociationTargetClass($associationName));
 
-        $queryBuilder->join(sprintf('%s.%s', $alias, $key), $key);
-        $identifierKey = $associationClassMetadata->getIdentifierFieldNames()[0];
-        if (array_key_exists($identifierKey, $value)) {
-            $value = $value[$identifierKey];
-        } else {
-            $value = array_map(
-                function ($entry) use ($identifierKey) {
-                    return $entry[$identifierKey];
-                },
-                $value
-            );
+        $joinAlias = $associationName;
+
+        $queryBuilder->join(sprintf('%s.%s', $alias, $associationName), $joinAlias);
+
+        $paths = array_filter(explode('.', $filter['id']));
+        if (!count($paths)) {
+            $paths = [$associationClassMetadata->getIdentifierFieldNames()[0]];
+        }
+
+        if(count($paths) > 1) {
+            throw new \RuntimeException('Paths too deep not supported yet.');
+        }
+
+        $searchField = $paths[0];
+
+        $value = $filter['value'];
+        switch (true) {
+            case !is_array($value):
+                break;
+            case array_key_exists($searchField, $value):
+                $value = $value[$searchField];
+                break;
+            default:
+                $value = array_map(
+                    function ($entry) use ($searchField) {
+                        return $entry[$searchField];
+                    },
+                    $value
+                );
+                break;
+
         }
 
         $this->addFilters(
             $queryBuilder,
             [
                 [
-                    'id' => $associationClassMetadata->getIdentifierFieldNames()[0],
+                    'id' => $searchField,
                     'value' => $value,
-                    'comparison' => $comparison,
+                    'comparison' =>  $filter['comparison'],
                 ]
             ],
             $associationClassMetadata->getName(),
-            $key
+            $joinAlias
         );
     }
 }

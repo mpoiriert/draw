@@ -1,7 +1,5 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
-
 /**
  * @Annotation
  */
@@ -28,6 +26,11 @@ class FormInput extends BaseAnnotation implements VendorPropertyInterface
      * @var string|null
      */
     private $icon;
+
+    /**
+     * @var bool
+     */
+    private $disabled = false;
 
     public function __construct(array $values = [])
     {
@@ -81,5 +84,15 @@ class FormInput extends BaseAnnotation implements VendorPropertyInterface
     public function setIcon(?string $icon): void
     {
         $this->icon = $icon;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled(bool $disabled): void
+    {
+        $this->disabled = $disabled;
     }
 }

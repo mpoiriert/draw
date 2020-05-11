@@ -17,11 +17,14 @@ use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Twig\Environment;
 
 class OptionActionListener implements EventSubscriberInterface
 {
     private $twig;
+
+    private $expressionLanguage;
 
     /**
      * @var ManagerRegistry
@@ -29,6 +32,11 @@ class OptionActionListener implements EventSubscriberInterface
     private $managerRegistry;
 
     private $serializer;
+
+    /**
+     * @var OptionBuilderEvent
+     */
+    private $currentEvent;
 
     public function __construct(
         Environment $environment,
@@ -38,6 +46,7 @@ class OptionActionListener implements EventSubscriberInterface
         $this->twig = $environment;
         $this->managerRegistry = $managerRegistry;
         $this->serializer = $serializer;
+        $this->expressionLanguage = new ExpressionLanguage();
     }
 
     public static function getSubscribedEvents()
@@ -133,7 +142,7 @@ class OptionActionListener implements EventSubscriberInterface
             ksort($columns);
             $columns = call_user_func_array('array_merge', $columns);
         }
-        
+
         $columns[] = new Column(['id' => '_actions', 'type' => 'actions', 'label' => 'actions']);
 
         $action->setColumns($columns);
@@ -220,9 +229,11 @@ class OptionActionListener implements EventSubscriberInterface
 
     private function loadChoices(FormInputChoices $input, Schema $schema, Schema $property, Root $openApiSchema)
     {
-        if ($input->getRepositoryMethod() === null) {
-            $input->setRepositoryMethod('findAll');
-        }
+        $expression = $input->getExpression();
+
+        $values = [
+            'input' => $input,
+        ];
 
         if ($property->items !== null) {
             $target = $openApiSchema->resolveSchema($property->items);
@@ -231,10 +242,16 @@ class OptionActionListener implements EventSubscriberInterface
         }
 
         $targetClass = $target->getVendorData()['x-draw-dashboard-class-name'];
-        $objects = $this->managerRegistry
-            ->getManagerForClass($targetClass)
-            ->getRepository($targetClass)
-            ->{$input->getRepositoryMethod()}();
+
+        if($manager = $this->managerRegistry->getManagerForClass($targetClass)) {
+            $repository = $manager->getRepository($targetClass);
+            $values['repository'] = $repository;
+            if(!$expression) {
+                $expression = 'repository.findAll()';
+            }
+        }
+
+        $objects = $this->expressionLanguage->evaluate($expression, $values);
 
         $choices = [];
         foreach ($objects as $object) {

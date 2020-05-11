@@ -21,6 +21,11 @@ class FormInputCollection extends FormInput
      */
     private $subForm;
 
+    /**
+     * @var bool
+     */
+    private $allowAdd = true;
+
     public function getOrderBy(): ?string
     {
         return $this->orderBy;
@@ -39,5 +44,15 @@ class FormInputCollection extends FormInput
     public function setSubForm($subForm): void
     {
         $this->subForm = $subForm;
+    }
+
+    public function isAllowAdd(): bool
+    {
+        return $this->allowAdd;
+    }
+
+    public function setAllowAdd(bool $allowAdd): void
+    {
+        $this->allowAdd = $allowAdd;
     }
 }

@@ -15,13 +15,6 @@ class FormInputChoices extends FormInput
     private $multiple = false;
 
     /**
-     * @var string|null
-     *
-     * @Serializer\Exclude()
-     */
-    private $repositoryMethod = null;
-
-    /**
      * @var array|null
      */
     private $choices = null;
@@ -33,6 +26,13 @@ class FormInputChoices extends FormInput
      */
     private $sourceCompareKeys = null;
 
+    /**
+     * @var string|null
+     *
+     * @Serializer\Exclude()
+     */
+    private $expression;
+
     public function getMultiple(): bool
     {
         return $this->multiple;
@@ -41,16 +41,6 @@ class FormInputChoices extends FormInput
     public function setMultiple(bool $multiple): void
     {
         $this->multiple = $multiple;
-    }
-
-    public function getRepositoryMethod(): ?string
-    {
-        return $this->repositoryMethod;
-    }
-
-    public function setRepositoryMethod(?string $repositoryMethod): void
-    {
-        $this->repositoryMethod = $repositoryMethod;
     }
 
     public function getChoices(): ?array
@@ -75,5 +65,15 @@ class FormInputChoices extends FormInput
     public function setSourceCompareKeys(?array $sourceCompareKeys): void
     {
         $this->sourceCompareKeys = $sourceCompareKeys;
+    }
+
+    public function getExpression(): ?string
+    {
+        return $this->expression;
+    }
+
+    public function setExpression(?string $expression): void
+    {
+        $this->expression = $expression;
     }
 }
