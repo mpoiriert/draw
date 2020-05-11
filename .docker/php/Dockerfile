@@ -6,8 +6,7 @@ RUN apt-get update \
     gnupg gnupg1 gnupg2 \
     sox lame libsox-fmt-mp3 \
     libpng-dev \
-    libjpeg-dev \
-    openssh-server
+    libjpeg-dev
 
 RUN docker-php-ext-configure gd --with-jpeg-dir=/usr/include/
 RUN docker-php-ext-install pdo pdo_mysql gd zip pcntl
@@ -30,18 +29,10 @@ RUN pecl install redis && docker-php-ext-enable redis
 #AWS
 RUN apt-get install -y --no-install-recommends awscli
 
-#SSH
-RUN mkdir /var/run/sshd
-RUN echo 'root:root' | chpasswd
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN  /usr/bin/ssh-keygen -A
-EXPOSE 22
-
-#GMP for PHP package simplito/elliptic-php
-RUN apt-get install -y libgmp-dev re2c libmhash-dev file
-RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/
-RUN docker-php-ext-configure gmp
-RUN docker-php-ext-install gmp
+# Install prestissimo (composer plugin). Plugin that downloads packages in parallel to speed up the installation process
+# After release of Composer 2.x, remove prestissimo, because parallelism already merged into Composer 2.x branch:
+# https://github.com/composer/composer/pull/7904
+RUN composer global require hirak/prestissimo
 
 ARG PUID=1000
 ARG PGID=1000
@@ -71,7 +62,3 @@ RUN docker-php-ext-configure opcache --enable-opcache \
 WORKDIR /home/wwwroot/
 
 EXPOSE 9000
-
-COPY run.sh /usr/local/bin/run.sh
-
-CMD ["/usr/local/bin/run.sh"]

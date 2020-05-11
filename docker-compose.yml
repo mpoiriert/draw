@@ -37,8 +37,6 @@ services:
         depends_on:
             - mysql
             - maildev
-        ports:
-            - "22:22"
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin

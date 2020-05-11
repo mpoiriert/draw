@@ -31,11 +31,12 @@ services:
         container_name: draw_php
         volumes:
           - .:/home/wwwroot
+          - ~/.ssh:/root/.ssh
+          - ~/.gitconfig:/etc/gitconfig
+          - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
         depends_on:
           - mysql
           - maildev
-        ports:
-          - "22:22"
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
