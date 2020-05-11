@@ -75,7 +75,7 @@ class User implements SecurityUserInterface
      *
      * @Dashboard\FormInputChoices(
      *     multiple=true,
-     *     repositoryMethod="findActive"
+     *     expression="repository.findActive()"
      * )
      *
      * @Dashboard\Filter(
