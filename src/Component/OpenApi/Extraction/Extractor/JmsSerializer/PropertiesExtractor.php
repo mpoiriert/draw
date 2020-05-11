@@ -151,7 +151,7 @@ class PropertiesExtractor implements ExtractorInterface
                     throw new \RuntimeException(sprintf(
                         'Type of property [%s::%s] is not set',
                         $propertyMetadata->class,
-                        $propertyMetadata->name,
+                        $propertyMetadata->name
                     ));
                 }
                 $propertySchema = $this->extractTypeSchema(
