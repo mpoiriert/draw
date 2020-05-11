@@ -14,9 +14,6 @@ class FormInputChoices extends FormInput
      */
     private $multiple = false;
 
-    /**
-     * @var array|null
-     */
     private $choices = null;
 
     /**
@@ -43,14 +40,19 @@ class FormInputChoices extends FormInput
         $this->multiple = $multiple;
     }
 
-    public function getChoices(): ?array
+    public function getChoices()
     {
         return $this->choices;
     }
 
     public function setChoices($choices): void
     {
-        if(!$choices instanceof Choices) {
+        if ($choices instanceof Remote) {
+            $this->choices = $choices;
+            return;
+        }
+
+        if (!$choices instanceof Choices) {
             $choices = new Choices(['choices' => $choices]);
         }
 
