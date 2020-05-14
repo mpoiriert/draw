@@ -52,6 +52,8 @@ class ConnectionTokensController extends AbstractController
      *     }
      * )
      *
+     * @Dashboard\Breadcrumb(label="_breadcrumb.createConnectionToken")
+     *
      * @Security("not is_granted('ROLE_USER')")
      *
      * @param Credential $credential

@@ -3,6 +3,7 @@
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Root;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -17,6 +18,8 @@ class OptionBuilderEvent extends Event
 
     private $response;
 
+    private $options;
+
     public function __construct(
         Action $action,
         Root $openApiSchema,
@@ -27,6 +30,7 @@ class OptionBuilderEvent extends Event
         $this->openApiSchema = $openApiSchema;
         $this->request = $request;
         $this->response = $response;
+        $this->options = new ParameterBag();
     }
 
     public function getAction(): Action
@@ -52,5 +56,10 @@ class OptionBuilderEvent extends Event
     public function getResponse(): Response
     {
         return $this->response;
+    }
+
+    public function getOptions(): ParameterBag
+    {
+        return $this->options;
     }
 }

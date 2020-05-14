@@ -26,6 +26,8 @@ class UsersController extends AbstractController
      *
      * @Dashboard\ActionCreate()
      *
+     * @Dashboard\Breadcrumb(parentOperationId="userList")
+     *
      * @IsGranted("ROLE_ADMIN")
      *
      * @param User $user
@@ -112,7 +114,11 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userList")
      *
-     * @Dashboard\ActionList()
+     * @Dashboard\ActionList(
+     *     title="_action.userList.title"
+     * )
+     *
+     * @Dashboard\Breadcrumb(label="_breadcrumb.userList")
      *
      * @param PaginatorBuilder $paginatorBuilder
      * @param Request $request

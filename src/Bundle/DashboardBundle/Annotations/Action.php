@@ -88,6 +88,8 @@ class Action extends BaseAnnotation implements VendorInterface
      */
     private $templates = [];
 
+    private $title;
+
     public function __construct(array $values = [])
     {
         $values['type'] = static::TYPE;
@@ -222,5 +224,15 @@ class Action extends BaseAnnotation implements VendorInterface
     public function getTemplate($name, $default = null)
     {
         return $this->templates[$name] ?? $default;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setTitle($title): void
+    {
+        $this->title = Translatable::set($this->title, $title);
     }
 }

@@ -15,3 +15,11 @@ email: 'Email'
 password: 'Password'
 position: 'Position'
 user: 'User'
+
+_action:
+  userList:
+    title: 'Users List'
+_breadcrumb:
+  home: 'Dashboard'
+  userList: 'Users management'
+  createConnectionToken: 'Sign In'

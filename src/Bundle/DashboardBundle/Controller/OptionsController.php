@@ -159,16 +159,17 @@ class OptionsController
 
             $action->setHref($this->getBasePath() . $pathInfo);
 
-            $body[$method] = ['x-draw-dashboard-action' => $action];
-
-            $this->eventDispatcher->dispatch(
-                new OptionBuilderEvent(
-                    $action,
-                    $openApiSchema,
-                    $subRequest,
-                    $response
-                )
+            $event = new OptionBuilderEvent(
+                $action,
+                $openApiSchema,
+                $subRequest,
+                $response
             );
+            $event->getOptions()->set('x-draw-dashboard-action', $action);
+
+            $this->eventDispatcher->dispatch($event);
+
+            $body[$method] = $event->getOptions()->all();
         }
 
         return $body;
