@@ -103,7 +103,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
 
         $container->getDefinition(ApiExceptionSubscriber::class)
             ->setArgument(
-                '$exceptionCodes',
+                '$errorCodes',
                 $codes
             )
             ->setArgument(

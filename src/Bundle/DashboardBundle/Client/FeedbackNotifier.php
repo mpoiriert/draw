@@ -1,6 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Client;
 
-use Draw\Bundle\OpenApiBundle\Response\Listener\ResponseConverterSubscriber;
+use Draw\Bundle\OpenApiBundle\Response\Listener\ResponseSerializerSubscriber;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class FeedbackNotifier
@@ -21,7 +21,7 @@ class FeedbackNotifier
             return;
         }
 
-        ResponseConverterSubscriber::setResponseHeader(
+        ResponseSerializerSubscriber::setResponseHeader(
             $request,
             self::HEADER_NAME,
             [json_encode(['type' => $feedback->getFeedbackType(), 'metadata' => $feedback])],

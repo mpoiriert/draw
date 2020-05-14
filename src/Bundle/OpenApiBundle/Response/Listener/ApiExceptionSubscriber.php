@@ -1,39 +1,32 @@
 <?php namespace Draw\Bundle\OpenApiBundle\Response\Listener;
 
 use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use ReflectionClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Throwable;
 
-class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInterface
+final class ApiExceptionSubscriber implements EventSubscriberInterface
 {
-    use LoggerAwareTrait;
-
+    /**
+     * @var bool
+     */
     private $debug;
 
-    private $exceptionCodes;
+    /**
+     * @var array<string,int>
+     */
+    private $errorCodes;
 
     /**
      * @var string
      */
     private $violationKey;
 
-    const DEFAULT_STATUS_CODE = 500;
-
-    public function __construct(
-        $debug = false,
-        $exceptionCodes = [],
-        $violationKey = 'errors'
-    ) {
-        $this->debug = $debug;
-        $this->exceptionCodes = $exceptionCodes;
-        $this->violationKey = $violationKey;
-    }
+    private const DEFAULT_STATUS_CODE = 500;
 
     /**
      * @return array
@@ -45,51 +38,25 @@ class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInt
         ];
     }
 
-    /**
-     * @param $exception
-     * @return int
-     */
-    protected function getStatusCode($exception)
-    {
-        if ($exception instanceof HttpException) {
-            return $exception->getStatusCode();
-        }
-
-        return $this->isSubclassOf($exception, $this->exceptionCodes) ?: self::DEFAULT_STATUS_CODE;
+    public function __construct(
+        bool $debug = false,
+        array $errorCodes = [],
+        string $violationKey = 'errors'
+    ) {
+        $this->debug = $debug;
+        $this->errorCodes = $errorCodes;
+        $this->violationKey = $violationKey;
     }
 
-    /**
-     * @param $exception
-     * @param $exceptionMap
-     * @return bool|string
-     */
-    protected function isSubclassOf($exception, $exceptionMap)
+    public function onKernelException(ExceptionEvent $event): void
     {
-        $exceptionClass = get_class($exception);
-        $reflectionExceptionClass = new ReflectionClass($exceptionClass);
-
-        foreach ($exceptionMap as $exceptionMapClass => $value) {
-            if ($value
-                && ($exceptionClass === $exceptionMapClass || $reflectionExceptionClass->isSubclassOf($exceptionMapClass))
-            ) {
-                return $value;
-            }
-        }
-
-        return false;
-    }
-
-    public function onKernelException(ExceptionEvent $event)
-    {
-        $error = $event->getThrowable();
         $request = $event->getRequest();
 
         if ($request->getRequestFormat() !== 'json') {
             return;
         }
 
-        $this->logger->notice('Intercepted error', $this->getExceptionDetail($error, false));
-
+        $error = $event->getThrowable();
         $statusCode = $this->getStatusCode($error);
 
         $data = [
@@ -98,24 +65,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInt
         ];
 
         if ($error instanceof ConstraintViolationListException) {
-            $errors = [];
-            foreach ($error->getViolationList() as $constraintViolation) {
-                /* @var $constraintViolation ConstraintViolationInterface */
-                $errorData = [
-                    'propertyPath' => $constraintViolation->getPropertyPath(),
-                    'message' => $constraintViolation->getMessage(),
-                    'invalidValue' => $constraintViolation->getInvalidValue(),
-                    'code' => $constraintViolation->getCode()
-                ];
-
-                if ($constraintViolation->getConstraint() && null !== ($payload = $constraintViolation->getConstraint()->payload)) {
-                    $errorData['payload'] = $payload;
-                }
-
-                $errors[] = $errorData;
-            }
-
-            $data[$this->violationKey] = $errors;
+            $data[$this->violationKey] = $this->getConstraintViolationData($error);
         }
 
         if ($this->debug) {
@@ -132,7 +82,34 @@ class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInt
         );
     }
 
-    public function getExceptionDetail(\Throwable $e, $full = true)
+    private function getConstraintViolationData(ConstraintViolationListException $exception): array
+    {
+        $errors = [];
+        foreach ($exception->getViolationList() as $constraintViolation) {
+            /* @var $constraintViolation ConstraintViolationInterface */
+            $errorData = [
+                'propertyPath' => $constraintViolation->getPropertyPath(),
+                'message' => $constraintViolation->getMessage(),
+                'invalidValue' => $constraintViolation->getInvalidValue(),
+                'code' => $constraintViolation->getCode()
+            ];
+
+            switch (true) {
+                case !($constraint = $constraintViolation->getConstraint()):
+                case $constraint->payload === null:
+                    break;
+                default:
+                    $errorData['payload'] = $constraint->payload;
+                    break;
+            }
+
+            $errors[] = $errorData;
+        }
+
+        return $errors;
+    }
+
+    private function getExceptionDetail(Throwable $e): array
     {
         $result = [
             'class' => get_class($e),
@@ -142,7 +119,7 @@ class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInt
             'line' => $e->getLine()
         ];
 
-        if ($full) {
+        if ($this->debug) {
             foreach (explode("\n", $e->getTraceAsString()) as $line) {
                 $result['stack'][] = $line;
             }
@@ -154,5 +131,38 @@ class ApiExceptionSubscriber implements EventSubscriberInterface, LoggerAwareInt
 
 
         return $result;
+    }
+
+    /**
+     * @param $exception
+     * @return int
+     */
+    private function getStatusCode($exception): int
+    {
+        if ($exception instanceof HttpException) {
+            return $exception->getStatusCode();
+        }
+
+        return $this->getStatusCodeFromErrorCodes($exception) ?: self::DEFAULT_STATUS_CODE;
+    }
+
+    private function getStatusCodeFromErrorCodes(Throwable $exception): ?int
+    {
+        $exceptionClass = get_class($exception);
+        $reflectionExceptionClass = new ReflectionClass($exceptionClass);
+
+        foreach ($this->errorCodes as $exceptionMapClass => $value) {
+            if(!$value) {
+                continue;
+            }
+
+            switch (true) {
+                case $exceptionClass === $exceptionMapClass:
+                case $reflectionExceptionClass->isSubclassOf($exceptionMapClass):
+                    return $value;
+            }
+        }
+
+        return false;
     }
 }

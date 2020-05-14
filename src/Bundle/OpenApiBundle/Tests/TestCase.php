@@ -4,7 +4,6 @@ use Draw\Bundle\TesterBundle\DependencyInjection\ServiceTesterTrait;
 use Draw\Bundle\TesterBundle\Http\BrowserFactoryInterface;
 use Draw\Bundle\TesterBundle\Http\HttpTesterTrait;
 use Draw\Component\Tester\Http\ClientInterface;
-use Draw\Component\Tester\Http\Observer\DefaultBaseUriObserver;
 use Draw\Component\Tester\Http\Request\DefaultValueObserver;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\BrowserKit\AbstractBrowser;

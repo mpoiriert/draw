@@ -4,10 +4,10 @@ use Draw\Bundle\OpenApiBundle\Tests\Mock\Controller\TestController;
 use Draw\Bundle\OpenApiBundle\Tests\TestCase;
 
 /**
- * This is a integration test but mainly to test the ResponseConverterSubscriberTest.
+ * This is a integration test but mainly to test the ResponseSerializerSubscriberTest.
  * It base itself on the configuration of the AppKernel and the Mock TestController
  */
-class ResponseConverterSubscriberTest extends TestCase
+class ResponseSerializerSubscriberTest extends TestCase
 {
     /**
      * @see TestController::createAction()

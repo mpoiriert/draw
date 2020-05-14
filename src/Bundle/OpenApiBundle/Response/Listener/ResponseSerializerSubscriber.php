@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class ResponseConverterSubscriber implements EventSubscriberInterface
+class ResponseSerializerSubscriber implements EventSubscriberInterface
 {
     /**
      * @var EventDispatcherInterface
