@@ -2,6 +2,7 @@
 
 use App\Tests\TestCase;
 use Draw\Component\Tester\Data\AgainstJsonFileTester;
+use Draw\Component\Tester\DataTester;
 
 class DashboardControllerTest extends TestCase
 {
@@ -13,7 +14,12 @@ class DashboardControllerTest extends TestCase
             ->toJsonDataTester()
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/DashboardControllerTest_testGetAction.json'
+                    __DIR__ . '/fixtures/DashboardControllerTest_testGetAction.json',
+                    [
+                        'toolbar[0].flow.id' => function (DataTester $dataTester) {
+                            $dataTester->assertIsString();
+                        }
+                    ]
                 )
             );
     }

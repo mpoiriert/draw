@@ -7,6 +7,7 @@ use Draw\Bundle\DashboardBundle\Annotations\ActionList;
 use Draw\Bundle\DashboardBundle\Annotations\Column;
 use Draw\Bundle\DashboardBundle\Annotations\ConfirmFlow;
 use Draw\Bundle\DashboardBundle\Annotations\Filter;
+use Draw\Bundle\DashboardBundle\Annotations\FormFlow;
 use Draw\Bundle\DashboardBundle\Annotations\FormInput;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputChoices;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputCollection;
@@ -69,6 +70,13 @@ class OptionActionListener implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
+
+        if($flow instanceof FormFlow) {
+            if(!$flow->getId()) {
+                $flow->setId(uniqid());
+            }
+        }
+
         if ($flow instanceof ConfirmFlow) {
             $flow->setMessage(
                 $this->renderStringTemplate(

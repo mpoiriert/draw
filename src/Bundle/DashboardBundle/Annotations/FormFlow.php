@@ -10,12 +10,11 @@ class FormFlow extends Flow implements FlowWithButtonsInterface
     const TYPE = 'form';
 
     /**
-     * @Serializer\Accessor(getter="getId")
+     * The id of flow are use for callback you should not set it manually
      *
-     * @internal
+     * @var string|null
      */
     private $id;
-
 
     /**
      * @var array<\Draw\Bundle\DashboardBundle\Annotations\Button>
@@ -47,12 +46,13 @@ class FormFlow extends Flow implements FlowWithButtonsInterface
         $this->dialog = $dialog;
     }
 
-    public function getId()
+    public function getId(): ?string
     {
-        if(is_null($this->id)) {
-            $this->id = uniqid();
-        }
-
         return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
     }
 }

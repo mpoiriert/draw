@@ -31,6 +31,7 @@
         "behaviours": []
       },
       "flow": {
+        "id": null,
         "type": "form",
         "buttons": [
           {
@@ -71,19 +72,22 @@
           "id": "username",
           "type": "email",
           "label": "Email",
-          "icon": null
+          "icon": null,
+          "disabled": false
         },
         {
           "id": "password",
           "type": "password",
           "label": "Password",
-          "icon": null
+          "icon": null,
+          "disabled": false
         }
       ],
       "default": {
         "username": null,
         "password": null
-      }
+      },
+      "title": "Sign In"
     }
   ]
 }

@@ -63,6 +63,9 @@
                         ],
                         "dialog": true
                     }
+                },
+                "x-draw-dashboard-breadcrumb": {
+                    "label": "Sign In"
                 }
             }
         },
@@ -373,9 +376,13 @@
                 "x-draw-open-api-symfony-route": "app_api_users_list",
                 "x-draw-dashboard-action": {
                     "type": "list",
+                    "title": "Users List",
                     "paginated": true,
                     "columns": [],
                     "filters": []
+                },
+                "x-draw-dashboard-breadcrumb": {
+                    "label": "Users management"
                 }
             },
             "post": {
@@ -429,6 +436,9 @@
                         ],
                         "dialog": false
                     }
+                },
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
                 }
             }
         },
@@ -642,7 +652,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "username",
                         "type": "email",
-                        "label": "Email"
+                        "label": "Email",
+                        "disabled": false
                     }
                 },
                 "password": {
@@ -650,7 +661,8 @@
                     "type": "string",
                     "x-draw-dashboard-form-input": {
                         "id": "password",
-                        "type": "password"
+                        "type": "password",
+                        "disabled": false
                     }
                 }
             },
@@ -677,7 +689,8 @@
                     },
                     "x-draw-dashboard-form-input": {
                         "id": "active",
-                        "type": "checkbox"
+                        "type": "checkbox",
+                        "disabled": false
                     }
                 },
                 "label": {
@@ -692,7 +705,8 @@
                     },
                     "x-draw-dashboard-form-input": {
                         "id": "label",
-                        "type": "text"
+                        "type": "text",
+                        "disabled": false
                     }
                 }
             },
@@ -714,7 +728,8 @@
                         "id": "id",
                         "alwaysShow": true,
                         "input": {
-                            "type": "text"
+                            "type": "text",
+                            "disabled": false
                         },
                         "comparison": "="
                     }
@@ -739,6 +754,7 @@
                     "x-draw-dashboard-form-input": {
                         "id": "tags",
                         "type": "choices",
+                        "disabled": false,
                         "multiple": true
                     },
                     "x-draw-dashboard-filter": {
@@ -746,6 +762,7 @@
                         "alwaysShow": true,
                         "input": {
                             "type": "choices",
+                            "disabled": false,
                             "multiple": false
                         },
                         "comparison": "="
@@ -768,6 +785,7 @@
                     "x-draw-dashboard-form-input": {
                         "id": "level",
                         "type": "choices",
+                        "disabled": false,
                         "multiple": false,
                         "choices": [
                             {
@@ -785,6 +803,7 @@
                         "alwaysShow": true,
                         "input": {
                             "type": "choices",
+                            "disabled": false,
                             "multiple": true,
                             "choices": [
                                 {
@@ -804,7 +823,8 @@
                     "$ref": "#/definitions/Address",
                     "x-draw-dashboard-form-input": {
                         "id": "address",
-                        "type": "composite"
+                        "type": "composite",
+                        "disabled": false
                     }
                 },
                 "userAddresses": {
@@ -815,7 +835,9 @@
                     "x-draw-dashboard-form-input": {
                         "id": "userAddresses",
                         "type": "collection",
-                        "orderBy": "position"
+                        "disabled": false,
+                        "orderBy": "position",
+                        "allowAdd": true
                     }
                 },
                 "dateOfBirth": {
@@ -823,7 +845,8 @@
                     "type": "string",
                     "x-draw-dashboard-form-input": {
                         "id": "dateOfBirth",
-                        "type": "date-picker"
+                        "type": "date-picker",
+                        "disabled": false
                     }
                 },
                 "email": {
@@ -838,7 +861,8 @@
                     },
                     "x-draw-dashboard-form-input": {
                         "id": "email",
-                        "type": "email"
+                        "type": "email",
+                        "disabled": false
                     }
                 },
                 "plainPassword": {
@@ -871,28 +895,32 @@
                     "type": "string",
                     "x-draw-dashboard-form-input": {
                         "id": "street",
-                        "type": "text"
+                        "type": "text",
+                        "disabled": false
                     }
                 },
                 "postalCode": {
                     "type": "string",
                     "x-draw-dashboard-form-input": {
                         "id": "postalCode",
-                        "type": "text"
+                        "type": "text",
+                        "disabled": false
                     }
                 },
                 "city": {
                     "type": "string",
                     "x-draw-dashboard-form-input": {
                         "id": "city",
-                        "type": "text"
+                        "type": "text",
+                        "disabled": false
                     }
                 },
                 "country": {
                     "type": "string",
                     "x-draw-dashboard-form-input": {
                         "id": "country",
-                        "type": "text"
+                        "type": "text",
+                        "disabled": false
                     }
                 }
             },
@@ -906,7 +934,8 @@
                     "type": "integer",
                     "x-draw-dashboard-form-input": {
                         "id": "id",
-                        "type": "hidden"
+                        "type": "hidden",
+                        "disabled": false
                     }
                 },
                 "user": {
@@ -916,7 +945,8 @@
                     "$ref": "#/definitions/Address",
                     "x-draw-dashboard-form-input": {
                         "id": "address",
-                        "type": "composite"
+                        "type": "composite",
+                        "disabled": false
                     }
                 },
                 "position": {
@@ -924,7 +954,8 @@
                     "type": "integer",
                     "x-draw-dashboard-form-input": {
                         "id": "position",
-                        "type": "hidden"
+                        "type": "hidden",
+                        "disabled": false
                     }
                 }
             },
@@ -946,7 +977,8 @@
                         "id": "id",
                         "alwaysShow": true,
                         "input": {
-                            "type": "text"
+                            "type": "text",
+                            "disabled": false
                         },
                         "comparison": "="
                     }
@@ -971,6 +1003,7 @@
                     "x-draw-dashboard-form-input": {
                         "id": "tags",
                         "type": "choices",
+                        "disabled": false,
                         "multiple": true
                     },
                     "x-draw-dashboard-filter": {
@@ -978,6 +1011,7 @@
                         "alwaysShow": true,
                         "input": {
                             "type": "choices",
+                            "disabled": false,
                             "multiple": false
                         },
                         "comparison": "="
@@ -1000,6 +1034,7 @@
                     "x-draw-dashboard-form-input": {
                         "id": "level",
                         "type": "choices",
+                        "disabled": false,
                         "multiple": false,
                         "choices": [
                             {
@@ -1017,6 +1052,7 @@
                         "alwaysShow": true,
                         "input": {
                             "type": "choices",
+                            "disabled": false,
                             "multiple": true,
                             "choices": [
                                 {
@@ -1036,7 +1072,8 @@
                     "$ref": "#/definitions/Address",
                     "x-draw-dashboard-form-input": {
                         "id": "address",
-                        "type": "composite"
+                        "type": "composite",
+                        "disabled": false
                     }
                 },
                 "userAddresses": {
@@ -1047,7 +1084,9 @@
                     "x-draw-dashboard-form-input": {
                         "id": "userAddresses",
                         "type": "collection",
-                        "orderBy": "position"
+                        "disabled": false,
+                        "orderBy": "position",
+                        "allowAdd": true
                     }
                 },
                 "dateOfBirth": {
@@ -1055,7 +1094,8 @@
                     "type": "string",
                     "x-draw-dashboard-form-input": {
                         "id": "dateOfBirth",
-                        "type": "date-picker"
+                        "type": "date-picker",
+                        "disabled": false
                     }
                 },
                 "email": {
@@ -1070,7 +1110,8 @@
                     },
                     "x-draw-dashboard-form-input": {
                         "id": "email",
-                        "type": "email"
+                        "type": "email",
+                        "disabled": false
                     }
                 },
                 "plainPassword": {
@@ -1104,7 +1145,8 @@
                     "type": "integer",
                     "x-draw-dashboard-form-input": {
                         "id": "id",
-                        "type": "hidden"
+                        "type": "hidden",
+                        "disabled": false
                     }
                 },
                 "user": {
@@ -1114,7 +1156,8 @@
                     "$ref": "#/definitions/Address",
                     "x-draw-dashboard-form-input": {
                         "id": "address",
-                        "type": "composite"
+                        "type": "composite",
+                        "disabled": false
                     }
                 },
                 "position": {
@@ -1122,7 +1165,8 @@
                     "type": "integer",
                     "x-draw-dashboard-form-input": {
                         "id": "position",
-                        "type": "hidden"
+                        "type": "hidden",
+                        "disabled": false
                     }
                 }
             },

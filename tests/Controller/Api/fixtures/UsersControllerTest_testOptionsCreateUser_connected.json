@@ -15,6 +15,7 @@
       },
       "flow": {
         "type": "form",
+        "id": null,
         "buttons": [
           {
             "id": "cancel",
@@ -49,12 +50,14 @@
       },
       "href": "http://localhost/api/users",
       "method": "POST",
+      "title": null,
       "inputs": [
         {
           "id": "tags",
           "type": "choices",
           "label": "Tags",
           "icon": null,
+          "disabled": false,
           "multiple": true,
           "choices": [
             {
@@ -73,6 +76,7 @@
           "type": "choices",
           "label": "Access Level",
           "icon": null,
+          "disabled": false,
           "multiple": false,
           "choices": [
             {
@@ -91,31 +95,36 @@
           "type": "composite",
           "label": "Address",
           "icon": null,
+          "disabled": false,
           "subForm": {
             "inputs": [
               {
                 "id": "street",
                 "type": "text",
                 "label": "Street",
-                "icon": null
+                "icon": null,
+                "disabled": false
               },
               {
                 "id": "postalCode",
                 "type": "text",
                 "label": "Postal Code",
-                "icon": null
+                "icon": null,
+                "disabled": false
               },
               {
                 "id": "city",
                 "type": "text",
                 "label": "City",
-                "icon": null
+                "icon": null,
+                "disabled": false
               },
               {
                 "id": "country",
                 "type": "text",
                 "label": "Country",
-                "icon": null
+                "icon": null,
+                "disabled": false
               }
             ],
             "default": {
@@ -131,6 +140,7 @@
           "type": "collection",
           "label": "Secondary Addresses",
           "icon": null,
+          "disabled": false,
           "orderBy": "position",
           "subForm": {
             "inputs": [
@@ -138,38 +148,44 @@
                 "id": "id",
                 "type": "hidden",
                 "label": "#",
-                "icon": null
+                "icon": null,
+                "disabled": false
               },
               {
                 "id": "address",
                 "type": "composite",
                 "label": "Address",
                 "icon": null,
+                "disabled": false,
                 "subForm": {
                   "inputs": [
                     {
                       "id": "street",
                       "type": "text",
                       "label": "Street",
-                      "icon": null
+                      "icon": null,
+                      "disabled": false
                     },
                     {
                       "id": "postalCode",
                       "type": "text",
                       "label": "Postal Code",
-                      "icon": null
+                      "icon": null,
+                      "disabled": false
                     },
                     {
                       "id": "city",
                       "type": "text",
                       "label": "City",
-                      "icon": null
+                      "icon": null,
+                      "disabled": false
                     },
                     {
                       "id": "country",
                       "type": "text",
                       "label": "Country",
-                      "icon": null
+                      "icon": null,
+                      "disabled": false
                     }
                   ],
                   "default": {
@@ -184,7 +200,8 @@
                 "id": "position",
                 "type": "hidden",
                 "label": "Position",
-                "icon": null
+                "icon": null,
+                "disabled": false
               }
             ],
             "default": {
@@ -198,19 +215,22 @@
               },
               "position": null
             }
-          }
+          },
+          "allowAdd": true
         },
         {
           "id": "dateOfBirth",
           "type": "date-picker",
           "label": "dateOfBirth",
-          "icon": null
+          "icon": null,
+          "disabled": false
         },
         {
           "id": "email",
           "type": "email",
           "label": "Email",
-          "icon": null
+          "icon": null,
+          "disabled": false
         }
       ],
       "default": {
@@ -229,6 +249,20 @@
         "plainPassword": null,
         "passwordUpdatedAt": null
       }
-    }
+    },
+    "x-draw-dashboard-breadcrumbs": [
+      {
+        "label": "Dashboard",
+        "href": "/"
+      },
+      {
+        "label": "Users management",
+        "href": "/list"
+      },
+      {
+        "label": null,
+        "href": "http://localhost/api/users/create"
+      }
+    ]
   }
 }

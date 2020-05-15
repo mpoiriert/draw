@@ -6,6 +6,7 @@
       "flow": null,
       "href": "http://localhost/api/users",
       "method": "GET",
+      "title": "Users List",
       "paginated": true,
       "columns": [
         {
@@ -71,7 +72,8 @@
             "id": "id",
             "type": "text",
             "label": "#",
-            "icon": null
+            "icon": null,
+            "disabled": false
           },
           "comparison": "="
         },
@@ -83,6 +85,7 @@
             "type": "choices",
             "label": "Tags",
             "icon": null,
+            "disabled": false,
             "multiple": false,
             "choices": [
               {
@@ -112,6 +115,7 @@
             "type": "choices",
             "label": "Access Level",
             "icon": null,
+            "disabled": false,
             "multiple": true,
             "choices": [
               {
@@ -128,6 +132,16 @@
           "comparison": "IN"
         }
       ]
-    }
+    },
+    "x-draw-dashboard-breadcrumbs": [
+      {
+        "label": "Dashboard",
+        "href": "/"
+      },
+      {
+        "label": "Users management",
+        "href": "http://localhost/api/users/list"
+      }
+    ]
   }
 }

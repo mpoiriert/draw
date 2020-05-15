@@ -4,6 +4,7 @@ use App\Entity\User;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\Tester\Data\AgainstJsonFileTester;
+use Draw\Component\Tester\DataTester;
 
 class UsersControllerTest extends TestCase
 {
@@ -60,7 +61,12 @@ class UsersControllerTest extends TestCase
             ->toJsonDataTester()
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/UsersControllerTest_testOptionsCreateUser_connected.json'
+                    __DIR__ . '/fixtures/UsersControllerTest_testOptionsCreateUser_connected.json',
+                    [
+                        "POST.x-draw-dashboard-action.flow.id" => function (DataTester $dataTester) {
+                            $dataTester->assertIsString();
+                        }
+                    ]
                 )
             );
     }

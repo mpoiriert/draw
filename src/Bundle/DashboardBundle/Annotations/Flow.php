@@ -1,7 +1,5 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
-
 /**
  * @Annotation
  */
