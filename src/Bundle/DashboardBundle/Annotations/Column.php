@@ -54,6 +54,11 @@ class Column extends BaseAnnotation implements VendorPropertyInterface
         return 'x-draw-dashboard-column';
     }
 
+    public function allowClassLevelConfiguration(): bool
+    {
+        return false;
+    }
+
     public function getId(): ?string
     {
         return $this->id;

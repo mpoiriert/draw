@@ -101,6 +101,11 @@ class Action extends BaseAnnotation implements VendorInterface
         return 'x-draw-dashboard-action';
     }
 
+    public function allowClassLevelConfiguration(): bool
+    {
+        return false;
+    }
+
     public function getType(): ?string
     {
         return $this->type;

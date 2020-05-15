@@ -47,7 +47,7 @@ class VendorExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        foreach($this->getAnnotations($source) as $annotation) {
+        foreach ($this->getAnnotations($source) as $annotation) {
             $target->setVendorDataKey($annotation->getVendorName(), $annotation);
         }
     }
@@ -58,12 +58,15 @@ class VendorExtractor implements ExtractorInterface
      */
     private function getAnnotations(Reflector $reflector): array
     {
+        $classLevelAnnotations = [];
         switch (true) {
             case $reflector instanceof \ReflectionMethod:
                 $annotations = $this->annotationReader->getMethodAnnotations($reflector);
+                $classLevelAnnotations = $this->annotationReader->getClassAnnotations($reflector->getDeclaringClass());
                 break;
             case $reflector instanceof \ReflectionProperty:
                 $annotations = $this->annotationReader->getPropertyAnnotations($reflector);
+                $classLevelAnnotations = $this->annotationReader->getClassAnnotations($reflector->getDeclaringClass());
                 break;
             case $reflector instanceof \ReflectionClass:
                 $annotations = $this->annotationReader->getClassAnnotations($reflector);
@@ -73,8 +76,52 @@ class VendorExtractor implements ExtractorInterface
                 break;
         }
 
-        return array_filter($annotations, function ($annotation) {
+        $filter = function ($annotation) {
             return $annotation instanceof VendorInterface;
-        });
+        };
+
+        $classLevelAnnotations = array_filter($classLevelAnnotations, $filter);
+        $annotations = array_filter($annotations, $filter);
+
+        return $this->mergeWithClassAnnotations($annotations, $classLevelAnnotations);
+    }
+
+    /**
+     * @param array|VendorInterface[] $currentAnnotations
+     * @param array|VendorInterface[] $classAnnotations
+     */
+    private function mergeWithClassAnnotations(array $currentAnnotations, array $classAnnotations): array
+    {
+        $classAnnotations = array_filter($classAnnotations,
+            function (VendorInterface $classAnnotation) use ($currentAnnotations) {
+                switch (true) {
+                    case !$classAnnotation->allowClassLevelConfiguration():
+                    case $this->alreadyPresentIn($classAnnotation, $currentAnnotations);
+                        return false;
+                }
+                return true;
+            });
+
+        $classAnnotations = array_map(
+            function (VendorInterface $annotation) {
+                return clone $annotation;
+            },
+            $classAnnotations
+        );
+
+        return array_merge($classAnnotations, $currentAnnotations);
+    }
+
+    /**
+     * @param array|VendorInterface[] $currentAnnotations
+     */
+    private function alreadyPresentIn(VendorInterface $annotation, array $currentAnnotations): bool
+    {
+        foreach ($currentAnnotations as $currentAnnotation) {
+            if ($currentAnnotation->getVendorName() === $annotation->getVendorName()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

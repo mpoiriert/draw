@@ -3,4 +3,6 @@
 interface VendorInterface
 {
     public function getVendorName(): string;
+
+    public function allowClassLevelConfiguration(): bool;
 }

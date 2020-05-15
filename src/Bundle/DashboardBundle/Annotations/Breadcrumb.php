@@ -19,6 +19,10 @@ class Breadcrumb extends BaseAnnotation implements VendorInterface
         return 'x-draw-dashboard-breadcrumb';
     }
 
+    public function allowClassLevelConfiguration(): bool
+    {
+        return true;
+    }
 
     public function getParentOperationId(): ?string
     {

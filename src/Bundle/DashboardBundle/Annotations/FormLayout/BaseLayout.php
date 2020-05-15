@@ -29,6 +29,11 @@ class BaseLayout extends BaseAnnotation implements VendorInterface
         return 'x-draw-dashboard-form-layout';
     }
 
+    public function allowClassLevelConfiguration(): bool
+    {
+        return false;
+    }
+
     public function getType(): ?string
     {
         return $this->type;

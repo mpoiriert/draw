@@ -50,6 +50,11 @@ class Filter extends BaseAnnotation implements VendorPropertyInterface
         return 'x-draw-dashboard-filter';
     }
 
+    public function allowClassLevelConfiguration(): bool
+    {
+        return false;
+    }
+
     public function getId(): ?string
     {
         return $this->id;

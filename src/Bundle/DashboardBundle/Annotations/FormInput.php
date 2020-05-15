@@ -46,6 +46,11 @@ class FormInput extends BaseAnnotation implements VendorPropertyInterface
         return 'x-draw-dashboard-form-input';
     }
 
+    public function allowClassLevelConfiguration(): bool
+    {
+        return false;
+    }
+
     public function getId(): ?string
     {
         return $this->id;

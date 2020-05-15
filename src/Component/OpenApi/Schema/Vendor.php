@@ -22,4 +22,9 @@ class Vendor implements VendorInterface
     {
         return $this->name;
     }
+
+    public function allowClassLevelConfiguration(): bool
+    {
+        return true;
+    }
 }
