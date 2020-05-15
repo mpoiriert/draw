@@ -15,6 +15,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Dashboard\Breadcrumb(parentOperationId="userList")
+ */
 class UsersController extends AbstractController
 {
     /**
@@ -25,8 +28,6 @@ class UsersController extends AbstractController
      * @Deserialization(name="user")
      *
      * @Dashboard\ActionCreate()
-     *
-     * @Dashboard\Breadcrumb(parentOperationId="userList")
      *
      * @IsGranted("ROLE_ADMIN")
      *
@@ -118,7 +119,7 @@ class UsersController extends AbstractController
      *     title="_action.userList.title"
      * )
      *
-     * @Dashboard\Breadcrumb(label="_breadcrumb.userList")
+     * @Dashboard\Breadcrumb()
      *
      * @param PaginatorBuilder $paginatorBuilder
      * @param Request $request

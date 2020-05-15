@@ -1,11 +1,12 @@
 nelmio_cors:
     defaults:
         origin_regex: true
-        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
+        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%', 'petstore.swagger.io']
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
         allow_headers:
             - 'X-Client-Version'
             - 'X-Draw-Dashboard-Methods'
+            - 'X-Draw-Dashboard-Dialog-Id'
             - 'X-Draw-Dashboard-Button-Id'
             - 'X-Locale'
             - 'Content-Type'

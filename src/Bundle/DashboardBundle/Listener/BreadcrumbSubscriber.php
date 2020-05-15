@@ -25,32 +25,39 @@ class BreadcrumbSubscriber implements EventSubscriberInterface
 
     public function buildBreadcrumb(OptionBuilderEvent $optionBuilderEvent): void
     {
-        $action = $optionBuilderEvent->getAction();
+        $action = $parentAction = $optionBuilderEvent->getAction();
 
         $breadcrumbs = [];
+        $autoCreateParent = true;
         do {
-            if (!($operation = $action->getOperation())) {
+            if (!($operation = $parentAction->getOperation())) {
                 break;
             }
             $breadcrumb = $operation->getVendorData()['x-draw-dashboard-breadcrumb'] ?? null;
             if (!$breadcrumb instanceof Breadcrumb) {
-                break;
+                if(!$breadcrumbs || !$autoCreateParent) {
+                    break;
+                }
+                $autoCreateParent = false;
+                $breadcrumb = new Breadcrumb();
+            }
+
+            if(!$breadcrumb->getLabel()) {
+                $breadcrumb->setLabel('_breadcrumb.' . $operation->operationId);
             }
 
             array_unshift(
                 $breadcrumbs,
                 [
-                    'label' => $label = $breadcrumb->getLabel(),
-                    'href' => $action->getHref() . '/' . $action->getType()
+                    'label' => $breadcrumb->getLabel(),
+                    'href' => $parentAction->getHref() . '/' . $parentAction->getType()
                 ]
             );
 
             if (!($parentOperationId = $breadcrumb->getParentOperationId())) {
                 break;
             }
-
-
-        } while ($action = $this->actionFinder->findOneByOperationId($parentOperationId));
+        } while ($parentAction = $this->actionFinder->findOneByOperationId($parentOperationId));
 
 
         if ($breadcrumbs && ($action->getTitle() === null)) {

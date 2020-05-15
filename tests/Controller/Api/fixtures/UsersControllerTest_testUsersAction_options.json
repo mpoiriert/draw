@@ -139,7 +139,7 @@
         "href": "/"
       },
       {
-        "label": "Users management",
+        "label": "Users Management",
         "href": "http://localhost/api/users/list"
       }
     ]

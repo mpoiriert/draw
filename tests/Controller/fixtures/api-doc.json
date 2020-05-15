@@ -381,9 +381,7 @@
                     "columns": [],
                     "filters": []
                 },
-                "x-draw-dashboard-breadcrumb": {
-                    "label": "Users management"
-                }
+                "x-draw-dashboard-breadcrumb": {}
             },
             "post": {
                 "operationId": "userCreate",
@@ -405,6 +403,9 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_users_create",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
                 "x-draw-dashboard-action": {
                     "type": "create",
                     "button": {
@@ -436,9 +437,6 @@
                         ],
                         "dialog": false
                     }
-                },
-                "x-draw-dashboard-breadcrumb": {
-                    "parentOperationId": "userList"
                 }
             }
         },
@@ -462,6 +460,9 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "user_get",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
                 "x-draw-dashboard-action": {
                     "type": "show",
                     "button": {
@@ -496,6 +497,9 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_users_edit",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
                 "x-draw-dashboard-action": {
                     "type": "edit",
                     "button": {
@@ -546,6 +550,9 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "user_delete",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
                 "x-draw-dashboard-action": {
                     "type": "delete",
                     "button": {
@@ -579,6 +586,9 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_users_sendresetpasswordemail",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
                 "x-draw-dashboard-action": {
                     "type": "generic",
                     "button": {

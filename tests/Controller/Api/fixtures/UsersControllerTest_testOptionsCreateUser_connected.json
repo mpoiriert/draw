@@ -50,7 +50,7 @@
       },
       "href": "http://localhost/api/users",
       "method": "POST",
-      "title": null,
+      "title": "Create User",
       "inputs": [
         {
           "id": "tags",
@@ -256,11 +256,11 @@
         "href": "/"
       },
       {
-        "label": "Users management",
+        "label": "Users Management",
         "href": "/list"
       },
       {
-        "label": null,
+        "label": "Create User",
         "href": "http://localhost/api/users/create"
       }
     ]
