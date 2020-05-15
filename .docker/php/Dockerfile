@@ -6,7 +6,8 @@ RUN apt-get update \
     gnupg gnupg1 gnupg2 \
     sox lame libsox-fmt-mp3 \
     libpng-dev \
-    libjpeg-dev
+    libjpeg-dev \
+    openssh-server
 
 RUN docker-php-ext-configure gd --with-jpeg-dir=/usr/include/
 RUN docker-php-ext-install pdo pdo_mysql gd zip pcntl
