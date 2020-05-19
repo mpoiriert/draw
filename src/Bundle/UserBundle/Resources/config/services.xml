@@ -9,8 +9,11 @@
             <bind key="string $inviteCreateAccountRoute">%draw_user.invite_create_account_route%</bind>
         </defaults>
         <prototype namespace="Draw\Bundle\UserBundle\" resource="../..">
-            <exclude>../../{DependencyInjection,Entity,Tests,Sonata,Email,Message}</exclude>
+            <exclude>../../{DependencyInjection,DTO,Entity,Tests,Sonata,Email,Message}</exclude>
             <exclude>../../{DrawUserBundle.php}</exclude>
+        </prototype>
+        <prototype namespace="Draw\Bundle\UserBundle\Controller\" resource="../../Controller">
+            <tag name="controller.service_arguments" />
         </prototype>
         <service id="draw_user.user_repository" class="Doctrine\ORM\EntityRepository">
             <factory service="doctrine" method="getRepository" />

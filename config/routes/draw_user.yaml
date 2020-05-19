@@ -2,3 +2,9 @@ sonata:
     resource: "@DrawUserBundle/Sonata/Controller"
     type: "annotation"
     prefix: "/admin"
+
+api:
+    resource: "@DrawUserBundle/Controller/Api"
+    type: "annotation"
+    format: "json"
+    prefix: "/api"

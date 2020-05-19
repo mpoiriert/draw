@@ -1,4 +1,4 @@
-<?php namespace App\DTO;
+<?php namespace Draw\Bundle\UserBundle\DTO;
 
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use JMS\Serializer\Annotation as Serializer;
@@ -12,8 +12,8 @@ class Credential
      * @Assert\NotBlank()
      *
      * @Dashboard\FormInput(
-     *     type="email",
-     *     label="email"
+     *     type="string",
+     *     label="_drawUserBundle.credential.username"
      * )
      *
      * @Serializer\Type("string")
@@ -26,7 +26,8 @@ class Credential
      * @Assert\NotBlank()
      *
      * @Dashboard\FormInput(
-     *     type="password"
+     *     type="password",
+     *     label="_drawUserBundle.credential.password"
      * )
      *
      * @Serializer\Type("string")
@@ -36,7 +37,7 @@ class Credential
     /**
      * @return string
      */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -44,7 +45,7 @@ class Credential
     /**
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }

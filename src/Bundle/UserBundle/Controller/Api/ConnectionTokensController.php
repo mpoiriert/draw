@@ -1,9 +1,5 @@
-<?php namespace App\Controller\Api;
+<?php namespace Draw\Bundle\UserBundle\Controller\Api;
 
-use App\Entity\User;
-use App\DTO\ConnectionToken;
-use App\DTO\Credential;
-use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Feedback\DefaultHeader;
@@ -11,6 +7,8 @@ use Draw\Bundle\DashboardBundle\Feedback\SignedIn;
 use Draw\Bundle\DashboardBundle\Feedback\SignedOut;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
+use Draw\Bundle\UserBundle\DTO\ConnectionToken;
+use Draw\Bundle\UserBundle\DTO\Credential;
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -19,10 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-/**
- * @method User getUser()
- */
 class ConnectionTokensController extends AbstractController
 {
     /**
@@ -37,7 +33,7 @@ class ConnectionTokensController extends AbstractController
      *
      * @OpenApi\Operation(
      *     tags="Security",
-     *     operationId="createConnectionToken"
+     *     operationId="drawUserBundleCreateConnectionToken"
      * )
      *
      * @Deserialization(name="credential")
@@ -45,19 +41,19 @@ class ConnectionTokensController extends AbstractController
      * @Serialization(statusCode=201)
      *
      * @Dashboard\ActionCreate(
-     *     button=@Dashboard\Button(label="Connect", icon="power_settings_new"),
+     *     button=@Dashboard\Button(label="_drawUserBundle.connect"),
      *     dialog=true,
      *     templates={
-     *       "notification_save":"{{ 'notification.connect'|trans({}, 'DrawDashboardBundle')|raw }}"
+     *       "notification_save":"{{ '_drawUserBundle.notification.connect'|trans({}, 'DrawDashboardBundle')|raw }}"
      *     }
      * )
      *
-     * @Dashboard\Breadcrumb(label="_breadcrumb.createConnectionToken")
+     * @Dashboard\Breadcrumb(label="_drawUserBundle.breadcrumb.createConnectionToken")
      *
-     * @Security("not is_granted('ROLE_USER')")
+     * @Security("not is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @param Credential $credential
-     * @param EntityManagerInterface $entityManager
+     * @param UserProviderInterface $userProvider
      * @param JwtAuthenticator $authenticator
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param FeedbackNotifier $feedbackNotifier
@@ -66,15 +62,14 @@ class ConnectionTokensController extends AbstractController
      */
     public function createAction(
         Credential $credential,
-        EntityManagerInterface $entityManager,
+        UserProviderInterface $userProvider,
         JwtAuthenticator $authenticator,
         UserPasswordEncoderInterface $passwordEncoder,
-        FeedbackNotifier $feedbackNotifier
+        ?FeedbackNotifier $feedbackNotifier
     ) {
+        $user = $userProvider->loadUserByUsername($credential->getUsername());
 
-        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $credential->getUsername()]);
-
-        if ($user === null) {
+        if (is_null($user)) {
             throw new HttpException(400, 'User not found');
         }
 
@@ -84,23 +79,25 @@ class ConnectionTokensController extends AbstractController
 
         $connectionToken = new ConnectionToken($authenticator->encode($user));
 
-        $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', 'Bearer ' . $connectionToken->token));
-        $feedbackNotifier->sendFeedback(new SignedIn());
+        if($feedbackNotifier) {
+            $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', 'Bearer ' . $connectionToken->token));
+            $feedbackNotifier->sendFeedback(new SignedIn());
+        }
 
         return $connectionToken;
     }
 
     /**
-     * @Route(name="connection_token_refresh", methods={"POST"}, path="/connection-tokens/refresh")
+     * @Route(name="drawUserBundle_connection_token_refresh", methods={"POST"}, path="/connection-tokens/refresh")
      *
      * @OpenApi\Operation(
      *     tags="Security",
-     *     operationId="refreshConnectionToken"
+     *     operationId="drawUserBundleRefreshConnectionToken"
      * )
      *
      * @Serialization(statusCode=200)
      *
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @param JwtAuthenticator $authenticator
      *
@@ -112,29 +109,31 @@ class ConnectionTokensController extends AbstractController
     }
 
     /**
-     * @Route(name="connection_clear", methods={"DELETE"}, path="/connection-tokens/current")
+     * @Route(name="drawUserBundle_connection_clear", methods={"DELETE"}, path="/connection-tokens/current")
      *
      * @OpenApi\Operation(
      *     tags="Security",
-     *     operationId="deleteConnectionToken"
+     *     operationId="drawUserBundleDeleteConnectionToken"
      * )
      *
      * @Serialization(statusCode=204)
      *
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @Dashboard\ActionDelete(
-     *     button=@Dashboard\Button(label="Disconnect", icon="exit_to_app"),
-     *     flow=@Dashboard\ConfirmFlow(message="Are you sure ?")
+     *     button=@Dashboard\Button(label="_drawUserBundle.disconnect", style="icon-button", icon="exit_to_app"),
+     *     flow=@Dashboard\ConfirmFlow(message="_drawUserBundle.confirm_disconnect")
      * )
      *
      * @param FeedbackNotifier $feedbackNotifier
      *
      * @return void Nothing to be returned
      */
-    public function clearAction(FeedbackNotifier $feedbackNotifier)
+    public function clearAction(?FeedbackNotifier $feedbackNotifier)
     {
-        $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', '', true));
-        $feedbackNotifier->sendFeedback(new SignedOut());
+        if($feedbackNotifier) {
+            $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', '', true));
+            $feedbackNotifier->sendFeedback(new SignedOut());
+        }
     }
 }

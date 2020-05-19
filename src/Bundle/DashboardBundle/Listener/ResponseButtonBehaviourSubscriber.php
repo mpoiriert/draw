@@ -86,7 +86,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
 
         $template = $action->getTemplate(
             'notification_save',
-            "{{ 'notification.save'|trans({'%entry%': request.get('object')}, 'DrawDashboardBundle')|raw }}"
+            "{{ '_notification.save'|trans({'%entry%': request.get('object')}, 'DrawDashboardBundle')|raw }}"
         );
 
         if (!$template) {

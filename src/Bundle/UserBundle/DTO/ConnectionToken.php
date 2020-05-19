@@ -1,4 +1,4 @@
-<?php namespace App\DTO;
+<?php namespace Draw\Bundle\UserBundle\DTO;
 
 use JMS\Serializer\Annotation as Serializer;
 

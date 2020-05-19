@@ -21,8 +21,8 @@
       "type": "create",
       "button": {
         "id": null,
-        "label": "Connect",
-        "icon": "power_settings_new",
+        "label": "Sign In",
+        "icon": null,
         "style": null,
         "color": null,
         "showLabel": null,
@@ -31,8 +31,8 @@
         "behaviours": []
       },
       "flow": {
-        "id": null,
         "type": "form",
+        "id": "5ec33d4089914",
         "buttons": [
           {
             "id": "cancel",
@@ -67,11 +67,12 @@
       },
       "href": "http://localhost/api/connection-tokens",
       "method": "POST",
+      "title": "Sign In",
       "inputs": [
         {
           "id": "username",
-          "type": "email",
-          "label": "Email",
+          "type": "string",
+          "label": "Username",
           "icon": null,
           "disabled": false
         },
@@ -86,8 +87,7 @@
       "default": {
         "username": null,
         "password": null
-      },
-      "title": "Sign In"
+      }
     }
   ]
 }

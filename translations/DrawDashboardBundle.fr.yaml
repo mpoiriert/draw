@@ -18,4 +18,3 @@ user: 'Utilisateur'
 _breadcrumb:
   home: 'Acceuil'
   userList: 'Gestion des utilisateurs'
-  createConnectionToken: 'Seconnecter'

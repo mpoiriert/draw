@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\UserBundle\Controller\Api\ConnectionTokensController;
 use Draw\Bundle\UserBundle\DependencyInjection\DrawUserExtension;
 use Draw\Bundle\UserBundle\EmailWriter\ForgotPasswordEmailWriter;
 use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
@@ -33,6 +34,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
 
     public function provideTestHasServiceDefinition(): iterable
     {
+        yield [ConnectionTokensController::class];
         yield [ForgotPasswordEmailWriter::class];
         yield [SessionUserFeed::class];
         yield [JwtAuthenticator::class];

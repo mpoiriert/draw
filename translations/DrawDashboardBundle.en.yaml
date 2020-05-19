@@ -24,4 +24,3 @@ _breadcrumb:
   userList: 'Users Management'
   userCreate: 'Create User'
   userEdit: 'Edit User'
-  createConnectionToken: 'Sign In'

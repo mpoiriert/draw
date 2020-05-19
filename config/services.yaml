@@ -11,6 +11,8 @@ services:
   Draw\Component\Tester\Command\GenerateTraitCommand: ~
   Draw\Component\Tester\Command\GenerateAssertsDocumentationPageCommand: ~
 
+
+
   App\:
     resource: '../app/src'
     exclude:
@@ -19,6 +21,8 @@ services:
   App\Controller\:
     resource: '../app/src/Controller'
     tags: ['controller.service_arguments']
+
+  Symfony\Component\Security\Core\User\UserProviderInterface: '@security.user.provider.concrete.chain_provider'
 
   jms_serializer.serialized_name_annotation_strategy:
     class: 'JMS\Serializer\Naming\SerializedNameAnnotationStrategy'

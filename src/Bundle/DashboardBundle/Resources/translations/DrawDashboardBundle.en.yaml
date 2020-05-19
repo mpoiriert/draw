@@ -6,6 +6,10 @@ edit: "Edit"
 save: "Save"
 show: "Show"
 
-notification:
+_notification:
   save: "The entry <b>%entry%</b> has been saved properly."
-  connect: "You are connected."
+
+_flow:
+  confirm:
+    message: 'Are you sure ?'
+

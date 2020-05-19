@@ -7,11 +7,20 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
+        chain_provider:
+            chain:
+                providers: [app_user_provider_id, app_user_provider_email]
         # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
+        app_user_provider_id:
             entity:
                 class: 'App\Entity\User'
                 property: 'id'
+
+        app_user_provider_email:
+            entity:
+                class: 'App\Entity\User'
+                property: 'email'
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -21,7 +30,7 @@ security:
             pattern:            /admin(.*)
             context:            user
             form_login:
-                provider:       app_user_provider
+                provider:       app_user_provider_email
                 login_path:     admin_login
                 use_forward:    false
                 check_path:     admin_login
@@ -31,6 +40,7 @@ security:
                 target:         admin_login
             anonymous:          true
             guard:
+                provider:       chain_provider
                 authenticators:
                     - 'Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator'
                     - 'Draw\Bundle\UserBundle\Security\MessageAuthenticator'
@@ -39,6 +49,7 @@ security:
             context: user
             anonymous: true
             guard:
+                provider:       chain_provider
                 authenticators:
                     - 'Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator'
                     - 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'

@@ -17,6 +17,6 @@ draw_dashboard:
       operationId: 'tagList'
   toolbar:
     connect:
-      operationId: 'createConnectionToken'
+      operationId: 'drawUserBundleCreateConnectionToken'
     disconnect:
-      operationId: 'deleteConnectionToken'
+      operationId: 'drawUserBundleDeleteConnectionToken'

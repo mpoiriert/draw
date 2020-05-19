@@ -5,116 +5,6 @@
         "version": "1.0"
     },
     "paths": {
-        "/api/connection-tokens": {
-            "post": {
-                "tags": [
-                    "Security"
-                ],
-                "summary": "Create a token base on the username/password of a user.",
-                "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp**\u00a0attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
-                "operationId": "createConnectionToken",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Credential"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "The newly created token",
-                        "schema": {
-                            "$ref": "#/definitions/ConnectionToken"
-                        }
-                    }
-                },
-                "x-draw-open-api-symfony-route": "connection_token_create",
-                "x-draw-dashboard-action": {
-                    "type": "create",
-                    "button": {
-                        "label": "Connect",
-                        "icon": "power_settings_new",
-                        "behaviours": []
-                    },
-                    "flow": {
-                        "type": "form",
-                        "buttons": [
-                            {
-                                "id": "cancel",
-                                "label": "Cancel",
-                                "style": "stroked-button",
-                                "behaviours": [
-                                    "cancel"
-                                ]
-                            },
-                            {
-                                "id": "save",
-                                "label": "Save",
-                                "style": "flat-button",
-                                "color": "primary",
-                                "behaviours": [
-                                    "submit",
-                                    "save",
-                                    "then-edit"
-                                ]
-                            }
-                        ],
-                        "dialog": true
-                    }
-                },
-                "x-draw-dashboard-breadcrumb": {
-                    "label": "Sign In"
-                }
-            }
-        },
-        "/api/connection-tokens/refresh": {
-            "post": {
-                "tags": [
-                    "Security"
-                ],
-                "operationId": "refreshConnectionToken",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "The refreshed token",
-                        "schema": {
-                            "$ref": "#/definitions/ConnectionToken"
-                        }
-                    }
-                },
-                "x-draw-open-api-symfony-route": "connection_token_refresh"
-            }
-        },
-        "/api/connection-tokens/current": {
-            "delete": {
-                "tags": [
-                    "Security"
-                ],
-                "operationId": "deleteConnectionToken",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": "Nothing to be returned"
-                    }
-                },
-                "x-draw-open-api-symfony-route": "connection_clear",
-                "x-draw-dashboard-action": {
-                    "type": "delete",
-                    "button": {
-                        "label": "Disconnect",
-                        "icon": "exit_to_app",
-                        "behaviours": []
-                    },
-                    "flow": {
-                        "type": "confirm",
-                        "title": "",
-                        "message": "Are you sure ?"
-                    }
-                }
-            }
-        },
         "/api/tags": {
             "get": {
                 "operationId": "tagList",
@@ -641,43 +531,119 @@
                     }
                 }
             }
+        },
+        "/api/connection-tokens": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Create a token base on the username/password of a user.",
+                "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp**\u00a0attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
+                "operationId": "drawUserBundleCreateConnectionToken",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.Credential"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The newly created token",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "connection_token_create",
+                "x-draw-dashboard-action": {
+                    "type": "create",
+                    "button": {
+                        "label": "Sign In",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "id": "cancel",
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "id": "save",
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-edit"
+                                ]
+                            }
+                        ],
+                        "dialog": true
+                    }
+                },
+                "x-draw-dashboard-breadcrumb": {
+                    "label": "Sign In"
+                }
+            }
+        },
+        "/api/connection-tokens/refresh": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "operationId": "drawUserBundleRefreshConnectionToken",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The refreshed token",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "drawUserBundle_connection_token_refresh"
+            }
+        },
+        "/api/connection-tokens/current": {
+            "delete": {
+                "tags": [
+                    "Security"
+                ],
+                "operationId": "drawUserBundleDeleteConnectionToken",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Nothing to be returned"
+                    }
+                },
+                "x-draw-open-api-symfony-route": "drawUserBundle_connection_clear",
+                "x-draw-dashboard-action": {
+                    "type": "delete",
+                    "button": {
+                        "label": "Sign Out",
+                        "icon": "exit_to_app",
+                        "style": "icon-button",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "confirm",
+                        "title": "",
+                        "message": "Sign Out ?"
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "ConnectionToken": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                }
-            },
-            "x-draw-dashboard-class-name": "App\\DTO\\ConnectionToken"
-        },
-        "Credential": {
-            "type": "object",
-            "properties": {
-                "username": {
-                    "format": "not empty",
-                    "type": "string",
-                    "x-draw-dashboard-form-input": {
-                        "id": "username",
-                        "type": "email",
-                        "label": "Email",
-                        "disabled": false
-                    }
-                },
-                "password": {
-                    "format": "not empty",
-                    "type": "string",
-                    "x-draw-dashboard-form-input": {
-                        "id": "password",
-                        "type": "password",
-                        "disabled": false
-                    }
-                }
-            },
-            "x-draw-dashboard-class-name": "App\\DTO\\Credential"
-        },
         "Tag": {
             "required": [
                 "label"
@@ -1195,6 +1161,41 @@
                 }
             },
             "x-draw-dashboard-class-name": "Draw\\Bundle\\OpenApiBundle\\Tests\\Mock\\Model\\Test"
+        },
+        "Draw.Bundle.UserBundle.DTO.ConnectionToken": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            },
+            "x-draw-dashboard-class-name": "Draw\\Bundle\\UserBundle\\DTO\\ConnectionToken"
+        },
+        "Draw.Bundle.UserBundle.DTO.Credential": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "username",
+                        "type": "string",
+                        "label": "Username",
+                        "disabled": false
+                    }
+                },
+                "password": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "password",
+                        "type": "password",
+                        "label": "Password",
+                        "disabled": false
+                    }
+                }
+            },
+            "x-draw-dashboard-class-name": "Draw\\Bundle\\UserBundle\\DTO\\Credential"
         }
     }
 }

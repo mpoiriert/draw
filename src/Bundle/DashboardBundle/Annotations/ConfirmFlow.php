@@ -7,33 +7,36 @@ class ConfirmFlow extends Flow
 {
     const TYPE = 'confirm';
 
-    /**
-     * @var string
-     */
+
     private $title = '';
 
-    /**
-     * @var string
-     */
-    private $message = 'Are you sure ?';
+    private $message = '_flow.confirm.message';
+
+    public function __construct(array $values)
+    {
+        if(!isset($values['message'])) {
+            $values['message'] = $this->message;
+        }
+        parent::__construct($values);
+    }
 
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
 
-    public function getMessage(): string
+    public function getMessage()
     {
         return $this->message;
     }
 
-    public function setMessage(string $message): void
+    public function setMessage($message): void
     {
-        $this->message = $message;
+        $this->message = Translatable::set($this->message, $message);
     }
 }

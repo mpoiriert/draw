@@ -6,6 +6,9 @@ delete: "Supprimer"
 edit: "Éditer"
 show: "Afficher"
 
-notification:
+_notification:
   save: "L'entrée <b>%entry%</b> a bien été sauvegardé."
-  connect: "Vous êtes connecté."
+
+_flow:
+  confirm:
+    message: 'Êtes-vous sûr ?'
