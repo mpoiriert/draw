@@ -23,6 +23,8 @@ class FormInputCollection extends FormInput
 
     /**
      * @var bool
+     *
+     * @Serializer\SerializedName("allowAdd")
      */
     private $allowAdd = true;
 
