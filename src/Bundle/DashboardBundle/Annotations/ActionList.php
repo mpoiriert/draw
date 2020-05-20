@@ -22,6 +22,15 @@ class ActionList extends Action
      */
     private $filters = [];
 
+    public function __construct(array $values = [])
+    {
+        if(!array_key_exists('isInstanceTarget', $values)) {
+            $values['isInstanceTarget'] = false;
+        }
+
+        parent::__construct($values);
+    }
+
     public function getPaginated(): bool
     {
         return $this->paginated;

@@ -73,6 +73,10 @@ class EntityActionsSubscriber implements EventSubscriberInterface
 
         $actions = [];
         foreach ($this->actionFinder->findAllByByTarget($object) as $action) {
+            if(!$action->getIsInstanceTarget()) {
+                continue;
+            }
+
             $routeName = $action->getRouteName();
             $method = strtoupper($action->getMethod());
             $path = $this->urlGenerator->generate(

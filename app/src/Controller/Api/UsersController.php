@@ -27,7 +27,7 @@ class UsersController extends AbstractController
      *
      * @Deserialization(name="user")
      *
-     * @Dashboard\ActionCreate()
+     * @Dashboard\ActionCreate(targets={User::class})
      *
      * @IsGranted("ROLE_ADMIN")
      *
@@ -52,9 +52,7 @@ class UsersController extends AbstractController
      *     propertiesMap={"id":"id"}
      * )
      *
-     * @Dashboard\ActionEdit(
-     *   targets={User::class}
-     * )
+     * @Dashboard\ActionEdit(targets={User::class})
      *
      * @IsGranted("ROLE_ADMIN")
      *
@@ -73,9 +71,7 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userGet")
      *
-     * @Dashboard\ActionShow(
-     *     targets={User::class}
-     * )
+     * @Dashboard\ActionShow(targets={User::class})
      *
      * @IsGranted("ROLE_ADMIN")
      *
@@ -116,6 +112,7 @@ class UsersController extends AbstractController
      * @OpenApi\Operation(operationId="userList")
      *
      * @Dashboard\ActionList(
+     *     targets={User::class},
      *     title="_action.userList.title"
      * )
      *

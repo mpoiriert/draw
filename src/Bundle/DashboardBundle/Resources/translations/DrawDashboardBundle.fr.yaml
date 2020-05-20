@@ -1,9 +1,11 @@
-cancel: "Annuler"
-save: "Sauvegarder"
 actions: "Actions"
+cancel: "Annuler"
 create: "Créer"
 delete: "Supprimer"
 edit: "Éditer"
+save: "Sauvegarder"
+saveThenCreate: "Sauvegarder et ajouter"
+saveThenList: "Sauvegarder et aller à la liste"
 show: "Afficher"
 
 _notification:

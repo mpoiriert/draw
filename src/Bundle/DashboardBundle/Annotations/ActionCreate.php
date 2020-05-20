@@ -25,6 +25,10 @@ class ActionCreate extends Action
 
     public function __construct(array $values = [])
     {
+        if(!array_key_exists('isInstanceTarget', $values)) {
+            $values['isInstanceTarget'] = false;
+        }
+
         if (!array_key_exists('button', $values)) {
             $values['button'] = $button = new Button(['label' => 'create']);
         }
@@ -48,6 +52,24 @@ class ActionCreate extends Action
                                 'style' => 'flat-button',
                                 'color' => 'primary',
                                 'behaviours' => ['submit', 'save', 'then-edit']
+                            ]
+                        ),
+                        new Button(
+                            [
+                                'id' => 'save-then-create',
+                                'label' => 'saveThenCreate',
+                                'style' => 'flat-button',
+                                'color' => 'primary',
+                                'behaviours' => ['submit', 'save', 'then-create']
+                            ]
+                        ),
+                        new Button(
+                            [
+                                'id' => 'save-then-list',
+                                'label' => 'saveThenList',
+                                'style' => 'flat-button',
+                                'color' => 'primary',
+                                'behaviours' => ['submit', 'save', 'then-list']
                             ]
                         )
                     ],

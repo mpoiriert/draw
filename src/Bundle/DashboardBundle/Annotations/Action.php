@@ -1,6 +1,5 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\VendorInterface;
 use JMS\Serializer\Annotation as Serializer;
@@ -73,6 +72,13 @@ class Action extends BaseAnnotation implements VendorInterface
      * @Serializer\Exclude()
      */
     private $targets = [];
+
+    /**
+     * @var bool|null
+     *
+     * @Serializer\Exclude()
+     */
+    private $isInstanceTarget;
 
     /**
      * @var string
@@ -239,5 +245,15 @@ class Action extends BaseAnnotation implements VendorInterface
     public function setTitle($title): void
     {
         $this->title = Translatable::set($this->title, $title);
+    }
+
+    public function getIsInstanceTarget(): ?bool
+    {
+        return $this->isInstanceTarget;
+    }
+
+    public function setIsInstanceTarget(?bool $isInstanceTarget): void
+    {
+        $this->isInstanceTarget = $isInstanceTarget;
     }
 }

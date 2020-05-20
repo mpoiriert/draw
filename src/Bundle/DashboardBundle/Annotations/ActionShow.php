@@ -9,6 +9,10 @@ class ActionShow extends Action
 
     public function __construct(array $values = [])
     {
+        if(!array_key_exists('isInstanceTarget', $values)) {
+            $values['isInstanceTarget'] = true;
+        }
+
         if(!array_key_exists('button', $values)) {
             $values['button'] = $button = new Button(['label' => 'show']);
         }

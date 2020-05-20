@@ -20,7 +20,7 @@ class TagsController
      *
      * @Deserialization(name="tag")
      *
-     * @Dashboard\ActionCreate()
+     * @Dashboard\ActionCreate(targets={Tag::class})
      *
      * @Serialization(statusCode=201)
      *
@@ -45,9 +45,7 @@ class TagsController
      *     propertiesMap={"id":"id"}
      * )
      *
-     * @Dashboard\ActionEdit(
-     *   targets={Tag::class}
-     * )
+     * @Dashboard\ActionEdit(targets={Tag::class})
      *
      * @param Tag $tag
      * @param EntityManagerInterface $entityManager
@@ -64,9 +62,7 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagGet")
      *
-     * @Dashboard\ActionShow(
-     *     targets={Tag::class}
-     * )
+     * @Dashboard\ActionShow(targets={Tag::class})
      *
      * @param Tag $tag
      *
@@ -102,7 +98,10 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagList")
      *
-     * @Dashboard\ActionList(paginated=true)
+     * @Dashboard\ActionList(
+     *     targets={Tag::class},
+     *     paginated=true
+     * )
      *
      * @param Request $request
      * @param PaginatorBuilder $paginatorBuilder

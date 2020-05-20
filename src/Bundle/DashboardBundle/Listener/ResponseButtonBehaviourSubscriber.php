@@ -30,7 +30,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
         // Must be executed before DrawOpenApiBundle's listener
         return [
             ViewEvent::class => [
-                ['thenEdit', 31],
+                ['then', 31],
                 ['saveNotification', 31],
                 ['closeDialog', 31],
             ],
@@ -49,28 +49,48 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
         $this->twig = $twig;
     }
 
-    public function thenEdit(ViewEvent $viewEvent): void
+    public function then(ViewEvent $viewEvent): void
     {
         switch (true) {
             case !($controllerResult = $viewEvent->getControllerResult()):
             case null === ($button = $this->getButtonToProcess($viewEvent->getRequest())):
-            case !in_array('then-edit', $button->getBehaviours()):
+            case !($thenActionType = $this->getThenActionType($button)):
                 return;
         }
 
         foreach ($this->actionFinder->findAllByByTarget($viewEvent->getControllerResult()) as $action) {
-            if ($action instanceof ActionEdit) {
-                $url = $this->urlGenerator->generate(
-                    $action->getRouteName(),
-                    ['id' => $controllerResult->getId()], // todo Make this dynamic
-                    UrlGeneratorInterface::ABSOLUTE_URL
-                );
-
-                $action->setHref($url);
-
-                $this->feedbackNotifier->sendFeedback(new Navigate($action));
+            if($action->getType() !== $thenActionType) {
+                continue;
             }
+
+            $parameters = [];
+            if($action->getIsInstanceTarget()) {
+                $parameters['id'] = $controllerResult->getId(); // todo Make this dynamic
+            }
+
+            $url = $this->urlGenerator->generate(
+                $action->getRouteName(),
+                $parameters,
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+
+            $action->setHref($url);
+            $this->feedbackNotifier->sendFeedback(new Navigate($action));
+            break;
         }
+    }
+
+    private function getThenActionType(Button $button): ?string
+    {
+        foreach($button->getBehaviours() as $behaviour) {
+            if(strpos($behaviour, 'then-') !== 0) {
+                continue;
+            }
+
+            return substr($behaviour, strlen('then-'));
+        }
+
+        return null;
     }
 
     public function saveNotification(ViewEvent $viewEvent): void

@@ -120,7 +120,6 @@ class ActionFinder
      */
     public function findAllByByTarget($object): array
     {
-
         $class = get_class($object);
         if (!array_key_exists($class, $this->actionsByClass)) {
             // Doesn't exists until proof otherwise
