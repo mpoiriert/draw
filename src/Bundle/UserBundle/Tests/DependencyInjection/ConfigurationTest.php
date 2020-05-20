@@ -30,6 +30,7 @@ class ConfigurationTest extends ConfigurationTestCase
             'jwt_authenticator' => [
                 'enabled' => true,
                 'key' => 'to-replace',
+                'queryParameters' => ['_auth']
             ],
         ];
     }
