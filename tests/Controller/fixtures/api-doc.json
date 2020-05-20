@@ -725,30 +725,7 @@
                                 "color": "primary",
                                 "behaviours": [
                                     "submit",
-                                    "save",
-                                    "then-edit"
-                                ]
-                            },
-                            {
-                                "id": "save-then-create",
-                                "label": "Save and add more",
-                                "style": "flat-button",
-                                "color": "primary",
-                                "behaviours": [
-                                    "submit",
-                                    "save",
-                                    "then-create"
-                                ]
-                            },
-                            {
-                                "id": "save-then-list",
-                                "label": "Save and go to list",
-                                "style": "flat-button",
-                                "color": "primary",
-                                "behaviours": [
-                                    "submit",
-                                    "save",
-                                    "then-list"
+                                    "save"
                                 ]
                             }
                         ],
