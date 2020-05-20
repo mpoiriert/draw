@@ -3,7 +3,7 @@
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;
-use Draw\Bundle\DashboardBundle\Annotations\Button;
+use Draw\Bundle\DashboardBundle\Annotations\Button\Button;
 use Draw\Bundle\DashboardBundle\Annotations\FlowWithButtonsInterface;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Feedback\CloseDialog;

@@ -24,9 +24,10 @@ class ActionList extends Action
 
     public function __construct(array $values = [])
     {
-        if(!array_key_exists('isInstanceTarget', $values)) {
-            $values['isInstanceTarget'] = false;
-        }
+        $values = array_merge(
+            ['isInstanceTarget' => false],
+            $values
+        );
 
         parent::__construct($values);
     }

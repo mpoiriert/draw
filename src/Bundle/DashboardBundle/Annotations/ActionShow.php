@@ -1,5 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
+
 /**
  * @Annotation
  */
@@ -9,13 +11,13 @@ class ActionShow extends Action
 
     public function __construct(array $values = [])
     {
-        if(!array_key_exists('isInstanceTarget', $values)) {
-            $values['isInstanceTarget'] = true;
-        }
-
-        if(!array_key_exists('button', $values)) {
-            $values['button'] = $button = new Button(['label' => 'show']);
-        }
+        $values = array_merge(
+            [
+                'isInstanceTarget' => true,
+                'button' => new Button\ButtonShow()
+            ],
+            $values
+        );
 
         parent::__construct($values);
     }

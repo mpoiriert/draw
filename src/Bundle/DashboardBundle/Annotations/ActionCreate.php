@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
@@ -25,58 +26,24 @@ class ActionCreate extends Action
 
     public function __construct(array $values = [])
     {
-        if(!array_key_exists('isInstanceTarget', $values)) {
-            $values['isInstanceTarget'] = false;
-        }
-
-        if (!array_key_exists('button', $values)) {
-            $values['button'] = $button = new Button(['label' => 'create']);
-        }
-
-        if (!array_key_exists('flow', $values)) {
-            $values['flow'] = $flow = new FormFlow(
-                [
-                    'buttons' => [
-                        new Button(
-                            [
-                                'id' => 'cancel',
-                                'label' => 'cancel',
-                                'style' => 'stroked-button',
-                                'behaviours' => ['cancel']
-                            ]
-                        ),
-                        new Button(
-                            [
-                                'id' => 'save',
-                                'label' => 'save',
-                                'style' => 'flat-button',
-                                'color' => 'primary',
-                                'behaviours' => ['submit', 'save', 'then-edit']
-                            ]
-                        ),
-                        new Button(
-                            [
-                                'id' => 'save-then-create',
-                                'label' => 'saveThenCreate',
-                                'style' => 'flat-button',
-                                'color' => 'primary',
-                                'behaviours' => ['submit', 'save', 'then-create']
-                            ]
-                        ),
-                        new Button(
-                            [
-                                'id' => 'save-then-list',
-                                'label' => 'saveThenList',
-                                'style' => 'flat-button',
-                                'color' => 'primary',
-                                'behaviours' => ['submit', 'save', 'then-list']
-                            ]
-                        )
-                    ],
-                    'dialog' => $values['dialog'] ?? $this->dialog
-                ]
-            );
-        }
+        $values = array_merge(
+            [
+                'isInstanceTarget' => false,
+                'button' => new Button\ButtonCreate(),
+                'flow' => new FormFlow(
+                    [
+                        'buttons' => [
+                            new Button\ButtonCancel(),
+                            new Button\ButtonSave(),
+                            new Button\ButtonSaveThenCreate(),
+                            new Button\ButtonSaveThenList()
+                        ],
+                        'dialog' => $values['dialog'] ?? $this->dialog
+                    ]
+                )
+            ],
+            $values
+        );
 
         parent::__construct($values);
     }

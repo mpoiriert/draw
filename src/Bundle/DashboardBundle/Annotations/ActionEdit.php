@@ -1,5 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
+
 /**
  * @Annotation
  */
@@ -16,13 +18,13 @@ class ActionEdit extends ActionCreate
 
     public function __construct(array $values = [])
     {
-        if(!array_key_exists('isInstanceTarget', $values)) {
-            $values['isInstanceTarget'] = true;
-        }
-
-        if (!array_key_exists('button', $values)) {
-            $values['button'] = $button = new Button(['label' => 'edit', 'icon' => 'edit']);
-        }
+        $values = array_merge(
+            [
+                'isInstanceTarget' => true,
+                'button' => new Button\ButtonEdit(),
+            ],
+            $values
+        );
 
         parent::__construct($values);
     }

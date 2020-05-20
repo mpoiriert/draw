@@ -17,9 +17,12 @@ class BaseLayout extends BaseAnnotation implements VendorInterface
 
     public function __construct(array $values = [])
     {
-        if(!isset($values['type'])) {
-            $values['type'] = static::TYPE;
-        }
+        $values = array_merge(
+            [
+                'type' => static::TYPE
+            ],
+            $values
+        );
 
         parent::__construct($values);
     }

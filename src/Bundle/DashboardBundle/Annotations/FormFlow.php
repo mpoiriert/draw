@@ -17,7 +17,7 @@ class FormFlow extends Flow implements FlowWithButtonsInterface
     private $id;
 
     /**
-     * @var array<\Draw\Bundle\DashboardBundle\Annotations\Button>
+     * @var array<\Draw\Bundle\DashboardBundle\Annotations\Button\Button>
      */
     private $buttons;
 

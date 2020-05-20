@@ -135,7 +135,7 @@ class UsersController extends AbstractController
      * @OpenApi\Operation(operationId="userSendResetPasswordEmail")
      *
      * @Dashboard\Action(
-     *     button=@Dashboard\Button(label="Send forgot password email", icon="email")
+     *     button=@Dashboard\Button\Button(label="Send forgot password email", icon="email")
      * )
      *
      * @param User $user

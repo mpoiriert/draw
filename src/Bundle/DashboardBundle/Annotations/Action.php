@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use Draw\Bundle\DashboardBundle\Annotations\Button\Button;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\VendorInterface;
 use JMS\Serializer\Annotation as Serializer;
@@ -17,7 +18,7 @@ class Action extends BaseAnnotation implements VendorInterface
     private $type = self::TYPE;
 
     /**
-     * @var \Draw\Bundle\DashboardBundle\Annotations\Button|null
+     * @var \Draw\Bundle\DashboardBundle\Annotations\Button\Button|null
      */
     private $button;
 

@@ -1,5 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
+
 /**
  * @Annotation
  */
@@ -9,19 +11,16 @@ class ActionDelete extends Action
 
     public function __construct(array $values = [])
     {
-        if(!array_key_exists('isInstanceTarget', $values)) {
-            $values['isInstanceTarget'] = true;
-        }
-
-        if(!array_key_exists('button', $values)) {
-            $values['button'] = $button = new Button(['label' => 'delete', 'icon' => 'delete']);
-        }
-
-        if(!array_key_exists('flow', $values)) {
-            $values['flow'] = $button = new ConfirmFlow([
-                'message' => 'Are you sure you want to delete this ?'
-            ]);
-        }
+        $values = array_merge(
+            [
+                'isInstanceTarget' => true,
+                'button' => new Button\ButtonDelete(),
+                'flow' => new ConfirmFlow([
+                    'message' => '_flow.confirm.delete'
+                ])
+            ],
+            $values
+        );
 
         parent::__construct($values);
     }

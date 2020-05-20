@@ -1,6 +1,8 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php namespace Draw\Bundle\DashboardBundle\Annotations\Button;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
+use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
+use Draw\Bundle\DashboardBundle\Annotations\Translatable;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
@@ -59,6 +61,18 @@ class Button extends BaseAnnotation
      * @var array<string>
      */
     public $behaviours = [];
+
+    /**
+     * @var array<string>
+     */
+    private $thenList = [];
+
+    public function initialize(): void
+    {
+        foreach($this->thenList as $then) {
+            $this->behaviours[] = 'then-' . $then;
+        }
+    }
 
     public function getId(): ?string
     {
@@ -148,5 +162,16 @@ class Button extends BaseAnnotation
     public function setBehaviours(array $behaviours): void
     {
         $this->behaviours = $behaviours;
+    }
+
+    public function getThenList(): array
+    {
+        return $this->thenList;
+    }
+
+    public function setThenList(array $thenList): void
+    {
+        $this->assertNotInitialized();
+        $this->thenList = $thenList;
     }
 }

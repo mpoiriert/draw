@@ -14,9 +14,13 @@ class ConfirmFlow extends Flow
 
     public function __construct(array $values)
     {
-        if(!isset($values['message'])) {
-            $values['message'] = $this->message;
-        }
+        $values = array_merge(
+            [
+                'message' => $this->message,
+            ],
+            $values
+        );
+
         parent::__construct($values);
     }
 

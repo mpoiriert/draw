@@ -39,9 +39,13 @@ class Filter extends BaseAnnotation implements VendorPropertyInterface
 
     public function __construct(array $values = [])
     {
-        if(!isset($values['input'])) {
-            $values['input'] = new FormInput();
-        }
+        $values = array_merge(
+            [
+                'input' => new FormInput(),
+            ],
+            $values
+        );
+
         parent::__construct($values);
     }
 

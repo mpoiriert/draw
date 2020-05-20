@@ -41,7 +41,7 @@ class ConnectionTokensController extends AbstractController
      * @Serialization(statusCode=201)
      *
      * @Dashboard\ActionCreate(
-     *     button=@Dashboard\Button(label="_drawUserBundle.connect"),
+     *     button=@Dashboard\Button\Button(label="_drawUserBundle.connect"),
      *     dialog=true,
      *     templates={
      *       "notification_save":"{{ '_drawUserBundle.notification.connect'|trans({}, 'DrawDashboardBundle')|raw }}"
@@ -121,7 +121,7 @@ class ConnectionTokensController extends AbstractController
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @Dashboard\ActionDelete(
-     *     button=@Dashboard\Button(label="_drawUserBundle.disconnect", style="icon-button", icon="exit_to_app"),
+     *     button=@Dashboard\Button\Button(label="_drawUserBundle.disconnect", style="icon-button", icon="exit_to_app"),
      *     flow=@Dashboard\ConfirmFlow(message="_drawUserBundle.confirm_disconnect")
      * )
      *
