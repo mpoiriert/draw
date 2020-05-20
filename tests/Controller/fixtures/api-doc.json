@@ -44,6 +44,11 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_tags_list",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
                 "x-draw-dashboard-action": {
                     "type": "list",
                     "paginated": true,
@@ -71,6 +76,11 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_tags_create",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
                 "x-draw-dashboard-action": {
                     "type": "create",
                     "button": {
@@ -97,6 +107,28 @@
                                     "submit",
                                     "save",
                                     "then-edit"
+                                ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
                                 ]
                             }
                         ],
@@ -125,6 +157,11 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "tag_get",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
                 "x-draw-dashboard-action": {
                     "type": "show",
                     "button": {
@@ -159,6 +196,11 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_tags_edit",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
                 "x-draw-dashboard-action": {
                     "type": "edit",
                     "button": {
@@ -187,6 +229,28 @@
                                     "save",
                                     "then-edit"
                                 ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
+                                ]
                             }
                         ],
                         "dialog": false
@@ -209,6 +273,11 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_tags_delete",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
                 "x-draw-dashboard-action": {
                     "type": "delete",
                     "button": {
@@ -264,6 +333,11 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_users_list",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
                 "x-draw-dashboard-action": {
                     "type": "list",
                     "title": "Users List",
@@ -296,6 +370,11 @@
                 "x-draw-dashboard-breadcrumb": {
                     "parentOperationId": "userList"
                 },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
                 "x-draw-dashboard-action": {
                     "type": "create",
                     "button": {
@@ -322,6 +401,28 @@
                                     "submit",
                                     "save",
                                     "then-edit"
+                                ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
                                 ]
                             }
                         ],
@@ -352,6 +453,11 @@
                 "x-draw-open-api-symfony-route": "user_get",
                 "x-draw-dashboard-breadcrumb": {
                     "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
                 },
                 "x-draw-dashboard-action": {
                     "type": "show",
@@ -390,6 +496,11 @@
                 "x-draw-dashboard-breadcrumb": {
                     "parentOperationId": "userList"
                 },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
                 "x-draw-dashboard-action": {
                     "type": "edit",
                     "button": {
@@ -418,6 +529,28 @@
                                     "save",
                                     "then-edit"
                                 ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
+                                ]
                             }
                         ],
                         "dialog": false
@@ -442,6 +575,11 @@
                 "x-draw-open-api-symfony-route": "user_delete",
                 "x-draw-dashboard-breadcrumb": {
                     "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
                 },
                 "x-draw-dashboard-action": {
                     "type": "delete",
@@ -478,6 +616,11 @@
                 "x-draw-open-api-symfony-route": "app_api_users_sendresetpasswordemail",
                 "x-draw-dashboard-breadcrumb": {
                     "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
                 },
                 "x-draw-dashboard-action": {
                     "type": "generic",
@@ -584,6 +727,28 @@
                                     "submit",
                                     "save",
                                     "then-edit"
+                                ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
                                 ]
                             }
                         ],

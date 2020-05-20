@@ -44,6 +44,36 @@
               "save",
               "then-edit"
             ]
+          },
+          {
+            "id": "save-then-create",
+            "label": "Save and add more",
+            "icon": null,
+            "style": "flat-button",
+            "color": "primary",
+            "showLabel": null,
+            "tooltip": null,
+            "tooltipPosition": null,
+            "behaviours": [
+              "submit",
+              "save",
+              "then-create"
+            ]
+          },
+          {
+            "id": "save-then-list",
+            "label": "Save and go to list",
+            "icon": null,
+            "style": "flat-button",
+            "color": "primary",
+            "showLabel": null,
+            "tooltip": null,
+            "tooltipPosition": null,
+            "behaviours": [
+              "submit",
+              "save",
+              "then-list"
+            ]
           }
         ],
         "dialog": false

@@ -11,6 +11,9 @@ use Draw\Component\OpenApi\Schema as OpenApi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Dashboard\Targets({Tag::class})
+ */
 class TagsController
 {
     /**
@@ -20,7 +23,7 @@ class TagsController
      *
      * @Deserialization(name="tag")
      *
-     * @Dashboard\ActionCreate(targets={Tag::class})
+     * @Dashboard\ActionCreate()
      *
      * @Serialization(statusCode=201)
      *
@@ -45,7 +48,7 @@ class TagsController
      *     propertiesMap={"id":"id"}
      * )
      *
-     * @Dashboard\ActionEdit(targets={Tag::class})
+     * @Dashboard\ActionEdit()
      *
      * @param Tag $tag
      * @param EntityManagerInterface $entityManager
@@ -62,7 +65,7 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagGet")
      *
-     * @Dashboard\ActionShow(targets={Tag::class})
+     * @Dashboard\ActionShow()
      *
      * @param Tag $tag
      *
@@ -79,7 +82,6 @@ class TagsController
      * @OpenApi\Operation(operationId="tagDelete")
      *
      * @Dashboard\ActionDelete(
-     *     targets={Tag::class},
      *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the tag {{tag.label}} ?")
      * )
      *
@@ -98,10 +100,7 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagList")
      *
-     * @Dashboard\ActionList(
-     *     targets={Tag::class},
-     *     paginated=true
-     * )
+     * @Dashboard\ActionList()
      *
      * @param Request $request
      * @param PaginatorBuilder $paginatorBuilder

@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Dashboard\Breadcrumb(parentOperationId="userList")
+ * @Dashboard\Targets({User::class})
  */
 class UsersController extends AbstractController
 {
@@ -27,7 +28,7 @@ class UsersController extends AbstractController
      *
      * @Deserialization(name="user")
      *
-     * @Dashboard\ActionCreate(targets={User::class})
+     * @Dashboard\ActionCreate()
      *
      * @IsGranted("ROLE_ADMIN")
      *
@@ -52,7 +53,7 @@ class UsersController extends AbstractController
      *     propertiesMap={"id":"id"}
      * )
      *
-     * @Dashboard\ActionEdit(targets={User::class})
+     * @Dashboard\ActionEdit()
      *
      * @IsGranted("ROLE_ADMIN")
      *
@@ -71,7 +72,7 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userGet")
      *
-     * @Dashboard\ActionShow(targets={User::class})
+     * @Dashboard\ActionShow()
      *
      * @IsGranted("ROLE_ADMIN")
      *
@@ -92,7 +93,6 @@ class UsersController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      *
      * @Dashboard\ActionDelete(
-     *     targets={User::class},
      *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the user {{user.email}} ?")
      * )
      *
@@ -112,7 +112,6 @@ class UsersController extends AbstractController
      * @OpenApi\Operation(operationId="userList")
      *
      * @Dashboard\ActionList(
-     *     targets={User::class},
      *     title="_action.userList.title"
      * )
      *
@@ -136,7 +135,6 @@ class UsersController extends AbstractController
      * @OpenApi\Operation(operationId="userSendResetPasswordEmail")
      *
      * @Dashboard\Action(
-     *     targets={User::class},
      *     button=@Dashboard\Button(label="Send forgot password email", icon="email")
      * )
      *

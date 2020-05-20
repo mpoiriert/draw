@@ -1,6 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Action;
 
 use Draw\Bundle\DashboardBundle\Annotations\Action;
+use Draw\Bundle\DashboardBundle\Annotations\Targets;
 use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
 use Draw\Component\OpenApi\Schema\Operation;
 
@@ -135,7 +136,15 @@ class ActionFinder
                         continue;
                     }
 
-                    if (!array_intersect($action->getTargets(), $classes)) {
+                    $targets = $action->getTargets();
+                    if($targets === null) {
+                        $targets = $operation->getVendorData()['x-draw-dashboard-targets'] ?? [];
+                        if($targets instanceof Targets) {
+                            $targets = $targets->getTargets();
+                        }
+                    }
+
+                    if (!array_intersect($targets, $classes)) {
                         continue;
                     }
 

@@ -67,11 +67,11 @@ class Action extends BaseAnnotation implements VendorInterface
     /**
      * The class that are a target of this action. Only use by the backend.
      *
-     * @var string[]
+     * @var string[]|null
      *
      * @Serializer\Exclude()
      */
-    private $targets = [];
+    private $targets;
 
     /**
      * @var bool|null
@@ -172,12 +172,12 @@ class Action extends BaseAnnotation implements VendorInterface
         $this->method = ($method ? strtoupper($method) : null);
     }
 
-    public function getTargets(): array
+    public function getTargets(): ?array
     {
         return $this->targets;
     }
 
-    public function setTargets(array $targets): void
+    public function setTargets(?array $targets): void
     {
         $this->targets = $targets;
     }
