@@ -6,10 +6,14 @@
         <defaults public="false" autoconfigure="true" autowire="true"/>
         <prototype namespace="Draw\Bundle\DashboardBundle\" resource="../..">
             <exclude>../../{DependencyInjection,Feedback,Event,Annotations}</exclude>
-            <exclude>../../{DrawDashboardBundle.php}</exclude>
+            <exclude>../../{DrawDashboardBundle.php,functions.php}</exclude>
         </prototype>
         <prototype namespace="Draw\Bundle\DashboardBundle\Controller\" resource="../../Controller">
             <tag name="controller.service_arguments"/>
         </prototype>
+        <service id="Draw\Bundle\DashboardBundle\ExpressionLanguage\SerializerFunctionProvider">
+            <tag name="jms.expression.function_provider" />
+        </service>
+        <service id="Draw\Bundle\DashboardBundle\Action\ButtonExecutionCheck" public="true" />
     </services>
 </container>

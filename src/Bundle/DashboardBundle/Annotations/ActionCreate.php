@@ -26,19 +26,24 @@ class ActionCreate extends Action
 
     public function __construct(array $values = [])
     {
+        $dialog = $values['dialog'] ?? $this->dialog;
         $values = array_merge(
             [
                 'isInstanceTarget' => false,
                 'button' => new Button\ButtonCreate(),
                 'flow' => new FormFlow(
                     [
-                        'buttons' => [
-                            new Button\ButtonCancel(),
-                            new Button\ButtonSave(),
-                            new Button\ButtonSaveThenCreate(),
-                            new Button\ButtonSaveThenList()
-                        ],
-                        'dialog' => $values['dialog'] ?? $this->dialog
+                        'buttons' =>
+                            !$dialog ? [
+                                new Button\ButtonCancel(),
+                                new Button\ButtonSave(),
+                                new Button\ButtonSaveThenCreate(),
+                                new Button\ButtonSaveThenList()
+                            ] : [
+                                new Button\ButtonCancel(),
+                                new Button\ButtonSave(['thenList' => []]),
+                            ],
+                        'dialog' => $dialog
                     ]
                 )
             ],

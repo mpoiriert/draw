@@ -12,7 +12,7 @@ class ConfirmFlow extends Flow
 
     private $message = '_flow.confirm.message';
 
-    public function __construct(array $values)
+    public function __construct(array $values = [])
     {
         $values = array_merge(
             [

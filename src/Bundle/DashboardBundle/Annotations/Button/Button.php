@@ -1,14 +1,16 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations\Button;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
 use Draw\Bundle\DashboardBundle\Annotations\Translatable;
 use JMS\Serializer\Annotation as Serializer;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
+ *
+ * @Serializer\Exclude(if="!can_activate(object, first_parent(context, 'Draw\\Bundle\\DashboardBundle\\Annotations\\Action'))")
  */
-class Button extends BaseAnnotation
+class Button
 {
     /**
      * @var string|null
@@ -64,12 +66,23 @@ class Button extends BaseAnnotation
 
     /**
      * @var array<string>
+     *
+     * @Serializer\Exclude()
      */
-    private $thenList = [];
+    private $thenList = null;
 
-    public function initialize(): void
+    public function __construct(array $values = [])
     {
-        foreach($this->thenList as $then) {
+        $thenList = $values['thenList'] ?? [];
+        unset($values['thenList']);
+
+        construct($this, $values);
+        $this->initialize($thenList);
+    }
+
+    private function initialize($thenList): void
+    {
+        foreach($thenList as $then) {
             $this->behaviours[] = 'then-' . $then;
         }
     }
@@ -162,16 +175,5 @@ class Button extends BaseAnnotation
     public function setBehaviours(array $behaviours): void
     {
         $this->behaviours = $behaviours;
-    }
-
-    public function getThenList(): array
-    {
-        return $this->thenList;
-    }
-
-    public function setThenList(array $thenList): void
-    {
-        $this->assertNotInitialized();
-        $this->thenList = $thenList;
     }
 }

@@ -18,6 +18,8 @@ class FormFlow extends Flow implements FlowWithButtonsInterface
 
     /**
      * @var array<\Draw\Bundle\DashboardBundle\Annotations\Button\Button>
+     *
+     * @Serializer\Type("array<Draw\Bundle\DashboardBundle\Annotations\Button\Button>")
      */
     private $buttons;
 

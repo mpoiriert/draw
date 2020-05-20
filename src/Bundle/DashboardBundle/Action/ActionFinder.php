@@ -1,7 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Action;
 
 use Draw\Bundle\DashboardBundle\Annotations\Action;
-use Draw\Bundle\DashboardBundle\Annotations\Targets;
 use Draw\Bundle\OpenApiBundle\Controller\OpenApiController;
 use Draw\Component\OpenApi\Schema\Operation;
 
@@ -116,17 +115,20 @@ class ActionFinder
     }
 
     /**
-     * @param $object
+     * @param $class
      * @return iterable|Action[]
      */
-    public function findAllByByTarget($object): array
+    public function findAllByByTarget($class): array
     {
-        $class = get_class($object);
+        if(is_object($class)) {
+            $class = get_class($class);
+        }
+
         if (!array_key_exists($class, $this->actionsByClass)) {
             // Doesn't exists until proof otherwise
             $this->actionsByClass[$class] = [];
 
-            $classes = $this->getClassesHierarchy($object);
+            $classes = $this->getClassesHierarchy($class);
             $rootSchema = $this->openApiController->loadOpenApiSchema();
 
             foreach ($rootSchema->paths as $path => $pathItem) {
@@ -136,13 +138,7 @@ class ActionFinder
                         continue;
                     }
 
-                    $targets = $action->getTargets();
-                    if($targets === null) {
-                        $targets = $operation->getVendorData()['x-draw-dashboard-targets'] ?? [];
-                        if($targets instanceof Targets) {
-                            $targets = $targets->getTargets();
-                        }
-                    }
+                    $targets = $action->getTargets() ?? [];
 
                     if (!array_intersect($targets, $classes)) {
                         continue;
@@ -168,9 +164,8 @@ class ActionFinder
         return $action ? clone $action : null;
     }
 
-    private function getClassesHierarchy($object)
+    private function getClassesHierarchy($class)
     {
-        $class = get_class($object);
         if (!array_key_exists($class, $this->classesHierarchy)) {
             $classes = array_merge(
                 [$class],

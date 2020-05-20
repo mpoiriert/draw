@@ -1,11 +1,12 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use JMS\Serializer\Annotation as Serializer;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
  */
-class Column extends BaseAnnotation implements VendorPropertyInterface
+class Column implements VendorPropertyInterface
 {
     /**
      * @var string|null
@@ -48,6 +49,11 @@ class Column extends BaseAnnotation implements VendorPropertyInterface
      * @var array
      */
     private $options;
+
+    public function __construct(array $values = [])
+    {
+        construct($this, $values);
+    }
 
     public function getVendorName(): string
     {

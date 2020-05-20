@@ -1,11 +1,11 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
  */
-class Translatable extends BaseAnnotation
+class Translatable
 {
     /**
      * @var string|null
@@ -22,7 +22,7 @@ class Translatable extends BaseAnnotation
         if (!is_array($value)) {
             $value = ['token' => $value];
         }
-        parent::__construct($value);
+        construct($this, $value);
     }
 
     public function getToken(): ?string

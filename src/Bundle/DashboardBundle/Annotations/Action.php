@@ -4,11 +4,12 @@ use Draw\Bundle\DashboardBundle\Annotations\Button\Button;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\VendorInterface;
 use JMS\Serializer\Annotation as Serializer;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
  */
-class Action extends BaseAnnotation implements VendorInterface
+class Action implements VendorInterface
 {
     const TYPE = 'generic';
 
@@ -100,7 +101,7 @@ class Action extends BaseAnnotation implements VendorInterface
     public function __construct(array $values = [])
     {
         $values['type'] = static::TYPE;
-        parent::__construct($values);
+        construct($this, $values);
     }
 
     public function getVendorName(): string

@@ -1,9 +1,11 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use function Draw\Bundle\DashboardBundle\construct;
+
 /**
  * @Annotation
  */
-abstract class Flow extends BaseAnnotation
+abstract class Flow
 {
     const TYPE = null;
 
@@ -12,11 +14,11 @@ abstract class Flow extends BaseAnnotation
      */
     private $type;
 
-    public function __construct(array $values)
+    public function __construct(array $values = [])
     {
         $values['type'] = static::TYPE;
 
-        parent::__construct($values);
+        construct($this, $values);
     }
 
     public function getType(): ?string

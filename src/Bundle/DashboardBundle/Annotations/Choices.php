@@ -1,9 +1,11 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use function Draw\Bundle\DashboardBundle\construct;
+
 /**
  * @Annotation
  */
-class Choices extends BaseAnnotation
+class Choices
 {
     /**
      * @var array
@@ -16,6 +18,11 @@ class Choices extends BaseAnnotation
     private $translationDomain;
 
     private $assoc = false;
+
+    public function __construct(array $values = [])
+    {
+        construct($this, $values);
+    }
 
     /**
      * Default value if not set is choices

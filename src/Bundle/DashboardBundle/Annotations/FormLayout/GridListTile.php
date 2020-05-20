@@ -1,11 +1,11 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations\FormLayout;
 
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
  */
-class GridListTile extends BaseAnnotation
+class GridListTile
 {
     /**
      * @var int
@@ -21,6 +21,11 @@ class GridListTile extends BaseAnnotation
      * @var array<string>
      */
     private $inputs;
+
+    public function __construct(array $values = [])
+    {
+        construct($this, $values);
+    }
 
     public function getColspan(): int
     {

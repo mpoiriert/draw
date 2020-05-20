@@ -1,16 +1,22 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Draw\Component\OpenApi\Schema\VendorInterface;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
  */
-class Targets extends BaseAnnotation implements VendorInterface
+class Targets implements VendorInterface
 {
     /**
      * @var array<string>
      */
     private $targets = [];
+
+    public function __construct(array $values = [])
+    {
+        construct($this, $values);
+    }
 
     public function getVendorName(): string
     {

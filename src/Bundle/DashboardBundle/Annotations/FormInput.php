@@ -1,9 +1,11 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use function Draw\Bundle\DashboardBundle\construct;
+
 /**
  * @Annotation
  */
-class FormInput extends BaseAnnotation implements VendorPropertyInterface
+class FormInput implements VendorPropertyInterface
 {
     const TYPE = 'text';
 
@@ -38,7 +40,7 @@ class FormInput extends BaseAnnotation implements VendorPropertyInterface
             $values['type'] = static::TYPE;
         }
 
-        parent::__construct($values);
+        construct($this, $values);
     }
 
     public function getVendorName(): string

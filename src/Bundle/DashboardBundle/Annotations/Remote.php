@@ -1,9 +1,11 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use function Draw\Bundle\DashboardBundle\construct;
+
 /**
  * @Annotation
  */
-class Remote extends BaseAnnotation
+class Remote
 {
     /**
      * @var string|null
@@ -14,6 +16,11 @@ class Remote extends BaseAnnotation
      * @var string|null
      */
     private $formPathValue;
+
+    public function __construct(array $values = [])
+    {
+        construct($this, $values);
+    }
 
     public function getRouteName(): ?string
     {

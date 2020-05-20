@@ -2,11 +2,12 @@
 
 use Doctrine\Common\Annotations\Annotation\Enum;
 use JMS\Serializer\Annotation as Serializer;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
  */
-class Filter extends BaseAnnotation implements VendorPropertyInterface
+class Filter implements VendorPropertyInterface
 {
     /**
      * @var string|null
@@ -46,7 +47,7 @@ class Filter extends BaseAnnotation implements VendorPropertyInterface
             $values
         );
 
-        parent::__construct($values);
+        construct($this, $values);
     }
 
     public function getVendorName(): string

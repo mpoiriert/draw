@@ -1,11 +1,12 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Draw\Component\OpenApi\Schema\VendorInterface;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
  */
-class Breadcrumb extends BaseAnnotation implements VendorInterface
+class Breadcrumb implements VendorInterface
 {
     /**
      * @var string|null
@@ -13,6 +14,11 @@ class Breadcrumb extends BaseAnnotation implements VendorInterface
     private $parentOperationId;
 
     private $label;
+
+    public function __construct(array $values = [])
+    {
+        construct($this, $values);
+    }
 
     public function getVendorName(): string
     {

@@ -1,12 +1,12 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations\FormLayout;
 
-use Draw\Bundle\DashboardBundle\Annotations\BaseAnnotation;
 use Draw\Component\OpenApi\Schema\VendorInterface;
+use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
  */
-class BaseLayout extends BaseAnnotation implements VendorInterface
+class BaseLayout implements VendorInterface
 {
     const TYPE = 'generic';
 
@@ -24,7 +24,7 @@ class BaseLayout extends BaseAnnotation implements VendorInterface
             $values
         );
 
-        parent::__construct($values);
+        construct($this, $values);
     }
 
     public function getVendorName(): string
