@@ -21,16 +21,30 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 
     private $userProvider;
 
+    private $queryParameters;
+
     private $translator;
 
     public function __construct(
         UserProviderInterface $userProvider,
         ?TranslatorInterface $translator,
-        $key
+        $key,
+        $queryParameters = []
     ) {
         $this->userProvider = $userProvider;
         $this->translator = $translator;
         $this->key = $key;
+        $this->queryParameters = $queryParameters;
+    }
+
+    public function supportQueryParameter()
+    {
+        return !empty($this->queryParameters);
+    }
+
+    public function getFirstSupportedQueryParameter(): ?string
+    {
+        return reset($this->queryParameters) ?: null;
     }
 
     public function supports(Request $request)
@@ -38,12 +52,12 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         return $this->getToken($request) !== null;
     }
 
-    public function encode(UserInterface $user): string
+    public function encode(UserInterface $user, $expiration = '+ 7 days'): string
     {
         return JWT::encode(
             [
                 'id' => $user->getId(),
-                'exp' => (new \DateTime('+ 7 days'))->getTimestamp()
+                'exp' => (new \DateTime($expiration))->getTimestamp()
             ],
             $this->key,
             $this->algorithm
@@ -52,15 +66,21 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 
     private function getToken(Request $request): ?string
     {
-        if (!$request->headers->has('Authorization')) {
-            return null;
+        if ($request->headers->has('Authorization')) {
+            if (preg_match('/Bearer\s(\S+)/', $request->headers->get('Authorization'), $matches)) {
+                return $matches[1];
+            }
         }
 
-        if (!preg_match('/Bearer\s(\S+)/', $request->headers->get('Authorization'), $matches)) {
-            return null;
+        foreach ($this->queryParameters as $queryParameter) {
+            if (!$request->query->has($queryParameter)) {
+                continue;
+            }
+
+            return $request->query->get($queryParameter);
         }
 
-        return $matches[1];
+        return null;
     }
 
     public function getCredentials(Request $request)
