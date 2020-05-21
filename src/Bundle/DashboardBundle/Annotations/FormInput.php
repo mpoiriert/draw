@@ -5,8 +5,10 @@ use function Draw\Bundle\DashboardBundle\construct;
 /**
  * @Annotation
  */
-class FormInput implements VendorPropertyInterface
+class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
 {
+    use CanBeExcludeTrait;
+
     const TYPE = 'text';
 
     /**

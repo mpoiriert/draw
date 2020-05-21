@@ -4,6 +4,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\DashboardBundle\Annotations\ActionCreate;
 use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;
 use Draw\Bundle\DashboardBundle\Annotations\ActionList;
+use Draw\Bundle\DashboardBundle\Annotations\CanBeExcludeInterface;
 use Draw\Bundle\DashboardBundle\Annotations\Column;
 use Draw\Bundle\DashboardBundle\Annotations\ConfirmFlow;
 use Draw\Bundle\DashboardBundle\Annotations\Filter;
@@ -13,12 +14,12 @@ use Draw\Bundle\DashboardBundle\Annotations\FormInputChoices;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputCollection;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputComposite;
 use Draw\Bundle\DashboardBundle\Event\OptionBuilderEvent;
+use Draw\Bundle\DashboardBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Twig\Environment;
 
 class OptionActionListener implements EventSubscriberInterface
@@ -34,20 +35,16 @@ class OptionActionListener implements EventSubscriberInterface
 
     private $serializer;
 
-    /**
-     * @var OptionBuilderEvent
-     */
-    private $currentEvent;
-
     public function __construct(
         Environment $environment,
         ManagerRegistry $managerRegistry,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        ExpressionLanguage $expressionLanguage
     ) {
         $this->twig = $environment;
         $this->managerRegistry = $managerRegistry;
         $this->serializer = $serializer;
-        $this->expressionLanguage = new ExpressionLanguage();
+        $this->expressionLanguage = $expressionLanguage;
     }
 
     public static function getSubscribedEvents()
@@ -71,8 +68,8 @@ class OptionActionListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        if($flow instanceof FormFlow) {
-            if(!$flow->getId()) {
+        if ($flow instanceof FormFlow) {
+            if (!$flow->getId()) {
                 $flow->setId(uniqid());
             }
         }
@@ -111,32 +108,24 @@ class OptionActionListener implements EventSubscriberInterface
         }
 
         $openApiSchema = $event->getOpenApiSchema();
-        $item = $openApiSchema->resolveSchema($responseSchema->properties['data']->items);
+        $objectSchema = $openApiSchema->resolveSchema($responseSchema->properties['data']->items);
 
         $columns = [];
         $filters = [];
-        foreach ($item->properties as $property) {
-            $column = $property->vendor['x-draw-dashboard-column'] ?? null;
+        foreach ($objectSchema->properties as $propertySchema) {
             $columnPosition = 0;
-            if ($column instanceof Column) {
-                if ($column->getLabel() === null) {
-                    $column->setLabel($column->getId());
-                }
+            if ($column = $this->processColumn($openApiSchema, $objectSchema, $propertySchema)) {
                 if ($column->getPosition() !== null) {
                     $columnPosition = $column->getPosition();
                 }
                 $columns[$columnPosition][] = $column;
             }
 
-            $filter = $property->vendor['x-draw-dashboard-filter'] ?? null;
-            if ($filter instanceof Filter) {
-                if ($input = $filter->getInput()) {
-                    if ($input->getId() === null) {
-                        $input->setId($filter->getId());
-                    }
-                    $this->configureInput($input, $item, $property, $openApiSchema);
+            if ($filter = $this->processFilter($openApiSchema, $objectSchema, $propertySchema)) {
+                $filterPosition = $columnPosition;
+                if ($filter->getPosition() !== null) {
+                    $filterPosition = $filter->getPosition();
                 }
-                null !== ($filterPosition = $filter->getPosition()) || ($filterPosition = $columnPosition);
                 $filters[$filterPosition][] = $filter;
             }
         }
@@ -155,6 +144,58 @@ class OptionActionListener implements EventSubscriberInterface
 
         $action->setColumns($columns);
         $action->setFilters($filters);
+    }
+
+    private function processFilter(Root $openApiSchema, Schema $objectSchema, Schema $propertySchema): ?Filter
+    {
+        $filter = $propertySchema->vendor['x-draw-dashboard-filter'] ?? null;
+        if (!$filter instanceof Filter) {
+            return null;
+        }
+
+        if ($input = $filter->getInput()) {
+            if ($input->getId() === null) {
+                $input->setId($filter->getId());
+            }
+            $this->configureInput($input, $objectSchema, $propertySchema, $openApiSchema);
+        }
+
+        $values = compact('filter', 'objectSchema', 'propertySchema');
+
+        if ($this->shouldBeExcluded($filter, $values)) {
+            return null;
+        }
+
+        return $filter;
+    }
+
+    private function processColumn(Root $openApiSchema, Schema $objectSchema, Schema $propertySchema): ?Column
+    {
+        $column = $propertySchema->vendor['x-draw-dashboard-column'] ?? null;
+        if (!$column instanceof Column) {
+            return null;
+        }
+
+        if ($column->getLabel() === null) {
+            $column->setLabel($column->getId());
+        }
+
+        $values = compact('column', 'propertySchema', 'objectSchema');
+
+        if ($this->shouldBeExcluded($column, $values)) {
+            return null;
+        }
+
+        return $column;
+    }
+
+    private function shouldBeExcluded(CanBeExcludeInterface $object, $values): bool
+    {
+        if (!$object->getExcludeIf()) {
+            return false;
+        }
+
+        return $this->expressionLanguage->evaluate($object->getExcludeIf(), $values);
     }
 
     public function buildOptionForCreateEdit(OptionBuilderEvent $event)
@@ -197,6 +238,16 @@ class OptionActionListener implements EventSubscriberInterface
             }
 
             $this->configureInput($input, $objectSchema, $property, $openApiSchema);
+
+            $values = [
+                'input' => $input,
+                'objectSchema' => $objectSchema,
+                'propertySchema' => $property
+            ];
+
+            if ($this->shouldBeExcluded($input, $values)) {
+                continue;
+            }
 
             $inputs[] = $input;
         }
@@ -251,10 +302,10 @@ class OptionActionListener implements EventSubscriberInterface
 
         $targetClass = $target->getVendorData()['x-draw-dashboard-class-name'];
 
-        if($manager = $this->managerRegistry->getManagerForClass($targetClass)) {
+        if ($manager = $this->managerRegistry->getManagerForClass($targetClass)) {
             $repository = $manager->getRepository($targetClass);
             $values['repository'] = $repository;
-            if(!$expression) {
+            if (!$expression) {
                 $expression = 'repository.findAll()';
             }
         }

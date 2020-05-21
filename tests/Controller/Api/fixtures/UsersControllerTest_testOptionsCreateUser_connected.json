@@ -256,6 +256,13 @@
           "disabled": false
         },
         {
+          "id": "comment",
+          "type": "text",
+          "label": "Comment",
+          "icon": null,
+          "disabled": false
+        },
+        {
           "id": "email",
           "type": "email",
           "label": "Email",
@@ -275,6 +282,7 @@
         },
         "userAddresses": [],
         "dateOfBirth": null,
+        "comment": "",
         "email": null,
         "plainPassword": null,
         "passwordUpdatedAt": null

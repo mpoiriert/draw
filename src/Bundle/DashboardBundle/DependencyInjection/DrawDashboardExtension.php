@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\DependencyInjection;
 
+use Draw\Bundle\DashboardBundle\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -11,6 +12,10 @@ class DrawDashboardExtension extends ConfigurableExtension
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
+
+        $container
+            ->registerForAutoconfiguration(ExpressionFunctionProviderInterface::class)
+            ->addTag(ExpressionFunctionProviderInterface::class);
 
         $container->setParameter('draw_dashboard.title', $config['title']);
         $container->setParameter('draw_dashboard.menu', $config['menu']);

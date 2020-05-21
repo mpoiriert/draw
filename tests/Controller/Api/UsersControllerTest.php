@@ -78,7 +78,6 @@ class UsersControllerTest extends TestCase
             ->assertStatus(200)
             ->toJsonDataTester()
             ->getData();
-
     }
 
     public function testUsersCreateAction()

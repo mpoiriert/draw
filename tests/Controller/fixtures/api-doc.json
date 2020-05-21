@@ -967,6 +967,14 @@
                         "disabled": false
                     }
                 },
+                "comment": {
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "comment",
+                        "type": "text",
+                        "disabled": false
+                    }
+                },
                 "email": {
                     "format": "not empty",
                     "type": "string",
@@ -1213,6 +1221,14 @@
                     "x-draw-dashboard-form-input": {
                         "id": "dateOfBirth",
                         "type": "date-picker",
+                        "disabled": false
+                    }
+                },
+                "comment": {
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "comment",
+                        "type": "text",
                         "disabled": false
                     }
                 },

@@ -141,6 +141,17 @@ class User implements SecurityUserInterface
      */
     private $dateOfBirth;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Dashboard\FormInput(
+     *     excludeIf="!is_granted('ROLE_ADMIN')"
+     * )
+     */
+    private $comment = '';
+
     public function __construct()
     {
         $this->address = new Address();

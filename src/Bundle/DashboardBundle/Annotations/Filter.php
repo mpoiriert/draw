@@ -7,8 +7,10 @@ use function Draw\Bundle\DashboardBundle\construct;
 /**
  * @Annotation
  */
-class Filter implements VendorPropertyInterface
+class Filter implements VendorPropertyInterface, CanBeExcludeInterface
 {
+    use CanBeExcludeTrait;
+
     /**
      * @var string|null
      */

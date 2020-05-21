@@ -1,5 +1,6 @@
 active: 'Actif'
 admin: 'Administrateur'
+comment: 'Commentaire'
 id: '#'
 tags: 'Tags'
 label: 'Intitulé'

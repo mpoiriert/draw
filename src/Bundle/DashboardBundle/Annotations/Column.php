@@ -6,8 +6,10 @@ use function Draw\Bundle\DashboardBundle\construct;
 /**
  * @Annotation
  */
-class Column implements VendorPropertyInterface
+class Column implements VendorPropertyInterface, CanBeExcludeInterface
 {
+    use CanBeExcludeTrait;
+
     /**
      * @var string|null
      */
