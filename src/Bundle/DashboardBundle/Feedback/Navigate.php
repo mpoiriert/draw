@@ -23,6 +23,8 @@ class Navigate implements FeedbackInterface, JsonSerializable
     {
         return [
             'href' => $this->action->getHref(),
+            'name' => $this->action->getName(),
+            'method' => $this->action->getMethod(),
             'type' => $this->action->getType()
         ];
     }
