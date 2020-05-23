@@ -88,6 +88,7 @@
           "label": "Tags",
           "icon": null,
           "disabled": false,
+          "required": false,
           "multiple": true,
           "choices": [
             {
@@ -107,6 +108,7 @@
           "label": "Access Level",
           "icon": null,
           "disabled": false,
+          "required": false,
           "multiple": false,
           "choices": [
             {
@@ -126,6 +128,7 @@
           "label": "Address",
           "icon": null,
           "disabled": false,
+          "required": false,
           "subForm": {
             "inputs": [
               {
@@ -133,28 +136,32 @@
                 "type": "text",
                 "label": "Street",
                 "icon": null,
-                "disabled": false
+                "disabled": false,
+                "required": false
               },
               {
                 "id": "postalCode",
                 "type": "text",
                 "label": "Postal Code",
                 "icon": null,
-                "disabled": false
+                "disabled": false,
+                "required": false
               },
               {
                 "id": "city",
                 "type": "text",
                 "label": "City",
                 "icon": null,
-                "disabled": false
+                "disabled": false,
+                "required": false
               },
               {
                 "id": "country",
                 "type": "text",
                 "label": "Country",
                 "icon": null,
-                "disabled": false
+                "disabled": false,
+                "required": false
               }
             ],
             "default": {
@@ -171,6 +178,7 @@
           "label": "Secondary Addresses",
           "icon": null,
           "disabled": false,
+          "required": false,
           "orderBy": "position",
           "subForm": {
             "inputs": [
@@ -179,7 +187,8 @@
                 "type": "hidden",
                 "label": "#",
                 "icon": null,
-                "disabled": false
+                "disabled": false,
+                "required": false
               },
               {
                 "id": "address",
@@ -187,6 +196,7 @@
                 "label": "Address",
                 "icon": null,
                 "disabled": false,
+                "required": false,
                 "subForm": {
                   "inputs": [
                     {
@@ -194,28 +204,32 @@
                       "type": "text",
                       "label": "Street",
                       "icon": null,
-                      "disabled": false
+                      "disabled": false,
+                      "required": false
                     },
                     {
                       "id": "postalCode",
                       "type": "text",
                       "label": "Postal Code",
                       "icon": null,
-                      "disabled": false
+                      "disabled": false,
+                      "required": false
                     },
                     {
                       "id": "city",
                       "type": "text",
                       "label": "City",
                       "icon": null,
-                      "disabled": false
+                      "disabled": false,
+                      "required": false
                     },
                     {
                       "id": "country",
                       "type": "text",
                       "label": "Country",
                       "icon": null,
-                      "disabled": false
+                      "disabled": false,
+                      "required": false
                     }
                   ],
                   "default": {
@@ -231,7 +245,8 @@
                 "type": "hidden",
                 "label": "Position",
                 "icon": null,
-                "disabled": false
+                "disabled": false,
+                "required": false
               }
             ],
             "default": {
@@ -253,21 +268,24 @@
           "type": "date-picker",
           "label": "dateOfBirth",
           "icon": null,
-          "disabled": false
+          "disabled": false,
+          "required": false
         },
         {
           "id": "comment",
           "type": "text",
           "label": "Comment",
           "icon": null,
-          "disabled": false
+          "disabled": false,
+          "required": false
         },
         {
           "id": "email",
           "type": "email",
           "label": "Email",
           "icon": null,
-          "disabled": false
+          "disabled": false,
+          "required": false
         }
       ],
       "default": {

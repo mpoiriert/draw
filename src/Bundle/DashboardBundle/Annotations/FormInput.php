@@ -36,6 +36,11 @@ class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
      */
     private $disabled = false;
 
+    /**
+     * @var bool
+     */
+    private $required = false;
+
     public function __construct(array $values = [])
     {
         if (!array_key_exists('type', $values)) {
@@ -95,7 +100,7 @@ class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
         $this->icon = $icon;
     }
 
-    public function isDisabled(): bool
+    public function getDisabled(): bool
     {
         return $this->disabled;
     }
@@ -103,5 +108,15 @@ class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
     public function setDisabled(bool $disabled): void
     {
         $this->disabled = $disabled;
+    }
+
+    public function getRequired(): bool
+    {
+        return $this->required;
+    }
+
+    public function setRequired(bool $required): void
+    {
+        $this->required = $required;
     }
 }

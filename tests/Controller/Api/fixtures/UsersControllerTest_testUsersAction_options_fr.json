@@ -73,7 +73,8 @@
             "type": "text",
             "label": "#",
             "icon": null,
-            "disabled": false
+            "disabled": false,
+            "required": false
           },
           "comparison": "="
         },
@@ -86,6 +87,7 @@
             "label": "Tags",
             "icon": null,
             "disabled": false,
+            "required": false,
             "multiple": false,
             "choices": [
               {
@@ -116,6 +118,7 @@
             "label": "Niveau d'acc\u00e8s",
             "icon": null,
             "disabled": false,
+            "required": false,
             "multiple": true,
             "choices": [
               {

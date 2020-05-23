@@ -73,14 +73,16 @@
           "type": "string",
           "label": "Username",
           "icon": null,
-          "disabled": false
+          "disabled": false,
+          "required": false
         },
         {
           "id": "password",
           "type": "password",
           "label": "Password",
           "icon": null,
-          "disabled": false
+          "disabled": false,
+          "required": false
         }
       ],
       "default": {

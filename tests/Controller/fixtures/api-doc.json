@@ -808,7 +808,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "active",
                         "type": "checkbox",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "label": {
@@ -824,7 +825,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "label",
                         "type": "text",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 }
             },
@@ -847,7 +849,8 @@
                         "alwaysShow": true,
                         "input": {
                             "type": "text",
-                            "disabled": false
+                            "disabled": false,
+                            "required": false
                         },
                         "comparison": "="
                     }
@@ -873,6 +876,7 @@
                         "id": "tags",
                         "type": "choices",
                         "disabled": false,
+                        "required": false,
                         "multiple": true
                     },
                     "x-draw-dashboard-filter": {
@@ -881,6 +885,7 @@
                         "input": {
                             "type": "choices",
                             "disabled": false,
+                            "required": false,
                             "multiple": false
                         },
                         "comparison": "="
@@ -904,6 +909,7 @@
                         "id": "level",
                         "type": "choices",
                         "disabled": false,
+                        "required": false,
                         "multiple": false,
                         "choices": [
                             {
@@ -922,6 +928,7 @@
                         "input": {
                             "type": "choices",
                             "disabled": false,
+                            "required": false,
                             "multiple": true,
                             "choices": [
                                 {
@@ -942,7 +949,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "address",
                         "type": "composite",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "userAddresses": {
@@ -954,6 +962,7 @@
                         "id": "userAddresses",
                         "type": "collection",
                         "disabled": false,
+                        "required": false,
                         "orderBy": "position",
                         "allowAdd": true
                     }
@@ -964,7 +973,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "dateOfBirth",
                         "type": "date-picker",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "comment": {
@@ -972,7 +982,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "comment",
                         "type": "text",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "email": {
@@ -988,7 +999,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "email",
                         "type": "email",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "plainPassword": {
@@ -1022,7 +1034,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "street",
                         "type": "text",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "postalCode": {
@@ -1030,7 +1043,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "postalCode",
                         "type": "text",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "city": {
@@ -1038,7 +1052,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "city",
                         "type": "text",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "country": {
@@ -1046,7 +1061,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "country",
                         "type": "text",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 }
             },
@@ -1061,7 +1077,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "id",
                         "type": "hidden",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "user": {
@@ -1072,7 +1089,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "address",
                         "type": "composite",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "position": {
@@ -1081,7 +1099,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "position",
                         "type": "hidden",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 }
             },
@@ -1104,7 +1123,8 @@
                         "alwaysShow": true,
                         "input": {
                             "type": "text",
-                            "disabled": false
+                            "disabled": false,
+                            "required": false
                         },
                         "comparison": "="
                     }
@@ -1130,6 +1150,7 @@
                         "id": "tags",
                         "type": "choices",
                         "disabled": false,
+                        "required": false,
                         "multiple": true
                     },
                     "x-draw-dashboard-filter": {
@@ -1138,6 +1159,7 @@
                         "input": {
                             "type": "choices",
                             "disabled": false,
+                            "required": false,
                             "multiple": false
                         },
                         "comparison": "="
@@ -1161,6 +1183,7 @@
                         "id": "level",
                         "type": "choices",
                         "disabled": false,
+                        "required": false,
                         "multiple": false,
                         "choices": [
                             {
@@ -1179,6 +1202,7 @@
                         "input": {
                             "type": "choices",
                             "disabled": false,
+                            "required": false,
                             "multiple": true,
                             "choices": [
                                 {
@@ -1199,7 +1223,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "address",
                         "type": "composite",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "userAddresses": {
@@ -1211,6 +1236,7 @@
                         "id": "userAddresses",
                         "type": "collection",
                         "disabled": false,
+                        "required": false,
                         "orderBy": "position",
                         "allowAdd": true
                     }
@@ -1221,7 +1247,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "dateOfBirth",
                         "type": "date-picker",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "comment": {
@@ -1229,7 +1256,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "comment",
                         "type": "text",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "email": {
@@ -1245,7 +1273,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "email",
                         "type": "email",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "plainPassword": {
@@ -1280,7 +1309,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "id",
                         "type": "hidden",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "user": {
@@ -1291,7 +1321,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "address",
                         "type": "composite",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "position": {
@@ -1300,7 +1331,8 @@
                     "x-draw-dashboard-form-input": {
                         "id": "position",
                         "type": "hidden",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 }
             },
@@ -1339,7 +1371,8 @@
                         "id": "username",
                         "type": "string",
                         "label": "Username",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 },
                 "password": {
@@ -1349,7 +1382,8 @@
                         "id": "password",
                         "type": "password",
                         "label": "Password",
-                        "disabled": false
+                        "disabled": false,
+                        "required": false
                     }
                 }
             },
