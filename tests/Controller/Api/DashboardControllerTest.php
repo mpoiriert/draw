@@ -16,7 +16,7 @@ class DashboardControllerTest extends TestCase
                 new AgainstJsonFileTester(
                     __DIR__ . '/fixtures/DashboardControllerTest_testGetAction.json',
                     [
-                        'toolbar[0].flow.id' => function (DataTester $dataTester) {
+                        'toolbar[1].flow.id' => function (DataTester $dataTester) {
                             $dataTester->assertIsString();
                         }
                     ]

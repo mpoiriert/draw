@@ -19,6 +19,11 @@ class Action implements VendorInterface
     private $type = self::TYPE;
 
     /**
+     * @var string|null
+     */
+    private $name;
+
+    /**
      * @var \Draw\Bundle\DashboardBundle\Annotations\Button\Button|null
      */
     private $button;
@@ -101,6 +106,13 @@ class Action implements VendorInterface
     public function __construct(array $values = [])
     {
         $values['type'] = static::TYPE;
+        $values = array_merge(
+            [
+                'name' => $values['type']
+            ],
+            $values
+        );
+
         construct($this, $values);
     }
 
@@ -257,5 +269,15 @@ class Action implements VendorInterface
     public function setIsInstanceTarget(?bool $isInstanceTarget): void
     {
         $this->isInstanceTarget = $isInstanceTarget;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): void
+    {
+        $this->name = $name;
     }
 }

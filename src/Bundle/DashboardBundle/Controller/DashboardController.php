@@ -95,7 +95,7 @@ class DashboardController extends AbstractController
             return null;
         }
 
-        return $action->getHref() . '/' . $action->getType();
+        return $action->getHref() . '/' . $action->getName();
     }
 
     private function getActionInformation($operationId, Request $request): ?Action

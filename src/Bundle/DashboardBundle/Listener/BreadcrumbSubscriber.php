@@ -50,7 +50,7 @@ class BreadcrumbSubscriber implements EventSubscriberInterface
                 $breadcrumbs,
                 [
                     'label' => $breadcrumb->getLabel(),
-                    'href' => $parentAction->getHref() . '/' . $parentAction->getType()
+                    'href' => $parentAction->getHref() . '/' . $parentAction->getName()
                 ]
             );
 

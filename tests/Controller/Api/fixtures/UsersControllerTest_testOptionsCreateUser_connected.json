@@ -2,6 +2,7 @@
   "POST": {
     "x-draw-dashboard-action": {
       "type": "create",
+      "name": "create",
       "button": {
         "id": null,
         "label": "Create",

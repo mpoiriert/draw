@@ -2,23 +2,50 @@
   "title": "Draw Dashboard",
   "menu": [
     {
+      "label": "My Profile",
+      "icon": "account_circle",
+      "security": null,
+      "children": [],
+      "link": "http:\/\/localhost\/api\/me\/generic"
+    },
+    {
       "label": "Users",
       "icon": "person",
       "security": null,
       "children": [],
-      "link": "http://localhost/api/users/list"
+      "link": "http:\/\/localhost\/api\/users\/list"
     },
     {
       "label": "Tags",
       "icon": "tag",
       "security": null,
       "children": [],
-      "link": "http://localhost/api/tags/list"
+      "link": "http:\/\/localhost\/api\/tags\/list"
     }
   ],
   "toolbar": [
     {
+      "type": "generic",
+      "name": "generic",
+      "button": {
+        "id": null,
+        "label": null,
+        "icon": "account_circle",
+        "style": null,
+        "color": null,
+        "showLabel": null,
+        "tooltip": null,
+        "tooltipPosition": null,
+        "behaviours": []
+      },
+      "flow": null,
+      "href": "http:\/\/localhost\/api\/me",
+      "method": "GET",
+      "title": "_breadcrumb.me"
+    },
+    {
       "type": "create",
+      "name": "create",
       "button": {
         "id": null,
         "label": "Sign In",
@@ -32,7 +59,7 @@
       },
       "flow": {
         "type": "form",
-        "id": null,
+        "id": "5ec9537b2cef6",
         "buttons": [
           {
             "id": "cancel",
@@ -64,7 +91,7 @@
         ],
         "dialog": true
       },
-      "href": "http://localhost/api/connection-tokens",
+      "href": "http:\/\/localhost\/api\/connection-tokens",
       "method": "POST",
       "title": "Sign In",
       "inputs": [

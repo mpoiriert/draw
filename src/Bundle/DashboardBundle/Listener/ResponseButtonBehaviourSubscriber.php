@@ -54,12 +54,12 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
         switch (true) {
             case !($controllerResult = $viewEvent->getControllerResult()):
             case null === ($button = $this->getButtonToProcess($viewEvent->getRequest())):
-            case !($thenActionType = $this->getThenActionType($button)):
+            case !($thenActionName = $this->getThenActionName($button)):
                 return;
         }
 
         foreach ($this->actionFinder->findAllByByTarget($viewEvent->getControllerResult()) as $action) {
-            if($action->getType() !== $thenActionType) {
+            if($action->getName() !== $thenActionName) {
                 continue;
             }
 
@@ -80,7 +80,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function getThenActionType(Button $button): ?string
+    private function getThenActionName(Button $button): ?string
     {
         foreach($button->getBehaviours() as $behaviour) {
             if(strpos($behaviour, 'then-') !== 0) {

@@ -3,6 +3,10 @@ draw_dashboard:
     visible_by_admin_only:
       label: 'Visible by admin only'
       security: "is_granted('ROLE_ADMIN')"
+    me:
+      label: 'My Profile'
+      icon: 'account_circle'
+      operationId: 'me'
     user:
       label: 'Users'
       icon: 'person'
@@ -16,6 +20,8 @@ draw_dashboard:
       icon: 'tag'
       operationId: 'tagList'
   toolbar:
+    me:
+      operationId: 'me'
     connect:
       operationId: 'drawUserBundleCreateConnectionToken'
     disconnect:

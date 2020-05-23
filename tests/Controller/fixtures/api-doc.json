@@ -51,6 +51,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "list",
+                    "name": "list",
                     "paginated": true,
                     "columns": [],
                     "filters": []
@@ -83,6 +84,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "create",
+                    "name": "create",
                     "button": {
                         "label": "Create",
                         "behaviours": []
@@ -164,6 +166,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "show",
+                    "name": "show",
                     "button": {
                         "label": "Show",
                         "behaviours": []
@@ -203,6 +206,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "edit",
+                    "name": "edit",
                     "button": {
                         "label": "Edit",
                         "icon": "edit",
@@ -280,6 +284,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "delete",
+                    "name": "delete",
                     "button": {
                         "label": "Delete",
                         "icon": "delete",
@@ -340,6 +345,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "list",
+                    "name": "list",
                     "title": "Users List",
                     "paginated": true,
                     "columns": [],
@@ -377,6 +383,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "create",
+                    "name": "create",
                     "button": {
                         "label": "Create",
                         "behaviours": []
@@ -431,6 +438,34 @@
                 }
             }
         },
+        "/api/me": {
+            "get": {
+                "operationId": "me",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Empty response mean success."
+                    }
+                },
+                "x-draw-open-api-symfony-route": "me",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "generic",
+                    "name": "generic",
+                    "button": {
+                        "icon": "account_circle",
+                        "behaviours": []
+                    }
+                }
+            }
+        },
         "/api/users/{id}": {
             "get": {
                 "operationId": "userGet",
@@ -461,6 +496,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "show",
+                    "name": "show",
                     "button": {
                         "label": "Show",
                         "behaviours": []
@@ -503,6 +539,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "edit",
+                    "name": "edit",
                     "button": {
                         "label": "Edit",
                         "icon": "edit",
@@ -583,6 +620,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "delete",
+                    "name": "delete",
                     "button": {
                         "label": "Delete",
                         "icon": "delete",
@@ -624,6 +662,7 @@
                 },
                 "x-draw-dashboard-action": {
                     "type": "generic",
+                    "name": "generic",
                     "button": {
                         "label": "Send forgot password email",
                         "icon": "email",
@@ -703,6 +742,7 @@
                 "x-draw-open-api-symfony-route": "connection_token_create",
                 "x-draw-dashboard-action": {
                     "type": "create",
+                    "name": "create",
                     "button": {
                         "label": "Sign In",
                         "behaviours": []
@@ -770,6 +810,7 @@
                 "x-draw-open-api-symfony-route": "drawUserBundle_connection_clear",
                 "x-draw-dashboard-action": {
                     "type": "delete",
+                    "name": "delete",
                     "button": {
                         "label": "Sign Out",
                         "icon": "exit_to_app",

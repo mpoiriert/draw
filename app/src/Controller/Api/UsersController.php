@@ -2,10 +2,12 @@
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Doctrine\Paginator;
 use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;
+use Draw\Bundle\DashboardBundle\Feedback\Navigate;
 use Draw\Bundle\DashboardBundle\Feedback\Notification;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
@@ -14,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Dashboard\Breadcrumb(parentOperationId="userList")
@@ -41,6 +44,31 @@ class UsersController extends AbstractController
         $entityManager->persist($user);
         $entityManager->flush();
         return $user;
+    }
+
+    /**
+     * @Route(name="me", methods={"GET"}, path="/me")
+     *
+     * @OpenApi\Operation(operationId="me")
+     *
+     * @Serialization(statusCode=204)
+     *
+     * @Dashboard\Action(
+     *     targets={},
+     *     button=@Dashboard\Button\Button(icon="account_circle")
+     * )
+     */
+    public function meAction(FeedbackNotifier $notifier, ActionFinder $actionFinder)
+    {
+        $action = $actionFinder->findOneByOperationId('userEdit');
+        $action->setHref(
+            $this->generateUrl(
+                $action->getRouteName(),
+                ['id' => $this->getUser()->getId()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
+        );
+        $notifier->sendFeedback(new Navigate($action));
     }
 
     /**

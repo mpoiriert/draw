@@ -2,6 +2,7 @@
   "GET": {
     "x-draw-dashboard-action": {
       "type": "list",
+      "name": "list",
       "button": null,
       "flow": null,
       "href": "http://localhost/api/users",
