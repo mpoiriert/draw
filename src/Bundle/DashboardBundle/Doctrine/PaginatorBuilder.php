@@ -15,7 +15,12 @@ class PaginatorBuilder
         $this->managerRegistry = $managerRegistry;
     }
 
-    public function fromRequest($class, Request $request, callable $queryBuilderCallback = null): Paginator
+    public function fromRequest(
+        $class,
+        Request $request,
+        callable $queryBuilderCallback = null,
+        $fetchJoinCollection = null
+    ): Paginator
     {
         $queryBuilder = $this->buildQueryBuilder(
             $class,
@@ -27,9 +32,17 @@ class PaginatorBuilder
             call_user_func($queryBuilderCallback, $queryBuilder);
         }
 
+        if(null === $fetchJoinCollection) {
+            // This prevent some default case when you do a custom query hydration that would trigger a error if no id
+            // is defined. We could pass false at the parameter but we detect if it's possible when not specified.
+            $fetchJoinCollection = count($queryBuilder->getAllAliases()) > 1;
+        }
+
         $paginator = new Paginator(
             $queryBuilder->getQuery(),
-            $request->query->getInt('pageSize')
+            $request->query->getInt('pageSize'),
+            null,
+            $fetchJoinCollection
         );
 
         $paginator->goToPage($request->query->getInt('pageIndex'));

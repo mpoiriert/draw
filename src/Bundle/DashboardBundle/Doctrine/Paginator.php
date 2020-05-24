@@ -30,17 +30,20 @@ class Paginator
      */
     private $paginator;
 
-    public function __construct($query, int $pageSize = 5, $pageSizeOptions = [5,10,25])
+    public function __construct($query, int $pageSize = 5, ?array $pageSizeOptions = [5,10,25], $fetchJoinCollection = true)
     {
+        if(null !== $pageSizeOptions) {
+            $this->pageSizeOptions = $pageSizeOptions;
+        }
+
         if(!$pageSize) {
-            $pageSize = min($pageSizeOptions);
+            $pageSize = min($this->pageSizeOptions);
         } else {
-            $pageSize = min($pageSize, max($pageSizeOptions));
+            $pageSize = min($pageSize, max($this->pageSizeOptions));
         }
 
         $this->pageSize = $pageSize;
-        $this->pageSizeOptions = $pageSizeOptions;
-        $this->paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
+        $this->paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query, $fetchJoinCollection);
     }
 
     public function goToPage($pageIndex)
