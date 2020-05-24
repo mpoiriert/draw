@@ -889,7 +889,7 @@
                         "id": "id",
                         "alwaysShow": true,
                         "input": {
-                            "type": "text",
+                            "type": "auto-complete",
                             "disabled": false,
                             "required": false
                         },
@@ -1163,7 +1163,7 @@
                         "id": "id",
                         "alwaysShow": true,
                         "input": {
-                            "type": "text",
+                            "type": "auto-complete",
                             "disabled": false,
                             "required": false
                         },

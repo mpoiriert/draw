@@ -10,6 +10,7 @@ use Draw\Bundle\DashboardBundle\Annotations\ConfirmFlow;
 use Draw\Bundle\DashboardBundle\Annotations\Filter;
 use Draw\Bundle\DashboardBundle\Annotations\FormFlow;
 use Draw\Bundle\DashboardBundle\Annotations\FormInput;
+use Draw\Bundle\DashboardBundle\Annotations\FormInputAutoComplete;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputChoices;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputCollection;
 use Draw\Bundle\DashboardBundle\Annotations\FormInputComposite;
@@ -20,6 +21,7 @@ use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 class OptionActionListener implements EventSubscriberInterface
@@ -35,16 +37,20 @@ class OptionActionListener implements EventSubscriberInterface
 
     private $serializer;
 
+    private $urlGenerator;
+
     public function __construct(
         Environment $environment,
         ManagerRegistry $managerRegistry,
         SerializerInterface $serializer,
-        ExpressionLanguage $expressionLanguage
+        ExpressionLanguage $expressionLanguage,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->twig = $environment;
         $this->managerRegistry = $managerRegistry;
         $this->serializer = $serializer;
         $this->expressionLanguage = $expressionLanguage;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public static function getSubscribedEvents()
@@ -269,6 +275,16 @@ class OptionActionListener implements EventSubscriberInterface
 
         if ($input instanceof FormInputComposite && $input->getSubForm() === null) {
             $input->setSubForm($this->loadSubForm($input, $objectSchema, $property, $openApiSchema));
+        }
+
+        if ($input instanceof FormInputAutoComplete && $input->getRemoteUrl() === null) {
+            $input->setRemoteUrl(
+                $this->urlGenerator->generate(
+                    $input->getRouteName(),
+                    $input->getParameters(),
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                )
+            );
         }
 
         if ($input instanceof FormInputCollection) {

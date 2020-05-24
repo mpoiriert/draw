@@ -71,11 +71,12 @@
           "alwaysShow": true,
           "input": {
             "id": "id",
-            "type": "text",
+            "type": "auto-complete",
             "label": "#",
             "icon": null,
             "disabled": false,
-            "required": false
+            "required": false,
+            "remoteUrl": "http://localhost/api/dashboard/auto-complete?_class=App%5CEntity%5CUser&_fields%5B0%5D=email"
           },
           "comparison": "="
         },

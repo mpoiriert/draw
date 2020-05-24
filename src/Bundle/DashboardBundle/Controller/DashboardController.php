@@ -1,5 +1,7 @@
 <?php namespace Draw\Bundle\DashboardBundle\Controller;
 
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +25,7 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * @Route(name="draw_dashboard", methods={"GET"}, path="/dashboard")
+     * @Route(name="drawDashboard_navigation", methods={"GET"}, path="/dashboard")
      */
     public function index(ParameterBagInterface $parameterBag, Request $request)
     {
@@ -121,5 +123,40 @@ class DashboardController extends AbstractController
         }
 
         return $action;
+    }
+
+    /**
+     * @Route(name="drawDashboard_choices", methods={"GET"}, path="/dashboard/auto-complete")
+     */
+    public function autocompleteAction(Request $request, EntityManagerInterface $entityManager)
+    {
+        $value = $request->query->get('value');
+        $alias = 'o';
+        $queryBuilder = $entityManager->createQueryBuilder()
+            ->from($request->query->get('_class'), $alias)
+            ->select($alias);
+
+        foreach ($request->query->get('_fields') as $field) {
+            $queryBuilder->orWhere(
+                sprintf(
+                    '%s.%s LIKE %s',
+                    $alias,
+                    $field,
+                    ':' . $field
+                )
+            )->setParameter($field, '%' . $value . '%');
+        }
+
+        $objects = $queryBuilder->getQuery()->execute();
+
+        $choices = [];
+        foreach($objects as $object) {
+            $choices[] = [
+                'value' => $object->getId(), // todo make this dynamic
+                'label' => (string)$object
+            ];
+        }
+
+        return $choices;
     }
 }

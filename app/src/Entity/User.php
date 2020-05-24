@@ -51,7 +51,11 @@ class User implements SecurityUserInterface
      *
      * @Serializer\ReadOnly()
      *
-     * @Dashboard\Filter()
+     * @Dashboard\Filter(
+     *     input=@Dashboard\FormInputAutoComplete(
+     *          parameters=@Dashboard\EntityParameters(class=User::class, fields={"email"})
+     *     )
+     * )
      */
     private $id;
 
