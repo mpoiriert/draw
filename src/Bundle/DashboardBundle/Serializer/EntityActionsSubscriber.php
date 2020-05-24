@@ -52,12 +52,12 @@ class EntityActionsSubscriber implements EventSubscriberInterface
         /** @var JsonSerializationVisitor $visitor */
         $visitor = $objectEvent->getVisitor();
 
-        $isManaged = false;
+        $canHaveAction = true;
         if ($manager = $this->managerRegistry->getManagerForClass(get_class($object))) {
-            $isManaged = $manager->contains($object);
+            $canHaveAction = $manager->contains($object);
         }
 
-        if (!$isManaged) {
+        if (!$canHaveAction) {
             return;
         }
 
@@ -71,8 +71,14 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             }
         }
 
+        $targetActions = $this->actionFinder->findAllByByTarget($object);
+
+        if(!$targetActions) {
+            return;
+        }
+
         $actions = [];
-        foreach ($this->actionFinder->findAllByByTarget($object) as $action) {
+        foreach ($targetActions as $action) {
             if(!$action->getIsInstanceTarget()) {
                 continue;
             }
