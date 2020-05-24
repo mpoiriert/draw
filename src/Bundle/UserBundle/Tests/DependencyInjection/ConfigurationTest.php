@@ -28,9 +28,11 @@ class ConfigurationTest extends ConfigurationTestCase
             'reset_password_route' => 'admin_change_password',
             'invite_create_account_route' => 'home',
             'jwt_authenticator' => [
-                'enabled' => true,
-                'key' => 'to-replace',
-                'queryParameters' => ['_auth']
+                'enabled' => false,
+                'query_parameters' => [
+                    'enabled' => true,
+                    'accepted_keys' => ['_auth']
+                ],
             ],
         ];
     }
@@ -55,6 +57,11 @@ class ConfigurationTest extends ConfigurationTestCase
         yield [
             ['user_entity_class' => 'InvalidClassName'],
             'Invalid configuration for path "draw_user.user_entity_class": The class ["InvalidClassName"] for the user entity must exists.'
+        ];
+
+        yield [
+            ['jwt_authenticator' => []],
+            'The child node "key" at path "draw_user.jwt_authenticator" must be configured.'
         ];
     }
 }

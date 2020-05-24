@@ -9,15 +9,9 @@ use Draw\Bundle\UserBundle\Sonata\Form\ForgotPasswordForm;
 use Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminRuntime;
-use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawUserExtensionWithoutSonataTest extends DrawUserExtensionTest
 {
-    public function createExtension(): Extension
-    {
-        return new DrawUserExtension();
-    }
-
     public function getConfiguration(): array
     {
         return ['sonata' => false];

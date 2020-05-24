@@ -71,8 +71,15 @@ class DrawUserExtension extends ConfigurableExtension
             return;
         }
 
-        $container
-            ->getDefinition(JwtAuthenticator::class)
-            ->setArgument('$key', $config['key']);
+        $definition = $container
+            ->getDefinition(JwtAuthenticator::class);
+
+        $definition->setArgument('$key', $config['key']);
+
+        if(!$config['query_parameters']['enabled']) {
+            return;
+        }
+
+        $definition->setArgument('$queryParameters', $config['query_parameters']['accepted_keys']);
     }
 }
