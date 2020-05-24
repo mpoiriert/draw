@@ -36,7 +36,7 @@ class Filter implements VendorPropertyInterface, CanBeExcludeInterface
     /**
      * @var string|null
      *
-     * @Enum({"=", "<>", ">", ">=", "<", "<=", "LIKE", "NOT LIKE", "IN", "NOT IN"})
+     * @Enum({"=", "<>", ">", ">=", "<", "<=", "LIKE", "NOT LIKE", "IN", "NOT IN", "BETWEEN"})
      */
     private $comparison = '=';
 
