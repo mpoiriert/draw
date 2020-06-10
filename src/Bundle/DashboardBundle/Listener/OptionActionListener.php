@@ -255,7 +255,17 @@ class OptionActionListener implements EventSubscriberInterface
                 continue;
             }
 
-            $inputs[] = $input;
+            $inputPosition = 0;
+            if ($input->getPosition() !== null) {
+                $inputPosition = $input->getPosition();
+            }
+
+            $inputs[$inputPosition][] = $input;
+        }
+
+        if ($inputs) {
+            ksort($inputs);
+            $inputs = call_user_func_array('array_merge', $inputs);
         }
 
         $default = (new \ReflectionClass($objectSchema->getVendorData()['x-draw-dashboard-class-name']))->newInstance();

@@ -1,5 +1,6 @@
 <?php namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use JMS\Serializer\Annotation as Serializer;
 use function Draw\Bundle\DashboardBundle\construct;
 
 /**
@@ -40,6 +41,13 @@ class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
      * @var bool
      */
     private $required = false;
+
+    /**
+     * @var int|null
+     *
+     * @Serializer\Exclude()
+     */
+    private $position;
 
     public function __construct(array $values = [])
     {
@@ -118,5 +126,15 @@ class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
     public function setRequired(bool $required): void
     {
         $this->required = $required;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
     }
 }
