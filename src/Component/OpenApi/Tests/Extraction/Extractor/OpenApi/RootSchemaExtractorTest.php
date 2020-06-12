@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\OpenApi;
+<?php
+
+namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\OpenApi;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
@@ -12,14 +14,14 @@ class RootSchemaExtractorTest extends TestCase
 {
     public function provideTestCanExtract()
     {
-        return array(
-            array(array(), new Root(), false),
-            array('toto', new Root(), false),
-            array("{}", new Root(), false),
-            array('{"swagger":"1.0"}', new Root(), false),
-            array('{"swagger":"2.0"}', '', false),
-            array('{"swagger":"2.0"}', new stdClass(), false)
-        );
+        return [
+            [[], new Root(), false],
+            ['toto', new Root(), false],
+            ['{}', new Root(), false],
+            ['{"swagger":"1.0"}', new Root(), false],
+            ['{"swagger":"2.0"}', '', false],
+            ['{"swagger":"2.0"}', new stdClass(), false],
+        ];
     }
 
     /**
@@ -38,14 +40,14 @@ class RootSchemaExtractorTest extends TestCase
 
         $this->assertSame($expected, $extractor->canExtract($source, $type, $context));
 
-        if($expected) {
+        if ($expected) {
             $extractor->extract($source, $type, $context);
             $this->assertTrue(true);
         } else {
             try {
                 $extractor->extract($source, $type, $context);
                 $this->fail('should throw a exception of type [Draw\Component\OpenApi\Extraction\ExtractionImpossibleException]');
-            } catch(ExtractionImpossibleException $e) {
+            } catch (ExtractionImpossibleException $e) {
                 $this->assertTrue(true);
             }
         }

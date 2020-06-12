@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Messenger\Transport;
+<?php
+
+namespace Draw\Component\Messenger\Transport;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Messenger\Exception\InvalidArgumentException;
@@ -24,7 +26,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
             throw new InvalidArgumentException(sprintf('The given Draw Messenger DSN "%s" is invalid.', $dsn));
         }
 
-        if(isset($components['query'])) {
+        if (isset($components['query'])) {
             $dsn .= '&';
         } else {
             $dsn .= '?';
@@ -32,7 +34,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
 
         $dsn .= 'auto_setup=false';
 
-        if(!isset($components['query']) || strpos($components['query'], 'table_name') === false) {
+        if (!isset($components['query']) || false === strpos($components['query'], 'table_name')) {
             $dsn .= '&table_name=draw_messenger__message';
         }
 
@@ -47,6 +49,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
         }
 
         $connection = new Connection($configuration, $driverConnection);
+
         return new DrawTransport($driverConnection, $connection, $serializer);
     }
 

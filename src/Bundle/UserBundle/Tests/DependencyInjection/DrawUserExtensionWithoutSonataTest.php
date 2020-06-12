@@ -1,6 +1,7 @@
-<?php namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
+<?php
 
-use Draw\Bundle\UserBundle\DependencyInjection\DrawUserExtension;
+namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
+
 use Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock;
 use Draw\Bundle\UserBundle\Sonata\Controller\LoginController;
 use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
@@ -28,7 +29,7 @@ class DrawUserExtensionWithoutSonataTest extends DrawUserExtensionTest
                 ChangePasswordForm::class,
                 AdminLoginAuthenticator::class,
                 UserAdminRuntime::class,
-                UserAdminExtension::class
+                UserAdminExtension::class,
             ],
             parent::provideTestHasServiceDefinition()
         );

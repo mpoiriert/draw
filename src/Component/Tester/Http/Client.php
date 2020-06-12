@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http;
+<?php
+
+namespace Draw\Component\Tester\Http;
 
 use Draw\Component\Tester\Http\Cookie\CookieClientObserver;
 use Psr\Http\Message\RequestInterface;
@@ -30,9 +32,6 @@ class Client implements ClientInterface
         return $this->requestExecutioner;
     }
 
-    /**
-     * @param RequestExecutionerInterface $requestExecutioner
-     */
     public function setRequestExecutioner(RequestExecutionerInterface $requestExecutioner): void
     {
         $this->requestExecutioner = $requestExecutioner;
@@ -45,9 +44,7 @@ class Client implements ClientInterface
 
     /**
      * @param $uri
-     * @param array $headers
      * @param string $version
-     * @return TestResponse
      */
     public function get($uri, array $headers = [], $version = '1.1'): TestResponse
     {
@@ -58,9 +55,7 @@ class Client implements ClientInterface
 
     /**
      * @param $uri
-     * @param array $headers
      * @param string $version
-     * @return TestResponse
      */
     public function head($uri, array $headers = [], $version = '1.1'): TestResponse
     {
@@ -71,10 +66,8 @@ class Client implements ClientInterface
 
     /**
      * @param $uri
-     * @param string|null|resource|StreamInterface $body
-     * @param array $headers
-     * @param string $version
-     * @return TestResponse
+     * @param string|resource|StreamInterface|null $body
+     * @param string                               $version
      */
     public function put($uri, $body, array $headers = [], $version = '1.1'): TestResponse
     {
@@ -85,10 +78,8 @@ class Client implements ClientInterface
 
     /**
      * @param $uri
-     * @param string|null|resource|StreamInterface $body
-     * @param array $headers
-     * @param string $version
-     * @return TestResponse
+     * @param string|resource|StreamInterface|null $body
+     * @param string                               $version
      */
     public function post($uri, $body, array $headers = [], $version = '1.1'): TestResponse
     {
@@ -99,10 +90,8 @@ class Client implements ClientInterface
 
     /**
      * @param $uri
-     * @param string|null|resource|StreamInterface $body
-     * @param array $headers
-     * @param string $version
-     * @return TestResponse
+     * @param string|resource|StreamInterface|null $body
+     * @param string                               $version
      */
     public function patch($uri, $body, array $headers = [], $version = '1.1'): TestResponse
     {
@@ -113,9 +102,7 @@ class Client implements ClientInterface
 
     /**
      * @param $uri
-     * @param array $headers
      * @param string $version
-     * @return TestResponse
      */
     public function delete($uri, array $headers = [], $version = '1.1'): TestResponse
     {
@@ -126,9 +113,7 @@ class Client implements ClientInterface
 
     /**
      * @param $uri
-     * @param array $headers
      * @param string $version
-     * @return TestResponse
      */
     public function options($uri, array $headers = [], $version = '1.1'): TestResponse
     {
@@ -138,8 +123,6 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param RequestInterface $request
-     * @return TestResponse
      * @throws Throwable
      */
     public function send(RequestInterface $request): TestResponse
@@ -183,10 +166,8 @@ class Client implements ClientInterface
     /**
      * @param $method
      * @param $uri
-     * @param string|null|resource|StreamInterface $body
-     * @param array $headers
-     * @param string $version
-     * @return RequestInterface
+     * @param string|resource|StreamInterface|null $body
+     * @param string                               $version
      */
     public function createRequest($method, $uri, $body = null, array $headers = [], $version = '1.1'): RequestInterface
     {

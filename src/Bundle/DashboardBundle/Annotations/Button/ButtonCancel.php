@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations\Button;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations\Button;
 
 /**
  * @Annotation
@@ -12,7 +14,7 @@ class ButtonCancel extends Button
                 'id' => 'cancel',
                 'label' => 'cancel',
                 'style' => 'stroked-button',
-                'behaviours' => ['cancel']
+                'behaviours' => ['cancel'],
             ],
             $values
         );

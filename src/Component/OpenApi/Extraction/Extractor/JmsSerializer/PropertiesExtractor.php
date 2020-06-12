@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer;
+<?php
+
+namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
@@ -12,11 +14,11 @@ use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\Exclusion\ExclusionStrategyInterface;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Exclusion\VersionExclusionStrategy;
+use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Metadata\VirtualPropertyMetadata;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
-use JMS\Serializer\Metadata\PropertyMetadata;
 use phpDocumentor\Reflection\DocBlockFactory;
 use ReflectionClass;
 use ReflectionException;
@@ -71,8 +73,8 @@ class PropertiesExtractor implements ExtractorInterface
      *
      * @param $source
      * @param $type
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -94,8 +96,7 @@ class PropertiesExtractor implements ExtractorInterface
      * extraction.
      *
      * @param ReflectionClass $reflectionClass
-     * @param Schema $schema
-     * @param ExtractionContextInterface $extractionContext
+     * @param Schema          $schema
      */
     public function extract($reflectionClass, $schema, ExtractionContextInterface $extractionContext)
     {
@@ -105,7 +106,7 @@ class PropertiesExtractor implements ExtractorInterface
 
         $meta = $this->factory->getMetadataForClass($reflectionClass->getName());
 
-        $exclusionStrategies = array();
+        $exclusionStrategies = [];
 
         $subContext = $extractionContext->createSubContext();
 
@@ -118,9 +119,7 @@ class PropertiesExtractor implements ExtractorInterface
         if ($extractionContext->getParameter(self::CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY)) {
             $info = $extractionContext->getRootSchema()->info;
             if (!isset($info->version)) {
-                throw new RuntimeException(
-                    'You must specify the [swagger.info.version] if you activate jms version exclusion strategy.'
-                );
+                throw new RuntimeException('You must specify the [swagger.info.version] if you activate jms version exclusion strategy.');
             }
             $exclusionStrategies[] = new VersionExclusionStrategy($extractionContext->getRootSchema()->info->version);
         }
@@ -147,12 +146,8 @@ class PropertiesExtractor implements ExtractorInterface
             }
 
             if (!$propertySchema) {
-                if(!isset($propertyMetadata->type['name'])) {
-                    throw new \RuntimeException(sprintf(
-                        'Type of property [%s::%s] is not set',
-                        $propertyMetadata->class,
-                        $propertyMetadata->name
-                    ));
+                if (!isset($propertyMetadata->type['name'])) {
+                    throw new \RuntimeException(sprintf('Type of property [%s::%s] is not set', $propertyMetadata->class, $propertyMetadata->name));
                 }
                 $propertySchema = $this->extractTypeSchema(
                     $propertyMetadata->type['name'],
@@ -167,7 +162,7 @@ class PropertiesExtractor implements ExtractorInterface
 
             $name = $this->namingStrategy->translateName($propertyMetadata);
             $schema->properties[$name] = $propertySchema;
-            $propertySchema->description = (string)$this->getDescription($propertyMetadata) ?: null;
+            $propertySchema->description = (string) $this->getDescription($propertyMetadata) ?: null;
 
             if ($this->eventDispatcher) {
                 $this->eventDispatcher->dispatch(new PropertyExtractedEvent($propertyMetadata, $propertySchema));
@@ -190,7 +185,6 @@ class PropertiesExtractor implements ExtractorInterface
     }
 
     /**
-     * @param PropertyMetadata $item
      * @return string
      */
     private function getDescription(PropertyMetadata $item)
@@ -205,7 +199,7 @@ class PropertiesExtractor implements ExtractorInterface
                 $docComment = $ref->getProperty($item->name)->getDocComment();
             }
 
-            if(!$docComment) {
+            if (!$docComment) {
                 return '';
             }
 
@@ -217,8 +211,7 @@ class PropertiesExtractor implements ExtractorInterface
 
     /**
      * @param ExclusionStrategyInterface[] $exclusionStrategies
-     * @param PropertyMetadata $item
-     * @param ExtractionContextInterface $extractionContext
+     *
      * @return bool
      */
     private function shouldSkipProperty(

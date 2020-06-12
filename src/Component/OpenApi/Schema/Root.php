@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Martin Poirier Theoret <mpoiriert@gmail.com>
@@ -24,7 +24,7 @@ class Root implements VendorExtensionSupportInterface
      * @Assert\NotBlank()
      * @JMS\Type("string")
      */
-    public $swagger = "2.0";
+    public $swagger = '2.0';
 
     /**
      * Provides metadata about the API. The metadata can be used by the clients if needed.
@@ -131,6 +131,7 @@ class Root implements VendorExtensionSupportInterface
      * This property does not define global responses for all operations.
      *
      * @Assert\Valid()
+     *
      * @var Response
      */
     public $responses;
@@ -188,7 +189,7 @@ class Root implements VendorExtensionSupportInterface
 
     public function hasDefinition($name)
     {
-        if ($this->definitions === null) {
+        if (null === $this->definitions) {
             return false;
         }
 
@@ -201,12 +202,13 @@ class Root implements VendorExtensionSupportInterface
     {
         $name = $this->sanitizeReferenceName($name);
         $this->definitions[$name] = $schema;
+
         return $this->getDefinitionReference($name);
     }
 
     public function resolveSchema(Schema $schema): Schema
     {
-        if(!$schema->ref) {
+        if (!$schema->ref) {
             return $schema;
         }
 
@@ -218,7 +220,7 @@ class Root implements VendorExtensionSupportInterface
 
     public function getDefinitionReference($name)
     {
-        return '#/definitions/' . $this->sanitizeReferenceName($name);
+        return '#/definitions/'.$this->sanitizeReferenceName($name);
     }
 
     public function sanitizeReferenceName($name)

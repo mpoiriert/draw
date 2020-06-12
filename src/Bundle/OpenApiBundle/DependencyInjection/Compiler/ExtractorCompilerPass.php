@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler;
 
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\OpenApi;
@@ -13,7 +15,7 @@ class ExtractorCompilerPass implements CompilerPassInterface
         $openApi = $container->getDefinition(OpenApi::class);
 
         foreach (array_keys($container->findTaggedServiceIds(ExtractorInterface::class)) as $id) {
-            $openApi->addMethodCall("registerExtractor", [new Reference($id)]);
+            $openApi->addMethodCall('registerExtractor', [new Reference($id)]);
         }
     }
 }

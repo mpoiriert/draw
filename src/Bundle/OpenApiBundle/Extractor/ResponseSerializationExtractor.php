@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Extractor;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
@@ -27,8 +29,8 @@ class ResponseSerializationExtractor implements ExtractorInterface
      *
      * @param $source
      * @param $target
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
@@ -54,8 +56,7 @@ class ResponseSerializationExtractor implements ExtractorInterface
      * extraction.
      *
      * @param ReflectionMethod $source
-     * @param Schema $target
-     * @param ExtractionContextInterface $extractionContext
+     * @param Schema           $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
@@ -67,13 +68,13 @@ class ResponseSerializationExtractor implements ExtractorInterface
 
         if ($serialization = $this->getSerialization($extractionContext->getParameter('controller-reflection-method'))) {
             $groups = $serialization->getSerializerGroups();
-            if($statusCode = $serialization->getStatusCode()) {
+            if ($statusCode = $serialization->getStatusCode()) {
                 $extractionContext->setParameter('response-status-code', $statusCode);
             }
 
             /** @var Response $response */
-            if($response = $extractionContext->getParameter('response')) {
-                foreach($serialization->getHeaders() as $name => $header) {
+            if ($response = $extractionContext->getParameter('response')) {
+                foreach ($serialization->getHeaders() as $name => $header) {
                     $response->headers[$name] = $header;
                 }
             }
@@ -89,13 +90,13 @@ class ResponseSerializationExtractor implements ExtractorInterface
     }
 
     /**
-     * @param ReflectionMethod $reflectionMethod
      * @return Serialization|null
      */
     private function getSerialization(ReflectionMethod $reflectionMethod)
     {
         /** @var Serialization|null $serialization */
         $serialization = $this->annotationReader->getMethodAnnotation($reflectionMethod, Serialization::class);
+
         return $serialization;
     }
 }

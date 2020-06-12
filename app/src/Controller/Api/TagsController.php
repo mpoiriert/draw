@@ -1,4 +1,6 @@
-<?php namespace App\Controller\Api;
+<?php
+
+namespace App\Controller\Api;
 
 use App\Entity\Tag;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,14 +29,13 @@ class TagsController
      *
      * @Serialization(statusCode=201)
      *
-     * @param Tag $tag
-     * @param EntityManagerInterface $entityManager
      * @return Tag The newly created tag
      */
     public function createAction(Tag $tag, EntityManagerInterface $entityManager)
     {
         $entityManager->persist($tag);
         $entityManager->flush();
+
         return $tag;
     }
 
@@ -50,13 +51,12 @@ class TagsController
      *
      * @Dashboard\ActionEdit()
      *
-     * @param Tag $tag
-     * @param EntityManagerInterface $entityManager
      * @return Tag The update tag
      */
     public function editAction(Tag $tag, EntityManagerInterface $entityManager)
     {
         $entityManager->flush();
+
         return $tag;
     }
 
@@ -66,8 +66,6 @@ class TagsController
      * @OpenApi\Operation(operationId="tagGet")
      *
      * @Dashboard\ActionShow()
-     *
-     * @param Tag $tag
      *
      * @return Tag The tag
      */
@@ -85,8 +83,6 @@ class TagsController
      *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the tag {{tag.label}} ?")
      * )
      *
-     * @param Tag $tag
-     * @param EntityManagerInterface $entityManager
      * @return void No result mean a success
      */
     public function deleteAction(Tag $tag, EntityManagerInterface $entityManager)
@@ -101,9 +97,6 @@ class TagsController
      * @OpenApi\Operation(operationId="tagList")
      *
      * @Dashboard\ActionList()
-     *
-     * @param Request $request
-     * @param PaginatorBuilder $paginatorBuilder
      *
      * @return Paginator<Tag> Tags Paginator
      */

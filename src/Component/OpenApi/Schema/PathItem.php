@@ -119,8 +119,8 @@ class PathItem
     public function getOperations()
     {
         $operations = [];
-        foreach($this as $key => $value) {
-            if(!$value instanceof Operation) {
+        foreach ($this as $key => $value) {
+            if (!$value instanceof Operation) {
                 continue;
             }
             $operations[$key] = $value;
@@ -128,4 +128,4 @@ class PathItem
 
         return $operations;
     }
-} 
+}

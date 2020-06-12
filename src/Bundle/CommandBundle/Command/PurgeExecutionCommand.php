@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Command;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Command;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -62,8 +64,8 @@ class PurgeExecutionCommand extends Command implements LoggerAwareInterface
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $delay = new \DateTime($input->getOption('delay'));
-        $batchSize = (int)$input->getOption('batch-size');
-        $seconds = (int)$input->getOption('sleep');
+        $batchSize = (int) $input->getOption('batch-size');
+        $seconds = (int) $input->getOption('sleep');
 
         if ($batchSize < 1) {
             throw new \InvalidArgumentException('Batch size must be a integer >= 1');
@@ -87,9 +89,8 @@ class PurgeExecutionCommand extends Command implements LoggerAwareInterface
     }
 
     /**
-     * @param \DateTime $before
-     * @param int $batchSize
      * @param int $seconds
+     *
      * @return int The total number of records purged
      */
     private function purge(
@@ -113,8 +114,6 @@ class PurgeExecutionCommand extends Command implements LoggerAwareInterface
     }
 
     /**
-     * @param \DateTime $before
-     * @param int $batchSize
      * @return int The number of affected rows
      */
     private function purgeBatch(\DateTime $before, int $batchSize): int

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 
@@ -8,8 +10,8 @@ class DrawUserExtensionWithJwtAuthenticatorTest extends DrawUserExtensionTest
     {
         return [
             'jwt_authenticator' => [
-                'key' => 'unique-key'
-            ]
+                'key' => 'unique-key',
+            ],
         ];
     }
 

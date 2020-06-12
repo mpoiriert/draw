@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\TesterBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\TesterBundle\DependencyInjection\DrawTesterExtension;
 use Draw\Bundle\TesterBundle\Profiling\SqlProfiler;

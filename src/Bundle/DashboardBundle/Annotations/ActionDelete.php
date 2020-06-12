@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
 
@@ -16,8 +18,8 @@ class ActionDelete extends Action
                 'isInstanceTarget' => true,
                 'button' => new Button\ButtonDelete(),
                 'flow' => new ConfirmFlow([
-                    'message' => '_flow.confirm.delete'
-                ])
+                    'message' => '_flow.confirm.delete',
+                ]),
             ],
             $values
         );

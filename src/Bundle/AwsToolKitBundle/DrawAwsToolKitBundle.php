@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\AwsToolKitBundle;
+<?php
+
+namespace Draw\Bundle\AwsToolKitBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

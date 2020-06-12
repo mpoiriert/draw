@@ -1,5 +1,7 @@
 <?php
+
 //example-start: TestClass
+
 namespace Your\Project\Name;
 
 use Draw\Component\Tester\DataTester;
@@ -16,7 +18,7 @@ class ExampleTest extends TestCase
             ->assertSame('A string value');
     }
 
-//example-end: TestClass
+    //example-end: TestClass
 
     public function testConciseNew()
     {
@@ -29,7 +31,7 @@ class ExampleTest extends TestCase
     public function testPath()
     {
         //example-start: TestPath
-        (new DataTester((object)["key" => "value"]))
+        (new DataTester((object) ['key' => 'value']))
             ->path('key')
             ->assertSame('value');
         //example-end: TestPath
@@ -38,7 +40,7 @@ class ExampleTest extends TestCase
     public function testChainPath()
     {
         //example-start: ChainTestPath
-        $tester = new DataTester((object)["key1" => "value1", "key2" => "value2"]);
+        $tester = new DataTester((object) ['key1' => 'value1', 'key2' => 'value2']);
         $tester->path('key1')->assertSame('value1');
         $tester->path('key2')->assertSame('value2');
         //example-end: ChainTestPath
@@ -47,7 +49,7 @@ class ExampleTest extends TestCase
     public function testDeeperPath()
     {
         //example-start: DeeperPathTest
-        (new DataTester((object)["level1" => (object)["level2" => "value"]]))
+        (new DataTester((object) ['level1' => (object) ['level2' => 'value']]))
             ->path('level1')
             ->path('level2')->assertSame('value');
         //example-end: DeeperPathTest
@@ -108,22 +110,22 @@ class ExampleTest extends TestCase
                 }
             );
         //example-end: IfPathIsReadable
-        $this->assertTrue(true);//This is to prevent PHPUnit to flag test as risky
+        $this->assertTrue(true); //This is to prevent PHPUnit to flag test as risky
     }
 
     public function testIfPathIsReadableAndEach()
     {
         //example-start: IfPathIsReadableAndEach
         $users = [
-            (object)[
+            (object) [
                 'firstName' => 'Martin',
                 'active' => true,
-                'referral' => 'Google'
+                'referral' => 'Google',
             ],
-            (object)[
+            (object) [
                 'firstName' => 'Julie',
-                'active' => false
-            ]
+                'active' => false,
+            ],
         ];
         (new DataTester($users))
             ->each(
@@ -144,10 +146,10 @@ class ExampleTest extends TestCase
     public function testUser()
     {
         //example-start: TestWithClassCallable
-        $user = (object)[
+        $user = (object) [
             'firstName' => 'Martin',
             'active' => true,
-            'referral' => 'Google'
+            'referral' => 'Google',
         ];
 
         (new DataTester($user))
@@ -159,15 +161,15 @@ class ExampleTest extends TestCase
     {
         //example-start: EachWithClassCallableEach
         $users = [
-            (object)[
+            (object) [
                 'firstName' => 'Martin',
                 'active' => true,
-                'referral' => 'Google'
+                'referral' => 'Google',
             ],
-            (object)[
+            (object) [
                 'firstName' => 'Julie',
-                'active' => false
-            ]
+                'active' => false,
+            ],
         ];
 
         (new DataTester($users))

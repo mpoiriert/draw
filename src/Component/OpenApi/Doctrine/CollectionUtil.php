@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Doctrine;
+<?php
+
+namespace Draw\Component\OpenApi\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -8,10 +10,7 @@ class CollectionUtil
 {
     /**
      * @param $collectionOwner
-     * @param string $propertyName
      * @param array|Collection $newCollection
-     * @param callable|null $add
-     * @param callable|null $remove
      */
     public static function replace(
         $collectionOwner,
@@ -24,20 +23,20 @@ class CollectionUtil
             $newCollection = new ArrayCollection($newCollection);
         }
 
-        $currentCollection = call_user_func([$collectionOwner, 'get' . $propertyName]);
+        $currentCollection = call_user_func([$collectionOwner, 'get'.$propertyName]);
 
-        if ($add === null) {
+        if (null === $add) {
             $add = self::createMutatorMethod('add', $collectionOwner, $propertyName);
-            if ($add === null) {
+            if (null === $add) {
                 $add = function ($collectionItem) use ($currentCollection) {
                     $currentCollection->add($collectionItem);
                 };
             }
         }
 
-        if ($remove === null) {
+        if (null === $remove) {
             $remove = self::createMutatorMethod('remove', $collectionOwner, $propertyName);
-            if ($remove === null) {
+            if (null === $remove) {
                 $remove = function ($collectionItem) use ($currentCollection) {
                     $currentCollection->removeElement($collectionItem);
                 };
@@ -59,7 +58,7 @@ class CollectionUtil
 
     private static function createMutatorMethod($methodPrefix, $collectionOwner, $propertyName): ?callable
     {
-        $methodName = $methodPrefix . Inflector::singularize($propertyName);
+        $methodName = $methodPrefix.Inflector::singularize($propertyName);
         if (!method_exists($collectionOwner, $methodName)) {
             return null;
         }
@@ -71,9 +70,9 @@ class CollectionUtil
 
     public static function assignPosition($element, Collection $collection, $attribute = 'position')
     {
-        $method = 'get' . $attribute;
+        $method = 'get'.$attribute;
         $currentPosition = call_user_func([$element, $method]);
-        if ($currentPosition !== null) {
+        if (null !== $currentPosition) {
             return;
         }
 
@@ -82,6 +81,6 @@ class CollectionUtil
             $position = max(call_user_func([$last, $method]) + 1, $position);
         }
 
-        call_user_func([$element, 'set' . $attribute], $position);
+        call_user_func([$element, 'set'.$attribute], $position);
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use JMS\Serializer\Annotation as Serializer;
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\PhpUnit;
+<?php
+
+namespace Draw\Bundle\TesterBundle\PhpUnit;
 
 use Draw\Bundle\TesterBundle\DrawTesterBundle;
 use Draw\Component\Tester\Container\ServiceTestInterface;
@@ -26,17 +28,17 @@ class ServiceTestsListener implements TestListener
     private function parseTest(Test $test)
     {
         $hash = spl_object_hash($test);
-        if(isset($this->extracted[$hash])) {
+        if (isset($this->extracted[$hash])) {
             return;
         }
 
         $this->extracted[$hash] = true;
 
-        if($test instanceof ServiceTestInterface) {
+        if ($test instanceof ServiceTestInterface) {
             DrawTesterBundle::addServicesToTest(call_user_func([get_class($test), 'getServiceIdsToTest']));
         }
 
-        if($test instanceof TestSuite) {
+        if ($test instanceof TestSuite) {
             $this->parseTest($test);
         }
     }

@@ -8,5 +8,4 @@ namespace Draw\Component\OpenApi\Schema;
  */
 class QueryParameter extends Parameter
 {
-
 }

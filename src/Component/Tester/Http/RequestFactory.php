@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http;
+<?php
+
+namespace Draw\Component\Tester\Http;
 
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;

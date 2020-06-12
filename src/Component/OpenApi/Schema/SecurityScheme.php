@@ -66,4 +66,4 @@ class SecurityScheme
      * @JMS\Type("array<string,string>")
      */
     public $scopes;
-} 
+}

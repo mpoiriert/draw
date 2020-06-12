@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\Email;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\Email;
 
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -10,7 +12,7 @@ class DefaultFromEmailWriter implements EmailWriterInterface
     public static function getForEmails(): array
     {
         return [
-            'setDefaultFrom' => -255
+            'setDefaultFrom' => -255,
         ];
     }
 

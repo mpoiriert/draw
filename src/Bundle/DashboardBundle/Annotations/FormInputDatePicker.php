@@ -1,6 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
 
-use JMS\Serializer\Annotation as Serializer;
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 /**
  * @Annotation

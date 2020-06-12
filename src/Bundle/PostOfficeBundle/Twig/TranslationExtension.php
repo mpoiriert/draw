@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\Twig;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\Twig;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
@@ -19,13 +21,13 @@ class TranslationExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('trans', [$this, 'trans'])
+            new TwigFilter('trans', [$this, 'trans']),
         ];
     }
 
     public function trans($messages, array $arguments = [], $domain = null, $locale = null, $count = null)
     {
-        if(!is_array($messages)) {
+        if (!is_array($messages)) {
             $messages = [$messages];
         }
 
@@ -36,7 +38,7 @@ class TranslationExtension extends AbstractExtension
         $result = reset($messages);
         foreach ($messages as $message) {
             $result = $this->translator->trans($message, $arguments, $domain, $locale);
-            if($result != $message) {
+            if ($result != $message) {
                 return $result;
             }
         }

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Message;
+<?php
+
+namespace Draw\Bundle\UserBundle\Message;
 
 use Draw\Bundle\MessengerBundle\Message\RedirectToRouteMessageInterface;
 use Draw\Bundle\MessengerBundle\Message\RedirectToRouteMessageTrait;

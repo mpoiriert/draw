@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\AwsToolKitBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\AwsToolKitBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand;
 use Draw\Bundle\AwsToolKitBundle\DependencyInjection\DrawAwsToolKitExtension;

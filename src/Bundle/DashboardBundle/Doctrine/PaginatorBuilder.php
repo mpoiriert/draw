@@ -1,9 +1,11 @@
-<?php namespace Draw\Bundle\DashboardBundle\Doctrine;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaginatorBuilder
@@ -20,8 +22,7 @@ class PaginatorBuilder
         Request $request,
         callable $queryBuilderCallback = null,
         $fetchJoinCollection = null
-    ): Paginator
-    {
+    ): Paginator {
         $queryBuilder = $this->buildQueryBuilder(
             $class,
             $request->query->get('orderBy', []),
@@ -32,7 +33,7 @@ class PaginatorBuilder
             call_user_func($queryBuilderCallback, $queryBuilder);
         }
 
-        if(null === $fetchJoinCollection) {
+        if (null === $fetchJoinCollection) {
             // This prevent some default case when you do a custom query hydration that would trigger a error if no id
             // is defined. We could pass false at the parameter but we detect if it's possible when not specified.
             $fetchJoinCollection = count($queryBuilder->getAllAliases()) > 1;
@@ -76,7 +77,7 @@ class PaginatorBuilder
 
         foreach ($filters as $filter) {
             $value = $filter['value'];
-            if ($value === '') {
+            if ('' === $value) {
                 continue;
             }
 
@@ -99,40 +100,37 @@ class PaginatorBuilder
                 }
 
                 if (count($paths)) {
-                    throw new \RuntimeException(sprintf(
-                        'Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
-                        $path,
-                        $filter['id']
-                    ));
+                    throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]', $path, $filter['id']));
                 }
 
                 $whereString = '%s.%s %s :%s';
 
-                $parameterName = $alias . '_' . $path;
+                $parameterName = $alias.'_'.$path;
 
                 switch (true) {
-                    case ($comparison === 'BETWEEN'):
+                    case 'BETWEEN' === $comparison:
                         $value = array_filter($value, function ($value) {
-                            return $value !== '';
+                            return '' !== $value;
                         });
 
                         if (!$value) {
                             return;
                         }
 
-                        if (count($value) === 1) {
+                        if (1 === count($value)) {
                             $this->addFilters(
                                 $queryBuilder,
                                 [
                                     [
                                         'id' => $path,
-                                        'comparison' => key($value) === 'from' ? '>=' : '<=',
-                                        'value' => current($value)
-                                    ]
+                                        'comparison' => 'from' === key($value) ? '>=' : '<=',
+                                        'value' => current($value),
+                                    ],
                                 ],
                                 $class,
                                 $alias
                             );
+
                             return;
                         }
 
@@ -146,9 +144,10 @@ class PaginatorBuilder
                             ));
                         break;
 
-                    /** @noinspection PhpMissingBreakStatementInspection */
+                    /* @noinspection PhpMissingBreakStatementInspection */
                     case is_array($value):
                         $whereString = '%s.%s %s (:%s)';
+                        // no break
                     default:
                         $queryBuilder
                             ->andWhere(sprintf(
@@ -163,12 +162,12 @@ class PaginatorBuilder
 
                 switch ($comparison) {
                     case 'BETWEEN':
-                        $queryBuilder->setParameter($parameterName . 'From', $value['from']);
-                        $queryBuilder->setParameter($parameterName . 'To', $value['to']);
+                        $queryBuilder->setParameter($parameterName.'From', $value['from']);
+                        $queryBuilder->setParameter($parameterName.'To', $value['to']);
                         break;
                     case 'LIKE':
                     case 'NOT LIKE':
-                        $queryBuilder->setParameter($parameterName, '%' . $value . '%');
+                        $queryBuilder->setParameter($parameterName, '%'.$value.'%');
                         break;
                     default:
                         $queryBuilder->setParameter($parameterName, $value);
@@ -198,7 +197,7 @@ class PaginatorBuilder
             $paths = [$associationClassMetadata->getIdentifierFieldNames()[0]];
         }
 
-        if(count($paths) > 1) {
+        if (count($paths) > 1) {
             throw new \RuntimeException('Paths too deep not supported yet.');
         }
 
@@ -219,7 +218,6 @@ class PaginatorBuilder
                     $value
                 );
                 break;
-
         }
 
         $this->addFilters(
@@ -228,8 +226,8 @@ class PaginatorBuilder
                 [
                     'id' => $searchField,
                     'value' => $value,
-                    'comparison' =>  $filter['comparison'],
-                ]
+                    'comparison' => $filter['comparison'],
+                ],
             ],
             $associationClassMetadata->getName(),
             $joinAlias

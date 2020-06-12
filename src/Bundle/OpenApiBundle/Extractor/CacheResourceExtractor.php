@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Extractor;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Extractor;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
@@ -17,12 +19,11 @@ class CacheResourceExtractor implements ExtractorInterface
 
     /**
      * @param \Reflector $source
-     * @param mixed $target
-     * @param ExtractionContextInterface $extractionContext
+     * @param mixed      $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if(!$this->canExtract($source, $target, $extractionContext)) {
+        if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
         }
 

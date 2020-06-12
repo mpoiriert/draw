@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Response;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Response;
 
 use Draw\Component\OpenApi\Schema\Header;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;

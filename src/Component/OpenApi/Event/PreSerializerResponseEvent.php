@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Event;
+<?php
+
+namespace Draw\Component\OpenApi\Event;
 
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use JMS\Serializer\SerializationContext;

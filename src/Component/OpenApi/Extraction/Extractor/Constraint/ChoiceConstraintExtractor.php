@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
-use Draw\Component\OpenApi\Extraction\Extractor\Constraint\ConstraintExtractor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice as SupportedConstraint;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -10,7 +9,6 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 class ChoiceConstraintExtractor extends ConstraintExtractor
 {
     /**
-     * @param Constraint $constraint
      * @return bool
      */
     public function supportConstraint(Constraint $constraint)
@@ -20,7 +18,6 @@ class ChoiceConstraintExtractor extends ConstraintExtractor
 
     /**
      * @param SupportedConstraint|Constraint $constraint
-     * @param ConstraintExtractionContext $context
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context)
     {

@@ -1,4 +1,6 @@
-<?php namespace App\Repository;
+<?php
+
+namespace App\Repository;
 
 use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

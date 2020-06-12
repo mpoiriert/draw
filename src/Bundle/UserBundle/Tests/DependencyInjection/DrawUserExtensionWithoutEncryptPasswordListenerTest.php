@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 
@@ -13,7 +15,7 @@ class DrawUserExtensionWithoutEncryptPasswordListenerTest extends DrawUserExtens
     {
         yield from $this->removeProvidedService(
             [
-                EncryptPasswordUserEntityListener::class
+                EncryptPasswordUserEntityListener::class,
             ],
             parent::provideTestHasServiceDefinition()
         );

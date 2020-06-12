@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Sonata\Block;
+<?php
+
+namespace Draw\Bundle\UserBundle\Sonata\Block;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BlockContextInterface;

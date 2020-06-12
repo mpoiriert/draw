@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Profiling\Sql;
+<?php
+
+namespace Draw\Component\Profiling\Sql;
 
 use Draw\Component\Profiling\ProfilerInterface;
 
@@ -11,12 +13,9 @@ abstract class SqlProfiler implements ProfilerInterface
      */
     protected $metricBuilder;
 
-    /**
-     * @return SqlMetricBuilder
-     */
     public function getMetricBuilder(): SqlMetricBuilder
     {
-        if ($this->metricBuilder === null) {
+        if (null === $this->metricBuilder) {
             $this->metricBuilder = new SqlMetricBuilder();
         }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\PostOfficeBundle\DependencyInjection\DrawPostOfficeExtension;
 use Draw\Bundle\PostOfficeBundle\Email\DefaultFromEmailWriter;
@@ -38,7 +40,7 @@ class DrawPostOfficeExtensionTest extends ExtensionTestCase
     {
         $email = 'support@example.com';
         $container = $this->load([
-            'default_from' => ['email' => $email]
+            'default_from' => ['email' => $email],
         ]);
 
         $definition = $container->getDefinition('draw_post_office.default_from');
@@ -56,7 +58,7 @@ class DrawPostOfficeExtensionTest extends ExtensionTestCase
         $email = 'support@example.com';
         $name = 'Acme';
         $container = $this->load([
-            'default_from' => ['email' => $email, 'name' => $name]
+            'default_from' => ['email' => $email, 'name' => $name],
         ]);
 
         $definition = $container->getDefinition('draw_post_office.default_from');

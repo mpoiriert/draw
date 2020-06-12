@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\MessengerBundle\MessageHandler;
+<?php
+
+namespace Draw\Bundle\MessengerBundle\MessageHandler;
 
 use Draw\Bundle\MessengerBundle\Message\RedirectToRouteMessageInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;

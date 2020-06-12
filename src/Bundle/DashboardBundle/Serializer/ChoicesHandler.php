@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Serializer;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Serializer;
 
 use Draw\Bundle\DashboardBundle\Annotations\Choices;
 use JMS\Serializer\Context;
@@ -16,7 +18,7 @@ class ChoicesHandler implements SubscribingHandlerInterface
                 'format' => 'json',
                 'type' => Choices::class,
                 'method' => 'serializeChoicesToJson',
-            ]
+            ],
         ];
     }
 

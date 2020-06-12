@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\Tests;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\Tests;
 
 use Draw\Bundle\PostOfficeBundle\DependencyInjection\CompilerPass;
 use Draw\Bundle\PostOfficeBundle\DrawPostOfficeBundle;
@@ -20,6 +22,6 @@ class DrawPostOfficeBundleTest extends TestCase
             }
         }
 
-        $this->assertTrue($found, 'Compiler pass [' . CompilerPass::class . '] not added.');
+        $this->assertTrue($found, 'Compiler pass ['.CompilerPass::class.'] not added.');
     }
 }

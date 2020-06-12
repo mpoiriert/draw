@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\DependencyInjection\Compiler;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\DependencyInjection\Compiler;
 
 use Draw\Bundle\DashboardBundle\ExpressionLanguage\ExpressionFunctionProviderInterface;
 use Draw\Bundle\DashboardBundle\ExpressionLanguage\ExpressionLanguage;

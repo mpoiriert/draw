@@ -300,7 +300,7 @@
         },
         "/api/users": {
             "get": {
-                "summary": "Return a paginator list of users",
+                "summary": "Return a paginator list of users.",
                 "operationId": "userList",
                 "parameters": [],
                 "responses": {
@@ -636,7 +636,7 @@
         },
         "/api/users/{id}/reset-password-email": {
             "post": {
-                "summary": "Send a reset password email to the user",
+                "summary": "Send a reset password email to the user.",
                 "operationId": "userSendResetPasswordEmail",
                 "parameters": [
                     {
@@ -1383,11 +1383,11 @@
             "type": "object",
             "properties": {
                 "property": {
-                    "description": "Property description",
+                    "description": "Property description.",
                     "type": "string"
                 },
                 "propertyFromBody": {
-                    "description": "Property deserialize from body in test",
+                    "description": "Property deserialize from body in test.",
                     "type": "string"
                 }
             },

@@ -1,4 +1,6 @@
-<?php namespace App\Tests\Controller\Api;
+<?php
+
+namespace App\Tests\Controller\Api;
 
 use App\Tests\TestCase;
 use Draw\Bundle\DashboardBundle\Feedback\DefaultHeader;
@@ -20,7 +22,7 @@ class ConnectionTokensControllerTest extends TestCase
         $token = JWT::encode(
             [
                 'id' => 'invalid',
-                'exp' => (new \DateTime('+ 7 days'))->getTimestamp()
+                'exp' => (new \DateTime('+ 7 days'))->getTimestamp(),
             ],
             'acme',
             'HS256'
@@ -30,7 +32,7 @@ class ConnectionTokensControllerTest extends TestCase
             ->post(
                 '/api/connection-tokens/refresh',
                 '',
-                ['Authorization' => 'Bearer ' . $token]
+                ['Authorization' => 'Bearer '.$token]
             )
             ->assertStatus(403)
             ->test(new ResponseContainFeedbackTester(SignedOut::FEEDBACK_TYPE))

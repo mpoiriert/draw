@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\JmsSerializer\Construction;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\JmsSerializer\Construction;
 
 use JMS\Serializer\Construction\ObjectConstructorInterface;
 use JMS\Serializer\DeserializationContext;
@@ -12,7 +14,7 @@ class SimpleObjectConstructor implements ObjectConstructorInterface
     public const ON_MISSING_FALLBACK = 'fallback';
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function construct(
         DeserializationVisitorInterface $visitor,
@@ -20,9 +22,9 @@ class SimpleObjectConstructor implements ObjectConstructorInterface
         $data,
         array $type,
         DeserializationContext $context
-    ): ?object
-    {
+    ): ?object {
         $className = $metadata->name;
+
         return new $className();
     }
 }

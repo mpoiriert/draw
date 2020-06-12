@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle;
+<?php
+
+namespace Draw\Bundle\CommandBundle;
 
 use Draw\Bundle\CommandBundle\Model\Command;
 
@@ -21,6 +23,7 @@ class CommandRegistry
 
     /**
      * @param $name
+     *
      * @return Command
      */
     public function getCommand($name)

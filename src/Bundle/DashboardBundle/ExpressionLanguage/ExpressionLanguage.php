@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\ExpressionLanguage;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\ExpressionLanguage;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as BaseExpressionLanguage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -18,6 +20,7 @@ class ExpressionLanguage extends BaseExpressionLanguage
     private function buildValues(array $values): array
     {
         $values['auth_checker'] = $this->authorizationChecker;
+
         return $values;
     }
 
@@ -35,6 +38,7 @@ class ExpressionLanguage extends BaseExpressionLanguage
     public function evaluate($expression, $values = [])
     {
         $values = $this->buildValues($values);
+
         return $this->parse($expression, array_keys($values))->getNodes()->evaluate($this->functions, $values);
     }
 
@@ -44,6 +48,7 @@ class ExpressionLanguage extends BaseExpressionLanguage
     public function parse($expression, $names)
     {
         $names = $this->buildNames($names);
+
         return parent::parse($expression, $names);
     }
 
@@ -53,6 +58,7 @@ class ExpressionLanguage extends BaseExpressionLanguage
     public function compile($expression, $names = [])
     {
         $names = $this->buildNames($names);
+
         return parent::compile($expression, $names);
     }
 

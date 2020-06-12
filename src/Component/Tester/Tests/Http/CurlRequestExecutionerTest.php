@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests\Http;
+<?php
+
+namespace Draw\Component\Tester\Tests\Http;
 
 use Draw\Component\Tester\Http\CurlRequestExecutioner;
 use Draw\Component\Tester\Http\RequestExecutionerInterface;
@@ -19,8 +21,6 @@ class CurlRequestExecutionerTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param CurlRequestExecutioner $curlRequestExecutioner
      */
     public function testExecuteRequest(CurlRequestExecutioner $curlRequestExecutioner)
     {

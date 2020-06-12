@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\AwsToolKitBundle\Command;
+<?php
+
+namespace Draw\Bundle\AwsToolKitBundle\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use Symfony\Component\Console\Command\Command;
@@ -8,7 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Command to download a cloud watch log locally base on it's log group name, log stream name and a start time/end time
+ * Command to download a cloud watch log locally base on it's log group name, log stream name and a start time/end time.
  */
 class CloudWatchLogsDownloadCommand extends Command
 {
@@ -17,9 +19,6 @@ class CloudWatchLogsDownloadCommand extends Command
      */
     private $cloudWatchClient;
 
-    /**
-     * @param CloudWatchLogsClient $cloudWatchClient
-     */
     public function __construct(CloudWatchLogsClient $cloudWatchClient)
     {
         $this->cloudWatchClient = $cloudWatchClient;
@@ -49,7 +48,7 @@ class CloudWatchLogsDownloadCommand extends Command
             'logGroupName' => $input->getArgument('logGroupName'),
             'logStreamName' => $input->getArgument('logStreamName'),
             'startTime' => $startTime,
-            'endTime' => $endTime
+            'endTime' => $endTime,
         ];
 
         $handle = fopen($input->getArgument('output'), $input->getOption('fileMode'));
@@ -65,7 +64,7 @@ class CloudWatchLogsDownloadCommand extends Command
                 ->getLogEvents($arguments);
 
             foreach ($events['events'] as $event) {
-                fwrite($handle, $event['message'] . PHP_EOL);
+                fwrite($handle, $event['message'].PHP_EOL);
             }
 
             $nextForwardToken = $events['nextForwardToken'];

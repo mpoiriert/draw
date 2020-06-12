@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Messenger\Stamp;
+<?php
+
+namespace Draw\Component\Messenger\Stamp;
 
 use Symfony\Component\Messenger\Stamp\StampInterface;
 

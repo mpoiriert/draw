@@ -1,4 +1,6 @@
-<?php namespace App\Entity;
+<?php
+
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
@@ -74,7 +76,7 @@ class UserAddress
 
     public function setUser(User $user): void
     {
-        if($this->user && ($this->user !== $user)) {
+        if ($this->user && ($this->user !== $user)) {
             throw new \RuntimeException('Cannot change user');
         }
 

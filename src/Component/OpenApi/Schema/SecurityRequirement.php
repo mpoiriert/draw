@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Schema;
+<?php
+
+namespace Draw\Component\OpenApi\Schema;
 
 /**
  * @author Martin Poirier Theoret <mpoiriert@gmail.com>
@@ -40,4 +42,4 @@ class SecurityRequirement
     {
         return $this->data[$name];
     }
-} 
+}

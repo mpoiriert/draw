@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Command;
+<?php
+
+namespace Draw\Component\Tester\Command;
 
 use PHPUnit\Framework\Assert;
 use ReflectionClass;
@@ -29,9 +31,8 @@ class DumpAssertMethodsCommand extends Command
 
         $reflectionClass = new ReflectionClass(Assert::class);
 
-
         foreach ($reflectionClass->getMethods() as $method) {
-            if (strpos($method->name, 'assert') !== 0) {
+            if (0 !== strpos($method->name, 'assert')) {
                 continue;
             }
             $parameters = [];
@@ -64,13 +65,13 @@ class DumpAssertMethodsCommand extends Command
                 case in_array('string', $parameters):
                     $guessParameter = 'string';
                     break;
-                case count($parameters) == 2:
+                case 2 == count($parameters):
                     $guessParameter = $parameters[0];
                     break;
                 default:
                     foreach ($parameters as $parameterName) {
                         switch (true) {
-                            case strpos($parameterName, 'actual') === 0:
+                            case 0 === strpos($parameterName, 'actual'):
                                 $guessParameter = $parameterName;
                                 break;
                         }
@@ -81,11 +82,10 @@ class DumpAssertMethodsCommand extends Command
             $ignore = false;
 
             switch (true) {
-                case strpos($method->name, 'assertAttribute') === 0:
-                case $method->name === 'assertThat':
+                case 0 === strpos($method->name, 'assertAttribute'):
+                case 'assertThat' === $method->name:
                     $ignore = true;
                     break;
-
             }
 
             if (!array_key_exists($method->name, $methods)) {
@@ -93,7 +93,7 @@ class DumpAssertMethodsCommand extends Command
                     'validated' => false,
                     'ignore' => $ignore,
                     'dataParameter' => $guessParameter ?: ($ignore ? 'IGNORE' : null),
-                    'parameters' => $parameters
+                    'parameters' => $parameters,
                 ];
             } else {
                 $methods[$method->name]['parameters'] = $parameters;

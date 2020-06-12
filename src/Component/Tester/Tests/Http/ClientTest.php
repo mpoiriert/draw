@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests\Http;
+<?php
+
+namespace Draw\Component\Tester\Tests\Http;
 
 use Draw\Component\Tester\Http\Client;
 use Draw\Component\Tester\Http\ClientInterface;
@@ -32,7 +34,7 @@ class ClientTest extends TestCase
                             'uri' => $request->getUri()->__toString(),
                             'body' => $request->getBody()->getContents(),
                             'headers' => $request->getHeaders(),
-                            'version' => $request->getProtocolVersion()
+                            'version' => $request->getProtocolVersion(),
                         ]
                     )
                 );
@@ -47,8 +49,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testGet(Client $client)
     {
@@ -70,8 +70,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testHead(Client $client)
     {
@@ -93,8 +91,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testPut(Client $client)
     {
@@ -117,8 +113,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testPost(Client $client)
     {
@@ -141,8 +135,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testDelete(Client $client)
     {
@@ -164,8 +156,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testOptions(Client $client)
     {
@@ -185,11 +175,8 @@ class ClientTest extends TestCase
         );
     }
 
-
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testPatch(Client $client)
     {
@@ -212,8 +199,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testSend(Client $client)
     {
@@ -239,8 +224,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testCreateRequest(Client $client)
     {
@@ -264,8 +247,6 @@ class ClientTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param Client $client
      */
     public function testRegisterObserver(Client $client)
     {
@@ -276,18 +257,18 @@ class ClientTest extends TestCase
         $mockClientObserver
             ->expects($this->once())
             ->method('preSendRequest')
-            ->willReturnCallback(function(RequestInterface $request) {
+            ->willReturnCallback(function (RequestInterface $request) {
                 return $request;
             });
 
         $mockClientObserver
             ->expects($this->once())
             ->method('postSendRequest')
-            ->willReturnCallback(function(RequestInterface $request, ResponseInterface $response) {
+            ->willReturnCallback(function (RequestInterface $request, ResponseInterface $response) {
                 return $response;
             });
 
-        /** @var ClientObserver $mockClientObserver */
+        /* @var ClientObserver $mockClientObserver */
         $client->registerObserver($mockClientObserver);
 
         $client->send(new Request('GET', '/test'));

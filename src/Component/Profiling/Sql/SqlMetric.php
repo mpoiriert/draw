@@ -1,9 +1,11 @@
-<?php namespace Draw\Component\Profiling\Sql;
+<?php
+
+namespace Draw\Component\Profiling\Sql;
 
 class SqlMetric
 {
     /**
-     * @var integer
+     * @var int
      */
     public $count = 0;
 

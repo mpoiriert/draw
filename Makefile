@@ -105,3 +105,6 @@ composer-update:
 	unlink composer.lock
 	docker-compose exec php composer install
 	sudo chown martin:martin -Rf .
+
+cs-fix:
+	docker-compose exec php php vendor/bin/php-cs-fixer fix -v

@@ -1,8 +1,9 @@
-<?php namespace Draw\Bundle\UserBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
-use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -50,7 +51,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('user_entity_class')
                     ->validate()
-                        ->ifTrue(function ($value) { return !class_exists($value);})
+                        ->ifTrue(function ($value) { return !class_exists($value); })
                         ->thenInvalid('The class [%s] for the user entity must exists.')
                     ->end()
                     ->defaultValue(User::class)
@@ -63,6 +64,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+
         return $treeBuilder;
     }
 

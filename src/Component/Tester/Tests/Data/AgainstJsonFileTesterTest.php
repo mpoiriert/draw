@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests\Data;
+<?php
+
+namespace Draw\Component\Tester\Tests\Data;
 
 use Draw\Component\Tester\Data\AgainstJsonFileTester;
 use Draw\Component\Tester\DataTester;
@@ -12,13 +14,13 @@ class AgainstJsonFileTesterTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$data = (object)['url' => 'http://google.com'];
+        self::$data = (object) ['url' => 'http://google.com'];
     }
 
     public function testInvoke()
     {
         (new DataTester(self::$data))
-            ->test(new AgainstJsonFileTester(__DIR__ . '/fixtures/AgainstJsonFileTesterTest.json'));
+            ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'));
     }
 
     public function testInvoke_doesNotMatch()
@@ -26,8 +28,8 @@ class AgainstJsonFileTesterTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Failed asserting that two objects are equal.');
 
-        (new DataTester((object)['url' => 'toto']))
-            ->test(new AgainstJsonFileTester(__DIR__ . '/fixtures/AgainstJsonFileTesterTest.json'));
+        (new DataTester((object) ['url' => 'toto']))
+            ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'));
     }
 
     public function testInvoke_propertyPathChecks_value()
@@ -35,9 +37,9 @@ class AgainstJsonFileTesterTest extends TestCase
         (new DataTester(self::$data))
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/AgainstJsonFileTesterTest_testInvoke_propertyPathChecks_equal.json',
+                    __DIR__.'/fixtures/AgainstJsonFileTesterTest_testInvoke_propertyPathChecks_equal.json',
                     [
-                        'url' => 'http://google.com'
+                        'url' => 'http://google.com',
                     ]
                 )
             );
@@ -52,9 +54,9 @@ Failed asserting that two strings are equal.');
         (new DataTester(self::$data))
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/AgainstJsonFileTesterTest.json',
+                    __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
-                        'url' => 'wrong-value'
+                        'url' => 'wrong-value',
                     ]
                 )
             );
@@ -66,14 +68,14 @@ Failed asserting that two strings are equal.');
         (new DataTester(self::$data))
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/AgainstJsonFileTesterTest.json',
+                    __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
                         'url' => function (DataTester $dataTester) use (&$called) {
                             //Make sure the DataTester have the value of the path
                             $dataTester->assertEquals('http://google.com');
 
                             $called = true;
-                        }
+                        },
                     ]
                 )
             );
@@ -87,12 +89,12 @@ Failed asserting that two strings are equal.');
         (new DataTester(self::$data))
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/AgainstJsonFileTesterTest.json',
+                    __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
                         'url' => function (DataTester $dataTester) {
                             //Make sure the DataTester have the value of the path
                             $dataTester->assertEquals('wrong-value');
-                        }
+                        },
                     ]
                 )
             );
@@ -100,7 +102,7 @@ Failed asserting that two strings are equal.');
 
     public function testInvoke_fileNotFoundException()
     {
-        $filePath = __DIR__ . '/does-not-exists.json';
+        $filePath = __DIR__.'/does-not-exists.json';
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage(sprintf('Fail path does not exists to validate data.
 File path: %s

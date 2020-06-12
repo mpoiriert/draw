@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Martin Poirier Theoret <mpoiriert@gmail.com>
@@ -104,7 +104,7 @@ class Operation implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\BaseParameter>")
      */
-    public $parameters = array();
+    public $parameters = [];
 
     /**
      * The list of possible responses as they are returned from executing this operation.
@@ -117,7 +117,7 @@ class Operation implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Response>")
      */
-    public $responses = array();
+    public $responses = [];
 
     /**
      * The transfer protocol for the operation. Values MUST be from the list: "http", "https", "ws", "wss".
@@ -135,7 +135,7 @@ class Operation implements VendorExtensionSupportInterface
      * Usage of the declared operation should be refrained.
      * Default value is false.
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      */
@@ -155,4 +155,4 @@ class Operation implements VendorExtensionSupportInterface
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\SecurityRequirement>")
      */
     public $security;
-} 
+}

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\AwsToolKitBundle\Listener;
+<?php
+
+namespace Draw\Bundle\AwsToolKitBundle\Listener;
 
 use Aws\Ec2\Ec2Client;
 use Psr\Log\LoggerAwareInterface;
@@ -34,7 +36,7 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
             ConsoleCommandEvent::class => [
                 ['addOptions', 255],
                 ['checkNewestInstance', 0],
-            ]
+            ],
         ];
     }
 
@@ -47,8 +49,6 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
     /**
      * This is a fallback on the compiler pass system to be sure options are available if command are registered
      * by another mean.
-     *
-     * @param ConsoleCommandEvent $consoleCommandEvent
      */
     public function addOptions(ConsoleCommandEvent $consoleCommandEvent)
     {
@@ -62,9 +62,7 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
             );
     }
 
-
     /**
-     * @param ConsoleCommandEvent $consoleCommandEvent
      * @return void
      */
     public function checkNewestInstance(ConsoleCommandEvent $consoleCommandEvent)
@@ -81,21 +79,25 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
             $currentInstanceId = file_get_contents('http://169.254.169.254/latest/meta-data/instance-id');
         } catch (Throwable $throwable) {
             $this->disableCommand($consoleCommandEvent, 'Cannot reach 169.254.169.254');
+
             return;
         }
 
         if (!$currentInstanceId) {
             $this->disableCommand($consoleCommandEvent, 'Current instance id not found');
+
             return;
         }
 
         try {
             if ($currentInstanceId != $this->getNewestInstanceIdForRole($role)) {
                 $this->disableCommand($consoleCommandEvent, 'Current instance is not the newest');
+
                 return;
             }
         } catch (Throwable $throwable) {
             $this->disableCommand($consoleCommandEvent, $throwable->getMessage());
+
             return;
         }
     }
@@ -113,19 +115,19 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
             'Filters' => [
                 [
                     'Name' => 'tag:Name',
-                    'Values' => [$role]
+                    'Values' => [$role],
                 ],
                 [
                     'Name' => 'instance-state-name',
                     'Values' => ['running'],
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $instances = [];
         foreach ($result['Reservations'] as $reservation) {
             foreach ($reservation['Instances'] as $instance) {
-                $instances[(int)$instance['LaunchTime']->format('U')][] = $instance['InstanceId'];
+                $instances[(int) $instance['LaunchTime']->format('U')][] = $instance['InstanceId'];
             }
         }
 
@@ -137,6 +139,7 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
 
         $instanceIds = array_pop($instances);
         sort($instanceIds);
+
         return array_pop($instanceIds);
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Response\Listener;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Response\Listener;
 
 use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
 use ReflectionClass;
@@ -34,7 +36,7 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ExceptionEvent::class => ['onKernelException', 255]
+            ExceptionEvent::class => ['onKernelException', 255],
         ];
     }
 
@@ -52,7 +54,7 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        if ($request->getRequestFormat() !== 'json') {
+        if ('json' !== $request->getRequestFormat()) {
             return;
         }
 
@@ -60,8 +62,8 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
         $statusCode = $this->getStatusCode($error);
 
         $data = [
-            "code" => $statusCode,
-            "message" => $error->getMessage()
+            'code' => $statusCode,
+            'message' => $error->getMessage(),
         ];
 
         if ($error instanceof ConstraintViolationListException) {
@@ -91,12 +93,12 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
                 'propertyPath' => $constraintViolation->getPropertyPath(),
                 'message' => $constraintViolation->getMessage(),
                 'invalidValue' => $constraintViolation->getInvalidValue(),
-                'code' => $constraintViolation->getCode()
+                'code' => $constraintViolation->getCode(),
             ];
 
             switch (true) {
                 case !($constraint = $constraintViolation->getConstraint()):
-                case $constraint->payload === null:
+                case null === $constraint->payload:
                     break;
                 default:
                     $errorData['payload'] = $constraint->payload;
@@ -116,7 +118,7 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
             'file' => $e->getFile(),
-            'line' => $e->getLine()
+            'line' => $e->getLine(),
         ];
 
         if ($this->debug) {
@@ -129,13 +131,11 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
             }
         }
 
-
         return $result;
     }
 
     /**
      * @param $exception
-     * @return int
      */
     private function getStatusCode($exception): int
     {
@@ -152,7 +152,7 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
         $reflectionExceptionClass = new ReflectionClass($exceptionClass);
 
         foreach ($this->errorCodes as $exceptionMapClass => $value) {
-            if(!$value) {
+            if (!$value) {
                 continue;
             }
 

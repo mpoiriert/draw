@@ -27,14 +27,13 @@ class OperationExtractor implements ExtractorInterface
 {
     private $contextFactory;
     private $docBlockFactory;
-    private $exceptionResponseCodes = array();
+    private $exceptionResponseCodes = [];
 
     public function __construct(
         DocBlockFactoryInterface $docBlockFactory = null
-    )
-    {
+    ) {
         $this->contextFactory = new ContextFactory();
-        $this->docBlockFactory =  $docBlockFactory ?: DocBlockFactory::createInstance();
+        $this->docBlockFactory = $docBlockFactory ?: DocBlockFactory::createInstance();
     }
 
     /**
@@ -42,8 +41,8 @@ class OperationExtractor implements ExtractorInterface
      *
      * @param $source
      * @param $type
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -59,7 +58,6 @@ class OperationExtractor implements ExtractorInterface
     }
 
     /**
-     * @param Reflector $reflector
      * @return DocBlock
      */
     private function createDocBlock(Reflector $reflector)
@@ -78,8 +76,7 @@ class OperationExtractor implements ExtractorInterface
      * extraction.
      *
      * @param ReflectionMethod $method
-     * @param Operation $operation
-     * @param ExtractionContextInterface $extractionContext
+     * @param Operation        $operation
      */
     public function extract($method, $operation, ExtractionContextInterface $extractionContext)
     {
@@ -87,14 +84,19 @@ class OperationExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        $docBlock = $this->createDocBlock($method);
+        try {
+            $docBlock = $this->createDocBlock($method);
+        } catch (\InvalidArgumentException $exception) {
+            return;
+        }
+
 
         if (!$operation->summary) {
-            $operation->summary = (string)$docBlock->getSummary() ?: null;
+            $operation->summary = (string) $docBlock->getSummary() ?: null;
         }
 
         if (!$operation->description) {
-            $operation->description = (string)$docBlock->getDescription() ?: null;
+            $operation->description = (string) $docBlock->getDescription() ?: null;
         }
 
         /** @var Type[] $types */
@@ -105,27 +107,27 @@ class OperationExtractor implements ExtractorInterface
             /* @var $returnTag DocBlock\Tags\Return_ */
             $type = $returnTag->getType();
             $hasVoid = $hasVoid || $type instanceof Void_;
-            if($type instanceof Compound) {
+            if ($type instanceof Compound) {
                 $types = array_merge($types, $type->getIterator()->getArrayCopy());
             } else {
                 $types[] = $type;
             }
         }
 
-        if($hasVoid && count($types) > 1) {
+        if ($hasVoid && count($types) > 1) {
             throw new RuntimeException('Operation returning [void] cannot return anything else.');
         }
 
-        if($returnTag) {
+        if ($returnTag) {
             foreach ($types as $type) {
                 $response = new Response();
-                $response->description = (string)$returnTag->getDescription() ?: null;
-                if($type != 'void' && $type != 'null') {
+                $response->description = (string) $returnTag->getDescription() ?: null;
+                if ('void' != $type && 'null' != $type) {
                     $response->schema = $responseSchema = new Schema();
                     $subContext = $extractionContext->createSubContext();
                     $subContext->setParameter('controller-reflection-method', $method);
                     $subContext->setParameter('response', $response);
-                    $extractionContext->getOpenApi()->extract((string)$type, $responseSchema, $subContext);
+                    $extractionContext->getOpenApi()->extract((string) $type, $responseSchema, $subContext);
                     $statusCode = $subContext->getParameter('response-status-code', 200);
                 } else {
                     $statusCode = 204;
@@ -135,11 +137,6 @@ class OperationExtractor implements ExtractorInterface
             }
         }
 
-        if(!$operation->responses) {
-            $operation->responses[204] = $response = new Response();
-            $response->description = 'Empty response mean success.';
-        }
-
         if ($docBlock->getTagsByName('deprecated')) {
             $operation->deprecated = true;
         }
@@ -147,15 +144,15 @@ class OperationExtractor implements ExtractorInterface
         foreach ($docBlock->getTagsByName('throws') as $throwTag) {
             /* @var $throwTag DocBlock\Tags\Throws */
 
-            $type = (string)$throwTag->getType();
-            $exceptionClass = new ReflectionClass((string)$type);
+            $type = (string) $throwTag->getType();
+            $exceptionClass = new ReflectionClass((string) $type);
             /** @var Exception $exception */
             $exception = $exceptionClass->newInstanceWithoutConstructor();
             list($code, $message) = $this->getExceptionInformation($exception);
             $operation->responses[$code] = $exceptionResponse = new Response();
 
-            if ((string)$throwTag->getDescription()) {
-                $message = (string)$throwTag->getDescription();
+            if ((string) $throwTag->getDescription()) {
+                $message = (string) $throwTag->getDescription();
             } else {
                 if (!$message) {
                     $exceptionClassDocBlock = $this->createDocBlock($exceptionClass);
@@ -163,7 +160,7 @@ class OperationExtractor implements ExtractorInterface
                 }
             }
 
-            $exceptionResponse->description = (string)$message ?: null;
+            $exceptionResponse->description = (string) $message ?: null;
         }
 
         $bodyParameter = null;
@@ -188,9 +185,9 @@ class OperationExtractor implements ExtractorInterface
                 }
             }
 
-            if ($parameter !== null) {
+            if (null !== $parameter) {
                 if (!$parameter->description) {
-                    $parameter->description = (string)$paramTag->getDescription() ?: null;
+                    $parameter->description = (string) $paramTag->getDescription() ?: null;
                 }
 
                 if ($parameter === $bodyParameter) {
@@ -200,31 +197,31 @@ class OperationExtractor implements ExtractorInterface
 
                     $subContext = $extractionContext->createSubContext();
                     $extractionContext->getOpenApi()->extract(
-                        (string)$paramTag->getType(),
+                        (string) $paramTag->getType(),
                         $bodyParameter->schema,
                         $subContext
                     );
                 } elseif (!$parameter->type) {
                     $parameter->type = TypeSchemaExtractor::getPrimitiveType(
-                        (string)$paramTag->getType(),
+                        (string) $paramTag->getType(),
                         $extractionContext
                     )['type'];
                 }
                 continue;
             }
 
-            if ($bodyParameter !== null) {
+            if (null !== $bodyParameter) {
                 /* @var BodyParameter $bodyParameter */
                 if (isset($bodyParameter->schema->properties[$parameterName])) {
                     $parameter = $bodyParameter->schema->properties[$parameterName];
 
                     if (!$parameter->description) {
-                        $parameter->description = (string)$paramTag->getDescription() ?: null;
+                        $parameter->description = (string) $paramTag->getDescription() ?: null;
                     }
 
                     if (!$parameter->type) {
                         $subContext = $extractionContext->createSubContext();
-                        $extractionContext->getOpenApi()->extract((string)$paramTag->getType(), $parameter, $subContext);
+                        $extractionContext->getOpenApi()->extract((string) $paramTag->getType(), $parameter, $subContext);
                     }
 
                     continue;
@@ -241,11 +238,11 @@ class OperationExtractor implements ExtractorInterface
             }
         }
 
-        return array(500, null);
+        return [500, null];
     }
 
     public function registerExceptionResponseCodes($exceptionClass, $code = 500, $message = null)
     {
-        $this->exceptionResponseCodes[$exceptionClass] = array($code, $message);
+        $this->exceptionResponseCodes[$exceptionClass] = [$code, $message];
     }
 }

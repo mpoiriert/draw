@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Core\Annotation;
+<?php
+
+namespace Draw\Component\Core\Annotation;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Event;
+<?php
+
+namespace Draw\Component\OpenApi\Event;
 
 use Draw\Component\OpenApi\Schema\Root;
 use Symfony\Contracts\EventDispatcher\Event;

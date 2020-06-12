@@ -11,14 +11,13 @@ use Symfony\Component\Routing\Route;
 
 class RouteOperationExtractor implements ExtractorInterface
 {
-
     /**
      * Return if the extractor can extract the requested data or not.
      *
      * @param $source
      * @param $type
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -39,9 +38,8 @@ class RouteOperationExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param Route $source
+     * @param Route     $source
      * @param Operation $type
-     * @param ExtractionContextInterface $extractionContext
      */
     public function extract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -51,16 +49,16 @@ class RouteOperationExtractor implements ExtractorInterface
 
         $type->setVendorDataKey('x-draw-open-api-symfony-route', $extractionContext->getParameter('symfony-route-name'));
 
-        foreach($source->compile()->getPathVariables() as $pathVariable) {
-            foreach($type->parameters as $parameter) {
-                if($parameter->name == $pathVariable) {
+        foreach ($source->compile()->getPathVariables() as $pathVariable) {
+            foreach ($type->parameters as $parameter) {
+                if ($parameter->name == $pathVariable) {
                     continue 2;
                 }
             }
 
             $type->parameters[] = $pathParameter = new PathParameter();
             $pathParameter->name = $pathVariable;
-            $pathParameter->type = "string";
+            $pathParameter->type = 'string';
         }
     }
 }

@@ -1,7 +1,9 @@
-<?php namespace Draw\Bundle\UserBundle\Entity;
+<?php
 
-use DateTimeInterface;
+namespace Draw\Bundle\UserBundle\Entity;
+
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -63,7 +65,7 @@ trait SecurityUserTrait
      */
     public function getUsername(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     /**
@@ -80,7 +82,7 @@ trait SecurityUserTrait
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return (string) $this->password;
     }
 
     public function setPassword(string $password)
@@ -102,7 +104,7 @@ trait SecurityUserTrait
     public function setPlainPassword(?string $plainPassword)
     {
         $this->plainPassword = $plainPassword;
-        if($this->plainPassword) {
+        if ($this->plainPassword) {
             //This is needed to flag a property modified to trigger what's is needed for the flush
             $this->setPasswordUpdatedAt(new DateTimeImmutable());
         }
@@ -118,11 +120,13 @@ trait SecurityUserTrait
 
     /**
      * @param \DateTimeImmutable $passwordUpdatedAt
+     *
      * @return SecurityUserTrait
      */
     public function setPasswordUpdatedAt(DateTimeInterface $passwordUpdatedAt)
     {
         $this->passwordUpdatedAt = \DateTimeImmutable::createFromFormat('U', $passwordUpdatedAt->getTimestamp());
+
         return $this;
     }
 

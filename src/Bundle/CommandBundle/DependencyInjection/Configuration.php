@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\CommandBundle\DependencyInjection;
 
 use Doctrine\ORM\Version;
 use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticator;
@@ -31,11 +33,12 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('commands')
                     ->beforeNormalization()
                         ->always(function ($commands) {
-                            foreach($commands as $name => $configuration) {
-                                if(!isset($configuration['name'])) {
+                            foreach ($commands as $name => $configuration) {
+                                if (!isset($configuration['name'])) {
                                     $commands[$name]['name'] = $name;
                                 }
                             }
+
                             return $commands;
                         })
                     ->end()
@@ -50,6 +53,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+
         return $treeBuilder;
     }
 
@@ -80,7 +84,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('group')->defaultValue('Command')->end()
                 ->scalarNode('controller_class')->defaultValue(ExecutionController::class)->end()
                 ->scalarNode('icon')->defaultValue("<i class='fa fa-terminal'></i>")->end()
-                ->scalarNode('label')->defaultValue("Execution")->end()
+                ->scalarNode('label')->defaultValue('Execution')->end()
                 ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
             ->end();
     }

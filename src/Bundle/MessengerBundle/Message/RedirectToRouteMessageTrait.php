@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\MessengerBundle\Message;
+<?php
+
+namespace Draw\Bundle\MessengerBundle\Message;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

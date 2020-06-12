@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\PostOfficeBundle\DependencyInjection\Configuration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
@@ -15,7 +17,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         return [
             'default_from' => ['enabled' => false],
-            'css_inliner' => ['enabled' => false]
+            'css_inliner' => ['enabled' => false],
         ];
     }
 
@@ -23,17 +25,17 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['default_from' => ['name' => []]],
-            'Invalid type for path "draw_post_office.default_from.name". Expected scalar, but got array.'
+            'Invalid type for path "draw_post_office.default_from.name". Expected scalar, but got array.',
         ];
 
         yield [
             ['default_from' => ['email' => []]],
-            'Invalid type for path "draw_post_office.default_from.email". Expected scalar, but got array.'
+            'Invalid type for path "draw_post_office.default_from.email". Expected scalar, but got array.',
         ];
 
         yield [
             ['default_from' => ['name' => 'Acme']],
-            'The child node "email" at path "draw_post_office.default_from" must be configured.'
+            'The child node "email" at path "draw_post_office.default_from" must be configured.',
         ];
     }
 }

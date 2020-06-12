@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations\Button;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations\Button;
 
 /**
  * @Annotation
@@ -9,7 +11,7 @@ class ButtonCreate extends Button
     {
         $values = array_merge(
             [
-                'label' => 'create'
+                'label' => 'create',
             ],
             $values
         );

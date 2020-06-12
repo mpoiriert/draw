@@ -1,9 +1,11 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations\Button;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations\Button;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
 use Draw\Bundle\DashboardBundle\Annotations\Translatable;
-use JMS\Serializer\Annotation as Serializer;
 use function Draw\Bundle\DashboardBundle\construct;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @Annotation
@@ -82,8 +84,8 @@ class Button
 
     private function initialize($thenList): void
     {
-        foreach($thenList as $then) {
-            $this->behaviours[] = 'then-' . $then;
+        foreach ($thenList as $then) {
+            $this->behaviours[] = 'then-'.$then;
         }
     }
 

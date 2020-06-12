@@ -1,4 +1,6 @@
-<?php namespace Breethe\TestHelper;
+<?php
+
+namespace Breethe\TestHelper;
 
 use Draw\Component\Tester\DataTester;
 
@@ -10,7 +12,7 @@ class ViolationListTester
     {
         $tester->assertCount(
             count($this->violations),
-            "Current violations:\n" . json_encode($tester->getData(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+            "Current violations:\n".json_encode($tester->getData(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
         );
 
         foreach ($this->violations as $index => $violation) {
@@ -23,18 +25,21 @@ class ViolationListTester
     /**
      * @param $propertyPath
      * @param $message
+     *
      * @return $this
      */
     public function addViolation($propertyPath, $message)
     {
         $this->violations[] = compact('propertyPath', 'message');
+
         return $this;
     }
 
     /**
-     * Check code of the last added violation
+     * Check code of the last added violation.
      *
      * @param $code
+     *
      * @return $this
      */
     public function code($code)
@@ -45,9 +50,10 @@ class ViolationListTester
     }
 
     /**
-     * Check invalid value on the last added violation
+     * Check invalid value on the last added violation.
      *
      * @param $invalidValue
+     *
      * @return $this
      */
     public function invalidValue($invalidValue)

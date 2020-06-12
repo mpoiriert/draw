@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\TesterBundle\DependencyInjection;
 
 use Draw\Component\Profiling\ProfilerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -14,7 +16,7 @@ class DrawTesterExtension extends ConfigurableExtension
             ->registerForAutoconfiguration(ProfilerInterface::class)
             ->addTag(ProfilerInterface::class);
 
-        $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
+        $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
         $fileLoader = new Loader\XmlFileLoader($container, $fileLocator);
 
         $this->configureProfiling($config['profiling'], $fileLoader, $container);
@@ -22,7 +24,7 @@ class DrawTesterExtension extends ConfigurableExtension
 
     private function configureProfiling($config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
     {
-        if(!$config['enabled']) {
+        if (!$config['enabled']) {
             return;
         }
 

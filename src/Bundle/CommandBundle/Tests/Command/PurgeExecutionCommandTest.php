@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Tests\Command;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Tests\Command;
 
 use Doctrine\DBAL\Connection;
 use Draw\Bundle\CommandBundle\Command\PurgeExecutionCommand;
@@ -54,7 +56,7 @@ class PurgeExecutionCommandTest extends CommandTestCase
             null,
             InputOption::VALUE_OPTIONAL,
             'Records older than this date interval will be deleted.',
-            '-1 month'
+            '-1 month',
         ];
 
         yield [
@@ -62,7 +64,7 @@ class PurgeExecutionCommandTest extends CommandTestCase
             null,
             InputOption::VALUE_OPTIONAL,
             'Delete this many rows as a batch in a loop.',
-            1000
+            1000,
         ];
 
         yield [
@@ -70,7 +72,7 @@ class PurgeExecutionCommandTest extends CommandTestCase
             null,
             InputOption::VALUE_OPTIONAL,
             'The delete loop will sleep this long in seconds between iteration.',
-            10
+            10,
         ];
     }
 
@@ -83,7 +85,7 @@ class PurgeExecutionCommandTest extends CommandTestCase
                 'debug',
                 [
                     'Purging all records before {delay}, {batch_size} as the time, sleeping {seconds} per batch.',
-                    ['delay' => $date, 'batch_size' => 1000, 'seconds' => 0]
+                    ['delay' => $date, 'batch_size' => 1000, 'seconds' => 0],
                 ]
             )
             ->shouldBeCalledOnce();
@@ -93,7 +95,7 @@ class PurgeExecutionCommandTest extends CommandTestCase
                 'debug',
                 [
                     'Sleeping for {seconds} seconds during purge.',
-                    ['seconds' => 0]
+                    ['seconds' => 0],
                 ]
             )
             ->shouldBeCalledOnce();
@@ -103,7 +105,7 @@ class PurgeExecutionCommandTest extends CommandTestCase
                 'debug',
                 [
                     'Successfully purged {record_count} records.',
-                    ['record_count' => 1002]
+                    ['record_count' => 1002],
                 ]
             )
             ->shouldBeCalledOnce();
@@ -114,7 +116,7 @@ class PurgeExecutionCommandTest extends CommandTestCase
                 [
                     'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
                     ['terminated', new \DateTime($date), 1000],
-                    ["string", "datetime", "integer"]
+                    ['string', 'datetime', 'integer'],
                 ]
             )
             ->shouldBeCalledTimes(2)

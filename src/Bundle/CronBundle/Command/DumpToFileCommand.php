@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CronBundle\Command;
+<?php
+
+namespace Draw\Bundle\CronBundle\Command;
 
 use Draw\Bundle\CronBundle\CronManager;
 use RuntimeException;
@@ -34,11 +36,8 @@ class DumpToFileCommand extends Command
     {
         $filePath = $input->getArgument('filePath');
 
-        if(is_file($filePath) && !$input->getOption('override')) {
-            throw new RuntimeException(sprintf(
-                'The file [%s] already exists. Remove the file or use option --override.',
-                $filePath
-            ));
+        if (is_file($filePath) && !$input->getOption('override')) {
+            throw new RuntimeException(sprintf('The file [%s] already exists. Remove the file or use option --override.', $filePath));
         }
 
         file_put_contents($filePath, $this->cronManager->dumpJobs());

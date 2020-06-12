@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use JMS\Serializer\Annotation as Serializer;
 
@@ -19,14 +21,14 @@ class FormInputAutoComplete extends FormInput
     private $remoteUrl = null;
 
     /**
-     * @var null|string
+     * @var string|null
      *
      * @Serializer\Exclude()
      */
     private $routeName = 'drawDashboard_choices';
 
     /**
-     * Use in conjunction of route name to generate parameters
+     * Use in conjunction of route name to generate parameters.
      *
      * @Serializer\Exclude()
      */
@@ -59,7 +61,7 @@ class FormInputAutoComplete extends FormInput
 
     public function setParameters($parameters): void
     {
-        if($parameters instanceof ParametersInterface) {
+        if ($parameters instanceof ParametersInterface) {
             $parameters = $parameters->toArray();
         }
         $this->parameters = $parameters;

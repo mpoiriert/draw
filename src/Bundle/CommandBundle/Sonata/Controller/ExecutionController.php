@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Sonata\Controller;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Sonata\Controller;
 
 use Draw\Bundle\CommandBundle\CommandRegistry;
 use Draw\Bundle\CommandBundle\Entity\Execution;
@@ -14,8 +16,6 @@ class ExecutionController extends CRUDController
 
     /**
      * @required
-     *
-     * @param CommandRegistry $commandFactory
      */
     public function setCommandFactory(CommandRegistry $commandFactory)
     {

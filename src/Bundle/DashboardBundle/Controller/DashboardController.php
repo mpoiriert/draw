@@ -1,6 +1,7 @@
-<?php namespace Draw\Bundle\DashboardBundle\Controller;
+<?php
 
-use App\Entity\User;
+namespace Draw\Bundle\DashboardBundle\Controller;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
@@ -93,17 +94,17 @@ class DashboardController extends AbstractController
     private function getRouteInformation($operationId, Request $request): ?string
     {
         $action = $this->getActionInformation($operationId, $request);
-        if ($action === null) {
+        if (null === $action) {
             return null;
         }
 
-        return $action->getHref() . '/' . $action->getName();
+        return $action->getHref().'/'.$action->getName();
     }
 
     private function getActionInformation($operationId, Request $request): ?Action
     {
         $action = $this->actionFinder->findOneByOperationId($operationId);
-        if ($action === null) {
+        if (null === $action) {
             return null;
         }
 
@@ -113,7 +114,7 @@ class DashboardController extends AbstractController
             [$action->getMethod()]
         );
 
-        /** @var Action $action */
+        /* @var Action $action */
         switch (true) {
             case null === ($information = $routeInformation[$action->getMethod()] ?? null):
             case null === ($action = $information['x-draw-dashboard-action'] ?? null):
@@ -142,18 +143,18 @@ class DashboardController extends AbstractController
                     '%s.%s LIKE %s',
                     $alias,
                     $field,
-                    ':' . $field
+                    ':'.$field
                 )
-            )->setParameter($field, '%' . $value . '%');
+            )->setParameter($field, '%'.$value.'%');
         }
 
         $objects = $queryBuilder->getQuery()->execute();
 
         $choices = [];
-        foreach($objects as $object) {
+        foreach ($objects as $object) {
             $choices[] = [
                 'value' => $object->getId(), // todo make this dynamic
-                'label' => (string)$object
+                'label' => (string) $object,
             ];
         }
 

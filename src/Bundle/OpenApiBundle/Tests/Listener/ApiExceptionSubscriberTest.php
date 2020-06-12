@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Tests\Listener;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Tests\Listener;
 
 use Draw\Bundle\OpenApiBundle\Response\Listener\ApiExceptionSubscriber;
 use Draw\Bundle\OpenApiBundle\Tests\TestCase;
@@ -121,33 +123,32 @@ class ApiExceptionSubscriberTest extends TestCase
         yield 'ChangeDefault' => [
             new Exception(),
             [Exception::class => 400],
-            400
+            400,
         ];
 
         yield 'FallbackOnDefault' => [
             new Exception(),
             [RuntimeException::class => 400],
-            500
+            500,
         ];
 
         yield 'MultipleConfiguration' => [
             new Exception(),
             [RuntimeException::class => 400, Exception::class => 300],
-            300
+            300,
         ];
 
         yield 'Extend' => [
             new OutOfBoundsException(),
             [RuntimeException::class => 400, Exception::class => 300],
-            400
+            400,
         ];
-
 
         $exception = $this->prophesize(Exception::class)->willImplement(JsonSerializable::class);
         yield 'Implements' => [
             $exception->reveal(),
             [RuntimeException::class => 400, JsonSerializable::class => 300],
-            300
+            300,
         ];
     }
 
@@ -174,6 +175,7 @@ class ApiExceptionSubscriberTest extends TestCase
     private function onKernelException(ApiExceptionSubscriber $apiExceptionSubscriber = null): ?Response
     {
         ($apiExceptionSubscriber ?: new ApiExceptionSubscriber())->onKernelException($this->exceptionEvent);
+
         return $this->exceptionEvent->getResponse();
     }
 }

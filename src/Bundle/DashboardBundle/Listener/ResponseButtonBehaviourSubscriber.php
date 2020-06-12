@@ -1,8 +1,9 @@
-<?php namespace Draw\Bundle\DashboardBundle\Listener;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Listener;
 
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
-use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;
 use Draw\Bundle\DashboardBundle\Annotations\Button\Button;
 use Draw\Bundle\DashboardBundle\Annotations\FlowWithButtonsInterface;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
@@ -59,12 +60,12 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
         }
 
         foreach ($this->actionFinder->findAllByByTarget($viewEvent->getControllerResult()) as $action) {
-            if($action->getName() !== $thenActionName) {
+            if ($action->getName() !== $thenActionName) {
                 continue;
             }
 
             $parameters = [];
-            if($action->getIsInstanceTarget()) {
+            if ($action->getIsInstanceTarget()) {
                 $parameters['id'] = $controllerResult->getId(); // todo Make this dynamic
             }
 
@@ -82,8 +83,8 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
 
     private function getThenActionName(Button $button): ?string
     {
-        foreach($button->getBehaviours() as $behaviour) {
-            if(strpos($behaviour, 'then-') !== 0) {
+        foreach ($button->getBehaviours() as $behaviour) {
+            if (0 !== strpos($behaviour, 'then-')) {
                 continue;
             }
 
@@ -143,7 +144,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
             switch (true) {
                 case !($buttonId = $request->headers->get('X-Draw-Dashboard-Button-Id')):
                 case null === ($action = $this->getActionToProcess($request)):
-                case ($flow = $action->getFlow()):
+                case $flow = $action->getFlow():
                     break;
             }
 
@@ -168,7 +169,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
             $action = null;
             switch (true) {
                 case !($route = $request->attributes->get('_route')):
-                case ($action = $this->actionFinder->findOneByRoute($route)):
+                case $action = $this->actionFinder->findOneByRoute($route):
                     break;
             }
 

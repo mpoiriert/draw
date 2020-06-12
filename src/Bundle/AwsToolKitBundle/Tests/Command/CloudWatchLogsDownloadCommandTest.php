@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\AwsToolKitBundle\Tests\Command;
+<?php
+
+namespace Draw\Bundle\AwsToolKitBundle\Tests\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand;
@@ -29,6 +31,7 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
     public function createCommand(): Command
     {
         $this->cloudWatchLogsClientProphecy = $this->prophesize(CloudWatchLogsClient::class);
+
         return new CloudWatchLogsDownloadCommand(
             $this->cloudWatchLogsClientProphecy->reveal(CloudWatchLogsClient::class)
         );
@@ -50,7 +53,7 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
             null,
             InputOption::VALUE_REQUIRED,
             'Mode in which the output file will be open to write to.',
-            'w+'
+            'w+',
         ];
     }
 
@@ -58,16 +61,16 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
     {
         $logGroupName = 'group-name';
         $logStreamName = 'stream-name';
-        $output = sys_get_temp_dir() . '/' . uniqid() . '.txt';
+        $output = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);
 
         $logEvents = [
-            "startFromHead" => true,
-            "logGroupName" => "group-name",
-            "logStreamName" => "stream-name",
-            "startTime" => 978307201000,
-            "endTime" => 978393601000
+            'startFromHead' => true,
+            'logGroupName' => 'group-name',
+            'logStreamName' => 'stream-name',
+            'startTime' => 978307201000,
+            'endTime' => 978393601000,
         ];
 
         $this->cloudWatchLogsClientProphecy
@@ -75,19 +78,19 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
             ->shouldBeCalledOnce()
             ->willReturn([
                 'events' => [
-                    ['message' => 'Line 1']
+                    ['message' => 'Line 1'],
                 ],
-                'nextForwardToken' => 'next-token'
+                'nextForwardToken' => 'next-token',
             ]);
 
         $this->cloudWatchLogsClientProphecy
-            ->__call('getLogEvents', [$logEvents + ["nextToken" => "next-token"]])
+            ->__call('getLogEvents', [$logEvents + ['nextToken' => 'next-token']])
             ->shouldBeCalledOnce()
             ->willReturn([
                 'events' => [
-                    ['message' => 'Line 2']
+                    ['message' => 'Line 2'],
                 ],
-                'nextForwardToken' => 'next-token'
+                'nextForwardToken' => 'next-token',
             ]);
 
         $this->execute(
@@ -106,7 +109,7 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
     {
         $logGroupName = 'group-name';
         $logStreamName = 'stream-name';
-        $output = sys_get_temp_dir() . '/' . uniqid() . '.txt';
+        $output = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);
 
@@ -115,20 +118,20 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
                 'getLogEvents',
                 [
                     [
-                        "startFromHead" => true,
-                        "logGroupName" => "group-name",
-                        "logStreamName" => "stream-name",
-                        "startTime" => 978307201000,
-                        "endTime" => 978393601000
-                    ]
+                        'startFromHead' => true,
+                        'logGroupName' => 'group-name',
+                        'logStreamName' => 'stream-name',
+                        'startTime' => 978307201000,
+                        'endTime' => 978393601000,
+                    ],
                 ]
             )
             ->shouldBeCalledOnce()
             ->willReturn([
                 'events' => [
-                    ['message' => 'Line 1']
+                    ['message' => 'Line 1'],
                 ],
-                'nextForwardToken' => null
+                'nextForwardToken' => null,
             ]);
 
         $this->execute(

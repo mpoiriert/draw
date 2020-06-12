@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Extractor;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
@@ -29,8 +31,8 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
      *
      * @param $source
      * @param $type
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -52,8 +54,7 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
      * extraction.
      *
      * @param ContainerInterface $source
-     * @param Root $type
-     * @param ExtractionContextInterface $extractionContext
+     * @param Root               $type
      */
     public function extract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -68,13 +69,13 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
     {
         foreach ($router->getRouteCollection() as $routeName => $route) {
             /* @var Route $route */
-            if(!($path = $route->getPath())) {
+            if (!($path = $route->getPath())) {
                 continue;
             }
 
             $controller = explode('::', $route->getDefault('_controller'));
 
-            if(count($controller) != 2) {
+            if (2 != count($controller)) {
                 continue;
             }
 
@@ -88,11 +89,11 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
 
             $operation = $this->getOperation($route, $reflectionMethod);
 
-            if ($operation === null) {
+            if (null === $operation) {
                 continue;
             }
 
-            if(!$operation->operationId) {
+            if (!$operation->operationId) {
                 $operation->operationId = $routeName;
             }
             $subContext = $extractionContext->createSubContext();
@@ -101,30 +102,28 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
             $extractionContext->getOpenApi()->extract($route, $operation, $subContext);
             $extractionContext->getOpenApi()->extract($reflectionMethod, $operation, $subContext);
 
-            if(!isset($schema->paths[$path])) {
+            if (!isset($schema->paths[$path])) {
                 $schema->paths[$path] = new PathItem();
             }
 
             $pathItem = $schema->paths[$path];
 
-            foreach($route->getMethods() as $method) {
+            foreach ($route->getMethods() as $method) {
                 $pathItem->{strtolower($method)} = $operation;
             }
         }
     }
 
     /**
-     * Return the operation for the route if the route is a Api route
+     * Return the operation for the route if the route is a Api route.
      *
-     * @param Route $route
-     * @param \ReflectionMethod $method
      * @return Operation|null
      */
     private function getOperation(Route $route, \ReflectionMethod $method)
     {
         $operation = $this->annotationReader->getMethodAnnotation($method, Operation::class);
 
-        if($operation instanceof Operation) {
+        if ($operation instanceof Operation) {
             return $operation;
         }
 
@@ -132,8 +131,8 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
             return new Operation();
         }
 
-        foreach($this->annotationReader->getMethodAnnotations($method) as $annotation) {
-            if($annotation instanceof Tag) {
+        foreach ($this->annotationReader->getMethodAnnotations($method) as $annotation) {
+            if ($annotation instanceof Tag) {
                 return new Operation();
             }
         }

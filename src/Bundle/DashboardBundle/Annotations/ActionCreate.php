@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
 use JMS\Serializer\Annotation as Serializer;
@@ -18,7 +20,7 @@ class ActionCreate extends Action
     private $default;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @Serializer\Exclude()
      */
@@ -33,19 +35,18 @@ class ActionCreate extends Action
                 'button' => new Button\ButtonCreate(),
                 'flow' => new FormFlow(
                     [
-                        'buttons' =>
-                            !$dialog ? [
+                        'buttons' => !$dialog ? [
                                 new Button\ButtonCancel(),
                                 new Button\ButtonSave(),
                                 new Button\ButtonSaveThenCreate(),
-                                new Button\ButtonSaveThenList()
+                                new Button\ButtonSaveThenList(),
                             ] : [
                                 new Button\ButtonCancel(),
                                 new Button\ButtonSave(['thenList' => []]),
                             ],
-                        'dialog' => $dialog
+                        'dialog' => $dialog,
                     ]
-                )
+                ),
             ],
             $values
         );

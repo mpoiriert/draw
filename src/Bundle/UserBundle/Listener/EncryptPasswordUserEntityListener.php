@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Listener;
+<?php
+
+namespace Draw\Bundle\UserBundle\Listener;
 
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -38,7 +40,7 @@ class EncryptPasswordUserEntityListener
 
     private function updatePassword(SecurityUserInterface $user)
     {
-        if(!$user->getPlainPassword() && !$user->getPassword() && $this->autoGeneratePassword) {
+        if (!$user->getPlainPassword() && !$user->getPassword() && $this->autoGeneratePassword) {
             $user->setPlainPassword(uniqid());
         }
 

@@ -1,4 +1,6 @@
-<?php namespace App\Controller\Api;
+<?php
+
+namespace App\Controller\Api;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,14 +37,13 @@ class UsersController extends AbstractController
      *
      * @IsGranted("ROLE_ADMIN")
      *
-     * @param User $user
-     * @param EntityManagerInterface $entityManager
      * @return User The newly created user
      */
     public function createAction(User $user, EntityManagerInterface $entityManager)
     {
         $entityManager->persist($user);
         $entityManager->flush();
+
         return $user;
     }
 
@@ -85,13 +86,12 @@ class UsersController extends AbstractController
      *
      * @IsGranted("ROLE_ADMIN")
      *
-     * @param User $user
-     * @param EntityManagerInterface $entityManager
      * @return User The update user
      */
     public function editAction(User $user, EntityManagerInterface $entityManager)
     {
         $entityManager->flush();
+
         return $user;
     }
 
@@ -103,8 +103,6 @@ class UsersController extends AbstractController
      * @Dashboard\ActionShow()
      *
      * @IsGranted("ROLE_ADMIN")
-     *
-     * @param User $user
      *
      * @return User The user
      */
@@ -133,7 +131,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * Return a paginator list of users
+     * Return a paginator list of users.
      *
      * @Route(methods={"GET"}, path="/users")
      *
@@ -145,9 +143,6 @@ class UsersController extends AbstractController
      *
      * @Dashboard\Breadcrumb()
      *
-     * @param PaginatorBuilder $paginatorBuilder
-     * @param Request $request
-     *
      * @return Paginator<User> A paginated user list
      */
     public function listAction(PaginatorBuilder $paginatorBuilder, Request $request)
@@ -156,7 +151,7 @@ class UsersController extends AbstractController
     }
 
     /**
-     * Send a reset password email to the user
+     * Send a reset password email to the user.
      *
      * @Route(methods={"POST"}, path="/users/{id}/reset-password-email")
      *
@@ -165,9 +160,6 @@ class UsersController extends AbstractController
      * @Dashboard\Action(
      *     button=@Dashboard\Button\Button(label="Send forgot password email", icon="email")
      * )
-     *
-     * @param User $user
-     * @param FeedbackNotifier $notifier
      *
      * @return void No return value mean email has been sent
      */

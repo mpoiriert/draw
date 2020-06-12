@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Entity;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Entity;
 
 use DateTime;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -38,11 +40,11 @@ class Execution
         self::STATE_STARTED,
         self::STATE_ERROR,
         self::STATE_TERMINATED,
-        self::STATE_ACKNOWLEDGE
+        self::STATE_ACKNOWLEDGE,
     ];
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -81,7 +83,7 @@ class Execution
     private $input = [];
 
     /**
-     * The execution output of the command
+     * The execution output of the command.
      *
      * @var string
      *
@@ -159,9 +161,6 @@ class Execution
         return $this->input;
     }
 
-    /**
-     * @param array $input
-     */
     public function setInput(array $input)
     {
         $this->input = $input;
@@ -202,6 +201,7 @@ class Execution
     public function getOutputHtml()
     {
         $converter = new AnsiToHtmlConverter();
+
         return nl2br($converter->convert($this->getOutput()));
     }
 
@@ -210,7 +210,7 @@ class Execution
      */
     public function getCommandLine()
     {
-        return (string)(new ArrayInput($this->getInput()));
+        return (string) (new ArrayInput($this->getInput()));
     }
 
     /**
@@ -247,8 +247,6 @@ class Execution
 
     /**
      * @ORM\PreUpdate()
-     *
-     * @param PreUpdateEventArgs $eventArgs
      */
     public function updateTimestamp(PreUpdateEventArgs $eventArgs)
     {
@@ -261,22 +259,20 @@ class Execution
 
     /**
      * @ORM\PrePersist()
-     *
-     * @param LifecycleEventArgs $eventArgs
      */
     public function ensureTimestamp(LifecycleEventArgs $eventArgs)
     {
-        if ($this->createdAt === null) {
+        if (null === $this->createdAt) {
             $this->createdAt = new DateTime();
         }
 
-        if ($this->updatedAt === null) {
+        if (null === $this->updatedAt) {
             $this->updatedAt = $this->createdAt;
         }
     }
 
     public function __toString()
     {
-        return (string)$this->commandName;
+        return (string) $this->commandName;
     }
 }

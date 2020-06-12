@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\MessengerBundle;
+<?php
+
+namespace Draw\Bundle\MessengerBundle;
 
 use Draw\Bundle\MessengerBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;

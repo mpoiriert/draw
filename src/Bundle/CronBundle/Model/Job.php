@@ -1,44 +1,46 @@
-<?php namespace Draw\Bundle\CronBundle\Model;
+<?php
+
+namespace Draw\Bundle\CronBundle\Model;
 
 class Job
 {
     /**
-     * The name of the job for reference
+     * The name of the job for reference.
      *
      * @var string
      */
     private $name;
 
     /**
-     * The description of the job
+     * The description of the job.
      *
      * @var string
      */
     private $description;
 
     /**
-     * The cron execution expression configuration
+     * The cron execution expression configuration.
      *
      * @var string
      */
     private $expression = '* * * * *';
 
     /**
-     * The command to execute
+     * The command to execute.
      *
      * @var string
      */
     private $command;
 
     /**
-     * If the job is enabled or not
+     * If the job is enabled or not.
      *
      * @var bool
      */
     private $enabled = true;
 
     /**
-     * Where the output will be redirect
+     * Where the output will be redirect.
      *
      * @var string
      */
@@ -103,25 +105,16 @@ class Job
         $this->enabled = $enabled;
     }
 
-    /**
-     * @return string
-     */
     public function getOutput(): string
     {
         return $this->output;
     }
 
-    /**
-     * @param string $output
-     */
     public function setOutput(string $output): void
     {
         $this->output = $output;
     }
 
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return get_object_vars($this);

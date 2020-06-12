@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http\Request;
+<?php
+
+namespace Draw\Component\Tester\Http\Request;
 
 use Draw\Component\Tester\Http\ClientObserver;
 use Psr\Http\Message\RequestInterface;
@@ -15,10 +17,6 @@ class DefaultValueObserver extends ClientObserver
         $this->queryParameters = $queryParameters;
     }
 
-    /**
-     * @param RequestInterface $request
-     * @return RequestInterface
-     */
     public function preSendRequest(RequestInterface $request): RequestInterface
     {
         $request = $this->withDefaultHeaders($request);
@@ -29,9 +27,9 @@ class DefaultValueObserver extends ClientObserver
 
     public function withDefaultQueryParameters(RequestInterface $request)
     {
-        if($this->queryParameters) {
+        if ($this->queryParameters) {
             $uri = $request->getUri();
-            $query = http_build_query($this->queryParameters) . '&' . $uri->getQuery();
+            $query = http_build_query($this->queryParameters).'&'.$uri->getQuery();
             $uri = $uri->withQuery(rtrim($query, '&'));
             $request = $request->withUri($uri);
         }
@@ -41,8 +39,8 @@ class DefaultValueObserver extends ClientObserver
 
     public function withDefaultHeaders(RequestInterface $request)
     {
-        foreach($this->headers as $name => $value) {
-            if($request->hasHeader($name)) {
+        foreach ($this->headers as $name => $value) {
+            if ($request->hasHeader($name)) {
                 continue;
             }
 

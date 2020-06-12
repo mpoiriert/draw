@@ -1,10 +1,12 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\DependencyInjection;
 
 use Draw\Bundle\PostOfficeBundle\Email\DefaultFromEmailWriter;
 use Draw\Bundle\PostOfficeBundle\Email\EmailWriterInterface;
 use Draw\Bundle\PostOfficeBundle\Listener\EmailCssInlinerListener;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -15,7 +17,7 @@ class DrawPostOfficeExtension extends ConfigurableExtension
 {
     protected function loadInternal(array $config, ContainerBuilder $container)
     {
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
         $container
@@ -32,6 +34,7 @@ class DrawPostOfficeExtension extends ConfigurableExtension
     {
         if (!$config['enabled']) {
             $container->removeDefinition(EmailCssInlinerListener::class);
+
             return;
         }
     }
@@ -40,6 +43,7 @@ class DrawPostOfficeExtension extends ConfigurableExtension
     {
         if (!$config['enabled']) {
             $container->removeDefinition(DefaultFromEmailWriter::class);
+
             return;
         }
 

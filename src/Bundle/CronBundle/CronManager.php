@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CronBundle;
+<?php
+
+namespace Draw\Bundle\CronBundle;
 
 use Draw\Bundle\CronBundle\Model\Job;
 
@@ -17,21 +19,19 @@ class CronManager
     }
 
     /**
-     * Dump all the jobs to a crontab compatible string
-     *
-     * @return string
+     * Dump all the jobs to a crontab compatible string.
      */
     public function dumpJobs(): string
     {
         $result = [];
-        foreach($this->jobs as $job) {
-            if(!$job->getEnabled()) {
+        foreach ($this->jobs as $job) {
+            if (!$job->getEnabled()) {
                 continue;
             }
             $jobData = $job->toArray();
             $mapping = [];
-            foreach($jobData as $key => $value) {
-                $mapping['{' . $key . '}'] = $value;
+            foreach ($jobData as $key => $value) {
+                $mapping['{'.$key.'}'] = $value;
             }
 
             $cronLine = str_replace(array_keys($mapping), array_values($mapping), self::JOB_STRING_PATTERN);
@@ -39,6 +39,6 @@ class CronManager
             $result[] = $cronLine;
         }
 
-        return trim(implode(PHP_EOL, $result)) . PHP_EOL;
+        return trim(implode(PHP_EOL, $result)).PHP_EOL;
     }
 }

@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This is the class that validates and merges configuration from your app/config files
+ * This is the class that validates and merges configuration from your app/config files.
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
@@ -70,8 +70,8 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('exceptionsStatusCodes')
                             ->arrayPrototype()
                                 ->children()
-                                    ->scalarNode("class")->isRequired()->end()
-                                    ->integerNode("code")->isRequired()->end()
+                                    ->scalarNode('class')->isRequired()->end()
+                                    ->integerNode('code')->isRequired()->end()
                                 ->end()
                             ->end()
                         ->end()
@@ -93,8 +93,8 @@ class Configuration implements ConfigurationInterface
             ->defaultValue([])
             ->arrayPrototype()
                 ->children()
-                    ->scalarNode("class")->isRequired()->end()
-                    ->scalarNode("alias")->isRequired()->end()
+                    ->scalarNode('class')->isRequired()->end()
+                    ->scalarNode('alias')->isRequired()->end()
                 ->end()
             ->end();
     }
@@ -105,17 +105,17 @@ class Configuration implements ConfigurationInterface
             ->normalizeKeys(false)
             ->ignoreExtraKeys(false)
             ->children()
-                ->arrayNode("info")
+                ->arrayNode('info')
                     ->children()
-                        ->scalarNode("version")->defaultValue("1.0")->end()
-                        ->scalarNode("contact")->end()
-                        ->scalarNode("termsOfService")->end()
-                        ->scalarNode("description")->end()
-                        ->scalarNode("title")->end()
+                        ->scalarNode('version')->defaultValue('1.0')->end()
+                        ->scalarNode('contact')->end()
+                        ->scalarNode('termsOfService')->end()
+                        ->scalarNode('description')->end()
+                        ->scalarNode('title')->end()
                     ->end()
                 ->end()
-                ->scalarNode("basePath")->end()
-                ->scalarNode("swagger")->defaultValue("2.0")->end()
+                ->scalarNode('basePath')->end()
+                ->scalarNode('swagger')->defaultValue('2.0')->end()
             ->end();
     }
 }

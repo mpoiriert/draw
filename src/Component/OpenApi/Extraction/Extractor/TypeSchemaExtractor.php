@@ -2,11 +2,11 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor;
 
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
-use Draw\Component\OpenApi\Schema\Schema as SupportedTarget;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
+use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Schema;
+use Draw\Component\OpenApi\Schema\Schema as SupportedTarget;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Collection;
 use ReflectionClass;
@@ -16,9 +16,9 @@ class TypeSchemaExtractor implements ExtractorInterface
     /**
      * @var string[]
      */
-    private $definitionAliases = array();
+    private $definitionAliases = [];
 
-    private $definitionHashes = array();
+    private $definitionHashes = [];
 
     private static $typeResolver;
 
@@ -32,8 +32,8 @@ class TypeSchemaExtractor implements ExtractorInterface
      *
      * @param $source
      * @param SupportedTarget $target
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
@@ -41,7 +41,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return false;
         }
 
-        if (self::getPrimitiveType($source, $extractionContext) === null) {
+        if (null === self::getPrimitiveType($source, $extractionContext)) {
             return false;
         }
 
@@ -54,9 +54,8 @@ class TypeSchemaExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param string $source
+     * @param string          $source
      * @param SupportedTarget $target
-     * @param ExtractionContextInterface $extractionContext
      *
      * @throws ExtractionImpossibleException
      */
@@ -70,7 +69,7 @@ class TypeSchemaExtractor implements ExtractorInterface
 
         $target->type = $primitiveType['type'];
 
-        if ($target->type == 'array') {
+        if ('array' == $target->type) {
             $target->items = $itemsSchema = new Schema();
             if (isset($primitiveType['subType'])) {
                 $extractionContext->getOpenApi()->extract(
@@ -83,7 +82,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return;
         }
 
-        if($target->type == 'generic') {
+        if ('generic' == $target->type) {
             $target->type = 'object';
             $reflectionClass = new ReflectionClass($primitiveType['class']);
             $subContext = $extractionContext->createSubContext();
@@ -97,7 +96,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return;
         }
 
-        if ($target->type == "object") {
+        if ('object' == $target->type) {
             $target->type = null;
             $reflectionClass = new ReflectionClass($primitiveType['class']);
             $rootSchema = $extractionContext->getRootSchema();
@@ -106,12 +105,12 @@ class TypeSchemaExtractor implements ExtractorInterface
             $definitionName = $this->getDefinitionName($reflectionClass->name);
 
             if ($hash = $this->getHash($definitionName, $context)) {
-                $definitionName .= '?' . $hash;
+                $definitionName .= '?'.$hash;
             }
 
             if (!$rootSchema->hasDefinition($definitionName)) {
                 $rootSchema->addDefinition($definitionName, $refSchema = new Schema());
-                $refSchema->type = "object";
+                $refSchema->type = 'object';
                 $extractionContext->getOpenApi()->extract(
                     $reflectionClass,
                     $refSchema,
@@ -120,6 +119,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             }
 
             $target->ref = $rootSchema->getDefinitionReference($definitionName);
+
             return;
         }
 
@@ -131,8 +131,8 @@ class TypeSchemaExtractor implements ExtractorInterface
     private function getDefinitionName($className)
     {
         foreach ($this->definitionAliases as $class => $alias) {
-            if (substr($class, -1) == '\\') {
-                if (strpos($className, $class) === 0) {
+            if ('\\' == substr($class, -1)) {
+                if (0 === strpos($className, $class)) {
                     return str_replace($class, $alias, $className);
                 }
                 continue;
@@ -169,25 +169,25 @@ class TypeSchemaExtractor implements ExtractorInterface
             return null;
         }
 
-        if (self::$typeResolver === null) {
+        if (null === self::$typeResolver) {
             self::$typeResolver = new TypeResolver();
         }
 
-        if($type == 'generic') {
+        if ('generic' == $type) {
             $type = $extractionContext->getParameter('generic-template');
         }
 
         $result = self::$typeResolver->resolve($type);
 
-        if($result instanceof Collection) {
+        if ($result instanceof Collection) {
             return [
                 'type' => 'generic',
-                'class' => (string)$result->getFqsen(),
-                'template' => (string)$result->getValueType()
+                'class' => (string) $result->getFqsen(),
+                'template' => (string) $result->getValueType(),
             ];
-        };
+        }
 
-        $primitiveType = array();
+        $primitiveType = [];
 
         $typeOfArray = str_replace('[]', '', $type);
         if ($typeOfArray != $type) {
@@ -197,36 +197,37 @@ class TypeSchemaExtractor implements ExtractorInterface
 
             $primitiveType['type'] = 'array';
             $primitiveType['subType'] = $typeOfArray;
+
             return $primitiveType;
         }
 
-        $types = array(
-            'int' => array('type' => 'integer', 'format' => 'int32'),
-            'integer' => array('type' => 'integer', 'format' => 'int32'),
-            'long' => array('type' => 'integer', 'format' => 'int64'),
-            'float' => array('type' => 'number', 'format' => 'float'),
-            'double' => array('type' => 'number', 'format' => 'double'),
-            'string' => array('type' => 'string'),
-            'byte' => array('type' => 'string', 'format' => 'byte'),
-            'boolean' => array('type' => 'boolean'),
-            'date' => array('type' => 'string', 'format' => 'date'),
-            'DateTime' => array('type' => 'string', 'format' => 'date-time'),
-            'DateTimeImmutable' => array('type' => 'string', 'format' => 'date-time'),
-            'dateTime' => array('type' => 'string', 'format' => 'date-time'),
-            'password' => array('type' => 'string', 'format' => 'password'),
-            'array' => array('type' => 'array'),
-        );
+        $types = [
+            'int' => ['type' => 'integer', 'format' => 'int32'],
+            'integer' => ['type' => 'integer', 'format' => 'int32'],
+            'long' => ['type' => 'integer', 'format' => 'int64'],
+            'float' => ['type' => 'number', 'format' => 'float'],
+            'double' => ['type' => 'number', 'format' => 'double'],
+            'string' => ['type' => 'string'],
+            'byte' => ['type' => 'string', 'format' => 'byte'],
+            'boolean' => ['type' => 'boolean'],
+            'date' => ['type' => 'string', 'format' => 'date'],
+            'DateTime' => ['type' => 'string', 'format' => 'date-time'],
+            'DateTimeImmutable' => ['type' => 'string', 'format' => 'date-time'],
+            'dateTime' => ['type' => 'string', 'format' => 'date-time'],
+            'password' => ['type' => 'string', 'format' => 'password'],
+            'array' => ['type' => 'array'],
+        ];
 
         if (array_key_exists($type, $types)) {
             return $types[$type];
         }
 
         if (class_exists($type)) {
-            return array(
+            return [
                 'type' => 'object',
-                'class' => $type
-            );
-        };
+                'class' => $type,
+            ];
+        }
 
         return null;
     }

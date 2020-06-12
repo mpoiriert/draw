@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle;
+<?php
+
+namespace Draw\Bundle\CommandBundle;
 
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -19,7 +21,7 @@ class BufferedConsoleOutput extends ConsoleOutput
      */
     public function setDecorated($decorated)
     {
-        if($this->isDecorated() == $decorated) {
+        if ($this->isDecorated() == $decorated) {
             return;
         }
 
@@ -31,7 +33,7 @@ class BufferedConsoleOutput extends ConsoleOutput
      */
     public function setFormatter(OutputFormatterInterface $formatter)
     {
-        if($this->getFormatter() === $formatter) {
+        if ($this->getFormatter() === $formatter) {
             return;
         }
 
@@ -43,7 +45,7 @@ class BufferedConsoleOutput extends ConsoleOutput
      */
     public function setVerbosity($level)
     {
-        if($this->getVerbosity() == $level) {
+        if ($this->getVerbosity() == $level) {
             return;
         }
 

@@ -1,8 +1,10 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Tests\Mock\Controller;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Tests\Mock\Controller;
 
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
-use Draw\Bundle\OpenApiBundle\Tests\Mock\Model\Test;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
+use Draw\Bundle\OpenApiBundle\Tests\Mock\Model\Test;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -34,7 +36,6 @@ class TestController
      * )
      *
      * @param string $param1
-     * @param Test $test
      *
      * @return Test The created test entity
      */

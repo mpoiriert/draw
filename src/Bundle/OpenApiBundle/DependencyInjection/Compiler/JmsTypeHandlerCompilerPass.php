@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler;
 
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
@@ -13,7 +15,7 @@ class JmsTypeHandlerCompilerPass implements CompilerPassInterface
         $propertiesExtractor = $container->getDefinition(PropertiesExtractor::class);
 
         foreach (array_keys($container->findTaggedServiceIds(TypeToSchemaHandlerInterface::class)) as $id) {
-            $propertiesExtractor->addMethodCall("registerTypeToSchemaHandler", [new Reference($id)]);
+            $propertiesExtractor->addMethodCall('registerTypeToSchemaHandler', [new Reference($id)]);
         }
     }
 }

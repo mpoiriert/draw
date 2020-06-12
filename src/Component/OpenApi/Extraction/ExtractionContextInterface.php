@@ -21,6 +21,6 @@ interface ExtractionContextInterface
     public function removeParameter($name): void;
 
     public function setParameters(array $parameters): void;
-    
+
     public function createSubContext(): ExtractionContextInterface;
 }

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Application;
+<?php
+
+namespace Draw\Component\Tester\Application;
 
 use Draw\Component\Tester\DataTester;
 use PHPUnit\Framework\TestCase;
@@ -61,7 +63,7 @@ abstract class CommandTestCase extends TestCase
     public function testArgument(string $name, ?int $mode, string $description, $default = null)
     {
         $argumentPosition = self::$argumentsCount;
-        self::$argumentsCount++;
+        ++self::$argumentsCount;
         $definition = $this->command->getDefinition();
 
         $this->assertTrue($definition->hasArgument($argumentPosition), 'No argument at this position');
@@ -70,7 +72,7 @@ abstract class CommandTestCase extends TestCase
         $this->assertSame(
             $name,
             $argument->getName(),
-            'Argument at position [' . $argumentPosition . '] does not match the name.'
+            'Argument at position ['.$argumentPosition.'] does not match the name.'
         );
         $this->assertSame($default, $argument->getDefault());
         $this->assertSame($description, $argument->getDescription());
@@ -104,7 +106,7 @@ abstract class CommandTestCase extends TestCase
 
         $this->assertSame($shortcut, $option->getShortcut());
 
-        if($default === null && !$option->acceptValue()) {
+        if (null === $default && !$option->acceptValue()) {
             $default = false;
         }
 
@@ -136,16 +138,18 @@ abstract class CommandTestCase extends TestCase
      *  * verbosity:                 Sets the output verbosity flag
      *  * capture_stderr_separately: Make output of stdOut and stdErr separately available
      *
-     * @param array $input An array of command arguments and options
+     * @param array $input   An array of command arguments and options
      * @param array $options An array of execution options
      *
      * @return DataTester The data tester with the command tester as data
+     *
      * @see CommandDataTester
      */
     public function execute(array $input, array $options = []): DataTester
     {
         $options += ['capture_stderr_separately' => true];
         $this->commandTester->execute($input, $options);
+
         return new DataTester($this->commandTester);
     }
 }

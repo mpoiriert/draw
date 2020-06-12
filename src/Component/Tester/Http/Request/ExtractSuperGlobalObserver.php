@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http\Request;
+<?php
+
+namespace Draw\Component\Tester\Http\Request;
 
 use Draw\Component\Tester\Http\ClientObserver;
 use Draw\Component\Tester\Http\RequestExecutionerInterface;

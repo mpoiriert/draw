@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticator;
 use Draw\Bundle\CommandBundle\DependencyInjection\Configuration;
@@ -33,7 +35,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'system_authentication_service' => SystemAuthenticator::class,
                 'system_auto_login' => false,
             ],
-            'commands' => []
+            'commands' => [],
         ];
     }
 
@@ -41,42 +43,42 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['doctrine' => ['log_execution' => []]],
-            'Invalid type for path "draw_command.doctrine.log_execution". Expected scalar, but got array.'
+            'Invalid type for path "draw_command.doctrine.log_execution". Expected scalar, but got array.',
         ];
 
         yield [
             ['sonata' => ['group' => []]],
-            'Invalid type for path "draw_command.sonata.group". Expected scalar, but got array.'
+            'Invalid type for path "draw_command.sonata.group". Expected scalar, but got array.',
         ];
 
         yield [
             ['sonata' => ['controller_class' => []]],
-            'Invalid type for path "draw_command.sonata.controller_class". Expected scalar, but got array.'
+            'Invalid type for path "draw_command.sonata.controller_class". Expected scalar, but got array.',
         ];
 
         yield [
             ['sonata' => ['icon' => []]],
-            'Invalid type for path "draw_command.sonata.icon". Expected scalar, but got array.'
+            'Invalid type for path "draw_command.sonata.icon". Expected scalar, but got array.',
         ];
 
         yield [
             ['sonata' => ['label' => []]],
-            'Invalid type for path "draw_command.sonata.label". Expected scalar, but got array.'
+            'Invalid type for path "draw_command.sonata.label". Expected scalar, but got array.',
         ];
 
         yield [
             ['sonata' => ['pager_type' => 'invalid']],
-            'The value "invalid" is not allowed for path "draw_command.sonata.pager_type". Permissible values: "default", "simple"'
+            'The value "invalid" is not allowed for path "draw_command.sonata.pager_type". Permissible values: "default", "simple"',
         ];
 
         yield [
             ['authentication' => ['system_authentication_service' => []]],
-            'Invalid type for path "draw_command.authentication.system_authentication_service". Expected scalar, but got array.'
+            'Invalid type for path "draw_command.authentication.system_authentication_service". Expected scalar, but got array.',
         ];
 
         yield [
             ['authentication' => ['system_auto_login' => []]],
-            'Invalid type for path "draw_command.authentication.system_auto_login". Expected boolean, but got array.'
+            'Invalid type for path "draw_command.authentication.system_auto_login". Expected boolean, but got array.',
         ];
     }
 }

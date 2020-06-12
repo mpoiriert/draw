@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http\Observer;
+<?php
+
+namespace Draw\Component\Tester\Http\Observer;
 
 use Draw\Component\Tester\Http\ClientObserver;
 use GuzzleHttp\Psr7\Uri;
@@ -16,9 +18,9 @@ class DefaultBaseUriObserver extends ClientObserver
     public function preSendRequest(RequestInterface $request): RequestInterface
     {
         $uri = $request->getUri();
-        if(empty($uri->getHost())) {
+        if (empty($uri->getHost())) {
             $request = $request->withUri(
-                new Uri($this->baseUri . $request->getUri())
+                new Uri($this->baseUri.$request->getUri())
             );
         }
 

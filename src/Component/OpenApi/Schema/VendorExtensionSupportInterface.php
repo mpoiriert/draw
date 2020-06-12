@@ -12,4 +12,4 @@ interface VendorExtensionSupportInterface
     public function setVendorData(array $data = null);
 
     public function setVendorDataKey($name, $data);
-} 
+}

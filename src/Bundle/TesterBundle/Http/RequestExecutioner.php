@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\Http;
+<?php
+
+namespace Draw\Bundle\TesterBundle\Http;
 
 use Draw\Component\Tester\Http\Request\BodyParser;
 use Draw\Component\Tester\Http\RequestExecutionerInterface;
@@ -41,7 +43,7 @@ class RequestExecutioner implements RequestExecutionerInterface
 
         $response = $this->doExecuteRequest(
             $request->getMethod(),
-            (string)$request->getUri(),
+            (string) $request->getUri(),
             $parsedBody['post'],
             $parsedBody['files'],
             $this->extractServerData($request),
@@ -65,13 +67,12 @@ class RequestExecutioner implements RequestExecutionerInterface
         array $server = [],
         string $content = null,
         bool $changeHistory = true
-    ): \Symfony\Component\HttpFoundation\Response
-    {
+    ): \Symfony\Component\HttpFoundation\Response {
         $this->lastBrowser = $browser = $this->browserFactory->createBrowser();
 
         $cookies = array_filter(explode(';', $server['HTTP_COOKIE'] ?? ''));
 
-        foreach($cookies as $cookie) {
+        foreach ($cookies as $cookie) {
             list($name, $value) = explode('=', $cookie);
             $this->lastBrowser->getCookieJar()
                 ->set(new Cookie($name, $value));
@@ -80,6 +81,7 @@ class RequestExecutioner implements RequestExecutionerInterface
         $browser->request(...func_get_args());
         /* @var $response \Symfony\Component\HttpFoundation\Response */
         $response = $browser->getResponse();
+
         return $response;
     }
 
@@ -93,12 +95,13 @@ class RequestExecutioner implements RequestExecutionerInterface
         $server = [];
         foreach ($request->getHeaders() as $key => $value) {
             $key = strtoupper(str_replace('-', '_', $key));
-            if (in_array($key, array('CONTENT_TYPE', 'CONTENT_LENGTH'))) {
+            if (in_array($key, ['CONTENT_TYPE', 'CONTENT_LENGTH'])) {
                 $server[$key] = implode(', ', $value);
             } else {
                 $server['HTTP_'.$key] = implode(', ', $value);
             }
         }
+
         return $server;
     }
 }

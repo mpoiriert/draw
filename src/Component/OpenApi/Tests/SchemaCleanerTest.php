@@ -1,7 +1,9 @@
-<?php namespace Draw\Component\OpenApi\Tests;
+<?php
 
-use Draw\Component\OpenApi\SchemaCleaner;
+namespace Draw\Component\OpenApi\Tests;
+
 use Draw\Component\OpenApi\OpenApi;
+use Draw\Component\OpenApi\SchemaCleaner;
 use PHPUnit\Framework\TestCase;
 
 class SchemaCleanerTest extends TestCase
@@ -23,7 +25,7 @@ class SchemaCleanerTest extends TestCase
             'difference' => ['difference'],
             'deep-reference' => ['deep-reference'],
             'not-needed-model' => ['not-needed-model'],
-            'definition-index' => ['definition-index']
+            'definition-index' => ['definition-index'],
         ];
     }
 
@@ -36,14 +38,14 @@ class SchemaCleanerTest extends TestCase
     {
         $openApi = new OpenApi();
         $schema = $openApi->extract(
-            file_get_contents(__DIR__ . '/fixture/cleaner/' . $case . '-dirty.json')
+            file_get_contents(__DIR__.'/fixture/cleaner/'.$case.'-dirty.json')
         );
         $this->assertInstanceOf(\Draw\Component\OpenApi\Schema\Root::class, $schema);
 
         $cleanedSchema = $this->schemaCleaner->clean($schema);
 
         $this->assertEquals(
-            json_decode(file_get_contents(__DIR__ . '/fixture/cleaner/' . $case . '-clean.json'), true),
+            json_decode(file_get_contents(__DIR__.'/fixture/cleaner/'.$case.'-clean.json'), true),
             json_decode($openApi->dump($cleanedSchema, false), true)
         );
     }

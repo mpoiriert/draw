@@ -1,9 +1,11 @@
-<?php namespace App\DataFixtures;
+<?php
+
+namespace App\DataFixtures;
 
 use App\Entity\Tag;
+use App\Entity\User;
 use App\Entity\UserAddress;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
@@ -35,9 +37,9 @@ class AppFixtures extends Fixture
 
         foreach (range(1, 49) as $number) {
             $user = new User();
-            $user->setEmail('user-' . str_pad($number, 4, '0', STR_PAD_LEFT) . '@example.com');
+            $user->setEmail('user-'.str_pad($number, 4, '0', STR_PAD_LEFT).'@example.com');
             $user->setPlainPassword('password');
-            if($number === 1) {
+            if (1 === $number) {
                 $user->setTags([$inactiveTag]);
             }
             $manager->persist($user);

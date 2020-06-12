@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Controller\Api;
+<?php
+
+namespace Draw\Bundle\UserBundle\Controller\Api;
 
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
@@ -52,10 +54,6 @@ class ConnectionTokensController extends AbstractController
      *
      * @Security("not is_granted('IS_AUTHENTICATED_FULLY')")
      *
-     * @param Credential $credential
-     * @param UserProviderInterface $userProvider
-     * @param JwtAuthenticator $authenticator
-     * @param UserPasswordEncoderInterface $passwordEncoder
      * @param FeedbackNotifier $feedbackNotifier
      *
      * @return ConnectionToken The newly created token
@@ -79,8 +77,8 @@ class ConnectionTokensController extends AbstractController
 
         $connectionToken = new ConnectionToken($authenticator->encode($user));
 
-        if($feedbackNotifier) {
-            $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', 'Bearer ' . $connectionToken->token));
+        if ($feedbackNotifier) {
+            $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', 'Bearer '.$connectionToken->token));
             $feedbackNotifier->sendFeedback(new SignedIn());
         }
 
@@ -98,8 +96,6 @@ class ConnectionTokensController extends AbstractController
      * @Serialization(statusCode=200)
      *
      * @IsGranted("IS_AUTHENTICATED_FULLY")
-     *
-     * @param JwtAuthenticator $authenticator
      *
      * @return ConnectionToken The refreshed token
      */
@@ -131,7 +127,7 @@ class ConnectionTokensController extends AbstractController
      */
     public function clearAction(?FeedbackNotifier $feedbackNotifier)
     {
-        if($feedbackNotifier) {
+        if ($feedbackNotifier) {
             $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', '', true));
             $feedbackNotifier->sendFeedback(new SignedOut());
         }

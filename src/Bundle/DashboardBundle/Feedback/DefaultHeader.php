@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Feedback;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Feedback;
 
 use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 
@@ -26,7 +28,7 @@ class DefaultHeader implements FeedbackInterface
         $this->name = $name;
         $this->value = $value;
         $this->clear = $clear;
-        if($this->clear) {
+        if ($this->clear) {
             $this->value = null;
         }
     }

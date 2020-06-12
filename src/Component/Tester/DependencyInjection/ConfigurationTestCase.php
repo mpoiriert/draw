@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\DependencyInjection;
+<?php
+
+namespace Draw\Component\Tester\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -13,7 +15,9 @@ abstract class ConfigurationTestCase extends TestCase
     private $configuration;
 
     abstract public function createConfiguration(): ConfigurationInterface;
+
     abstract public function getDefaultConfiguration(): array;
+
     abstract public function provideTestInvalidConfiguration(): iterable;
 
     public function setUp(): void
@@ -23,9 +27,6 @@ abstract class ConfigurationTestCase extends TestCase
 
     /**
      * @dataProvider provideTestInvalidConfiguration
-     *
-     * @param array $configuration
-     * @param string $expectedMessage
      */
     public function testInvalidConfiguration(array $configuration, string $expectedMessage)
     {

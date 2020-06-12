@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations\Button;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations\Button;
 
 /**
  * @Annotation
@@ -11,7 +13,7 @@ class ButtonSaveThenList extends ButtonSave
             [
                 'id' => 'save-then-list',
                 'label' => 'saveThenList',
-                'thenList' => ['list']
+                'thenList' => ['list'],
             ],
             $values
         );

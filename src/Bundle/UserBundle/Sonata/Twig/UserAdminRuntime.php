@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Sonata\Twig;
+<?php
+
+namespace Draw\Bundle\UserBundle\Sonata\Twig;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;

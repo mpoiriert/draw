@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle;
+<?php
+
+namespace Draw\Bundle\TesterBundle;
 
 use Draw\Bundle\TesterBundle\Config\ServiceIdsResourceCheck;
 use Draw\Component\Profiling\ProfilerCoordinator;
@@ -13,7 +15,7 @@ class DrawTesterBundle extends Bundle implements CompilerPassInterface
 
     public static function addServicesToTest($ids)
     {
-        $ids = (array)$ids;
+        $ids = (array) $ids;
         self::$ids += $ids;
     }
 
@@ -24,7 +26,7 @@ class DrawTesterBundle extends Bundle implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        $file = $container->getParameter('kernel.cache_dir') . '/serviceIdsToTest.json';
+        $file = $container->getParameter('kernel.cache_dir').'/serviceIdsToTest.json';
         $container->addResource(new ServiceIdsResourceCheck($file));
         self::$ids = array_unique(self::$ids);
         foreach (self::$ids as $id) {

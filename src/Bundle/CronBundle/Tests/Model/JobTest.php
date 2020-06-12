@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CronBundle\Tests\Model;
+<?php
+
+namespace Draw\Bundle\CronBundle\Tests\Model;
 
 use Draw\Bundle\CronBundle\Model\Job;
 use PHPUnit\Framework\TestCase;

@@ -41,7 +41,7 @@ class Xml
     /**
      * Declares whether the property definition translates to an attribute instead of an element. Default value is false.
      *
-     * @var boolean
+     * @var bool
      * @JMS\Type("boolean")
      */
     public $attribute;
@@ -53,7 +53,7 @@ class Xml
      * Default value is false.
      * The definition takes effect only when defined alongside type being array (outside the items).
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      */

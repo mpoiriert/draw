@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Message;
+<?php
+
+namespace Draw\Bundle\UserBundle\Message;
 
 interface AutoConnectInterface
 {

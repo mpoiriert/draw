@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\DependencyInjection;
+<?php
+
+namespace Draw\Component\Tester\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,9 +24,7 @@ abstract class ExtensionTestCase extends TestCase
     abstract public function createExtension(): Extension;
 
     /**
-     * Return the configuration that will be tested by this extension
-     *
-     * @return array
+     * Return the configuration that will be tested by this extension.
      */
     abstract public function getConfiguration(): array;
 
@@ -32,8 +32,8 @@ abstract class ExtensionTestCase extends TestCase
 
     protected function removeProvidedService(array $idsToRemove, iterable $providedServices): iterable
     {
-        foreach($providedServices as $providedService) {
-            if(!in_array($providedService[0], $idsToRemove)) {
+        foreach ($providedServices as $providedService) {
+            if (!in_array($providedService[0], $idsToRemove)) {
                 yield $providedService;
             }
         }
@@ -42,7 +42,7 @@ abstract class ExtensionTestCase extends TestCase
     public function setUp(): void
     {
         $this->extension = $this->createExtension();
-        if (self::$containerBuilder === null) {
+        if (null === self::$containerBuilder) {
             self::$containerBuilder = $this->load($this->getConfiguration());
         }
     }
@@ -57,7 +57,6 @@ abstract class ExtensionTestCase extends TestCase
     /**
      * @dataProvider provideTestHasServiceDefinition
      *
-     * @param string $id
      * @param string $aliasOf If the id is a alias it's a alias of which service ?
      */
     public function testHasServiceDefinition(string $id, string $aliasOf = null)
@@ -123,12 +122,12 @@ abstract class ExtensionTestCase extends TestCase
 
     /**
      * @param array $config The configuration will be pass as Extension::load([$config])
-     * @return ContainerBuilder
      */
     protected function load(array $config): ContainerBuilder
     {
         $containerBuilder = new ContainerBuilder();
         $this->extension->load([$config], $containerBuilder);
+
         return $containerBuilder;
     }
 }

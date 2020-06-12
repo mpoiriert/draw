@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\Listener;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\Listener;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DomCrawler\Crawler;
@@ -25,12 +27,13 @@ class EmailEventListener implements EventSubscriberInterface
         return [
             MessageEvent::class => [
                 ['composeMessage', 200],
-                ['assignSubjectFromHtmlTitle', -2]
-            ]
+                ['assignSubjectFromHtmlTitle', -2],
+            ],
         ];
     }
 
-    public function __construct(ContainerInterface $serviceLocator) {
+    public function __construct(ContainerInterface $serviceLocator)
+    {
         $this->serviceLocator = $serviceLocator;
     }
 
@@ -42,7 +45,7 @@ class EmailEventListener implements EventSubscriberInterface
 
     public function getWriters(string $email = null)
     {
-        if($email === null) {
+        if (null === $email) {
             return null;
         }
 
@@ -50,7 +53,7 @@ class EmailEventListener implements EventSubscriberInterface
             return [];
         }
 
-        if(!isset($this->sortedWriters[$email])) {
+        if (!isset($this->sortedWriters[$email])) {
             $this->sortWriters($email);
         }
 
@@ -66,11 +69,11 @@ class EmailEventListener implements EventSubscriberInterface
     public function composeMessage(MessageEvent $messageEvent)
     {
         $message = $messageEvent->getMessage();
-        if(!$message instanceof Message) {
+        if (!$message instanceof Message) {
             return;
         }
 
-        if($message->getHeaders()->has('X-DrawPostOffice')) {
+        if ($message->getHeaders()->has('X-DrawPostOffice')) {
             return;
         }
 
@@ -78,8 +81,8 @@ class EmailEventListener implements EventSubscriberInterface
 
         $envelope = $messageEvent->getEnvelope();
 
-        foreach($this->getTypes($message) as $type) {
-            foreach($this->getWriters($type) as $writer) {
+        foreach ($this->getTypes($message) as $type) {
+            foreach ($this->getWriters($type) as $writer) {
                 list($writerName, $writerMethod) = $writer;
                 $service = $this->serviceLocator->get($writerName);
                 call_user_func([$service, $writerMethod], $message, $envelope);
@@ -90,11 +93,11 @@ class EmailEventListener implements EventSubscriberInterface
     public function assignSubjectFromHtmlTitle(MessageEvent $messageEvent)
     {
         $message = $messageEvent->getMessage();
-        if(!$message instanceof Email) {
+        if (!$message instanceof Email) {
             return;
         }
 
-        switch(true) {
+        switch (true) {
             case !($body = $message->getHtmlBody()):
             case !count($crawler = (new Crawler($body))->filter('html > head > title')->first()):
             case !($subject = $crawler->text()):

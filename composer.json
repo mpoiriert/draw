@@ -36,7 +36,8 @@
         "symfony/security": "^4.3",
         "symfony/translation": "^4.3",
         "symfony/validator": "^3.4|^4.3|^5.0",
-        "symfony/yaml": "*"
+        "symfony/yaml": "*",
+        "friendsofphp/php-cs-fixer": "^2.16"
     },
     "require-dev": {
         "doctrine/common": "^2.12",

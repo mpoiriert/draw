@@ -1,24 +1,26 @@
-<?php namespace Draw\Component\OpenApi\Tests\Extraction\Extractor;
+<?php
+
+namespace Draw\Component\OpenApi\Tests\Extraction\Extractor;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
-use Draw\Component\OpenApi\Schema\Schema;
 use Draw\Component\OpenApi\OpenApi;
+use Draw\Component\OpenApi\Schema\Schema;
 use PHPUnit\Framework\TestCase;
 
 class TypeSchemaExtractorTest extends TestCase
 {
     public function provideTestCanExtract()
     {
-        return array(
-            array('string', null, false),
-            array(null, new Schema(), false),
-            array('string', new Schema(), true),
-            array('string[]', new Schema(), true),
-            array(new Schema(), new Schema(), false),
-        );
+        return [
+            ['string', null, false],
+            [null, new Schema(), false],
+            ['string', new Schema(), true],
+            ['string[]', new Schema(), true],
+            [new Schema(), new Schema(), false],
+        ];
     }
 
     /**
@@ -56,22 +58,22 @@ class TypeSchemaExtractorTest extends TestCase
 
         $schema = $context->getRootSchema();
 
-        $schema->addDefinition("fake-string", $modelSchema = new Schema());
-        $extractor->extract("string", $modelSchema, $context);
+        $schema->addDefinition('fake-string', $modelSchema = new Schema());
+        $extractor->extract('string', $modelSchema, $context);
 
-        $schema->addDefinition("fake-strings", $modelSchema = new Schema());
-        $extractor->extract("string[]", $modelSchema, $context);
+        $schema->addDefinition('fake-strings', $modelSchema = new Schema());
+        $extractor->extract('string[]', $modelSchema, $context);
 
-        $schema->addDefinition("fake-strings", $modelSchema = new Schema());
-        $extractor->extract("string[]", $modelSchema, $context);
+        $schema->addDefinition('fake-strings', $modelSchema = new Schema());
+        $extractor->extract('string[]', $modelSchema, $context);
 
-        $schema->addDefinition("object", $modelSchema = new Schema());
+        $schema->addDefinition('object', $modelSchema = new Schema());
         $extractor->extract(TypeExtractorStubModel::class, $modelSchema, $context);
 
         $jsonSchema = $context->getOpenApi()->dump($context->getRootSchema(), false);
 
         $this->assertJsonStringEqualsJsonString(
-            file_get_contents(__DIR__ . '/fixture/typeSchemaExtractorTestExtract.json'),
+            file_get_contents(__DIR__.'/fixture/typeSchemaExtractorTestExtract.json'),
             $jsonSchema
         );
     }
@@ -87,5 +89,4 @@ class TypeSchemaExtractorTest extends TestCase
 
 class TypeExtractorStubModel
 {
-
 }

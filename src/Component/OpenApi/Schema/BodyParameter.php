@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Annotation
@@ -24,6 +24,6 @@ class BodyParameter extends BaseParameter
 
     public function __construct()
     {
-        $this->name = "body";
+        $this->name = 'body';
     }
-} 
+}

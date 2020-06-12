@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @see https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#headerObject
@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation as JMS;
  *
  * @Annotation
  */
-class Header 
+class Header
 {
     /**
      * A short description of the header.
@@ -24,7 +24,7 @@ class Header
     public $description;
 
     /**
-     * The type of the object. The value MUST be one of "string",
+     * The type of the object. The value MUST be one of "string",.
      *
      * @var string
      *
@@ -55,7 +55,7 @@ class Header
     public $items;
 
     /**
-     * Determines the format of the array if type array is used. Possible values are:
+     * Determines the format of the array if type array is used. Possible values are:.
      *
      * csv - comma separated values foo,bar.
      * ssv - space separated values foo bar.
@@ -78,7 +78,7 @@ class Header
      *
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor101.
      *
-     * @var Mixed
+     * @var mixed
      *
      * @JMS\Type("Draw\Component\OpenApi\Schema\Mixed")
      */
@@ -87,7 +87,7 @@ class Header
     /**
      * @see  http://json-schema.org/latest/json-schema-validation.html#anchor17
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      */
@@ -96,7 +96,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor17
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("exclusiveMaximum")
@@ -106,7 +106,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      */
@@ -115,7 +115,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("exclusiveMinimum")
@@ -125,7 +125,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor26
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("maxLength")
@@ -135,7 +135,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor29
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("minLength")
@@ -154,7 +154,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor42
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("maxItems")
@@ -164,7 +164,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor45
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("minItems")
@@ -174,7 +174,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor49
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("uniqueItems")
@@ -184,7 +184,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor76
      *
-     * @var Mixed[]
+     * @var mixed[]
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\Mixed>")
      */
@@ -193,7 +193,7 @@ class Header
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor14
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("multipleOf")
@@ -208,4 +208,4 @@ class Header
         $this->default = Mixed::convert($this->default);
         $this->enum = Mixed::convert($this->enum, true);
     }
-} 
+}

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Command;
+<?php
+
+namespace Draw\Component\Tester\Command;
 
 use PHPUnit\Framework\Assert;
 use ReflectionClass;
@@ -18,7 +20,7 @@ class GenerateTraitCommand extends Command
                 'assertMethodsFilePath',
                 InputArgument::OPTIONAL,
                 'The file path where the methods configuration are.',
-                __DIR__ . '/../Resources/config/assert_methods.json'
+                __DIR__.'/../Resources/config/assert_methods.json'
             );
     }
 
@@ -51,8 +53,8 @@ trait AssertTrait
     abstract public function getData();
 ';
 
-        foreach($methods as $methodName => $information) {
-            if($information['ignore']) {
+        foreach ($methods as $methodName => $information) {
+            if ($information['ignore']) {
                 continue;
             }
             $method = $reflectionClass->getMethod($methodName);
@@ -61,48 +63,48 @@ trait AssertTrait
 
             $callParameters = [];
             $parameters = [];
-            foreach($method->getParameters() as $parameter) {
-                if($information['dataParameter'] === $parameter->name) {
+            foreach ($method->getParameters() as $parameter) {
+                if ($information['dataParameter'] === $parameter->name) {
                     $callParameters[] = '$this->getData()';
                     continue;
                 }
                 $parameterString = '';
-                if(method_exists($parameter, 'hasType') && $parameter->hasType()) {
-                    $parameterString .= $parameter->getType() . ' ';
+                if (method_exists($parameter, 'hasType') && $parameter->hasType()) {
+                    $parameterString .= $parameter->getType().' ';
                 }
-                $parameterString .= '$' . $parameter->name;
+                $parameterString .= '$'.$parameter->name;
 
-                if($parameter->isDefaultValueAvailable()) {
-                    $parameterString .= ' = ' . var_export($parameter->getDefaultValue(), true);
+                if ($parameter->isDefaultValueAvailable()) {
+                    $parameterString .= ' = '.var_export($parameter->getDefaultValue(), true);
                 }
                 $parameters[] = $parameterString;
-                $callParameters[] = '$' . $parameter->name;
+                $callParameters[] = '$'.$parameter->name;
             }
 
             $callParametersString = implode(', ', $callParameters);
             $parametersString = implode(', ', $parameters);
 
             $docCommentLines = [];
-            foreach(explode("\n", $docComment) as $line) {
-                if(strpos($line, '$' . $information['dataParameter']) !== false) {
-                    if(strpos($line, '@param') !== false) {
+            foreach (explode("\n", $docComment) as $line) {
+                if (false !== strpos($line, '$'.$information['dataParameter'])) {
+                    if (false !== strpos($line, '@param')) {
                         continue;
                     }
                 }
 
-                if(strpos($line, '@throws') !== false) {
+                if (false !== strpos($line, '@throws')) {
                     continue;
                 }
 
                 $docCommentLines[] = $line;
             }
 
-            if(count($docCommentLines) == 1) {
+            if (1 == count($docCommentLines)) {
                 $docCommentLines[0] = '/**';
                 $docCommentLines[1] = '';
             }
 
-            $docCommentLines[count($docCommentLines) -1] = '     * @return $this';
+            $docCommentLines[count($docCommentLines) - 1] = '     * @return $this';
             $docCommentLines[] = '     */';
 
             $correctedDocComment = implode("\n", $docCommentLines);
@@ -119,9 +121,9 @@ trait AssertTrait
 ";
         }
 
-        $class .= "
-}";
+        $class .= '
+}';
 
-        file_put_contents(__DIR__ . '/../AssertTrait.php', $class);
+        file_put_contents(__DIR__.'/../AssertTrait.php', $class);
     }
 }

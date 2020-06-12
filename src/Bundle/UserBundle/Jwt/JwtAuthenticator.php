@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Jwt;
+<?php
+
+namespace Draw\Bundle\UserBundle\Jwt;
 
 use Firebase\JWT\JWT;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -49,7 +51,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 
     public function supports(Request $request)
     {
-        return $this->getToken($request) !== null;
+        return null !== $this->getToken($request);
     }
 
     public function encode(UserInterface $user, $expiration = '+ 7 days'): string
@@ -57,7 +59,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         return JWT::encode(
             [
                 'id' => $user->getId(),
-                'exp' => (new \DateTime($expiration))->getTimestamp()
+                'exp' => (new \DateTime($expiration))->getTimestamp(),
             ],
             $this->key,
             $this->algorithm
@@ -86,7 +88,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
         return [
-            'token' => $this->getToken($request)
+            'token' => $this->getToken($request),
         ];
     }
 
@@ -123,10 +125,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        throw new HttpException(
-            Response::HTTP_FORBIDDEN,
-            $this->translate($exception->getMessageKey(), $exception->getMessageData())
-        );
+        throw new HttpException(Response::HTTP_FORBIDDEN, $this->translate($exception->getMessageKey(), $exception->getMessageData()));
     }
 
     private function translate($message, array $data = [])
@@ -141,7 +140,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
     public function start(Request $request, AuthenticationException $authException = null)
     {
         $data = [
-            'message' => 'Authentication Required'
+            'message' => 'Authentication Required',
         ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);

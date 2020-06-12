@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations\Button;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations\Button;
 
 /**
  * @Annotation
@@ -14,7 +16,7 @@ class ButtonSave extends Button
                 'style' => 'flat-button',
                 'color' => 'primary',
                 'behaviours' => ['submit', 'save'],
-                'thenList' => ['edit']
+                'thenList' => ['edit'],
             ],
             $values
         );

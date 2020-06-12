@@ -1,11 +1,13 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Tests\Listener;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Tests\Listener;
 
 use Draw\Bundle\OpenApiBundle\Tests\Mock\Controller\TestController;
 use Draw\Bundle\OpenApiBundle\Tests\TestCase;
 
 /**
  * This is a integration test but mainly to test the ResponseSerializerSubscriberTest.
- * It base itself on the configuration of the AppKernel and the Mock TestController
+ * It base itself on the configuration of the AppKernel and the Mock TestController.
  */
 class ResponseSerializerSubscriberTest extends TestCase
 {

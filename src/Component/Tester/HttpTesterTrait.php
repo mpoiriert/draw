@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester;
+<?php
+
+namespace Draw\Component\Tester;
 
 use Draw\Component\Tester\Http\ClientInterface;
 
@@ -11,7 +13,7 @@ trait HttpTesterTrait
 
     public function httpTester(): ClientInterface
     {
-        if (static::$httpTesterClient === null) {
+        if (null === static::$httpTesterClient) {
             static::$httpTesterClient = $this->createHttpTesterClient();
         }
 

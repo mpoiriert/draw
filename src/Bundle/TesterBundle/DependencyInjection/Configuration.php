@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\TesterBundle\DependencyInjection;
 
 use Draw\Component\Profiling\ProfilerCoordinator;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -26,6 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+
         return $treeBuilder;
     }
 }

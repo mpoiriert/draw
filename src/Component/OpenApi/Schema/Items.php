@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Martin Poirier Théoret <mpoiriert@gmail.com>
@@ -62,7 +62,7 @@ class Items
      *
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor101
      *
-     * @var Mixed
+     * @var mixed
      *
      * @JMS\Type("Draw\Component\OpenApi\Schema\Mixed")
      */
@@ -71,7 +71,7 @@ class Items
     /**
      * @see  http://json-schema.org/latest/json-schema-validation.html#anchor17
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      */
@@ -80,7 +80,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor17
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("exclusiveMaximum")
@@ -90,7 +90,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      */
@@ -99,7 +99,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("exclusiveMinimum")
@@ -109,7 +109,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor26
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("maxLength")
@@ -119,7 +119,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor29
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("minLength")
@@ -138,7 +138,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor42
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("maxItems")
@@ -148,7 +148,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor45
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("minItems")
@@ -158,7 +158,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor49
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("uniqueItems")
@@ -168,7 +168,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor76
      *
-     * @var Mixed[]
+     * @var mixed[]
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\Mixed>")
      */
@@ -177,7 +177,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor14
      *
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("multipleOf")

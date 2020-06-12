@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Tests\Controller;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Tests\Controller;
 
 use Draw\Bundle\OpenApiBundle\Tests\TestCase;
 use Draw\Component\Tester\Data\AgainstJsonFileTester;
@@ -20,7 +22,7 @@ class OpenApiControllerTest extends TestCase
             ->assertStatus(200)
             ->toJsonDataTester()
             ->test(
-                new AgainstJsonFileTester(__DIR__ . '/fixtures/OpenApiControllerTest_testApiDocAction_json.json')
+                new AgainstJsonFileTester(__DIR__.'/fixtures/OpenApiControllerTest_testApiDocAction_json.json')
             );
     }
 }

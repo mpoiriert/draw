@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Entity;
+<?php
+
+namespace Draw\Bundle\UserBundle\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -9,7 +11,7 @@ interface SecurityUserInterface extends UserInterface
     public function getPlainPassword(): ?string;
 
     /**
-     * Set the the plain (not encrypted) password to replace the current password upon save
+     * Set the the plain (not encrypted) password to replace the current password upon save.
      *
      * @param string $plainPassword The new password
      */

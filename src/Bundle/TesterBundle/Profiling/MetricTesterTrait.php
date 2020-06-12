@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\Profiling;
+<?php
+
+namespace Draw\Bundle\TesterBundle\Profiling;
 
 use Draw\Bundle\TesterBundle\Http\RequestExecutioner;
 use Draw\Component\Profiling\ProfilerCoordinator;
@@ -20,7 +22,7 @@ trait MetricTesterTrait
 
         $requestExecutioner = $this->httpTester()->getRequestExecutioner();
 
-        if(!$requestExecutioner instanceof RequestExecutioner) {
+        if (!$requestExecutioner instanceof RequestExecutioner) {
             Assert::fail(sprintf(
                 'Incompatible Request Executioner. Make sure your request executioner is of type [%s].',
                 RequestExecutioner::class
@@ -31,7 +33,7 @@ trait MetricTesterTrait
             Assert::fail('No request executed to assert metrics.');
         }
 
-        if(!$lastBrowser instanceof KernelBrowser) {
+        if (!$lastBrowser instanceof KernelBrowser) {
             Assert::fail(sprintf(
                 'Incompatible Browser. Make sure the Last Browser if of type [%s].',
                 KernelBrowser::class

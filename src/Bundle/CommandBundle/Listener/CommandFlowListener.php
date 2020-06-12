@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Listener;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Listener;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\MasterSlaveConnection;
@@ -23,7 +25,7 @@ class CommandFlowListener implements EventSubscriberInterface
         'help',
         'doctrine:database:drop',
         'doctrine:database:create',
-        'cache:clear'
+        'cache:clear',
     ];
 
     /**
@@ -37,10 +39,10 @@ class CommandFlowListener implements EventSubscriberInterface
             Event\ConsoleCommandEvent::class => [
                 ['addOptions', 255],
                 ['setIgnoreFlag', -1],
-                ['logCommandStart', 0]
+                ['logCommandStart', 0],
             ],
             Event\ConsoleTerminateEvent::class => ['logCommandTerminate'],
-            Event\ConsoleErrorEvent::class => ['logCommandError']
+            Event\ConsoleErrorEvent::class => ['logCommandError'],
         ];
     }
 
@@ -71,26 +73,31 @@ class CommandFlowListener implements EventSubscriberInterface
 
         if (in_array($commandName, $this->commandsToIgnore)) {
             $option->setDefault(true);
+
             return;
         }
 
         if (!$consoleCommandEvent->commandShouldRun()) {
             $option->setDefault(true);
+
             return;
         }
 
         if ($consoleCommandEvent->getInput()->getOption('help')) {
             $option->setDefault(true);
+
             return;
         }
 
         try {
             if (!$this->connection->getSchemaManager()->tablesExist(['command__execution'])) {
                 $option->setDefault(true);
+
                 return;
             }
         } catch (DBALException $exception) {
             $option->setDefault(true);
+
             return;
         }
     }
@@ -204,11 +211,11 @@ SQL;
 
         $options = array_filter($input->getOptions(), function ($value) {
             // We want to keep 0 value
-            return $value !== false && $value !== null;
+            return false !== $value && null !== $value;
         });
 
         foreach ($options as $key => $value) {
-            $parameters['--' . $key] = $value;
+            $parameters['--'.$key] = $value;
         }
 
         $date = date('Y-m-d H:i:s');
@@ -226,7 +233,7 @@ SQL;
                     'updated_at' => $date,
                     'output' => '',
                     'state' => Execution::STATE_STARTED,
-                    'input' => json_encode($parameters)
+                    'input' => json_encode($parameters),
                 ]
             );
 

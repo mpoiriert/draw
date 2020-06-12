@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Application;
+<?php
+
+namespace Draw\Component\Tester\Application;
 
 use Draw\Component\Tester\DataTester;
 
@@ -24,12 +26,12 @@ class CommandDataTester
     }
 
     /**
-     * @param string $display
      * @return CommandDataTester
      */
     public function setDisplay(string $display)
     {
         $this->display = $display;
+
         return $this;
     }
 
@@ -42,12 +44,12 @@ class CommandDataTester
     }
 
     /**
-     * @param int $statusCode
      * @return CommandDataTester
      */
     public function setStatusCode(int $statusCode)
     {
         $this->statusCode = $statusCode;
+
         return $this;
     }
 
@@ -60,12 +62,12 @@ class CommandDataTester
     }
 
     /**
-     * @param string $errorOutput
      * @return CommandDataTester
      */
     public function setErrorOutput(string $errorOutput)
     {
         $this->errorOutput = $errorOutput;
+
         return $this;
     }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Feedback;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Feedback;
 
 use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 use JsonSerializable;
@@ -20,7 +22,7 @@ class CloseDialog implements FeedbackInterface, JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id' => $this->id
+            'id' => $this->id,
         ];
     }
 }

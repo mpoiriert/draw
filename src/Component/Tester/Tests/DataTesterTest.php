@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests;
+<?php
+
+namespace Draw\Component\Tester\Tests;
 
 use Draw\Component\Tester\DataTester;
 use PHPUnit\Framework\TestCase;
@@ -15,10 +17,9 @@ class DataTesterTest extends TestCase
         );
     }
 
-
     public function testAssertPathIsReadable()
     {
-        $tester = new DataTester((object)["key" => "value"]);
+        $tester = new DataTester((object) ['key' => 'value']);
 
         $this->assertSame(
             $tester,
@@ -28,7 +29,7 @@ class DataTesterTest extends TestCase
 
     public function testPath()
     {
-        $tester = new DataTester((object)["key" => "value"]);
+        $tester = new DataTester((object) ['key' => 'value']);
 
         $this->assertNotSame(
             $tester,
@@ -73,7 +74,7 @@ class DataTesterTest extends TestCase
                 function (DataTester $tester) use (&$hasBeenCalled) {
                     // To remove the warning of the ide we use the variable
                     // assigning true would have been enough
-                    $hasBeenCalled = $tester !== null;
+                    $hasBeenCalled = null !== $tester;
                 }
             )
         );
@@ -89,7 +90,7 @@ class DataTesterTest extends TestCase
     {
         $users = [
             ['firstName' => 'Martin', 'active' => true, 'referral' => 'Google'],
-            ['firstName' => 'Julie', 'active' => false]
+            ['firstName' => 'Julie', 'active' => false],
         ];
 
         $callbackCount = 0;
@@ -100,7 +101,7 @@ class DataTesterTest extends TestCase
             $tester,
             $tester->each(
                 function (DataTester $tester) use (&$callbackCount) {
-                    $callbackCount++;
+                    ++$callbackCount;
                 }
             )
         );

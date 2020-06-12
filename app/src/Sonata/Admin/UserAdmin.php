@@ -1,4 +1,6 @@
-<?php namespace App\Sonata\Admin;
+<?php
+
+namespace App\Sonata\Admin;
 
 use KunicMarko\SonataAutoConfigureBundle\Annotation\AdminOptions;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -29,14 +31,11 @@ class UserAdmin extends AbstractAdmin
                         'show' => [],
                         'edit' => [],
                         'delete' => [],
-                    ]
+                    ],
                 ]
             );
     }
 
-    /**
-     * @param FormMapper $formMapper
-     */
     protected function configureFormFields(FormMapper $formMapper): void
     {
         $formMapper

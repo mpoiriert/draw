@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Listener;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Listener;
 
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Breadcrumb;
@@ -35,22 +37,22 @@ class BreadcrumbSubscriber implements EventSubscriberInterface
             }
             $breadcrumb = $operation->getVendorData()['x-draw-dashboard-breadcrumb'] ?? null;
             if (!$breadcrumb instanceof Breadcrumb) {
-                if(!$breadcrumbs || !$autoCreateParent) {
+                if (!$breadcrumbs || !$autoCreateParent) {
                     break;
                 }
                 $autoCreateParent = false;
                 $breadcrumb = new Breadcrumb();
             }
 
-            if(!$breadcrumb->getLabel()) {
-                $breadcrumb->setLabel('_breadcrumb.' . $operation->operationId);
+            if (!$breadcrumb->getLabel()) {
+                $breadcrumb->setLabel('_breadcrumb.'.$operation->operationId);
             }
 
             array_unshift(
                 $breadcrumbs,
                 [
                     'label' => $breadcrumb->getLabel(),
-                    'href' => $parentAction->getHref() . '/' . $parentAction->getName()
+                    'href' => $parentAction->getHref().'/'.$parentAction->getName(),
                 ]
             );
 
@@ -59,8 +61,7 @@ class BreadcrumbSubscriber implements EventSubscriberInterface
             }
         } while ($parentAction = $this->actionFinder->findOneByOperationId($parentOperationId));
 
-
-        if ($breadcrumbs && ($action->getTitle() === null)) {
+        if ($breadcrumbs && (null === $action->getTitle())) {
             $action->setTitle($breadcrumbs[count($breadcrumbs) - 1]['label']);
         }
 
@@ -68,7 +69,7 @@ class BreadcrumbSubscriber implements EventSubscriberInterface
             $breadcrumbs,
             [
                 'label' => new Translatable('_breadcrumb.home'),
-                'href' => '/'
+                'href' => '/',
             ]
         );
 

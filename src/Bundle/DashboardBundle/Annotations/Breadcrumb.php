@@ -1,7 +1,9 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
 
-use Draw\Component\OpenApi\Schema\VendorInterface;
+namespace Draw\Bundle\DashboardBundle\Annotations;
+
 use function Draw\Bundle\DashboardBundle\construct;
+use Draw\Component\OpenApi\Schema\VendorInterface;
 
 /**
  * @Annotation

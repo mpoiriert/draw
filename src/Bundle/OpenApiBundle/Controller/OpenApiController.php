@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Controller;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Controller;
 
 use Draw\Bundle\OpenApiBundle\Extractor\CacheResourceExtractor;
 use Draw\Component\OpenApi\OpenApi;
@@ -35,7 +37,7 @@ class OpenApiController
         Request $request,
         UrlGeneratorInterface $urlGenerator
     ) {
-        if ($request->getRequestFormat() != 'json') {
+        if ('json' != $request->getRequestFormat()) {
             $currentRoute = $request->attributes->get('_route');
             $currentUrl = $urlGenerator
                 ->generate(
@@ -43,7 +45,8 @@ class OpenApiController
                     ['_format' => 'json'],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );
-            return new RedirectResponse('http://petstore.swagger.io/?url=' . $currentUrl);
+
+            return new RedirectResponse('http://petstore.swagger.io/?url='.$currentUrl);
         }
 
         return new JsonResponse(
@@ -53,20 +56,20 @@ class OpenApiController
 
     public function loadOpenApiSchema(): Root
     {
-        if ($this->openApiSchema === null) {
+        if (null === $this->openApiSchema) {
             $debug = $this->parameterBag->get('kernel.debug');
-            $path = $this->parameterBag->get('kernel.cache_dir') . '/openApi.php';
+            $path = $this->parameterBag->get('kernel.cache_dir').'/openApi.php';
             $configCache = new ConfigCache($path, $debug);
             if (!$configCache->isFresh()) {
-                $schema = $this->openApi->extract(json_encode($this->parameterBag->get("draw_open_api.root_schema")));
+                $schema = $this->openApi->extract(json_encode($this->parameterBag->get('draw_open_api.root_schema')));
                 $openApi = $this->openApi->extract($this->container, $schema);
                 $configCache->write(
-                    '<?php return unserialize(' . var_export(serialize($openApi), true) . ');',
+                    '<?php return unserialize('.var_export(serialize($openApi), true).');',
                     $this->cacheResourceExtractor->getResources()
                 );
             }
 
-            $this->openApiSchema = require($path);
+            $this->openApiSchema = require $path;
         }
 
         return $this->openApiSchema;

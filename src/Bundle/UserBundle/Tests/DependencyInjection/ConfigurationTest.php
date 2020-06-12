@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
@@ -31,7 +33,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'enabled' => false,
                 'query_parameters' => [
                     'enabled' => true,
-                    'accepted_keys' => ['_auth']
+                    'accepted_keys' => ['_auth'],
                 ],
             ],
         ];
@@ -41,27 +43,27 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['sonata' => ['user_admin_code' => []]],
-            'Invalid type for path "draw_user.sonata.user_admin_code". Expected scalar, but got array.'
+            'Invalid type for path "draw_user.sonata.user_admin_code". Expected scalar, but got array.',
         ];
 
         yield [
             ['encrypt_password_listener' => 'string-not-supported'],
-            'Invalid type for path "draw_user.encrypt_password_listener". Expected array, but got string'
+            'Invalid type for path "draw_user.encrypt_password_listener". Expected array, but got string',
         ];
 
         yield [
             ['user_entity_class' => []],
-            'Invalid type for path "draw_user.user_entity_class". Expected scalar, but got array.'
+            'Invalid type for path "draw_user.user_entity_class". Expected scalar, but got array.',
         ];
 
         yield [
             ['user_entity_class' => 'InvalidClassName'],
-            'Invalid configuration for path "draw_user.user_entity_class": The class ["InvalidClassName"] for the user entity must exists.'
+            'Invalid configuration for path "draw_user.user_entity_class": The class ["InvalidClassName"] for the user entity must exists.',
         ];
 
         yield [
             ['jwt_authenticator' => []],
-            'The child node "key" at path "draw_user.jwt_authenticator" must be configured.'
+            'The child node "key" at path "draw_user.jwt_authenticator" must be configured.',
         ];
     }
 }

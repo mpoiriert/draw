@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CronBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\CronBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\CronBundle\Command\DumpToFileCommand;
 use Draw\Bundle\CronBundle\CronManager;
@@ -14,7 +16,7 @@ class DrawCronExtensionTest extends ExtensionTestCase
     private static $defaultJobConfiguration = [
         'name' => 'test',
         'command' => 'echo test',
-        'expression' => '* * * * *'
+        'expression' => '* * * * *',
     ];
 
     public function createExtension(): Extension
@@ -44,8 +46,8 @@ class DrawCronExtensionTest extends ExtensionTestCase
     {
         $containerBuilder = $this->load([
             'jobs' => [
-                self::$defaultJobConfiguration
-            ]
+                self::$defaultJobConfiguration,
+            ],
         ]);
 
         $this->assertJobDefinition(
@@ -55,8 +57,8 @@ class DrawCronExtensionTest extends ExtensionTestCase
                 + [
                     'output' => '>/dev/null 2>&1',
                     'enabled' => true,
-                    'description' => null
-                ]
+                    'description' => null,
+                ],
             ]//Default value of the configuration
         );
     }
@@ -68,8 +70,8 @@ class DrawCronExtensionTest extends ExtensionTestCase
 
         $containerBuilder = $this->load([
             'jobs' => [
-                $jobConfiguration
-            ]
+                $jobConfiguration,
+            ],
         ]);
 
         $this->assertJobDefinition(
@@ -98,7 +100,7 @@ class DrawCronExtensionTest extends ExtensionTestCase
                     $jobConfiguration['command'],
                     $jobConfiguration['expression'],
                     $jobConfiguration['enabled'],
-                    $jobConfiguration['description']
+                    $jobConfiguration['description'],
                 ],
                 $jobDefinition->getArguments()
             );

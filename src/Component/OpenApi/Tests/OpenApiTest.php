@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Tests;
+<?php
+
+namespace Draw\Component\OpenApi\Tests;
 
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
@@ -8,13 +10,14 @@ class OpenApiTest extends TestCase
 {
     public function provideTestExtractSwaggerSchema()
     {
-        foreach(glob(__DIR__ . '/fixture/schema/*.json') as $file) {
+        foreach (glob(__DIR__.'/fixture/schema/*.json') as $file) {
             yield basename($file) => [$file];
         }
     }
 
     /**
      * @dataProvider provideTestExtractSwaggerSchema
+     *
      * @param $file
      */
     public function testExtractSwaggerSchema($file)

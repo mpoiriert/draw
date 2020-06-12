@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle;
 
 use Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler\ExtractorCompilerPass;
 use Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler\JmsTypeHandlerCompilerPass;

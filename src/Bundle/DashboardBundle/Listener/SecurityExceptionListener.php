@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Listener;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Listener;
 
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Feedback\DefaultHeader;
@@ -16,7 +18,7 @@ class SecurityExceptionListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AuthenticationFailureEvent::class => ['handleAuthenticationFailure']
+            AuthenticationFailureEvent::class => ['handleAuthenticationFailure'],
         ];
     }
 

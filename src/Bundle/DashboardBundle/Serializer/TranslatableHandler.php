@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Serializer;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Serializer;
 
 use Draw\Bundle\DashboardBundle\Annotations\Translatable;
 use JMS\Serializer\Context;
@@ -19,7 +21,7 @@ class TranslatableHandler implements SubscribingHandlerInterface
                 'format' => 'json',
                 'type' => Translatable::class,
                 'method' => 'serializeTranslatableToJson',
-            ]
+            ],
         ];
     }
 
@@ -34,7 +36,7 @@ class TranslatableHandler implements SubscribingHandlerInterface
         array $type,
         Context $context
     ) {
-        if ($translatable === null || empty($translatable->getToken())) {
+        if (null === $translatable || empty($translatable->getToken())) {
             return null;
         }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http\Request;
+<?php
+
+namespace Draw\Component\Tester\Http\Request;
 
 use function GuzzleHttp\Psr7\parse_request;
 
@@ -26,18 +28,19 @@ class BodyParser
     {
         $results = [
             'post' => [],
-            'files' => []
+            'files' => [],
         ];
 
-        if(strpos($contentType, 'application/x-www-form-urlencoded') !== false) {
+        if (false !== strpos($contentType, 'application/x-www-form-urlencoded')) {
             parse_str($body, $post);
             $results['post'] = $post;
+
             return $results;
         }
 
         preg_match('/boundary=(.*)$/', $contentType, $matches);
 
-        if(!count($matches) || !strlen($matches[1])) {
+        if (!count($matches) || !strlen($matches[1])) {
             return $results;
         }
 
@@ -47,12 +50,12 @@ class BodyParser
         $blocks = preg_split("/-+$boundary/", $body);
         array_pop($blocks);
 
-        foreach($blocks as $content) {
+        foreach ($blocks as $content) {
             if (empty($content)) {
                 continue;
             }
 
-            $request = parse_request("GET /fake-start-line HTTP/1.1" . $content);
+            $request = parse_request('GET /fake-start-line HTTP/1.1'.$content);
 
             $contentDisposition = $this->parseContentDisposition($request->getHeaderLine('Content-Disposition'));
 
@@ -64,7 +67,7 @@ class BodyParser
                     $inputName = $contentDisposition['data']['name'];
                     switch ($contentType) {
                         case '':
-                            $results['post'][] = $inputName . '=' . urlencode($content);
+                            $results['post'][] = $inputName.'='.urlencode($content);
                             break;
                         default:
                             $fileEntry = $this->createFileEntry(
@@ -93,8 +96,8 @@ class BodyParser
         $parts = array_map('trim', $parts);
         $type = array_shift($parts);
         $data = [];
-        if($parts) {
-            foreach($parts as $keyValue) {
+        if ($parts) {
+            foreach ($parts as $keyValue) {
                 list($key, $value) = explode('=', $keyValue);
                 $data[$key] = trim($value, '"');
             }
@@ -108,18 +111,18 @@ class BodyParser
         $result = [];
         $tmp_name = tempnam($this->tempDirectory, 'draw_');
         $size = file_put_contents($tmp_name, $content);
-        $error = $size === false ? UPLOAD_ERR_CANT_WRITE : UPLOAD_ERR_OK;
+        $error = false === $size ? UPLOAD_ERR_CANT_WRITE : UPLOAD_ERR_OK;
 
-        if(!$error && $this->autoRemoveFileOnShutdown) {
+        if (!$error && $this->autoRemoveFileOnShutdown) {
             register_shutdown_function('unlink', $tmp_name);
         }
 
-        parse_str($inputName . '=temp', $structure);
+        parse_str($inputName.'=temp', $structure);
         $data = compact('name', 'type', 'tmp_name', 'error', 'size');
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $tempArray = $structure;
-            array_walk_recursive($tempArray, function(&$temp) use ($value) {
-                if($temp != 'temp') {
+            array_walk_recursive($tempArray, function (&$temp) use ($value) {
+                if ('temp' != $temp) {
                     return;
                 }
                 $temp = $value;

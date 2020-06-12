@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Event;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Event;
 
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Component\OpenApi\Schema\Operation;

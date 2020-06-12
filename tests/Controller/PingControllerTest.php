@@ -1,4 +1,6 @@
-<?php namespace App\Tests\Controller;
+<?php
+
+namespace App\Tests\Controller;
 
 use App\Tests\TestCase;
 use Draw\Component\Profiling\Sql\SqlAssertionBuilder;

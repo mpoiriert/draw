@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Schema;
+<?php
+
+namespace Draw\Component\OpenApi\Schema;
 
 class Mixed
 {
@@ -11,18 +13,19 @@ class Mixed
 
     public static function convert($value, $valueIsArray = false)
     {
-        if($value === null) {
+        if (null === $value) {
             return null;
         }
 
-        if($valueIsArray && is_array($value)) {
-            foreach($value as $key => $data) {
+        if ($valueIsArray && is_array($value)) {
+            foreach ($value as $key => $data) {
                 $value[$key] = static::convert($data);
             }
+
             return $value;
         }
 
-        if($value instanceof Mixed) {
+        if ($value instanceof Mixed) {
             return $value;
         }
 

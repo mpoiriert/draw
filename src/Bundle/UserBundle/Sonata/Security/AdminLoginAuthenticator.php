@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Sonata\Security;
+<?php
+
+namespace Draw\Bundle\UserBundle\Sonata\Security;
 
 use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -52,8 +54,7 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
 
     public function supports(Request $request): bool
     {
-
-        if ($request->getMethod() != 'POST'
+        if ('POST' != $request->getMethod()
             || $request->getPathInfo() != $this->urlGenerator->generate('admin_login')
         ) {
             return false;
@@ -83,8 +84,6 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
 
     /**
      * @param mixed $credentials
-     * @param UserInterface $user
-     * @return bool
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {

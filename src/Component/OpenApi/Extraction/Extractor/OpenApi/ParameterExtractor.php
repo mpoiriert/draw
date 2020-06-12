@@ -24,11 +24,11 @@ class ParameterExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if(!$source instanceof ReflectionMethod) {
+        if (!$source instanceof ReflectionMethod) {
             return false;
         }
 
-        if(!$target instanceof Operation) {
+        if (!$target instanceof Operation) {
             return false;
         }
 
@@ -37,8 +37,8 @@ class ParameterExtractor implements ExtractorInterface
 
     /**
      * @param ReflectionMethod $source
-     * @param Operation $target
-     * @param ExtractionContextInterface $extractionContext
+     * @param Operation        $target
+     *
      * @throws ExtractionImpossibleException
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext)
@@ -47,8 +47,8 @@ class ParameterExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        foreach($this->reader->getMethodAnnotations($source) as $annotation) {
-            if($annotation instanceof BaseParameter) {
+        foreach ($this->reader->getMethodAnnotations($source) as $annotation) {
+            if ($annotation instanceof BaseParameter) {
                 $target->parameters[] = $annotation;
             }
         }

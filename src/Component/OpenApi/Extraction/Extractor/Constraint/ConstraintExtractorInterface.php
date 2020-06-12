@@ -8,15 +8,13 @@ use Symfony\Component\Validator\Constraint;
 interface ConstraintExtractorInterface extends ExtractorInterface
 {
     /**
-     * @param Constraint $constraint
-     * @return boolean
+     * @return bool
      */
     public function supportConstraint(Constraint $constraint);
 
     /**
-     * Extract the constraint information
-     * @param Constraint $constraint
-     * @param ConstraintExtractionContext $context
+     * Extract the constraint information.
+     *
      * @return void
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context);

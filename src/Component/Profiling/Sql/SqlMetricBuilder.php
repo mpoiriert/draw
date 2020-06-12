@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Profiling\Sql;
+<?php
+
+namespace Draw\Component\Profiling\Sql;
 
 use Draw\Component\Profiling\MetricBuilderInterface;
 
@@ -25,6 +27,7 @@ class SqlMetricBuilder implements MetricBuilderInterface
             },
             $this->logs
         );
+
         return new SqlMetric($queries);
     }
 }

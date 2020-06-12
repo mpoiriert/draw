@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\Email;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\Email;
 
 interface EmailWriterInterface
 {

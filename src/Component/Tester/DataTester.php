@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester;
+<?php
+
+namespace Draw\Component\Tester;
 
 use PHPUnit\Framework\Assert;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -9,7 +11,7 @@ class DataTester
     use AssertTrait;
 
     /**
-     * The root data that the asserts will be done on
+     * The root data that the asserts will be done on.
      *
      * @var mixed
      */
@@ -21,17 +23,18 @@ class DataTester
     private static $propertyAccessor;
 
     /**
-     * A private static property accessor so we do not need to initialize it more than once
+     * A private static property accessor so we do not need to initialize it more than once.
      *
      * @return PropertyAccessorInterface
      */
     protected static function getPropertyAccessor()
     {
-        if (self::$propertyAccessor === null) {
+        if (null === self::$propertyAccessor) {
             self::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
                 ->enableExceptionOnInvalidIndex()
                 ->getPropertyAccessor();
         }
+
         return self::$propertyAccessor;
     }
 
@@ -41,7 +44,7 @@ class DataTester
     }
 
     /**
-     * Return the data value of what is currently tested
+     * Return the data value of what is currently tested.
      *
      * @return mixed
      */
@@ -69,10 +72,8 @@ class DataTester
     /**
      * Execute the callable if the path is readable. Useful to test array|object with optional key|property.
      *
-     *
-     *
      * @param $path
-     * @param callable $callable
+     *
      * @return $this
      */
     public function ifPathIsReadable($path, callable $callable)
@@ -85,9 +86,10 @@ class DataTester
     }
 
     /**
-     * Check if a path is readable
+     * Check if a path is readable.
      *
      * @param $path
+     *
      * @return bool
      */
     public function isReadable($path)
@@ -96,9 +98,8 @@ class DataTester
     }
 
     /**
-     * Loop trough the current data and call the callable with a independent tester
+     * Loop trough the current data and call the callable with a independent tester.
      *
-     * @param callable $callable
      * @return $this
      */
     public function each(callable $callable)
@@ -114,6 +115,7 @@ class DataTester
      * Transform the data and return a new instance of Tester with the transformed data.
      *
      * @param callable $callable The callable that will transform the data
+     *
      * @return $this
      */
     public function transform(callable $callable)
@@ -124,6 +126,7 @@ class DataTester
     /**
      * @param $path
      * @param string $message
+     *
      * @return $this
      */
     public function assertPathIsReadable($path, $message = null)
@@ -131,9 +134,8 @@ class DataTester
         Assert::assertTrue(
             $this->isReadable($path),
             $message ?:
-                "Property path is not readable.\nProperty path: " . $path . "\nData:\n" .
-                json_encode($this->data, JSON_PRETTY_PRINT) . "\nBe careful for assoc array and object"
-
+                "Property path is not readable.\nProperty path: ".$path."\nData:\n".
+                json_encode($this->data, JSON_PRETTY_PRINT)."\nBe careful for assoc array and object"
         );
 
         return $this;
@@ -142,6 +144,7 @@ class DataTester
     /**
      * @param $path
      * @param null $message
+     *
      * @return $this
      */
     public function assertPathIsNotReadable($path, $message = null)
@@ -149,8 +152,8 @@ class DataTester
         Assert::assertFalse(
             $this->isReadable($path),
             $message ?:
-                "Property path is readable.\nProperty path: " . $path . "\nData:\n" .
-                json_encode($this->data, JSON_PRETTY_PRINT) . "\nBe careful for assoc array and object"
+                "Property path is readable.\nProperty path: ".$path."\nData:\n".
+                json_encode($this->data, JSON_PRETTY_PRINT)."\nBe careful for assoc array and object"
         );
 
         return $this;
@@ -160,7 +163,6 @@ class DataTester
      * Execute the callable with $this as the parameters.
      * Useful to create reusable test.
      *
-     * @param callable $callable
      * @return $this
      */
     public function test(callable $callable)

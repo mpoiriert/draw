@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CronBundle\Tests\Command;
+<?php
+
+namespace Draw\Bundle\CronBundle\Tests\Command;
 
 use Draw\Bundle\CronBundle\Command\DumpToFileCommand;
 use Draw\Bundle\CronBundle\CronManager;
@@ -19,6 +21,7 @@ class DumpToFileCommandTest extends CommandTestCase
     public function createCommand(): Command
     {
         $this->cronManagerProphecy = $this->prophesize(CronManager::class);
+
         return new DumpToFileCommand($this->cronManagerProphecy->reveal(CronManager::class));
     }
 
@@ -49,7 +52,7 @@ class DumpToFileCommandTest extends CommandTestCase
             ->shouldBeCalledOnce()
             ->willReturn('Output');
 
-        $filePath = sys_get_temp_dir() . '/' . uniqid() . '.txt';
+        $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
         register_shutdown_function('unlink', $filePath);
         $this
             ->execute(['filePath' => $filePath])
@@ -65,7 +68,7 @@ class DumpToFileCommandTest extends CommandTestCase
             ->shouldBeCalledOnce()
             ->willReturn('Output');
 
-        $filePath = sys_get_temp_dir() . '/' . uniqid() . '.txt';
+        $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($filePath, 'Before');
         register_shutdown_function('unlink', $filePath);
         $this
@@ -77,7 +80,7 @@ class DumpToFileCommandTest extends CommandTestCase
 
     public function testExecuteNewFile_noOverrideException()
     {
-        $filePath = sys_get_temp_dir() . '/' . uniqid() . '.txt';
+        $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($filePath, 'Before');
         register_shutdown_function('unlink', $filePath);
 

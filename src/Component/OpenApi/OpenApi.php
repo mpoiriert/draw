@@ -1,11 +1,14 @@
-<?php namespace Draw\Component\OpenApi;
+<?php
+
+namespace Draw\Component\OpenApi;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\RootSchemaExtractor;
+use Draw\Component\OpenApi\Extraction\ExtractorInterface;
+use Draw\Component\OpenApi\Schema\Root as Schema;
 use Draw\Component\OpenApi\Serializer\SerializerHandler;
 use Draw\Component\OpenApi\Serializer\SerializerListener;
 use InvalidArgumentException;
@@ -13,7 +16,6 @@ use JMS\Serializer\EventDispatcher\EventDispatcher;
 use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
-use Draw\Component\OpenApi\Schema\Root as Schema;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validation;
@@ -29,7 +31,7 @@ class OpenApi
     /**
      * @var array
      */
-    private $extractors = array();
+    private $extractors = [];
 
     /**
      * @var EventDispatcherInterface
@@ -42,7 +44,7 @@ class OpenApi
     private $sortedExtractors;
 
     /**
-     * Whether or not we want to clean the schema on dump
+     * Whether or not we want to clean the schema on dump.
      *
      * @var bool
      */
@@ -55,7 +57,7 @@ class OpenApi
 
     public function __construct(SerializerInterface $serializer = null, SchemaCleaner $schemaCleaner = null)
     {
-        if ($serializer === null) {
+        if (null === $serializer) {
             $serializer = SerializerBuilder::create()
                 ->configureListeners(
                     function (EventDispatcher $dispatcher) {
@@ -78,8 +80,6 @@ class OpenApi
 
     /**
      * @required
-     *
-     * @param EventDispatcherInterface|null $eventDispatcher
      */
     public function setEventDispatcher(?EventDispatcherInterface $eventDispatcher)
     {
@@ -109,17 +109,17 @@ class OpenApi
     }
 
     /**
-     * @param Schema $schema
-     * @param boolean $validate
+     * @param bool $validate
+     *
      * @return string
      */
     public function dump(Schema $schema, $validate = true)
     {
-        if($this->eventDispatcher) {
+        if ($this->eventDispatcher) {
             $this->eventDispatcher->dispatch(new PreDumpRootSchemaEvent($schema));
         }
 
-        if($this->cleanOnDump) {
+        if ($this->cleanOnDump) {
             $schema = $this->schemaCleaner->clean($schema);
         }
 
@@ -130,35 +130,32 @@ class OpenApi
         return $this->serializer->serialize($schema, 'json');
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function validate(Schema $schema)
     {
         /** @var ConstraintViolationList $result */
         $result = Validation::createValidatorBuilder()
             ->enableAnnotationMapping(new AnnotationReader())
             ->getValidator()
-            ->validate($schema, null, array(Constraint::DEFAULT_GROUP));
+            ->validate($schema, null, [Constraint::DEFAULT_GROUP]);
 
         if (count($result)) {
-            throw new InvalidArgumentException("" . $result);
+            throw new InvalidArgumentException(''.$result);
         }
     }
 
     /**
      * @param $source
      * @param null $type
-     * @param ExtractionContextInterface|null $extractionContext
+     *
      * @return Schema
      */
     public function extract($source, $type = null, ExtractionContextInterface $extractionContext = null)
     {
-        if ($type === null) {
+        if (null === $type) {
             $type = new Schema();
         }
 
-        if ($extractionContext === null) {
+        if (null === $extractionContext) {
             $extractionContext = new ExtractionContext($this, $type);
         }
 
@@ -176,8 +173,8 @@ class OpenApi
      */
     private function getSortedExtractors()
     {
-        if ($this->sortedExtractors === null) {
-            $this->sortedExtractors = array();
+        if (null === $this->sortedExtractors) {
+            $this->sortedExtractors = [];
             foreach ($this->extractors as $section => $extractors) {
                 ksort($extractors);
                 array_unshift($extractors, $this->sortedExtractors);
@@ -187,4 +184,4 @@ class OpenApi
 
         return $this->sortedExtractors;
     }
-} 
+}

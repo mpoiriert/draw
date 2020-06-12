@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Command;
+<?php
+
+namespace Draw\Component\Tester\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,7 +18,7 @@ class GenerateAssertsDocumentationPageCommand extends Command
                 'assertMethodsFilePath',
                 InputArgument::OPTIONAL,
                 'The file path where the methods configuration are.',
-                __DIR__ . '/../Resources/config/assert_methods.json'
+                __DIR__.'/../Resources/config/assert_methods.json'
             );
     }
 
@@ -47,17 +49,17 @@ that is normally pass trough the **PHPUnit Assert** methods.
 
             $file .= "
 $methodName
-" . str_pad('', strlen($methodName), '^') . "
+".str_pad('', strlen($methodName), '^').'
 
 .. literalinclude:: ../AssertTrait.php
-   :name: assert-" . str_replace('assert', '', $methodName) . "
-   :start-after: //example-start: " . $methodName . "
-   :end-before: //example-end: " . $methodName . "
+   :name: assert-'.str_replace('assert', '', $methodName).'
+   :start-after: //example-start: '.$methodName.'
+   :end-before: //example-end: '.$methodName.'
    :dedent: 4
    :prepend: <?php
-";
+';
         }
 
-        file_put_contents(__DIR__ . '/../docs/asserts.rst', $file);
+        file_put_contents(__DIR__.'/../docs/asserts.rst', $file);
     }
 }

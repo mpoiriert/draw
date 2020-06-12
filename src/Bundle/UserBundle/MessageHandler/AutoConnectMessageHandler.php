@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\MessageHandler;
+<?php
+
+namespace Draw\Bundle\UserBundle\MessageHandler;
 
 use Draw\Bundle\UserBundle\Message\AutoConnectInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;

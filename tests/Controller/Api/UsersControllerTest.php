@@ -1,4 +1,6 @@
-<?php namespace App\Tests\Controller\Api;
+<?php
+
+namespace App\Tests\Controller\Api;
 
 use App\Entity\User;
 use App\Tests\TestCase;
@@ -12,7 +14,7 @@ class UsersControllerTest extends TestCase
      * @beforeClass
      * @afterClass
      */
-    static public function cleanUp()
+    public static function cleanUp()
     {
         static::getService(EntityManagerInterface::class)
             ->createQueryBuilder()
@@ -34,7 +36,7 @@ class UsersControllerTest extends TestCase
             ->toJsonDataTester()
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/UsersControllerTest_testUsersAction_options.json'
+                    __DIR__.'/fixtures/UsersControllerTest_testUsersAction_options.json'
                 )
             );
     }
@@ -47,7 +49,7 @@ class UsersControllerTest extends TestCase
             ->toJsonDataTester()
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/UsersControllerTest_testUsersAction_options_fr.json'
+                    __DIR__.'/fixtures/UsersControllerTest_testUsersAction_options_fr.json'
                 )
             );
     }
@@ -61,11 +63,11 @@ class UsersControllerTest extends TestCase
             ->toJsonDataTester()
             ->test(
                 new AgainstJsonFileTester(
-                    __DIR__ . '/fixtures/UsersControllerTest_testOptionsCreateUser_connected.json',
+                    __DIR__.'/fixtures/UsersControllerTest_testOptionsCreateUser_connected.json',
                     [
-                        "POST.x-draw-dashboard-action.flow.id" => function (DataTester $dataTester) {
+                        'POST.x-draw-dashboard-action.flow.id' => function (DataTester $dataTester) {
                             $dataTester->assertIsString();
-                        }
+                        },
                     ]
                 )
             );
@@ -83,6 +85,7 @@ class UsersControllerTest extends TestCase
     public function testUsersCreateAction()
     {
         $this->connect();
+
         return $this->httpTester()
             ->post(
                 '/api/users',
@@ -90,8 +93,8 @@ class UsersControllerTest extends TestCase
                     'email' => 'test@example.com',
                     'plainPassword' => 'test',
                     'tags' => [
-                        ['id' => 1]
-                    ]
+                        ['id' => 1],
+                    ],
                 ])
             )
             ->assertStatus(200)
@@ -103,22 +106,22 @@ class UsersControllerTest extends TestCase
      * @depends testUsersCreateAction
      *
      * @param $user
+     *
      * @return mixed
      */
     public function testUsersEditAction($user)
     {
         $this->httpTester()
             ->put(
-                '/api/users/' . $user->id,
+                '/api/users/'.$user->id,
                 json_encode([
-                    'tags' => []
+                    'tags' => [],
                 ])
             )
             ->assertStatus(200)
             ->toJsonDataTester()
             ->path('tags')->assertSame([]);
     }
-
 
     /**
      * @depends testUsersCreateAction
@@ -128,7 +131,7 @@ class UsersControllerTest extends TestCase
     public function testUsersDeleteAction($user)
     {
         $this->httpTester()
-            ->delete('/api/users/' . $user->id)
+            ->delete('/api/users/'.$user->id)
             ->assertStatus(204);
     }
 
@@ -138,7 +141,7 @@ class UsersControllerTest extends TestCase
     public function testOptionsDeleteUser($pagers)
     {
         $this->httpTester()
-            ->options('/api/users/' . $pagers->data[0]->id)
+            ->options('/api/users/'.$pagers->data[0]->id)
             ->assertStatus(200);
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Profiling\Tests\Sql;
+<?php
+
+namespace Draw\Component\Profiling\Tests\Sql;
 
 use Draw\Component\Profiling\Sql\SqlLog;
 use PHPUnit\Framework\TestCase;

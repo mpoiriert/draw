@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Sonata\Form;
+<?php
+
+namespace Draw\Bundle\UserBundle\Sonata\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -17,8 +19,8 @@ final class ForgotPasswordForm extends AbstractType
                 [
                     'label' => false,
                     'attr' => [
-                        'placeholder' => 'form.forgot_password.field.email'
-                    ]
+                        'placeholder' => 'form.forgot_password.field.email',
+                    ],
                 ]
             )
             ->add(
@@ -26,7 +28,7 @@ final class ForgotPasswordForm extends AbstractType
                 SubmitType::class,
                 [
                     'label' => 'form.forgot_password.field.submit',
-                    'attr' => ['class' => 'btn-primary']
+                    'attr' => ['class' => 'btn-primary'],
                 ]
             );
     }
@@ -35,7 +37,7 @@ final class ForgotPasswordForm extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'translation_domain' => 'DrawUserBundle'
+                'translation_domain' => 'DrawUserBundle',
             ]);
     }
 }

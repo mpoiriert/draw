@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\Http;
+<?php
+
+namespace Draw\Bundle\TesterBundle\Http;
 
 use Draw\Component\Tester\Http\Client;
 use Draw\Component\Tester\Http\ClientInterface;

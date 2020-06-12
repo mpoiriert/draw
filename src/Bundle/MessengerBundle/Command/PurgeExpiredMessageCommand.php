@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\MessengerBundle\Command;
+<?php
+
+namespace Draw\Bundle\MessengerBundle\Command;
 
 use Draw\Component\Messenger\Transport\ObsoleteMessageAwareInterface;
 use Psr\Container\ContainerInterface;

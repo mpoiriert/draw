@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\EmailWriter;
+<?php
+
+namespace Draw\Bundle\UserBundle\EmailWriter;
 
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\MessengerBundle\Controller\MessageController;
@@ -78,7 +80,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
                         'message_click',
                         [
                             MessageController::MESSAGE_ID_PARAMETER_NAME => $messageId,
-                            'type' => 'reset_password'
+                            'type' => 'reset_password',
                         ],
                         UrlGeneratorInterface::ABSOLUTE_URL
                     );

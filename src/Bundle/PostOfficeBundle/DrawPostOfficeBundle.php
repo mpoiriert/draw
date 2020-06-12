@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle;
 
 use Draw\Bundle\PostOfficeBundle\DependencyInjection\CompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

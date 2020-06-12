@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\Listener;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\Listener;
 
 use Pelago\Emogrifier\CssInliner;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -10,8 +12,7 @@ class EmailCssInlinerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            MessageEvent::class =>
-                ['inlineEmailCss', -1]
+            MessageEvent::class => ['inlineEmailCss', -1],
         ];
     }
 
@@ -19,7 +20,7 @@ class EmailCssInlinerListener implements EventSubscriberInterface
     {
         $message = $event->getMessage();
 
-        if($message instanceof Email && $message->getHtmlBody()) {
+        if ($message instanceof Email && $message->getHtmlBody()) {
             $message->html(CssInliner::fromHtml($message->getHtmlBody())->inlineCss()->render());
         }
     }

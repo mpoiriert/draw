@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Profiling\Tests\Sql;
+<?php
+
+namespace Draw\Component\Profiling\Tests\Sql;
 
 use Draw\Component\Profiling\Sql\SqlAssertionBuilder;
 use Draw\Component\Profiling\Sql\SqlMetric;
@@ -17,17 +19,16 @@ class SqlAssertionBuilderTest extends TestCase
 
     public function provideTestAssertCountEquals()
     {
-        yield [0, new DataTester((object)['sql' => new SqlMetric([])]), false];
-        yield [1, new DataTester((object)['sql' => new SqlMetric(['query'])]), false];
-        yield [1, new DataTester((object)['sql' => new SqlMetric([])]), true];
-        yield [0, new DataTester((object)['sql' => new SqlMetric(['query'])]), true];
+        yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
+        yield [1, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
+        yield [1, new DataTester((object) ['sql' => new SqlMetric([])]), true];
+        yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), true];
     }
 
     /**
      * @dataProvider provideTestAssertCountEquals
      *
      * @param $expectedCount
-     * @param DataTester $dataTester
      * @param $shouldFail
      */
     public function testProvideAssertCountEquals($expectedCount, DataTester $dataTester, $shouldFail)
@@ -38,17 +39,16 @@ class SqlAssertionBuilderTest extends TestCase
 
     public function provideTestAssertCountGreaterThanOrEqual()
     {
-        yield [0, new DataTester((object)['sql' => new SqlMetric([])]), false];
-        yield [0, new DataTester((object)['sql' => new SqlMetric(['query'])]), false];
-        yield [1, new DataTester((object)['sql' => new SqlMetric(['query'])]), false];
-        yield [1, new DataTester((object)['sql' => new SqlMetric([])]), true];
+        yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
+        yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
+        yield [1, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
+        yield [1, new DataTester((object) ['sql' => new SqlMetric([])]), true];
     }
 
     /**
      * @dataProvider provideTestAssertCountGreaterThanOrEqual
      *
      * @param $expectedCount
-     * @param DataTester $dataTester
      * @param $shouldFail
      */
     public function testAssertCountGreaterThanOrEqual($expectedCount, DataTester $dataTester, $shouldFail)
@@ -59,17 +59,16 @@ class SqlAssertionBuilderTest extends TestCase
 
     public function provideTestAssertCountLessThanOrEqual()
     {
-        yield [1, new DataTester((object)['sql' => new SqlMetric([])]), false];
-        yield [0, new DataTester((object)['sql' => new SqlMetric([])]), false];
-        yield [1, new DataTester((object)['sql' => new SqlMetric(['query'])]), false];
-        yield [0, new DataTester((object)['sql' => new SqlMetric(['query'])]), true];
+        yield [1, new DataTester((object) ['sql' => new SqlMetric([])]), false];
+        yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
+        yield [1, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
+        yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), true];
     }
 
     /**
      * @dataProvider provideTestAssertCountLessThanOrEqual
      *
      * @param $expectedCount
-     * @param DataTester $dataTester
      * @param $shouldFail
      */
     public function testAssertCountLessThanOrEqual($expectedCount, DataTester $dataTester, $shouldFail)
@@ -90,7 +89,6 @@ Failed asserting that 2 matches expected 0.');
             ->test(SqlAssertionBuilder::create(0));
     }
 
-
     public function testInvoke_noAssertionException()
     {
         $this->expectException(\RuntimeException::class);
@@ -106,7 +104,6 @@ Failed asserting that 2 matches expected 0.');
         try {
             $this->assertionBuilder->__invoke($dataTester);
         } catch (ExpectationFailedException $exception) {
-
         } finally {
             if ($shouldFail) {
                 $this->assertInstanceOf(ExpectationFailedException::class, $exception);

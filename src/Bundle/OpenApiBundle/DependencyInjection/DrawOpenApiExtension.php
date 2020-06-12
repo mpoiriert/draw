@@ -1,13 +1,15 @@
-<?php namespace Draw\Bundle\OpenApiBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\DependencyInjection;
 
 use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
 use Draw\Bundle\OpenApiBundle\Request\Listener\QueryParameterFetcherSubscriber;
+use Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter;
 use Draw\Bundle\OpenApiBundle\Response\Listener\ApiExceptionSubscriber;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\OpenApi;
-use Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,13 +20,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class DrawOpenApiExtension extends ConfigurableExtension
 {
     /**
-     * @param array $config
-     * @param ContainerBuilder $container
      * @throws \Exception
      */
     public function loadInternal(array $config, ContainerBuilder $container)
     {
-        $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
+        $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new XmlFileLoader($container, $fileLocator);
 
         $this->configOpenApi($config['openApi'], $loader, $container);
@@ -39,7 +39,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
             return;
         }
 
-        $container->setParameter("draw_open_api.root_schema", $config['schema']);
+        $container->setParameter('draw_open_api.root_schema', $config['schema']);
         $container->setParameter(
             'draw_open_api.component_dir',
             dirname((new \ReflectionClass(OpenApi::class))->getFileName())
@@ -86,6 +86,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
     {
         if (!$config['enabled']) {
             $container->removeDefinition(ApiExceptionSubscriber::class);
+
             return;
         }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Serializer;
+<?php
+
+namespace Draw\Component\OpenApi\Serializer;
 
 use Draw\Component\OpenApi\Schema\Mixed;
 use Draw\Component\OpenApi\Schema\SecurityRequirement;
@@ -48,10 +50,6 @@ class SerializerHandler implements SubscribingHandlerInterface
     }
 
     /**
-     * @param JsonSerializationVisitor $visitor
-     * @param SecurityRequirement $securityRequirement
-     * @param array $type
-     * @param Context $context
      * @return mixed
      */
     public function serializeSecurityRequirementToJson(
@@ -64,10 +62,8 @@ class SerializerHandler implements SubscribingHandlerInterface
     }
 
     /**
-     * @param JsonDeserializationVisitor $visitor
      * @param SecurityRequirement $data
-     * @param array $type
-     * @param Context $context
+     *
      * @return SecurityRequirement
      */
     public function deserializeSecurityRequirementToJson(
@@ -78,14 +74,11 @@ class SerializerHandler implements SubscribingHandlerInterface
     ) {
         $securityRequirement = new SecurityRequirement();
         $securityRequirement->setData($data);
+
         return $securityRequirement;
     }
 
     /**
-     * @param JsonSerializationVisitor $visitor
-     * @param Mixed $mixed
-     * @param array $type
-     * @param Context $context
      * @return mixed
      */
     public function serializeMixedToJson(
@@ -98,10 +91,8 @@ class SerializerHandler implements SubscribingHandlerInterface
     }
 
     /**
-     * @param JsonDeserializationVisitor $visitor
      * @param mixed $data
-     * @param array $type
-     * @param Context $context
+     *
      * @return mixed
      */
     public function deserializeMixedToJson(
@@ -114,10 +105,6 @@ class SerializerHandler implements SubscribingHandlerInterface
     }
 
     /**
-     * @param JsonSerializationVisitor $visitor
-     * @param Vendor $vendor
-     * @param array $type
-     * @param Context $context
      * @return mixed
      */
     public function serializeVendorToJson(

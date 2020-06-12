@@ -1,7 +1,9 @@
-<?php namespace Draw\Component\Tester\Http\Cookie;
+<?php
+
+namespace Draw\Component\Tester\Http\Cookie;
 
 /**
- * Set-Cookie object
+ * Set-Cookie object.
  */
 class Cookie
 {
@@ -15,13 +17,13 @@ class Cookie
         'Expires' => null,
         'Secure' => false,
         'Discard' => false,
-        'HttpOnly' => false
+        'HttpOnly' => false,
     ];
     /** @var array Cookie data */
     private $data;
 
     /**
-     * Create a new Cookie object from a string
+     * Create a new Cookie object from a string.
      *
      * @param string $cookie Set-Cookie header string
      *
@@ -59,6 +61,7 @@ class Cookie
             }
             $data[$key] = $value;
         }
+
         return new self($data);
     }
 
@@ -79,16 +82,17 @@ class Cookie
 
     public function __toString()
     {
-        $str = $this->data['Name'] . '=' . $this->data['Value'] . '; ';
+        $str = $this->data['Name'].'='.$this->data['Value'].'; ';
         foreach ($this->data as $k => $v) {
-            if ($k !== 'Name' && $k !== 'Value' && $v !== null && $v !== false) {
-                if ($k === 'Expires') {
-                    $str .= 'Expires=' . gmdate('D, d M Y H:i:s \G\M\T', $v) . '; ';
+            if ('Name' !== $k && 'Value' !== $k && null !== $v && false !== $v) {
+                if ('Expires' === $k) {
+                    $str .= 'Expires='.gmdate('D, d M Y H:i:s \G\M\T', $v).'; ';
                 } else {
-                    $str .= ($v === true ? $k : "{$k}={$v}") . '; ';
+                    $str .= (true === $v ? $k : "{$k}={$v}").'; ';
                 }
             }
         }
+
         return rtrim($str, '; ');
     }
 
@@ -98,7 +102,7 @@ class Cookie
     }
 
     /**
-     * Get the cookie name
+     * Get the cookie name.
      *
      * @return string
      */
@@ -108,7 +112,7 @@ class Cookie
     }
 
     /**
-     * Set the cookie name
+     * Set the cookie name.
      *
      * @param string $name Cookie name
      */
@@ -118,7 +122,7 @@ class Cookie
     }
 
     /**
-     * Get the cookie value
+     * Get the cookie value.
      *
      * @return string
      */
@@ -128,7 +132,7 @@ class Cookie
     }
 
     /**
-     * Set the cookie value
+     * Set the cookie value.
      *
      * @param string $value Cookie value
      */
@@ -138,7 +142,7 @@ class Cookie
     }
 
     /**
-     * Get the domain
+     * Get the domain.
      *
      * @return string|null
      */
@@ -148,7 +152,7 @@ class Cookie
     }
 
     /**
-     * Set the domain of the cookie
+     * Set the domain of the cookie.
      *
      * @param string $domain
      */
@@ -158,7 +162,7 @@ class Cookie
     }
 
     /**
-     * Get the path
+     * Get the path.
      *
      * @return string
      */
@@ -168,7 +172,7 @@ class Cookie
     }
 
     /**
-     * Set the path of the cookie
+     * Set the path of the cookie.
      *
      * @param string $path Path of the cookie
      */
@@ -178,7 +182,7 @@ class Cookie
     }
 
     /**
-     * Maximum lifetime of the cookie in seconds
+     * Maximum lifetime of the cookie in seconds.
      *
      * @return int|null
      */
@@ -188,7 +192,7 @@ class Cookie
     }
 
     /**
-     * Set the max-age of the cookie
+     * Set the max-age of the cookie.
      *
      * @param int $maxAge Max age of the cookie in seconds
      */
@@ -198,7 +202,7 @@ class Cookie
     }
 
     /**
-     * The UNIX timestamp when the cookie Expires
+     * The UNIX timestamp when the cookie Expires.
      *
      * @return mixed
      */
@@ -208,21 +212,21 @@ class Cookie
     }
 
     /**
-     * Set the unix timestamp for which the cookie will expire
+     * Set the unix timestamp for which the cookie will expire.
      *
      * @param int $timestamp Unix timestamp
      */
     public function setExpires($timestamp)
     {
         $this->data['Expires'] = is_numeric($timestamp)
-            ? (int)$timestamp
+            ? (int) $timestamp
             : strtotime($timestamp);
     }
 
     /**
-     * Get whether or not this is a secure cookie
+     * Get whether or not this is a secure cookie.
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function getSecure()
     {
@@ -230,7 +234,7 @@ class Cookie
     }
 
     /**
-     * Set whether or not the cookie is secure
+     * Set whether or not the cookie is secure.
      *
      * @param bool $secure Set to true or false if secure
      */
@@ -240,9 +244,9 @@ class Cookie
     }
 
     /**
-     * Get whether or not this is a session cookie
+     * Get whether or not this is a session cookie.
      *
-     * @return null|bool
+     * @return bool|null
      */
     public function getDiscard()
     {
@@ -250,7 +254,7 @@ class Cookie
     }
 
     /**
-     * Set whether or not this is a session cookie
+     * Set whether or not this is a session cookie.
      *
      * @param bool $discard Set to true or false if this is a session cookie
      */
@@ -260,7 +264,7 @@ class Cookie
     }
 
     /**
-     * Get whether or not this is an HTTP only cookie
+     * Get whether or not this is an HTTP only cookie.
      *
      * @return bool
      */
@@ -270,7 +274,7 @@ class Cookie
     }
 
     /**
-     * Set whether or not this is an HTTP only cookie
+     * Set whether or not this is an HTTP only cookie.
      *
      * @param bool $httpOnly Set to true or false if this is HTTP only
      */
@@ -300,7 +304,7 @@ class Cookie
     {
         $cookiePath = $this->getPath();
         // Match on exact matches or when path is the default empty "/"
-        if ($cookiePath === '/' || $cookiePath == $requestPath) {
+        if ('/' === $cookiePath || $cookiePath == $requestPath) {
             return true;
         }
         // Ensure that the cookie-path is a prefix of the request path.
@@ -308,15 +312,15 @@ class Cookie
             return false;
         }
         // Match if the last character of the cookie-path is "/"
-        if (substr($cookiePath, -1, 1) === '/') {
+        if ('/' === substr($cookiePath, -1, 1)) {
             return true;
         }
         // Match if the first character not included in cookie path is "/"
-        return substr($requestPath, strlen($cookiePath), 1) === '/';
+        return '/' === substr($requestPath, strlen($cookiePath), 1);
     }
 
     /**
-     * Check if the cookie matches a domain value
+     * Check if the cookie matches a domain value.
      *
      * @param string $domain Domain to check against
      *
@@ -336,11 +340,12 @@ class Cookie
         if (filter_var($domain, FILTER_VALIDATE_IP)) {
             return false;
         }
-        return (bool)preg_match('/\.' . preg_quote($cookieDomain) . '$/', $domain);
+
+        return (bool) preg_match('/\.'.preg_quote($cookieDomain).'$/', $domain);
     }
 
     /**
-     * Check if the cookie is expired
+     * Check if the cookie is expired.
      *
      * @return bool
      */
@@ -350,7 +355,7 @@ class Cookie
     }
 
     /**
-     * Check if the cookie is valid according to RFC 6265
+     * Check if the cookie is valid according to RFC 6265.
      *
      * @return bool|string Returns true if valid or an error message if invalid
      */
@@ -367,8 +372,8 @@ class Cookie
             $name)
         ) {
             return 'Cookie name must not contain invalid characters: ASCII '
-                . 'Control characters (0-31;127), space, tab and the '
-                . 'following characters: ()<>@,;:\"/?={}';
+                .'Control characters (0-31;127), space, tab and the '
+                .'following characters: ()<>@,;:\"/?={}';
         }
         // Value must not be empty, but can be 0
         $value = $this->getValue();
@@ -382,6 +387,7 @@ class Cookie
         if (empty($domain) && !is_numeric($domain)) {
             return 'The cookie domain must not be empty';
         }
+
         return true;
     }
 }

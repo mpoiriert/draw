@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Tests\Controller;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Tests\Controller;
 
 use App\Tests\TestCase;
 

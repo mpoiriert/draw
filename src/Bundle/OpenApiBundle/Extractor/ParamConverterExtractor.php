@@ -1,12 +1,14 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Extractor;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
-use Draw\Component\OpenApi\Schema\Schema;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Operation;
+use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use ReflectionMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -28,8 +30,8 @@ class ParamConverterExtractor implements ExtractorInterface
      *
      * @param $source
      * @param $type
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -55,8 +57,7 @@ class ParamConverterExtractor implements ExtractorInterface
      * extraction.
      *
      * @param ReflectionMethod $method
-     * @param Operation $operation
-     * @param ExtractionContextInterface $extractionContext
+     * @param Operation        $operation
      */
     public function extract($method, $operation, ExtractionContextInterface $extractionContext)
     {
@@ -120,7 +121,6 @@ class ParamConverterExtractor implements ExtractorInterface
     }
 
     /**
-     * @param ReflectionMethod $reflectionMethod
      * @return ParamConverter|null
      */
     private function getParamConverter(ReflectionMethod $reflectionMethod)
@@ -132,7 +132,7 @@ class ParamConverterExtractor implements ExtractorInterface
                     return false;
                 }
 
-                if ($converter->getConverter() != "draw_open_api.request_body") {
+                if ('draw_open_api.request_body' != $converter->getConverter()) {
                     return false;
                 }
 

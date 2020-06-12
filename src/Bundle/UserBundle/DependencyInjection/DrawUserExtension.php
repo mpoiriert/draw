@@ -1,18 +1,20 @@
-<?php namespace Draw\Bundle\UserBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 class DrawUserExtension extends ConfigurableExtension
 {
     protected function loadInternal(array $config, ContainerBuilder $container)
     {
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
         $this->configureSonata($config['sonata'], $loader, $container);
@@ -20,11 +22,7 @@ class DrawUserExtension extends ConfigurableExtension
 
         $userClass = $config['user_entity_class'];
         if (!class_exists($userClass)) {
-            throw new \RuntimeException(sprintf(
-                'The class [%s] does not exists. Make sure you configured the [%s] node properly.',
-                $userClass,
-                'draw_user.user_entity_class'
-            ));
+            throw new \RuntimeException(sprintf('The class [%s] does not exists. Make sure you configured the [%s] node properly.', $userClass, 'draw_user.user_entity_class'));
         }
 
         $this->assignParameters($config, $container);
@@ -46,11 +44,11 @@ class DrawUserExtension extends ConfigurableExtension
         $parameterNames = [
             'user_entity_class',
             'reset_password_route',
-            'invite_create_account_route'
+            'invite_create_account_route',
         ];
 
-        foreach($parameterNames as $parameterName) {
-            $container->setParameter('draw_user.' . $parameterName, $config[$parameterName]);
+        foreach ($parameterNames as $parameterName) {
+            $container->setParameter('draw_user.'.$parameterName, $config[$parameterName]);
         }
     }
 
@@ -68,6 +66,7 @@ class DrawUserExtension extends ConfigurableExtension
     {
         if (!$config['enabled']) {
             $container->removeDefinition(JwtAuthenticator::class);
+
             return;
         }
 
@@ -76,7 +75,7 @@ class DrawUserExtension extends ConfigurableExtension
 
         $definition->setArgument('$key', $config['key']);
 
-        if(!$config['query_parameters']['enabled']) {
+        if (!$config['query_parameters']['enabled']) {
             return;
         }
 

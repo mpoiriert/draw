@@ -1,4 +1,6 @@
-<?php namespace App\Tests\Controller;
+<?php
+
+namespace App\Tests\Controller;
 
 use App\Tests\TestCase;
 use Draw\Component\Tester\Data\AgainstJsonFileTester;
@@ -9,7 +11,7 @@ class OpenApiControllerTest extends TestCase
 
     public function testApiDoc()
     {
-        $file = __DIR__ . '/fixtures/api-doc.json';
+        $file = __DIR__.'/fixtures/api-doc.json';
 
         $responseTester = $this->httpTester()
             ->get('/api-doc.json')

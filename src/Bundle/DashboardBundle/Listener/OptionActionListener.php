@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Listener;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\DashboardBundle\Annotations\ActionCreate;
@@ -60,7 +62,7 @@ class OptionActionListener implements EventSubscriberInterface
                 ['buildOption'],
                 ['buildOptionForList'],
                 ['buildOptionForCreateEdit'],
-            ]
+            ],
         ];
     }
 
@@ -121,7 +123,7 @@ class OptionActionListener implements EventSubscriberInterface
         foreach ($objectSchema->properties as $propertySchema) {
             $columnPosition = 0;
             if ($column = $this->processColumn($openApiSchema, $objectSchema, $propertySchema)) {
-                if ($column->getPosition() !== null) {
+                if (null !== $column->getPosition()) {
                     $columnPosition = $column->getPosition();
                 }
                 $columns[$columnPosition][] = $column;
@@ -129,7 +131,7 @@ class OptionActionListener implements EventSubscriberInterface
 
             if ($filter = $this->processFilter($openApiSchema, $objectSchema, $propertySchema)) {
                 $filterPosition = $columnPosition;
-                if ($filter->getPosition() !== null) {
+                if (null !== $filter->getPosition()) {
                     $filterPosition = $filter->getPosition();
                 }
                 $filters[$filterPosition][] = $filter;
@@ -160,7 +162,7 @@ class OptionActionListener implements EventSubscriberInterface
         }
 
         if ($input = $filter->getInput()) {
-            if ($input->getId() === null) {
+            if (null === $input->getId()) {
                 $input->setId($filter->getId());
             }
             $this->configureInput($input, $objectSchema, $propertySchema, $openApiSchema);
@@ -182,7 +184,7 @@ class OptionActionListener implements EventSubscriberInterface
             return null;
         }
 
-        if ($column->getLabel() === null) {
+        if (null === $column->getLabel()) {
             $column->setLabel($column->getId());
         }
 
@@ -229,7 +231,7 @@ class OptionActionListener implements EventSubscriberInterface
         $item = $openApiSchema->resolveSchema($bodyParameter->schema);
 
         foreach ($this->loadFormInputs($item, $openApiSchema) as $key => $value) {
-            $action->{'set' . $key}($value);
+            $action->{'set'.$key}($value);
         }
     }
 
@@ -248,7 +250,7 @@ class OptionActionListener implements EventSubscriberInterface
             $values = [
                 'input' => $input,
                 'objectSchema' => $objectSchema,
-                'propertySchema' => $property
+                'propertySchema' => $property,
             ];
 
             if ($this->shouldBeExcluded($input, $values)) {
@@ -256,7 +258,7 @@ class OptionActionListener implements EventSubscriberInterface
             }
 
             $inputPosition = 0;
-            if ($input->getPosition() !== null) {
+            if (null !== $input->getPosition()) {
                 $inputPosition = $input->getPosition();
             }
 
@@ -269,6 +271,7 @@ class OptionActionListener implements EventSubscriberInterface
         }
 
         $default = (new \ReflectionClass($objectSchema->getVendorData()['x-draw-dashboard-class-name']))->newInstance();
+
         return compact('inputs', 'default');
     }
 
@@ -278,16 +281,16 @@ class OptionActionListener implements EventSubscriberInterface
             $input->setLabel($input->getId());
         }
 
-        if ($input instanceof FormInputChoices && $input->getChoices() === null) {
+        if ($input instanceof FormInputChoices && null === $input->getChoices()) {
             $input->setChoices($this->loadChoices($input, $objectSchema, $property, $openApiSchema));
             $input->setSourceCompareKeys(['id']); //todo make this dynamic
         }
 
-        if ($input instanceof FormInputComposite && $input->getSubForm() === null) {
+        if ($input instanceof FormInputComposite && null === $input->getSubForm()) {
             $input->setSubForm($this->loadSubForm($input, $objectSchema, $property, $openApiSchema));
         }
 
-        if ($input instanceof FormInputAutoComplete && $input->getRemoteUrl() === null) {
+        if ($input instanceof FormInputAutoComplete && null === $input->getRemoteUrl()) {
             $input->setRemoteUrl(
                 $this->urlGenerator->generate(
                     $input->getRouteName(),
@@ -320,7 +323,7 @@ class OptionActionListener implements EventSubscriberInterface
             'input' => $input,
         ];
 
-        if ($property->items !== null) {
+        if (null !== $property->items) {
             $target = $openApiSchema->resolveSchema($property->items);
         } else {
             $target = $openApiSchema->resolveSchema($property);
@@ -341,10 +344,10 @@ class OptionActionListener implements EventSubscriberInterface
         $choices = [];
         foreach ($objects as $object) {
             $choices[] = [
-                'label' => (string)$object,
+                'label' => (string) $object,
                 'value' => [
-                    'id' => $object->getId()//todo make this dynamic
-                ]
+                    'id' => $object->getId(), //todo make this dynamic
+                ],
             ];
         }
 

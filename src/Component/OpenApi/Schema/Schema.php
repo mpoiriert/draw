@@ -37,7 +37,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $description;
 
     /**
-     * @var Mixed
+     * @var mixed
      *
      * @JMS\Type("Draw\Component\OpenApi\Schema\Mixed")
      */
@@ -51,7 +51,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $maximum;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      */
@@ -65,7 +65,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $minimum;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("exclusiveMinimum")
@@ -73,7 +73,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $exclusiveMinimum;
 
     /**
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("maxLength")
@@ -81,7 +81,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $maxLength;
 
     /**
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("minLength")
@@ -96,7 +96,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $pattern;
 
     /**
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("maxItems")
@@ -104,7 +104,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $maxItems;
 
     /**
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("minItems")
@@ -112,7 +112,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $minItems;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("uniqueItems")
@@ -120,7 +120,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $uniqueItems;
 
     /**
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("maxProperties")
@@ -128,7 +128,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $maxProperties;
 
     /**
-     * @var integer
+     * @var int
      *
      * @JMS\Type("integer")
      * @JMS\SerializedName("minProperties")
@@ -143,7 +143,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     public $required;
 
     /**
-     * @var Mixed[]
+     * @var mixed[]
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\Mixed>")
      */
@@ -210,7 +210,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
      * Properties marked as readOnly being true SHOULD NOT be in the required list of the defined schema.
      * Default value is false.
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      * @JMS\SerializedName("readOnly")
@@ -242,11 +242,10 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
      */
     public $externalDocs;
 
-
     /**
      * A free-form property to include a an example of an instance for this schema.
      *
-     * @var Mixed
+     * @var mixed
      *
      * @Assert\Valid()
      *
@@ -276,7 +275,7 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     {
         $groups = ['Schema'];
 
-        if(!$this->ref && !$this->allOf) {
+        if (!$this->ref && !$this->allOf) {
             $groups[] = 'Type';
         } else {
             $groups[] = 'Ref';
@@ -284,4 +283,4 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
 
         return $groups;
     }
-} 
+}

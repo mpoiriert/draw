@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Messenger\Exception;
+<?php
+
+namespace Draw\Component\Messenger\Exception;
 
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 
@@ -19,9 +21,6 @@ class MessageExpiredException extends \Exception implements ExceptionInterface
         );
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
     public function getExpiredAt(): \DateTimeInterface
     {
         return $this->expiredAt;

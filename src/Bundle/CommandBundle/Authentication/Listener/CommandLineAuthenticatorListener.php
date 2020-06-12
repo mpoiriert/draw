@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Authentication\Listener;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Authentication\Listener;
 
 use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticatorInterface;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -31,7 +33,7 @@ class CommandLineAuthenticatorListener implements EventSubscriberInterface
             ConsoleCommandEvent::class => [
                 ['addOptions', 255],
                 ['connectSystem', 0],
-            ]
+            ],
         ];
     }
 
@@ -48,8 +50,6 @@ class CommandLineAuthenticatorListener implements EventSubscriberInterface
     /**
      * This is a fallback on the compiler pass system to be sure options are available if command are registered
      * by another mean.
-     *
-     * @param ConsoleCommandEvent $consoleCommandEvent
      */
     public function addOptions(ConsoleCommandEvent $consoleCommandEvent)
     {
@@ -64,9 +64,7 @@ class CommandLineAuthenticatorListener implements EventSubscriberInterface
             );
     }
 
-
     /**
-     * @param ConsoleCommandEvent $consoleCommandEvent
      * @return void
      */
     public function connectSystem(ConsoleCommandEvent $consoleCommandEvent)

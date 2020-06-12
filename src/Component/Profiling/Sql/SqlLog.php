@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Profiling\Sql;
+<?php
+
+namespace Draw\Component\Profiling\Sql;
 
 class SqlLog
 {

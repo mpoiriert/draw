@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Controller\Api\ConnectionTokensController;
 use Draw\Bundle\UserBundle\DependencyInjection\DrawUserExtension;

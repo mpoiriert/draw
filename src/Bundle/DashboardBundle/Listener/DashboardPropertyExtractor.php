@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Listener;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Listener;
 
 use Doctrine\Common\Annotations\Reader;
 use Draw\Bundle\DashboardBundle\Annotations\VendorPropertyInterface;
@@ -13,10 +15,9 @@ class DashboardPropertyExtractor implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            PropertyExtractedEvent::class => 'addColumnInformation'
+            PropertyExtractedEvent::class => 'addColumnInformation',
         ];
     }
-
 
     public function __construct(Reader $annotationReader)
     {

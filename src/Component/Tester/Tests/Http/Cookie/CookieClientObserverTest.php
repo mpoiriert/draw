@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests\Http\Cookie;
+<?php
+
+namespace Draw\Component\Tester\Tests\Http\Cookie;
 
 use Draw\Component\Tester\Http\ClientObserver;
 use Draw\Component\Tester\Http\Cookie\CookieClientObserver;
@@ -22,7 +24,6 @@ class CookieClientObserverTest extends TestCase
     /**
      * @depends testConstruct
      *
-     * @param CookieClientObserver $clientObserver
      * @return CookieClientObserver
      */
     public function testRequestNoCookie(CookieClientObserver $clientObserver)
@@ -39,7 +40,6 @@ class CookieClientObserverTest extends TestCase
     /**
      * @depends testRequestNoCookie
      *
-     * @param CookieClientObserver $clientObserver
      * @return CookieClientObserver
      */
     public function testResponseWithCookie(CookieClientObserver $clientObserver)
@@ -57,7 +57,6 @@ class CookieClientObserverTest extends TestCase
     /**
      * @depends testResponseWithCookie
      *
-     * @param CookieClientObserver $clientObserver
      * @return CookieClientObserver
      */
     public function testRequestWithCookie(CookieClientObserver $clientObserver)
@@ -75,7 +74,6 @@ class CookieClientObserverTest extends TestCase
     /**
      * @depends testRequestWithCookie
      *
-     * @param CookieClientObserver $clientObserver
      * @return CookieClientObserver
      */
     public function testRemoveCookie(CookieClientObserver $clientObserver)
@@ -93,7 +91,6 @@ class CookieClientObserverTest extends TestCase
     /**
      * @depends testRemoveCookie
      *
-     * @param CookieClientObserver $clientObserver
      * @return CookieClientObserver
      */
     public function testRequestCookieRemoved(CookieClientObserver $clientObserver)

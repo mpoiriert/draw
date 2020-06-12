@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Schema;
+<?php
+
+namespace Draw\Component\OpenApi\Schema;
 
 interface VendorInterface
 {

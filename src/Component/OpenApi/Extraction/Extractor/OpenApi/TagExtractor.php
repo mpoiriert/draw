@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
 
-
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
@@ -27,8 +26,8 @@ class TagExtractor implements ExtractorInterface
      *
      * @param SupportedSource $source
      * @param SupportedTarget $target
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
@@ -51,12 +50,11 @@ class TagExtractor implements ExtractorInterface
      *
      * @param SupportedSource $source
      * @param SupportedTarget $target
-     * @param ExtractionContextInterface $extractionContext
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        foreach($this->annotationReader->getMethodAnnotations($source) as $annotation) {
-            if($annotation instanceof Tag) {
+        foreach ($this->annotationReader->getMethodAnnotations($source) as $annotation) {
+            if ($annotation instanceof Tag) {
                 $target->tags[] = $annotation->name;
             }
         }

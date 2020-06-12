@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http\Cookie;
+<?php
+
+namespace Draw\Component\Tester\Http\Cookie;
 
 use Draw\Component\Tester\Http\ClientObserver;
 use Psr\Http\Message\RequestInterface;
@@ -21,6 +23,7 @@ class CookieClientObserver extends ClientObserver
     public function postSendRequest(RequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->cookieJar->extractCookies($request, $response);
+
         return $response;
     }
 }

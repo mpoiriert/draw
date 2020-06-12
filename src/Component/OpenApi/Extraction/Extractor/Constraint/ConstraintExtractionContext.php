@@ -18,7 +18,7 @@ class ConstraintExtractionContext
     public $classSchema;
 
     /**
-     * class or property
+     * class or property.
      *
      * @var string
      */

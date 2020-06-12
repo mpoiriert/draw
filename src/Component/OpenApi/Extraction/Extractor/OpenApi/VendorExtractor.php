@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
+<?php
+
+namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
 
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
@@ -36,9 +38,9 @@ class VendorExtractor implements ExtractorInterface
     }
 
     /**
-     * @param mixed $source
+     * @param mixed                                 $source
      * @param mixed|VendorExtensionSupportInterface $target
-     * @param ExtractionContextInterface $extractionContext
+     *
      * @throws ExtractionImpossibleException
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext)
@@ -53,7 +55,6 @@ class VendorExtractor implements ExtractorInterface
     }
 
     /**
-     * @param Reflector $reflector
      * @return array|VendorInterface[]
      */
     private function getAnnotations(Reflector $reflector): array
@@ -72,7 +73,7 @@ class VendorExtractor implements ExtractorInterface
                 $annotations = $this->annotationReader->getClassAnnotations($reflector);
                 break;
             default:
-                throw new RuntimeException('Not supported reflection class [' . get_class($reflector) . ']');
+                throw new RuntimeException('Not supported reflection class ['.get_class($reflector).']');
                 break;
         }
 
@@ -96,9 +97,10 @@ class VendorExtractor implements ExtractorInterface
             function (VendorInterface $classAnnotation) use ($currentAnnotations) {
                 switch (true) {
                     case !$classAnnotation->allowClassLevelConfiguration():
-                    case $this->alreadyPresentIn($classAnnotation, $currentAnnotations);
+                    case $this->alreadyPresentIn($classAnnotation, $currentAnnotations):
                         return false;
                 }
+
                 return true;
             });
 
@@ -122,6 +124,7 @@ class VendorExtractor implements ExtractorInterface
                 return true;
             }
         }
+
         return false;
     }
 }

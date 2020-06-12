@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests\Http\Request;
+<?php
+
+namespace Draw\Component\Tester\Tests\Http\Request;
 
 use Draw\Component\Tester\Http\Request\SuperGlobalsExtractor;
 use GuzzleHttp\Psr7\Request;
@@ -23,9 +25,9 @@ class SuperGlobalsExtractorTest extends TestCase
             'http://localhost/?key=value&duplicate=from_get',
             [
                 'Content-Type' => $contentType = 'Content-Type: multipart/mixed; boundary=boundary',
-                'Cookie' => $cookie = 'key1=value1; key2=value2'
+                'Cookie' => $cookie = 'key1=value1; key2=value2',
             ],
-            "------------boundary
+            '------------boundary
 Content-Disposition: form-data; name=field
 
 value
@@ -38,7 +40,7 @@ Content-Disposition: form-data; name=file; filename=filename.txt
 Content-Type: text/plain
 
 content of file
-------------boundary"
+------------boundary'
         );
 
         $result = $this->superGlobalsExtractor->extractSuperGlobals($request);
@@ -65,14 +67,14 @@ content of file
                         'type' => 'text/plain',
                         'tmp_name' => $tmp_name,
                         'error' => UPLOAD_ERR_OK,
-                        'size' => 15
+                        'size' => 15,
                     ],
                 ],
                 '_REQUEST' => [
                     'key' => 'value',
                     'duplicate' => 'from_post',
-                    'field' => 'value'
-                ]
+                    'field' => 'value',
+                ],
             ],
             $result
         );

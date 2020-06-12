@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\Profiling;
+<?php
+
+namespace Draw\Bundle\TesterBundle\Profiling;
 
 use Doctrine\DBAL\Logging\DebugStack;
 use Doctrine\DBAL\Logging\LoggerChain;
@@ -41,15 +43,16 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
 
         $this->debugLogger = new DebugStack();
 
-        if($this->logger === null) {
+        if (null === $this->logger) {
             $configuration->setSQLLogger($this->debugLogger);
+
             return;
         }
 
         $configuration->setSQLLogger(
             new LoggerChain([
                 $this->debugLogger,
-                $this->logger
+                $this->logger,
             ])
         );
     }
@@ -57,7 +60,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
     public function stop()
     {
         $metricBuilder = $this->getMetricBuilder();
-        foreach($this->debugLogger->queries as $query) {
+        foreach ($this->debugLogger->queries as $query) {
             $query = $this->sanitizeQuery($query);
             $sql = $query['sql'];
             if ($query['explainable']) {
@@ -86,10 +89,10 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
     {
         $query['explainable'] = true;
         if (null === $query['params']) {
-            $query['params'] = array();
+            $query['params'] = [];
         }
         if (!is_array($query['params'])) {
-            $query['params'] = array($query['params']);
+            $query['params'] = [$query['params']];
         }
         foreach ($query['params'] as $j => $param) {
             if (isset($query['types'][$j])) {
@@ -101,7 +104,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
                 if ($type instanceof Type) {
                     $query['types'][$j] = $type->getBindingType();
                     try {
-                        $param = $type->convertToDatabaseValue($param,  $this->entityManager->getConnection()->getDatabasePlatform());
+                        $param = $type->convertToDatabaseValue($param, $this->entityManager->getConnection()->getDatabasePlatform());
                     } catch (TypeError $e) {
                         // Error thrown while processing params, query is not explainable.
                         $query['explainable'] = false;
@@ -128,8 +131,6 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
      * value to explain the query).
      *
      * @param mixed $var
-     *
-     * @return array
      */
     private function sanitizeParam($var): array
     {
@@ -137,12 +138,12 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
             $className = get_class($var);
 
             return method_exists($var, '__toString') ?
-                array(sprintf('/* Object(%s): */"%s"', $className, $var->__toString()), false) :
-                array(sprintf('/* Object(%s) */', $className), false);
+                [sprintf('/* Object(%s): */"%s"', $className, $var->__toString()), false] :
+                [sprintf('/* Object(%s) */', $className), false];
         }
 
         if (is_array($var)) {
-            $a = array();
+            $a = [];
             $original = true;
             foreach ($var as $k => $v) {
                 list($value, $orig) = $this->sanitizeParam($v);
@@ -150,13 +151,13 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
                 $a[$k] = $value;
             }
 
-            return array($a, $original);
+            return [$a, $original];
         }
 
         if (is_resource($var)) {
-            return array(sprintf('/* Resource(%s) */', get_resource_type($var)), false);
+            return [sprintf('/* Resource(%s) */', get_resource_type($var)), false];
         }
 
-        return array($var, true);
+        return [$var, true];
     }
 }

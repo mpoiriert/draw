@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Feedback;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Feedback;
 
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
@@ -13,7 +15,6 @@ class Navigate implements FeedbackInterface, JsonSerializable
         $this->action = $action;
     }
 
-
     public function getFeedbackType(): string
     {
         return 'navigate';
@@ -25,7 +26,7 @@ class Navigate implements FeedbackInterface, JsonSerializable
             'href' => $this->action->getHref(),
             'name' => $this->action->getName(),
             'method' => $this->action->getMethod(),
-            'type' => $this->action->getType()
+            'type' => $this->action->getType(),
         ];
     }
 }

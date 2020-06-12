@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use function Draw\Bundle\DashboardBundle\construct;
 
@@ -25,7 +27,7 @@ class Choices
     }
 
     /**
-     * Default value if not set is choices
+     * Default value if not set is choices.
      *
      * @param $value
      */
@@ -67,23 +69,23 @@ class Choices
     public function toArray(): array
     {
         $choices = $this->choices;
-        if(is_array($choices) && count($choices)) {
-            if(!is_numeric(array_keys($choices)[0])) {
+        if (is_array($choices) && count($choices)) {
+            if (!is_numeric(array_keys($choices)[0])) {
                 $newChoices = [];
-                foreach($choices as $label => $value) {
+                foreach ($choices as $label => $value) {
                     $newChoices[] = [
                         'label' => $translatable = new Translatable($label),
-                        'value' => $value
+                        'value' => $value,
                     ];
                     $translatable->setDomain($this->translationDomain);
                 }
                 $choices = $newChoices;
-            } elseif(!is_array($choices[0])) {
+            } elseif (!is_array($choices[0])) {
                 $newChoices = [];
-                foreach($choices as $value) {
+                foreach ($choices as $value) {
                     $newChoices[] = [
                         'label' => $translatable = new Translatable($value),
-                        'value' => $value
+                        'value' => $value,
                     ];
                     $translatable->setDomain($this->translationDomain);
                 }
@@ -91,9 +93,9 @@ class Choices
             }
         }
 
-        if($this->assoc) {
+        if ($this->assoc) {
             $newChoices = [];
-            foreach($choices as $choice) {
+            foreach ($choices as $choice) {
                 $newChoices[$choice['value']] = $choice['label'];
             }
             $choices = $newChoices;

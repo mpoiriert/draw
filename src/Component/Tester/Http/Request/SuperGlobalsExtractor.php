@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http\Request;
+<?php
+
+namespace Draw\Component\Tester\Http\Request;
 
 use Psr\Http\Message\RequestInterface;
 
@@ -31,7 +33,7 @@ class SuperGlobalsExtractor
             '_GET' => $get = $this->extractGetData($request),
             '_COOKIE' => $cookie = $this->extractCookieData($request),
             '_FILES' => $result['files'],
-            '_REQUEST' => $this->mergeDataForRequest($get, $post, $cookie)
+            '_REQUEST' => $this->mergeDataForRequest($get, $post, $cookie),
         ];
     }
 
@@ -43,7 +45,7 @@ class SuperGlobalsExtractor
             '_GET' => $_GET,
             '_COOKIE' => $_COOKIE,
             '_FILES' => $_FILES,
-            '_REQUEST' => $_REQUEST
+            '_REQUEST' => $_REQUEST,
         ];
 
         $_SERVER = $extractedSuperGlobals['_SERVER'];
@@ -65,7 +67,7 @@ class SuperGlobalsExtractor
                     continue;
                 }
 
-                if (strpos($oneCookie, '=') === false) {
+                if (false === strpos($oneCookie, '=')) {
                     continue;
                 }
 
@@ -94,6 +96,7 @@ class SuperGlobalsExtractor
     {
         $get = [];
         parse_str($request->getUri()->getQuery(), $get);
+
         return $get;
     }
 
@@ -102,10 +105,10 @@ class SuperGlobalsExtractor
         $server = [];
         foreach ($request->getHeaders() as $key => $value) {
             $key = strtoupper(str_replace('-', '_', $key));
-            if (in_array($key, array('CONTENT_TYPE', 'CONTENT_LENGTH'))) {
+            if (in_array($key, ['CONTENT_TYPE', 'CONTENT_LENGTH'])) {
                 $server[$key] = implode(', ', $value);
             } else {
-                $server['HTTP_' . $key] = implode(', ', $value);
+                $server['HTTP_'.$key] = implode(', ', $value);
             }
         }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\PostOfficeBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\PostOfficeBundle\DependencyInjection;
 
 use Draw\Bundle\PostOfficeBundle\Email\EmailWriterInterface;
 use Draw\Bundle\PostOfficeBundle\Listener\EmailEventListener;

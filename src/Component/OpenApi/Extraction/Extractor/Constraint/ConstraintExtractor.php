@@ -1,11 +1,13 @@
-<?php namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
+<?php
+
+namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Schema\Schema;
 use InvalidArgumentException;
-use Symfony\Component\Validator\Constraint;
 use ReflectionClass;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 
@@ -28,13 +30,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
     protected function assertSupportConstraint(Constraint $constraint)
     {
         if (!$this->supportConstraint($constraint)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'The constraint of type [%s] is not supported by [%s]',
-                    get_class($constraint),
-                    get_class($this)
-                )
-            );
+            throw new InvalidArgumentException(sprintf('The constraint of type [%s] is not supported by [%s]', get_class($constraint), get_class($this)));
         }
     }
 
@@ -43,8 +39,8 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
      *
      * @param $source
      * @param $type
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -70,7 +66,6 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
         $context = $extractionContext->getParameter('model-context', []);
 
         return array_key_exists('validation-groups', $context) ? $context['validation-groups'] : null;
-
     }
 
     private function getPropertiesConstraints(ReflectionClass $reflectionClass, Schema $schema, array $groups = null)
@@ -80,7 +75,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
             return [];
         }
 
-        if ($groups === null) {
+        if (null === $groups) {
             $groups = [Constraint::DEFAULT_GROUP];
         }
 
@@ -89,7 +84,6 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
         /* @var ClassMetadataInterface $classMetadata */
         $classMetadata = $this->metadataFactory->getMetadataFor($class);
         foreach ($classMetadata->getConstrainedProperties() as $propertyName) {
-
             //This is to prevent hading properties just because they have validation
             if (!isset($schema->properties[$propertyName])) {
                 continue;
@@ -134,8 +128,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
      * extraction.
      *
      * @param ReflectionClass $source
-     * @param Schema $target
-     * @param ExtractionContextInterface $extractionContext
+     * @param Schema          $target
      *
      * @throws ExtractionImpossibleException
      */
@@ -147,7 +140,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
 
         $constraintExtractionContext = new ConstraintExtractionContext();
         $constraintExtractionContext->classSchema = $target;
-        $constraintExtractionContext->context = "property";
+        $constraintExtractionContext->context = 'property';
 
         $validationGroups = $this->getValidationGroups($extractionContext);
 

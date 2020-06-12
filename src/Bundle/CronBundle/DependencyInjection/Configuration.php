@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CronBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\CronBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -24,11 +26,12 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue([])
                     ->beforeNormalization()
                         ->always(function ($config) {
-                            foreach($config as $name => $configuration) {
-                                if(!isset($configuration['name'])) {
+                            foreach ($config as $name => $configuration) {
+                                if (!isset($configuration['name'])) {
                                     $config[$name]['name'] = $name;
                                 }
                             }
+
                             return $config;
                         })
                     ->end()
@@ -64,6 +67,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end()
         ;
+
         return $treeBuilder;
     }
 }

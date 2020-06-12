@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Client;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Client;
 
 use Draw\Bundle\OpenApiBundle\Response\Listener\ResponseSerializerSubscriber;
 use Symfony\Component\HttpFoundation\RequestStack;

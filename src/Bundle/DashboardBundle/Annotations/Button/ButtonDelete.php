@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations\Button;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations\Button;
 
 /**
  * @Annotation
@@ -10,7 +12,7 @@ class ButtonDelete extends Button
         $values = array_merge(
             [
                 'label' => 'delete',
-                'icon' => 'delete'
+                'icon' => 'delete',
             ],
             $values
         );

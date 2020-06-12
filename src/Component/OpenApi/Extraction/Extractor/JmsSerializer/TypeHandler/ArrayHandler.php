@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler;
+<?php
+
+namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor;
@@ -26,7 +28,7 @@ class ArrayHandler implements TypeToSchemaHandlerInterface
     {
         switch (true) {
             case !isset($item->type['name']):
-            case !in_array($item->type['name'], array('array', 'ArrayCollection')):
+            case !in_array($item->type['name'], ['array', 'ArrayCollection']):
             case !isset($item->type['params'][0]['name']):
                 return null;
         }

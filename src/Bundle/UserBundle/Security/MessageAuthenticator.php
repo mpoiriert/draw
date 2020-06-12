@@ -1,11 +1,12 @@
-<?php namespace Draw\Bundle\UserBundle\Security;
+<?php
+
+namespace Draw\Bundle\UserBundle\Security;
 
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\MessengerBundle\Controller\MessageController;
 use Draw\Bundle\UserBundle\Message\AutoConnectInterface;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -21,8 +22,7 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
     public function __construct(
         DrawTransport $drawTransport,
         EntityRepository $userEntityRepository
-    )
-    {
+    ) {
         $this->entityRepository = $userEntityRepository;
         $this->transport = $drawTransport;
     }
@@ -40,7 +40,7 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $messageId = $credentials['messageId'] ?? null;
-        if ($messageId === null) {
+        if (null === $messageId) {
             return null;
         }
 
@@ -49,7 +49,7 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
         }
 
         $message = $envelope->getMessage();
-        if(!$message instanceof AutoConnectInterface) {
+        if (!$message instanceof AutoConnectInterface) {
             return null;
         }
 

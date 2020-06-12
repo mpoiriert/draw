@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Martin Poirier Theoret <mpoiriert@gmail.com>
@@ -55,7 +55,7 @@ abstract class BaseParameter
      * If the parameter is in "path", this property is required and its value MUST be true.
      * Otherwise, the property MAY be included and its default value is false.
      *
-     * @var boolean
+     * @var bool
      *
      * @JMS\Type("boolean")
      */
@@ -68,11 +68,11 @@ abstract class BaseParameter
     public function getType()
     {
         $striped = str_replace(
-            array(__NAMESPACE__ . '\\','Parameter'),
-            array('',''),
+            [__NAMESPACE__.'\\', 'Parameter'],
+            ['', ''],
             get_class($this)
         );
 
         return lcfirst($striped);
     }
-} 
+}

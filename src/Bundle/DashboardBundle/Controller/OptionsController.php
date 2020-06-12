@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Controller;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Controller;
 
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
@@ -75,7 +77,7 @@ class OptionsController
 
     public function dummyHandling($method, $path, Request $fromRequest = null)
     {
-        if ($fromRequest === null) {
+        if (null === $fromRequest) {
             $fromRequest = $this->requestStack->getMasterRequest();
         }
 
@@ -127,7 +129,7 @@ class OptionsController
             Request::METHOD_PURGE,
             Request::METHOD_TRACE,
             Request::METHOD_CONNECT,
-            Request::METHOD_OPTIONS
+            Request::METHOD_OPTIONS,
         ];
 
         $context = clone $this->router->getContext();
@@ -153,11 +155,11 @@ class OptionsController
 
             list($subRequest, $response) = $this->dummyHandling($method, $pathInfo, $request);
 
-            if ($response->getStatusCode() === 403) {
+            if (403 === $response->getStatusCode()) {
                 continue;
             }
 
-            $action->setHref($this->getBasePath() . $pathInfo);
+            $action->setHref($this->getBasePath().$pathInfo);
 
             $event = new OptionBuilderEvent(
                 $action,
@@ -177,7 +179,7 @@ class OptionsController
 
     private function getBasePath(): string
     {
-        if ($this->basePath === null) {
+        if (null === $this->basePath) {
             $this->basePath = str_replace(
                 $this->urlGenerator->generate(
                     'draw_dashboard_options',
@@ -197,11 +199,12 @@ class OptionsController
 
     private function createSubRequest(Request $request, $uri, $method): Request
     {
-        $subRequest = Request::create($uri, $method, array(), $request->cookies->all(), array(),
+        $subRequest = Request::create($uri, $method, [], $request->cookies->all(), [],
             $request->server->all());
         if ($request->hasSession()) {
             $subRequest->setSession($request->getSession());
         }
+
         return $subRequest;
     }
 }

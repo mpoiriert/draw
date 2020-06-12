@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event;
+<?php
+
+namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event;
 
 use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\Metadata\PropertyMetadata;

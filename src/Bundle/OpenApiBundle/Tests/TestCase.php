@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Tests;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Tests;
 
 use Draw\Bundle\TesterBundle\DependencyInjection\ServiceTesterTrait;
 use Draw\Bundle\TesterBundle\Http\BrowserFactoryInterface;
@@ -23,7 +25,7 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
         $client->registerObserver(
             new DefaultValueObserver([
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/json'
+                'Accept' => 'application/json',
             ])
         );
 

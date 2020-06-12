@@ -4,11 +4,7 @@
     "/service": {
       "get": {
         "parameters": [],
-        "responses": {
-          "204": {
-            "description": "Empty response mean success."
-          }
-        }
+        "responses": {}
       }
     }
   },

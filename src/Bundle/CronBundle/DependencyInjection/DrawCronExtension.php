@@ -1,18 +1,20 @@
-<?php namespace Draw\Bundle\CronBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\CronBundle\DependencyInjection;
 
 use Draw\Bundle\CronBundle\CronManager;
 use Draw\Bundle\CronBundle\Model\Job;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 class DrawCronExtension extends ConfigurableExtension
 {
     protected function loadInternal(array $config, ContainerBuilder $container)
     {
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
         $cronManagerDefinition = $container->getDefinition(CronManager::class);
@@ -23,7 +25,7 @@ class DrawCronExtension extends ConfigurableExtension
                 $jobData['command'],
                 $jobData['expression'],
                 $jobData['enabled'],
-                $jobData['description']
+                $jobData['description'],
             ]);
 
             $jobDefinition->addMethodCall('setOutput', [$jobData['output']]);

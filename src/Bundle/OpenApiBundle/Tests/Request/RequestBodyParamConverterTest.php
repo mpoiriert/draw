@@ -1,10 +1,12 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Tests\Request;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Tests\Request;
 
 use Draw\Bundle\OpenApiBundle\Tests\TestCase;
 
 /**
  * This is a integration test but mainly to test the RequestBodyParamConverter.
- * It base itself on the configuration of the AppKernel and the Mock TestController
+ * It base itself on the configuration of the AppKernel and the Mock TestController.
  */
 class RequestBodyParamConverterTest extends TestCase
 {
@@ -14,7 +16,7 @@ class RequestBodyParamConverterTest extends TestCase
             ->post(
                 '/tests',
                 json_encode([
-                    'property_from_body' => 'propertyValue'
+                    'property_from_body' => 'propertyValue',
                 ])
             )
             ->assertStatus(201)
@@ -29,7 +31,7 @@ class RequestBodyParamConverterTest extends TestCase
             ->post(
                 '/tests',
                 json_encode([
-                    'property_from_body' => 'invalidValue'
+                    'property_from_body' => 'invalidValue',
                 ])
             )
             ->assertStatus(400)
@@ -37,11 +39,11 @@ class RequestBodyParamConverterTest extends TestCase
             ->path('errors')
             ->assertCount(1)
             ->path('[0]')
-            ->assertEquals((object)[
+            ->assertEquals((object) [
                 'propertyPath' => 'propertyFromBody',
                 'message' => 'This value should not be equal to "invalidValue".',
                 'invalidValue' => 'invalidValue',
-                'code' => 'aa2e33da-25c8-4d76-8c6c-812f02ea89dd'
+                'code' => 'aa2e33da-25c8-4d76-8c6c-812f02ea89dd',
             ]);
     }
 }

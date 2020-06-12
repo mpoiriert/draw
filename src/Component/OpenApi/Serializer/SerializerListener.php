@@ -1,9 +1,10 @@
-<?php namespace Draw\Component\OpenApi\Serializer;
+<?php
 
-use Draw\Component\OpenApi\Schema\Vendor;
+namespace Draw\Component\OpenApi\Serializer;
+
 use Draw\Component\OpenApi\Schema\VendorExtensionSupportInterface;
-use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\Events;
+use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\EventDispatcher\PreDeserializeEvent;
 use JMS\Serializer\EventDispatcher\PreSerializeEvent;
@@ -15,16 +16,13 @@ class SerializerListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
     {
-        return array(
-            array('event' => Events::PRE_SERIALIZE, 'method' => 'onPreSerialize'),
-            array('event' => Events::PRE_DESERIALIZE, 'method' => 'onPreDeserialize'),
-            array('event' => Events::POST_SERIALIZE, 'method' => 'onPostSerialize')
-        );
+        return [
+            ['event' => Events::PRE_SERIALIZE, 'method' => 'onPreSerialize'],
+            ['event' => Events::PRE_DESERIALIZE, 'method' => 'onPreDeserialize'],
+            ['event' => Events::POST_SERIALIZE, 'method' => 'onPostSerialize'],
+        ];
     }
 
-    /**
-     * @param PreSerializeEvent $event
-     */
     public function onPreSerialize(PreSerializeEvent $event)
     {
         $object = $event->getObject();
@@ -62,7 +60,7 @@ class SerializerListener implements EventSubscriberInterface
                 continue;
             }
 
-            if (strpos($key, 'x-') !== 0) {
+            if (0 !== strpos($key, 'x-')) {
                 continue;
             }
 
@@ -76,7 +74,6 @@ class SerializerListener implements EventSubscriberInterface
 
     public function onPostSerialize(ObjectEvent $event)
     {
-
         $object = $event->getObject();
 
         $visitor = $event->getVisitor();
@@ -87,7 +84,7 @@ class SerializerListener implements EventSubscriberInterface
         }
 
         foreach ($object->getVendorData() as $key => $value) {
-            $visitor->visitProperty(new StaticPropertyMetadata("", $key, $value), $value);
+            $visitor->visitProperty(new StaticPropertyMetadata('', $key, $value), $value);
         }
     }
 }

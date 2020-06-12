@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Tests;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Tests;
 
 use Draw\Component\OpenApi\OpenApi;
 

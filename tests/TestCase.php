@@ -1,4 +1,6 @@
-<?php namespace App\Tests;
+<?php
+
+namespace App\Tests;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +33,7 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
         $client->registerObserver(
             new DefaultValueObserver([
                 'Content-Type' => 'application/json',
-                'Accept' => 'application/json'
+                'Accept' => 'application/json',
             ])
         );
 
@@ -47,7 +49,7 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
                 ->getRepository(User::class)
                 ->findOneBy(['email' => $email]);
             if (is_null($user)) {
-                throw new \InvalidArgumentException('User with email [' . $email . '] not found.');
+                throw new \InvalidArgumentException('User with email ['.$email.'] not found.');
             }
 
             $this->connectionTokens[$email] = $this->getService(JwtAuthenticator::class)->encode($user);
@@ -61,7 +63,7 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
         $this->httpTester()
             ->registerObserver(
             new DefaultValueObserver([
-                'Authorization' => 'Bearer ' . self::getConnectionToken($withEmail)
+                'Authorization' => 'Bearer '.self::getConnectionToken($withEmail),
             ])
         );
     }

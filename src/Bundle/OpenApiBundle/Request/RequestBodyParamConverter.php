@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Request;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Request;
 
 use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
 use Draw\Bundle\OpenApiBundle\Util\DynamicArrayObject;
@@ -28,10 +30,6 @@ class RequestBodyParamConverter implements ParamConverterInterface
      */
     private $validator;
 
-    /**
-     * @param SerializerInterface $serializer
-     * @param ValidatorInterface $validator
-     */
     public function __construct(
         SerializerInterface $serializer,
         ValidatorInterface $validator
@@ -49,7 +47,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
 
         $request->attributes->set($configuration->getName(), $object);
 
-        if(!$request->attributes->get('_draw_dummy_execution')) {
+        if (!$request->attributes->get('_draw_dummy_execution')) {
             $violations = $this->validate($object, $configuration);
 
             if (count($violations)) {
@@ -64,18 +62,18 @@ class RequestBodyParamConverter implements ParamConverterInterface
 
     private function getBodyData(Request $request, ParamConverter $configuration)
     {
-        $options = (array)$configuration->getOptions();
+        $options = (array) $configuration->getOptions();
 
         switch (true) {
             case $request->attributes->get('_draw_dummy_execution'):
                 return '{}';
-            case strpos($request->headers->get('Content-Type'), 'application/json') === 0:
+            case 0 === strpos($request->headers->get('Content-Type'), 'application/json'):
                 //This allow a empty body to be consider as '{}'
                 if (null === ($requestData = json_decode($request->getContent(), true))) {
                     $requestData = [];
                 }
                 break;
-            case strpos($request->headers->get('Content-Type'), 'multipart/form-data') === 0:
+            case 0 === strpos($request->headers->get('Content-Type'), 'multipart/form-data'):
                 $requestData = $request->request->all();
                 break;
             default:
@@ -86,7 +84,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
             $content = new DynamicArrayObject($requestData);
             $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
-            $attributes = (object)$request->attributes->all();
+            $attributes = (object) $request->attributes->all();
             foreach ($options['propertiesMap'] as $target => $source) {
                 $propertyAccessor->setValue(
                     $content,
@@ -107,7 +105,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
 
         $violations = $this->validate($object, $configuration);
 
-        if(count($violations)) {
+        if (count($violations)) {
             $exception = new ConstraintViolationListException();
             $exception->setViolationList($violations);
             throw $exception;
@@ -120,7 +118,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
     {
         $options = $configuration->getOptions();
 
-        $arrayContext =  $options['deserializationContext'] ?? [];
+        $arrayContext = $options['deserializationContext'] ?? [];
 
         $this->configureContext($context = new DeserializationContext(), $arrayContext);
 
@@ -140,7 +138,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
 
     /**
      * @param $object
-     * @param ParamConverter $paramConverter
+     *
      * @return ConstraintViolationListInterface|null
      */
     private function validate($object, ParamConverter $paramConverter)
@@ -149,6 +147,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
         if ($options['validate'] ?? true) {
             $validatorOptions = $paramConverter->getOptions()['validator'] ?? [];
             $groups = $validatorOptions['groups'] ?? ['Default'];
+
             return $this->validator->validate($object, null, $groups);
         }
 
@@ -163,10 +162,6 @@ class RequestBodyParamConverter implements ParamConverterInterface
         return null !== $configuration->getClass() && 'draw_open_api.request_body' === $configuration->getConverter();
     }
 
-    /**
-     * @param DeserializationContext $context
-     * @param array $options
-     */
     protected function configureContext(DeserializationContext $context, array $options)
     {
         foreach ($options as $key => $value) {

@@ -1,10 +1,12 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Draw\Bundle\DashboardBundle\Annotations\Button\Button;
+use function Draw\Bundle\DashboardBundle\construct;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\VendorInterface;
 use JMS\Serializer\Annotation as Serializer;
-use function Draw\Bundle\DashboardBundle\construct;
 
 /**
  * @Annotation
@@ -34,7 +36,7 @@ class Action implements VendorInterface
     private $flow;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @Serializer\Exclude()
      */
@@ -108,7 +110,7 @@ class Action implements VendorInterface
         $values['type'] = static::TYPE;
         $values = array_merge(
             [
-                'name' => $values['type']
+                'name' => $values['type'],
             ],
             $values
         );

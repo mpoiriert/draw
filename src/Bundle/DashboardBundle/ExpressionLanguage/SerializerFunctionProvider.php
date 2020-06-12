@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\ExpressionLanguage;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\ExpressionLanguage;
 
 use Draw\Bundle\DashboardBundle\Action\ButtonExecutionCheck;
 use Symfony\Component\ExpressionLanguage\ExpressionFunction;
@@ -21,7 +23,7 @@ class SerializerFunctionProvider implements ExpressionFunctionProviderInterface
                 return $variables['container']
                     ->get(ButtonExecutionCheck::class)
                     ->canExecute($button, $action);
-            })
+            }),
         ];
     }
 }

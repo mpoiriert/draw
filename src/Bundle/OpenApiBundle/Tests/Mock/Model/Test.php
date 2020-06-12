@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Tests\Mock\Model;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Tests\Mock\Model;
 
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -6,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Test
 {
     /**
-     * Property description
+     * Property description.
      *
      * @Serializer\Type("string")
      * @Serializer\Groups({"Included"})
@@ -16,7 +18,7 @@ class Test
     private $property;
 
     /**
-     * Property deserialize from body in test
+     * Property deserialize from body in test.
      *
      * @var string
      *
@@ -28,7 +30,7 @@ class Test
     private $propertyFromBody;
 
     /**
-     * Will be excluded because of the group
+     * Will be excluded because of the group.
      *
      * @var string
      *

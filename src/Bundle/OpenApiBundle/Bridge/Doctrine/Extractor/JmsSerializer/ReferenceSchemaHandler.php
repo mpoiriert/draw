@@ -1,10 +1,12 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Bridge\Doctrine\Extractor\JmsSerializer;
+<?php
 
+namespace Draw\Bundle\OpenApiBundle\Bridge\Doctrine\Extractor\JmsSerializer;
+
+use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\Metadata\PropertyMetadata;
-use Doctrine\Persistence\ManagerRegistry;
 
 class ReferenceSchemaHandler implements TypeToSchemaHandlerInterface
 {
@@ -36,7 +38,7 @@ class ReferenceSchemaHandler implements TypeToSchemaHandlerInterface
     {
         switch (true) {
             case !isset($item->type['name']):
-            case $item->type['name'] != 'ObjectReference':
+            case 'ObjectReference' != $item->type['name']:
             case !isset($item->type['params'][0]['name']):
                 return null;
         }

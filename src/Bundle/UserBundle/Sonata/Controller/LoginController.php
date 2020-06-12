@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Sonata\Controller;
+<?php
+
+namespace Draw\Bundle\UserBundle\Sonata\Controller;
 
 use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
@@ -8,11 +10,11 @@ use Draw\Bundle\UserBundle\Sonata\Form\ForgotPasswordForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\HttpFoundation\Response;
 
 final class LoginController extends AbstractController
 {
@@ -28,17 +30,11 @@ final class LoginController extends AbstractController
 
     /**
      * @Route("/resetting/forgot-password", name="admin_forgot_password", methods={"GET", "POST"})
-     *
-     * @param Request $request
-     * @param MailerInterface $mailer
-     *
-     * @return Response
      */
     public function forgotPasswordAction(
         Request $request,
         MailerInterface $mailer
     ): Response {
-
         $form = $this->createForm(
             ForgotPasswordForm::class,
             ['email' => $this->authenticationUtils->getLastUsername()]
@@ -48,6 +44,7 @@ final class LoginController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mailer->send(new ForgotPasswordEmail($form->get('email')->getData()));
+
             return new RedirectResponse($this->generateUrl('admin_check_email'));
         }
 
@@ -59,8 +56,6 @@ final class LoginController extends AbstractController
 
     /**
      * @Route("/resetting/check-email", name="admin_check_email")
-     *
-     * @return Response
      */
     public function checkEmailAction(): Response
     {
@@ -116,6 +111,7 @@ final class LoginController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManagerForClass(get_class($user))->flush();
             $userFeed->addToFeed($user, 'success', 'Password changed');
+
             return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
         }
 

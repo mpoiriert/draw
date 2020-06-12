@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\MessengerBundle\Controller;
+<?php
+
+namespace Draw\Bundle\MessengerBundle\Controller;
 
 use Draw\Bundle\MessengerBundle\Event\ErroredMessageLinkEvent;
 use Draw\Bundle\MessengerBundle\Message\ResponseGeneratorMessageInterface;

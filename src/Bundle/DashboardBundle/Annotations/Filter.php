@@ -1,8 +1,10 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Doctrine\Common\Annotations\Annotation\Enum;
-use JMS\Serializer\Annotation as Serializer;
 use function Draw\Bundle\DashboardBundle\construct;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @Annotation
@@ -22,7 +24,7 @@ class Filter implements VendorPropertyInterface, CanBeExcludeInterface
     private $alwaysShow = true;
 
     /**
-     * @var null|int
+     * @var int|null
      *
      * @Serializer\Exclude()
      */

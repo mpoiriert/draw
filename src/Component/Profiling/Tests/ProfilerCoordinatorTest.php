@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Profiling\Tests;
+<?php
+
+namespace Draw\Component\Profiling\Tests;
 
 use Draw\Component\Profiling\ProfilerCoordinator;
 use Draw\Component\Profiling\ProfilerInterface;

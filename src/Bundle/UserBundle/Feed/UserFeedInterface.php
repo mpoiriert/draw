@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\Feed;
+<?php
+
+namespace Draw\Bundle\UserBundle\Feed;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 

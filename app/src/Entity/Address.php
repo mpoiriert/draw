@@ -1,4 +1,6 @@
-<?php namespace App\Entity;
+<?php
+
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;

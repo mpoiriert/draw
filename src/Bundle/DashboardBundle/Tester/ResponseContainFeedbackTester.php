@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Tester;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Tester;
 
 use Draw\Component\Tester\DataTester;
 use Draw\Component\Tester\Http\TestResponse;
@@ -23,11 +25,11 @@ class ResponseContainFeedbackTester
                 continue;
             }
 
-            if ($this->metadata === null) {
+            if (null === $this->metadata) {
                 return;
             }
 
-            if($this->metadata != $feedback['metadata']) {
+            if ($this->metadata != $feedback['metadata']) {
                 continue;
             }
 
@@ -47,7 +49,7 @@ class ResponseContainFeedbackTester
         $testResponse->assertHeader('X-Draw-Feedback');
         $feedbackList = [];
         foreach ($testResponse->getResponse()->getHeader('X-Draw-Feedback') as $header) {
-            $feedbackList = array_merge($feedbackList, json_decode('[' . $header . ']', true));
+            $feedbackList = array_merge($feedbackList, json_decode('['.$header.']', true));
         }
 
         return $feedbackList;

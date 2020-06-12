@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\OpenApi\Extractor;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\OpenApi\Extractor;
 
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Annotations\Targets;
@@ -12,11 +14,11 @@ class AssignActionTargetsDataExtractor implements ExtractorInterface
 {
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if(!$source instanceof ReflectionMethod) {
+        if (!$source instanceof ReflectionMethod) {
             return false;
         }
 
-        if(!$target instanceof Operation) {
+        if (!$target instanceof Operation) {
             return false;
         }
 
@@ -25,8 +27,8 @@ class AssignActionTargetsDataExtractor implements ExtractorInterface
 
     /**
      * @param ReflectionMethod $source
-     * @param Operation $target
-     * @param ExtractionContextInterface $extractionContext
+     * @param Operation        $target
+     *
      * @throws ExtractionImpossibleException
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext)
@@ -36,17 +38,17 @@ class AssignActionTargetsDataExtractor implements ExtractorInterface
         }
 
         $targets = $target->getVendorData()['x-draw-dashboard-targets'] ?? null;
-        if(!$targets instanceof Targets) {
+        if (!$targets instanceof Targets) {
             return;
         }
 
         $action = $target->getVendorData()['x-draw-dashboard-action'] ?? null;
 
-        if(!$action instanceof Action) {
+        if (!$action instanceof Action) {
             return;
         }
 
-        if($action->getTargets() !== null) {
+        if (null !== $action->getTargets()) {
             return;
         }
 

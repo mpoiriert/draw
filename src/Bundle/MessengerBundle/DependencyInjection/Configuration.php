@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\MessengerBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -12,6 +14,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('transport_service_name')->defaultValue('messenger.transport.draw')->end()
             ->end();
+
         return $treeBuilder;
     }
 }

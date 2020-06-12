@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http\Cookie;
+<?php
+
+namespace Draw\Component\Tester\Http\Cookie;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -11,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
  * necessary. Subclasses are also responsible for storing and retrieving
  * cookies from a file, database, etc.
  *
- * @link http://docs.python.org/2/library/cookielib.html Inspiration
+ * @see http://docs.python.org/2/library/cookielib.html Inspiration
  */
 interface CookieJarInterface extends \Countable, \IteratorAggregate
 {
@@ -41,7 +43,7 @@ interface CookieJarInterface extends \Countable, \IteratorAggregate
     /**
      * Sets a cookie in the cookie jar.
      *
-     * @param Cookie $cookie Cookie to set.
+     * @param Cookie $cookie cookie to set
      *
      * @return bool Returns true on success or false on failure
      */

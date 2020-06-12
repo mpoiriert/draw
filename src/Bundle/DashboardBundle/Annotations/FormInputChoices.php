@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use JMS\Serializer\Annotation as Serializer;
 
@@ -49,6 +51,7 @@ class FormInputChoices extends FormInput
     {
         if ($choices instanceof Remote) {
             $this->choices = $choices;
+
             return;
         }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Http;
+<?php
+
+namespace Draw\Component\Tester\Http;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -18,7 +20,6 @@ abstract class ClientObserver
 
     public function preExecute(RequestInterface $request, RequestExecutionerInterface $requestExecutioner): void
     {
-
     }
 
     public function postExecute(
@@ -26,7 +27,6 @@ abstract class ClientObserver
         ResponseInterface $response,
         RequestExecutionerInterface $requestExecutioner
     ): void {
-
     }
 
     public function postExecutionError(
@@ -34,6 +34,5 @@ abstract class ClientObserver
         Throwable $throwable,
         RequestExecutionerInterface $requestExecutioner
     ): void {
-
     }
 }

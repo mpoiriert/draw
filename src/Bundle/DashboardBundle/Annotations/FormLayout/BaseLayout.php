@@ -1,7 +1,9 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations\FormLayout;
+<?php
 
-use Draw\Component\OpenApi\Schema\VendorInterface;
+namespace Draw\Bundle\DashboardBundle\Annotations\FormLayout;
+
 use function Draw\Bundle\DashboardBundle\construct;
+use Draw\Component\OpenApi\Schema\VendorInterface;
 
 /**
  * @Annotation
@@ -19,7 +21,7 @@ class BaseLayout implements VendorInterface
     {
         $values = array_merge(
             [
-                'type' => static::TYPE
+                'type' => static::TYPE,
             ],
             $values
         );

@@ -1,4 +1,6 @@
-<?php namespace App\Entity;
+<?php
+
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
@@ -23,7 +25,7 @@ class Tag
     private $id;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="active", type="boolean", options={"default":"1"})
      *
@@ -60,6 +62,7 @@ class Tag
     public function setId(int $id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -85,6 +88,6 @@ class Tag
 
     public function __toString()
     {
-        return (string)$this->getLabel();
+        return (string) $this->getLabel();
     }
 }

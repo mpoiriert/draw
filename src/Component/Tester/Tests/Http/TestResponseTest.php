@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests\Http;
+<?php
+
+namespace Draw\Component\Tester\Tests\Http;
 
 use Draw\Component\Tester\DataTester;
 use Draw\Component\Tester\Http\TestResponse;
@@ -11,7 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 class TestResponseTest extends TestCase
 {
     /**
-     * @param ResponseInterface $response
      * @return TestResponse
      */
     private function createTestResponse(ResponseInterface $response)
@@ -80,7 +81,7 @@ class TestResponseTest extends TestCase
 
         if (!$expectSuccess) {
             $this->expectException(ExpectationFailedException::class);
-            $this->expectExceptionMessage('Response status code [' . $statusCode . '] is not a successful status code.');
+            $this->expectExceptionMessage('Response status code ['.$statusCode.'] is not a successful status code.');
         }
 
         // We check fluent interface
@@ -106,7 +107,7 @@ class TestResponseTest extends TestCase
         $testResponse = $this->createTestResponse(new Response(100));
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage("Expected status code [666] but received [100].");
+        $this->expectExceptionMessage('Expected status code [666] but received [100].');
 
         $testResponse->assertStatus(666);
     }
@@ -173,7 +174,7 @@ class TestResponseTest extends TestCase
 
         if (!$expectSuccess) {
             $this->expectException(ExpectationFailedException::class);
-            $this->expectExceptionMessage('Response status code [' . $statusCode . '] is not a redirect status code.');
+            $this->expectExceptionMessage('Response status code ['.$statusCode.'] is not a redirect status code.');
         }
 
         $testResponse->assertRedirect();
@@ -209,22 +210,14 @@ class TestResponseTest extends TestCase
     public function provideAssertHeader()
     {
         return [
-            'pass-one-value' =>
-                ['header', 'value', ['header' => ['value']], true],
-            'fail-no-header' =>
-                ['header', 'value', [], false],
-            'fail-wrong-header' =>
-                ['header', 'value', ['wrong-header' => ['value']], false],
-            'fail-wrong-value' =>
-                ['header', 'value', ['header' => ['wrong-value']], false],
-            'fail-multiple-wrong-value' =>
-                ['header', 'value', ['header' => ['wrong-value-1', 'wrong-value-2']], false],
-            'pass-multiple-value' =>
-                ['header', 'value', ['header' => ['value', 'other-value']], true],
-            'pass-multiple-header' =>
-                ['header', 'value', ['header' => ['value'], 'other-header' => ['other-value']], true],
-            'fail-multiple-wrong-header' =>
-                ['header', 'value', ['wrong-header-1' => ['value'], 'wrong-header-2' => ['value']], false],
+            'pass-one-value' => ['header', 'value', ['header' => ['value']], true],
+            'fail-no-header' => ['header', 'value', [], false],
+            'fail-wrong-header' => ['header', 'value', ['wrong-header' => ['value']], false],
+            'fail-wrong-value' => ['header', 'value', ['header' => ['wrong-value']], false],
+            'fail-multiple-wrong-value' => ['header', 'value', ['header' => ['wrong-value-1', 'wrong-value-2']], false],
+            'pass-multiple-value' => ['header', 'value', ['header' => ['value', 'other-value']], true],
+            'pass-multiple-header' => ['header', 'value', ['header' => ['value'], 'other-header' => ['other-value']], true],
+            'fail-multiple-wrong-header' => ['header', 'value', ['wrong-header-1' => ['value'], 'wrong-header-2' => ['value']], false],
         ];
     }
 
@@ -332,7 +325,7 @@ class TestResponseTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage(
             sprintf(
-                "Cookie [%s] was found, but value [%s] does not match [%s].",
+                'Cookie [%s] was found, but value [%s] does not match [%s].',
                 'name',
                 'value',
                 'other-value'

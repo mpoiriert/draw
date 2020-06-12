@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Messenger\Exception;
+<?php
+
+namespace Draw\Component\Messenger\Exception;
 
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 

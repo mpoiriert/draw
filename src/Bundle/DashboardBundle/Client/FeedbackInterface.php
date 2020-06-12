@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Client;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Client;
 
 interface FeedbackInterface
 {

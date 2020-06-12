@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Feedback;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Feedback;
 
 use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 use JsonSerializable;
@@ -35,7 +37,7 @@ class Notification implements FeedbackInterface, JsonSerializable
     {
         return [
             'message' => $this->message,
-            'type' => $this->type
+            'type' => $this->type,
         ];
     }
 }

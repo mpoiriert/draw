@@ -2,14 +2,12 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
-use Draw\Component\OpenApi\Extraction\Extractor\Constraint\ConstraintExtractor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Range as SupportedConstraint;
 
 class RangeConstraintExtractor extends ConstraintExtractor
 {
     /**
-     * @param Constraint $constraint
      * @return bool
      */
     public function supportConstraint(Constraint $constraint)
@@ -19,7 +17,6 @@ class RangeConstraintExtractor extends ConstraintExtractor
 
     /**
      * @param SupportedConstraint|Constraint $constraint
-     * @param ConstraintExtractionContext $context
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context)
     {

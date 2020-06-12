@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Exception;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Exception;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -13,7 +15,7 @@ class ConstraintViolationListException extends ValidatorException
     public function setViolationList(ConstraintViolationListInterface $violationList)
     {
         $this->violationList = $violationList;
-        $this->message = (string)$violationList;
+        $this->message = (string) $violationList;
     }
 
     public function getViolationList()

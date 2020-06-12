@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Response\Listener;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Response\Listener;
 
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Event\PreSerializerResponseEvent;
@@ -27,9 +29,9 @@ class ResponseSerializerSubscriber implements EventSubscriberInterface
     private $serializationContextFactory;
 
     /**
-     * If we must serialize null
+     * If we must serialize null.
      *
-     * @var boolean
+     * @var bool
      */
     private $serializeNull;
 
@@ -43,7 +45,7 @@ class ResponseSerializerSubscriber implements EventSubscriberInterface
         // Must be executed before SensioFrameworkExtraBundle's listener
         return [
             KernelEvents::VIEW => ['onKernelView', 30],
-            KernelEvents::RESPONSE => ['onKernelResponse', 30]
+            KernelEvents::RESPONSE => ['onKernelResponse', 30],
         ];
     }
 
@@ -75,8 +77,9 @@ class ResponseSerializerSubscriber implements EventSubscriberInterface
                 return;
         }
 
-        if ($result === null) {
+        if (null === $result) {
             $event->setResponse(new Response('', 204));
+
             return;
         }
 
@@ -94,7 +97,7 @@ class ResponseSerializerSubscriber implements EventSubscriberInterface
                 $context->setGroups($groups);
             }
 
-            foreach($serialization->getContextAttributes() as $key => $value) {
+            foreach ($serialization->getContextAttributes() as $key => $value) {
                 $context->setAttribute($key, $value);
             }
         }
@@ -102,7 +105,7 @@ class ResponseSerializerSubscriber implements EventSubscriberInterface
         $this->eventDispatcher->dispatch(new PreSerializerResponseEvent($result, $serialization, $context));
 
         $data = $this->serializer->serialize($result, $requestFormat, $context);
-        $response = new JsonResponse($data, 200, ['Content-Type' => 'application/' . $requestFormat], true);
+        $response = new JsonResponse($data, 200, ['Content-Type' => 'application/'.$requestFormat], true);
 
         if ($serialization instanceof Serialization
             && $serialization->getStatusCode()
@@ -125,15 +128,14 @@ class ResponseSerializerSubscriber implements EventSubscriberInterface
     /**
      * @see ResponseHeaderBag::set
      *
-     * @param Request $request
      * @param $key
      * @param $values
      * @param bool $replace
      */
-    public static function setResponseHeader(Request $request, $key, $values, $replace= true)
+    public static function setResponseHeader(Request $request, $key, $values, $replace = true)
     {
         $responseHeaderBag = $request->attributes->get('_responseHeaderBag', new ResponseHeaderBag());
-        if(!$responseHeaderBag instanceof ResponseHeaderBag) {
+        if (!$responseHeaderBag instanceof ResponseHeaderBag) {
             throw new \RuntimeException('The current attribute value of [_responseHeaderBag] is invalid');
         }
 

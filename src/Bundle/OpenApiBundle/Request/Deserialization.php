@@ -1,43 +1,45 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Request;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * This param convert is for auto-completion of option in ide.
- * Private properties are converted to options
+ * Private properties are converted to options.
  *
  * @Annotation
  */
 class Deserialization extends ParamConverter
 {
     /**
-     * The groups use for deserialization
+     * The groups use for deserialization.
      *
      * @var array
      */
     private $deserializationGroups;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $deserializationEnableMaxDepth;
 
     /**
-     * If we must validate the deserialized object
+     * If we must validate the deserialized object.
      *
-     * @var boolean
+     * @var bool
      */
     private $validate;
 
     /**
-     * The validation groups to use if we do perform a validation
+     * The validation groups to use if we do perform a validation.
      *
      * @var array
      */
     private $validationGroups;
 
     /**
-     * A mapping from attribute to property path
+     * A mapping from attribute to property path.
      *
      * @var array
      */
@@ -45,7 +47,7 @@ class Deserialization extends ParamConverter
 
     public function __construct(array $values)
     {
-        if(!isset($values['name'])) {
+        if (!isset($values['name'])) {
             $values['name'] = 'object';
         }
 
@@ -53,7 +55,7 @@ class Deserialization extends ParamConverter
 
         // We set the properties in the options array since they would be overriden by
         // the set options if it's configuration after
-        foreach($values as $key => $value) {
+        foreach ($values as $key => $value) {
             switch ($key) {
                 case 'validate':
                     $values['options']['validate'] = $value;
@@ -117,6 +119,7 @@ class Deserialization extends ParamConverter
     public function getValidationGroups()
     {
         $options = $this->getOptions();
+
         return $options['validator']['groups'] ?? null;
     }
 
@@ -143,7 +146,7 @@ class Deserialization extends ParamConverter
      */
     public function setDeserializationGroups($deserializationGroups)
     {
-        $deserializationGroups = (array)$deserializationGroups;
+        $deserializationGroups = (array) $deserializationGroups;
         $this->setDeserializationContextOptions('groups', $deserializationGroups);
     }
 
@@ -173,6 +176,7 @@ class Deserialization extends ParamConverter
     private function getDeserializationContextOptions($name, $default = null)
     {
         $options = $this->getOptions();
+
         return $options['deserializationContext'][$name] ?? $default;
     }
 }

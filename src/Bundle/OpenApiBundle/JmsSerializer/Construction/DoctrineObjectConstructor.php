@@ -1,12 +1,14 @@
-<?php namespace Draw\Bundle\OpenApiBundle\JmsSerializer\Construction;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\JmsSerializer\Construction;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use JMS\Serializer\Construction\ObjectConstructorInterface;
+use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Exception\InvalidArgumentException;
 use JMS\Serializer\Exception\ObjectConstructionException;
-use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 use JMS\Serializer\Metadata\ClassMetadata;
-use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 use Metadata\MetadataFactoryInterface;
 
 class DoctrineObjectConstructor implements ObjectConstructorInterface
@@ -31,9 +33,8 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
     private $fallbackConstructor;
 
     /**
-     * @param ManagerRegistry $managerRegistry Manager registry
+     * @param ManagerRegistry            $managerRegistry     Manager registry
      * @param ObjectConstructorInterface $fallbackConstructor Fallback object constructor
-     * @param MetadataFactoryInterface $metadataFactory
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
@@ -66,7 +67,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         //If the object is not found we relay on the fallback constructor
         if (null === ($object = $this->loadObject($metadata->name, $data, $context, $context->getCurrentPath()))) {
             $constructionFallbackStrategy = null;
-            if($context->hasAttribute('constructionFallbackStrategy')) {
+            if ($context->hasAttribute('constructionFallbackStrategy')) {
                 $constructionFallbackStrategy = $context->getAttribute('constructionFallbackStrategy');
             }
             switch ($constructionFallbackStrategy) {
@@ -99,24 +100,24 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
 
         $doctrineFindByFields = null;
         $findByIdentifier = false; //This will allow an optimization on the find method
-        if($context->hasAttribute('doctrineFindByFieldsMap')) {
+        if ($context->hasAttribute('doctrineFindByFieldsMap')) {
             $doctrineFindByFieldsMap = $context->getAttribute('doctrineFindByFieldsMap');
-            if(isset($doctrineFindByFieldsMap[0])) {
+            if (isset($doctrineFindByFieldsMap[0])) {
                 //This is to create a alias since the path will not be 0 but rather ""
-                $doctrineFindByFieldsMap[""] = $doctrineFindByFieldsMap[0];
+                $doctrineFindByFieldsMap[''] = $doctrineFindByFieldsMap[0];
             }
             $pathAsString = implode('.', $path);
-            if(isset($doctrineFindByFieldsMap[$pathAsString])) {
+            if (isset($doctrineFindByFieldsMap[$pathAsString])) {
                 $doctrineFindByFields = $doctrineFindByFieldsMap[$pathAsString];
             }
         }
 
-        if ($doctrineFindByFields === null) {
+        if (null === $doctrineFindByFields) {
             $doctrineFindByFields = $classMetadata->getIdentifierFieldNames();
             $findByIdentifier = true;
         }
 
-        if($findByIdentifier && !is_array($data) && count($doctrineFindByFields) == 1) {
+        if ($findByIdentifier && !is_array($data) && 1 == count($doctrineFindByFields)) {
             $object = $objectManager->find($class, $data);
         } else {
             if (!is_array($data)) {
@@ -150,7 +151,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
                 return null;
             }
 
-            if($findByIdentifier) {
+            if ($findByIdentifier) {
                 $object = $objectManager->find($class, $criteria);
             } else {
                 $object = $objectManager->getRepository($class)->findOneBy($criteria);

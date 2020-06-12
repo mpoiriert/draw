@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests\Http;
+<?php
+
+namespace Draw\Component\Tester\Tests\Http;
 
 use Draw\Component\Tester\Http\ClientObserver;
 use GuzzleHttp\Psr7\Request;
@@ -13,7 +15,7 @@ class ClientObserverTest extends TestCase
 
         $request = new Request('GET', '/test');
 
-        /** @var ClientObserver $clientObserver */
+        /* @var ClientObserver $clientObserver */
         $this->assertSame(
             $request,
             $clientObserver->preSendRequest($request)
@@ -26,10 +28,10 @@ class ClientObserverTest extends TestCase
 
         $response = new Response(200);
 
-        /** @var ClientObserver $clientObserver */
+        /* @var ClientObserver $clientObserver */
         $this->assertSame(
             $response,
-            $clientObserver->postSendRequest( new Request('GET', '/test'), $response)
+            $clientObserver->postSendRequest(new Request('GET', '/test'), $response)
         );
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Bridge\Doctrine\Serializer;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Bridge\Doctrine\Serializer;
 
 use Doctrine\Persistence\ManagerRegistry;
 use JMS\Serializer\Context;
@@ -17,14 +19,14 @@ class ObjectReferenceSerializer implements SubscribingHandlerInterface
                 'direction' => GraphNavigatorInterface::DIRECTION_SERIALIZATION,
                 'format' => 'json',
                 'type' => 'ObjectReference',
-                'method' => 'serializeReference'
+                'method' => 'serializeReference',
             ],
             [
                 'direction' => GraphNavigatorInterface::DIRECTION_DESERIALIZATION,
                 'format' => 'json',
                 'type' => 'ObjectReference',
-                'method' => 'deserializeReference'
-            ]
+                'method' => 'deserializeReference',
+            ],
         ];
     }
 
@@ -44,7 +46,7 @@ class ObjectReferenceSerializer implements SubscribingHandlerInterface
         array $type,
         Context $context
     ) {
-        if ($value === null) {
+        if (null === $value) {
             return null;
         }
 
@@ -63,12 +65,11 @@ class ObjectReferenceSerializer implements SubscribingHandlerInterface
         $value,
         array $type,
         DeserializationContext $context
-    )
-    {
+    ) {
         $repository = $this->managerRegistry
             ->getRepository($type['params'][0]['name']);
 
-        if(!isset($type['params'][1])) {
+        if (!isset($type['params'][1])) {
             return $repository->find($value);
         }
     }

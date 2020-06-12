@@ -25,8 +25,8 @@ class RootSchemaExtractor implements ExtractorInterface
      *
      * @param $source
      * @param $type
-     * @param ExtractionContextInterface $extractionContext
-     * @return boolean
+     *
+     * @return bool
      */
     public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
     {
@@ -43,7 +43,7 @@ class RootSchemaExtractor implements ExtractorInterface
         }
 
         $schema = json_decode($source, true);
-        if (json_last_error() != JSON_ERROR_NONE) {
+        if (JSON_ERROR_NONE != json_last_error()) {
             return false;
         }
 
@@ -51,7 +51,7 @@ class RootSchemaExtractor implements ExtractorInterface
             return false;
         }
 
-        if ($schema['swagger'] != '2.0') {
+        if ('2.0' != $schema['swagger']) {
             return false;
         }
 
@@ -65,8 +65,7 @@ class RootSchemaExtractor implements ExtractorInterface
      * extraction.
      *
      * @param string $source
-     * @param Root $rootSchema
-     * @param ExtractionContextInterface $extractionContext
+     * @param Root   $rootSchema
      */
     public function extract($source, $rootSchema, ExtractionContextInterface $extractionContext)
     {

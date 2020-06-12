@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Serializer;
+<?php
+
+namespace Draw\Component\OpenApi\Serializer;
 
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
@@ -12,14 +14,14 @@ class GenericSerializerHandler implements EventSubscriberInterface
             [
                 'event' => Events::PRE_SERIALIZE,
                 'method' => 'onPreSerialize',
-                'format' => 'json'
-            ]
+                'format' => 'json',
+            ],
         ];
     }
 
     public function onPreSerialize(PreSerializeEvent $event): void
     {
-        if ($event->getType()['name'] != 'generic') {
+        if ('generic' != $event->getType()['name']) {
             return;
         }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Messenger\Message;
+<?php
+
+namespace Draw\Component\Messenger\Message;
 
 interface ManuallyTriggeredInterface
 {

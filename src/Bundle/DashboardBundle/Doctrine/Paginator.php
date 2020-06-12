@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Doctrine;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Doctrine;
 
 use JMS\Serializer\Annotation as Serializer;
 
@@ -30,13 +32,13 @@ class Paginator
      */
     private $paginator;
 
-    public function __construct($query, int $pageSize = 5, ?array $pageSizeOptions = [5,10,25], $fetchJoinCollection = true)
+    public function __construct($query, int $pageSize = 5, ?array $pageSizeOptions = [5, 10, 25], $fetchJoinCollection = true)
     {
-        if(null !== $pageSizeOptions) {
+        if (null !== $pageSizeOptions) {
             $this->pageSizeOptions = $pageSizeOptions;
         }
 
-        if(!$pageSize) {
+        if (!$pageSize) {
             $pageSize = min($this->pageSizeOptions);
         } else {
             $pageSize = min($pageSize, max($this->pageSizeOptions));

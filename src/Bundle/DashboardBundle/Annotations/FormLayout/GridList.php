@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations\FormLayout;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations\FormLayout;
 
 /**
  * @Annotation

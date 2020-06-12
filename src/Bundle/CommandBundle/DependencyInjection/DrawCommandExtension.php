@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\CommandBundle\DependencyInjection;
 
 use Draw\Bundle\CommandBundle\Authentication\Listener\CommandLineAuthenticatorListener;
 use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticatorInterface;
@@ -6,17 +8,17 @@ use Draw\Bundle\CommandBundle\CommandRegistry;
 use Draw\Bundle\CommandBundle\Listener\CommandFlowListener;
 use Draw\Bundle\CommandBundle\Model\Command;
 use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
 class DrawCommandExtension extends ConfigurableExtension
 {
     protected function loadInternal(array $config, ContainerBuilder $container)
     {
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
         $this->configureDoctrine($config['doctrine'], $container);
@@ -31,7 +33,7 @@ class DrawCommandExtension extends ConfigurableExtension
             $definition->addMethodCall(
                 'setCommand',
                 [
-                    $commandDefinition
+                    $commandDefinition,
                 ]
             );
         }
@@ -39,15 +41,16 @@ class DrawCommandExtension extends ConfigurableExtension
 
     private function configureDoctrine(array $config, ContainerBuilder $container)
     {
-        if(!$config['enabled']) {
+        if (!$config['enabled']) {
             $container->removeDefinition(CommandFlowListener::class);
+
             return;
         }
     }
 
     private function configureAuthentication(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
     {
-        if(!$config['enabled']) {
+        if (!$config['enabled']) {
             return;
         }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Feedback;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Feedback;
 
 use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 

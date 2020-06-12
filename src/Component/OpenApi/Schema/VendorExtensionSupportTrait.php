@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Schema;
+<?php
+
+namespace Draw\Component\OpenApi\Schema;
 
 trait VendorExtensionSupportTrait
 {
@@ -23,7 +25,6 @@ trait VendorExtensionSupportTrait
     {
         return $this->vendor = $data;
     }
-
 
     public function setVendorDataKey($key, $data)
     {

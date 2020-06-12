@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\TesterBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -7,7 +9,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 trait ServiceTesterTrait
 {
-    static function getService($service)
+    public static function getService($service)
     {
         return static::bootKernel()->getContainer()->get('test.service_container')->get($service);
     }

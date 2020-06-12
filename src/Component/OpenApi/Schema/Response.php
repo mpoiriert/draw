@@ -36,4 +36,4 @@ class Response
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Header>")
      */
     public $headers;
-} 
+}

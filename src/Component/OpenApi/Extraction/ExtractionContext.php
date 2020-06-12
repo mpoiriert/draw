@@ -1,7 +1,9 @@
-<?php namespace Draw\Component\OpenApi\Extraction;
+<?php
 
-use Draw\Component\OpenApi\Schema\Root;
+namespace Draw\Component\OpenApi\Extraction;
+
 use Draw\Component\OpenApi\OpenApi;
+use Draw\Component\OpenApi\Schema\Root;
 
 class ExtractionContext implements ExtractionContextInterface
 {
@@ -15,7 +17,7 @@ class ExtractionContext implements ExtractionContextInterface
      */
     private $openApi;
 
-    private $parameters = array();
+    private $parameters = [];
 
     public function __construct(OpenApi $openApi, Root $rootSchema)
     {

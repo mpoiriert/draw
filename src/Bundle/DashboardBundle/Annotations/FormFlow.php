@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use JMS\Serializer\Annotation as Serializer;
 
@@ -10,7 +12,7 @@ class FormFlow extends Flow implements FlowWithButtonsInterface
     const TYPE = 'form';
 
     /**
-     * The id of flow are use for callback you should not set it manually
+     * The id of flow are use for callback you should not set it manually.
      *
      * @var string|null
      */
@@ -24,7 +26,7 @@ class FormFlow extends Flow implements FlowWithButtonsInterface
     private $buttons;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $dialog = false;
 

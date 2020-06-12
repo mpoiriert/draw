@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\Request\Listener;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\Request\Listener;
 
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Schema\QueryParameter;
@@ -18,7 +20,7 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::CONTROLLER => ['onKernelController', 5]
+            KernelEvents::CONTROLLER => ['onKernelController', 5],
         ];
     }
 
@@ -29,8 +31,6 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
 
     /**
      * Core controller handler.
-     *
-     * @param ControllerEvent $event
      *
      * @throws InvalidArgumentException
      */
@@ -59,13 +59,7 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
             $name = $annotation->name;
 
             if ($request->attributes->has($name) && null !== $request->attributes->get($name)) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        "QueryParameterFetcherSubscriber parameter conflicts with a path parameter '%s' for route '%s'",
-                        $name,
-                        $request->attributes->get('_route')
-                    )
-                );
+                throw new InvalidArgumentException(sprintf("QueryParameterFetcherSubscriber parameter conflicts with a path parameter '%s' for route '%s'", $name, $request->attributes->get('_route')));
             }
 
             if ($request->query->has($name)) {

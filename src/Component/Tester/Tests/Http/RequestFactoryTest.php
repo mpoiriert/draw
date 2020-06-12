@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests\Http;
+<?php
+
+namespace Draw\Component\Tester\Tests\Http;
 
 use Draw\Component\Tester\Http\RequestFactory;
 use Draw\Component\Tester\Http\RequestFactoryInterface;
@@ -17,8 +19,6 @@ class RequestFactoryTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @param RequestFactory $requestFactory
      */
     public function testCreateRequest(RequestFactory $requestFactory)
     {

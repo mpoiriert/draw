@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Sonata\Admin;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Sonata\Admin;
 
 use Draw\Bundle\CommandBundle\CommandRegistry;
 use Draw\Bundle\CommandBundle\Entity\Execution;
@@ -22,7 +24,7 @@ class ExecutionAdmin extends AbstractAdmin
         '_page' => 1,
         '_per_page' => 32,
         '_sort_order' => 'DESC',
-        '_sort_by' => 'id'
+        '_sort_by' => 'id',
     ];
 
     /**
@@ -39,8 +41,6 @@ class ExecutionAdmin extends AbstractAdmin
 
     /**
      * @required
-     *
-     * @param CommandRegistry $commandFactory
      */
     public function setCommandFactory(CommandRegistry $commandFactory)
     {
@@ -49,8 +49,6 @@ class ExecutionAdmin extends AbstractAdmin
 
     /**
      * @required
-     *
-     * @param Application $application
      */
     public function setKernel(Application $application)
     {
@@ -91,7 +89,7 @@ class ExecutionAdmin extends AbstractAdmin
                     'choices' => array_combine(
                         Execution::STATES,
                         Execution::STATES
-                    )
+                    ),
                 ]
             )
             ->add('output')
@@ -145,14 +143,15 @@ class ExecutionAdmin extends AbstractAdmin
 
     /**
      * @param $action
-     * @param null|Execution $object
+     * @param Execution|null $object
+     *
      * @return array
      */
     public function configureActionButtons($action, $object = null)
     {
         $list = parent::configureActionButtons($action, $object);
 
-        if ($action == 'show' && $object->getState() == Execution::STATE_ERROR) {
+        if ('show' == $action && Execution::STATE_ERROR == $object->getState()) {
             $list['acknowledge']['template'] = '@DrawSonataCommand\ExecutionAdmin\button_acknowledge.html.twig';
         }
 
@@ -170,14 +169,14 @@ class ExecutionAdmin extends AbstractAdmin
         $object->setInput([
             'command' => $object->getCommandName(),
             '-vvv' => true,
-            '--no-interaction' => true
+            '--no-interaction' => true,
         ]);
 
         parent::create($object);
 
         $this->application->setAutoExit(false);
         $input = new ArrayInput(
-            $object->getInput() + ['--' . CommandFlowListener::OPTION_EXECUTION_ID => $object->getId()]
+            $object->getInput() + ['--'.CommandFlowListener::OPTION_EXECUTION_ID => $object->getId()]
         );
         $output = new BufferedOutput(Output::OUTPUT_NORMAL, true);
         $this->application->run($input, $output);

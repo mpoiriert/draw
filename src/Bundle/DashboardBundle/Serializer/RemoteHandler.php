@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Serializer;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Serializer;
 
 use Draw\Bundle\DashboardBundle\Annotations\Remote;
 use JMS\Serializer\Context;
@@ -19,7 +21,7 @@ class RemoteHandler implements SubscribingHandlerInterface
                 'format' => 'json',
                 'type' => Remote::class,
                 'method' => 'serializeRemoteToJson',
-            ]
+            ],
         ];
     }
 
@@ -35,10 +37,10 @@ class RemoteHandler implements SubscribingHandlerInterface
         Context $context
     ) {
         $result = [
-            'url' => $this->urlGenerator->generate($remote->getRouteName(), [], UrlGeneratorInterface::ABSOLUTE_URL)
+            'url' => $this->urlGenerator->generate($remote->getRouteName(), [], UrlGeneratorInterface::ABSOLUTE_URL),
         ];
 
-        if($remote->getFormPathValue()) {
+        if ($remote->getFormPathValue()) {
             $result['fromPathValue'] = $remote->getFormPathValue();
         }
 

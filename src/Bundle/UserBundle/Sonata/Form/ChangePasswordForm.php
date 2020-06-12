@@ -1,12 +1,13 @@
-<?php namespace Draw\Bundle\UserBundle\Sonata\Form;
+<?php
+
+namespace Draw\Bundle\UserBundle\Sonata\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final class ChangePasswordForm extends AbstractType
 {
@@ -25,7 +26,7 @@ final class ChangePasswordForm extends AbstractType
                     ],
                     'first_options' => [
                         'label' => false,
-                        'attr' => ['placeholder' => 'form.change_password.field.new_password']
+                        'attr' => ['placeholder' => 'form.change_password.field.new_password'],
                     ],
                     'second_options' => [
                         'label' => false,
@@ -39,7 +40,7 @@ final class ChangePasswordForm extends AbstractType
                 SubmitType::class,
                 [
                     'label' => 'form.change_password.field.submit',
-                    'attr' => ['class' => 'btn-primary']
+                    'attr' => ['class' => 'btn-primary'],
                 ]
             );
     }
@@ -47,7 +48,7 @@ final class ChangePasswordForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translation_domain' => 'DrawUserBundle'
+            'translation_domain' => 'DrawUserBundle',
         ]);
     }
 }

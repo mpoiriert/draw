@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer;
+<?php
+
+namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
@@ -24,12 +26,12 @@ class PropertiesExtractorTest extends TestCase
 
     public function provideTestCanExtract()
     {
-        return array(
-            array(null, null, false),
-            array(null, new Schema(), false),
-            array(__NAMESPACE__ . '\JmsExtractorStubModel', null, false),
-            array(__NAMESPACE__ . '\JmsExtractorStubModel', new Schema(), true),
-        );
+        return [
+            [null, null, false],
+            [null, new Schema(), false],
+            [__NAMESPACE__.'\JmsExtractorStubModel', null, false],
+            [__NAMESPACE__.'\JmsExtractorStubModel', new Schema(), true],
+        ];
     }
 
     public function setUp()
@@ -53,7 +55,7 @@ class PropertiesExtractorTest extends TestCase
      */
     public function testCanExtract($source, $type, $canBeExtract)
     {
-        if ($source !== null) {
+        if (null !== $source) {
             $source = new ReflectionClass($source);
         }
 
@@ -74,7 +76,7 @@ class PropertiesExtractorTest extends TestCase
 
     public function testExtract()
     {
-        $reflectionClass = new ReflectionClass(__NAMESPACE__ . '\JmsExtractorStubModel');
+        $reflectionClass = new ReflectionClass(__NAMESPACE__.'\JmsExtractorStubModel');
 
         $context = $this->getExtractionContext();
 
@@ -93,7 +95,7 @@ class PropertiesExtractorTest extends TestCase
         $jsonSchema = $context->getOpenApi()->dump($context->getRootSchema(), false);
 
         $this->assertJsonStringEqualsJsonString(
-            file_get_contents(__DIR__ . '/fixture/jmsExtractorTestExtract.json'),
+            file_get_contents(__DIR__.'/fixture/jmsExtractorTestExtract.json'),
             $jsonSchema
         );
     }
@@ -110,7 +112,7 @@ class PropertiesExtractorTest extends TestCase
 class JmsExtractorStubModel
 {
     /**
-     * The name
+     * The name.
      *
      * @var string
      * @Serializer\Type("string")
@@ -129,7 +131,7 @@ class JmsExtractorStubModel
     public $generic;
 
     /**
-     * Serialized property
+     * Serialized property.
      *
      * @var string
      * @Serializer\Type("string")
@@ -139,7 +141,7 @@ class JmsExtractorStubModel
     public $serializeProperty;
 
     /**
-     * The array
+     * The array.
      *
      * @var array
      * @Serializer\Type("array<Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubModel>")
@@ -148,7 +150,7 @@ class JmsExtractorStubModel
     public $array;
 
     /**
-     * The array
+     * The array.
      *
      * @var array
      * @Serializer\Type("array<Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubModel>")

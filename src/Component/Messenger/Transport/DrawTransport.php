@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Messenger\Transport;
+<?php
+
+namespace Draw\Component\Messenger\Transport;
 
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\DBALException;
@@ -66,7 +68,7 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         $id = Uuid::uuid4()->toString();
         $now = new \DateTime();
         $availableAt = null;
-        if($delay !== null) {
+        if (null !== $delay) {
             $availableAt = (clone $now)->modify(sprintf('+%d seconds', $delay / 1000));
         }
 
@@ -89,7 +91,7 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
             $this->connection->getConfiguration()['queue_name'],
             self::formatDateTime($now),
             $availableAt ? self::formatDateTime($availableAt) : null,
-            $expiresAt ? self::formatDateTime($expiresAt) : null
+            $expiresAt ? self::formatDateTime($expiresAt) : null,
         ]);
 
         return $id;
@@ -104,6 +106,7 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
     {
         $stmt = $this->driverConnection->prepare($sql);
         $stmt->execute($parameters);
+
         return $stmt;
     }
 
@@ -139,7 +142,7 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         $total = 0;
         do {
             $total += $affectedRows = $this->driverConnection->executeUpdate(
-                'DELETE FROM ' . $tableName . ' WHERE expires_at < ? LIMIT ?',
+                'DELETE FROM '.$tableName.' WHERE expires_at < ? LIMIT ?',
                 [$since, $batchSize],
                 [Type::DATETIME, Type::INTEGER]
             );

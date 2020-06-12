@@ -54,11 +54,11 @@
       "type": "object",
       "properties": {
         "property": {
-          "description": "Property description",
+          "description": "Property description.",
           "type": "string"
         },
         "property_from_body": {
-          "description": "Property deserialize from body in test",
+          "description": "Property deserialize from body in test.",
           "type": "string"
         }
       }

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Messenger\Transport;
+<?php
+
+namespace Draw\Component\Messenger\Transport;
 
 interface ObsoleteMessageAwareInterface
 {
@@ -8,7 +10,6 @@ interface ObsoleteMessageAwareInterface
      * Return the amount of message that have been purged.
      *
      * @param \DateTimeInterface|null $since
-     * @return int
      */
     public function purgeObsoleteMessages(\DateTimeInterface $since): int;
 }

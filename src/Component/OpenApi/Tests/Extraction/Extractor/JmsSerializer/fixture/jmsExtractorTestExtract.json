@@ -9,7 +9,7 @@
           "$ref": "#\/definitions\/Draw.Component.OpenApi.Tests.Extraction.Extractor.JmsSerializer.JmsExtractorStubModel"
         },
         "name": {
-          "description": "The name",
+          "description": "The name.",
           "type": "string",
           "readOnly": true
         },
@@ -25,11 +25,11 @@
           "readOnly": true
         },
         "serializeProperty": {
-          "description": "Serialized property",
+          "description": "Serialized property.",
           "type": "string"
         },
         "array": {
-          "description": "The array",
+          "description": "The array.",
           "type": "array",
           "items": {
             "$ref": "#\/definitions\/Draw.Component.OpenApi.Tests.Extraction.Extractor.JmsSerializer.JmsExtractorStubModel"

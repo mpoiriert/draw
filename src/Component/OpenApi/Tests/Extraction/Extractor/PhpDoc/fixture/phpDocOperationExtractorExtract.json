@@ -17,7 +17,7 @@
             "description": "Define message"
           },
           "400": {
-            "description": "The extraction is impossible"
+            "description": "The extraction is impossible."
           }
         }
       }

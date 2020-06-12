@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Tests;
+<?php
+
+namespace Draw\Component\Tester\Tests;
 
 use Draw\Component\Tester\Http\Client;
 use Draw\Component\Tester\Http\ClientInterface;
@@ -15,6 +17,7 @@ class HttpTesterTraitTest extends TestCase
     public function createHttpTesterClient(): ClientInterface
     {
         $this->createClientHasBeenCalled = true;
+
         return new Client(new CurlRequestExecutioner());
     }
 

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Serializer;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Serializer;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
@@ -29,8 +31,8 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             [
                 'event' => Events::POST_SERIALIZE,
                 'method' => 'postSerialize',
-                'format' => 'json'
-            ]
+                'format' => 'json',
+            ],
         ];
     }
 
@@ -64,22 +66,22 @@ class EntityActionsSubscriber implements EventSubscriberInterface
         $context = $objectEvent->getContext();
 
         // We test if we must scrip the property before the processing so we can save some time
-        $propertyMetadata = new StaticPropertyMetadata('', '_actions', [],  $this->actionGroups);
-        if($exclusionStrategy = $context->getExclusionStrategy()) {
-            if($exclusionStrategy->shouldSkipProperty($propertyMetadata, $context)) {
+        $propertyMetadata = new StaticPropertyMetadata('', '_actions', [], $this->actionGroups);
+        if ($exclusionStrategy = $context->getExclusionStrategy()) {
+            if ($exclusionStrategy->shouldSkipProperty($propertyMetadata, $context)) {
                 return;
             }
         }
 
         $targetActions = $this->actionFinder->findAllByByTarget($object);
 
-        if(!$targetActions) {
+        if (!$targetActions) {
             return;
         }
 
         $actions = [];
         foreach ($targetActions as $action) {
-            if(!$action->getIsInstanceTarget()) {
+            if (!$action->getIsInstanceTarget()) {
                 continue;
             }
 
@@ -95,7 +97,7 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             list(, $response) = $this->optionsController->dummyHandling($method, $path);
 
             // We skip action that we do not have access
-            if ($response->getStatusCode() === 403) {
+            if (403 === $response->getStatusCode()) {
                 continue;
             }
 
@@ -104,7 +106,7 @@ class EntityActionsSubscriber implements EventSubscriberInterface
         }
 
         // Since there is no setter for the value we create a new property
-        $propertyMetadata = new StaticPropertyMetadata('', '_actions', [],  $this->actionGroups);
+        $propertyMetadata = new StaticPropertyMetadata('', '_actions', [], $this->actionGroups);
 
         // Pushing the property metadata replicate the flow and make sure any call to Context::getCurrentPath will work
         $context->pushPropertyMetadata($propertyMetadata);

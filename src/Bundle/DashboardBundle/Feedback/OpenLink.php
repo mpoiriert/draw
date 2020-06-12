@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Feedback;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Feedback;
 
 use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 use JsonSerializable;
@@ -24,7 +26,7 @@ class OpenLink implements FeedbackInterface, JsonSerializable
     {
         return [
             'url' => $this->url,
-            'target' => $this->target
+            'target' => $this->target,
         ];
     }
 }

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Container;
+<?php
+
+namespace Draw\Component\Tester\Container;
 
 interface ServiceTestInterface
 {

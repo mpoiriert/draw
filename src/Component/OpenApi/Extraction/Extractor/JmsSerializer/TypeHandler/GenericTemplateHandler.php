@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler;
+<?php
+
+namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Schema\Schema;
@@ -13,20 +15,21 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
         if ($genericType = $this->getGenericType($propertyMetadata)) {
             $extractionContext->getOpenApi()
                 ->extract(
-                    $propertyMetadata->type['name'] . '<' . $genericType . '>',
+                    $propertyMetadata->type['name'].'<'.$genericType.'>',
                     $propertySchema = new Schema(),
                     $extractionContext
                 );
+
             return $propertySchema;
         }
 
-        if(($propertyMetadata->type['name'] ?? null) != 'generic') {
+        if (($propertyMetadata->type['name'] ?? null) != 'generic') {
             return null;
         }
 
         $genericTemplate = $extractionContext->getParameter('generic-template');
 
-        if(!$genericTemplate) {
+        if (!$genericTemplate) {
             return null;
         }
 
@@ -44,8 +47,8 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
     {
         switch (true) {
             case !isset($item->type['name']):
-            case in_array($item->type['name'], array('array', 'ArrayCollection')):
-            case !class_exists($item->type['name']);
+            case in_array($item->type['name'], ['array', 'ArrayCollection']):
+            case !class_exists($item->type['name']):
             case !isset($item->type['params'][0]['name']):
             case isset($item->type['params'][1]['name']):
                 return null;

@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\UserBundle\DTO;
+<?php
+
+namespace Draw\Bundle\UserBundle\DTO;
 
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use JMS\Serializer\Annotation as Serializer;

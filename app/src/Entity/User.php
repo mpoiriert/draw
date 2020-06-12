@@ -1,4 +1,6 @@
-<?php namespace App\Entity;
+<?php
+
+namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -36,7 +38,7 @@ class User implements SecurityUserInterface
 
     const LEVELS = [
         User::LEVEL_USER,
-        User::LEVEL_ADMIN
+        User::LEVEL_ADMIN,
     ];
 
     /**
@@ -170,7 +172,7 @@ class User implements SecurityUserInterface
      */
     public function getId()
     {
-        if ($this->id === null) {
+        if (null === $this->id) {
             $this->id = Uuid::uuid4()->toString();
         }
 
@@ -243,9 +245,6 @@ class User implements SecurityUserInterface
         return $this->userAddresses;
     }
 
-    /**
-     * @param UserAddress $userAddress
-     */
     public function addUserAddress(UserAddress $userAddress)
     {
         if (!$this->userAddresses->contains($userAddress)) {
@@ -255,9 +254,6 @@ class User implements SecurityUserInterface
         }
     }
 
-    /**
-     * @param UserAddress $userAddress
-     */
     public function removeUserAddress(UserAddress $userAddress)
     {
         if ($this->userAddresses->contains($userAddress)) {

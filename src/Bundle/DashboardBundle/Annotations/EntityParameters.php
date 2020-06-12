@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use function Draw\Bundle\DashboardBundle\construct;
 
@@ -46,7 +48,7 @@ class EntityParameters implements ParametersInterface
     {
         return [
             '_class' => $this->getClass(),
-            '_fields' => $this->getFields()
+            '_fields' => $this->getFields(),
         ];
     }
 }

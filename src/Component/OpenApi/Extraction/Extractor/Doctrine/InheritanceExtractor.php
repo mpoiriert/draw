@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Extraction\Extractor\Doctrine;
+<?php
+
+namespace Draw\Component\OpenApi\Extraction\Extractor\Doctrine;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
@@ -39,8 +41,7 @@ class InheritanceExtractor implements ExtractorInterface
 
     /**
      * @param ReflectionClass $source
-     * @param Schema $target
-     * @param ExtractionContextInterface $extractionContext
+     * @param Schema          $target
      *
      * @throws ExtractionImpossibleException
      */
@@ -73,7 +74,7 @@ class InheritanceExtractor implements ExtractorInterface
             $property->description = 'The concrete class of the inheritance.';
             $property->enum = array_keys($metaData->discriminatorMap);
         } else {
-            if(isset($target->properties[$metaData->discriminatorColumn['name']])) {
+            if (isset($target->properties[$metaData->discriminatorColumn['name']])) {
                 $property = $target->properties[$metaData->discriminatorColumn['name']];
                 $property->description = 'Discriminator property. Value will be ';
                 $property->type = 'string';

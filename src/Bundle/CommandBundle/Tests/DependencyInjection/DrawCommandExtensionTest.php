@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\CommandBundle\Tests\DependencyInjection;
+<?php
+
+namespace Draw\Bundle\CommandBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\CommandBundle\Command\PurgeExecutionCommand;
 use Draw\Bundle\CommandBundle\CommandRegistry;

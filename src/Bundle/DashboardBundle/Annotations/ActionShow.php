@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Annotations;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Annotations;
 
 use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
 
@@ -14,7 +16,7 @@ class ActionShow extends Action
         $values = array_merge(
             [
                 'isInstanceTarget' => true,
-                'button' => new Button\ButtonShow()
+                'button' => new Button\ButtonShow(),
             ],
             $values
         );

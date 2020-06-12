@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\PhpDoc;
+<?php
+
+namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\PhpDoc;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
@@ -27,14 +29,14 @@ class OperationExtractorTest extends TestCase
 
     public function provideTestCanExtract()
     {
-        $reflectionMethod = new ReflectionMethod(__NAMESPACE__ . '\PhpDocOperationExtractorStubService', 'operation');
+        $reflectionMethod = new ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', 'operation');
 
-        return array(
-            array(null, null, false),
-            array(null, new Operation(), false),
-            array($reflectionMethod, null, false),
-            array($reflectionMethod, new Operation(), true),
-        );
+        return [
+            [null, null, false],
+            [null, new Operation(), false],
+            [$reflectionMethod, null, false],
+            [$reflectionMethod, new Operation(), true],
+        ];
     }
 
     /**
@@ -63,14 +65,16 @@ class OperationExtractorTest extends TestCase
 
     public function testExtract()
     {
-        $this->phpDocOperationExtractor->registerExceptionResponseCodes('Draw\Component\OpenApi\Extraction\ExtractionImpossibleException',
-            400);
+        $this->phpDocOperationExtractor->registerExceptionResponseCodes(
+            'Draw\Component\OpenApi\Extraction\ExtractionImpossibleException',
+            400
+        );
         $this->phpDocOperationExtractor->registerExceptionResponseCodes('LengthException', 408, 'Define message');
 
         $context = $this->extractStubServiceMethod('operation');
 
         $this->assertJsonStringEqualsJsonString(
-            file_get_contents(__DIR__ . '/fixture/phpDocOperationExtractorExtract.json'),
+            file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
     }
@@ -80,7 +84,7 @@ class OperationExtractorTest extends TestCase
         $context = $this->extractStubServiceMethod('void');
 
         $this->assertJsonStringEqualsJsonString(
-            file_get_contents(__DIR__ . '/fixture/phpDocOperationExtractorExtract_testExtract_void.json'),
+            file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtract_void.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
     }
@@ -90,7 +94,7 @@ class OperationExtractorTest extends TestCase
         $context = $this->extractStubServiceMethod('defaultVoid');
 
         $this->assertJsonStringEqualsJsonString(
-            file_get_contents(__DIR__ . '/fixture/phpDocOperationExtractorExtract_testExtract_defaultVoid.json'),
+            file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtract_defaultVoid.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
     }
@@ -100,7 +104,7 @@ class OperationExtractorTest extends TestCase
         $context = $this->extractStubServiceMethod('arrayOfPrimitive');
 
         $this->assertJsonStringEqualsJsonString(
-            file_get_contents(__DIR__ . '/fixture/phpDocOperationExtractorExtract_testExtract_arrayOfPrimitive.json'),
+            file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtract_arrayOfPrimitive.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
     }
@@ -110,18 +114,19 @@ class OperationExtractorTest extends TestCase
         $context = $this->extractStubServiceMethod('genericCollection');
 
         $this->assertJsonStringEqualsJsonString(
-            file_get_contents(__DIR__ . '/fixture/phpDocOperationExtractorExtract_testExtract_genericCollection.json'),
+            file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtract_genericCollection.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
     }
 
     /**
      * @param $method
+     *
      * @return ExtractionContext
      */
     private function extractStubServiceMethod($method)
     {
-        $reflectionMethod = new ReflectionMethod(__NAMESPACE__ . '\PhpDocOperationExtractorStubService', $method);
+        $reflectionMethod = new ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', $method);
 
         $context = $this->getExtractionContext();
         $context->getOpenApi()->registerExtractor(new TypeSchemaExtractor());
@@ -146,30 +151,28 @@ class OperationExtractorTest extends TestCase
 
 class PhpDocOperationExtractorStubClass
 {
-
 }
 
 /**
- * This class is a stub and the code implementation make no sens, just the doc is usefull
+ * This class is a stub and the code implementation make no sens, just the doc is usefull.
  */
 class PhpDocOperationExtractorStubService
 {
     /**
-     * @param PhpDocOperationExtractorStubService $service
      * @param $string
-     * @param array $array
      *
      * @return PhpDocOperationExtractorStubService
      *
-     * @throws Exception When problem occur
+     * @throws Exception                     When problem occur
      * @throws LengthException
      * @throws ExtractionImpossibleException
      */
     public function operation(PhpDocOperationExtractorStubService $service, $string, array $array)
     {
-        if($string) {
+        if ($string) {
             throw new ExtractionImpossibleException();
         }
+
         return $service;
     }
 
@@ -178,15 +181,10 @@ class PhpDocOperationExtractorStubService
      */
     public function void()
     {
-
     }
 
-    /**
-     *
-     */
     public function defaultVoid()
     {
-
     }
 
     /**

@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Tester\Data;
+<?php
+
+namespace Draw\Component\Tester\Data;
 
 use Draw\Component\Tester\DataTester;
 use PHPUnit\Framework\Assert;
@@ -18,22 +20,22 @@ class AgainstJsonFileTester
 
     public function __invoke(DataTester $tester)
     {
-        if(!file_exists($this->fullJsonFilePath)) {
+        if (!file_exists($this->fullJsonFilePath)) {
             Assert::fail(
-                "Fail path does not exists to validate data.\nFile path: " . $this->fullJsonFilePath . "\nData:\n" .
+                "Fail path does not exists to validate data.\nFile path: ".$this->fullJsonFilePath."\nData:\n".
                 json_encode($tester->getData(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
             );
         }
 
         $data = json_decode(file_get_contents($this->fullJsonFilePath));
 
-        if($this->propertyPathsCheck) {
+        if ($this->propertyPathsCheck) {
             $accessor = PropertyAccess::createPropertyAccessor();
-            foreach($this->propertyPathsCheck as $path => $callable) {
-                if(!is_callable($callable)) {
+            foreach ($this->propertyPathsCheck as $path => $callable) {
+                if (!is_callable($callable)) {
                     $value = $callable;
-                    $callable = function(DataTester $tester) use ($value, $path) {
-                        $tester->assertEquals($value, 'Path: ' . $path);
+                    $callable = function (DataTester $tester) use ($value, $path) {
+                        $tester->assertEquals($value, 'Path: '.$path);
                     };
                 }
 

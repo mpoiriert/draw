@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\Profiling;
+<?php
+
+namespace Draw\Component\Profiling;
 
 class ProfilerCoordinator
 {

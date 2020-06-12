@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\TesterBundle\Config;
+<?php
+
+namespace Draw\Bundle\TesterBundle\Config;
 
 use Draw\Bundle\TesterBundle\DrawTesterBundle;
 use Symfony\Component\Config\Resource\SelfCheckingResourceInterface;
@@ -14,13 +16,13 @@ class ServiceIdsResourceCheck implements SelfCheckingResourceInterface
 
     public function isFresh($timestamp)
     {
-        if(!is_file($this->filePath) || !is_readable($this->filePath)) {
+        if (!is_file($this->filePath) || !is_readable($this->filePath)) {
             $ids = [];
         } else {
             $ids = json_decode(file_get_contents($this->filePath));
         }
 
-        if(!count($missingIds = array_diff(array_unique(DrawTesterBundle::$ids), $ids))) {
+        if (!count($missingIds = array_diff(array_unique(DrawTesterBundle::$ids), $ids))) {
             return true;
         }
 
