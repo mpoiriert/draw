@@ -23,6 +23,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 /**
  * @Dashboard\Breadcrumb(parentOperationId="userList")
  * @Dashboard\Targets({User::class})
+ *
+ * @method user getUser()
  */
 class UsersController extends AbstractController
 {
@@ -58,6 +60,8 @@ class UsersController extends AbstractController
      *     targets={},
      *     button=@Dashboard\Button\Button(icon="account_circle")
      * )
+     *
+     * @return User The currently connected user.
      */
     public function meAction(FeedbackNotifier $notifier, ActionFinder $actionFinder)
     {
@@ -70,6 +74,8 @@ class UsersController extends AbstractController
             )
         );
         $notifier->sendFeedback(new Navigate($action));
+
+        return $this->getUser();
     }
 
     /**
@@ -123,6 +129,8 @@ class UsersController extends AbstractController
      * )
      *
      * @Serialization(statusCode=204)
+     *
+     * @return void Empty response mean success.
      */
     public function deleteAction(User $user, EntityManagerInterface $entityManager)
     {

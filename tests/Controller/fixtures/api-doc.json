@@ -273,7 +273,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No result mean a success"
+                        "description": "Empty response mean success."
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_tags_delete",
@@ -444,7 +444,10 @@
                 "parameters": [],
                 "responses": {
                     "204": {
-                        "description": "Empty response mean success."
+                        "description": "The currently connected user.",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
                     }
                 },
                 "x-draw-open-api-symfony-route": "me",

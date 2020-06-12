@@ -28,6 +28,8 @@ class Address
      * @ORM\Column(name="postal_code", type="string", options={"default": ""})
      *
      * @Dashboard\FormInput()
+     *
+     * @Serializer\Type("string")
      */
     private $postalCode = '';
 
@@ -37,6 +39,8 @@ class Address
      * @ORM\Column(name="city", type="string", options={"default": ""})
      *
      * @Dashboard\FormInput()
+     *
+     * @Serializer\Type("string")
      */
     private $city = '';
 
@@ -46,6 +50,8 @@ class Address
      * @ORM\Column(name="country", type="string", options={"default": ""})
      *
      * @Dashboard\FormInput()
+     *
+     * @Serializer\Type("string")
      */
     private $country = '';
 
