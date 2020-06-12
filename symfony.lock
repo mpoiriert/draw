@@ -407,9 +407,6 @@
             "ref": "2f69bd1995730b73a5211a9707622fb25a925df7"
         }
     },
-    "sonata-project/datagrid-bundle": {
-        "version": "2.5.0"
-    },
     "sonata-project/doctrine-extensions": {
         "version": "1.6.0"
     },
@@ -418,6 +415,12 @@
     },
     "sonata-project/exporter": {
         "version": "2.2.0"
+    },
+    "sonata-project/form-extensions": {
+        "version": "0.1.2"
+    },
+    "sonata-project/twig-extensions": {
+        "version": "0.1.1"
     },
     "symfony/asset": {
         "version": "v4.4.7"
@@ -470,6 +473,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.4.7"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.1.2"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.4.7"
@@ -621,6 +627,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "v1.15.0"
+    },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
     },
     "symfony/process": {
         "version": "v5.0.7"
