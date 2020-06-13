@@ -83,7 +83,7 @@ class TagsController
      *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the tag {{tag.label}} ?")
      * )
      *
-     * @return void Empty response mean success.
+     * @return void Empty response mean success
      */
     public function deleteAction(Tag $tag, EntityManagerInterface $entityManager)
     {

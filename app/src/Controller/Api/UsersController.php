@@ -61,7 +61,7 @@ class UsersController extends AbstractController
      *     button=@Dashboard\Button\Button(icon="account_circle")
      * )
      *
-     * @return User The currently connected user.
+     * @return User The currently connected user
      */
     public function meAction(FeedbackNotifier $notifier, ActionFinder $actionFinder)
     {
@@ -130,7 +130,7 @@ class UsersController extends AbstractController
      *
      * @Serialization(statusCode=204)
      *
-     * @return void Empty response mean success.
+     * @return void Empty response mean success
      */
     public function deleteAction(User $user, EntityManagerInterface $entityManager)
     {
