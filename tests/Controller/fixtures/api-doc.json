@@ -1008,7 +1008,8 @@
                         "disabled": false,
                         "required": false,
                         "orderBy": "position",
-                        "allowAdd": true
+                        "allowAdd": true,
+                        "allowRemove": true
                     }
                 },
                 "dateOfBirth": {
@@ -1282,7 +1283,8 @@
                         "disabled": false,
                         "required": false,
                         "orderBy": "position",
-                        "allowAdd": true
+                        "allowAdd": true,
+                        "allowRemove": true
                     }
                 },
                 "dateOfBirth": {

@@ -123,18 +123,20 @@ class User implements SecurityUserInterface
     /**
      * @var UserAddress[]|Collection
      *
+     * @Assert\Valid()
+     *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\UserAddress",
      *     cascade={"persist"},
      *     mappedBy="user",
      *     orphanRemoval=true
      * )
+     * @ORM\OrderBy({"position":"ASC"})
      *
      * @Dashboard\FormInputCollection(
-     *     orderBy="position"
+     *     orderBy="position",
+     *     allowRemove=true
      * )
-     *
-     * @ORM\OrderBy({"position":"ASC"})
      */
     private $userAddresses;
 

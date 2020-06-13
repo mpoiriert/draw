@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity()
@@ -45,6 +46,8 @@ class UserAddress
      * @Serializer\Type("App\Entity\Address")
      *
      * @Dashboard\FormInputComposite()
+     *
+     * @Assert\Valid()
      */
     private $address;
 

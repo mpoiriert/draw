@@ -43,9 +43,15 @@ class CollectionUtil
             }
         }
 
-        foreach ($currentCollection as $element) {
-            if (!$newCollection->contains($element)) {
+        if($newCollection instanceof ArrayCollectionMutationTracker) {
+            foreach($newCollection->getRemovedElements() as $element) {
                 call_user_func($remove, $element);
+            }
+        } else {
+            foreach ($currentCollection as $element) {
+                if (!$newCollection->contains($element)) {
+                    call_user_func($remove, $element);
+                }
             }
         }
 

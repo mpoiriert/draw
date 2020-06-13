@@ -20,6 +20,7 @@
         <service id="JMS\Serializer\Naming\PropertyNamingStrategyInterface" alias="jms_serializer.naming_strategy" />
         <service id="Metadata\MetadataFactoryInterface" alias="jms_serializer.metadata_factory" />
 
+        <service id="Draw\Component\OpenApi\Serializer\Handler\ArrayCollectionHandler" />
         <service id="Draw\Component\OpenApi\Serializer\GenericSerializerHandler" />
         <service id="Draw\Component\OpenApi\Serializer\SerializerHandler" />
         <service id="Draw\Component\OpenApi\Serializer\SerializerListener" />

@@ -262,7 +262,8 @@
               "position": null
             }
           },
-          "allowAdd": true
+          "allowAdd": true,
+          "allowRemove": true
         },
         {
           "id": "dateOfBirth",

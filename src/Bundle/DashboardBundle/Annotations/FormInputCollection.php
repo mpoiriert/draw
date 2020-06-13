@@ -30,6 +30,13 @@ class FormInputCollection extends FormInput
      */
     private $allowAdd = true;
 
+    /**
+     * @var bool
+     *
+     * @Serializer\SerializedName("allowRemove")
+     */
+    private $allowRemove = true;
+
     public function getOrderBy(): ?string
     {
         return $this->orderBy;
@@ -50,7 +57,7 @@ class FormInputCollection extends FormInput
         $this->subForm = $subForm;
     }
 
-    public function isAllowAdd(): bool
+    public function getAllowAdd(): bool
     {
         return $this->allowAdd;
     }
@@ -58,5 +65,15 @@ class FormInputCollection extends FormInput
     public function setAllowAdd(bool $allowAdd): void
     {
         $this->allowAdd = $allowAdd;
+    }
+
+    public function getAllowRemove(): bool
+    {
+        return $this->allowRemove;
+    }
+
+    public function setAllowRemove(bool $allowRemove): void
+    {
+        $this->allowRemove = $allowRemove;
     }
 }
