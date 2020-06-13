@@ -96,21 +96,6 @@ class RequestBodyParamConverter implements ParamConverterInterface
             $requestData = $content->getArrayCopy();
         }
 
-        $object = $this->deserialize(
-            json_encode($requestData),
-            $configuration
-        );
-
-        $request->attributes->set($configuration->getName(), $object);
-
-        $violations = $this->validate($object, $configuration);
-
-        if (count($violations)) {
-            $exception = new ConstraintViolationListException();
-            $exception->setViolationList($violations);
-            throw $exception;
-        }
-
         return json_encode($requestData);
     }
 
