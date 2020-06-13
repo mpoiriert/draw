@@ -90,7 +90,6 @@ class OperationExtractor implements ExtractorInterface
             return;
         }
 
-
         if (!$operation->summary) {
             $operation->summary = (string) $docBlock->getSummary() ?: null;
         }

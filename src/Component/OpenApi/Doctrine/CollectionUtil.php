@@ -43,8 +43,8 @@ class CollectionUtil
             }
         }
 
-        if($newCollection instanceof ArrayCollectionMutationTracker) {
-            foreach($newCollection->getRemovedElements() as $element) {
+        if ($newCollection instanceof ArrayCollectionMutationTracker) {
+            foreach ($newCollection->getRemovedElements() as $element) {
                 call_user_func($remove, $element);
             }
         } else {

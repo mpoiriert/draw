@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Doctrine;
+<?php
+
+namespace Draw\Component\OpenApi\Doctrine;
 
 use Doctrine\Common\Collections\ArrayCollection as BaseArrayCollection;
 

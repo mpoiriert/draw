@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Serializer\Handler;
+<?php
+
+namespace Draw\Component\OpenApi\Serializer\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Draw\Component\OpenApi\Doctrine\ArrayCollectionMutationTracker;
@@ -47,8 +49,8 @@ class ArrayCollectionHandler implements SubscribingHandlerInterface
         $type['name'] = 'array';
         $collection = new ArrayCollectionMutationTracker($visitor->visitArray($data, $type));
 
-        foreach($data as $key => $value) {
-            if(isset($value['_drawOpenApiRemove']) && $value['_drawOpenApiRemove']) {
+        foreach ($data as $key => $value) {
+            if (isset($value['_drawOpenApiRemove']) && $value['_drawOpenApiRemove']) {
                 $collection->remove($key);
             }
         }
