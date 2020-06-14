@@ -64,7 +64,8 @@ class RequestBodyParamConverter implements ParamConverterInterface
     {
         switch (true) {
             case $request->attributes->get('_draw_dummy_execution'):
-                return '{}';
+                $requestData = [];
+                break;
             case 0 === strpos($request->headers->get('Content-Type'), 'application/json'):
                 //This allow a empty body to be consider as '{}'
                 if (null === ($requestData = json_decode($request->getContent(), true))) {
@@ -83,7 +84,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
 
     private function assignPropertiesFromAttribute(Request $request, ParamConverter $configuration, $requestData)
     {
-        $options = (array)$configuration->getOptions();
+        $options = (array) $configuration->getOptions();
         if (!isset($options['propertiesMap'])) {
             return $requestData;
         }
@@ -91,7 +92,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
         $content = new DynamicArrayObject($requestData);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
-        $attributes = (object)$request->attributes->all();
+        $attributes = (object) $request->attributes->all();
         foreach ($options['propertiesMap'] as $target => $source) {
             $propertyAccessor->setValue(
                 $content,
