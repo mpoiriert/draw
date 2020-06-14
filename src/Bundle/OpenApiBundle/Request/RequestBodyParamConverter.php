@@ -62,8 +62,6 @@ class RequestBodyParamConverter implements ParamConverterInterface
 
     private function getBodyData(Request $request, ParamConverter $configuration)
     {
-        $options = (array) $configuration->getOptions();
-
         switch (true) {
             case $request->attributes->get('_draw_dummy_execution'):
                 return '{}';
@@ -80,23 +78,29 @@ class RequestBodyParamConverter implements ParamConverterInterface
                 throw new RuntimeException('Invalid request format');
         }
 
-        if (isset($options['propertiesMap'])) {
-            $content = new DynamicArrayObject($requestData);
-            $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        return json_encode($this->assignPropertiesFromAttribute($request, $configuration, $requestData));
+    }
 
-            $attributes = (object) $request->attributes->all();
-            foreach ($options['propertiesMap'] as $target => $source) {
-                $propertyAccessor->setValue(
-                    $content,
-                    $target,
-                    $propertyAccessor->getValue($attributes, $source)
-                );
-            }
-
-            $requestData = $content->getArrayCopy();
+    private function assignPropertiesFromAttribute(Request $request, ParamConverter $configuration, $requestData)
+    {
+        $options = (array)$configuration->getOptions();
+        if (!isset($options['propertiesMap'])) {
+            return $requestData;
         }
 
-        return json_encode($requestData);
+        $content = new DynamicArrayObject($requestData);
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+
+        $attributes = (object)$request->attributes->all();
+        foreach ($options['propertiesMap'] as $target => $source) {
+            $propertyAccessor->setValue(
+                $content,
+                $target,
+                $propertyAccessor->getValue($attributes, $source)
+            );
+        }
+
+        return $content->getArrayCopy();
     }
 
     private function deserialize($data, ParamConverter $configuration)
