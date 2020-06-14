@@ -12,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
  */
 class Deserialization extends ParamConverter
 {
+    const DEFAULT_PARAMETER_NAME = 'target';
+
     /**
      * The groups use for deserialization.
      *
@@ -48,7 +50,7 @@ class Deserialization extends ParamConverter
     public function __construct(array $values)
     {
         if (!isset($values['name'])) {
-            $values['name'] = 'object';
+            $values['name'] = Deserialization::DEFAULT_PARAMETER_NAME;
         }
 
         $values['converter'] = $values['converter'] ?? 'draw_open_api.request_body';

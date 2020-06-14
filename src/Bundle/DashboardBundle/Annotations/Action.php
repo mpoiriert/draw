@@ -13,6 +13,8 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class Action implements VendorInterface
 {
+    const DEFAULT_REQUEST_ATTRIBUTE_NAME = 'target';
+
     const TYPE = 'generic';
 
     /**
@@ -94,7 +96,7 @@ class Action implements VendorInterface
      *
      * @Serializer\Exclude()
      */
-    private $requestAttribute = 'object';
+    private $requestAttributeName = Action::DEFAULT_REQUEST_ATTRIBUTE_NAME;
 
     /**
      * @var array
@@ -228,14 +230,14 @@ class Action implements VendorInterface
         $this->path = $path;
     }
 
-    public function getRequestAttribute(): string
+    public function getRequestAttributeName(): string
     {
-        return $this->requestAttribute;
+        return $this->requestAttributeName;
     }
 
-    public function setRequestAttribute(string $requestAttribute): void
+    public function setRequestAttributeName(string $requestAttributeName): void
     {
-        $this->requestAttribute = $requestAttribute;
+        $this->requestAttributeName = $requestAttributeName;
     }
 
     public function getTemplates(): array

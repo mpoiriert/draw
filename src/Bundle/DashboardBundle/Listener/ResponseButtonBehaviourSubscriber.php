@@ -105,9 +105,11 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
                 return;
         }
 
+        $requestAttribute = $action->getRequestAttributeName();
+
         $template = $action->getTemplate(
             'notification_save',
-            "{{ '_notification.save'|trans({'%entry%': request.get('object')}, 'DrawDashboardBundle')|raw }}"
+            "{{ '_notification.save'|trans({'%entry%': request.attributes.get('$requestAttribute')}, 'DrawDashboardBundle')|raw }}"
         );
 
         if (!$template) {

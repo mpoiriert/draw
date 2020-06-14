@@ -23,7 +23,7 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagCreate")
      *
-     * @Deserialization(name="tag")
+     * @Deserialization()
      *
      * @Dashboard\ActionCreate()
      *
@@ -31,12 +31,12 @@ class TagsController
      *
      * @return Tag The newly created tag
      */
-    public function createAction(Tag $tag, EntityManagerInterface $entityManager)
+    public function createAction(Tag $target, EntityManagerInterface $entityManager)
     {
-        $entityManager->persist($tag);
+        $entityManager->persist($target);
         $entityManager->flush();
 
-        return $tag;
+        return $target;
     }
 
     /**
@@ -45,7 +45,6 @@ class TagsController
      * @OpenApi\Operation(operationId="tagEdit")
      *
      * @Deserialization(
-     *     name="tag",
      *     propertiesMap={"id":"id"}
      * )
      *
@@ -53,11 +52,11 @@ class TagsController
      *
      * @return Tag The update tag
      */
-    public function editAction(Tag $tag, EntityManagerInterface $entityManager)
+    public function editAction(Tag $target, EntityManagerInterface $entityManager)
     {
         $entityManager->flush();
 
-        return $tag;
+        return $target;
     }
 
     /**
@@ -69,9 +68,9 @@ class TagsController
      *
      * @return Tag The tag
      */
-    public function getAction(Tag $tag)
+    public function getAction(Tag $target)
     {
-        return $tag;
+        return $target;
     }
 
     /**
@@ -85,9 +84,9 @@ class TagsController
      *
      * @return void Empty response mean success
      */
-    public function deleteAction(Tag $tag, EntityManagerInterface $entityManager)
+    public function deleteAction(Tag $target, EntityManagerInterface $entityManager)
     {
-        $entityManager->remove($tag);
+        $entityManager->remove($target);
         $entityManager->flush();
     }
 

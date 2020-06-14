@@ -632,7 +632,7 @@
                     "flow": {
                         "type": "confirm",
                         "title": "",
-                        "message": "Are you sure you want to delete the user {{user.email}} ?"
+                        "message": "Are you sure you want to delete the user {{target.email}} ?"
                     }
                 }
             }

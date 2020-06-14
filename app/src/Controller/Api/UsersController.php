@@ -33,7 +33,7 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userCreate")
      *
-     * @Deserialization(name="user")
+     * @Deserialization()
      *
      * @Dashboard\ActionCreate()
      *
@@ -41,12 +41,12 @@ class UsersController extends AbstractController
      *
      * @return User The newly created user
      */
-    public function createAction(User $user, EntityManagerInterface $entityManager)
+    public function createAction(User $target, EntityManagerInterface $entityManager)
     {
-        $entityManager->persist($user);
+        $entityManager->persist($target);
         $entityManager->flush();
 
-        return $user;
+        return $target;
     }
 
     /**
@@ -84,7 +84,6 @@ class UsersController extends AbstractController
      * @OpenApi\Operation(operationId="userEdit")
      *
      * @Deserialization(
-     *     name="user",
      *     propertiesMap={"id":"id"}
      * )
      *
@@ -94,11 +93,11 @@ class UsersController extends AbstractController
      *
      * @return User The update user
      */
-    public function editAction(User $user, EntityManagerInterface $entityManager)
+    public function editAction(User $target, EntityManagerInterface $entityManager)
     {
         $entityManager->flush();
 
-        return $user;
+        return $target;
     }
 
     /**
@@ -112,9 +111,9 @@ class UsersController extends AbstractController
      *
      * @return User The user
      */
-    public function getAction(User $user)
+    public function getAction(User $target)
     {
-        return $user;
+        return $target;
     }
 
     /**
@@ -125,16 +124,16 @@ class UsersController extends AbstractController
      * @IsGranted("ROLE_ADMIN")
      *
      * @Dashboard\ActionDelete(
-     *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the user {{user.email}} ?")
+     *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the user {{target.email}} ?")
      * )
      *
      * @Serialization(statusCode=204)
      *
      * @return void Empty response mean success
      */
-    public function deleteAction(User $user, EntityManagerInterface $entityManager)
+    public function deleteAction(User $target, EntityManagerInterface $entityManager)
     {
-        $entityManager->remove($user);
+        $entityManager->remove($target);
         $entityManager->flush();
     }
 
@@ -171,7 +170,7 @@ class UsersController extends AbstractController
      *
      * @return void No return value mean email has been sent
      */
-    public function sendResetPasswordEmail(User $user, FeedbackNotifier $notifier)
+    public function sendResetPasswordEmail(User $target, FeedbackNotifier $notifier)
     {
         $notifier->sendFeedback(new Notification('success', 'Email sent! (not really)'));
     }
