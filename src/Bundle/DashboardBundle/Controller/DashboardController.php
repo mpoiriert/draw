@@ -131,24 +131,32 @@ class DashboardController extends AbstractController
      */
     public function autocompleteAction(Request $request, EntityManagerInterface $entityManager)
     {
-        $value = $request->query->get('value');
-        $alias = 'o';
-        $queryBuilder = $entityManager->createQueryBuilder()
-            ->from($request->query->get('_class'), $alias)
-            ->select($alias);
+        $class = $request->query->get('_class');
 
-        foreach ($request->query->get('_fields') as $field) {
-            $queryBuilder->orWhere(
-                sprintf(
-                    '%s.%s LIKE %s',
-                    $alias,
-                    $field,
-                    ':'.$field
-                )
-            )->setParameter($field, '%'.$value.'%');
+        if ($request->query->has('value')) {
+            $id = $request->query->get('value');
+            $objects = array_filter([$entityManager->find($class, $id)]);
+        } else {
+            $fields = $request->query->get('_fields');
+            $lookup = $request->query->get('lookup');
+            $alias = 'o';
+            $queryBuilder = $entityManager->createQueryBuilder()
+                ->from($class, $alias)
+                ->select($alias);
+
+            foreach ($fields as $field) {
+                $queryBuilder->orWhere(
+                    sprintf(
+                        '%s.%s LIKE %s',
+                        $alias,
+                        $field,
+                        ':'.$field
+                    )
+                )->setParameter($field, '%'.$lookup.'%');
+            }
+
+            $objects = $queryBuilder->getQuery()->execute();
         }
-
-        $objects = $queryBuilder->getQuery()->execute();
 
         $choices = [];
         foreach ($objects as $object) {
