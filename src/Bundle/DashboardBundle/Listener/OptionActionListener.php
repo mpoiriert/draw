@@ -329,9 +329,10 @@ class OptionActionListener implements EventSubscriberInterface
             $target = $openApiSchema->resolveSchema($property);
         }
 
-        $targetClass = $target->getVendorData()['x-draw-dashboard-class-name'];
+        $values['managerRegistry'] = $this->managerRegistry;
 
-        if ($manager = $this->managerRegistry->getManagerForClass($targetClass)) {
+        $targetClass = $target->getVendorData()['x-draw-dashboard-class-name'] ?? null;
+        if ($targetClass && $manager = $this->managerRegistry->getManagerForClass($targetClass)) {
             $repository = $manager->getRepository($targetClass);
             $values['repository'] = $repository;
             if (!$expression) {
