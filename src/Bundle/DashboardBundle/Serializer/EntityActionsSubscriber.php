@@ -3,25 +3,24 @@
 namespace Draw\Bundle\DashboardBundle\Serializer;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Bundle\DashboardBundle\Action\ActionBuilder;
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
-use Draw\Bundle\DashboardBundle\Controller\OptionsController;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\Metadata\StaticPropertyMetadata;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class EntityActionsSubscriber implements EventSubscriberInterface
 {
     private $actionGroups = ['Default', 'DrawDashboard:Actions'];
 
+    private $actionBuilder;
+
     private $actionFinder;
 
     private $urlGenerator;
-
-    private $optionsController;
 
     private $managerRegistry;
 
@@ -38,14 +37,14 @@ class EntityActionsSubscriber implements EventSubscriberInterface
 
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
-        OptionsController $optionsController,
         ManagerRegistry $managerRegistry,
-        ActionFinder $actionFinder
+        ActionFinder $actionFinder,
+        ActionBuilder $actionBuilder
     ) {
-        $this->optionsController = $optionsController;
         $this->urlGenerator = $urlGenerator;
         $this->managerRegistry = $managerRegistry;
         $this->actionFinder = $actionFinder;
+        $this->actionBuilder = $actionBuilder;
     }
 
     public function postSerialize(ObjectEvent $objectEvent): void
@@ -79,31 +78,7 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $actions = [];
-        foreach ($targetActions as $action) {
-            if (!$action->getIsInstanceTarget()) {
-                continue;
-            }
-
-            $routeName = $action->getRouteName();
-            $method = strtoupper($action->getMethod());
-            $path = $this->urlGenerator->generate(
-                $routeName,
-                ['id' => $object->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-
-            /** @var Response $response */
-            list(, $response) = $this->optionsController->dummyHandling($method, $path);
-
-            // We skip action that we do not have access
-            if (403 === $response->getStatusCode()) {
-                continue;
-            }
-
-            $action->setHref($path);
-            $actions[] = $action;
-        }
+        $actions = $this->actionBuilder->buildActions($targetActions, $object);
 
         // Since there is no setter for the value we create a new property
         $propertyMetadata = new StaticPropertyMetadata('', '_actions', [], $this->actionGroups);

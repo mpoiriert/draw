@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\DashboardBundle\Annotations;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * @Annotation
  */
@@ -23,6 +25,13 @@ class ActionList extends Action
      * @var array
      */
     private $filters = [];
+
+    /**
+     * @var array|Action[]|null
+     *
+     * @Serializer\SerializedName("collectionActions")
+     */
+    private $collectionActions;
 
     public function __construct(array $values = [])
     {
@@ -62,5 +71,15 @@ class ActionList extends Action
     public function setFilters(array $filters): void
     {
         $this->filters = $filters;
+    }
+
+    public function getCollectionActions(): ?array
+    {
+        return $this->collectionActions;
+    }
+
+    public function setCollectionActions(?array $collectionActions): void
+    {
+        $this->collectionActions = $collectionActions;
     }
 }

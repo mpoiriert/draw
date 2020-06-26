@@ -28,7 +28,7 @@
       "type": "generic",
       "name": "generic",
       "button": {
-        "id": null,
+        "id": "me",
         "label": null,
         "icon": "account_circle",
         "style": null,
@@ -36,7 +36,9 @@
         "showLabel": null,
         "tooltip": null,
         "tooltipPosition": null,
-        "behaviours": []
+        "behaviours": [
+          "navigateTo-userEdit"
+        ]
       },
       "flow": null,
       "href": "http:\/\/localhost\/api\/me",

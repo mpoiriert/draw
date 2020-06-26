@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\DashboardBundle\Listener;
 
+use Draw\Bundle\DashboardBundle\Action\ActionBuilder;
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Annotations\Button\Button;
@@ -18,6 +19,8 @@ use Twig\Environment;
 
 class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
 {
+    private $actionBuilder;
+
     private $actionFinder;
 
     private $feedbackNotifier;
@@ -34,17 +37,20 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
                 ['then', 31],
                 ['saveNotification', 31],
                 ['closeDialog', 31],
+                ['navigateTo', 31],
             ],
         ];
     }
 
     public function __construct(
         ActionFinder $actionFinder,
+        ActionBuilder $actionBuilder,
         UrlGeneratorInterface $urlGenerator,
         FeedbackNotifier $feedbackNotifier,
         Environment $twig
     ) {
         $this->actionFinder = $actionFinder;
+        $this->actionBuilder = $actionBuilder;
         $this->feedbackNotifier = $feedbackNotifier;
         $this->urlGenerator = $urlGenerator;
         $this->twig = $twig;
@@ -55,40 +61,32 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
         switch (true) {
             case !($controllerResult = $viewEvent->getControllerResult()):
             case null === ($button = $this->getButtonToProcess($viewEvent->getRequest())):
-            case !($thenActionName = $this->getThenActionName($button)):
+            case !($thenActionName = $this->getPrefixedBehaviour($button, 'then-')):
                 return;
         }
 
-        foreach ($this->actionFinder->findAllByByTarget($viewEvent->getControllerResult()) as $action) {
+        foreach ($this->actionFinder->findAllByByTarget($controllerResult) as $action) {
             if ($action->getName() !== $thenActionName) {
                 continue;
             }
 
-            $parameters = [];
-            if ($action->getIsInstanceTarget()) {
-                $parameters['id'] = $controllerResult->getId(); // todo Make this dynamic
+            $action = $this->actionBuilder->buildActions([$action])[0] ?? null;
+
+            if ($action) {
+                $this->feedbackNotifier->sendFeedback(new Navigate($action));
             }
-
-            $url = $this->urlGenerator->generate(
-                $action->getRouteName(),
-                $parameters,
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-
-            $action->setHref($url);
-            $this->feedbackNotifier->sendFeedback(new Navigate($action));
             break;
         }
     }
 
-    private function getThenActionName(Button $button): ?string
+    private function getPrefixedBehaviour(Button $button, $prefix): ?string
     {
         foreach ($button->getBehaviours() as $behaviour) {
-            if (0 !== strpos($behaviour, 'then-')) {
+            if (0 !== strpos($behaviour, $prefix)) {
                 continue;
             }
 
-            return substr($behaviour, strlen('then-'));
+            return substr($behaviour, strlen($prefix));
         }
 
         return null;
@@ -141,6 +139,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
     private function getButtonToProcess(Request $request): ?Button
     {
         if (!$request->attributes->has('_draw_dashboard_button')) {
+            $action = null;
             $flow = null;
             $buttonToProcess = null;
             switch (true) {
@@ -150,12 +149,19 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
                     break;
             }
 
+            $buttons = [];
+            if ($action instanceof Action && $action->getButton()) {
+                $buttons[] = $action->getButton();
+            }
+
             if ($flow instanceof FlowWithButtonsInterface) {
-                foreach ($flow->getButtons() as $button) {
-                    if ($button->getId() === $buttonId) {
-                        $buttonToProcess = $button;
-                        break;
-                    }
+                $buttons = array_merge($buttons, $flow->getButtons());
+            }
+
+            foreach ($buttons as $button) {
+                if ($button->getId() === $buttonId) {
+                    $buttonToProcess = $button;
+                    break;
                 }
             }
 
@@ -179,5 +185,18 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
         }
 
         return $request->attributes->get('_draw_dashboard_action');
+    }
+
+    public function navigateTo(ViewEvent $viewEvent): void
+    {
+        switch (true) {
+            case null === ($button = $this->getButtonToProcess($viewEvent->getRequest())):
+            case !($navigateToOperationId = $this->getPrefixedBehaviour($button, 'navigateTo-')):
+            case null === ($action = $this->actionFinder->findOneByOperationId($navigateToOperationId)):
+            case null === ($action = $this->actionBuilder->buildActions([$action], $viewEvent->getControllerResult())[0] ?? null):
+                return;
+        }
+
+        $this->feedbackNotifier->sendFeedback(new Navigate($action));
     }
 }

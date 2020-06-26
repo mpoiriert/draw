@@ -79,7 +79,7 @@ class TagsController
      * @OpenApi\Operation(operationId="tagDelete")
      *
      * @Dashboard\ActionDelete(
-     *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the tag {{tag.label}} ?")
+     *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the tag {{target.label}} ?")
      * )
      *
      * @return void Empty response mean success
@@ -102,5 +102,29 @@ class TagsController
     public function listAction(Request $request, PaginatorBuilder $paginatorBuilder)
     {
         return $paginatorBuilder->fromRequest(Tag::class, $request);
+    }
+
+    /**
+     * @Route(methods={"POST"}, path="/tags/activate-all")
+     *
+     * @OpenApi\Operation(operationId="tagActivateAll")
+     *
+     * @Dashboard\Action(
+     *     isInstanceTarget=false,
+     *     button=@Dashboard\Button\Button(id="activateAll", label="activateAll", behaviours={"navigateTo-tagList"})
+     * )
+     *
+     * @Serialization(statusCode=204)
+     *
+     * @return void Empty return value mean success
+     */
+    public function activateAllAction(EntityManagerInterface $entityManager)
+    {
+        $tags = $entityManager->getRepository(Tag::class)->findBy(['active' => false]);
+        foreach ($tags as $tag) {
+            $tag->setActive(true);
+        }
+
+        $entityManager->flush();
     }
 }

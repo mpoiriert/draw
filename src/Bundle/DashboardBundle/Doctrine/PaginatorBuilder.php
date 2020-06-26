@@ -101,13 +101,12 @@ class PaginatorBuilder
             }
 
             if (count($paths)) {
-                throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
-                    $path, $filter['id']));
+                throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]', $path, $filter['id']));
             }
 
             $whereString = '%s.%s %s :%s';
 
-            $parameterName = $alias . '_' . $path;
+            $parameterName = $alias.'_'.$path;
 
             switch (true) {
                 case 'BETWEEN' === $comparison:
@@ -164,12 +163,12 @@ class PaginatorBuilder
 
             switch ($comparison) {
                 case 'BETWEEN':
-                    $queryBuilder->setParameter($parameterName . 'From', $value['from']);
-                    $queryBuilder->setParameter($parameterName . 'To', $value['to']);
+                    $queryBuilder->setParameter($parameterName.'From', $value['from']);
+                    $queryBuilder->setParameter($parameterName.'To', $value['to']);
                     break;
                 case 'LIKE':
                 case 'NOT LIKE':
-                    $queryBuilder->setParameter($parameterName, '%' . $value . '%');
+                    $queryBuilder->setParameter($parameterName, '%'.$value.'%');
                     break;
                 default:
                     $queryBuilder->setParameter($parameterName, $value);
@@ -209,13 +208,13 @@ class PaginatorBuilder
                         ['id' => (count($paths) ? implode('.', $paths) : '')]
                     )
                 );
+
                 return;
             }
         }
 
         if (count($paths)) {
-            throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
-                $path, $filter['id']));
+            throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]', $path, $filter['id']));
         }
 
         if (is_null($path)) {

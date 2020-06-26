@@ -3,6 +3,9 @@
 namespace Draw\Bundle\DashboardBundle\Listener;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Bundle\DashboardBundle\Action\ActionBuilder;
+use Draw\Bundle\DashboardBundle\Action\ActionFinder;
+use Draw\Bundle\DashboardBundle\Annotations\Action;
 use Draw\Bundle\DashboardBundle\Annotations\ActionCreate;
 use Draw\Bundle\DashboardBundle\Annotations\ActionEdit;
 use Draw\Bundle\DashboardBundle\Annotations\ActionList;
@@ -28,9 +31,13 @@ use Twig\Environment;
 
 class OptionActionListener implements EventSubscriberInterface
 {
+    private $actionFinder;
+
     private $twig;
 
     private $expressionLanguage;
+
+    private $actionBuilder;
 
     /**
      * @var ManagerRegistry
@@ -46,13 +53,17 @@ class OptionActionListener implements EventSubscriberInterface
         ManagerRegistry $managerRegistry,
         SerializerInterface $serializer,
         ExpressionLanguage $expressionLanguage,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        ActionFinder $actionFinder,
+        ActionBuilder $actionBuilder
     ) {
         $this->twig = $environment;
         $this->managerRegistry = $managerRegistry;
         $this->serializer = $serializer;
         $this->expressionLanguage = $expressionLanguage;
         $this->urlGenerator = $urlGenerator;
+        $this->actionFinder = $actionFinder;
+        $this->actionBuilder = $actionBuilder;
     }
 
     public static function getSubscribedEvents()
@@ -152,6 +163,19 @@ class OptionActionListener implements EventSubscriberInterface
 
         $action->setColumns($columns);
         $action->setFilters($filters);
+
+        $targetActions = $this->actionFinder->findAllByByTarget($objectSchema->getVendorData()['x-draw-dashboard-class-name']);
+
+        $targetActions = array_filter($targetActions, function (Action $targetAction) {
+            return ActionList::TYPE != $targetAction->getType();
+        });
+
+        if (!$targetActions) {
+            return;
+        }
+
+        $actions = $this->actionBuilder->buildActions($targetActions);
+        $action->setCollectionActions($actions);
     }
 
     private function processFilter(Root $openApiSchema, Schema $objectSchema, Schema $propertySchema): ?Filter

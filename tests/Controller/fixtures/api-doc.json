@@ -293,7 +293,35 @@
                     "flow": {
                         "type": "confirm",
                         "title": "",
-                        "message": "Are you sure you want to delete the tag {{tag.label}} ?"
+                        "message": "Are you sure you want to delete the tag {{target.label}} ?"
+                    }
+                }
+            }
+        },
+        "/api/tags/activate-all": {
+            "post": {
+                "operationId": "tagActivateAll",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Empty return value mean success"
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_activateall",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "generic",
+                    "name": "generic",
+                    "button": {
+                        "id": "activateAll",
+                        "label": "Activate all",
+                        "behaviours": [
+                            "navigateTo-tagList"
+                        ]
                     }
                 }
             }
@@ -463,8 +491,11 @@
                     "type": "generic",
                     "name": "generic",
                     "button": {
+                        "id": "me",
                         "icon": "account_circle",
-                        "behaviours": []
+                        "behaviours": [
+                            "navigateTo-userEdit"
+                        ]
                     }
                 }
             }

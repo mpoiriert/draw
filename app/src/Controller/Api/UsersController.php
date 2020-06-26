@@ -9,7 +9,6 @@ use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Doctrine\Paginator;
 use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;
-use Draw\Bundle\DashboardBundle\Feedback\Navigate;
 use Draw\Bundle\DashboardBundle\Feedback\Notification;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
@@ -18,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Dashboard\Breadcrumb(parentOperationId="userList")
@@ -58,23 +56,13 @@ class UsersController extends AbstractController
      *
      * @Dashboard\Action(
      *     targets={},
-     *     button=@Dashboard\Button\Button(icon="account_circle")
+     *     button=@Dashboard\Button\Button(id="me", icon="account_circle", behaviours={"navigateTo-userEdit"})
      * )
      *
      * @return User The currently connected user
      */
     public function meAction(FeedbackNotifier $notifier, ActionFinder $actionFinder)
     {
-        $action = $actionFinder->findOneByOperationId('userEdit');
-        $action->setHref(
-            $this->generateUrl(
-                $action->getRouteName(),
-                ['id' => $this->getUser()->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            )
-        );
-        $notifier->sendFeedback(new Navigate($action));
-
         return $this->getUser();
     }
 
@@ -165,6 +153,7 @@ class UsersController extends AbstractController
      * @OpenApi\Operation(operationId="userSendResetPasswordEmail")
      *
      * @Dashboard\Action(
+     *     isInstanceTarget=true,
      *     button=@Dashboard\Button\Button(label="Send forgot password email", icon="email")
      * )
      *

@@ -136,6 +136,93 @@
           },
           "comparison": "IN"
         }
+      ],
+      "collectionActions": [
+        {
+          "type": "create",
+          "name": "create",
+          "button": {
+            "id": null,
+            "label": "Create",
+            "icon": null,
+            "style": null,
+            "color": null,
+            "showLabel": null,
+            "tooltip": null,
+            "tooltipPosition": null,
+            "behaviours": []
+          },
+          "flow": {
+            "type": "form",
+            "id": null,
+            "buttons": [
+              {
+                "id": "cancel",
+                "label": "Cancel",
+                "icon": null,
+                "style": "stroked-button",
+                "color": null,
+                "showLabel": null,
+                "tooltip": null,
+                "tooltipPosition": null,
+                "behaviours": [
+                  "cancel"
+                ]
+              },
+              {
+                "id": "save",
+                "label": "Save",
+                "icon": null,
+                "style": "flat-button",
+                "color": "primary",
+                "showLabel": null,
+                "tooltip": null,
+                "tooltipPosition": null,
+                "behaviours": [
+                  "submit",
+                  "save",
+                  "then-edit"
+                ]
+              },
+              {
+                "id": "save-then-create",
+                "label": "Save and add more",
+                "icon": null,
+                "style": "flat-button",
+                "color": "primary",
+                "showLabel": null,
+                "tooltip": null,
+                "tooltipPosition": null,
+                "behaviours": [
+                  "submit",
+                  "save",
+                  "then-create"
+                ]
+              },
+              {
+                "id": "save-then-list",
+                "label": "Save and go to list",
+                "icon": null,
+                "style": "flat-button",
+                "color": "primary",
+                "showLabel": null,
+                "tooltip": null,
+                "tooltipPosition": null,
+                "behaviours": [
+                  "submit",
+                  "save",
+                  "then-list"
+                ]
+              }
+            ],
+            "dialog": false
+          },
+          "href": "http://localhost/api/users",
+          "method": "POST",
+          "title": null,
+          "inputs": null,
+          "default": null
+        }
       ]
     },
     "x-draw-dashboard-breadcrumbs": [
