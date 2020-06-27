@@ -101,4 +101,12 @@ class Paginator
     {
         return $this->paginator->getIterator()->getArrayCopy();
     }
+
+    /**
+     * @return \Doctrine\ORM\Tools\Pagination\Paginator
+     */
+    public function getDoctrinePaginator()
+    {
+        return $this->paginator;
+    }
 }
