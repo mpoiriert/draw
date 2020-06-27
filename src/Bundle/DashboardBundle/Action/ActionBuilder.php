@@ -20,7 +20,7 @@ class ActionBuilder
 
     /**
      * @param array|Action[] $actions
-     * @param null           $object
+     * @param null $object
      *
      * @return array|Action[]
      */
@@ -35,6 +35,8 @@ class ActionBuilder
                 }
 
                 $target = $object;
+            } elseif ($object) {
+                continue;
             }
 
             $routeName = $action->getRouteName();
