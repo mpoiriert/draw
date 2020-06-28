@@ -70,7 +70,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            $action = $this->actionBuilder->buildActions([$action])[0] ?? null;
+            $action = $this->actionBuilder->buildActions([$action], $controllerResult)[0] ?? null;
 
             if ($action) {
                 $this->feedbackNotifier->sendFeedback(new Navigate($action));
