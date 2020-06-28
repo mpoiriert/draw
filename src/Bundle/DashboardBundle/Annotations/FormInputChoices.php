@@ -26,6 +26,13 @@ class FormInputChoices extends FormInput
     private $sourceCompareKeys = null;
 
     /**
+     * @var bool
+     *
+     * @Serializer\SerializedName("autoSelect")
+     */
+    private $autoSelect = false;
+
+    /**
      * @var string|null
      *
      * @Serializer\Exclude()
@@ -80,5 +87,15 @@ class FormInputChoices extends FormInput
     public function setExpression(?string $expression): void
     {
         $this->expression = $expression;
+    }
+
+    public function getAutoSelect(): bool
+    {
+        return $this->autoSelect;
+    }
+
+    public function setAutoSelect(bool $autoSelect): void
+    {
+        $this->autoSelect = $autoSelect;
     }
 }
