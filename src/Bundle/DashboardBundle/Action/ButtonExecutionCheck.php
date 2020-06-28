@@ -39,9 +39,9 @@ final class ButtonExecutionCheck
             return false;
         }
 
-        foreach ($thenList as $thenActionType) {
+        foreach ($thenList as $thenActionName) {
             foreach ($this->actionFinder->findAllByByTarget($targets[0]) as $action) {
-                if ($action->getType() !== $thenActionType) {
+                if ($action->getName() !== $thenActionName) {
                     continue;
                 }
 
