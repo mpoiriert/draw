@@ -15,3 +15,5 @@ _flow:
   confirm:
     message: 'Êtes-vous sûr ?'
     delete: 'Êtes-vous sûr de vouloir supprimer ceci ?'
+    yes: 'Oui'
+    no: 'Non'
