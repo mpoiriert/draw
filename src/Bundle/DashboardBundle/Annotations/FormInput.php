@@ -35,6 +35,11 @@ class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
     private $icon;
 
     /**
+     * @var int|null
+     */
+    private $fontSize;
+
+    /**
      * @var bool
      */
     private $disabled = false;
@@ -138,5 +143,15 @@ class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
     public function setPosition(?int $position): void
     {
         $this->position = $position;
+    }
+
+    public function getFontSize(): ?int
+    {
+        return $this->fontSize;
+    }
+
+    public function setFontSize(?int $fontSize): void
+    {
+        $this->fontSize = $fontSize;
     }
 }
