@@ -3,8 +3,10 @@
 namespace Draw\Bundle\DashboardBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Draw\Bundle\DashboardBundle\Action\ActionFinder;
 use Draw\Bundle\DashboardBundle\Annotations\Action;
+use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -98,7 +100,7 @@ class DashboardController extends AbstractController
             return null;
         }
 
-        return $action->getHref().'/'.$action->getName();
+        return $action->getHref() . '/' . $action->getName();
     }
 
     private function getActionInformation($operationId, Request $request): ?Action
@@ -129,40 +131,48 @@ class DashboardController extends AbstractController
     /**
      * @Route(name="drawDashboard_choices", methods={"GET"}, path="/dashboard/auto-complete")
      */
-    public function autocompleteAction(Request $request, EntityManagerInterface $entityManager)
-    {
+    public function autocompleteAction(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        PaginatorBuilder $paginatorBuilder
+    ) {
         $class = $request->query->get('_class');
 
         if ($request->query->has('value')) {
             $id = $request->query->get('value');
             $objects = array_filter([$entityManager->find($class, $id)]);
         } else {
-            $fields = $request->query->get('_fields');
-            $lookup = $request->query->get('lookup');
-            $alias = 'o';
-            $queryBuilder = $entityManager->createQueryBuilder()
-                ->from($class, $alias)
-                ->select($alias);
+            $objects = $paginatorBuilder
+                ->fromClass($class)
+                ->build(function (QueryBuilder $queryBuilder) use ($entityManager, $request) {
+                    $fields = $request->query->get('_fields');
+                    $lookup = $request->query->get('lookup');
+                    $alias = 'o';
+                    $queryBuilder = $queryBuilder->select($alias);
 
-            foreach ($fields as $field) {
-                $queryBuilder->orWhere(
-                    sprintf(
-                        '%s.%s LIKE %s',
-                        $alias,
-                        $field,
-                        ':'.$field
-                    )
-                )->setParameter($field, '%'.$lookup.'%');
-            }
-
-            $objects = $queryBuilder->getQuery()->execute();
+                    foreach ($fields as $field) {
+                        $queryBuilder->orWhere(
+                            sprintf(
+                                '%s.%s LIKE %s',
+                                $alias,
+                                $field,
+                                ':' . $field
+                            )
+                        )->setParameter($field, '%' . $lookup . '%');
+                    }
+                })
+                ->getDoctrinePaginator()
+                ->getQuery()
+                ->setMaxResults(null)
+                ->setFirstResult(null)
+                ->execute();
         }
 
         $choices = [];
         foreach ($objects as $object) {
             $choices[] = [
                 'value' => $object->getId(), // todo make this dynamic
-                'label' => (string) $object,
+                'label' => (string)$object,
             ];
         }
 
