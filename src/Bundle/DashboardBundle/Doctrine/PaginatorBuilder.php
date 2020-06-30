@@ -12,43 +12,162 @@ class PaginatorBuilder
 {
     private $managerRegistry;
 
+    private $filters = [];
+
+    private $orderBy = [];
+
+    private $fromClass;
+
+    private $fetchJoinCollection = null;
+
+    /**
+     * In case of zero will fallback on the first page size options
+     *
+     * @var int
+     */
+    private $pageSize = 0;
+
+    private $pageIndex = 0;
+
+    private $pageSizeOptions = [10, 25, 50];
+
     public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->managerRegistry = $managerRegistry;
     }
 
-    public function fromRequest(
-        $class,
-        Request $request,
-        callable $queryBuilderCallback = null,
-        $fetchJoinCollection = null
-    ): Paginator {
+    public function fromClass($class): self
+    {
+        $this->fromClass = $class;
+
+        return clone $this;
+    }
+
+    public function getFromClass(): ?string
+    {
+        return $this->fromClass;
+    }
+
+    public function filters(array $filters): self
+    {
+        $this->filters = $filters;
+
+        return clone $this;
+    }
+
+    public function orderBy(array $orderBy): self
+    {
+        $this->orderBy = $orderBy;
+
+        return clone $this;
+    }
+
+    public function getOrderBy(): array
+    {
+        return $this->orderBy;
+    }
+
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
+    public function fetchJoinCollection(?bool $fetch): self
+    {
+        $this->fetchJoinCollection = $fetch;
+
+        return clone $this;
+    }
+
+    public function getFetchJoinCollection(): ?bool
+    {
+        return $this->fetchJoinCollection;
+    }
+
+    public function pageIndex(int $pageIndex): self
+    {
+        $this->pageIndex = $pageIndex;
+
+        return clone $this;
+    }
+
+    public function getPageIndex(): int
+    {
+        return $this->pageIndex;
+    }
+
+    public function pageSize(?int $pageSize): self
+    {
+        $this->pageSize = $pageSize;
+
+        return clone $this;
+    }
+
+    public function getPageSize(): int
+    {
+        return $this->pageSize ?: $this->getPageSizeOptions()[0];
+    }
+
+    /**
+     * @param array|int[] $pageSizeOptions
+     */
+    public function pageSizeOptions(array $pageSizeOptions): self
+    {
+        $this->pageSizeOptions = $pageSizeOptions ? $pageSizeOptions : $this->pageSizeOptions;
+
+        return clone $this;
+    }
+
+    /**
+     * @return array|int[]
+     */
+    public function getPageSizeOptions(): array
+    {
+        return $this->pageSizeOptions;
+    }
+
+    public function build(callable $queryBuilderCallback = null)
+    {
+        if(!$this->fromClass) {
+            throw new \RuntimeException('You must define a class you want to paginate from');
+        }
+
         $queryBuilder = $this->buildQueryBuilder(
-            $class,
-            $request->query->get('orderBy', []),
-            $request->query->get('filters', [])
+            $this->fromClass,
+            $this->orderBy,
+            $this->filters
         );
 
         if ($queryBuilderCallback) {
             call_user_func($queryBuilderCallback, $queryBuilder);
         }
 
+        $fetchJoinCollection = $this->fetchJoinCollection;
         if (null === $fetchJoinCollection) {
             // This prevent some default case when you do a custom query hydration that would trigger a error if no id
             // is defined. We could pass false at the parameter but we detect if it's possible when not specified.
-            $fetchJoinCollection = count($queryBuilder->getAllAliases()) > 1;
+            $fetchJoinCollection = count($queryBuilder->getAllAliases()) === 1;
         }
 
         $paginator = new Paginator(
             $queryBuilder->getQuery(),
-            $request->query->getInt('pageSize'),
-            null,
+            $this->getPageSize(),
+            $this->getPageSizeOptions(),
             $fetchJoinCollection
         );
 
-        $paginator->goToPage($request->query->getInt('pageIndex'));
+        $paginator->goToPage($this->getPageIndex());
 
         return $paginator;
+    }
+
+    public function extractFromRequest(Request $request): self
+    {
+        return $this
+            ->orderBy($request->query->get('orderBy', []))
+            ->filters($request->query->get('filters', []))
+            ->pageSize($request->query->getInt('pageSize', $this->getPageSize()))
+            ->pageIndex($request->query->getInt('pageIndex'));
     }
 
     private function buildQueryBuilder($class, array $orderBy, array $filters): QueryBuilder
@@ -101,12 +220,13 @@ class PaginatorBuilder
             }
 
             if (count($paths)) {
-                throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]', $path, $filter['id']));
+                throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
+                    $path, $filter['id']));
             }
 
             $whereString = '%s.%s %s :%s';
 
-            $parameterName = $alias.'_'.$path;
+            $parameterName = $alias . '_' . $path;
 
             switch (true) {
                 case 'BETWEEN' === $comparison:
@@ -163,12 +283,12 @@ class PaginatorBuilder
 
             switch ($comparison) {
                 case 'BETWEEN':
-                    $queryBuilder->setParameter($parameterName.'From', $value['from']);
-                    $queryBuilder->setParameter($parameterName.'To', $value['to']);
+                    $queryBuilder->setParameter($parameterName . 'From', $value['from']);
+                    $queryBuilder->setParameter($parameterName . 'To', $value['to']);
                     break;
                 case 'LIKE':
                 case 'NOT LIKE':
-                    $queryBuilder->setParameter($parameterName, '%'.$value.'%');
+                    $queryBuilder->setParameter($parameterName, '%' . $value . '%');
                     break;
                 default:
                     $queryBuilder->setParameter($parameterName, $value);
@@ -214,7 +334,8 @@ class PaginatorBuilder
         }
 
         if (count($paths)) {
-            throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]', $path, $filter['id']));
+            throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
+                $path, $filter['id']));
         }
 
         if (is_null($path)) {

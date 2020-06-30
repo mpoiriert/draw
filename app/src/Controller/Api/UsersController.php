@@ -142,7 +142,10 @@ class UsersController extends AbstractController
      */
     public function listAction(PaginatorBuilder $paginatorBuilder, Request $request)
     {
-        return $paginatorBuilder->fromRequest(User::class, $request);
+        return $paginatorBuilder
+            ->fromClass(User::class)
+            ->extractFromRequest($request)
+            ->build();
     }
 
     /**

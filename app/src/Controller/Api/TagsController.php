@@ -101,7 +101,10 @@ class TagsController
      */
     public function listAction(Request $request, PaginatorBuilder $paginatorBuilder)
     {
-        return $paginatorBuilder->fromRequest(Tag::class, $request);
+        return $paginatorBuilder
+            ->fromClass(Tag::class)
+            ->extractFromRequest($request)
+            ->build();
     }
 
     /**

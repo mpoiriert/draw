@@ -15,5 +15,7 @@
             <tag name="jms.expression.function_provider" />
         </service>
         <service id="Draw\Bundle\DashboardBundle\Action\ButtonExecutionCheck" public="true" />
+
+        <service id="Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder" shared="false" />
     </services>
 </container>
