@@ -6,10 +6,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\Mapping\ClassMetadata;
+use Draw\Bundle\DashboardBundle\Event\PaginatorBuilderBuildEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class PaginatorBuilder
 {
+    private $eventDispatcher;
+
     private $managerRegistry;
 
     private $filters = [];
@@ -31,8 +35,9 @@ class PaginatorBuilder
 
     private $pageSizeOptions = [10, 25, 50];
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(ManagerRegistry $managerRegistry, EventDispatcherInterface $eventDispatcher)
     {
+        $this->eventDispatcher = $eventDispatcher;
         $this->managerRegistry = $managerRegistry;
     }
 
@@ -128,7 +133,7 @@ class PaginatorBuilder
 
     public function build(callable $queryBuilderCallback = null)
     {
-        if(!$this->fromClass) {
+        if (!$this->fromClass) {
             throw new \RuntimeException('You must define a class you want to paginate from');
         }
 
@@ -148,6 +153,8 @@ class PaginatorBuilder
             // is defined. We could pass false at the parameter but we detect if it's possible when not specified.
             $fetchJoinCollection = count($queryBuilder->getAllAliases()) === 1;
         }
+
+        $this->eventDispatcher->dispatch(new PaginatorBuilderBuildEvent($this, $queryBuilder));
 
         $paginator = new Paginator(
             $queryBuilder->getQuery(),
