@@ -35,8 +35,6 @@ class ActionBuilder
                 }
 
                 $target = $object;
-            } elseif ($object) {
-                continue;
             }
 
             $routeName = $action->getRouteName();

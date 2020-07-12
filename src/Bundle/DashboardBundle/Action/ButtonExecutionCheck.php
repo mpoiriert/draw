@@ -40,7 +40,7 @@ final class ButtonExecutionCheck
         }
 
         foreach ($thenList as $thenActionName) {
-            foreach ($this->actionFinder->findAllByByTarget($targets[0]) as $action) {
+            foreach ($this->actionFinder->findAllByTarget($targets[0]) as $action) {
                 if ($action->getName() !== $thenActionName) {
                     continue;
                 }

@@ -286,9 +286,12 @@
                     "type": "delete",
                     "name": "delete",
                     "button": {
+                        "id": "delete",
                         "label": "Delete",
                         "icon": "delete",
-                        "behaviours": []
+                        "behaviours": [
+                            "delete"
+                        ]
                     },
                     "flow": {
                         "type": "confirm",
@@ -658,9 +661,12 @@
                     "type": "delete",
                     "name": "delete",
                     "button": {
+                        "id": "delete",
                         "label": "Delete",
                         "icon": "delete",
-                        "behaviours": []
+                        "behaviours": [
+                            "delete"
+                        ]
                     },
                     "flow": {
                         "type": "confirm",

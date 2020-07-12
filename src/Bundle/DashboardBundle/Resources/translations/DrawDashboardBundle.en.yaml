@@ -10,6 +10,7 @@ show: "Show"
 
 _notification:
   save: "The entry <b>%entry%</b> has been saved properly."
+  delete: "The entry <b>%entry%</b> has been deleted properly."
 
 _flow:
   confirm:

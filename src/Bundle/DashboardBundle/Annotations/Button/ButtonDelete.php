@@ -11,8 +11,10 @@ class ButtonDelete extends Button
     {
         $values = array_merge(
             [
+                'id' => 'delete',
                 'label' => 'delete',
                 'icon' => 'delete',
+                'behaviours' => ['delete'],
             ],
             $values
         );

@@ -164,7 +164,7 @@ class OptionActionListener implements EventSubscriberInterface
         $action->setColumns($columns);
         $action->setFilters($filters);
 
-        $targetActions = $this->actionFinder->findAllByByTarget($objectSchema->getVendorData()['x-draw-dashboard-class-name']);
+        $targetActions = $this->actionFinder->findAllByTarget($objectSchema->getVendorData()['x-draw-dashboard-class-name']);
 
         $targetActions = array_filter($targetActions, function (Action $targetAction) {
             return ActionList::TYPE != $targetAction->getType();

@@ -72,7 +72,7 @@ class EntityActionsSubscriber implements EventSubscriberInterface
             }
         }
 
-        $targetActions = $this->actionFinder->findAllByByTarget($object);
+        $targetActions = $this->actionFinder->findAllByTarget($object, true);
 
         if (!$targetActions) {
             return;

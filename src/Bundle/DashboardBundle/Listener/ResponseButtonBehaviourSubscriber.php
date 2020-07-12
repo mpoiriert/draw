@@ -9,6 +9,7 @@ use Draw\Bundle\DashboardBundle\Annotations\Button\Button;
 use Draw\Bundle\DashboardBundle\Annotations\FlowWithButtonsInterface;
 use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
 use Draw\Bundle\DashboardBundle\Feedback\CloseDialog;
+use Draw\Bundle\DashboardBundle\Feedback\EntityDeleted;
 use Draw\Bundle\DashboardBundle\Feedback\Navigate;
 use Draw\Bundle\DashboardBundle\Feedback\Notification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,6 +37,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
             ViewEvent::class => [
                 ['then', 31],
                 ['saveNotification', 31],
+                ['deleteNotification', 31],
                 ['closeDialog', 31],
                 ['navigateTo', 31],
             ],
@@ -65,7 +67,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
                 return;
         }
 
-        foreach ($this->actionFinder->findAllByByTarget($controllerResult) as $action) {
+        foreach ($this->actionFinder->findAllByTarget($controllerResult) as $action) {
             if ($action->getName() !== $thenActionName) {
                 continue;
             }
@@ -103,11 +105,42 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
                 return;
         }
 
+        $this->sendNotification(
+            $request,
+            $action,
+            'save',
+            Notification::TYPE_SUCCESS
+        );
+    }
+
+    public function deleteNotification(ViewEvent $viewEvent): void
+    {
+        $request = $viewEvent->getRequest();
+
+        switch (true) {
+            case null === ($button = $this->getButtonToProcess($request)):
+            case !in_array('delete', $button->getBehaviours()):
+            case null === ($action = $this->getActionToProcess($request)):
+                return;
+        }
+
+        $this->feedbackNotifier->sendFeedback(new EntityDeleted());
+
+        $this->sendNotification(
+            $request,
+            $action,
+            'delete',
+            Notification::TYPE_SUCCESS
+        );
+    }
+
+    private function sendNotification(Request $request, Action $action, $name, $type)
+    {
         $requestAttribute = $action->getRequestAttributeName();
 
         $template = $action->getTemplate(
-            'notification_save',
-            "{{ '_notification.save'|trans({'%entry%': request.attributes.get('$requestAttribute')}, 'DrawDashboardBundle')|raw }}"
+            'notification_' . $name,
+            "{{ '_notification." . $name . "'|trans({'%entry%': request.attributes.get('$requestAttribute')}, 'DrawDashboardBundle')|raw }}"
         );
 
         if (!$template) {
@@ -116,7 +149,7 @@ class ResponseButtonBehaviourSubscriber implements EventSubscriberInterface
 
         $this->feedbackNotifier->sendFeedback(
             new Notification(
-                Notification::TYPE_SUCCESS,
+                $type,
                 $this->twig->render(
                     $this->twig->createTemplate($template),
                     ['request' => $request]
