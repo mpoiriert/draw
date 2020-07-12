@@ -42,6 +42,8 @@ class Filter implements VendorPropertyInterface, CanBeExcludeInterface
      */
     private $comparison = '=';
 
+    private $defaultValue;
+
     public function __construct(array $values = [])
     {
         $values = array_merge(
@@ -112,5 +114,15 @@ class Filter implements VendorPropertyInterface, CanBeExcludeInterface
     public function setPosition(?int $position): void
     {
         $this->position = $position;
+    }
+
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    public function setDefaultValue($defaultValue): void
+    {
+        $this->defaultValue = $defaultValue;
     }
 }
