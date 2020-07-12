@@ -6,21 +6,21 @@
       "icon": "account_circle",
       "security": null,
       "children": [],
-      "link": "http:\/\/localhost\/api\/me\/generic"
+      "link": "http://localhost/api/me/generic"
     },
     {
       "label": "Users",
       "icon": "person",
       "security": null,
       "children": [],
-      "link": "http:\/\/localhost\/api\/users\/list"
+      "link": "http://localhost/api/users/list"
     },
     {
       "label": "Tags",
       "icon": "tag",
       "security": null,
       "children": [],
-      "link": "http:\/\/localhost\/api\/tags\/list"
+      "link": "http://localhost/api/tags/list"
     }
   ],
   "toolbar": [
@@ -41,7 +41,7 @@
         ]
       },
       "flow": null,
-      "href": "http:\/\/localhost\/api\/me",
+      "href": "http://localhost/api/me",
       "method": "GET",
       "title": "_breadcrumb.me"
     },
@@ -61,7 +61,7 @@
       },
       "flow": {
         "type": "form",
-        "id": "5ec9537b2cef6",
+        "id": "5f0b4d6208bde",
         "buttons": [
           {
             "id": "cancel",
@@ -93,7 +93,7 @@
         ],
         "dialog": true
       },
-      "href": "http:\/\/localhost\/api\/connection-tokens",
+      "href": "http://localhost/api/connection-tokens",
       "method": "POST",
       "title": "Sign In",
       "inputs": [
@@ -102,6 +102,7 @@
           "type": "string",
           "label": "Username",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false
         },
@@ -110,6 +111,7 @@
           "type": "password",
           "label": "Password",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false
         }

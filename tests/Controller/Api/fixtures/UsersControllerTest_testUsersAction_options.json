@@ -74,11 +74,13 @@
             "type": "auto-complete",
             "label": "#",
             "icon": null,
+            "fontSize": null,
             "disabled": false,
             "required": false,
             "remoteUrl": "http://localhost/api/dashboard/auto-complete?_class=App%5CEntity%5CUser&_fields%5B0%5D=email"
           },
-          "comparison": "="
+          "comparison": "=",
+          "defaultValue": null
         },
         {
           "id": "tags",
@@ -88,6 +90,7 @@
             "type": "choices",
             "label": "Tags",
             "icon": null,
+            "fontSize": null,
             "disabled": false,
             "required": false,
             "multiple": false,
@@ -107,9 +110,11 @@
             ],
             "sourceCompareKeys": [
               "id"
-            ]
+            ],
+            "autoSelect": false
           },
-          "comparison": "="
+          "comparison": "=",
+          "defaultValue": null
         },
         {
           "id": "level",
@@ -119,6 +124,7 @@
             "type": "choices",
             "label": "Access Level",
             "icon": null,
+            "fontSize": null,
             "disabled": false,
             "required": false,
             "multiple": true,
@@ -132,9 +138,11 @@
                 "value": "admin"
               }
             ],
-            "sourceCompareKeys": null
+            "sourceCompareKeys": null,
+            "autoSelect": false
           },
-          "comparison": "IN"
+          "comparison": "IN",
+          "defaultValue": null
         }
       ],
       "collectionActions": [

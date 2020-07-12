@@ -16,7 +16,7 @@
       },
       "flow": {
         "type": "form",
-        "id": "5ef68908e1228",
+        "id": "5f0b4ddaa73a0",
         "buttons": [
           {
             "id": "cancel",
@@ -88,6 +88,7 @@
           "type": "choices",
           "label": "Tags",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false,
           "multiple": true,
@@ -101,13 +102,15 @@
           ],
           "sourceCompareKeys": [
             "id"
-          ]
+          ],
+          "autoSelect": false
         },
         {
           "id": "level",
           "type": "choices",
           "label": "Access Level",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false,
           "multiple": false,
@@ -121,13 +124,15 @@
               "value": "admin"
             }
           ],
-          "sourceCompareKeys": null
+          "sourceCompareKeys": null,
+          "autoSelect": false
         },
         {
           "id": "address",
           "type": "composite",
           "label": "Address",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false,
           "subForm": {
@@ -137,6 +142,7 @@
                 "type": "text",
                 "label": "Street",
                 "icon": null,
+                "fontSize": null,
                 "disabled": false,
                 "required": false
               },
@@ -145,6 +151,7 @@
                 "type": "text",
                 "label": "Postal Code",
                 "icon": null,
+                "fontSize": null,
                 "disabled": false,
                 "required": false
               },
@@ -153,6 +160,7 @@
                 "type": "text",
                 "label": "City",
                 "icon": null,
+                "fontSize": null,
                 "disabled": false,
                 "required": false
               },
@@ -161,6 +169,7 @@
                 "type": "text",
                 "label": "Country",
                 "icon": null,
+                "fontSize": null,
                 "disabled": false,
                 "required": false
               }
@@ -178,6 +187,7 @@
           "type": "collection",
           "label": "Secondary Addresses",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false,
           "orderBy": "position",
@@ -188,6 +198,7 @@
                 "type": "hidden",
                 "label": "#",
                 "icon": null,
+                "fontSize": null,
                 "disabled": false,
                 "required": false
               },
@@ -196,6 +207,7 @@
                 "type": "composite",
                 "label": "Address",
                 "icon": null,
+                "fontSize": null,
                 "disabled": false,
                 "required": false,
                 "subForm": {
@@ -205,6 +217,7 @@
                       "type": "text",
                       "label": "Street",
                       "icon": null,
+                      "fontSize": null,
                       "disabled": false,
                       "required": false
                     },
@@ -213,6 +226,7 @@
                       "type": "text",
                       "label": "Postal Code",
                       "icon": null,
+                      "fontSize": null,
                       "disabled": false,
                       "required": false
                     },
@@ -221,6 +235,7 @@
                       "type": "text",
                       "label": "City",
                       "icon": null,
+                      "fontSize": null,
                       "disabled": false,
                       "required": false
                     },
@@ -229,6 +244,7 @@
                       "type": "text",
                       "label": "Country",
                       "icon": null,
+                      "fontSize": null,
                       "disabled": false,
                       "required": false
                     }
@@ -246,6 +262,7 @@
                 "type": "hidden",
                 "label": "Position",
                 "icon": null,
+                "fontSize": null,
                 "disabled": false,
                 "required": false
               }
@@ -270,6 +287,7 @@
           "type": "date-picker",
           "label": "dateOfBirth",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false
         },
@@ -278,6 +296,7 @@
           "type": "text",
           "label": "Comment",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false
         },
@@ -286,6 +305,7 @@
           "type": "email",
           "label": "Email",
           "icon": null,
+          "fontSize": null,
           "disabled": false,
           "required": false
         }

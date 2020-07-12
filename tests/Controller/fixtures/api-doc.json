@@ -293,7 +293,9 @@
                     "flow": {
                         "type": "confirm",
                         "title": "",
-                        "message": "Are you sure you want to delete the tag {{target.label}} ?"
+                        "message": "Are you sure you want to delete the tag {{target.label}} ?",
+                        "yesLabel": "Yes",
+                        "noLabel": "No"
                     }
                 }
             }
@@ -663,7 +665,9 @@
                     "flow": {
                         "type": "confirm",
                         "title": "",
-                        "message": "Are you sure you want to delete the user {{target.email}} ?"
+                        "message": "Are you sure you want to delete the user {{target.email}} ?",
+                        "yesLabel": "Yes",
+                        "noLabel": "No"
                     }
                 }
             }
@@ -854,7 +858,9 @@
                     "flow": {
                         "type": "confirm",
                         "title": "",
-                        "message": "Sign Out ?"
+                        "message": "Sign Out ?",
+                        "yesLabel": "Yes",
+                        "noLabel": "No"
                     }
                 }
             }
@@ -952,7 +958,8 @@
                         "type": "choices",
                         "disabled": false,
                         "required": false,
-                        "multiple": true
+                        "multiple": true,
+                        "autoSelect": false
                     },
                     "x-draw-dashboard-filter": {
                         "id": "tags",
@@ -961,7 +968,8 @@
                             "type": "choices",
                             "disabled": false,
                             "required": false,
-                            "multiple": false
+                            "multiple": false,
+                            "autoSelect": false
                         },
                         "comparison": "="
                     }
@@ -995,7 +1003,8 @@
                                 "label": "Admin",
                                 "value": "admin"
                             }
-                        ]
+                        ],
+                        "autoSelect": false
                     },
                     "x-draw-dashboard-filter": {
                         "id": "level",
@@ -1014,7 +1023,8 @@
                                     "label": "Admin",
                                     "value": "admin"
                                 }
-                            ]
+                            ],
+                            "autoSelect": false
                         },
                         "comparison": "IN"
                     }
@@ -1227,7 +1237,8 @@
                         "type": "choices",
                         "disabled": false,
                         "required": false,
-                        "multiple": true
+                        "multiple": true,
+                        "autoSelect": false
                     },
                     "x-draw-dashboard-filter": {
                         "id": "tags",
@@ -1236,7 +1247,8 @@
                             "type": "choices",
                             "disabled": false,
                             "required": false,
-                            "multiple": false
+                            "multiple": false,
+                            "autoSelect": false
                         },
                         "comparison": "="
                     }
@@ -1270,7 +1282,8 @@
                                 "label": "Admin",
                                 "value": "admin"
                             }
-                        ]
+                        ],
+                        "autoSelect": false
                     },
                     "x-draw-dashboard-filter": {
                         "id": "level",
@@ -1289,7 +1302,8 @@
                                     "label": "Admin",
                                     "value": "admin"
                                 }
-                            ]
+                            ],
+                            "autoSelect": false
                         },
                         "comparison": "IN"
                     }
