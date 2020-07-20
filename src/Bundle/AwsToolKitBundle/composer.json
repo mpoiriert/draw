@@ -1,4 +1,9 @@
 {
+    "name": "draw/aws-tool-kit-bundle",
+    "type": "symfony-bundle",
+    "keywords": ["symfony", "aws"],
+    "license": "MIT",
+    "description": "[BETA] This bundle offer a few AWS tool for symfony.",
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\AwsToolKitBundle\\": ""
