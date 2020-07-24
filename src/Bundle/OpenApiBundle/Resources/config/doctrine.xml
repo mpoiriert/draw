@@ -7,5 +7,6 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
         <prototype namespace="Draw\Bundle\OpenApiBundle\Bridge\Doctrine\" resource="../../Bridge/Doctrine" />
+        <service id="Draw\Component\OpenApi\Extraction\Extractor\Doctrine\InheritanceExtractor" />
     </services>
 </container>
