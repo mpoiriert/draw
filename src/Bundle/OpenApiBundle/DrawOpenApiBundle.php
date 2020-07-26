@@ -3,6 +3,7 @@
 namespace Draw\Bundle\OpenApiBundle;
 
 use Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler\ExtractorCompilerPass;
+use Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
 use Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler\JmsTypeHandlerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -13,5 +14,6 @@ class DrawOpenApiBundle extends Bundle
     {
         $container->addCompilerPass(new ExtractorCompilerPass());
         $container->addCompilerPass(new JmsTypeHandlerCompilerPass());
+        $container->addCompilerPass(new JmsDoctrineObjectConstructionCompilerPass());
     }
 }
