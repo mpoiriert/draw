@@ -9,5 +9,8 @@
             <exclude>../../{DependencyInjection,Tests}</exclude>
             <exclude>../../DrawDoctrineBusMessageBundle.php</exclude>
         </prototype>
+        <service id="Draw\Bundle\DoctrineBusMessageBundle\Listener\DoctrineBusMessageEventSubscriber">
+            <tag name="doctrine.event_subscriber" />
+        </service>
     </services>
 </container>
