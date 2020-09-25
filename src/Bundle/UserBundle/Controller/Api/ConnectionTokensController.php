@@ -45,6 +45,13 @@ class ConnectionTokensController extends AbstractController
      * @Dashboard\ActionCreate(
      *     button=@Dashboard\Button\Button(label="_drawUserBundle.connect"),
      *     dialog=true,
+     *     flow=@Dashboard\FormFlow(
+     *        dialog=true,
+     *        buttons={
+     *           @Dashboard\Button\ButtonCancel(),
+     *           @Dashboard\Button\ButtonSave(label="_drawUserBundle.connect", thenList={})
+     *        }
+     *     ),
      *     templates={
      *       "notification_save":"{{ '_drawUserBundle.notification.connect'|trans({}, 'DrawDashboardBundle')|raw }}"
      *     }
