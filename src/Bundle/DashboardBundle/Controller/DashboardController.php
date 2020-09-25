@@ -158,7 +158,7 @@ class DashboardController extends AbstractController
                                 $field,
                                 ':' . $field
                             )
-                        )->setParameter($field, '%' . $lookup . '%');
+                        )->setParameter($field, $lookup . '%');
                     }
                 })
                 ->getDoctrinePaginator()
