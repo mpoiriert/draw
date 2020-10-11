@@ -7,7 +7,7 @@
     "require": {
         "symfony/http-foundation": "^4.3",
         "symfony/browser-kit": "^4.3",
-        "draw/tester": "^0.5.22"
+        "draw/tester": "^0.6"
     },
     "autoload": {
         "psr-4": {
