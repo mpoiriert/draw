@@ -210,6 +210,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             'string' => ['type' => 'string'],
             'byte' => ['type' => 'string', 'format' => 'byte'],
             'boolean' => ['type' => 'boolean'],
+            'bool' => ['type' => 'boolean'],
             'date' => ['type' => 'string', 'format' => 'date'],
             'DateTime' => ['type' => 'string', 'format' => 'date-time'],
             'DateTimeImmutable' => ['type' => 'string', 'format' => 'date-time'],

@@ -122,7 +122,7 @@ class Root implements VendorExtensionSupportInterface
      * @var Parameter[]
      *
      * @Assert\Valid()
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\BaseParameter>")
+     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\BaseParameter>")
      */
     public $parameters;
 
@@ -130,9 +130,10 @@ class Root implements VendorExtensionSupportInterface
      * An object to hold responses that can be used across operations.
      * This property does not define global responses for all operations.
      *
-     * @Assert\Valid()
+     * @var Response[]
      *
-     * @var Response
+     * @Assert\Valid()
+     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Response>")
      */
     public $responses;
 
