@@ -59,11 +59,35 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
             $name = $annotation->name;
 
             if ($request->attributes->has($name) && null !== $request->attributes->get($name)) {
-                throw new InvalidArgumentException(sprintf("QueryParameterFetcherSubscriber parameter conflicts with a path parameter '%s' for route '%s'", $name, $request->attributes->get('_route')));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        "QueryParameterFetcherSubscriber parameter conflicts with a path parameter '%s' for route '%s'",
+                        $name,
+                        $request->attributes->get('_route')
+                    )
+                );
             }
 
             if ($request->query->has($name)) {
-                $request->attributes->set($name, $request->query->get($name));
+                switch ($annotation->type) {
+                    case 'string':
+                        $value = $request->query->getAlpha($name);
+                        break;
+                    case 'integer':
+                        $value = $request->query->getInt($name);
+                        break;
+                    case 'boolean':
+                        $value = $request->query->getBoolean($name);
+                        break;
+                    case 'number':
+                        $value = $request->query->getDigits($name);
+                        break;
+                    default:
+                        $value = $request->query->get($name);
+                        break;
+                }
+
+                $request->attributes->set($name, $value);
             }
         }
     }
