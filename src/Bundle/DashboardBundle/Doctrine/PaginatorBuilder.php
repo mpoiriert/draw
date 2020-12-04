@@ -187,13 +187,46 @@ class PaginatorBuilder
             ->from($class, $alias)
             ->select($alias);
 
-        foreach ($orderBy as $key => $direction) {
-            $queryBuilder->addOrderBy(sprintf('%s.%s', $alias, $key), $direction);
-        }
-
+        $this->addOrderBy($queryBuilder, $orderBy, $class, $alias);
         $this->addFilters($queryBuilder, $filters, $class, $alias);
 
         return $queryBuilder;
+    }
+
+    private function addOrderBy(QueryBuilder $queryBuilder, array $orderBy, string $class, string $alias)
+    {
+        $entityManager = $this->managerRegistry->getManagerForClass($class);
+        foreach ($orderBy as $key => $direction) {
+            $classMetadata = $entityManager->getClassMetadata($class);
+            $currentAlias = $alias;
+            foreach (explode('.', $key) as $pathSection) {
+                if ($classMetadata->hasField($pathSection)) {
+                    $queryBuilder->addOrderBy(sprintf('%s.%s', $currentAlias, $pathSection), $direction);
+                    continue;
+                }
+
+                if ($classMetadata->hasAssociation($pathSection)) {
+                    $classMetadata = $this->managerRegistry
+                        ->getManagerForClass($classMetadata->getName())
+                        ->getClassMetadata($classMetadata->getAssociationTargetClass($pathSection));
+
+                    if (!in_array($pathSection, $queryBuilder->getAllAliases())) {
+                        $queryBuilder->join(sprintf('%s.%s', $currentAlias, $pathSection), $pathSection);
+                    }
+
+                    $currentAlias = $pathSection;
+                    continue;
+                }
+
+                throw new \RuntimeException(
+                    sprintf(
+                        'Invalid order by id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
+                        $pathSection,
+                        $key
+                    )
+                );
+            }
+        }
     }
 
     private function addFilters(QueryBuilder $queryBuilder, array $filters, string $class, string $alias)
