@@ -30,11 +30,6 @@ RUN pecl install redis && docker-php-ext-enable redis
 #AWS
 RUN apt-get install -y --no-install-recommends awscli
 
-# Install prestissimo (composer plugin). Plugin that downloads packages in parallel to speed up the installation process
-# After release of Composer 2.x, remove prestissimo, because parallelism already merged into Composer 2.x branch:
-# https://github.com/composer/composer/pull/7904
-RUN composer global require hirak/prestissimo
-
 ARG PUID=1000
 ARG PGID=1000
 
