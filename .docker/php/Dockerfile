@@ -47,7 +47,7 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 #XDEBUG
 ARG xdebug
 RUN if [ $xdebug = "1" ] ; then \
-    pecl install xdebug \
+    pecl install -f xdebug-2.9.8 \
     && docker-php-ext-enable xdebug \
     ; fi
 
