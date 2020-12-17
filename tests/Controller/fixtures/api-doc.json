@@ -804,7 +804,7 @@
                             },
                             {
                                 "id": "save",
-                                "label": "Save",
+                                "label": "Sign In",
                                 "style": "flat-button",
                                 "color": "primary",
                                 "behaviours": [

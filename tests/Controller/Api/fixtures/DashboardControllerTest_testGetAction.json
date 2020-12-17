@@ -78,7 +78,7 @@
           },
           {
             "id": "save",
-            "label": "Save",
+            "label": "Sign In",
             "icon": null,
             "style": "flat-button",
             "color": "primary",
