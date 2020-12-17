@@ -54,27 +54,29 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
 
     public function supports(Request $request): bool
     {
-        if ('POST' != $request->getMethod()
-            || $request->getPathInfo() != $this->urlGenerator->generate('admin_login')
-        ) {
-            return false;
-        }
-
-        return true;
+        return null !== $this->getFormData($request);
     }
 
     public function getCredentials(Request $request): array
     {
+        return $this->getFormData($request) ?: [];
+    }
+
+    private function getFormData(Request $request): ?array
+    {
+        if($request->getPathInfo() != $this->urlGenerator->generate('admin_login')) {
+            return null;
+        }
+
         $form = $this->formFactory->create(AdminLoginForm::class);
         $form->handleRequest($request);
+        if(!$form->isSubmitted()) {
+            return null;
+        }
 
         $data = $form->getData();
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $data['email']
-        );
 
-        return $data;
+        return isset($data['password']) && isset($data['email']) ? $data : null;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
