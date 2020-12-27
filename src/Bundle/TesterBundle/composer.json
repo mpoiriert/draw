@@ -7,7 +7,7 @@
     "require": {
         "symfony/http-foundation": "^4.3",
         "symfony/browser-kit": "^4.3",
-        "draw/tester": "^0.7"
+        "draw/tester": "^0.8"
     },
     "autoload": {
         "psr-4": {
@@ -16,7 +16,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.7-dev"
+            "dev-master": "0.8-dev"
         }
     }
 }
