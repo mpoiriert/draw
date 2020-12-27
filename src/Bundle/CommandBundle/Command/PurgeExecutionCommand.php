@@ -86,6 +86,8 @@ class PurgeExecutionCommand extends Command implements LoggerAwareInterface
             'Successfully purged {record_count} records.',
             ['record_count' => $recordCount]
         );
+
+        return 0;
     }
 
     /**

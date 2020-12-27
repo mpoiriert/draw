@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Messenger\Transport;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Messenger\Exception\InvalidArgumentException;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\Doctrine\Connection;
@@ -14,7 +14,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
 {
     private $registry;
 
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
         parent::__construct($registry);

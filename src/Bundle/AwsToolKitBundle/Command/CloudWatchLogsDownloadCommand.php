@@ -71,5 +71,7 @@ class CloudWatchLogsDownloadCommand extends Command
         } while ($nextForwardToken !== $nextToken);
 
         fclose($handle);
+
+        return 0;
     }
 }

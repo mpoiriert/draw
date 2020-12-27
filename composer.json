@@ -10,7 +10,7 @@
         "aws/aws-sdk-php": "^3.112",
         "doctrine/annotations": "^1.3",
         "doctrine/dbal": "^2.9",
-        "doctrine/doctrine-bundle": "^1.6.10",
+        "doctrine/doctrine-bundle": "^1.6.10 | ^2.0",
         "doctrine/doctrine-migrations-bundle": "^2.1",
         "doctrine/orm": "^2.7",
         "doctrine/sql-formatter": "^1.1",
@@ -59,7 +59,8 @@
         "symfony/debug-pack": "^1.0",
         "symfony/dependency-injection": "^4.3",
         "symfony/dotenv": "^4.3",
-        "symplify/monorepo-builder": "^7.2"
+        "symplify/monorepo-builder": "^7.2",
+        "symfony/phpunit-bridge": "^5.2"
     },
     "autoload": {
         "files": [

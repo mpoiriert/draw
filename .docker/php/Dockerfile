@@ -1,4 +1,4 @@
-FROM php:7.2.17-fpm
+FROM php:7.3.24-fpm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends vim curl debconf subversion git apt-transport-https apt-utils \
@@ -7,6 +7,7 @@ RUN apt-get update \
     sox lame libsox-fmt-mp3 \
     libpng-dev \
     libjpeg-dev \
+    libzip-dev \
     openssh-server
 
 RUN docker-php-ext-configure gd --with-jpeg-dir=/usr/include/

@@ -133,8 +133,17 @@ class OpenApi
     public function validate(Schema $schema)
     {
         /** @var ConstraintViolationList $result */
-        $result = Validation::createValidatorBuilder()
-            ->enableAnnotationMapping(new AnnotationReader())
+        $annotationReader = new AnnotationReader();
+        $builder = Validation::createValidatorBuilder();
+        if(method_exists($builder, 'setDoctrineAnnotationReader')) {
+            $builder
+                ->enableAnnotationMapping(true)
+                ->setDoctrineAnnotationReader($annotationReader);
+        } else {
+            $builder->enableAnnotationMapping($annotationReader);
+        }
+
+        $result = $builder
             ->getValidator()
             ->validate($schema, null, [Constraint::DEFAULT_GROUP]);
 

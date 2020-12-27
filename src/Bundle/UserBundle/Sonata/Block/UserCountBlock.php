@@ -28,7 +28,7 @@ class UserCountBlock extends AbstractBlockService
         parent::__construct($twig);
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, Response $response = null): Response
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 
@@ -56,12 +56,12 @@ class UserCountBlock extends AbstractBlockService
         ], $response);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'User Count';
     }
 
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'icon' => 'fa-user',

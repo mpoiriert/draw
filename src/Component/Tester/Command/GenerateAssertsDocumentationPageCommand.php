@@ -61,5 +61,7 @@ $methodName
         }
 
         file_put_contents(__DIR__.'/../docs/asserts.rst', $file);
+
+        return 0;
     }
 }

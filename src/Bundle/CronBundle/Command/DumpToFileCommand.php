@@ -41,5 +41,7 @@ class DumpToFileCommand extends Command
         }
 
         file_put_contents($filePath, $this->cronManager->dumpJobs());
+
+        return 0;
     }
 }

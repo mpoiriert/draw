@@ -101,5 +101,7 @@ class DumpAssertMethodsCommand extends Command
         }
 
         file_put_contents($filePath, json_encode($methods, JSON_PRETTY_PRINT));
+
+        return 0;
     }
 }

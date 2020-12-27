@@ -64,5 +64,7 @@ class PurgeExpiredMessageCommand extends Command
                 $io->note(sprintf('The "%s" transport does not support purge obsolete messages.', $transportName));
             }
         }
+
+        return 0;
     }
 }

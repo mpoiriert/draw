@@ -125,5 +125,7 @@ trait AssertTrait
 }';
 
         file_put_contents(__DIR__.'/../AssertTrait.php', $class);
+
+        return 0;
     }
 }

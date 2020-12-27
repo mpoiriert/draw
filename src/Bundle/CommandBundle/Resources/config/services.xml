@@ -5,7 +5,7 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true">
             <bind key="Doctrine\DBAL\Connection $executionConnection" type="expression">
-                service('Symfony\Bridge\Doctrine\RegistryInterface').getEntityManagerForClass('Draw\Bundle\CommandBundle\Entity\Execution').getConnection()
+                service('Doctrine\Persistence\ManagerRegistry').getEntityManagerForClass('Draw\Bundle\CommandBundle\Entity\Execution').getConnection()
             </bind>
         </defaults>
         <prototype namespace="Draw\Bundle\CommandBundle\" resource="../..">
