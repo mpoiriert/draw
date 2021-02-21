@@ -9,7 +9,6 @@ use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
-use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use ReflectionMethod;
 
 class ResponseSerializationExtractor implements ExtractorInterface
@@ -80,13 +79,11 @@ class ResponseSerializationExtractor implements ExtractorInterface
             }
         }
 
-        if (empty($groups)) {
-            $groups = [GroupsExclusionStrategy::DEFAULT_GROUP];
+        if (!empty($groups)) {
+            $modelContext = $extractionContext->getParameter('model-context', []);
+            $modelContext['serializer-groups'] = $groups;
+            $extractionContext->setParameter('model-context', $modelContext);
         }
-
-        $modelContext = $extractionContext->getParameter('model-context', []);
-        $modelContext['serializer-groups'] = $groups;
-        $extractionContext->setParameter('model-context', $modelContext);
     }
 
     /**

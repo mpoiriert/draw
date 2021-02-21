@@ -9,7 +9,6 @@ use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Schema;
-use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use ReflectionMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -107,7 +106,7 @@ class ParamConverterExtractor implements ExtractorInterface
             return $options['deserializationContext']['groups'];
         }
 
-        return [GroupsExclusionStrategy::DEFAULT_GROUP];
+        return null;
     }
 
     private function getValidationGroups(ParamConverter $paramConverter)
