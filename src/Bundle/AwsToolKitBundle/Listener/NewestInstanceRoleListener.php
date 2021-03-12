@@ -7,7 +7,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Throwable;
 
@@ -34,7 +33,6 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
     {
         return [
             ConsoleCommandEvent::class => [
-                ['addOptions', 255],
                 ['checkNewestInstance', 0],
             ],
         ];
@@ -44,22 +42,6 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
     {
         $this->ec2Client = $ec2Client;
         $this->logger = new NullLogger();
-    }
-
-    /**
-     * This is a fallback on the compiler pass system to be sure options are available if command are registered
-     * by another mean.
-     */
-    public function addOptions(ConsoleCommandEvent $consoleCommandEvent)
-    {
-        $consoleCommandEvent
-            ->getCommand()
-            ->addOption(
-                NewestInstanceRoleListener::OPTION_AWS_NEWEST_INSTANCE_ROLE,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The instance role the server must be the newest of to run the command.'
-            );
     }
 
     /**
