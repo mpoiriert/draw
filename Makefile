@@ -101,6 +101,9 @@ ifeq ($(run),1)
 endif
 	docker-compose exec php vendor/bin/monorepo-builder release $(version) $$DRY_RUN
 
+monorepo-release-patch:
+	docker-compose exec php vendor/bin/monorepo-builder release patch
+
 composer-update:
 	unlink composer.lock
 	docker-compose exec php composer install
