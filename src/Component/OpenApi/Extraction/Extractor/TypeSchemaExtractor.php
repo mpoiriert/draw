@@ -5,6 +5,7 @@ namespace Draw\Component\OpenApi\Extraction\Extractor;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
+use Draw\Component\OpenApi\Naming\ClassNamingFilterInterface;
 use Draw\Component\OpenApi\Schema\Schema;
 use Draw\Component\OpenApi\Schema\Schema as SupportedTarget;
 use phpDocumentor\Reflection\TypeResolver;
@@ -14,17 +15,17 @@ use ReflectionClass;
 class TypeSchemaExtractor implements ExtractorInterface
 {
     /**
-     * @var string[]
+     * @var array|ClassNamingFilterInterface[]
      */
-    private $definitionAliases = [];
+    private $classNamingFilters = [];
 
     private $definitionHashes = [];
 
     private static $typeResolver;
 
-    public function registerDefinitionAlias($definition, $alias)
+    public function __construct($classNamingFilters = [])
     {
-        $this->definitionAliases[$definition] = $alias;
+        $this->classNamingFilters = $classNamingFilters;
     }
 
     /**
@@ -54,7 +55,7 @@ class TypeSchemaExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param string          $source
+     * @param string $source
      * @param SupportedTarget $target
      *
      * @throws ExtractionImpossibleException
@@ -102,10 +103,10 @@ class TypeSchemaExtractor implements ExtractorInterface
             $rootSchema = $extractionContext->getRootSchema();
             $context = $extractionContext->getParameter('model-context', []);
 
-            $definitionName = $this->getDefinitionName($reflectionClass->name);
+            $definitionName = $this->getDefinitionName($reflectionClass->name, $context);
 
             if ($hash = $this->getHash($definitionName, $context)) {
-                $definitionName .= '?'.$hash;
+                $definitionName .= '?' . $hash;
             }
 
             if (!$rootSchema->hasDefinition($definitionName)) {
@@ -128,22 +129,13 @@ class TypeSchemaExtractor implements ExtractorInterface
         }
     }
 
-    private function getDefinitionName($className)
+    private function getDefinitionName($className, array $context)
     {
-        foreach ($this->definitionAliases as $class => $alias) {
-            if ('\\' == substr($class, -1)) {
-                if (0 === strpos($className, $class)) {
-                    return str_replace($class, $alias, $className);
-                }
-                continue;
-            }
-
-            if ($class == $className) {
-                return $alias;
-            }
+        $newName = $className;
+        foreach ($this->classNamingFilters as $classNamingFilter) {
+            $newName = $classNamingFilter->filterClassName($className, $context, $newName);
         }
-
-        return $className;
+        return $newName;
     }
 
     private function getHash($modelName, array $context = null)

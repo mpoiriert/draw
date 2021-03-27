@@ -3,6 +3,7 @@
 namespace Draw\Bundle\OpenApiBundle\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -40,6 +41,7 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('cleanOnDump')->defaultTrue()->end()
                 ->append($this->createSchemaNode())
                 ->append($this->createDefinitionAliasesNode())
+                ->append($this->createNamingFiltersNode())
             ->end();
     }
 
@@ -97,6 +99,13 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('alias')->isRequired()->end()
                 ->end()
             ->end();
+    }
+
+    private function createNamingFiltersNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('classNamingFilters'))
+            ->defaultValue([AliasesClassNamingFilter::class])
+            ->scalarPrototype()->end();
     }
 
     private function createSchemaNode(): ArrayNodeDefinition

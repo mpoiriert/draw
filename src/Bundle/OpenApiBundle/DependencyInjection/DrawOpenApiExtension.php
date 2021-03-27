@@ -9,11 +9,13 @@ use Draw\Bundle\OpenApiBundle\Response\Listener\ApiExceptionSubscriber;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
+use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -60,14 +62,16 @@ class DrawOpenApiExtension extends ConfigurableExtension
             ->getDefinition(OpenApi::class)
             ->addMethodCall('setCleanOnDump', [$config['cleanOnDump']]);
 
-        $definition = $container->getDefinition(TypeSchemaExtractor::class);
+        $definition = $container->getDefinition(AliasesClassNamingFilter::class);
+        $definition->setArgument(0, $config['definitionAliases']);
 
-        foreach ($config['definitionAliases'] as $alias) {
-            $definition->addMethodCall(
-                'registerDefinitionAlias',
-                [$alias['class'], $alias['alias']]
-            );
+        $namingFilterServices = [];
+        foreach($config['classNamingFilters'] as $serviceName) {
+            $namingFilterServices[] = new Reference($serviceName);
         }
+        $container
+            ->getDefinition(TypeSchemaExtractor::class)
+            ->setArgument('$classNamingFilters', $namingFilterServices);
     }
 
     private function configResponse(array $config, LoaderInterface $loader, ContainerBuilder $container)

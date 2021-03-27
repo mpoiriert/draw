@@ -42,6 +42,8 @@
         <service id="Draw\Component\OpenApi\Extraction\Extractor\OpenApi\ParameterExtractor" />
         <service id="Draw\Component\OpenApi\Extraction\Extractor\PhpDoc\OperationExtractor" />
         <service id="Draw\Bundle\OpenApiBundle\Extractor\ParamConverterExtractor" />
+        <service id="Draw\Component\OpenApi\Naming\AliasesClassNamingFilter" />
+        <service id="Draw\Component\OpenApi\Naming\ReferenceContextClassNamingFilter" />
     </services>
 
 
