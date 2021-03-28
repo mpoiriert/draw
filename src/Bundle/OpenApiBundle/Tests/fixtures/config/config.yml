@@ -12,5 +12,7 @@ draw_open_api:
     schema:
       info:
         title: "test"
+    definitionAliases:
+      - class: 'Draw\Bundle\OpenApiBundle\Tests\Mock\Model\'
+        alias: ''
   doctrine: false
-

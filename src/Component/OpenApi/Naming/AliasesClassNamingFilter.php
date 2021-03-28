@@ -15,7 +15,9 @@ class AliasesClassNamingFilter implements ClassNamingFilterInterface
     public function filterClassName(string $originalClassName, array $context = [], string $newName = null)
     {
         $className = $newName ?: $originalClassName;
-        foreach ($this->definitionAliases as $class => $alias) {
+        foreach ($this->definitionAliases as $configuration) {
+            $class = $configuration['class'];
+            $alias = $configuration['alias'];
             if ('\\' == substr($class, -1)) {
                 if (0 === strpos($className, $class)) {
                     return str_replace($class, $alias, $className);

@@ -21,7 +21,7 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+              "$ref": "#/definitions/Test"
             }
           }
         ],
@@ -29,7 +29,7 @@
           "201": {
             "description": "The created test entity",
             "schema": {
-              "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+              "$ref": "#/definitions/Test"
             },
             "headers": {
               "X-Draw": {
@@ -50,7 +50,7 @@
     }
   },
   "definitions": {
-    "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
+    "Test": {
       "type": "object",
       "properties": {
         "property": {
