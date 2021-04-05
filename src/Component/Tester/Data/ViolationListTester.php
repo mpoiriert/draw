@@ -1,6 +1,6 @@
 <?php
 
-namespace Breethe\TestHelper;
+namespace Draw\Component\Tester\Data;
 
 use Draw\Component\Tester\DataTester;
 
