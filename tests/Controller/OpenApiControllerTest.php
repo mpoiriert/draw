@@ -29,4 +29,9 @@ class OpenApiControllerTest extends TestCase
         $jsonTester
             ->test(new AgainstJsonFileTester($file));
     }
+
+    public function testWriteFile(): void
+    {
+        $this->assertFalse($this->writeFile, 'Write file true should not be committed.');
+    }
 }
