@@ -5,17 +5,8 @@
     "cocur/slugify": {
         "version": "v4.0.0"
     },
-    "composer/ca-bundle": {
-        "version": "1.2.7"
-    },
-    "composer/composer": {
-        "version": "1.10.5"
-    },
     "composer/semver": {
         "version": "1.5.1"
-    },
-    "composer/spdx-licenses": {
-        "version": "1.5.3"
     },
     "composer/xdebug-handler": {
         "version": "1.4.1"
@@ -183,6 +174,9 @@
     "hoa/zformat": {
         "version": "1.17.01.10"
     },
+    "jean85/pretty-package-versions": {
+        "version": "1.6.0"
+    },
     "jms/metadata": {
         "version": "2.1.0"
     },
@@ -197,9 +191,6 @@
             "version": "3.0",
             "ref": "384cec52df45f3bfd46a09930d6960a58872b268"
         }
-    },
-    "justinrainbow/json-schema": {
-        "version": "5.2.9"
     },
     "knplabs/knp-menu": {
         "version": "2.6.0"
@@ -370,12 +361,6 @@
     },
     "sebastian/version": {
         "version": "2.0.1"
-    },
-    "seld/jsonlint": {
-        "version": "1.7.2"
-    },
-    "seld/phar-utils": {
-        "version": "1.1.0"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -780,9 +765,6 @@
     "symfony/yaml": {
         "version": "v5.0.7"
     },
-    "symplify/auto-bind-parameter": {
-        "version": "v7.2.12"
-    },
     "symplify/autowire-array-parameter": {
         "version": "v7.2.12"
     },
@@ -800,6 +782,9 @@
     },
     "symplify/smart-file-system": {
         "version": "v7.2.12"
+    },
+    "symplify/symplify-kernel": {
+        "version": "8.3.48"
     },
     "theseer/tokenizer": {
         "version": "1.1.3"

@@ -59,7 +59,7 @@
         "symfony/debug-pack": "^1.0",
         "symfony/dependency-injection": "^4.3",
         "symfony/dotenv": "^4.3",
-        "symplify/monorepo-builder": "^7.2",
+        "symplify/monorepo-builder": "^8.3.48",
         "symfony/phpunit-bridge": "^5.2"
     },
     "autoload": {
@@ -90,7 +90,8 @@
     "autoload-dev": {
         "psr-4": {
             "App\\": "app//src//",
-            "App\\Tests\\": "tests//"
+            "App\\Tests\\": "tests//",
+            "Draw\\Development\\": "src/Development/"
         }
     },
     "replace": {
