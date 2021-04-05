@@ -14,8 +14,8 @@ RUN docker-php-ext-configure gd --with-jpeg-dir=/usr/include/
 RUN docker-php-ext-install pdo pdo_mysql gd zip pcntl
 
 COPY php.ini /usr/local/etc/php/php.ini
-COPY php.ini /etc/php/7.2.17/php.ini
-COPY php-fpm-pool.conf /etc/php/7.2.17/pool.d/www.conf
+COPY php.ini /etc/php/7.3.24/php.ini
+COPY php-fpm-pool.conf /etc/php/7.3.24/pool.d/www.conf
 
 #COMPOSER
 RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
@@ -31,20 +31,6 @@ RUN pecl install redis && docker-php-ext-enable redis
 #AWS
 RUN apt-get install -y --no-install-recommends awscli
 
-ARG PUID=1000
-ARG PGID=1000
-
-ENV PUID ${PUID}
-ENV PGID ${PGID}
-
-RUN groupadd dev -g ${PGID}
-RUN useradd -u ${PUID} -g dev -d /home/dev -m dev
-
-RUN rm -rf /var/lib/apt/lists/*
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
-    echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
-    locale-gen
-
 #XDEBUG
 ARG xdebug
 RUN if [ $xdebug = "1" ] ; then \
@@ -55,6 +41,26 @@ RUN if [ $xdebug = "1" ] ; then \
 #OPCACHE
 RUN docker-php-ext-configure opcache --enable-opcache \
     && docker-php-ext-install opcache
+
+#localisation file
+RUN rm -rf /var/lib/apt/lists/*
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen
+
+ARG PUID=1000
+ARG PGID=1000
+
+ENV PUID ${PUID}
+ENV PGID ${PGID}
+
+RUN groupadd dev -g ${PGID}
+RUN useradd -u ${PUID} -g dev -d /home/dev -m dev
+RUN usermod -aG sudo dev
+RUN echo "dev  ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN mkdir -p /home/wwwroot && chown -R dev:dev /home/wwwroot /home/dev
+
+USER dev
 
 WORKDIR /home/wwwroot/
 
