@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\CommandBundle;
+namespace Draw\Bundle\CommandBundle\Console\Output;
 
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
