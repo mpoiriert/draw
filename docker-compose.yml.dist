@@ -4,12 +4,12 @@ services:
         build: .docker/apache
         container_name: draw_apache
         ports:
-          - 80:80
+            - 80:80
         volumes:
-          - .docker/config/vhosts:/etc/apache2/sites-enabled
-          - .:/home/wwwroot
+            - .docker/config/vhosts:/etc/apache2/sites-enabled
+            - .:/home/wwwroot
         depends_on:
-          - php
+            - php
 
     mysql:
         image: mysql:5.7.12
@@ -30,30 +30,31 @@ services:
                 xdebug: 1
         container_name: draw_php
         volumes:
-          - .:/home/wwwroot
-          - ~/.ssh:/root/.ssh
-          - ~/.gitconfig:/etc/gitconfig
-          - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
+            - .:/home/wwwroot
+            - ~/.ssh:/home/dev/.ssh
+            - ~/.gitconfig:/etc/gitconfig
+            - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
         depends_on:
-          - mysql
-          - maildev
+            - mysql
+            - maildev
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
         container_name: draw_phpmyadmin
         environment:
-          PMA_HOST: mysql
-          PMA_PORT: 3306
+            PMA_HOST: mysql
+            PMA_PORT: 3306
         ports:
             - 8080:80
         links:
             - mysql
 
     maildev:
-        image: djfarrelly/maildev
+        image: djfarrelly/maildev:latest
         container_name: draw_maildev
+        command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
         ports:
-          - 8001:80
+            - 8001:80
 
 volumes:
     data_mysql:

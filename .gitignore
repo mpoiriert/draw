@@ -2,6 +2,7 @@
 /.idea
 /.subsplit
 /composer.lock
+/docker-compose.yml
 
 ###> symfony/framework-bundle ###
 /.env.local
