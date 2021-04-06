@@ -1,0 +1,10 @@
+{
+    "require": {
+        "symplify/easy-coding-standard": "^9.2"
+    },
+    "autoload": {
+        "files": [
+            "./override.php"
+        ]
+    }
+}

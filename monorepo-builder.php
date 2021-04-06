@@ -23,6 +23,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // what extra parts to add after merge?
     $parameters->set(Option::DATA_TO_APPEND, [
         'require-dev' => [
+            'bamarni/composer-bin-plugin' => '^1.4',
             'phpunit/phpunit' => '^7.0',
             'sonata-project/admin-bundle' => '^3.54',
             'sonata-project/doctrine-orm-admin-bundle' => '^3.10',

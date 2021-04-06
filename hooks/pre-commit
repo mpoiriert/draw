@@ -1,0 +1,3 @@
+#!/bin/sh
+
+docker-compose exec -T php vendor/bin/ecs check src --match-git-diff

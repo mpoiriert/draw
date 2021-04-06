@@ -2,6 +2,9 @@
     "aws/aws-sdk-php": {
         "version": "3.134.6"
     },
+    "bamarni/composer-bin-plugin": {
+        "version": "1.4.1"
+    },
     "cocur/slugify": {
         "version": "v4.0.0"
     },

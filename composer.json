@@ -43,6 +43,7 @@
         "symfony/yaml": "*"
     },
     "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.4",
         "doctrine/common": "^2.12",
         "doctrine/doctrine-fixtures-bundle": "^3.2",
         "doctrine/orm": "^2.7",
@@ -59,8 +60,8 @@
         "symfony/debug-pack": "^1.0",
         "symfony/dependency-injection": "^4.3",
         "symfony/dotenv": "^4.3",
-        "symplify/monorepo-builder": "^8.3.48",
-        "symfony/phpunit-bridge": "^5.2"
+        "symfony/phpunit-bridge": "^5.2",
+        "symplify/monorepo-builder": "^8.3.48"
     },
     "autoload": {
         "files": [
@@ -117,7 +118,8 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@composer bin all install --ansi"
         ],
         "post-update-cmd": [
             "@auto-scripts"
