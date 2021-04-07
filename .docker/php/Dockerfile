@@ -42,6 +42,11 @@ RUN if [ $xdebug = "1" ] ; then \
 RUN docker-php-ext-configure opcache --enable-opcache \
     && docker-php-ext-install opcache
 
+#INTL
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libicu-dev
+RUN docker-php-ext-install intl
+
 #localisation file
 RUN rm -rf /var/lib/apt/lists/*
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
