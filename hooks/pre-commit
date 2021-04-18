@@ -1,3 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-docker-compose exec -T php vendor/bin/ecs check src --match-git-diff
+if [ "$IN_CONTAINER" == 1 ]
+then
+    php vendor/bin/ecs check src --match-git-diff
+else
+    docker-compose exec -T php vendor/bin/ecs check src --match-git-diff
+fi

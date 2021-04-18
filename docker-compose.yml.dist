@@ -37,6 +37,8 @@ services:
         depends_on:
             - mysql
             - maildev
+        environment:
+            IN_CONTAINER: 1
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
