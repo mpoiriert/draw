@@ -28,6 +28,11 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
      */
     private $violationKey;
 
+    /**
+     * @var bool
+     */
+    private $ignoreConstraintInvalidValue;
+
     private const DEFAULT_STATUS_CODE = 500;
 
     /**
@@ -43,11 +48,13 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
     public function __construct(
         bool $debug = false,
         array $errorCodes = [],
-        string $violationKey = 'errors'
+        string $violationKey = 'errors',
+        bool $ignoreConstraintInvalidValue = false
     ) {
         $this->debug = $debug;
         $this->errorCodes = $errorCodes;
         $this->violationKey = $violationKey;
+        $this->ignoreConstraintInvalidValue = $ignoreConstraintInvalidValue;
     }
 
     public function onKernelException(ExceptionEvent $event): void
@@ -95,6 +102,10 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
                 'invalidValue' => $constraintViolation->getInvalidValue(),
                 'code' => $constraintViolation->getCode(),
             ];
+
+            if($this->ignoreConstraintInvalidValue) {
+                unset($errorData['invalidValue']);
+            }
 
             switch (true) {
                 case !($constraint = $constraintViolation->getConstraint()):

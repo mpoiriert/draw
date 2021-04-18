@@ -114,6 +114,10 @@ class DrawOpenApiExtension extends ConfigurableExtension
             ->setArgument(
                 '$violationKey',
                 $config['violationKey']
+            )
+            ->setArgument(
+                '$ignoreConstraintInvalidValue',
+                $config['ignoreConstraintInvalidValue']
             );
     }
 

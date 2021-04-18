@@ -69,6 +69,7 @@ class Configuration implements ConfigurationInterface
                     ->canBeDisabled()
                     ->children()
                         ->booleanNode('useDefaultExceptionsStatusCodes')->defaultTrue()->end()
+                        ->booleanNode('ignoreConstraintInvalidValue')->defaultFalse()->end()
                         ->arrayNode('exceptionsStatusCodes')
                             ->arrayPrototype()
                                 ->children()

@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\OpenApiBundle\Tests\Listener;
 
+use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
 use Draw\Bundle\OpenApiBundle\Response\Listener\ApiExceptionSubscriber;
 use Draw\Bundle\OpenApiBundle\Tests\TestCase;
 use Exception;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Throwable;
 
 class ApiExceptionSubscriberTest extends TestCase
@@ -170,6 +173,45 @@ class ApiExceptionSubscriberTest extends TestCase
             $errorCode,
             $this->onKernelException(new ApiExceptionSubscriber(false, $errorCodes))->getStatusCode()
         );
+    }
+
+    private function createConstraintListExceptionEvent(): void
+    {
+        $exception = new ConstraintViolationListException();
+        $exception->setViolationList(
+            new ConstraintViolationList([
+                new ConstraintViolation('Message', null, [], null, 'test', 'invalid-value'),
+            ])
+        );
+
+        $this->exceptionEvent = new ExceptionEvent(
+            $this->httpKernel->reveal(),
+            $this->request->reveal(),
+            KernelInterface::MASTER_REQUEST,
+            $exception
+        );
+    }
+
+    public function testOnKernelException_doNotIgnoreConstraintInvalidValue(): void
+    {
+        $this->createConstraintListExceptionEvent();
+
+        $value = json_decode(
+            $this->onKernelException(new ApiExceptionSubscriber())->getContent()
+        );
+
+        $this->assertSame('invalid-value', $value->errors[0]->invalidValue);
+    }
+
+    public function testOnKernelException_ignoreConstraintInvalidValue(): void
+    {
+        $this->createConstraintListExceptionEvent();
+
+        $value = json_decode(
+            $this->onKernelException(new ApiExceptionSubscriber(false, [], 'errors', true))->getContent()
+        );
+
+        $this->assertFalse(isset($value->errors[0]->invalidValue));
     }
 
     private function onKernelException(ApiExceptionSubscriber $apiExceptionSubscriber = null): ?Response
