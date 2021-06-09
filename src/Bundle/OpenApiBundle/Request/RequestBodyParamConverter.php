@@ -8,7 +8,6 @@ use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Exception\Exception as JMSSerializerException;
 use JMS\Serializer\Exception\UnsupportedFormatException;
 use JMS\Serializer\SerializerInterface;
-use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,7 +75,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
                 $requestData = $request->request->all();
                 break;
             default:
-                throw new RuntimeException('Invalid request format');
+                throw new UnsupportedMediaTypeHttpException();
         }
 
         return json_encode($this->assignPropertiesFromAttribute($request, $configuration, $requestData));

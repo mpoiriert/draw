@@ -46,4 +46,15 @@ class RequestBodyParamConverterTest extends TestCase
                 'code' => 'aa2e33da-25c8-4d76-8c6c-812f02ea89dd',
             ]);
     }
+
+    public function testApplyUnsupportedMediaType()
+    {
+        $this->httpTester()
+            ->post(
+                '/tests',
+                '<test />',
+                ['Content-Type' => 'application/xml']
+            )
+            ->assertStatus(415);
+    }
 }
