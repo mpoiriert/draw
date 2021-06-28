@@ -7,5 +7,9 @@ framework:
     enabled: false
   validation: { enable_annotations: true }
 
+  messenger:
+    transports:
+      memory: 'in-memory://'
+
 draw_tester:
   profiling: false
