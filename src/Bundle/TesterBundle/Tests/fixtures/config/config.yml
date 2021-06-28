@@ -1,0 +1,11 @@
+framework:
+  secret: fos
+  router:
+    resource: "%kernel.root_dir%/fixtures/config/routing.yml"
+  test: true
+  session:
+    enabled: false
+  validation: { enable_annotations: true }
+
+draw_tester:
+  profiling: false
