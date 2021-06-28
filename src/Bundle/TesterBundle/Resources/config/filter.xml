@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false" autoconfigure="true" autowire="true"/>
+
+        <service id="draw.tester.expression_filter"
+                 class="Draw\Component\Core\FilterExpression\Evaluator"
+                 public="true"/>
+
+        <service id="Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator">
+            <argument index-by="$evaluator" type="service" id="draw.tester.expression_filter"/>
+        </service>
+        <service id="Draw\Component\Core\FilterExpression\Expression\ConstraintExpressionEvaluator"/>
+    </services>
+</container>

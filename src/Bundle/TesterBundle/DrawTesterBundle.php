@@ -3,6 +3,7 @@
 namespace Draw\Bundle\TesterBundle;
 
 use Draw\Bundle\TesterBundle\Config\ServiceIdsResourceCheck;
+use Draw\Bundle\TesterBundle\DependencyInjection\CompilerPass;
 use Draw\Component\Profiling\ProfilerCoordinator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -21,6 +22,7 @@ class DrawTesterBundle extends Bundle implements CompilerPassInterface
 
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(new CompilerPass());
         $container->addCompilerPass($this, PassConfig::TYPE_BEFORE_REMOVING);
     }
 
