@@ -3,10 +3,13 @@
 namespace Draw\Bundle\TesterBundle\Messenger;
 
 use Draw\Component\Core\FilterExpression\Evaluator;
+use Draw\Component\Core\FilterExpression\Expression\ConstraintExpression;
+use Draw\Component\Core\FilterExpression\Expression\Expression;
 use Draw\Component\Core\FilterExpression\Query;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Transport\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
+use Symfony\Component\Validator\Constraints\Type;
 
 class TransportTester
 {
@@ -31,20 +34,33 @@ class TransportTester
         return $this->transport;
     }
 
-    public function assertMessageMatch(Query $query, $count = 1, $message = ''): void
-    {
+    public function assertMessageMatch(
+        string $messageClass,
+        Expression $expression = null,
+        $count = 1,
+        $message = ''
+    ): array {
         $messages = [];
         foreach ($this->transport->get() as $envelope) {
             $messages[] = $envelope->getMessage();
         }
 
-        $messages = $this->evaluator->execute($query, $messages);
+        $query = (new Query())
+            ->where(new ConstraintExpression(null, new Type($messageClass)));
+
+        if ($expression) {
+            $query = $query->andWhere($expression);
+        }
+
+        $messages = iterator_to_array($this->evaluator->execute($query, $messages));
 
         TestCase::assertCount(
             $count,
             $messages,
             $message
         );
+
+        return $messages;
     }
 
     public function reset()
