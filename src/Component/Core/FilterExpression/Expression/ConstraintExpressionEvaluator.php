@@ -25,9 +25,9 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
     {
         $this->validator = $validator ?: (new ValidatorBuilder())->getValidator();
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessorBuilder()
-                ->enableExceptionOnInvalidPropertyPath()
-                ->enableExceptionOnInvalidIndex()
-                ->getPropertyAccessor();
+            ->enableExceptionOnInvalidPropertyPath()
+            ->enableExceptionOnInvalidIndex()
+            ->getPropertyAccessor();
     }
 
     public function evaluate($data, Expression $expression): bool
@@ -36,11 +36,14 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
             throw new RuntimeException('Expression of class [' . get_class($expression) . '] is not supported');
         }
 
-        if(!$this->propertyAccessor->isReadable($data, $expression->getPath())) {
-            return false;
-        }
+        $value = $data;
+        if (null !== $expression->getPath()) {
+            if (!$this->propertyAccessor->isReadable($data, $expression->getPath())) {
+                return false;
+            }
 
-        $value = $this->propertyAccessor->getValue($data, $expression->getPath());
+            $value = $this->propertyAccessor->getValue($data, $expression->getPath());
+        }
 
         $constraintViolationList = $this->validator->validate(
             $value,

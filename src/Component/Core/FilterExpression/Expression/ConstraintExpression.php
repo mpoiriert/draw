@@ -14,7 +14,7 @@ class ConstraintExpression extends Expression
     private $constraints;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $path;
 
@@ -32,7 +32,7 @@ class ConstraintExpression extends Expression
      *
      * @see ValidatorInterface::validate()
      */
-    public function __construct(string $path, $constraints = null, $groups = null)
+    public function __construct(?string $path, $constraints = null, $groups = null)
     {
         $this->constraints = $constraints;
         $this->path = $path;
@@ -47,7 +47,7 @@ class ConstraintExpression extends Expression
         return $this->constraints;
     }
 
-    public function getPath(): string
+    public function getPath(): ?string
     {
         return $this->path;
     }
