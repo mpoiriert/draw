@@ -134,8 +134,8 @@ class DataTester
         Assert::assertTrue(
             $this->isReadable($path),
             $message ?:
-                "Property path is not readable.\nProperty path: ".$path."\nData:\n".
-                json_encode($this->data, JSON_PRETTY_PRINT)."\nBe careful for assoc array and object"
+                "Property path is not readable.\nProperty path: " . $path . "\nData:\n" .
+                json_encode($this->data, JSON_PRETTY_PRINT) . "\nBe careful for assoc array and object"
         );
 
         return $this;
@@ -152,8 +152,8 @@ class DataTester
         Assert::assertFalse(
             $this->isReadable($path),
             $message ?:
-                "Property path is readable.\nProperty path: ".$path."\nData:\n".
-                json_encode($this->data, JSON_PRETTY_PRINT)."\nBe careful for assoc array and object"
+                "Property path is readable.\nProperty path: " . $path . "\nData:\n" .
+                json_encode($this->data, JSON_PRETTY_PRINT) . "\nBe careful for assoc array and object"
         );
 
         return $this;
@@ -170,5 +170,12 @@ class DataTester
         call_user_func($callable, $this);
 
         return $this;
+    }
+
+    public static function createCallable(string $methodName, ...$parameters): callable
+    {
+        return function (DataTester $dataTester) use ($methodName, $parameters) {
+            call_user_func_array([$dataTester, $methodName], array_values($parameters));
+        };
     }
 }

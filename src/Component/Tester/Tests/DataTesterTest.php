@@ -3,11 +3,12 @@
 namespace Draw\Component\Tester\Tests;
 
 use Draw\Component\Tester\DataTester;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 class DataTesterTest extends TestCase
 {
-    public function testAssertPathIsNotReadable()
+    public function testAssertPathIsNotReadable(): void
     {
         $tester = new DataTester(null);
 
@@ -17,7 +18,7 @@ class DataTesterTest extends TestCase
         );
     }
 
-    public function testAssertPathIsReadable()
+    public function testAssertPathIsReadable(): void
     {
         $tester = new DataTester((object) ['key' => 'value']);
 
@@ -27,7 +28,7 @@ class DataTesterTest extends TestCase
         );
     }
 
-    public function testPath()
+    public function testPath(): void
     {
         $tester = new DataTester((object) ['key' => 'value']);
 
@@ -44,7 +45,7 @@ class DataTesterTest extends TestCase
     /**
      * @depends testPath
      */
-    public function testChain()
+    public function testChain(): void
     {
         $data = new \stdClass();
         $data->key1 = 'value1';
@@ -61,7 +62,7 @@ class DataTesterTest extends TestCase
         $tester->path('key2[1]')->assertSame('arrayValue1');
     }
 
-    public function testIfPathIsReadable()
+    public function testIfPathIsReadable(): void
     {
         $hasBeenCalled = false;
 
@@ -86,7 +87,7 @@ class DataTesterTest extends TestCase
      * @depends testIfPathIsReadable
      * @depends testPath
      */
-    public function testEach()
+    public function testEach(): void
     {
         $users = [
             ['firstName' => 'Martin', 'active' => true, 'referral' => 'Google'],
@@ -112,7 +113,7 @@ class DataTesterTest extends TestCase
     /**
      * @depends testPath
      */
-    public function testTransform()
+    public function testTransform(): void
     {
         $tester = new DataTester('{"key":"value"}');
 
@@ -123,5 +124,18 @@ class DataTesterTest extends TestCase
 
         $this->assertInstanceOf(DataTester::class, $newTester);
         $newTester->path('key')->assertSame('value');
+    }
+
+    public function testCreateCallable(): void
+    {
+        (new DataTester(1))->test(DataTester::createCallable('assertIsInt'));
+    }
+
+    public function testCreateCallableFailing(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('This is not a string.');
+
+        (new DataTester(1))->test(DataTester::createCallable('assertIsString', 'This is not a string.'));
     }
 }
