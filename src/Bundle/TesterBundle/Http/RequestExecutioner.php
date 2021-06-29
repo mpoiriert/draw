@@ -95,7 +95,7 @@ class RequestExecutioner implements RequestExecutionerInterface
         $server = [];
         foreach ($request->getHeaders() as $key => $value) {
             $key = strtoupper(str_replace('-', '_', $key));
-            if (in_array($key, ['CONTENT_TYPE', 'CONTENT_LENGTH'])) {
+            if (in_array($key, ['CONTENT_TYPE', 'CONTENT_LENGTH', 'REMOTE_ADDR'])) {
                 $server[$key] = implode(', ', $value);
             } else {
                 $server['HTTP_'.$key] = implode(', ', $value);
