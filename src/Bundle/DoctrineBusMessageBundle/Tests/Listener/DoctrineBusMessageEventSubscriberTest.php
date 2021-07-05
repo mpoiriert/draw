@@ -1,10 +1,17 @@
-<?php namespace Draw\Bundle\DoctrineBusMessageBundle\Tests\Listener;
+<?php
 
-use Doctrine\Persistence\Event\LifecycleEventArgs;
+namespace Draw\Bundle\DoctrineBusMessageBundle\Tests\Listener;
+
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\ORM\UnitOfWork;
+use Draw\Bundle\DoctrineBusMessageBundle\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Bundle\DoctrineBusMessageBundle\Listener\DoctrineBusMessageEventSubscriber;
 use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface;
 use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderTrait;
 use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -14,64 +21,61 @@ class DoctrineBusMessageEventSubscriberTest extends TestCase implements MessageH
 
     private $doctrineBusMessageEventSubscriber;
 
-    private $messageBus;
+    private $envelopeFactory;
 
     private $event;
+
+    private $messageBus;
+
+    private $unitOfWork;
 
     public function setUp(): void
     {
         $this->messageBus = $this->prophesize(MessageBusInterface::class);
-        $this->event = $this->prophesize(LifecycleEventArgs::class);
-        $this->event->getObject()->shouldBeCalledOnce()->willReturn($this);
+        $this->event = $this->prophesize(PostFlushEventArgs::class);
+        $this->unitOfWork = $this->prophesize(UnitOfWork::class);
+        $this->envelopeFactory = $this->prophesize(EnvelopeFactoryInterface::class);
+        $entityManager = $this->prophesize(EntityManagerInterface::class);
 
-        $this->doctrineBusMessageEventSubscriber = new DoctrineBusMessageEventSubscriber($this->messageBus->reveal());
+        $entityManager->getUnitOfWork()->shouldBeCalledOnce()->willReturn($this->unitOfWork);
+        $this->event->getEntityManager()->shouldBeCalledOnce()->willReturn($entityManager);
+
+        $this->doctrineBusMessageEventSubscriber = new DoctrineBusMessageEventSubscriber(
+            $this->messageBus->reveal(),
+            $this->envelopeFactory->reveal()
+        );
     }
 
-    public function testPostPersist_empty()
+    public function testPostFlushEmpty(): void
     {
-        $this->messageBus->dispatch()->shouldNotBeCalled();
-        $this->doctrineBusMessageEventSubscriber->postPersist($this->event->reveal());
+        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([]);
+        $this->messageBus->dispatch(Argument::any())->shouldNotBeCalled();
+        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
     }
 
-    public function testPostUpdate_empty()
+    public function testPostRemoveNoMessageHolder(): void
     {
-        $this->messageBus->dispatch()->shouldNotBeCalled();
-        $this->doctrineBusMessageEventSubscriber->postUpdate($this->event->reveal());
+        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[new stdClass()]]);
+        $this->messageBus->dispatch(Argument::any())->shouldNotBeCalled();
+        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
     }
 
-    public function testPostRemove_empty()
+    public function testPostRemoveOneMessageHolderWithNoMessage(): void
     {
-        $this->messageBus->dispatch()->shouldNotBeCalled();
-        $this->doctrineBusMessageEventSubscriber->postRemove($this->event->reveal());
+        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[$this]]);
+        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
+
+        $this->assertEmpty($this->messageQueue());
     }
 
-    public function testPostPersist_notEmpty()
+    public function testPostRemoveOneMessageHolderWithOneMessage(): void
     {
-        $this->messageQueue()->enqueue($value = new \stdClass());
-        $this->messageBus->dispatch($value)->willReturn(new Envelope($value))->shouldBeCalledOnce();
+        $this->messageQueue()->enqueue($message = new stdClass());
+        $this->envelopeFactory->createEnvelope($message)->shouldBeCalledOnce()->willReturn($envelope = new Envelope($message));
+        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[$this]]);
+        $this->messageBus->dispatch($envelope)->shouldBeCalledOnce()->willReturnArgument();
+        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
 
-        $this->doctrineBusMessageEventSubscriber->postPersist($this->event->reveal());
-
-        $this->assertTrue($this->messageQueue()->isEmpty());
-    }
-
-    public function testPostUpdate_notEmpty()
-    {
-        $this->messageQueue()->enqueue($value = new \stdClass());
-        $this->messageBus->dispatch($value)->willReturn(new Envelope($value))->shouldBeCalledOnce();
-
-        $this->doctrineBusMessageEventSubscriber->postUpdate($this->event->reveal());
-
-        $this->assertTrue($this->messageQueue()->isEmpty());
-    }
-
-    public function testPostRemove_notEmpty()
-    {
-        $this->messageQueue()->enqueue($value = new \stdClass());
-        $this->messageBus->dispatch($value)->willReturn(new Envelope($value))->shouldBeCalledOnce();
-
-        $this->doctrineBusMessageEventSubscriber->postRemove($this->event->reveal());
-
-        $this->assertTrue($this->messageQueue()->isEmpty());
+        $this->assertEmpty($this->messageQueue());
     }
 }

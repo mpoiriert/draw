@@ -1,6 +1,7 @@
-<?php namespace Draw\Bundle\DoctrineBusMessageBundle\Message;
+<?php
+
+namespace Draw\Bundle\DoctrineBusMessageBundle\Message;
 
 interface AsyncMessageInterface
 {
-
 }
