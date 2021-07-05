@@ -5,7 +5,7 @@
     "license": "MIT",
     "description": "",
     "require": {
-        "draw/messenger": "^0.8",
+        "draw/messenger": "^0.7.12",
         "symfony/css-selector": "^4.3",
         "symfony/mailer": "^4.4",
         "symfony/translation": "^4.3"
