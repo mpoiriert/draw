@@ -46,7 +46,7 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
 
         foreach ($entities as $entity) {
             if (!$entity instanceof MessageHolderInterface) {
-                return;
+                continue;
             }
 
             $queue = $entity->messageQueue();

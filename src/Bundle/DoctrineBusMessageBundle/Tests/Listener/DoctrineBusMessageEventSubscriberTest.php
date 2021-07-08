@@ -78,4 +78,15 @@ class DoctrineBusMessageEventSubscriberTest extends TestCase implements MessageH
 
         $this->assertEmpty($this->messageQueue());
     }
+
+    public function testPostRemoveOneMessageHolderWithOneMessagePrecedeByNoneMessageHolder(): void
+    {
+        $this->messageQueue()->enqueue($message = new stdClass());
+        $this->envelopeFactory->createEnvelope($message)->shouldBeCalledOnce()->willReturn($envelope = new Envelope($message));
+        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[new stdClass(), $this]]);
+        $this->messageBus->dispatch($envelope)->shouldBeCalledOnce()->willReturnArgument();
+        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
+
+        $this->assertEmpty($this->messageQueue());
+    }
 }
