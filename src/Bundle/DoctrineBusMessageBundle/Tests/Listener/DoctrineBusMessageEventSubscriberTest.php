@@ -71,7 +71,10 @@ class DoctrineBusMessageEventSubscriberTest extends TestCase implements MessageH
     public function testPostRemoveOneMessageHolderWithOneMessage(): void
     {
         $this->messageQueue()->enqueue($message = new stdClass());
-        $this->envelopeFactory->createEnvelope($message)->shouldBeCalledOnce()->willReturn($envelope = new Envelope($message));
+        $this->envelopeFactory
+            ->createEnvelopes($this, [$message])
+            ->shouldBeCalledOnce()
+            ->willReturn([$envelope = new Envelope($message)]);
         $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[$this]]);
         $this->messageBus->dispatch($envelope)->shouldBeCalledOnce()->willReturnArgument();
         $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
@@ -82,7 +85,10 @@ class DoctrineBusMessageEventSubscriberTest extends TestCase implements MessageH
     public function testPostRemoveOneMessageHolderWithOneMessagePrecedeByNoneMessageHolder(): void
     {
         $this->messageQueue()->enqueue($message = new stdClass());
-        $this->envelopeFactory->createEnvelope($message)->shouldBeCalledOnce()->willReturn($envelope = new Envelope($message));
+        $this->envelopeFactory
+            ->createEnvelopes($this, [$message])
+            ->shouldBeCalledOnce()
+            ->willReturn([$envelope = new Envelope($message)]);
         $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[new stdClass(), $this]]);
         $this->messageBus->dispatch($envelope)->shouldBeCalledOnce()->willReturnArgument();
         $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());

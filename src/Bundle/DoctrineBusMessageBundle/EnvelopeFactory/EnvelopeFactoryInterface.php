@@ -2,9 +2,13 @@
 
 namespace Draw\Bundle\DoctrineBusMessageBundle\EnvelopeFactory;
 
+use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface;
 use Symfony\Component\Messenger\Envelope;
 
 interface EnvelopeFactoryInterface
 {
-    public function createEnvelope($message): ?Envelope;
+    /**
+     * @return array|Envelope[]
+     */
+    public function createEnvelopes(MessageHolderInterface $object, array $messages): array;
 }

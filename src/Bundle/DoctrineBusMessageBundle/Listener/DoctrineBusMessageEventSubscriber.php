@@ -20,12 +20,12 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
     /**
      * @var EnvelopeFactoryInterface
      */
-    private $enveloperFactory;
+    private $envelopeFactory;
 
     public function __construct(MessageBusInterface $bus, EnvelopeFactoryInterface $envelopeFactory = null)
     {
         $this->bus = $bus;
-        $this->enveloperFactory = $envelopeFactory ?: new BasicEnvelopeFactory();
+        $this->envelopeFactory = $envelopeFactory ?: new BasicEnvelopeFactory();
     }
 
     public function getSubscribedEvents()
@@ -44,19 +44,28 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
 
         $entities = call_user_func_array('array_merge', $identityMap);
 
+        $envelopes = [];
         foreach ($entities as $entity) {
             if (!$entity instanceof MessageHolderInterface) {
                 continue;
             }
 
             $queue = $entity->messageQueue();
-            while (!$queue->isEmpty()) {
-                $message = $queue->dequeue();
-                if (null === $envelope = $this->enveloperFactory->createEnvelope($message)) {
-                    continue;
-                }
-                $this->bus->dispatch($envelope);
+
+            if ($queue->isEmpty()) {
+                continue;
             }
+
+            $messages = [];
+            while (!$queue->isEmpty()) {
+                $messages[] = $queue->dequeue();
+            }
+
+            $envelopes = array_merge($this->envelopeFactory->createEnvelopes($entity, $messages), $envelopes);
+        }
+
+        foreach ($envelopes as $envelope) {
+            $this->bus->dispatch($envelope);
         }
     }
 }
