@@ -3,96 +3,137 @@
 namespace Draw\Bundle\DoctrineBusMessageBundle\Tests\Listener;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\PostFlushEventArgs;
-use Doctrine\ORM\UnitOfWork;
-use Draw\Bundle\DoctrineBusMessageBundle\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Bundle\DoctrineBusMessageBundle\Listener\DoctrineBusMessageEventSubscriber;
-use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface;
-use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderTrait;
-use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use stdClass;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Draw\Bundle\DoctrineBusMessageBundle\Message\AsyncMessageInterface;
+use Draw\Bundle\DoctrineBusMessageBundle\Tests\fixtures\Message\TestMessage;
+use Draw\Bundle\DoctrineBusMessageBundle\Tests\TestCase;
+use Draw\Bundle\TesterBundle\Messenger\TransportTester;
+use Test\Entity\MessageHolder;
+use Test\Entity\NotMessageHolder;
 
-class DoctrineBusMessageEventSubscriberTest extends TestCase implements MessageHolderInterface
+/**
+ * @covers \Draw\Bundle\DoctrineBusMessageBundle\Listener\DoctrineBusMessageEventSubscriber
+ */
+class DoctrineBusMessageEventSubscriberTest extends TestCase
 {
-    use MessageHolderTrait;
-
+    /**
+     * @var DoctrineBusMessageEventSubscriber
+     */
     private $doctrineBusMessageEventSubscriber;
 
-    private $envelopeFactory;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
-    private $event;
+    /**
+     * @var TransportTester
+     */
+    private $transportTester;
 
-    private $messageBus;
+    public static function setUpBeforeClass()
+    {
+        static::loadDatabase();
 
-    private $unitOfWork;
+        $messageHolder = new MessageHolder();
+        $entityManger = static::getService(EntityManagerInterface::class);
+        $entityManger->persist($messageHolder);
+        $entityManger->flush();
+    }
 
     public function setUp(): void
     {
-        $this->messageBus = $this->prophesize(MessageBusInterface::class);
-        $this->event = $this->prophesize(PostFlushEventArgs::class);
-        $this->unitOfWork = $this->prophesize(UnitOfWork::class);
-        $this->envelopeFactory = $this->prophesize(EnvelopeFactoryInterface::class);
-        $entityManager = $this->prophesize(EntityManagerInterface::class);
+        $this->entityManager = static::getService(EntityManagerInterface::class);
+        $this->entityManager->clear(); // This is to test postLoad
+        $this->transportTester = static::getService('messenger.transport.async.draw.tester');
+        $this->transportTester->reset();
+        $this->doctrineBusMessageEventSubscriber = static::getService(DoctrineBusMessageEventSubscriber::class);
+    }
 
-        $entityManager->getUnitOfWork()->shouldBeCalledOnce()->willReturn($this->unitOfWork);
-        $this->event->getEntityManager()->shouldBeCalledOnce()->willReturn($entityManager);
+    public function testPostPersist(): void
+    {
+        $messageHolder = new MessageHolder();
+        $this->entityManager->persist($messageHolder);
+        $this->entityManager->flush();
 
-        $this->doctrineBusMessageEventSubscriber = new DoctrineBusMessageEventSubscriber(
-            $this->messageBus->reveal(),
-            $this->envelopeFactory->reveal()
+        $this->assertSame(
+            [$messageHolder],
+            $this->doctrineBusMessageEventSubscriber->getFlattenMessageHolders()
+        );
+    }
+
+    public function testPostPersistNotMessageHolderEntity(): void
+    {
+        $notMessageHolder = new NotMessageHolder();
+        $this->entityManager->persist($notMessageHolder);
+        $this->entityManager->flush();
+
+        $this->assertSame(
+            [],
+            $this->doctrineBusMessageEventSubscriber->getFlattenMessageHolders()
+        );
+    }
+
+    public function testPostLoad(): void
+    {
+        $messageHolder = $this->entityManager->find(MessageHolder::class, 1);
+
+        $this->assertSame(
+            [$messageHolder],
+            $this->doctrineBusMessageEventSubscriber->getFlattenMessageHolders()
+        );
+    }
+
+    /**
+     * @depends testPostLoad
+     */
+    public function testOnClearAll(): void
+    {
+        $this->entityManager->find(MessageHolder::class, 1);
+        $this->entityManager->clear();
+
+        $this->assertSame(
+            [],
+            $this->doctrineBusMessageEventSubscriber->getFlattenMessageHolders()
+        );
+    }
+
+    /**
+     * @depends testPostLoad
+     */
+    public function testOnClearOther(): void
+    {
+        $messageHolder = $this->entityManager->find(MessageHolder::class, 1);
+        $this->entityManager->clear(NotMessageHolder::class);
+
+        $this->assertSame(
+            [$messageHolder],
+            $this->doctrineBusMessageEventSubscriber->getFlattenMessageHolders()
         );
     }
 
     public function testPostFlushEmpty(): void
     {
-        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([]);
-        $this->messageBus->dispatch(Argument::any())->shouldNotBeCalled();
-        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
+        $this->entityManager->flush();
+        $this->transportTester->assertMessageMatch(AsyncMessageInterface::class, null, 0);
     }
 
-    public function testPostRemoveNoMessageHolder(): void
+    public function testPostFlushWithOneMessage(): void
     {
-        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[new stdClass()]]);
-        $this->messageBus->dispatch(Argument::any())->shouldNotBeCalled();
-        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
+        $messageHolder = $this->entityManager->find(MessageHolder::class, 1);
+        $messageHolder->messageQueue()->enqueue(new TestMessage());
+        $this->entityManager->flush();
+
+        $this->transportTester->assertMessageMatch(AsyncMessageInterface::class);
     }
 
-    public function testPostRemoveOneMessageHolderWithNoMessage(): void
+    public function testPostFlushWithMultipleMessage(): void
     {
-        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[$this]]);
-        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
+        $messageHolder = $this->entityManager->find(MessageHolder::class, 1);
+        $messageHolder->messageQueue()->enqueue(new TestMessage());
+        $messageHolder->messageQueue()->enqueue(new TestMessage());
+        $this->entityManager->flush();
 
-        $this->assertEmpty($this->messageQueue());
-    }
-
-    public function testPostRemoveOneMessageHolderWithOneMessage(): void
-    {
-        $this->messageQueue()->enqueue($message = new stdClass());
-        $this->envelopeFactory
-            ->createEnvelopes($this, [$message])
-            ->shouldBeCalledOnce()
-            ->willReturn([$envelope = new Envelope($message)]);
-        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[$this]]);
-        $this->messageBus->dispatch($envelope)->shouldBeCalledOnce()->willReturnArgument();
-        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
-
-        $this->assertEmpty($this->messageQueue());
-    }
-
-    public function testPostRemoveOneMessageHolderWithOneMessagePrecedeByNoneMessageHolder(): void
-    {
-        $this->messageQueue()->enqueue($message = new stdClass());
-        $this->envelopeFactory
-            ->createEnvelopes($this, [$message])
-            ->shouldBeCalledOnce()
-            ->willReturn([$envelope = new Envelope($message)]);
-        $this->unitOfWork->getIdentityMap()->shouldBeCalledOnce()->willReturn([[new stdClass(), $this]]);
-        $this->messageBus->dispatch($envelope)->shouldBeCalledOnce()->willReturnArgument();
-        $this->doctrineBusMessageEventSubscriber->postFlush($this->event->reveal());
-
-        $this->assertEmpty($this->messageQueue());
+        $this->transportTester->assertMessageMatch(AsyncMessageInterface::class, null, 2);
     }
 }

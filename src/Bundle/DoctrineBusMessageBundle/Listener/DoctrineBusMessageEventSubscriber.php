@@ -3,8 +3,11 @@
 namespace Draw\Bundle\DoctrineBusMessageBundle\Listener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\OnClearEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Proxy;
 use Draw\Bundle\DoctrineBusMessageBundle\EnvelopeFactory\BasicEnvelopeFactory;
 use Draw\Bundle\DoctrineBusMessageBundle\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface;
@@ -12,6 +15,16 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class DoctrineBusMessageEventSubscriber implements EventSubscriber
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var MessageHolderInterface[]
+     */
+    private $messageHolders = [];
+
     /**
      * @var MessageBusInterface
      */
@@ -22,35 +35,60 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
      */
     private $envelopeFactory;
 
-    public function __construct(MessageBusInterface $bus, EnvelopeFactoryInterface $envelopeFactory = null)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        MessageBusInterface $bus,
+        EnvelopeFactoryInterface $envelopeFactory = null
+    ) {
         $this->bus = $bus;
+        $this->entityManager = $entityManager;
         $this->envelopeFactory = $envelopeFactory ?: new BasicEnvelopeFactory();
     }
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
+            Events::postPersist,
+            Events::postLoad,
             Events::postFlush,
+            Events::onClear,
         ];
     }
 
-    public function postFlush(PostFlushEventArgs $event): void
+    public function postPersist(LifecycleEventArgs $event): void
     {
-        $identityMap = $event->getEntityManager()->getUnitOfWork()->getIdentityMap();
-        if (!$identityMap) {
+        $this->trackMessageHolder($event);
+    }
+
+    public function postRemove(LifecycleEventArgs $event): void
+    {
+        $this->trackMessageHolder($event);
+    }
+
+    public function postLoad(LifecycleEventArgs $event): void
+    {
+        $this->trackMessageHolder($event);
+    }
+
+    public function onClear(OnClearEventArgs $args): void
+    {
+        if ($args->clearsAllEntities()) {
+            $this->messageHolders = [];
             return;
         }
 
-        $entities = call_user_func_array('array_merge', $identityMap);
+        $this->messageHolders[$args->getEntityClass()] = [];
+    }
 
+    public function postFlush(): void
+    {
         $envelopes = [];
-        foreach ($entities as $entity) {
-            if (!$entity instanceof MessageHolderInterface) {
+        foreach ($this->getFlattenMessageHolders() as $messageHolder) {
+            if ($messageHolder instanceof Proxy && !$messageHolder->__isInitialized()) {
                 continue;
             }
 
-            $queue = $entity->messageQueue();
+            $queue = $messageHolder->messageQueue();
 
             if ($queue->isEmpty()) {
                 continue;
@@ -61,11 +99,37 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
                 $messages[] = $queue->dequeue();
             }
 
-            $envelopes = array_merge($this->envelopeFactory->createEnvelopes($entity, $messages), $envelopes);
+            $envelopes = array_merge($this->envelopeFactory->createEnvelopes($messageHolder, $messages), $envelopes);
         }
 
         foreach ($envelopes as $envelope) {
             $this->bus->dispatch($envelope);
         }
+    }
+
+    private function trackMessageHolder(LifecycleEventArgs $event): void
+    {
+        $entity = $event->getEntity();
+
+        if (!$entity instanceof MessageHolderInterface) {
+            return;
+        }
+
+        $classMetadata = $this->entityManager->getClassMetadata(get_class($entity));
+        $className = $classMetadata->rootEntityName;
+        $this->messageHolders[$className][spl_object_id($entity)] = $entity;
+    }
+
+    /**
+     * @return array|MessageHolderInterface[]
+     * @internal
+     */
+    public function getFlattenMessageHolders(): array
+    {
+        if (!$this->messageHolders) {
+            return [];
+        }
+
+        return call_user_func_array('array_merge', $this->messageHolders);
     }
 }
