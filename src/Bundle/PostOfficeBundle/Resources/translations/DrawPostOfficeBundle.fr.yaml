@@ -1,6 +1,7 @@
 email:
   default:
     subject: 'Sujet'
+    preview: ''
     salutation: '<p>Bonjour,</p>'
     top_section: ''
     call_to_action_text: 'Cliquer ici'
