@@ -38,13 +38,13 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
      * Return if the extractor can extract the requested data or not.
      *
      * @param $source
-     * @param $type
+     * @param $target
      *
      * @return bool
      */
-    public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if (!$type instanceof Schema) {
+        if (!$target instanceof Schema) {
             return false;
         }
 
@@ -54,7 +54,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
 
         $constraints = $this->getPropertiesConstraints(
             $source,
-            $type,
+            $target,
             $this->getValidationGroups($extractionContext)
         );
 

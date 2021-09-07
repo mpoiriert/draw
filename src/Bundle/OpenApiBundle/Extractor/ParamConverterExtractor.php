@@ -28,17 +28,17 @@ class ParamConverterExtractor implements ExtractorInterface
      * Return if the extractor can extract the requested data or not.
      *
      * @param $source
-     * @param $type
+     * @param $target
      *
      * @return bool
      */
-    public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
         if (!$source instanceof ReflectionMethod) {
             return false;
         }
 
-        if (!$type instanceof Operation) {
+        if (!$target instanceof Operation) {
             return false;
         }
 
@@ -55,18 +55,18 @@ class ParamConverterExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param ReflectionMethod $method
-     * @param Operation        $operation
+     * @param ReflectionMethod $source
+     * @param Operation        $target
      */
-    public function extract($method, $operation, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if (!$this->canExtract($method, $operation, $extractionContext)) {
+        if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
         }
 
-        $paramConverter = $this->getParamConverter($method);
+        $paramConverter = $this->getParamConverter($source);
         if (null === ($type = $paramConverter->getClass())) {
-            foreach ($method->getParameters() as $parameter) {
+            foreach ($source->getParameters() as $parameter) {
                 if ($parameter->getName() != $paramConverter->getName()) {
                     continue;
                 }
@@ -74,7 +74,7 @@ class ParamConverterExtractor implements ExtractorInterface
             }
         }
 
-        $operation->parameters[] = $parameter = new BodyParameter();
+        $target->parameters[] = $parameter = new BodyParameter();
 
         $serializationGroups = $this->getDeserializationGroups($paramConverter);
         $validationGroups = $this->getValidationGroups($paramConverter);

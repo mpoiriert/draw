@@ -30,17 +30,17 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
      * Return if the extractor can extract the requested data or not.
      *
      * @param $source
-     * @param $type
+     * @param $target
      *
      * @return bool
      */
-    public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
         if (!$source instanceof ContainerInterface) {
             return false;
         }
 
-        if (!$type instanceof Root) {
+        if (!$target instanceof Root) {
             return false;
         }
 
@@ -54,15 +54,15 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
      * extraction.
      *
      * @param ContainerInterface $source
-     * @param Root               $type
+     * @param Root               $target
      */
-    public function extract($source, $type, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if (!$this->canExtract($source, $type, $extractionContext)) {
+        if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
         }
 
-        $this->triggerRouteExtraction($source->get('router'), $type, $extractionContext);
+        $this->triggerRouteExtraction($source->get('router'), $target, $extractionContext);
     }
 
     private function triggerRouteExtraction(RouterInterface $router, Root $schema, ExtractionContextInterface $extractionContext)

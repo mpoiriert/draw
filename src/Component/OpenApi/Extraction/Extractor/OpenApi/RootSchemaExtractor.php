@@ -24,21 +24,21 @@ class RootSchemaExtractor implements ExtractorInterface
      * Return if the extractor can extract the requested data or not.
      *
      * @param $source
-     * @param $type
+     * @param $target
      *
      * @return bool
      */
-    public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
         if (!is_string($source)) {
             return false;
         }
 
-        if (!is_object($type)) {
+        if (!is_object($target)) {
             return false;
         }
 
-        if (!$type instanceof Root) {
+        if (!$target instanceof Root) {
             return false;
         }
 
@@ -65,18 +65,18 @@ class RootSchemaExtractor implements ExtractorInterface
      * extraction.
      *
      * @param string $source
-     * @param Root   $rootSchema
+     * @param Root   $target
      */
-    public function extract($source, $rootSchema, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if (!$this->canExtract($source, $rootSchema, $extractionContext)) {
+        if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
         }
 
-        $result = $this->serializer->deserialize($source, get_class($rootSchema), 'json');
+        $result = $this->serializer->deserialize($source, get_class($target), 'json');
 
         foreach ($result as $key => $value) {
-            $rootSchema->{$key} = $value;
+            $target->{$key} = $value;
         }
     }
 }

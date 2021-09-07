@@ -15,17 +15,17 @@ class RouteOperationExtractor implements ExtractorInterface
      * Return if the extractor can extract the requested data or not.
      *
      * @param $source
-     * @param $type
+     * @param $target
      *
      * @return bool
      */
-    public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
         if (!$source instanceof Route) {
             return false;
         }
 
-        if (!$type instanceof Operation) {
+        if (!$target instanceof Operation) {
             return false;
         }
 
@@ -39,24 +39,24 @@ class RouteOperationExtractor implements ExtractorInterface
      * extraction.
      *
      * @param Route     $source
-     * @param Operation $type
+     * @param Operation $target
      */
-    public function extract($source, $type, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if (!$this->canExtract($source, $type, $extractionContext)) {
+        if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
         }
 
-        $type->setVendorDataKey('x-draw-open-api-symfony-route', $extractionContext->getParameter('symfony-route-name'));
+        $target->setVendorDataKey('x-draw-open-api-symfony-route', $extractionContext->getParameter('symfony-route-name'));
 
         foreach ($source->compile()->getPathVariables() as $pathVariable) {
-            foreach ($type->parameters as $parameter) {
+            foreach ($target->parameters as $parameter) {
                 if ($parameter->name == $pathVariable) {
                     continue 2;
                 }
             }
 
-            $type->parameters[] = $pathParameter = new PathParameter();
+            $target->parameters[] = $pathParameter = new PathParameter();
             $pathParameter->name = $pathVariable;
             $pathParameter->type = 'string';
         }

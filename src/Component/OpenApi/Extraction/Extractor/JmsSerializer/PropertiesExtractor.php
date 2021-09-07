@@ -72,17 +72,17 @@ class PropertiesExtractor implements ExtractorInterface
      * Return if the extractor can extract the requested data or not.
      *
      * @param $source
-     * @param $type
+     * @param $target
      *
      * @return bool
      */
-    public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
         if (!$source instanceof ReflectionClass) {
             return false;
         }
 
-        if (!$type instanceof Schema) {
+        if (!$target instanceof Schema) {
             return false;
         }
 
@@ -95,16 +95,16 @@ class PropertiesExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param ReflectionClass $reflectionClass
-     * @param Schema          $schema
+     * @param ReflectionClass $source
+     * @param Schema          $target
      */
-    public function extract($reflectionClass, $schema, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if (!$this->canExtract($reflectionClass, $schema, $extractionContext)) {
+        if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
         }
 
-        $meta = $this->factory->getMetadataForClass($reflectionClass->getName());
+        $meta = $this->factory->getMetadataForClass($source->getName());
 
         $exclusionStrategies = [];
 
@@ -161,7 +161,7 @@ class PropertiesExtractor implements ExtractorInterface
             }
 
             $name = $this->namingStrategy->translateName($propertyMetadata);
-            $schema->properties[$name] = $propertySchema;
+            $target->properties[$name] = $propertySchema;
             $propertySchema->description = (string) $this->getDescription($propertyMetadata) ?: null;
 
             if ($this->eventDispatcher) {

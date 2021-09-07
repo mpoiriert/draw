@@ -40,17 +40,17 @@ class OperationExtractor implements ExtractorInterface
      * Return if the extractor can extract the requested data or not.
      *
      * @param $source
-     * @param $type
+     * @param $target
      *
      * @return bool
      */
-    public function canExtract($source, $type, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
         if (!$source instanceof ReflectionMethod) {
             return false;
         }
 
-        if (!$type instanceof Operation) {
+        if (!$target instanceof Operation) {
             return false;
         }
 
@@ -75,27 +75,27 @@ class OperationExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param ReflectionMethod $method
-     * @param Operation        $operation
+     * @param ReflectionMethod $source
+     * @param Operation        $target
      */
-    public function extract($method, $operation, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if (!$this->canExtract($method, $operation, $extractionContext)) {
+        if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
         }
 
         try {
-            $docBlock = $this->createDocBlock($method);
+            $docBlock = $this->createDocBlock($source);
         } catch (\InvalidArgumentException $exception) {
             return;
         }
 
-        if (!$operation->summary) {
-            $operation->summary = (string) $docBlock->getSummary() ?: null;
+        if (!$target->summary) {
+            $target->summary = (string) $docBlock->getSummary() ?: null;
         }
 
-        if (!$operation->description) {
-            $operation->description = (string) $docBlock->getDescription() ?: null;
+        if (!$target->description) {
+            $target->description = (string) $docBlock->getDescription() ?: null;
         }
 
         /** @var Type[] $types */
@@ -124,7 +124,7 @@ class OperationExtractor implements ExtractorInterface
                 if ('void' != $type && 'null' != $type) {
                     $response->schema = $responseSchema = new Schema();
                     $subContext = $extractionContext->createSubContext();
-                    $subContext->setParameter('controller-reflection-method', $method);
+                    $subContext->setParameter('controller-reflection-method', $source);
                     $subContext->setParameter('response', $response);
                     $extractionContext->getOpenApi()->extract((string) $type, $responseSchema, $subContext);
                     $statusCode = $subContext->getParameter('response-status-code', 200);
@@ -132,12 +132,12 @@ class OperationExtractor implements ExtractorInterface
                     $statusCode = 204;
                 }
 
-                $operation->responses[$statusCode] = $response;
+                $target->responses[$statusCode] = $response;
             }
         }
 
         if ($docBlock->getTagsByName('deprecated')) {
-            $operation->deprecated = true;
+            $target->deprecated = true;
         }
 
         foreach ($docBlock->getTagsByName('throws') as $throwTag) {
@@ -148,7 +148,7 @@ class OperationExtractor implements ExtractorInterface
             /** @var Exception $exception */
             $exception = $exceptionClass->newInstanceWithoutConstructor();
             list($code, $message) = $this->getExceptionInformation($exception);
-            $operation->responses[$code] = $exceptionResponse = new Response();
+            $target->responses[$code] = $exceptionResponse = new Response();
 
             if ((string) $throwTag->getDescription()) {
                 $message = (string) $throwTag->getDescription();
@@ -164,7 +164,7 @@ class OperationExtractor implements ExtractorInterface
 
         $bodyParameter = null;
 
-        foreach ($operation->parameters as $parameter) {
+        foreach ($target->parameters as $parameter) {
             if ($parameter instanceof BodyParameter) {
                 $bodyParameter = $parameter;
                 break;
@@ -177,7 +177,7 @@ class OperationExtractor implements ExtractorInterface
             $parameterName = trim($paramTag->getVariableName(), '$');
 
             $parameter = null;
-            foreach ($operation->parameters as $existingParameter) {
+            foreach ($target->parameters as $existingParameter) {
                 if ($existingParameter->name == $parameterName) {
                     $parameter = $existingParameter;
                     break;
