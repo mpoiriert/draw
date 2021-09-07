@@ -45,4 +45,21 @@ class TestController
 
         return $test;
     }
+
+    /**
+     * @Route(methods={"POST"}, path="/tests-array")
+     *
+     * @OpenApi\Operation(
+     *     operationId="arrayTest",
+     *     tags={"test"}
+     * )
+     *
+     * @OpenApi\QueryParameter(name="param1", type="array", collectionFormat="csv")
+     *
+     * @return array The query parameter value
+     */
+    public function arrayAction(array $param1)
+    {
+        return $param1;
+    }
 }

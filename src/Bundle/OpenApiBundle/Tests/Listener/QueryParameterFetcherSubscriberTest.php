@@ -56,6 +56,18 @@ class QueryParameterFetcherSubscriberTest extends TestCase
             ->assertSame('default');
     }
 
+    /**
+     * @see TestController::createAction()
+     */
+    public function testOnKernelController_array()
+    {
+        $this->httpTester()
+            ->post('/tests-array?param1=toto,tata', '')
+            ->assertStatus(200)
+            ->toJsonDataTester()
+            ->assertSame(['toto', 'tata']);
+    }
+
     public function provideOnKernelController()
     {
         yield 'boolean-0-false' => ['boolean', '0', false];

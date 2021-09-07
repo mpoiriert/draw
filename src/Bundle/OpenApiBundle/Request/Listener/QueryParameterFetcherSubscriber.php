@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Schema\QueryParameter;
 use InvalidArgumentException;
 use ReflectionMethod;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -71,7 +72,7 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
             if ($request->query->has($name)) {
                 switch ($annotation->type) {
                     case 'string':
-                        $value = $request->query->getAlpha($name);
+                        $value = (string) $request->query->get($name);
                         break;
                     case 'integer':
                         $value = $request->query->getInt($name);
@@ -81,6 +82,30 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
                         break;
                     case 'number':
                         $value = $request->query->getDigits($name);
+                        break;
+                    case 'array':
+                        switch ($annotation->collectionFormat) {
+                            case 'csv':
+                                $separator = ',';
+                                break;
+                            case 'ssv':
+                                $separator = ' ';
+                                break;
+                            case 'tsv':
+                                $separator = "\n";
+                                break;
+                            case 'pipes':
+                                $separator = '|';
+                                break;
+                            case 'multi':
+                            default:
+                                throw new RuntimeException(sprintf(
+                                    'Unsupported collection format [%s]',
+                                    $annotation->collectionFormat
+                                ));
+
+                        }
+                        $value = explode($separator, (string) $request->query->get($name));
                         break;
                     default:
                         $value = $request->query->get($name);

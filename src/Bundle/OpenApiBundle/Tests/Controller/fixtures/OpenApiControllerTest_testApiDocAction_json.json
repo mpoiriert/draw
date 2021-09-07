@@ -47,6 +47,32 @@
           }
         }
       }
+    },
+    "/tests-array": {
+      "post": {
+        "tags": [
+          "test"
+        ],
+        "operationId": "arrayTest",
+        "parameters": [
+          {
+            "type": "array",
+            "name": "param1",
+            "collectionFormat": "csv",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The query parameter value",
+            "schema": {
+              "type": "array",
+              "items": {}
+            }
+          }
+        },
+        "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_array"
+      }
     }
   },
   "definitions": {
