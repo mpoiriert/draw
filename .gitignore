@@ -3,6 +3,7 @@
 /.subsplit
 /composer.lock
 /docker-compose.yml
+/draw.iml
 
 /vendor-bin/**/vendor
 
