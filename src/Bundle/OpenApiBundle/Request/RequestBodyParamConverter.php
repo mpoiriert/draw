@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\OpenApiBundle\Request;
 
-use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
 use Draw\Bundle\OpenApiBundle\Util\DynamicArrayObject;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Exception\Exception as JMSSerializerException;
@@ -14,8 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RequestBodyParamConverter implements ParamConverterInterface
 {
@@ -24,17 +21,9 @@ class RequestBodyParamConverter implements ParamConverterInterface
      */
     private $serializer;
 
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
-
-    public function __construct(
-        SerializerInterface $serializer,
-        ValidatorInterface $validator
-    ) {
+    public function __construct(SerializerInterface $serializer)
+    {
         $this->serializer = $serializer;
-        $this->validator = $validator;
     }
 
     public function apply(Request $request, ParamConverter $configuration)
@@ -47,13 +36,7 @@ class RequestBodyParamConverter implements ParamConverterInterface
         $request->attributes->set($configuration->getName(), $object);
 
         if (!$request->attributes->get('_draw_dummy_execution')) {
-            $violations = $this->validate($object, $configuration);
-
-            if (count($violations)) {
-                $exception = new ConstraintViolationListException();
-                $exception->setViolationList($violations);
-                throw $exception;
-            }
+            $request->attributes->set('_draw_body_validation', $configuration);
         }
 
         return true;
@@ -123,24 +106,6 @@ class RequestBodyParamConverter implements ParamConverterInterface
         } catch (JMSSerializerException $e) {
             throw new BadRequestHttpException($e->getMessage(), $e);
         }
-    }
-
-    /**
-     * @param $object
-     *
-     * @return ConstraintViolationListInterface|null
-     */
-    private function validate($object, ParamConverter $paramConverter)
-    {
-        $options = $paramConverter->getOptions();
-        if ($options['validate'] ?? true) {
-            $validatorOptions = $paramConverter->getOptions()['validator'] ?? [];
-            $groups = $validatorOptions['groups'] ?? ['Default'];
-
-            return $this->validator->validate($object, null, $groups);
-        }
-
-        return null;
     }
 
     /**

@@ -52,10 +52,12 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
             new ReflectionMethod(get_class($controller[0]), $controller[1])
         );
 
+        $parameters = [];
         foreach ($annotations as $annotation) {
             if (!$annotation instanceof QueryParameter) {
                 continue;
             }
+            $parameters[] = $annotation;
 
             $name = $annotation->name;
 
@@ -114,6 +116,10 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
 
                 $request->attributes->set($name, $value);
             }
+        }
+
+        if ($parameters) {
+            $request->attributes->set('_draw_query_parameters_validation', $parameters);
         }
     }
 }

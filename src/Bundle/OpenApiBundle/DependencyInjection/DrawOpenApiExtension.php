@@ -4,6 +4,7 @@ namespace Draw\Bundle\OpenApiBundle\DependencyInjection;
 
 use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
 use Draw\Bundle\OpenApiBundle\Request\Listener\QueryParameterFetcherSubscriber;
+use Draw\Bundle\OpenApiBundle\Request\Listener\ValidationSubscriber;
 use Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter;
 use Draw\Bundle\OpenApiBundle\Response\Listener\ApiExceptionSubscriber;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
@@ -26,7 +27,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
      */
     public function loadInternal(array $config, ContainerBuilder $container)
     {
-        $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
+        $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $loader = new XmlFileLoader($container, $fileLocator);
 
         $this->configOpenApi($config['openApi'], $loader, $container);
@@ -66,7 +67,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
         $definition->setArgument(0, $config['definitionAliases']);
 
         $namingFilterServices = [];
-        foreach($config['classNamingFilters'] as $serviceName) {
+        foreach ($config['classNamingFilters'] as $serviceName) {
             $namingFilterServices[] = new Reference($serviceName);
         }
         $container
@@ -128,6 +129,14 @@ class DrawOpenApiExtension extends ConfigurableExtension
         }
 
         $loader->load('request.xml');
+
+        $container
+            ->getDefinition(ValidationSubscriber::class)
+            ->setArgument(
+                '$prefixes',
+                $config['validation']['pathPrefixes'] ??
+                ['query' => '$.query', 'body' => '$.body']
+            );
 
         if (!$config['queryParameter']['enabled']) {
             $container->removeDefinition(QueryParameterFetcherSubscriber::class);
