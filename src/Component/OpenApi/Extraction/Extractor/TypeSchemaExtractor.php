@@ -206,6 +206,8 @@ class TypeSchemaExtractor implements ExtractorInterface
             'date' => ['type' => 'string', 'format' => 'date'],
             'DateTime' => ['type' => 'string', 'format' => 'date-time'],
             'DateTimeImmutable' => ['type' => 'string', 'format' => 'date-time'],
+            '\DateTime' => ['type' => 'string', 'format' => 'date-time'],
+            '\DateTimeImmutable' => ['type' => 'string', 'format' => 'date-time'],
             'dateTime' => ['type' => 'string', 'format' => 'date-time'],
             'password' => ['type' => 'string', 'format' => 'password'],
             'array' => ['type' => 'array'],

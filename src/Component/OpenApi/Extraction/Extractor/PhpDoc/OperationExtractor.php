@@ -201,12 +201,12 @@ class OperationExtractor implements ExtractorInterface
                         $subContext
                     );
                 } elseif (!$parameter->type) {
-                    $typeConfiguration = TypeSchemaExtractor::getPrimitiveType(
+                    $primitiveType = TypeSchemaExtractor::getPrimitiveType(
                         (string) $paramTag->getType(),
                         $extractionContext
                     );
 
-                    if (!isset($typeConfiguration['type'])) {
+                    if (!isset($primitiveType['type'])) {
                         throw new RuntimeException(sprintf(
                             'No type found for parameter named [%s] for operation id [%s]',
                             $paramTag->getVariableName(),
@@ -214,7 +214,10 @@ class OperationExtractor implements ExtractorInterface
                         ));
                     }
 
-                    $parameter->type = $typeConfiguration['type'];
+                    $parameter->type = $primitiveType['type'];
+                    if (isset($primitiveType['format'])) {
+                        $parameter->format = $primitiveType['format'];
+                    }
                 }
                 continue;
             }
