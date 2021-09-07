@@ -10,10 +10,12 @@ use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\PathItem;
+use Draw\Component\OpenApi\Schema\QueryParameter;
 use Exception;
 use LengthException;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
+use RuntimeException;
 
 class OperationExtractorTest extends TestCase
 {
@@ -119,12 +121,20 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    /**
-     * @param $method
-     *
-     * @return ExtractionContext
-     */
-    private function extractStubServiceMethod($method)
+    public function testExtract_invalidTypeParameter()
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('No type found for parameter named [param] for operation id [operation_id]');
+
+        $operation = new Operation();
+        $operation->operationId = 'operation_id';
+        $operation->parameters[] = $parameter = new QueryParameter();
+        $parameter->name = 'param';
+
+        $this->extractStubServiceMethod('invalidTypeParameter', $operation);
+    }
+
+    private function extractStubServiceMethod(string $method, Operation $operation = null)
     {
         $reflectionMethod = new ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', $method);
 
@@ -133,7 +143,7 @@ class OperationExtractorTest extends TestCase
         $schema = $context->getRootSchema();
         $schema->paths['/service'] = $pathItem = new PathItem();
 
-        $pathItem->get = $operation = new Operation();
+        $pathItem->get = $operation = $operation ?: new Operation();
 
         $this->phpDocOperationExtractor->extract($reflectionMethod, $operation, $context);
 
@@ -201,5 +211,13 @@ class PhpDocOperationExtractorStubService
     public function genericCollection()
     {
         return new PhpDocOperationExtractorStubClass();
+    }
+
+    /**
+     * @param toto $param
+     */
+    public function invalidTypeParameter($param)
+    {
+
     }
 }
