@@ -64,9 +64,11 @@ class TestController
      *     }
      * )
      *
+     * @param ?array $param1 The parameter
+     *
      * @return array The query parameter value
      */
-    public function arrayAction(array $param1)
+    public function arrayAction(?array $param1)
     {
         return $param1;
     }

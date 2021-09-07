@@ -31,7 +31,7 @@ class TypeSchemaExtractor implements ExtractorInterface
     /**
      * Return if the extractor can extract the requested data or not.
      *
-     * @param $source
+     * @param                 $source
      * @param SupportedTarget $target
      *
      * @return bool
@@ -55,7 +55,7 @@ class TypeSchemaExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param string $source
+     * @param string          $source
      * @param SupportedTarget $target
      *
      * @throws ExtractionImpossibleException
@@ -163,6 +163,10 @@ class TypeSchemaExtractor implements ExtractorInterface
 
         if (null === self::$typeResolver) {
             self::$typeResolver = new TypeResolver();
+        }
+
+        if (0 === strpos($type, '?')) {
+            $type = substr($type, 1);
         }
 
         if ('generic' == $type) {
