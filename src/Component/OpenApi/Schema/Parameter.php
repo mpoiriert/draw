@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Annotation
  * @Target({"METHOD"})
  */
-class Parameter extends BaseParameter
+class Parameter extends BaseParameter implements ValidationConfigurationInterface
 {
     /**
      * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types

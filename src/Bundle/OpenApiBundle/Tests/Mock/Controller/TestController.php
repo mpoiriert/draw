@@ -7,6 +7,7 @@ use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Bundle\OpenApiBundle\Tests\Mock\Model\Test;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class TestController
 {
@@ -54,7 +55,14 @@ class TestController
      *     tags={"test"}
      * )
      *
-     * @OpenApi\QueryParameter(name="param1", type="array", collectionFormat="csv")
+     * @OpenApi\QueryParameter(
+     *     name="param1",
+     *     type="array",
+     *     collectionFormat="csv",
+     *     constraints={
+     *         @Assert\NotNull()
+     *     }
+     * )
      *
      * @return array The query parameter value
      */

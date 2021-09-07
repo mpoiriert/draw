@@ -4,6 +4,7 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
+use Draw\Component\OpenApi\Schema\QueryParameter;
 use Draw\Component\OpenApi\Schema\Schema;
 use InvalidArgumentException;
 use ReflectionClass;
@@ -34,29 +35,24 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
         }
     }
 
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param $source
-     * @param $target
-     *
-     * @return bool
-     */
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
     {
-        if (!$target instanceof Schema) {
-            return false;
+        $constraints = [];
+        switch (true) {
+            case $target instanceof Schema && $source instanceof ReflectionClass:
+                $constraints = $this->getPropertiesConstraints(
+                    $source,
+                    $target,
+                    $this->getValidationGroups($extractionContext)
+                );
+                break;
+            case $target instanceof QueryParameter && $source instanceof QueryParameter:
+                $constraints = array_filter(
+                    $target->constraints,
+                    [$this, 'supportConstraint']
+                );
+                break;
         }
-
-        if (!$source instanceof ReflectionClass) {
-            return false;
-        }
-
-        $constraints = $this->getPropertiesConstraints(
-            $source,
-            $target,
-            $this->getValidationGroups($extractionContext)
-        );
 
         return count($constraints);
     }
@@ -144,11 +140,23 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
 
         $validationGroups = $this->getValidationGroups($extractionContext);
 
+        if ($target instanceof QueryParameter) {
+            $constraints =  array_filter(
+                $target->constraints,
+                [$this, 'supportConstraint']
+            );
+            foreach ($constraints as $constraint) {
+                $constraintExtractionContext->validationConfiguration = $constraint;
+                $this->extractConstraint($constraint, $constraintExtractionContext);
+            }
+            return;
+        }
+
         $propertyConstraints = $this->getPropertiesConstraints($source, $target, $validationGroups);
 
         foreach ($propertyConstraints as $propertyName => $constraints) {
             foreach ($constraints as $constraint) {
-                $constraintExtractionContext->propertySchema = $target->properties[$propertyName];
+                $constraintExtractionContext->validationConfiguration = $target->properties[$propertyName];
                 $constraintExtractionContext->propertyName = $propertyName;
                 $this->extractConstraint($constraint, $constraintExtractionContext);
             }

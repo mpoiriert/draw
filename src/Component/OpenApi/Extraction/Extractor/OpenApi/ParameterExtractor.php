@@ -50,6 +50,11 @@ class ParameterExtractor implements ExtractorInterface
         foreach ($this->reader->getMethodAnnotations($source) as $annotation) {
             if ($annotation instanceof BaseParameter) {
                 $target->parameters[] = $annotation;
+                $extractionContext->getOpenApi()->extract(
+                    $annotation,
+                    $annotation,
+                    $extractionContext
+                );
             }
         }
     }

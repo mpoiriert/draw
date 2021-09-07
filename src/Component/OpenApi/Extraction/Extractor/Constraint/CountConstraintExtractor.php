@@ -23,11 +23,11 @@ class CountConstraintExtractor extends ConstraintExtractor
         $this->assertSupportConstraint($constraint);
 
         if ($constraint->min) {
-            $context->propertySchema->minItems = $constraint->min;
+            $context->validationConfiguration->minItems = $constraint->min;
         }
 
         if ($constraint->max) {
-            $context->propertySchema->maxItems = $constraint->max;
+            $context->validationConfiguration->maxItems = $constraint->max;
         }
     }
 }

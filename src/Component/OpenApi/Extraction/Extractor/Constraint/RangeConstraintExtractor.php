@@ -21,7 +21,7 @@ class RangeConstraintExtractor extends ConstraintExtractor
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context)
     {
         $this->assertSupportConstraint($constraint);
-        $context->propertySchema->maximum = $constraint->max;
-        $context->propertySchema->minimum = $constraint->min;
+        $context->validationConfiguration->maximum = $constraint->max;
+        $context->validationConfiguration->minimum = $constraint->min;
     }
 }

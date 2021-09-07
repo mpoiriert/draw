@@ -4,13 +4,14 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Schema\Schema;
+use Draw\Component\OpenApi\Schema\ValidationConfigurationInterface;
 
 class ConstraintExtractionContext
 {
     /**
-     * @var Schema
+     * @var ValidationConfigurationInterface
      */
-    public $propertySchema;
+    public $validationConfiguration;
 
     /**
      * @var Schema

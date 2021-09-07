@@ -21,7 +21,7 @@ class LengthConstraintExtractor extends ConstraintExtractor
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context)
     {
         $this->assertSupportConstraint($constraint);
-        $context->propertySchema->maxLength = $constraint->max;
-        $context->propertySchema->minLength = $constraint->min;
+        $context->validationConfiguration->maxLength = $constraint->max;
+        $context->validationConfiguration->minLength = $constraint->min;
     }
 }

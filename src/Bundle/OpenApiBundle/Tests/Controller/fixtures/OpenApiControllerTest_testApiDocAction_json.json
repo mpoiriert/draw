@@ -59,7 +59,8 @@
             "type": "array",
             "name": "param1",
             "collectionFormat": "csv",
-            "in": "query"
+            "in": "query",
+            "required": true
           }
         ],
         "responses": {

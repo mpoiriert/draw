@@ -33,7 +33,7 @@ class ChoiceConstraintExtractor extends ConstraintExtractor
         }
 
         foreach ($choices as $choice) {
-            $context->propertySchema->enum[] = $choice;
+            $context->validationConfiguration->enum[] = $choice;
         }
     }
 }
