@@ -135,23 +135,24 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
         }
 
         $constraintExtractionContext = new ConstraintExtractionContext();
-        $constraintExtractionContext->classSchema = $target;
-        $constraintExtractionContext->context = 'property';
 
         $validationGroups = $this->getValidationGroups($extractionContext);
 
         if ($target instanceof QueryParameter) {
+            $constraintExtractionContext->context = 'query';
             $constraints =  array_filter(
                 $target->constraints,
                 [$this, 'supportConstraint']
             );
             foreach ($constraints as $constraint) {
-                $constraintExtractionContext->validationConfiguration = $constraint;
+                $constraintExtractionContext->validationConfiguration = $target;
                 $this->extractConstraint($constraint, $constraintExtractionContext);
             }
             return;
         }
 
+        $constraintExtractionContext->classSchema = $target;
+        $constraintExtractionContext->context = 'property';
         $propertyConstraints = $this->getPropertiesConstraints($source, $target, $validationGroups);
 
         foreach ($propertyConstraints as $propertyName => $constraints) {
