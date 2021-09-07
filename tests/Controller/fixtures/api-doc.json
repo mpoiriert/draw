@@ -1,1280 +1,1422 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "test",
-    "version": "1.0"
-  },
-  "paths": {
-    "/api/tags": {
-      "get": {
-        "operationId": "tagList",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Tags Paginator",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "totalCount": {
-                  "format": "int32",
-                  "type": "integer",
-                  "readOnly": true
+    "swagger": "2.0",
+    "info": {
+        "title": "test",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/tags": {
+            "get": {
+                "operationId": "tagList",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Tags Paginator",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "totalCount": {
+                                    "format": "int32",
+                                    "type": "integer",
+                                    "readOnly": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Tag"
+                                    },
+                                    "readOnly": true
+                                },
+                                "pageSize": {
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "pageSizeOptions": {
+                                    "type": "array",
+                                    "items": {
+                                        "format": "int32",
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "x-draw-dashboard-class-name": "Draw\\Bundle\\DashboardBundle\\Doctrine\\Paginator"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
                 },
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Tag"
-                  },
-                  "readOnly": true
+                "x-draw-open-api-symfony-route": "app_api_tags_list",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
                 },
-                "pageSize": {
-                  "format": "int32",
-                  "type": "integer"
+                "x-draw-dashboard-action": {
+                    "type": "list",
+                    "name": "list",
+                    "paginated": true,
+                    "columns": [],
+                    "filters": []
+                }
+            },
+            "post": {
+                "operationId": "tagCreate",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The newly created tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
                 },
-                "pageSizeOptions": {
-                  "type": "array",
-                  "items": {
+                "x-draw-open-api-symfony-route": "app_api_tags_create",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "create",
+                    "name": "create",
+                    "button": {
+                        "label": "Create",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "id": "cancel",
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "id": "save",
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-edit"
+                                ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
+                                ]
+                            }
+                        ],
+                        "dialog": false
+                    }
+                }
+            }
+        },
+        "/api/tags/{id}": {
+            "get": {
+                "operationId": "tagGet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "tag_get",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "show",
+                    "name": "show",
+                    "button": {
+                        "label": "Show",
+                        "behaviours": []
+                    }
+                }
+            },
+            "put": {
+                "operationId": "tagEdit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The update tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_edit",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "edit",
+                    "name": "edit",
+                    "button": {
+                        "label": "Edit",
+                        "icon": "edit",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "id": "cancel",
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "id": "save",
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-edit"
+                                ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
+                                ]
+                            }
+                        ],
+                        "dialog": false
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "tagDelete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Empty response mean success"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_delete",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "delete",
+                    "name": "delete",
+                    "button": {
+                        "id": "delete",
+                        "label": "Delete",
+                        "icon": "delete",
+                        "behaviours": [
+                            "delete"
+                        ]
+                    },
+                    "flow": {
+                        "type": "confirm",
+                        "title": "",
+                        "message": "Are you sure you want to delete the tag {{target.label}} ?",
+                        "yesLabel": "Yes",
+                        "noLabel": "No"
+                    }
+                }
+            }
+        },
+        "/api/tags/activate-all": {
+            "post": {
+                "operationId": "tagActivateAll",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Empty return value mean success"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_activateall",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\Tag"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "generic",
+                    "name": "generic",
+                    "button": {
+                        "id": "activateAll",
+                        "label": "Activate all",
+                        "behaviours": [
+                            "navigateTo-tagList"
+                        ]
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "summary": "Return a paginator list of users.",
+                "operationId": "userList",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "A paginated user list",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "totalCount": {
+                                    "format": "int32",
+                                    "type": "integer",
+                                    "readOnly": true
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/User"
+                                    },
+                                    "readOnly": true
+                                },
+                                "pageSize": {
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "pageSizeOptions": {
+                                    "type": "array",
+                                    "items": {
+                                        "format": "int32",
+                                        "type": "integer"
+                                    }
+                                }
+                            },
+                            "x-draw-dashboard-class-name": "Draw\\Bundle\\DashboardBundle\\Doctrine\\Paginator"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_users_list",
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "list",
+                    "name": "list",
+                    "title": "Users List",
+                    "paginated": true,
+                    "columns": [],
+                    "filters": []
+                },
+                "x-draw-dashboard-breadcrumb": {}
+            },
+            "post": {
+                "operationId": "userCreate",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The newly created user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_users_create",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "create",
+                    "name": "create",
+                    "button": {
+                        "label": "Create",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "id": "cancel",
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "id": "save",
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-edit"
+                                ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
+                                ]
+                            }
+                        ],
+                        "dialog": false
+                    }
+                }
+            }
+        },
+        "/api/me": {
+            "get": {
+                "operationId": "me",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "The currently connected user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "me",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "generic",
+                    "name": "generic",
+                    "button": {
+                        "id": "me",
+                        "icon": "account_circle",
+                        "behaviours": [
+                            "navigateTo-userEdit"
+                        ]
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "operationId": "userGet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "user_get",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "show",
+                    "name": "show",
+                    "button": {
+                        "label": "Show",
+                        "behaviours": []
+                    }
+                }
+            },
+            "put": {
+                "operationId": "userEdit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The update user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_users_edit",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "edit",
+                    "name": "edit",
+                    "button": {
+                        "label": "Edit",
+                        "icon": "edit",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "id": "cancel",
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "id": "save",
+                                "label": "Save",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-edit"
+                                ]
+                            },
+                            {
+                                "id": "save-then-create",
+                                "label": "Save and add more",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-create"
+                                ]
+                            },
+                            {
+                                "id": "save-then-list",
+                                "label": "Save and go to list",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save",
+                                    "then-list"
+                                ]
+                            }
+                        ],
+                        "dialog": false
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "userDelete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Empty response mean success"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "user_delete",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "delete",
+                    "name": "delete",
+                    "button": {
+                        "id": "delete",
+                        "label": "Delete",
+                        "icon": "delete",
+                        "behaviours": [
+                            "delete"
+                        ]
+                    },
+                    "flow": {
+                        "type": "confirm",
+                        "title": "",
+                        "message": "Are you sure you want to delete the user {{target.email}} ?",
+                        "yesLabel": "Yes",
+                        "noLabel": "No"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/reset-password-email": {
+            "post": {
+                "summary": "Send a reset password email to the user.",
+                "operationId": "userSendResetPasswordEmail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No return value mean email has been sent"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_users_sendresetpasswordemail",
+                "x-draw-dashboard-breadcrumb": {
+                    "parentOperationId": "userList"
+                },
+                "x-draw-dashboard-targets": {
+                    "targets": [
+                        "App\\Entity\\User"
+                    ]
+                },
+                "x-draw-dashboard-action": {
+                    "type": "generic",
+                    "name": "generic",
+                    "button": {
+                        "label": "Send forgot password email",
+                        "icon": "email",
+                        "behaviours": []
+                    }
+                }
+            }
+        },
+        "/tests": {
+            "post": {
+                "tags": [
+                    "test"
+                ],
+                "operationId": "createTest",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "param1",
+                        "in": "query"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The created test entity",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+                        },
+                        "headers": {
+                            "X-Draw": {
+                                "description": "Description of the header",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_create",
+                "x-test": {
+                    "key": "value",
+                    "object": {
+                        "property": "value"
+                    }
+                }
+            }
+        },
+        "/tests-array": {
+            "post": {
+                "tags": [
+                    "test"
+                ],
+                "operationId": "arrayTest",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "name": "param1",
+                        "required": true,
+                        "collectionFormat": "csv",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The query parameter value",
+                        "schema": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_array"
+            }
+        },
+        "/api/connection-tokens": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Create a token base on the username/password of a user.",
+                "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp**\u00a0attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
+                "operationId": "drawUserBundleCreateConnectionToken",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.Credential"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The newly created token",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "connection_token_create",
+                "x-draw-dashboard-action": {
+                    "type": "create",
+                    "name": "create",
+                    "button": {
+                        "label": "Sign In",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "form",
+                        "buttons": [
+                            {
+                                "id": "cancel",
+                                "label": "Cancel",
+                                "style": "stroked-button",
+                                "behaviours": [
+                                    "cancel"
+                                ]
+                            },
+                            {
+                                "id": "save",
+                                "label": "Sign In",
+                                "style": "flat-button",
+                                "color": "primary",
+                                "behaviours": [
+                                    "submit",
+                                    "save"
+                                ]
+                            }
+                        ],
+                        "dialog": true
+                    }
+                },
+                "x-draw-dashboard-breadcrumb": {
+                    "label": "Sign In"
+                }
+            }
+        },
+        "/api/connection-tokens/refresh": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "operationId": "drawUserBundleRefreshConnectionToken",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The refreshed token",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "drawUserBundle_connection_token_refresh"
+            }
+        },
+        "/api/connection-tokens/current": {
+            "delete": {
+                "tags": [
+                    "Security"
+                ],
+                "operationId": "drawUserBundleDeleteConnectionToken",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Nothing to be returned"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "drawUserBundle_connection_clear",
+                "x-draw-dashboard-action": {
+                    "type": "delete",
+                    "name": "delete",
+                    "button": {
+                        "label": "Sign Out",
+                        "icon": "exit_to_app",
+                        "style": "icon-button",
+                        "behaviours": []
+                    },
+                    "flow": {
+                        "type": "confirm",
+                        "title": "",
+                        "message": "Sign Out ?",
+                        "yesLabel": "Yes",
+                        "noLabel": "No"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Tag": {
+            "required": [
+                "label"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
                     "format": "int32",
                     "type": "integer"
-                  }
-                }
-              },
-              "x-draw-dashboard-class-name": "Draw\\Bundle\\DashboardBundle\\Doctrine\\Paginator"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_tags_list",
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\Tag"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "list",
-          "name": "list",
-          "paginated": true,
-          "columns": [],
-          "filters": []
-        }
-      },
-      "post": {
-        "operationId": "tagCreate",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/Tag"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The newly created tag",
-            "schema": {
-              "$ref": "#/definitions/Tag"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_tags_create",
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\Tag"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "create",
-          "name": "create",
-          "button": {
-            "label": "Create",
-            "behaviours": []
-          },
-          "flow": {
-            "type": "form",
-            "buttons": [
-              {
-                "id": "cancel",
-                "label": "Cancel",
-                "style": "stroked-button",
-                "behaviours": [
-                  "cancel"
-                ]
-              },
-              {
-                "id": "save",
-                "label": "Save",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-edit"
-                ]
-              },
-              {
-                "id": "save-then-create",
-                "label": "Save and add more",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-create"
-                ]
-              },
-              {
-                "id": "save-then-list",
-                "label": "Save and go to list",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-list"
-                ]
-              }
-            ],
-            "dialog": false
-          }
-        }
-      }
-    },
-    "/api/tags/{id}": {
-      "get": {
-        "operationId": "tagGet",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "required": true,
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The tag",
-            "schema": {
-              "$ref": "#/definitions/Tag"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "tag_get",
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\Tag"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "show",
-          "name": "show",
-          "button": {
-            "label": "Show",
-            "behaviours": []
-          }
-        }
-      },
-      "put": {
-        "operationId": "tagEdit",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "required": true,
-            "in": "path"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/Tag"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The update tag",
-            "schema": {
-              "$ref": "#/definitions/Tag"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_tags_edit",
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\Tag"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "edit",
-          "name": "edit",
-          "button": {
-            "label": "Edit",
-            "icon": "edit",
-            "behaviours": []
-          },
-          "flow": {
-            "type": "form",
-            "buttons": [
-              {
-                "id": "cancel",
-                "label": "Cancel",
-                "style": "stroked-button",
-                "behaviours": [
-                  "cancel"
-                ]
-              },
-              {
-                "id": "save",
-                "label": "Save",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-edit"
-                ]
-              },
-              {
-                "id": "save-then-create",
-                "label": "Save and add more",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-create"
-                ]
-              },
-              {
-                "id": "save-then-list",
-                "label": "Save and go to list",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-list"
-                ]
-              }
-            ],
-            "dialog": false
-          }
-        }
-      },
-      "delete": {
-        "operationId": "tagDelete",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "required": true,
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Empty response mean success"
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_tags_delete",
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\Tag"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "delete",
-          "name": "delete",
-          "button": {
-            "id": "delete",
-            "label": "Delete",
-            "icon": "delete",
-            "behaviours": [
-              "delete"
-            ]
-          },
-          "flow": {
-            "type": "confirm",
-            "title": "",
-            "message": "Are you sure you want to delete the tag {{target.label}} ?",
-            "yesLabel": "Yes",
-            "noLabel": "No"
-          }
-        }
-      }
-    },
-    "/api/tags/activate-all": {
-      "post": {
-        "operationId": "tagActivateAll",
-        "parameters": [],
-        "responses": {
-          "204": {
-            "description": "Empty return value mean success"
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_tags_activateall",
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\Tag"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "generic",
-          "name": "generic",
-          "button": {
-            "id": "activateAll",
-            "label": "Activate all",
-            "behaviours": [
-              "navigateTo-tagList"
-            ]
-          }
-        }
-      }
-    },
-    "/api/users": {
-      "get": {
-        "summary": "Return a paginator list of users.",
-        "operationId": "userList",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "A paginated user list",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "totalCount": {
-                  "format": "int32",
-                  "type": "integer",
-                  "readOnly": true
                 },
-                "data": {
-                  "type": "array",
-                  "items": {
+                "active": {
+                    "type": "boolean",
+                    "x-draw-dashboard-column": {
+                        "id": "active",
+                        "isActive": true,
+                        "sortable": true,
+                        "visible": true,
+                        "type": "boolean"
+                    },
+                    "x-draw-dashboard-form-input": {
+                        "id": "active",
+                        "type": "checkbox",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "label": {
+                    "maxLength": 255,
+                    "minLength": 3,
+                    "type": "string",
+                    "x-draw-dashboard-column": {
+                        "id": "label",
+                        "isActive": true,
+                        "visible": true,
+                        "type": "simple"
+                    },
+                    "x-draw-dashboard-form-input": {
+                        "id": "label",
+                        "type": "text",
+                        "disabled": false,
+                        "required": false
+                    }
+                }
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\Tag"
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "x-draw-dashboard-column": {
+                        "id": "id",
+                        "isActive": true,
+                        "sortable": true,
+                        "visible": true,
+                        "type": "simple"
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "id",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "auto-complete",
+                            "disabled": false,
+                            "required": false
+                        },
+                        "comparison": "="
+                    }
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Tag"
+                    },
+                    "x-draw-dashboard-column": {
+                        "id": "tags",
+                        "isActive": true,
+                        "sortable": false,
+                        "visible": true,
+                        "type": "list",
+                        "options": {
+                            "list": {
+                                "attribute": "label"
+                            }
+                        }
+                    },
+                    "x-draw-dashboard-form-input": {
+                        "id": "tags",
+                        "type": "choices",
+                        "disabled": false,
+                        "required": false,
+                        "multiple": true,
+                        "autoSelect": false
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "tags",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "choices",
+                            "disabled": false,
+                            "required": false,
+                            "multiple": false,
+                            "autoSelect": false
+                        },
+                        "comparison": "="
+                    }
+                },
+                "level": {
+                    "type": "string",
+                    "x-draw-dashboard-column": {
+                        "id": "level",
+                        "isActive": true,
+                        "visible": true,
+                        "type": "choices",
+                        "options": {
+                            "choices": {
+                                "user": "User",
+                                "admin": "Admin"
+                            }
+                        }
+                    },
+                    "x-draw-dashboard-form-input": {
+                        "id": "level",
+                        "type": "choices",
+                        "disabled": false,
+                        "required": false,
+                        "multiple": false,
+                        "choices": [
+                            {
+                                "label": "User",
+                                "value": "user"
+                            },
+                            {
+                                "label": "Admin",
+                                "value": "admin"
+                            }
+                        ],
+                        "autoSelect": false
+                    },
+                    "x-draw-dashboard-filter": {
+                        "id": "level",
+                        "alwaysShow": true,
+                        "input": {
+                            "type": "choices",
+                            "disabled": false,
+                            "required": false,
+                            "multiple": true,
+                            "choices": [
+                                {
+                                    "label": "User",
+                                    "value": "user"
+                                },
+                                {
+                                    "label": "Admin",
+                                    "value": "admin"
+                                }
+                            ],
+                            "autoSelect": false
+                        },
+                        "comparison": "IN"
+                    }
+                },
+                "address": {
+                    "$ref": "#/definitions/Address",
+                    "x-draw-dashboard-form-input": {
+                        "id": "address",
+                        "type": "composite",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "userAddresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserAddress"
+                    },
+                    "x-draw-dashboard-form-input": {
+                        "id": "userAddresses",
+                        "type": "collection",
+                        "disabled": false,
+                        "required": false,
+                        "orderBy": "position",
+                        "allowAdd": true,
+                        "allowRemove": true
+                    }
+                },
+                "dateOfBirth": {
+                    "format": "date-time",
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "dateOfBirth",
+                        "type": "date-picker",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "comment": {
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "comment",
+                        "type": "text",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "email": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-dashboard-column": {
+                        "id": "email",
+                        "isActive": true,
+                        "sortable": true,
+                        "visible": true,
+                        "type": "email"
+                    },
+                    "x-draw-dashboard-form-input": {
+                        "id": "email",
+                        "type": "email",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "plainPassword": {
+                    "type": "string"
+                },
+                "passwordUpdatedAt": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "x-draw-dashboard-form-layout": {
+                "type": "grid-list",
+                "cols": 1,
+                "tiles": [
+                    {
+                        "colspan": 1,
+                        "rowspan": 1,
+                        "inputs": [
+                            "*"
+                        ]
+                    }
+                ]
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\User"
+        },
+        "Address": {
+            "type": "object",
+            "properties": {
+                "street": {
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "street",
+                        "type": "text",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "postalCode": {
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "postalCode",
+                        "type": "text",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "city": {
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "city",
+                        "type": "text",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "country": {
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "country",
+                        "type": "text",
+                        "disabled": false,
+                        "required": false
+                    }
+                }
+            },
+            "x-draw-dashboard-class-name": "App\\Entity\\Address"
+        },
+        "UserAddress": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer",
+                    "x-draw-dashboard-form-input": {
+                        "id": "id",
+                        "type": "hidden",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "user": {
                     "$ref": "#/definitions/User"
-                  },
-                  "readOnly": true
                 },
-                "pageSize": {
-                  "format": "int32",
-                  "type": "integer"
+                "address": {
+                    "$ref": "#/definitions/Address",
+                    "x-draw-dashboard-form-input": {
+                        "id": "address",
+                        "type": "composite",
+                        "disabled": false,
+                        "required": false
+                    }
                 },
-                "pageSizeOptions": {
-                  "type": "array",
-                  "items": {
+                "position": {
                     "format": "int32",
-                    "type": "integer"
-                  }
+                    "type": "integer",
+                    "x-draw-dashboard-form-input": {
+                        "id": "position",
+                        "type": "hidden",
+                        "disabled": false,
+                        "required": false
+                    }
                 }
-              },
-              "x-draw-dashboard-class-name": "Draw\\Bundle\\DashboardBundle\\Doctrine\\Paginator"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_users_list",
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\User"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "list",
-          "name": "list",
-          "title": "Users List",
-          "paginated": true,
-          "columns": [],
-          "filters": []
-        },
-        "x-draw-dashboard-breadcrumb": {}
-      },
-      "post": {
-        "operationId": "userCreate",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The newly created user",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_users_create",
-        "x-draw-dashboard-breadcrumb": {
-          "parentOperationId": "userList"
-        },
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\User"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "create",
-          "name": "create",
-          "button": {
-            "label": "Create",
-            "behaviours": []
-          },
-          "flow": {
-            "type": "form",
-            "buttons": [
-              {
-                "id": "cancel",
-                "label": "Cancel",
-                "style": "stroked-button",
-                "behaviours": [
-                  "cancel"
-                ]
-              },
-              {
-                "id": "save",
-                "label": "Save",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-edit"
-                ]
-              },
-              {
-                "id": "save-then-create",
-                "label": "Save and add more",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-create"
-                ]
-              },
-              {
-                "id": "save-then-list",
-                "label": "Save and go to list",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-list"
-                ]
-              }
-            ],
-            "dialog": false
-          }
-        }
-      }
-    },
-    "/api/me": {
-      "get": {
-        "operationId": "me",
-        "parameters": [],
-        "responses": {
-          "204": {
-            "description": "The currently connected user",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "me",
-        "x-draw-dashboard-breadcrumb": {
-          "parentOperationId": "userList"
-        },
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\User"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "generic",
-          "name": "generic",
-          "button": {
-            "id": "me",
-            "icon": "account_circle",
-            "behaviours": [
-              "navigateTo-userEdit"
-            ]
-          }
-        }
-      }
-    },
-    "/api/users/{id}": {
-      "get": {
-        "operationId": "userGet",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "required": true,
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The user",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "user_get",
-        "x-draw-dashboard-breadcrumb": {
-          "parentOperationId": "userList"
-        },
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\User"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "show",
-          "name": "show",
-          "button": {
-            "label": "Show",
-            "behaviours": []
-          }
-        }
-      },
-      "put": {
-        "operationId": "userEdit",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "required": true,
-            "in": "path"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The update user",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_users_edit",
-        "x-draw-dashboard-breadcrumb": {
-          "parentOperationId": "userList"
-        },
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\User"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "edit",
-          "name": "edit",
-          "button": {
-            "label": "Edit",
-            "icon": "edit",
-            "behaviours": []
-          },
-          "flow": {
-            "type": "form",
-            "buttons": [
-              {
-                "id": "cancel",
-                "label": "Cancel",
-                "style": "stroked-button",
-                "behaviours": [
-                  "cancel"
-                ]
-              },
-              {
-                "id": "save",
-                "label": "Save",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-edit"
-                ]
-              },
-              {
-                "id": "save-then-create",
-                "label": "Save and add more",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-create"
-                ]
-              },
-              {
-                "id": "save-then-list",
-                "label": "Save and go to list",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save",
-                  "then-list"
-                ]
-              }
-            ],
-            "dialog": false
-          }
-        }
-      },
-      "delete": {
-        "operationId": "userDelete",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "required": true,
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Empty response mean success"
-          }
-        },
-        "x-draw-open-api-symfony-route": "user_delete",
-        "x-draw-dashboard-breadcrumb": {
-          "parentOperationId": "userList"
-        },
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\User"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "delete",
-          "name": "delete",
-          "button": {
-            "id": "delete",
-            "label": "Delete",
-            "icon": "delete",
-            "behaviours": [
-              "delete"
-            ]
-          },
-          "flow": {
-            "type": "confirm",
-            "title": "",
-            "message": "Are you sure you want to delete the user {{target.email}} ?",
-            "yesLabel": "Yes",
-            "noLabel": "No"
-          }
-        }
-      }
-    },
-    "/api/users/{id}/reset-password-email": {
-      "post": {
-        "summary": "Send a reset password email to the user.",
-        "operationId": "userSendResetPasswordEmail",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "required": true,
-            "in": "path"
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No return value mean email has been sent"
-          }
-        },
-        "x-draw-open-api-symfony-route": "app_api_users_sendresetpasswordemail",
-        "x-draw-dashboard-breadcrumb": {
-          "parentOperationId": "userList"
-        },
-        "x-draw-dashboard-targets": {
-          "targets": [
-            "App\\Entity\\User"
-          ]
-        },
-        "x-draw-dashboard-action": {
-          "type": "generic",
-          "name": "generic",
-          "button": {
-            "label": "Send forgot password email",
-            "icon": "email",
-            "behaviours": []
-          }
-        }
-      }
-    },
-    "/tests": {
-      "post": {
-        "tags": [
-          "test"
-        ],
-        "operationId": "createTest",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "param1",
-            "in": "query"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The created test entity",
-            "schema": {
-              "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
             },
-            "headers": {
-              "X-Draw": {
-                "description": "Description of the header",
-                "type": "string"
-              }
-            }
-          }
+            "x-draw-dashboard-class-name": "App\\Entity\\UserAddress"
         },
-        "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_create",
-        "x-test": {
-          "key": "value",
-          "object": {
-            "property": "value"
-          }
-        }
-      }
-    },
-    "/tests-array": {
-      "post": {
-        "tags": [
-          "test"
-        ],
-        "operationId": "arrayTest",
-        "parameters": [
-          {
-            "type": "array",
-            "name": "param1",
-            "collectionFormat": "csv",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The query parameter value",
-            "schema": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_array"
-      }
-    },
-    "/api/connection-tokens": {
-      "post": {
-        "tags": [
-          "Security"
-        ],
-        "summary": "Create a token base on the username/password of a user.",
-        "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp**\u00a0attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
-        "operationId": "drawUserBundleCreateConnectionToken",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.Credential"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The newly created token",
-            "schema": {
-              "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "connection_token_create",
-        "x-draw-dashboard-action": {
-          "type": "create",
-          "name": "create",
-          "button": {
-            "label": "Sign In",
-            "behaviours": []
-          },
-          "flow": {
-            "type": "form",
-            "buttons": [
-              {
-                "id": "cancel",
-                "label": "Cancel",
-                "style": "stroked-button",
-                "behaviours": [
-                  "cancel"
-                ]
-              },
-              {
-                "id": "save",
-                "label": "Sign In",
-                "style": "flat-button",
-                "color": "primary",
-                "behaviours": [
-                  "submit",
-                  "save"
-                ]
-              }
-            ],
-            "dialog": true
-          }
-        },
-        "x-draw-dashboard-breadcrumb": {
-          "label": "Sign In"
-        }
-      }
-    },
-    "/api/connection-tokens/refresh": {
-      "post": {
-        "tags": [
-          "Security"
-        ],
-        "operationId": "drawUserBundleRefreshConnectionToken",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "The refreshed token",
-            "schema": {
-              "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "drawUserBundle_connection_token_refresh"
-      }
-    },
-    "/api/connection-tokens/current": {
-      "delete": {
-        "tags": [
-          "Security"
-        ],
-        "operationId": "drawUserBundleDeleteConnectionToken",
-        "parameters": [],
-        "responses": {
-          "204": {
-            "description": "Nothing to be returned"
-          }
-        },
-        "x-draw-open-api-symfony-route": "drawUserBundle_connection_clear",
-        "x-draw-dashboard-action": {
-          "type": "delete",
-          "name": "delete",
-          "button": {
-            "label": "Sign Out",
-            "icon": "exit_to_app",
-            "style": "icon-button",
-            "behaviours": []
-          },
-          "flow": {
-            "type": "confirm",
-            "title": "",
-            "message": "Sign Out ?",
-            "yesLabel": "Yes",
-            "noLabel": "No"
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "Tag": {
-      "required": [
-        "label"
-      ],
-      "type": "object",
-      "properties": {
-        "id": {
-          "format": "int32",
-          "type": "integer"
-        },
-        "active": {
-          "type": "boolean",
-          "x-draw-dashboard-column": {
-            "id": "active",
-            "isActive": true,
-            "sortable": true,
-            "visible": true,
-            "type": "boolean"
-          },
-          "x-draw-dashboard-form-input": {
-            "id": "active",
-            "type": "checkbox",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "label": {
-          "maxLength": 255,
-          "minLength": 3,
-          "type": "string",
-          "x-draw-dashboard-column": {
-            "id": "label",
-            "isActive": true,
-            "visible": true,
-            "type": "simple"
-          },
-          "x-draw-dashboard-form-input": {
-            "id": "label",
-            "type": "text",
-            "disabled": false,
-            "required": false
-          }
-        }
-      },
-      "x-draw-dashboard-class-name": "App\\Entity\\Tag"
-    },
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "x-draw-dashboard-column": {
-            "id": "id",
-            "isActive": true,
-            "sortable": true,
-            "visible": true,
-            "type": "simple"
-          },
-          "x-draw-dashboard-filter": {
-            "id": "id",
-            "alwaysShow": true,
-            "input": {
-              "type": "auto-complete",
-              "disabled": false,
-              "required": false
-            },
-            "comparison": "="
-          }
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Tag"
-          },
-          "x-draw-dashboard-column": {
-            "id": "tags",
-            "isActive": true,
-            "sortable": false,
-            "visible": true,
-            "type": "list",
-            "options": {
-              "list": {
-                "attribute": "label"
-              }
-            }
-          },
-          "x-draw-dashboard-form-input": {
-            "id": "tags",
-            "type": "choices",
-            "disabled": false,
-            "required": false,
-            "multiple": true,
-            "autoSelect": false
-          },
-          "x-draw-dashboard-filter": {
-            "id": "tags",
-            "alwaysShow": true,
-            "input": {
-              "type": "choices",
-              "disabled": false,
-              "required": false,
-              "multiple": false,
-              "autoSelect": false
-            },
-            "comparison": "="
-          }
-        },
-        "level": {
-          "type": "string",
-          "x-draw-dashboard-column": {
-            "id": "level",
-            "isActive": true,
-            "visible": true,
-            "type": "choices",
-            "options": {
-              "choices": {
-                "user": "User",
-                "admin": "Admin"
-              }
-            }
-          },
-          "x-draw-dashboard-form-input": {
-            "id": "level",
-            "type": "choices",
-            "disabled": false,
-            "required": false,
-            "multiple": false,
-            "choices": [
-              {
-                "label": "User",
-                "value": "user"
-              },
-              {
-                "label": "Admin",
-                "value": "admin"
-              }
-            ],
-            "autoSelect": false
-          },
-          "x-draw-dashboard-filter": {
-            "id": "level",
-            "alwaysShow": true,
-            "input": {
-              "type": "choices",
-              "disabled": false,
-              "required": false,
-              "multiple": true,
-              "choices": [
-                {
-                  "label": "User",
-                  "value": "user"
+        "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
+            "type": "object",
+            "properties": {
+                "property": {
+                    "description": "Property description.",
+                    "type": "string"
                 },
-                {
-                  "label": "Admin",
-                  "value": "admin"
+                "propertyFromBody": {
+                    "description": "Property deserialize from body in test.",
+                    "type": "string"
                 }
-              ],
-              "autoSelect": false
             },
-            "comparison": "IN"
-          }
+            "x-draw-dashboard-class-name": "Draw\\Bundle\\OpenApiBundle\\Tests\\Mock\\Model\\Test"
         },
-        "address": {
-          "$ref": "#/definitions/Address",
-          "x-draw-dashboard-form-input": {
-            "id": "address",
-            "type": "composite",
-            "disabled": false,
-            "required": false
-          }
+        "Draw.Bundle.UserBundle.DTO.ConnectionToken": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            },
+            "x-draw-dashboard-class-name": "Draw\\Bundle\\UserBundle\\DTO\\ConnectionToken"
         },
-        "userAddresses": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/UserAddress"
-          },
-          "x-draw-dashboard-form-input": {
-            "id": "userAddresses",
-            "type": "collection",
-            "disabled": false,
-            "required": false,
-            "orderBy": "position",
-            "allowAdd": true,
-            "allowRemove": true
-          }
+        "Draw.Bundle.UserBundle.DTO.Credential": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "username",
+                        "type": "string",
+                        "label": "Username",
+                        "disabled": false,
+                        "required": false
+                    }
+                },
+                "password": {
+                    "format": "not empty",
+                    "type": "string",
+                    "x-draw-dashboard-form-input": {
+                        "id": "password",
+                        "type": "password",
+                        "label": "Password",
+                        "disabled": false,
+                        "required": false
+                    }
+                }
+            },
+            "x-draw-dashboard-class-name": "Draw\\Bundle\\UserBundle\\DTO\\Credential"
         },
-        "dateOfBirth": {
-          "format": "date-time",
-          "type": "string",
-          "x-draw-dashboard-form-input": {
-            "id": "dateOfBirth",
-            "type": "date-picker",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "comment": {
-          "type": "string",
-          "x-draw-dashboard-form-input": {
-            "id": "comment",
-            "type": "text",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "email": {
-          "format": "not empty",
-          "type": "string",
-          "x-draw-dashboard-column": {
-            "id": "email",
-            "isActive": true,
-            "sortable": true,
-            "visible": true,
-            "type": "email"
-          },
-          "x-draw-dashboard-form-input": {
-            "id": "email",
-            "type": "email",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "plainPassword": {
-          "type": "string"
-        },
-        "passwordUpdatedAt": {
-          "format": "date-time",
-          "type": "string"
+        "Draw.OpenApi.Error.Validation": {
+            "required": [
+                "code"
+            ],
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "object",
+                    "properties": {
+                        "propertyPath": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
+                        "invalidValue": {
+                            "type": "mixed"
+                        },
+                        "code": {
+                            "type": "string"
+                        },
+                        "payload": {
+                            "type": "mixed"
+                        }
+                    }
+                }
+            }
         }
-      },
-      "x-draw-dashboard-form-layout": {
-        "type": "grid-list",
-        "cols": 1,
-        "tiles": [
-          {
-            "colspan": 1,
-            "rowspan": 1,
-            "inputs": [
-              "*"
-            ]
-          }
-        ]
-      },
-      "x-draw-dashboard-class-name": "App\\Entity\\User"
-    },
-    "Address": {
-      "type": "object",
-      "properties": {
-        "street": {
-          "type": "string",
-          "x-draw-dashboard-form-input": {
-            "id": "street",
-            "type": "text",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "postalCode": {
-          "type": "string",
-          "x-draw-dashboard-form-input": {
-            "id": "postalCode",
-            "type": "text",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "city": {
-          "type": "string",
-          "x-draw-dashboard-form-input": {
-            "id": "city",
-            "type": "text",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "country": {
-          "type": "string",
-          "x-draw-dashboard-form-input": {
-            "id": "country",
-            "type": "text",
-            "disabled": false,
-            "required": false
-          }
-        }
-      },
-      "x-draw-dashboard-class-name": "App\\Entity\\Address"
-    },
-    "UserAddress": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "format": "int32",
-          "type": "integer",
-          "x-draw-dashboard-form-input": {
-            "id": "id",
-            "type": "hidden",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "user": {
-          "$ref": "#/definitions/User"
-        },
-        "address": {
-          "$ref": "#/definitions/Address",
-          "x-draw-dashboard-form-input": {
-            "id": "address",
-            "type": "composite",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "position": {
-          "format": "int32",
-          "type": "integer",
-          "x-draw-dashboard-form-input": {
-            "id": "position",
-            "type": "hidden",
-            "disabled": false,
-            "required": false
-          }
-        }
-      },
-      "x-draw-dashboard-class-name": "App\\Entity\\UserAddress"
-    },
-    "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
-      "type": "object",
-      "properties": {
-        "property": {
-          "description": "Property description.",
-          "type": "string"
-        },
-        "propertyFromBody": {
-          "description": "Property deserialize from body in test.",
-          "type": "string"
-        }
-      },
-      "x-draw-dashboard-class-name": "Draw\\Bundle\\OpenApiBundle\\Tests\\Mock\\Model\\Test"
-    },
-    "Draw.Bundle.UserBundle.DTO.ConnectionToken": {
-      "type": "object",
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      },
-      "x-draw-dashboard-class-name": "Draw\\Bundle\\UserBundle\\DTO\\ConnectionToken"
-    },
-    "Draw.Bundle.UserBundle.DTO.Credential": {
-      "type": "object",
-      "properties": {
-        "username": {
-          "format": "not empty",
-          "type": "string",
-          "x-draw-dashboard-form-input": {
-            "id": "username",
-            "type": "string",
-            "label": "Username",
-            "disabled": false,
-            "required": false
-          }
-        },
-        "password": {
-          "format": "not empty",
-          "type": "string",
-          "x-draw-dashboard-form-input": {
-            "id": "password",
-            "type": "password",
-            "label": "Password",
-            "disabled": false,
-            "required": false
-          }
-        }
-      },
-      "x-draw-dashboard-class-name": "Draw\\Bundle\\UserBundle\\DTO\\Credential"
     }
-  }
 }

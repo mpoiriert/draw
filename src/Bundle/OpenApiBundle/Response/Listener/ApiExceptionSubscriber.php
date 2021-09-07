@@ -3,6 +3,9 @@
 namespace Draw\Bundle\OpenApiBundle\Response\Listener;
 
 use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
+use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
+use Draw\Component\OpenApi\Schema\Response;
+use Draw\Component\OpenApi\Schema\Schema;
 use ReflectionClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,6 +45,7 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
     {
         return [
             ExceptionEvent::class => ['onKernelException', 255],
+            PreDumpRootSchemaEvent::class => ['addErrorDefinition'],
         ];
     }
 
@@ -55,6 +59,54 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
         $this->errorCodes = $errorCodes;
         $this->violationKey = $violationKey;
         $this->ignoreConstraintInvalidValue = $ignoreConstraintInvalidValue;
+    }
+
+    public function addErrorDefinition(PreDumpRootSchemaEvent $event): void
+    {
+        $root = $event->getSchema();
+
+        $exception = new ConstraintViolationListException();
+        $code = (string) $this->getStatusCode($exception);
+
+        $root->addDefinition('Draw.OpenApi.Error.Validation', $validationErrorSchema = new Schema());
+
+        $validationErrorSchema->type = 'object';
+        $validationErrorSchema->properties = [
+            'code' => $codeSchema = new Schema(),
+            'message' => $messageSchema = new Schema(),
+            $this->violationKey => $violationSchema = new Schema(),
+        ];
+
+        $validationErrorSchema->required[] = 'code';
+        $codeSchema->type = 'integer';
+        $messageSchema->type = 'string';
+        $violationSchema->type = 'object';
+        $violationSchema->properties = [
+            'propertyPath' => $propertyPath = new Schema(),
+            'message' => $messageSchema = new Schema(),
+            'invalidValue' => $invalidValueSchema = new Schema(),
+            'code' => $codeSchema = new Schema(),
+            'payload' => $payloadSchema = new Schema(),
+        ];
+
+        $propertyPath->type = 'string';
+        $invalidValueSchema->type = 'mixed';
+        $messageSchema->type = 'string';
+        $codeSchema->type = 'string';
+        $payloadSchema->type = 'mixed';
+
+        foreach ($root->paths as $pathItem) {
+            foreach ($pathItem->getOperations() as $operation) {
+                if (isset($operation->responses[$code])) {
+                    continue;
+                }
+                $operation->responses[$code] = $response = new Response();
+                $response->description = 'Request Validation error';
+                $responseSchema = new Schema();
+                $response->schema = $responseSchema;
+                $responseSchema->ref = $root->getDefinitionReference('Draw.OpenApi.Error.Validation');
+            }
+        }
     }
 
     public function onKernelException(ExceptionEvent $event): void
@@ -103,7 +155,7 @@ final class ApiExceptionSubscriber implements EventSubscriberInterface
                 'code' => $constraintViolation->getCode(),
             ];
 
-            if($this->ignoreConstraintInvalidValue) {
+            if ($this->ignoreConstraintInvalidValue) {
                 unset($errorData['invalidValue']);
             }
 

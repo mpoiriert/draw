@@ -1,94 +1,140 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "test",
-    "version": "1.0"
-  },
-  "paths": {
-    "/tests": {
-      "post": {
-        "tags": [
-          "test"
-        ],
-        "operationId": "createTest",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "param1",
-            "in": "query"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/Test"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The created test entity",
-            "schema": {
-              "$ref": "#/definitions/Test"
-            },
-            "headers": {
-              "X-Draw": {
-                "description": "Description of the header",
-                "type": "string"
-              }
-            }
-          }
-        },
-        "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_create",
-        "x-test": {
-          "key": "value",
-          "object": {
-            "property": "value"
-          }
-        }
-      }
+    "swagger": "2.0",
+    "info": {
+        "title": "test",
+        "version": "1.0"
     },
-    "/tests-array": {
-      "post": {
-        "tags": [
-          "test"
-        ],
-        "operationId": "arrayTest",
-        "parameters": [
-          {
-            "type": "array",
-            "name": "param1",
-            "collectionFormat": "csv",
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The query parameter value",
-            "schema": {
-              "type": "array",
-              "items": {}
+    "paths": {
+        "/tests": {
+            "post": {
+                "tags": [
+                    "test"
+                ],
+                "operationId": "createTest",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "param1",
+                        "in": "query"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Test"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The created test entity",
+                        "schema": {
+                            "$ref": "#/definitions/Test"
+                        },
+                        "headers": {
+                            "X-Draw": {
+                                "description": "Description of the header",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_create",
+                "x-test": {
+                    "key": "value",
+                    "object": {
+                        "property": "value"
+                    }
+                }
             }
-          }
         },
-        "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_array"
-      }
-    }
-  },
-  "definitions": {
-    "Test": {
-      "type": "object",
-      "properties": {
-        "property": {
-          "description": "Property description.",
-          "type": "string"
-        },
-        "property_from_body": {
-          "description": "Property deserialize from body in test.",
-          "type": "string"
+        "/tests-array": {
+            "post": {
+                "tags": [
+                    "test"
+                ],
+                "operationId": "arrayTest",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "name": "param1",
+                        "required": true,
+                        "collectionFormat": "csv",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The query parameter value",
+                        "schema": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_array"
+            }
         }
-      }
+    },
+    "definitions": {
+        "Test": {
+            "type": "object",
+            "properties": {
+                "property": {
+                    "description": "Property description.",
+                    "type": "string"
+                },
+                "property_from_body": {
+                    "description": "Property deserialize from body in test.",
+                    "type": "string"
+                }
+            }
+        },
+        "Draw.OpenApi.Error.Validation": {
+            "required": [
+                "code"
+            ],
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "object",
+                    "properties": {
+                        "propertyPath": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
+                        "invalidValue": {
+                            "type": "mixed"
+                        },
+                        "code": {
+                            "type": "string"
+                        },
+                        "payload": {
+                            "type": "mixed"
+                        }
+                    }
+                }
+            }
+        }
     }
-  }
 }
