@@ -1,4 +1,7 @@
 {
+    "aws/aws-crt-php": {
+        "version": "v1.0.2"
+    },
     "aws/aws-sdk-php": {
         "version": "3.134.6"
     },
@@ -40,6 +43,9 @@
     },
     "doctrine/dbal": {
         "version": "v2.10.1"
+    },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
     },
     "doctrine/doctrine-bundle": {
         "version": "1.12",
@@ -279,6 +285,9 @@
     "phpspec/prophecy": {
         "version": "v1.10.3"
     },
+    "phpstan/phpdoc-parser": {
+        "version": "0.5.6"
+    },
     "phpunit/php-code-coverage": {
         "version": "6.1.4"
     },
@@ -465,9 +474,6 @@
             "config/packages/dev/debug.yaml"
         ]
     },
-    "symfony/debug-pack": {
-        "version": "v1.0.8"
-    },
     "symfony/dependency-injection": {
         "version": "v4.4.7"
     },
@@ -598,9 +604,6 @@
     "symfony/options-resolver": {
         "version": "v4.4.7"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.8"
-    },
     "symfony/phpunit-bridge": {
         "version": "4.3",
         "recipe": {
@@ -646,11 +649,11 @@
     "symfony/polyfill-php80": {
         "version": "v1.17.0"
     },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
+    },
     "symfony/process": {
         "version": "v5.0.7"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.4"
     },
     "symfony/property-access": {
         "version": "v4.4.7"
