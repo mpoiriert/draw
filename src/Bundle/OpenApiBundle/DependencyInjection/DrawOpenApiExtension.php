@@ -27,7 +27,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
      */
     public function loadInternal(array $config, ContainerBuilder $container)
     {
-        $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
+        $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new XmlFileLoader($container, $fileLocator);
 
         $this->configOpenApi($config['openApi'], $loader, $container);

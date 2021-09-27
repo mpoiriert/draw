@@ -10,10 +10,9 @@ use Symfony\Component\BrowserKit\AbstractBrowser;
 
 class TestCase extends KernelTestCase implements BrowserFactoryInterface
 {
-    protected static $class = AppKernel::class;
-
     use ServiceTesterTrait;
     use HttpTesterTrait;
+    protected static $class = AppKernel::class;
 
     public function createBrowser(): AbstractBrowser
     {

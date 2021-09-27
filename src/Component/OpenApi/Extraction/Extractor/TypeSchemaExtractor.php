@@ -106,7 +106,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             $definitionName = $this->getDefinitionName($reflectionClass->name, $context);
 
             if ($hash = $this->getHash($definitionName, $context)) {
-                $definitionName .= '?' . $hash;
+                $definitionName .= '?'.$hash;
             }
 
             if (!$rootSchema->hasDefinition($definitionName)) {
@@ -135,6 +135,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         foreach ($this->classNamingFilters as $classNamingFilter) {
             $newName = $classNamingFilter->filterClassName($className, $context, $newName);
         }
+
         return $newName;
     }
 

@@ -17,7 +17,7 @@ class CompositeExpressionEvaluator extends ExpressionEvaluator
     public function evaluate($data, Expression $expression): bool
     {
         if (!$expression instanceof CompositeExpression) {
-            throw new RuntimeException('Expression of class [' . get_class($expression) . '] is not supported');
+            throw new RuntimeException('Expression of class ['.get_class($expression).'] is not supported');
         }
 
         $type = $expression->getType();
@@ -27,11 +27,11 @@ class CompositeExpressionEvaluator extends ExpressionEvaluator
 
         foreach ($expressions as $subExpression) {
             $result = $this->evaluator->evaluate($data, $subExpression);
-            if ($result && $type === CompositeExpression::TYPE_OR) {
+            if ($result && CompositeExpression::TYPE_OR === $type) {
                 return true;
             }
 
-            if (!$result && $type === CompositeExpression::TYPE_AND) {
+            if (!$result && CompositeExpression::TYPE_AND === $type) {
                 return false;
             }
         }
@@ -42,7 +42,7 @@ class CompositeExpressionEvaluator extends ExpressionEvaluator
             case CompositeExpression::TYPE_OR:
                 return false;
             default:
-                throw new RuntimeException('Unsupported CompositeExpression type [' . $type . ']');
+                throw new RuntimeException('Unsupported CompositeExpression type ['.$type.']');
         }
     }
 }

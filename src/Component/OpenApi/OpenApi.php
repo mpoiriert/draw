@@ -135,7 +135,7 @@ class OpenApi
         /** @var ConstraintViolationList $result */
         $annotationReader = new AnnotationReader();
         $builder = Validation::createValidatorBuilder();
-        if(method_exists($builder, 'setDoctrineAnnotationReader')) {
+        if (method_exists($builder, 'setDoctrineAnnotationReader')) {
             $builder
                 ->enableAnnotationMapping(true)
                 ->setDoctrineAnnotationReader($annotationReader);

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file has been copied from:
+ * This file has been copied from:.
  *
  * https://github.com/symfony/symfony/blob/5.4/src/Symfony/Component/Messenger/EventListener/StopWorkerOnFailureLimitListener.php
  *

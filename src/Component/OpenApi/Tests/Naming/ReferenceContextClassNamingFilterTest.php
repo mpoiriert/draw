@@ -33,7 +33,7 @@ class ReferenceContextClassNamingFilterTest extends TestCase
             self::class,
             ['serializer-groups' => ['reference']],
             self::class,
-            self::class . 'Reference',
+            self::class.'Reference',
         ];
 
         yield 'MultipleGroups' => [

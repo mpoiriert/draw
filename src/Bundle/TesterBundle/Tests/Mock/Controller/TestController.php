@@ -9,7 +9,6 @@ class TestController
 {
     /**
      * @Route(path="/test")
-     *
      */
     public function testAction(): Response
     {

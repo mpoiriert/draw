@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler;
+<?php
+
+namespace Draw\Bundle\OpenApiBundle\DependencyInjection\Compiler;
 
 use Draw\Bundle\OpenApiBundle\JmsSerializer\Construction\DoctrineObjectConstructor;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -8,7 +10,7 @@ class JmsDoctrineObjectConstructionCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if(null === $container->getDefinition('jms_serializer.doctrine_object_constructor')->getDecoratedService()) {
+        if (null === $container->getDefinition('jms_serializer.doctrine_object_constructor')->getDecoratedService()) {
             return;
         }
 

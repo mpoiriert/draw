@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Naming;
+<?php
+
+namespace Draw\Component\OpenApi\Naming;
 
 class AliasesClassNamingFilter implements ClassNamingFilterInterface
 {

@@ -1,0 +1,15 @@
+framework:
+    secret: fos
+    router:
+        resource: "%kernel.root_dir%/fixtures/config/routing.yaml"
+    test: true
+    session:
+        enabled: false
+    validation: { enable_annotations: true }
+
+    messenger:
+        transports:
+            memory: 'in-memory://'
+
+draw_tester:
+    profiling: false

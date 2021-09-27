@@ -77,7 +77,7 @@ class SqlAssertionBuilderTest extends TestCase
         $this->invoke($dataTester, $shouldFail);
     }
 
-    public function testInvoke_failMessage()
+    public function testInvokeFailMessage()
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Queries: 
@@ -89,7 +89,7 @@ Failed asserting that 2 matches expected 0.');
             ->test(SqlAssertionBuilder::create(0));
     }
 
-    public function testInvoke_noAssertionException()
+    public function testInvokeNoAssertionException()
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No assertion configured.');

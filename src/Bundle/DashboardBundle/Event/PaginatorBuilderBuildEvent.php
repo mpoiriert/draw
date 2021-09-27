@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\DashboardBundle\Event;
+<?php
+
+namespace Draw\Bundle\DashboardBundle\Event;
 
 use Doctrine\ORM\QueryBuilder;
 use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;

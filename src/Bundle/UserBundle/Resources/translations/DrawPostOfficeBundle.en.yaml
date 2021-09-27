@@ -1,22 +1,22 @@
 email:
-  forgot_password:
-    subject: 'You have forgotten your password!'
-    top_section: |
-      <p>You have request a link to reset your password.<p>
-      <p>Please click on the link bellow to reset your password.</p>
-    call_to_action_text: 'Reset my password'
-    bottom_section: |
-      <p>If you didn't do this request, maybe someone made a typo in their email.
-      Your password will not be affected and you can still login to your account.</p>
+    forgot_password:
+        subject: 'You have forgotten your password!'
+        top_section: |
+            <p>You have request a link to reset your password.<p>
+            <p>Please click on the link bellow to reset your password.</p>
+        call_to_action_text: 'Reset my password'
+        bottom_section: |
+            <p>If you didn't do this request, maybe someone made a typo in their email.
+            Your password will not be affected and you can still login to your account.</p>
 
-  email_not_found:
-    subject: 'No account found!'
-    top_section: |
-      <p>You have request a link to reset your password.<p>
-      <p>Unfotunatelly we didn't find any account under that email.</p>
-      <p>Maybe you did use another email to create your account?</p>
-      <p>If it's not the case we invite you to create an account.</p>
-    call_to_action_text: 'Create an account'
-    bottom_section: |
-      <p>If you didn't do this request, maybe someone made a typo in their email.</p>
-      <p>Maybe you would be interested in our website ? Follow the link above to know more.</p>
+    email_not_found:
+        subject: 'No account found!'
+        top_section: |
+            <p>You have request a link to reset your password.<p>
+            <p>Unfotunatelly we didn't find any account under that email.</p>
+            <p>Maybe you did use another email to create your account?</p>
+            <p>If it's not the case we invite you to create an account.</p>
+        call_to_action_text: 'Create an account'
+        bottom_section: |
+            <p>If you didn't do this request, maybe someone made a typo in their email.</p>
+            <p>Maybe you would be interested in our website ? Follow the link above to know more.</p>

@@ -81,7 +81,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtract_void()
+    public function testExtractVoid()
     {
         $context = $this->extractStubServiceMethod('void');
 
@@ -91,7 +91,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtract_defaultVoid()
+    public function testExtractDefaultVoid()
     {
         $context = $this->extractStubServiceMethod('defaultVoid');
 
@@ -101,7 +101,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtract_arrayOfPrimitive()
+    public function testExtractArrayOfPrimitive()
     {
         $context = $this->extractStubServiceMethod('arrayOfPrimitive');
 
@@ -111,7 +111,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtract_genericCollection()
+    public function testExtractGenericCollection()
     {
         $context = $this->extractStubServiceMethod('genericCollection');
 
@@ -121,7 +121,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtract_invalidTypeParameter()
+    public function testExtractInvalidTypeParameter()
     {
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('No type found for parameter named [param] for operation id [operation_id]');
@@ -218,6 +218,5 @@ class PhpDocOperationExtractorStubService
      */
     public function invalidTypeParameter($param)
     {
-
     }
 }

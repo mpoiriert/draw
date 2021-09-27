@@ -207,11 +207,7 @@ class OperationExtractor implements ExtractorInterface
                     );
 
                     if (!isset($primitiveType['type'])) {
-                        throw new RuntimeException(sprintf(
-                            'No type found for parameter named [%s] for operation id [%s]',
-                            $paramTag->getVariableName(),
-                            $target->operationId
-                        ));
+                        throw new RuntimeException(sprintf('No type found for parameter named [%s] for operation id [%s]', $paramTag->getVariableName(), $target->operationId));
                     }
 
                     $parameter->type = $primitiveType['type'];

@@ -1,11 +1,11 @@
 draw_open_api:
-  openApi:
-    schema:
-      info:
-        title: "test"
+    openApi:
+        schema:
+            info:
+                title: "test"
 
-    definitionAliases:
-      - class: 'App\Entity\'
-        alias: ''
-      - class: 'App\DTO\'
-        alias: ''
+        definitionAliases:
+            -   class: 'App\Entity\'
+                alias: ''
+            -   class: 'App\DTO\'
+                alias: ''

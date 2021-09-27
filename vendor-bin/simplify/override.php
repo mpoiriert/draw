@@ -7,7 +7,7 @@ namespace Symplify\EasyCodingStandard\Git;
 final class GitDiffProvider
 {
     /**
-     * @return string[] The absolute path to the file matching the git diff shell command.
+     * @return string[] the absolute path to the file matching the git diff shell command
      */
     public function provide(): array
     {

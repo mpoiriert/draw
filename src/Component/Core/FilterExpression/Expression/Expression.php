@@ -22,7 +22,7 @@ abstract class Expression
     }
 
     /**
-     * Helper method to common and where equal expression
+     * Helper method to common and where equal expression.
      */
     public static function andWhereEqual(array $propertyPathValueMap): CompositeExpression
     {
@@ -36,6 +36,6 @@ abstract class Expression
 
     public function evaluateBy(): string
     {
-        return static::class . 'Evaluator';
+        return static::class.'Evaluator';
     }
 }

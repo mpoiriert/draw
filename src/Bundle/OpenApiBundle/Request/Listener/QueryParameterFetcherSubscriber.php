@@ -62,13 +62,7 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
             $name = $annotation->name;
 
             if ($request->attributes->has($name) && null !== $request->attributes->get($name)) {
-                throw new InvalidArgumentException(
-                    sprintf(
-                        "QueryParameterFetcherSubscriber parameter conflicts with a path parameter '%s' for route '%s'",
-                        $name,
-                        $request->attributes->get('_route')
-                    )
-                );
+                throw new InvalidArgumentException(sprintf("QueryParameterFetcherSubscriber parameter conflicts with a path parameter '%s' for route '%s'", $name, $request->attributes->get('_route')));
             }
 
             if ($request->query->has($name)) {
@@ -101,11 +95,7 @@ class QueryParameterFetcherSubscriber implements EventSubscriberInterface
                                 break;
                             case 'multi':
                             default:
-                                throw new RuntimeException(sprintf(
-                                    'Unsupported collection format [%s]',
-                                    $annotation->collectionFormat
-                                ));
-
+                                throw new RuntimeException(sprintf('Unsupported collection format [%s]', $annotation->collectionFormat));
                         }
                         $value = explode($separator, (string) $request->query->get($name));
                         break;

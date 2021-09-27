@@ -1,4 +1,6 @@
-<?php namespace Draw\Bundle\AwsToolKitBundle\Tests;
+<?php
+
+namespace Draw\Bundle\AwsToolKitBundle\Tests;
 
 use Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand;
 use Draw\Bundle\AwsToolKitBundle\Listener\NewestInstanceRoleListener;
@@ -10,7 +12,6 @@ class DrawAwsToolKitBundleTest extends KernelTestCase
     use ServiceTesterTrait;
 
     protected static $class = AppKernel::class;
-
 
     public function testCloudWatchLogsDownloadCommand()
     {

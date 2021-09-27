@@ -46,7 +46,7 @@ class ExpressionTest extends TestCase
     {
         $expression = Expression::andWhereEqual([
             '[property1]' => 'value1',
-            '[property2]' => 'value2'
+            '[property2]' => 'value2',
         ]);
 
         $this->assertInstanceOf(CompositeExpression::class, $expression);

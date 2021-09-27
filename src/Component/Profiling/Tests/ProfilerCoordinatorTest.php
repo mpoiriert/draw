@@ -33,18 +33,18 @@ class ProfilerCoordinatorTest extends TestCase
         $this->profiler = $this->profilerProphecy->reveal();
     }
 
-    public function testIsStarted_default(): void
+    public function testIsStartedDefault(): void
     {
         $this->assertFalse($this->profilerCoordinator->isStarted());
     }
 
-    public function testIsStarted_afterStart(): void
+    public function testIsStartedAfterStart(): void
     {
         $this->profilerCoordinator->startAll();
         $this->assertTrue($this->profilerCoordinator->isStarted());
     }
 
-    public function testIsStarted_afterStop(): void
+    public function testIsStartedAfterStop(): void
     {
         $this->profilerCoordinator->startAll();
         $this->profilerCoordinator->stopAll();

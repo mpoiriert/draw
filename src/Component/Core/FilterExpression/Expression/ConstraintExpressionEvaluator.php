@@ -33,7 +33,7 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
     public function evaluate($data, Expression $expression): bool
     {
         if (!$expression instanceof ConstraintExpression) {
-            throw new RuntimeException('Expression of class [' . get_class($expression) . '] is not supported');
+            throw new RuntimeException('Expression of class ['.get_class($expression).'] is not supported');
         }
 
         $value = $data;

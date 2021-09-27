@@ -9,12 +9,12 @@ saveThenList: "Save and go to list"
 show: "Show"
 
 _notification:
-  save: "The entry <b>%entry%</b> has been saved properly."
-  delete: "The entry <b>%entry%</b> has been deleted properly."
+    save: "The entry <b>%entry%</b> has been saved properly."
+    delete: "The entry <b>%entry%</b> has been deleted properly."
 
 _flow:
-  confirm:
-    message: 'Are you sure ?'
-    delete: 'Are you sure you want to delete this ?'
-    yes: 'Yes'
-    no: 'No'
+    confirm:
+        message: 'Are you sure ?'
+        delete: 'Are you sure you want to delete this ?'
+        yes: 'Yes'
+        no: 'No'

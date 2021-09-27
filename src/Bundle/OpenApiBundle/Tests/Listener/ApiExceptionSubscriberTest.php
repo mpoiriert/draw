@@ -41,13 +41,13 @@ class ApiExceptionSubscriberTest extends TestCase
         );
     }
 
-    public function testOnKernelException_noneJsonRequest(): void
+    public function testOnKernelExceptionNoneJsonRequest(): void
     {
         $this->request->getRequestFormat()->willReturn('html');
         $this->assertNull($this->onKernelException());
     }
 
-    public function testOnKernelException_jsonResponse(): void
+    public function testOnKernelExceptionJsonResponse(): void
     {
         $this->request->getRequestFormat()->willReturn('json');
         $this->assertInstanceOf(
@@ -63,7 +63,7 @@ class ApiExceptionSubscriberTest extends TestCase
         $this->assertJson($response->getContent());
     }
 
-    public function testOnKernelException_defaultDebugFalse(): void
+    public function testOnKernelExceptionDefaultDebugFalse(): void
     {
         $this->assertArrayNotHasKey(
             'detail',
@@ -71,7 +71,7 @@ class ApiExceptionSubscriberTest extends TestCase
         );
     }
 
-    public function testOnKernelException_debugFalse(): void
+    public function testOnKernelExceptionDebugFalse(): void
     {
         $this->assertArrayNotHasKey(
             'detail',
@@ -79,7 +79,7 @@ class ApiExceptionSubscriberTest extends TestCase
         );
     }
 
-    public function testOnKernelException_debugTrue(): void
+    public function testOnKernelExceptionDebugTrue(): void
     {
         $throwable = new Exception(
             $message = 'Message',
@@ -113,7 +113,7 @@ class ApiExceptionSubscriberTest extends TestCase
         );
     }
 
-    public function testOnKernelException_defaultStatusCode500(): void
+    public function testOnKernelExceptionDefaultStatusCode500(): void
     {
         $this->assertSame(
             500,
@@ -160,7 +160,7 @@ class ApiExceptionSubscriberTest extends TestCase
      *
      * @param array<string,int> $errorCodes
      */
-    public function testOnKernelException_errorCode(Throwable $throwable, array $errorCodes, int $errorCode): void
+    public function testOnKernelExceptionErrorCode(Throwable $throwable, array $errorCodes, int $errorCode): void
     {
         $this->exceptionEvent = new ExceptionEvent(
             $this->httpKernel->reveal(),
@@ -192,7 +192,7 @@ class ApiExceptionSubscriberTest extends TestCase
         );
     }
 
-    public function testOnKernelException_doNotIgnoreConstraintInvalidValue(): void
+    public function testOnKernelExceptionDoNotIgnoreConstraintInvalidValue(): void
     {
         $this->createConstraintListExceptionEvent();
 
@@ -203,7 +203,7 @@ class ApiExceptionSubscriberTest extends TestCase
         $this->assertSame('invalid-value', $value->errors[0]->invalidValue);
     }
 
-    public function testOnKernelException_ignoreConstraintInvalidValue(): void
+    public function testOnKernelExceptionIgnoreConstraintInvalidValue(): void
     {
         $this->createConstraintListExceptionEvent();
 

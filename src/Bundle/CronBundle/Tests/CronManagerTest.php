@@ -34,7 +34,7 @@ CRONTAB;
         );
     }
 
-    public function testDumpJobs_twoJobs(): void
+    public function testDumpJobsTwoJobs(): void
     {
         $job = new Job('Job name', 'echo "test"');
         $this->cronManager->addJob($job);
@@ -56,7 +56,7 @@ CRONTAB;
         );
     }
 
-    public function testDumpJobs_disabled(): void
+    public function testDumpJobsDisabled(): void
     {
         $job = new Job('Job 2', 'echo "test"');
         $job->setEnabled(false);

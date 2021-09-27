@@ -78,7 +78,7 @@ class DumpToFileCommandTest extends CommandTestCase
         $this->assertSame('Output', file_get_contents($filePath));
     }
 
-    public function testExecuteNewFile_noOverrideException()
+    public function testExecuteNewFileNoOverrideException()
     {
         $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($filePath, 'Before');

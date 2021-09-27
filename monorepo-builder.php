@@ -13,10 +13,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // where are the packages located?
     $parameters->set(Option::PACKAGE_DIRECTORIES, [
-        __DIR__ . '/src/Bundle',
-        __DIR__ . '/src/Component',
+        __DIR__.'/src/Bundle',
+        __DIR__.'/src/Component',
     ]);
-
 
     // "merge" command related
 
@@ -41,8 +40,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // How to split them on github ?
 
     $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES, [
-        __DIR__ . '/src/Component/*' => 'git@github.com:mpoiriert/*.git',
-        __DIR__ . '/src/Bundle/*' => 'git@github.com:mpoiriert/*.git',
+        __DIR__.'/src/Component/*' => 'git@github.com:mpoiriert/*.git',
+        __DIR__.'/src/Bundle/*' => 'git@github.com:mpoiriert/*.git',
     ]);
 
     $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES_CONVERT_FORMAT, ConvertFormat::PASCAL_CASE_TO_KEBAB_CASE);

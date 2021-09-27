@@ -100,7 +100,7 @@ class DashboardController extends AbstractController
             return null;
         }
 
-        return $action->getHref() . '/' . $action->getName();
+        return $action->getHref().'/'.$action->getName();
     }
 
     private function getActionInformation($operationId, Request $request): ?Action
@@ -144,7 +144,7 @@ class DashboardController extends AbstractController
         } else {
             $objects = $paginatorBuilder
                 ->fromClass($class)
-                ->build(function (QueryBuilder $queryBuilder) use ($entityManager, $request) {
+                ->build(function (QueryBuilder $queryBuilder) use ($request) {
                     $fields = $request->query->get('_fields');
                     $lookup = $request->query->get('lookup');
                     $alias = 'o';
@@ -156,9 +156,9 @@ class DashboardController extends AbstractController
                                 '%s.%s LIKE %s',
                                 $alias,
                                 $field,
-                                ':' . $field
+                                ':'.$field
                             )
-                        )->setParameter($field, $lookup . '%');
+                        )->setParameter($field, $lookup.'%');
                     }
                 })
                 ->getDoctrinePaginator()
@@ -172,7 +172,7 @@ class DashboardController extends AbstractController
         foreach ($objects as $object) {
             $choices[] = [
                 'value' => $object->getId(), // todo make this dynamic
-                'label' => (string)$object,
+                'label' => (string) $object,
             ];
         }
 

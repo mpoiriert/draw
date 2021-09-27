@@ -20,7 +20,7 @@ class ActionBuilder
 
     /**
      * @param array|Action[] $actions
-     * @param null $object
+     * @param null           $object
      *
      * @return array|Action[]
      */

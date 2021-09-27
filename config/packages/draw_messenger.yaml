@@ -1,19 +1,19 @@
 services:
-  _defaults:
-    autoconfigure: true
-    autowire: true
+    _defaults:
+        autoconfigure: true
+        autowire: true
 
-  Draw\Component\Messenger\Transport\DrawTransportFactory: ~
-  Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware: ~
-  messengerTransportDraw: '@messenger.transport.draw'
+    Draw\Component\Messenger\Transport\DrawTransportFactory: ~
+    Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware: ~
+    messengerTransportDraw: '@messenger.transport.draw'
 framework:
 
-  messenger:
-    default_bus: 'command.bus'
-    transports:
-      draw: 'draw://default'
-    buses:
-      command.bus: ~
-      messenger.bus.draw:
-        middleware:
-          - 'Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware'
+    messenger:
+        default_bus: 'command.bus'
+        transports:
+            draw: 'draw://default'
+        buses:
+            command.bus: ~
+            messenger.bus.draw:
+                middleware:
+                    - 'Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware'

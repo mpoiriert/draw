@@ -1,19 +1,19 @@
 sonata_admin:
-  templates:
-    user_block: '@DrawUser/Sonata/Block/user_block.html.twig'
+    templates:
+        user_block: '@DrawUser/Sonata/Block/user_block.html.twig'
 
 sonata_block:
-  blocks:
-    Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
+    blocks:
+        Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
 
 draw_user:
-  sonata: ~
+    sonata: ~
 
-  jwt_authenticator:
-    key: 'acme'
+    jwt_authenticator:
+        key: 'acme'
 
 framework:
-  messenger:
-    routing:
-      Draw\Bundle\UserBundle\Message\ResetPassword: 'draw'
-      Draw\Bundle\UserBundle\Message\AutoConnect: 'draw'
+    messenger:
+        routing:
+            Draw\Bundle\UserBundle\Message\ResetPassword: 'draw'
+            Draw\Bundle\UserBundle\Message\AutoConnect: 'draw'

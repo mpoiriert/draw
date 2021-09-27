@@ -34,7 +34,7 @@ class CompilerPass implements CompilerPassInterface
                 ->setArgument('$evaluator', new Reference('draw.tester.expression_filter'))
                 ->setPublic(true);
 
-            $container->setDefinition($receiverId . '.draw.tester', $transportTester);
+            $container->setDefinition($receiverId.'.draw.tester', $transportTester);
         }
     }
 }

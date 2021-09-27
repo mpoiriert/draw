@@ -17,9 +17,9 @@ class OpenApiControllerTest extends TestCase
             ->assertHeader('Location', 'http://petstore.swagger.io/?url=http://localhost/api-doc.json');
     }
 
-    public function testApiDocAction_json()
+    public function testApiDocActionJson()
     {
-        $file = __DIR__ . '/fixtures/OpenApiControllerTest_testApiDocAction_json.json';
+        $file = __DIR__.'/fixtures/OpenApiControllerTest_testApiDocAction_json.json';
 
         $responseTester = $this->httpTester()
             ->get('/api-doc.json')
