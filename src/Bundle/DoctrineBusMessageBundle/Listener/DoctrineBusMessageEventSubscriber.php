@@ -74,6 +74,7 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
     {
         if ($args->clearsAllEntities()) {
             $this->messageHolders = [];
+
             return;
         }
 
@@ -122,6 +123,7 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
 
     /**
      * @return array|MessageHolderInterface[]
+     *
      * @internal
      */
     public function getFlattenMessageHolders(): array

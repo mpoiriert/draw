@@ -30,7 +30,7 @@ class TagCurrentBranchReleaseWorker implements ReleaseWorkerInterface
             // nothing to commit
         }
 
-        $this->processRunner->run('git tag ' . $version->getVersionString());
+        $this->processRunner->run('git tag '.$version->getVersionString());
     }
 
     public function getDescription(Version $version): string

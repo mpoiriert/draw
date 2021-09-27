@@ -1,0 +1,33 @@
+---
+# https://github.com/marketplace/actions/run-yamllint-with-reviewdog
+# https://github.com/marketplace/actions/checkout
+
+name: YAML
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  yamllint:
+    name: Yamllint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Yamllint
+        uses: reviewdog/action-yamllint@v1
+        with:
+          fail_on_error: true
+          filter_mode: nofilter
+          github_token: ${{ secrets.github_token }}
+          level: info
+          reporter: github-pr-review
+          # reviewdog_flags:
+          # https://yamllint.readthedocs.io/en/stable/
+          yamllint_flags: "--strict ."

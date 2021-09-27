@@ -1,0 +1,32 @@
+---
+# https://github.com/marketplace/actions/checkout
+# https://github.com/marketplace/actions/setup-php-action
+
+name: PHP Code Style
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  phpcs:
+    name: PHPCS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.2'
+          tools: composer
+      - name: Composer
+        run: composer install
+      - name: PHPCS
+        # https://cs.symfony.com/doc/usage.html
+        run: php vendor/bin/php-cs-fixer fix --dry-run --diff --verbose

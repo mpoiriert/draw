@@ -1,0 +1,6 @@
+extends: relaxed
+rules:
+    trailing-spaces: disable
+    line-length: disable
+    hyphens:
+        max-spaces-after: 3

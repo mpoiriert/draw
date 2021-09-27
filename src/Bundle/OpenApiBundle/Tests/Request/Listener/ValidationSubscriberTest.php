@@ -6,7 +6,7 @@ use Draw\Bundle\OpenApiBundle\Tests\TestCase;
 
 class ValidationSubscriberTest extends TestCase
 {
-    public function testOnKernelController_body()
+    public function testOnKernelControllerBody()
     {
         $this->httpTester()
             ->post(
@@ -28,7 +28,7 @@ class ValidationSubscriberTest extends TestCase
             ]);
     }
 
-    public function testOnKernelController_queryParameter()
+    public function testOnKernelControllerQueryParameter()
     {
         $this->httpTester()
             ->post(

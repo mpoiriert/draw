@@ -25,7 +25,7 @@ class PaginatorBuilder
     private $fetchJoinCollection = null;
 
     /**
-     * In case of zero will fallback on the first page size options
+     * In case of zero will fallback on the first page size options.
      *
      * @var int
      */
@@ -151,7 +151,7 @@ class PaginatorBuilder
         if (null === $fetchJoinCollection) {
             // This prevent some default case when you do a custom query hydration that would trigger a error if no id
             // is defined. We could pass false at the parameter but we detect if it's possible when not specified.
-            $fetchJoinCollection = count($queryBuilder->getAllAliases()) === 1;
+            $fetchJoinCollection = 1 === count($queryBuilder->getAllAliases());
         }
 
         $this->eventDispatcher->dispatch(new PaginatorBuilderBuildEvent($this, $queryBuilder));
@@ -218,13 +218,7 @@ class PaginatorBuilder
                     continue;
                 }
 
-                throw new \RuntimeException(
-                    sprintf(
-                        'Invalid order by id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
-                        $pathSection,
-                        $key
-                    )
-                );
+                throw new \RuntimeException(sprintf('Invalid order by id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]', $pathSection, $key));
             }
         }
     }
@@ -260,13 +254,12 @@ class PaginatorBuilder
             }
 
             if (count($paths)) {
-                throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
-                    $path, $filter['id']));
+                throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]', $path, $filter['id']));
             }
 
             $whereString = '%s.%s %s :%s';
 
-            $parameterName = $alias . '_' . $path;
+            $parameterName = $alias.'_'.$path;
 
             switch (true) {
                 case 'BETWEEN' === $comparison:
@@ -323,12 +316,12 @@ class PaginatorBuilder
 
             switch ($comparison) {
                 case 'BETWEEN':
-                    $queryBuilder->setParameter($parameterName . 'From', $value['from']);
-                    $queryBuilder->setParameter($parameterName . 'To', $value['to']);
+                    $queryBuilder->setParameter($parameterName.'From', $value['from']);
+                    $queryBuilder->setParameter($parameterName.'To', $value['to']);
                     break;
                 case 'LIKE':
                 case 'NOT LIKE':
-                    $queryBuilder->setParameter($parameterName, '%' . $value . '%');
+                    $queryBuilder->setParameter($parameterName, '%'.$value.'%');
                     break;
                 default:
                     $queryBuilder->setParameter($parameterName, $value);
@@ -374,8 +367,7 @@ class PaginatorBuilder
         }
 
         if (count($paths)) {
-            throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]',
-                $path, $filter['id']));
+            throw new \RuntimeException(sprintf('Invalid filter id paths configuration. Dot separator should be use to separate joins. Key [%s] is not a association. Path [%s]', $path, $filter['id']));
         }
 
         if (is_null($path)) {

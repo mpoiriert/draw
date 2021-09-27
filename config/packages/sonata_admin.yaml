@@ -1,15 +1,15 @@
 sonata_admin:
-  title: 'Sonata Admin'
-  options:
-    legacy_twig_text_extension: false
-  dashboard:
-    blocks:
-      - { type: sonata.admin.block.admin_list, position: left }
-      - class:    col-lg-3 col-xs-6          # twitter bootstrap responsive code
-        position: top                        # zone in the dashboard
-        type:     'Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock'  # block id
+    title: 'Sonata Admin'
+    options:
+        legacy_twig_text_extension: false
+    dashboard:
+        blocks:
+            - { type: 'sonata.admin.block.admin_list', position: 'left' }
+            -   class: 'col-lg-3 col-xs-6'          # twitter bootstrap responsive code
+                position: 'top'                        # zone in the dashboard
+                type: 'Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock'  # block id
 
 sonata_block:
-  blocks:
-    sonata.admin.block.admin_list:
-      contexts: [admin]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [ admin ]

@@ -9,11 +9,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CompilerPass implements CompilerPassInterface
 {
-
     /**
      * You can modify the container here before it is dumped to PHP code.
-     *
-     * @param ContainerBuilder $container
      *
      * @api
      */

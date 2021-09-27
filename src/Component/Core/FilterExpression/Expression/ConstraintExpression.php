@@ -14,7 +14,7 @@ class ConstraintExpression extends Expression
     private $constraints;
 
     /**
-     * @var null|string
+     * @var string|null
      */
     private $path;
 
@@ -27,7 +27,7 @@ class ConstraintExpression extends Expression
      * If no constraint is passed, the constraint
      * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
      *
-     * @param Constraint|Constraint[]|null                            $constraints The constraint(s) to validate against
+     * @param Constraint|Constraint[]|null                       $constraints The constraint(s) to validate against
      * @param string|GroupSequence|(string|GroupSequence)[]|null $groups      The validation groups to validate. If none is given, "Default" is assumed
      *
      * @see ValidatorInterface::validate()

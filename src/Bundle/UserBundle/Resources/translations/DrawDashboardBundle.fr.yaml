@@ -1,14 +1,14 @@
 _drawUserBundle:
-  credential:
-    username: "Identifiant"
-    password: "Mot de passe"
+    credential:
+        username: "Identifiant"
+        password: "Mot de passe"
 
-  connect: "Se connecter"
-  disconnect: "Se déconnecter"
-  confirm_disconnect: "Se déconnecter ?"
+    connect: "Se connecter"
+    disconnect: "Se déconnecter"
+    confirm_disconnect: "Se déconnecter ?"
 
-  notification:
-    connect: "Vous êtes bien connecter."
+    notification:
+        connect: "Vous êtes bien connecter."
 
-  breadcrumb:
-    createConnectionToken: 'Se connecter'
+    breadcrumb:
+        createConnectionToken: 'Se connecter'

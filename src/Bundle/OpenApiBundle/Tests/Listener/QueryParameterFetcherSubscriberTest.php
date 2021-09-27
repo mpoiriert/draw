@@ -33,7 +33,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
     /**
      * @see TestController::createAction()
      */
-    public function testOnKernelController_withValue()
+    public function testOnKernelControllerWithValue()
     {
         $this->httpTester()
             ->post('/tests?param1=toto', '')
@@ -46,7 +46,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
     /**
      * @see TestController::createAction()
      */
-    public function testOnKernelController_defaultValue()
+    public function testOnKernelControllerDefaultValue()
     {
         $this->httpTester()
             ->post('/tests', '')
@@ -59,7 +59,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
     /**
      * @see TestController::createAction()
      */
-    public function testOnKernelController_array()
+    public function testOnKernelControllerArray()
     {
         $this->httpTester()
             ->post('/tests-array?param1=toto,tata', '')

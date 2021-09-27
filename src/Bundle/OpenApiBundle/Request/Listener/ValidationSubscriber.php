@@ -57,13 +57,13 @@ class ValidationSubscriber implements EventSubscriberInterface
         }
 
         foreach ($request->attributes->get('_draw_query_parameters_validation', []) as $parameter) {
-            /** @var QueryParameter $parameter */
+            /* @var QueryParameter $parameter */
             $constraints += $this->bonifyConstraints(
                 $this->validator->validate(
                     $request->attributes->get($parameter->name),
                     $parameter->constraints
                 ),
-                $this->prefixes['query'] ? $this->prefixes['query'] . '.' . $parameter->name : $parameter->name
+                $this->prefixes['query'] ? $this->prefixes['query'].'.'.$parameter->name : $parameter->name
             );
         }
 
@@ -80,9 +80,9 @@ class ValidationSubscriber implements EventSubscriberInterface
         foreach ($violations as $violation) {
             $path = $violation->getPropertyPath();
             if ($pathPrefix) {
-                $path = $pathPrefix . (0 === strpos($path, '[') || !$path ? $path : '.' . $path);
+                $path = $pathPrefix.(0 === strpos($path, '[') || !$path ? $path : '.'.$path);
             }
-            /** @var ConstraintViolationInterface $violation */
+            /* @var ConstraintViolationInterface $violation */
             $constraintViolations[] = new ConstraintViolation(
                 $violation->getMessage(),
                 $violation->getMessageTemplate(),

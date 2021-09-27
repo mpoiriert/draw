@@ -1,8 +1,8 @@
 nelmio_cors:
     defaults:
         origin_regex: true
-        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%', 'petstore.swagger.io']
-        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
+        allow_origin: [ '%env(CORS_ALLOW_ORIGIN)%', 'petstore.swagger.io' ]
+        allow_methods: [ 'GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE' ]
         allow_headers:
             - 'X-Client-Version'
             - 'X-Draw-Dashboard-Methods'
@@ -17,4 +17,4 @@ nelmio_cors:
         max_age: 3600
     paths:
         '^/api/':
-            allow_origin: ['*']
+            allow_origin: [ '*' ]

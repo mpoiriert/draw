@@ -1,28 +1,28 @@
 draw_dashboard:
-  menu:
-    visible_by_admin_only:
-      label: 'Visible by admin only'
-      security: "is_granted('ROLE_ADMIN')"
-    me:
-      label: 'My Profile'
-      icon: 'account_circle'
-      operationId: 'me'
-    user:
-      label: 'Users'
-      icon: 'person'
-      operationId: 'userList'
-    create_user:
-      label: 'User create'
-      icon: 'person'
-      operationId: 'userCreate'
-    tag:
-      label: 'Tags'
-      icon: 'tag'
-      operationId: 'tagList'
-  toolbar:
-    me:
-      operationId: 'me'
-    connect:
-      operationId: 'drawUserBundleCreateConnectionToken'
-    disconnect:
-      operationId: 'drawUserBundleDeleteConnectionToken'
+    menu:
+        visible_by_admin_only:
+            label: 'Visible by admin only'
+            security: "is_granted('ROLE_ADMIN')"
+        me:
+            label: 'My Profile'
+            icon: 'account_circle'
+            operationId: 'me'
+        user:
+            label: 'Users'
+            icon: 'person'
+            operationId: 'userList'
+        create_user:
+            label: 'User create'
+            icon: 'person'
+            operationId: 'userCreate'
+        tag:
+            label: 'Tags'
+            icon: 'tag'
+            operationId: 'tagList'
+    toolbar:
+        me:
+            operationId: 'me'
+        connect:
+            operationId: 'drawUserBundleCreateConnectionToken'
+        disconnect:
+            operationId: 'drawUserBundleDeleteConnectionToken'

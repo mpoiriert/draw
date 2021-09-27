@@ -23,7 +23,7 @@ class AgainstJsonFileTesterTest extends TestCase
             ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'));
     }
 
-    public function testInvoke_doesNotMatch()
+    public function testInvokeDoesNotMatch()
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Failed asserting that two objects are equal.');
@@ -32,7 +32,7 @@ class AgainstJsonFileTesterTest extends TestCase
             ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'));
     }
 
-    public function testInvoke_propertyPathChecks_value()
+    public function testInvokePropertyPathChecksValue()
     {
         (new DataTester(self::$data))
             ->test(
@@ -45,7 +45,7 @@ class AgainstJsonFileTesterTest extends TestCase
             );
     }
 
-    public function testInvoke_propertyPathChecks_value_fail()
+    public function testInvokePropertyPathChecksValueFail()
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Path: url
@@ -62,7 +62,7 @@ Failed asserting that two strings are equal.');
             );
     }
 
-    public function testInvoke_propertyPathChecks_callable()
+    public function testInvokePropertyPathChecksCallable()
     {
         $called = false;
         (new DataTester(self::$data))
@@ -82,7 +82,7 @@ Failed asserting that two strings are equal.');
         $this->assertTrue($called);
     }
 
-    public function testInvoke_propertyPathChecks_callable_fail()
+    public function testInvokePropertyPathChecksCallableFail()
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Failed asserting that two strings are equal.');
@@ -100,7 +100,7 @@ Failed asserting that two strings are equal.');
             );
     }
 
-    public function testInvoke_fileNotFoundException()
+    public function testInvokeFileNotFoundException()
     {
         $filePath = __DIR__.'/does-not-exists.json';
         $this->expectException(AssertionFailedError::class);

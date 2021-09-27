@@ -64,13 +64,13 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
 
     private function getFormData(Request $request): ?array
     {
-        if($request->getPathInfo() != $this->urlGenerator->generate('admin_login')) {
+        if ($request->getPathInfo() != $this->urlGenerator->generate('admin_login')) {
             return null;
         }
 
         $form = $this->formFactory->create(AdminLoginForm::class);
         $form->handleRequest($request);
-        if(!$form->isSubmitted()) {
+        if (!$form->isSubmitted()) {
             return null;
         }
 

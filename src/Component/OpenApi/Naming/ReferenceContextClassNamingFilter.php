@@ -1,4 +1,6 @@
-<?php namespace Draw\Component\OpenApi\Naming;
+<?php
+
+namespace Draw\Component\OpenApi\Naming;
 
 class ReferenceContextClassNamingFilter implements ClassNamingFilterInterface
 {
@@ -11,5 +13,4 @@ class ReferenceContextClassNamingFilter implements ClassNamingFilterInterface
 
         return $newName;
     }
-
 }

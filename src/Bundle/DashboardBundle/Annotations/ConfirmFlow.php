@@ -23,7 +23,7 @@ class ConfirmFlow extends Flow
             [
                 'message' => $this->message,
                 'yesLabel' => $this->yesLabel,
-                'noLabel' => $this->noLabel
+                'noLabel' => $this->noLabel,
             ],
             $values
         );

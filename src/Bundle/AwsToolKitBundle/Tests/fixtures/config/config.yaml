@@ -15,5 +15,5 @@ services:
     Aws\CloudWatchLogs\CloudWatchLogsClient:
         class: 'Aws\CloudWatchLogs\CloudWatchLogsClient'
         arguments:
-            - region: 'us-west-2'
-              version: 'latest'
+            -   region: 'us-west-2'
+                version: 'latest'

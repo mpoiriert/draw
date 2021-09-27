@@ -25,7 +25,7 @@ class UsersControllerTest extends TestCase
             ->execute();
     }
 
-    public function testUsersAction_options()
+    public function testUsersActionOptions()
     {
         $this->httpTester()
             ->options(
@@ -41,7 +41,7 @@ class UsersControllerTest extends TestCase
             );
     }
 
-    public function testUsersAction_options_fr()
+    public function testUsersActionOptionsFr()
     {
         $this->httpTester()
             ->options('/api/users', ['X-Locale' => 'fr'])
@@ -54,7 +54,7 @@ class UsersControllerTest extends TestCase
             );
     }
 
-    public function testOptionsCreateUser_connected()
+    public function testOptionsCreateUserConnected()
     {
         $this->connect();
         $this->httpTester()

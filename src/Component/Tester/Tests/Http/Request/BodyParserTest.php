@@ -19,7 +19,7 @@ class BodyParserTest extends TestCase
         $this->bodyParser = new BodyParser();
     }
 
-    public function testParse_formData_oneField()
+    public function testParseFormDataOneField()
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -41,7 +41,7 @@ BODY;
         );
     }
 
-    public function testParse_formData_twoFields()
+    public function testParseFormDataTwoFields()
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -68,7 +68,7 @@ BODY;
         );
     }
 
-    public function testParse_formData_fieldArray()
+    public function testParseFormDataFieldArray()
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -90,7 +90,7 @@ BODY;
         );
     }
 
-    public function testParse_formData_fieldContentWithAmpersand()
+    public function testParseFormDataFieldContentWithAmpersand()
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -112,7 +112,7 @@ BODY;
         );
     }
 
-    public function testParse_formData_fieldContentWithEqual()
+    public function testParseFormDataFieldContentWithEqual()
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -134,7 +134,7 @@ BODY;
         );
     }
 
-    public function testParse_formData_file()
+    public function testParseFormDataFile()
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -181,7 +181,7 @@ BODY;
      *
      * @see http://php.net/manual/en/features.file-upload.post-method.php#121833
      */
-    public function testParse_formData_file_nested()
+    public function testParseFormDataFileNested()
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
 

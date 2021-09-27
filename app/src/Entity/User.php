@@ -196,6 +196,7 @@ class User implements SecurityUserInterface
     {
         $roles = $this->roles;
         $roles[] = 'ROLE_USER'; // guarantee every user at least has ROLE_USER
+
         return $roles;
     }
 

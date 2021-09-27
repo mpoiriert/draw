@@ -19,10 +19,10 @@ position: 'Position'
 user: 'User'
 
 _action:
-  userList:
-    title: 'Users List'
+    userList:
+        title: 'Users List'
 _breadcrumb:
-  home: 'Dashboard'
-  userList: 'Users Management'
-  userCreate: 'Create User'
-  userEdit: 'Edit User'
+    home: 'Dashboard'
+    userList: 'Users Management'
+    userCreate: 'Create User'
+    userEdit: 'Edit User'

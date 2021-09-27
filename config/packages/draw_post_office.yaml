@@ -1,5 +1,5 @@
 draw_post_office:
-  css_inliner: ~
-  default_from:
-    email: 'support@example.com'
-    name: 'Example - Support'
+    css_inliner: ~
+    default_from:
+        email: 'support@example.com'
+        name: 'Example - Support'

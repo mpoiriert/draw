@@ -140,7 +140,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
 
         if ($target instanceof QueryParameter) {
             $constraintExtractionContext->context = 'query';
-            $constraints =  array_filter(
+            $constraints = array_filter(
                 $target->constraints,
                 [$this, 'supportConstraint']
             );
@@ -148,6 +148,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
                 $constraintExtractionContext->validationConfiguration = $target;
                 $this->extractConstraint($constraint, $constraintExtractionContext);
             }
+
             return;
         }
 

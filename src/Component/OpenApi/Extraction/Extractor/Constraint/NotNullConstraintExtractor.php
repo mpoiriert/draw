@@ -23,8 +23,9 @@ class NotNullConstraintExtractor extends ConstraintExtractor
     {
         $this->assertSupportConstraint($constraint);
 
-        if($context->validationConfiguration instanceof BaseParameter) {
+        if ($context->validationConfiguration instanceof BaseParameter) {
             $context->validationConfiguration->required = true;
+
             return;
         }
 

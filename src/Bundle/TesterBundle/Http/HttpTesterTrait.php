@@ -29,14 +29,10 @@ trait HttpTesterTrait
             return $lastBrowser->getContainer()->get('test.service_container');
         }
 
-        throw new \RuntimeException(sprintf(
-            'Browser must be an instance of [%s]',
-            KernelBrowser::class
-        ));
+        throw new \RuntimeException(sprintf('Browser must be an instance of [%s]', KernelBrowser::class));
     }
 
     /**
-     * @param string $service
      * @return object|null
      */
     public function getClientService(string $service)
