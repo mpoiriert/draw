@@ -88,7 +88,8 @@
             "Draw\\Component\\Messenger\\": "src/Component/Messenger/",
             "Draw\\Component\\OpenApi\\": "src/Component/OpenApi/",
             "Draw\\Component\\Profiling\\": "src/Component/Profiling/",
-            "Draw\\Component\\Tester\\": "src/Component/Tester/"
+            "Draw\\Component\\Tester\\": "src/Component/Tester/",
+            "Draw\\Component\\Validator\\": "src/Component/Validator/"
         }
     },
     "autoload-dev": {
@@ -113,7 +114,8 @@
         "draw/profiling": "self.version",
         "draw/tester": "self.version",
         "draw/tester-bundle": "self.version",
-        "draw/user-bundle": "self.version"
+        "draw/user-bundle": "self.version",
+        "draw/validator": "self.version"
     },
     "scripts": {
         "auto-scripts": {
