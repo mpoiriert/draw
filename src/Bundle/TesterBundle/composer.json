@@ -5,8 +5,8 @@
     "license": "MIT",
     "description": "",
     "require": {
-        "symfony/http-foundation": "^4.4",
-        "symfony/browser-kit": "^4.4",
+        "symfony/http-foundation": "^4.4|^5.3",
+        "symfony/browser-kit": "^4.4|^5.3",
         "draw/core": "^0.8",
         "draw/tester": "^0.8"
     },

@@ -6,7 +6,9 @@
 
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
-        <prototype namespace="Draw\Bundle\CommandBundle\Sonata\" resource="../../Sonata" />
+        <prototype namespace="Draw\Bundle\CommandBundle\Sonata\" resource="../../Sonata">
+            <exclude>../../Sonata/Admin/{ExecutionAdmin3X,ExecutionAdmin4X}.php</exclude>
+        </prototype>
         <prototype namespace="Draw\Bundle\CommandBundle\Sonata\Controller\" resource="../../Sonata/Controller">
             <tag name="controller.service_arguments" />
         </prototype>

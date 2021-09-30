@@ -7,5 +7,5 @@ namespace Draw\Bundle\DashboardBundle\Annotations;
  */
 class FormInputDatePicker extends FormInput
 {
-    const TYPE = 'date-picker';
+    public const TYPE = 'date-picker';
 }

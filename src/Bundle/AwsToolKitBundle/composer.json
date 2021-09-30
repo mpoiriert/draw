@@ -10,8 +10,8 @@
         }
     },
     "require": {
-        "aws/aws-sdk-php": "^3.112",
-        "symfony/css-selector": "^4.4"
+        "aws/aws-sdk-php": "^3.171",
+        "symfony/css-selector": "^4.4|^5.3"
     },
     "extra": {
         "branch-alias": {

@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class FormInputAutoComplete extends FormInput
 {
-    const TYPE = 'auto-complete';
+    public const TYPE = 'auto-complete';
 
     /**
      * @var string|null

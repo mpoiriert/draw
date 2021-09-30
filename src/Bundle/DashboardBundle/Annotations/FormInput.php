@@ -12,7 +12,7 @@ class FormInput implements VendorPropertyInterface, CanBeExcludeInterface
 {
     use CanBeExcludeTrait;
 
-    const TYPE = 'text';
+    public const TYPE = 'text';
 
     /**
      * @var string|null

@@ -6,7 +6,7 @@ use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 
 class SignedOut implements FeedbackInterface
 {
-    const FEEDBACK_TYPE = 'signed-out';
+    public const FEEDBACK_TYPE = 'signed-out';
 
     public function getFeedbackType(): string
     {

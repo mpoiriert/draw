@@ -13,7 +13,7 @@ class SchemaCleanerTest extends TestCase
      */
     private $schemaCleaner;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->schemaCleaner = new SchemaCleaner();
     }

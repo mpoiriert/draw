@@ -9,7 +9,7 @@ use function Draw\Bundle\DashboardBundle\construct;
  */
 abstract class Flow
 {
-    const TYPE = null;
+    public const TYPE = null;
 
     /**
      * @var string|null

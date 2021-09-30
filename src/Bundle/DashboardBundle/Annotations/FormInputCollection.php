@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class FormInputCollection extends FormInput
 {
-    const TYPE = 'collection';
+    public const TYPE = 'collection';
 
     /**
      * @var string|null

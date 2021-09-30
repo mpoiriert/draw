@@ -22,7 +22,7 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
 {
     use LoggerAwareTrait;
 
-    const OPTION_AWS_NEWEST_INSTANCE_ROLE = 'aws-newest-instance-role';
+    public const OPTION_AWS_NEWEST_INSTANCE_ROLE = 'aws-newest-instance-role';
 
     /**
      * @var Ec2Client

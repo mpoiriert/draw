@@ -6,6 +6,7 @@ use Draw\Bundle\CommandBundle\CommandRegistry;
 use Draw\Bundle\CommandBundle\Entity\Execution;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ExecutionController extends CRUDController
 {
@@ -22,10 +23,7 @@ class ExecutionController extends CRUDController
         $this->commandFactory = $commandFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createAction(Request $request = null)
+    public function myCreateAction(Request $request): Response
     {
         $this->admin->checkAccess('create');
 
@@ -39,10 +37,10 @@ class ExecutionController extends CRUDController
             );
         }
 
-        return parent::createAction();
+        return parent::createAction($request);
     }
 
-    public function acknowledgeAction(Execution $execution)
+    public function acknowledgeAction(Request $request, Execution $execution): Response
     {
         $execution->setState(Execution::STATE_ACKNOWLEDGE);
         $this->admin->getModelManager()->update($execution);
@@ -55,6 +53,11 @@ class ExecutionController extends CRUDController
                 'SonataAdminBundle'
             )
         );
+
+        // TODO drop when stop supporting sonata 3.x
+        if ((new \ReflectionObject($this))->getMethod('redirectTo')->getNumberOfParameters() > 1) {
+            return $this->redirectTo($request, $execution);
+        }
 
         return $this->redirectTo($execution);
     }

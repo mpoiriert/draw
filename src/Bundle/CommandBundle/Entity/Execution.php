@@ -25,17 +25,17 @@ use Symfony\Component\Console\Input\ArrayInput;
  */
 class Execution
 {
-    const STATE_INITIALIZED = 'initialized';
+    public const STATE_INITIALIZED = 'initialized';
 
-    const STATE_STARTED = 'started';
+    public const STATE_STARTED = 'started';
 
-    const STATE_ERROR = 'error';
+    public const STATE_ERROR = 'error';
 
-    const STATE_TERMINATED = 'terminated';
+    public const STATE_TERMINATED = 'terminated';
 
-    const STATE_ACKNOWLEDGE = 'acknowledge';
+    public const STATE_ACKNOWLEDGE = 'acknowledge';
 
-    const STATES = [
+    public const STATES = [
         self::STATE_INITIALIZED,
         self::STATE_STARTED,
         self::STATE_ERROR,

@@ -32,11 +32,11 @@ class User implements SecurityUserInterface
 {
     use SecurityUserTrait;
 
-    const LEVEL_USER = 'user';
+    public const LEVEL_USER = 'user';
 
-    const LEVEL_ADMIN = 'admin';
+    public const LEVEL_ADMIN = 'admin';
 
-    const LEVELS = [
+    public const LEVELS = [
         User::LEVEL_USER,
         User::LEVEL_ADMIN,
     ];

@@ -2,28 +2,20 @@
 
 namespace App\Sonata\Admin;
 
-use KunicMarko\SonataAutoConfigureBundle\Annotation\AdminOptions;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-/**
- * @AdminOptions(
- *     group="User",
- *     pagerType="simple",
- *     icon="<i class='fa fa-user'></i>"
- * )
- */
 class UserAdmin extends AbstractAdmin
 {
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         $listMapper
             ->addIdentifier('id')
             ->add('email')
             ->add(
-                '_action',
+                constant(ListMapper::class.'::NAME_ACTIONS') ?: '_action',
                 null,
                 [
                     'label' => 'Action',
@@ -40,8 +32,8 @@ class UserAdmin extends AbstractAdmin
     {
         $formMapper
             ->tab('User')
-                ->add('email')
-                ->add('plainPassword', TextType::class, ['required' => false])
+            ->add('email')
+            ->add('plainPassword', TextType::class, ['required' => false])
             ->end();
     }
 }

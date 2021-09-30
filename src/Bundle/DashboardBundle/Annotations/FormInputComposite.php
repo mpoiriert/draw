@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class FormInputComposite extends FormInput
 {
-    const TYPE = 'composite';
+    public const TYPE = 'composite';
 
     /**
      * @Serializer\SerializedName("subForm")

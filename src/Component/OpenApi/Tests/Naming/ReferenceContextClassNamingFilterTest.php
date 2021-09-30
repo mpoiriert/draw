@@ -10,7 +10,7 @@ class ReferenceContextClassNamingFilterTest extends TestCase
 {
     private $referenceContextClassNamingFilter;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->referenceContextClassNamingFilter = new ReferenceContextClassNamingFilter();
     }
@@ -34,13 +34,6 @@ class ReferenceContextClassNamingFilterTest extends TestCase
             ['serializer-groups' => ['reference']],
             self::class,
             self::class.'Reference',
-        ];
-
-        yield 'MultipleGroups' => [
-            self::class,
-            ['serializer-groups' => ['reference', 'other']],
-            self::class,
-            self::class,
         ];
 
         yield 'MultipleGroups' => [

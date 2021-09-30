@@ -10,6 +10,8 @@ use Draw\Component\OpenApi\Schema\QueryParameter;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * This is a integration test but mainly to test the QueryParameterFetcherSubscriber.
@@ -33,7 +35,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
     /**
      * @see TestController::createAction()
      */
-    public function testOnKernelControllerWithValue()
+    public function testOnKernelControllerWithValue(): void
     {
         $this->httpTester()
             ->post('/tests?param1=toto', '')
@@ -46,7 +48,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
     /**
      * @see TestController::createAction()
      */
-    public function testOnKernelControllerDefaultValue()
+    public function testOnKernelControllerDefaultValue(): void
     {
         $this->httpTester()
             ->post('/tests', '')
@@ -59,7 +61,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
     /**
      * @see TestController::createAction()
      */
-    public function testOnKernelControllerArray()
+    public function testOnKernelControllerArray(): void
     {
         $this->httpTester()
             ->post('/tests-array?param1=toto,tata', '')
@@ -68,7 +70,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
             ->assertSame(['toto', 'tata']);
     }
 
-    public function provideOnKernelController()
+    public function provideOnKernelController(): iterable
     {
         yield 'boolean-0-false' => ['boolean', '0', false];
         yield 'boolean-1-true' => ['boolean', '1', true];
@@ -79,7 +81,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
     /**
      * @dataProvider provideOnKernelController
      */
-    public function testOnKernelController(string $type, string $value, $expectedValue)
+    public function testOnKernelController(string $type, string $value, $expectedValue): void
     {
         $queryParameter = new QueryParameter();
         $queryParameter->name = 'test';
@@ -87,17 +89,17 @@ class QueryParameterFetcherSubscriberTest extends TestCase
 
         $this->reader->getMethodAnnotations(Argument::any())->shouldBeCalledOnce()->willReturn([$queryParameter]);
 
-        $controller = $this->prophesize(ControllerEvent::class);
-        $controller->getRequest()->willReturn($request = new Request());
+        $kernel = $this->prophesize(KernelInterface::class);
+        $controllerEvent = new ControllerEvent(
+            $kernel->reveal(),
+            [$this, 'testOnKernelController'],
+            $request = new Request(),
+            constant(HttpKernelInterface::class.'::MASTER_REQUEST') ?: constant(HttpKernelInterface::class.'::MAIN_REQUEST')
+        );
 
         $request->query->set('test', $value);
 
-        //This need to exist but will not be used
-        $controller->getController()->willReturn([$this, 'testOnKernelController']);
-
-        $this->queryParameterFetcherSubscriber->onKernelController(
-            $controller->reveal()
-        );
+        $this->queryParameterFetcherSubscriber->onKernelController($controllerEvent);
 
         $this->assertSame(
             $expectedValue,

@@ -29,6 +29,7 @@ security:
         admin:
             pattern: /admin(.*)
             context: user
+            anonymous: true
             form_login:
                 provider: app_user_provider_email
                 login_path: admin_login
@@ -38,7 +39,6 @@ security:
             logout:
                 path: admin_logout
                 target: admin_login
-            anonymous: true
             guard:
                 provider: chain_provider
                 authenticators:

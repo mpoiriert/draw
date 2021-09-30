@@ -12,7 +12,7 @@ class AgainstJsonFileTesterTest extends TestCase
 {
     private static $data;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$data = (object) ['url' => 'http://google.com'];
     }

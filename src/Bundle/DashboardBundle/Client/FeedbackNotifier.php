@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class FeedbackNotifier
 {
-    const HEADER_NAME = 'X-Draw-Feedback';
+    public const HEADER_NAME = 'X-Draw-Feedback';
 
     private $requestStack;
 

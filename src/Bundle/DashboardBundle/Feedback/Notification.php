@@ -7,7 +7,7 @@ use JsonSerializable;
 
 class Notification implements FeedbackInterface, JsonSerializable
 {
-    const TYPE_SUCCESS = 'success';
+    public const TYPE_SUCCESS = 'success';
 
     private $message;
     private $type;

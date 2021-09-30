@@ -31,8 +31,22 @@ abstract class ConfigurationTestCase extends TestCase
     public function testInvalidConfiguration(array $configuration, string $expectedMessage)
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage($expectedMessage);
-        $this->processConfiguration([$configuration]);
+
+        try {
+            $this->processConfiguration([$configuration]);
+        } catch (InvalidConfigurationException $error) {
+            $replaces = [
+                'at path' => 'under',
+                'child node' => 'child config',
+                '"' => '',
+                'boolean' => 'bool',
+            ];
+            $this->assertSame(
+                str_replace(array_keys($replaces), array_values($replaces), $expectedMessage),
+                str_replace(array_keys($replaces), array_values($replaces), $error->getMessage()),
+            );
+            throw $error;
+        }
     }
 
     public function testDefault()

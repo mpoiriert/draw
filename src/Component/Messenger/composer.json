@@ -18,11 +18,11 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "ext-json": "*",
-        "symfony/messenger": "^4.4",
-        "symfony/doctrine-bridge": "^4.4",
-        "doctrine/dbal": "^2.9"
+        "symfony/messenger": "^4.4.2|^5.3",
+        "symfony/doctrine-bridge": "^4.4|^5.3",
+        "doctrine/dbal": "^2.13"
     },
     "extra": {
         "branch-alias": {

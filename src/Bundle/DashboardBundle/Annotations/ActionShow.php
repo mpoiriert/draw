@@ -9,7 +9,7 @@ use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
  */
 class ActionShow extends Action
 {
-    const TYPE = 'show';
+    public const TYPE = 'show';
 
     public function __construct(array $values = [])
     {

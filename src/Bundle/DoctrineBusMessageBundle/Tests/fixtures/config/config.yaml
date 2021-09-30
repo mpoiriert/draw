@@ -1,7 +1,5 @@
 framework:
     secret: 'fos'
-    router:
-        resource: "%kernel.root_dir%/fixtures/config/routing.yaml"
     test: true
     session:
         enabled: false

@@ -9,7 +9,7 @@ use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
  */
 class ActionDelete extends Action
 {
-    const TYPE = 'delete';
+    public const TYPE = 'delete';
 
     public function __construct(array $values = [])
     {

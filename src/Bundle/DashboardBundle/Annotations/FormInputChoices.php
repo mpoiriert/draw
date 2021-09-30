@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class FormInputChoices extends FormInput
 {
-    const TYPE = 'choices';
+    public const TYPE = 'choices';
 
     /**
      * @var bool

@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class ActionList extends Action
 {
-    const TYPE = 'list';
+    public const TYPE = 'list';
 
     /**
      * @var bool
