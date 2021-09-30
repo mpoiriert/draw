@@ -21,7 +21,7 @@
         "ext-json": "*",
         "draw/open-api": "^0.8",
         "doctrine/annotations": "^1.3",
-        "symfony/framework-bundle": "^4.3",
+        "symfony/framework-bundle": "^4.4",
         "jms/serializer-bundle": "@stable"
     },
     "require-dev": {
