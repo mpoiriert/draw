@@ -6,11 +6,11 @@
     },
     "require": {
         "sensiolabs/ansi-to-html": "^1.1",
-        "symfony/security": "^4.3",
-        "symfony/console": "^4.3"
+        "symfony/security": "^4.4",
+        "symfony/console": "^4.4"
     },
     "require-dev": {
-        "symfony/security": "^4.3"
+        "symfony/security": "^4.4"
     },
     "suggest": {
         "symfony/security": "If you want to user authentication in command line"

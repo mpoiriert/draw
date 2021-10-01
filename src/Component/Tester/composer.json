@@ -18,8 +18,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
-        "symfony/console": "^4.3",
-        "symfony/dependency-injection": "^4.3"
+        "symfony/console": "^4.4",
+        "symfony/dependency-injection": "^4.4"
     },
     "require": {
         "phpunit/phpunit": "^7.0",

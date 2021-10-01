@@ -20,8 +20,8 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "symfony/messenger": "^4.3",
-        "symfony/doctrine-bridge": "^4.3",
+        "symfony/messenger": "^4.4",
+        "symfony/doctrine-bridge": "^4.4",
         "doctrine/dbal": "^2.9"
     },
     "extra": {

@@ -23,17 +23,19 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::DATA_TO_APPEND, [
         'require-dev' => [
             'bamarni/composer-bin-plugin' => '^1.4',
+            'nelmio/cors-bundle' => '^2.0',
             'phpunit/phpunit' => '^7.0',
-            'sonata-project/admin-bundle' => '^3.54',
-            'sonata-project/doctrine-orm-admin-bundle' => '^3.10',
-            'ramsey/uuid' => '^3.8',
             'doctrine/doctrine-fixtures-bundle' => '^3.2',
-            'symfony/debug-pack' => '^1.0',
             'kunicmarko/sonata-auto-configure-bundle' => '^0.7.1',
             'pelago/emogrifier' => '^3.0',
-            'symfony/dotenv' => '^4.3',
+            'ramsey/uuid' => '^3.8',
+            'sonata-project/admin-bundle' => '^3.54',
+            'sonata-project/doctrine-orm-admin-bundle' => '^3.10',
+            'symfony/debug-bundle' => '^4.4',
+            'symfony/dotenv' => '^4.4',
+            'symfony/web-profiler-bundle' => '^4.4',
+            'symfony/stopwatch' => '^4.4',
             'symplify/monorepo-builder' => '^8.3.48',
-            'nelmio/cors-bundle' => '^2.0',
         ],
     ]);
 

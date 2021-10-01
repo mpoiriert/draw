@@ -1,0 +1,30 @@
+{
+    "name": "draw/validator",
+    "type": "library",
+    "keywords": ["draw", "validator", "symfony"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Poirier Theoret",
+            "email": "mpoiriert@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Draw\\Component\\Validator\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "symfony/validator": "^4.4|^5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "draw/tester": "^0.8"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}
