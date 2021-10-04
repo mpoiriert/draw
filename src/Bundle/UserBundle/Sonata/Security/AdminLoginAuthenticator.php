@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -36,6 +37,11 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
     private $passwordEncoder;
 
     /**
+     * @var RoleHierarchyInterface
+     */
+    private $roleHierarchy;
+
+    /**
      * @var UrlGeneratorInterface
      */
     private $urlGenerator;
@@ -43,11 +49,13 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
     public function __construct(
         FormFactoryInterface $formFactory,
         RouterInterface $router,
+        RoleHierarchyInterface $roleHierarchy,
         UserPasswordEncoderInterface $passwordEncoder,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->roleHierarchy = $roleHierarchy;
         $this->passwordEncoder = $passwordEncoder;
         $this->urlGenerator = $urlGenerator;
     }
@@ -93,7 +101,7 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
             return false;
         }
 
-        if (!in_array('ROLE_SONATA_ADMIN', $user->getRoles())) {
+        if (!in_array('ROLE_SONATA_ADMIN', $this->roleHierarchy->getReachableRoleNames($user->getRoles()))) {
             throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
         }
 
