@@ -1,7 +1,6 @@
 /tmp
 /.idea
 /.subsplit
-/composer.lock
 /docker-compose.yml
 /draw.iml
 

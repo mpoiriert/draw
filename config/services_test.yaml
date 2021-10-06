@@ -1,0 +1,2 @@
+services:
+  scheb_two_factor.security.totp_authenticator: '@App\Security\TotpAuthenticatorMock'

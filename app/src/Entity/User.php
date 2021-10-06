@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
+use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthenticationUserInterface;
 use Draw\Component\OpenApi\Doctrine\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
@@ -28,9 +30,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class User implements SecurityUserInterface
+class User implements SecurityUserInterface, TwoFactorAuthenticationUserInterface
 {
     use SecurityUserTrait;
+    use TwoFactorAuthenticationUserTrait;
 
     public const LEVEL_USER = 'user';
 

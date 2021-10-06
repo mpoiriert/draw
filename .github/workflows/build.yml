@@ -104,6 +104,7 @@ jobs:
 
           echo "::group::Install"
           composer install --optimize-autoloader --no-interaction --prefer-dist
+          composer update --optimize-autoloader --no-interaction --prefer-dist
           bin/console assets:install ./public --no-interaction
           echo "::endgroup::"
 

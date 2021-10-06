@@ -14,6 +14,8 @@ use Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock;
 use Draw\Bundle\UserBundle\Sonata\Controller\LoginController;
 use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
 use Draw\Bundle\UserBundle\Sonata\Form\ChangePasswordForm;
+use Draw\Bundle\UserBundle\Sonata\Form\Enable2fa;
+use Draw\Bundle\UserBundle\Sonata\Form\Enable2faForm;
 use Draw\Bundle\UserBundle\Sonata\Form\ForgotPasswordForm;
 use Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
@@ -45,6 +47,8 @@ class DrawUserExtensionTest extends ExtensionTestCase
         yield [LoginController::class];
         yield [AdminLoginForm::class];
         yield [ChangePasswordForm::class];
+        yield [Enable2fa::class];
+        yield [Enable2faForm::class];
         yield [ForgotPasswordForm::class];
         yield [AdminLoginAuthenticator::class];
         yield [UserAdminExtension::class];

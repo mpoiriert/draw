@@ -852,10 +852,10 @@
                     {
                         "type": "array",
                         "name": "param1",
+                        "description": "The parameter",
                         "required": true,
                         "collectionFormat": "csv",
-                        "in": "query",
-                        "description": "The parameter"
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1236,6 +1236,9 @@
                 },
                 "passwordUpdatedAt": {
                     "format": "date-time",
+                    "type": "string"
+                },
+                "totpSecret": {
                     "type": "string"
                 }
             },

@@ -23,11 +23,17 @@
         "symfony/yaml": "*"
     },
     "require-dev": {
-        "firebase/php-jwt": "^5.1"
+        "firebase/php-jwt": "^5.1",
+        "scheb/2fa-bundle": "^5.12",
+        "scheb/2fa-qr-code": "^5.12",
+        "scheb/2fa-totp": "^5.12"
     },
     "suggest": {
         "draw/messenger-bundle": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",
-        "firebase/php-jwt": "Use for the jwt connection token system"
+        "firebase/php-jwt": "Use for the jwt connection token system",
+        "scheb/2fa-bundle": "Use for the 2FA",
+        "scheb/2fa-totp": "Use to enable TOTP methdon for 2FA",
+        "scheb/2fa-qr-code": "Use for the 2FA secret code generation using QR code"
     },
     "autoload": {
         "psr-4": {
