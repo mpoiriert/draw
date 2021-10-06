@@ -74,6 +74,7 @@ class Configuration implements ConfigurationInterface
             ->{class_exists(SonataDoctrineORMAdminBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}()
             ->children()
                 ->scalarNode('user_admin_code')->defaultValue(UserAdmin::class)->end()
+                ->scalarNode('2fa_enabled')->defaultValue(false)->end()
             ->end();
     }
 }

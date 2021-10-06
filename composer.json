@@ -64,7 +64,10 @@
         "symfony/phpunit-bridge": "^5.2",
         "symfony/stopwatch": "^4.4",
         "symfony/web-profiler-bundle": "^4.4",
-        "symplify/monorepo-builder": "^8.3.48"
+        "symplify/monorepo-builder": "^8.3.48",
+        "scheb/2fa-bundle": "^5.8",
+        "scheb/2fa-qr-code": "^5.8",
+        "scheb/2fa-totp": "^5.8"
     },
     "autoload": {
         "files": [

@@ -1,0 +1,8 @@
+{% if object.id %}
+    <li>
+        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('enable-2fa', object) }}">
+            <i class="fa fa-lock"></i>
+            Enable 2FA
+        </a>
+    </li>
+{% endif %}

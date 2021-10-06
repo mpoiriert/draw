@@ -21,6 +21,7 @@ class ConfigurationTest extends ConfigurationTestCase
             'sonata' => [
                 'enabled' => true,
                 'user_admin_code' => UserAdmin::class,
+                '2fa_enabled' => false,
             ],
             'encrypt_password_listener' => [
                 'enabled' => true,

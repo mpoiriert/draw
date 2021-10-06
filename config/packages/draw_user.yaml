@@ -7,7 +7,10 @@ sonata_block:
         Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
 
 draw_user:
-    sonata: ~
+    sonata:
+        enabled: true
+        user_admin_code: App\Sonata\Admin\UserAdmin
+        2fa_enabled: true
 
     jwt_authenticator:
         key: 'acme'

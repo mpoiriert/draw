@@ -1,0 +1,11 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block content %}
+    <div>
+        <h4>{{ 'form.enable_2fa.header' | trans([], 'DrawUserBundle') }}</h4>
+        <p>{{ 'form.enable_2fa.description' | trans([], 'DrawUserBundle') }}</p>
+        {{ qrCodeSvg|raw }}
+
+        {{ form(form) }}
+    </div>
+{% endblock %}

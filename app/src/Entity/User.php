@@ -8,9 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
+use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationTrait;
 use Draw\Component\OpenApi\Doctrine\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,9 +30,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class User implements SecurityUserInterface
+class User implements SecurityUserInterface, TwoFactorInterface
 {
     use SecurityUserTrait;
+    use TwoFactorAuthenticationTrait;
 
     const LEVEL_USER = 'user';
 

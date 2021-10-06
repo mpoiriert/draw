@@ -4,6 +4,7 @@ namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
+use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -60,6 +61,17 @@ class DrawUserExtension extends ConfigurableExtension
 
         $container->setParameter('draw_user.sonata.user_admin_code', $config['user_admin_code']);
         $loader->load('sonata.xml');
+
+        if ($container->hasParameter('kernel.bundles')) {
+            $bundles = $container->getParameter('kernel.bundles');
+            if ($config['2fa_enabled'] && !isset($bundles['SchebTwoFactorBundle'])) {
+                throw new \RuntimeException('The bundle SchebTwoFactorBundle needs to be registered to have 2FA enabled.');
+            }
+        }
+
+        if (!$config['2fa_enabled']) {
+            $container->removeDefinition(TwoFactorAuthenticationExtension::class);
+        }
     }
 
     private function configureJwtAuthenticator(array $config, LoaderInterface $loader, ContainerBuilder $container)

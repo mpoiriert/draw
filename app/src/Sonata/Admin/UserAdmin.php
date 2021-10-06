@@ -2,6 +2,7 @@
 
 namespace App\Sonata\Admin;
 
+use Draw\Bundle\UserBundle\Sonata\Controller\UserController;
 use KunicMarko\SonataAutoConfigureBundle\Annotation\AdminOptions;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -12,7 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
  * @AdminOptions(
  *     group="User",
  *     pagerType="simple",
- *     icon="<i class='fa fa-user'></i>"
+ *     icon="<i class='fa fa-user'></i>",
+ *     controller=UserController::class
  * )
  */
 class UserAdmin extends AbstractAdmin

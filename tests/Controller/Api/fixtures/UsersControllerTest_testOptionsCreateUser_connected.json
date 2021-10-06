@@ -325,7 +325,8 @@
         "comment": "",
         "email": null,
         "plainPassword": null,
-        "passwordUpdatedAt": null
+        "passwordUpdatedAt": null,
+        "totpSecret": null
       }
     },
     "x-draw-dashboard-breadcrumbs": [

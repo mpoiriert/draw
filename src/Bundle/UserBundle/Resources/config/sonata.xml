@@ -16,5 +16,9 @@
         <service id="Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock" public="true">
             <tag name="sonata.block"/>
         </service>
+
+        <service id="Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension">
+            <tag name="sonata.admin.extension" global="true"/>
+        </service>
     </services>
 </container>
