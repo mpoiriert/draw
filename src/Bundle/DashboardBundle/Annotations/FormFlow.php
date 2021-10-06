@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class FormFlow extends Flow implements FlowWithButtonsInterface
 {
-    const TYPE = 'form';
+    public const TYPE = 'form';
 
     /**
      * The id of flow are use for callback you should not set it manually.

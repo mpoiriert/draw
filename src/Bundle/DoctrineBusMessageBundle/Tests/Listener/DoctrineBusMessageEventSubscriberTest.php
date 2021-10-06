@@ -31,7 +31,7 @@ class DoctrineBusMessageEventSubscriberTest extends TestCase
      */
     private $transportTester;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         static::loadDatabase();
 

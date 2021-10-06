@@ -24,7 +24,7 @@ class OperationExtractorTest extends TestCase
      */
     private $phpDocOperationExtractor;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->phpDocOperationExtractor = new OperationExtractor();
     }

@@ -10,7 +10,7 @@ use Draw\Component\OpenApi\Schema\VendorInterface;
  */
 class BaseLayout implements VendorInterface
 {
-    const TYPE = 'generic';
+    public const TYPE = 'generic';
 
     /**
      * @var string|null

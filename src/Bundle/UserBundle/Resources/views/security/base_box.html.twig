@@ -1,4 +1,15 @@
 {% extends '@SonataAdmin/standard_layout.html.twig' %}
+{% if sonata_admin is defined %}
+    {% set logo_content = sonata_admin.adminPool.getOption('title_mode') %}
+    {% set logo = sonata_admin.adminPool.titlelogo %}
+    {% set title = sonata_admin.adminPool.title %}
+{% else %}
+    {% set logo_content = sonata_config.getOption('logo_content') %}
+    {% set logo = sonata_config.logo %}
+    {% set title = sonata_config.title %}
+{% endif %}
+{% set display_icon = logo_content in ['icon', 'single_image', 'both', 'all'] %}
+{% set display_text = logo_content in ['text', 'single_text', 'both', 'all'] %}
 
 {% block sonata_nav %}
 {% endblock sonata_nav %}
@@ -16,14 +27,13 @@
         {% block login_box_header %}
             <div class="login-logo">
                 <a href="{{ path('sonata_admin_dashboard') }}">
-                    {% if sonata_admin.adminPool.getOption('title_mode') in ['single_image', 'both'] %}
+                    {% if display_icon %}
                         <div>
-                            <img style="width:64px;" src="{{ asset(sonata_admin.adminPool.titlelogo) }}"
-                                 alt="{{ sonata_admin.adminPool.title }}">
+                            <img style="width:64px;" src="{{ asset(logo) }}" alt="{{ title }}">
                         </div>
                     {% endif %}
-                    {% if sonata_admin.adminPool.getOption('title_mode') in ['single_text', 'both'] %}
-                        <span>{{ sonata_admin.adminPool.title }}</span>
+                    {% if display_text %}
+                        <span>{{ title }}</span>
                     {% endif %}
                 </a>
             </div>

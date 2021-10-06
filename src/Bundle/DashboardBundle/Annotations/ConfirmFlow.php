@@ -7,7 +7,7 @@ namespace Draw\Bundle\DashboardBundle\Annotations;
  */
 class ConfirmFlow extends Flow
 {
-    const TYPE = 'confirm';
+    public const TYPE = 'confirm';
 
     private $title = '';
 

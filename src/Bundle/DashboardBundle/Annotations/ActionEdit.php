@@ -9,7 +9,7 @@ use Draw\Bundle\DashboardBundle\Annotations\Button as Button;
  */
 class ActionEdit extends ActionCreate
 {
-    const TYPE = 'edit';
+    public const TYPE = 'edit';
 
     /**
      * @var array

@@ -49,15 +49,16 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
     public function __construct(
         FormFactoryInterface $formFactory,
         RouterInterface $router,
-        RoleHierarchyInterface $roleHierarchy,
         UserPasswordEncoderInterface $passwordEncoder,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        RoleHierarchyInterface $roleHierarchy
     ) {
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->roleHierarchy = $roleHierarchy;
         $this->passwordEncoder = $passwordEncoder;
         $this->urlGenerator = $urlGenerator;
+        $this->roleHierarchy = $roleHierarchy;
     }
 
     public function supports(Request $request): bool

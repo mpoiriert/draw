@@ -1,3 +1,6 @@
+imports:
+    - { resource: 'legacy.php' }
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -26,3 +29,9 @@ services:
         class: 'JMS\Serializer\Naming\SerializedNameAnnotationStrategy'
         arguments:
             - '@jms_serializer.identical_property_naming_strategy'
+
+    App\Sonata\Admin\UserAdmin:
+        class: 'App\Sonata\Admin\UserAdmin'
+        arguments: [~, 'App\Entity\User', ~]
+        tags:
+            - { name: 'sonata.admin', manager_type: 'orm', group: 'User', pager_type: 'simple', icon: '<i class="fa fa-user"></i>' }

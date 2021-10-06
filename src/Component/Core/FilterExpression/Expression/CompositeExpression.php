@@ -4,9 +4,9 @@ namespace Draw\Component\Core\FilterExpression\Expression;
 
 class CompositeExpression extends Expression
 {
-    const TYPE_AND = 'AND';
+    public const TYPE_AND = 'AND';
 
-    const TYPE_OR = 'OR';
+    public const TYPE_OR = 'OR';
 
     /**
      * @var string

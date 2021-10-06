@@ -20,7 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MessageController extends AbstractController
 {
-    const MESSAGE_ID_PARAMETER_NAME = 'dMUuid';
+    public const MESSAGE_ID_PARAMETER_NAME = 'dMUuid';
 
     /**
      * @Route(name="message_click", methods={"GET"}, path="/message-link/{dMUuid}")

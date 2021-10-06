@@ -13,9 +13,9 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class Action implements VendorInterface
 {
-    const DEFAULT_REQUEST_ATTRIBUTE_NAME = 'target';
+    public const DEFAULT_REQUEST_ATTRIBUTE_NAME = 'target';
 
-    const TYPE = 'generic';
+    public const TYPE = 'generic';
 
     /**
      * @var string|null

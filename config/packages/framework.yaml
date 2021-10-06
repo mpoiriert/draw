@@ -1,3 +1,7 @@
 framework:
     secret: '%env(APP_SECRET)%'
     session: ~
+    form:
+        enabled: true
+    assets:
+        enabled: true

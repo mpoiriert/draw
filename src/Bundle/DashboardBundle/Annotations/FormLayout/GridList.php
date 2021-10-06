@@ -7,7 +7,7 @@ namespace Draw\Bundle\DashboardBundle\Annotations\FormLayout;
  */
 class GridList extends BaseLayout
 {
-    const TYPE = 'grid-list';
+    public const TYPE = 'grid-list';
 
     /**
      * @var int

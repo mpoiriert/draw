@@ -6,7 +6,7 @@ use Draw\Bundle\DashboardBundle\Client\FeedbackInterface;
 
 class DefaultHeader implements FeedbackInterface
 {
-    const FEEDBACK_TYPE = 'default-header';
+    public const FEEDBACK_TYPE = 'default-header';
 
     /**
      * @var string

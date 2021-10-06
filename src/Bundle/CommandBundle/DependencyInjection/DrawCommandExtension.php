@@ -8,6 +8,10 @@ use Draw\Bundle\CommandBundle\CommandRegistry;
 use Draw\Bundle\CommandBundle\Listener\CommandFlowListener;
 use Draw\Bundle\CommandBundle\Model\Command;
 use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin;
+use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin3X;
+use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin4X;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -71,14 +75,24 @@ class DrawCommandExtension extends ConfigurableExtension
 
         $fileLoader->load('sonata.xml');
 
-        $container
-            ->getDefinition(ExecutionAdmin::class)
-            ->addTag(
-                'sonata.admin',
-                array_intersect_key(
-                    $config,
-                    array_flip(['group', 'icon', 'label', 'pager_type'])
-                ) + ['manager_type' => 'orm']
-            );
+        $type = (new \ReflectionClass(AbstractAdmin::class))
+            ->getMethod('configureRoutes')
+            ->getParameters()[0]->getType()->getName();
+
+        // TODO remove ExecutionAdmin3X when stop support of sonata admin 3.x
+        $adminClass = RouteCollectionInterface::class === $type ? ExecutionAdmin4X::class : ExecutionAdmin3X::class;
+
+        $container->addDefinitions([
+            ExecutionAdmin::class => (new Definition($adminClass))
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->addTag(
+                    'sonata.admin',
+                    array_intersect_key(
+                        $config,
+                        array_flip(['group', 'icon', 'label', 'pager_type'])
+                    ) + ['manager_type' => 'orm']
+                ),
+        ]);
     }
 }

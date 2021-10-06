@@ -17,9 +17,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CommandFlowListener implements EventSubscriberInterface
 {
-    const OPTION_EXECUTION_ID = 'draw-execution-id';
+    public const OPTION_EXECUTION_ID = 'draw-execution-id';
 
-    const OPTION_IGNORE = 'draw-execution-ignore';
+    public const OPTION_IGNORE = 'draw-execution-ignore';
 
     private $commandsToIgnore = [
         'help',

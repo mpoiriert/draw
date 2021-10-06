@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -20,13 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ExecutionAdmin extends AbstractAdmin
 {
-    protected $datagridValues = [
-        '_page' => 1,
-        '_per_page' => 32,
-        '_sort_order' => 'DESC',
-        '_sort_by' => 'id',
-    ];
-
     /**
      * @var CommandRegistry
      */
@@ -58,14 +52,14 @@ class ExecutionAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function getNewInstance()
+    public function createNewInstance(): object
     {
         /** @var Execution $execution */
-        $execution = parent::getNewInstance();
+        $execution = parent::createNewInstance();
 
-        if ($this->hasRequest()) {
-            if ($this->getRequest()->isMethod(Request::METHOD_GET)) {
-                $command = $this->commandFactory->getCommand($this->getRequest()->get('command'));
+        if ($this->hasRequest() && $this->getRequest()->isMethod(Request::METHOD_GET)) {
+            if ($commandName = $this->getRequest()->get('command')) {
+                $command = $this->commandFactory->getCommand($commandName);
                 $execution->setCommand($command->getName());
                 $execution->setCommandName($command->getCommandName());
             }
@@ -74,7 +68,13 @@ class ExecutionAdmin extends AbstractAdmin
         return $execution;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        $sortValues['_sort_order'] = 'DESC';
+        $sortValues['_sort_by'] = 'id';
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('id')
@@ -82,9 +82,8 @@ class ExecutionAdmin extends AbstractAdmin
             ->add('commandName')
             ->add(
                 'state',
-                null,
-                [],
                 ChoiceType::class,
+                [],
                 [
                     'choices' => array_combine(
                         Execution::STATES,
@@ -96,7 +95,7 @@ class ExecutionAdmin extends AbstractAdmin
             ->add('createdAt');
     }
 
-    protected function configureListFields(ListMapper $list)
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('id')
@@ -106,64 +105,58 @@ class ExecutionAdmin extends AbstractAdmin
             ->add('createdAt');
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show
             ->tab('Execution')
-                ->with('General')
-                    ->add('id')
-                    ->add('command')
-                    ->add('commandName')
-                    ->add('state')
-                    ->add('createdAt')
-                    ->add('updatedAt')
-                    ->add('input', 'array')
-                ->end()
-                ->with('Execution')
-                    ->add('commandLine', 'text')
-                    ->add('outputHtml', 'html')
-                ->end()
+            ->with('General')
+            ->add('id')
+            ->add('command')
+            ->add('commandName')
+            ->add('state')
+            ->add('createdAt')
+            ->add('updatedAt')
+            ->add('input', 'array')
+            ->end()
+            ->with('Execution')
+            ->add('commandLine', 'text')
+            ->add('outputHtml', 'html')
+            ->end()
             ->end();
     }
 
-    protected function configureFormFields(FormMapper $form)
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('command', null, ['attr' => ['readonly' => true]])
             ->add('commandName', null, ['attr' => ['readonly' => true]]);
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    /**
+     * @param RouteCollection|RouteCollectionInterface $collection
+     */
+    protected function backwardCompatibleConfigureRoute($collection)
     {
-        parent::configureRoutes($collection);
-
+        $collection
+            ->get('create')
+            ->setDefault('_controller', $collection->getBaseControllerName().'::myCreateAction');
         $collection->remove('edit');
         $collection->add('acknowledge', $this->getRouterIdParameter().'/acknowledge');
     }
 
-    /**
-     * @param $action
-     * @param Execution|null $object
-     *
-     * @return array
-     */
-    public function configureActionButtons($action, $object = null)
+    public function backwardCompatibleConfigureActionButtons(array $buttonList, $action, $object = null): array
     {
-        $list = parent::configureActionButtons($action, $object);
-
         if ('show' == $action && Execution::STATE_ERROR == $object->getState()) {
-            $list['acknowledge']['template'] = '@DrawSonataCommand\ExecutionAdmin\button_acknowledge.html.twig';
+            $buttonList['acknowledge']['template'] = '@DrawSonataCommand\ExecutionAdmin\button_acknowledge.html.twig';
         }
 
-        return $list;
+        return $buttonList;
     }
 
     /**
      * @param Execution $object
-     *
-     * @return object
      */
-    public function create($object)
+    public function prePersist($object): void
     {
         $object->setState(Execution::STATE_INITIALIZED);
         $object->setInput([
@@ -171,16 +164,18 @@ class ExecutionAdmin extends AbstractAdmin
             '-vvv' => true,
             '--no-interaction' => true,
         ]);
+    }
 
-        parent::create($object);
-
+    /**
+     * @param Execution $object
+     */
+    public function postPersist($object): void
+    {
         $this->application->setAutoExit(false);
         $input = new ArrayInput(
             $object->getInput() + ['--'.CommandFlowListener::OPTION_EXECUTION_ID => $object->getId()]
         );
         $output = new BufferedOutput(Output::OUTPUT_NORMAL, true);
         $this->application->run($input, $output);
-
-        return $object;
     }
 }

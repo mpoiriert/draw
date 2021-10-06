@@ -16,7 +16,7 @@ class TransportTesterTest extends TestCase
      */
     private $transportTester;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->transportTester = $this->getService('messenger.transport.memory.draw.tester');
     }

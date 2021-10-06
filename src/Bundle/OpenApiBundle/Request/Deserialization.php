@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
  */
 class Deserialization extends ParamConverter
 {
-    const DEFAULT_PARAMETER_NAME = 'target';
+    public const DEFAULT_PARAMETER_NAME = 'target';
 
     /**
      * The groups use for deserialization.

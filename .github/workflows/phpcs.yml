@@ -23,9 +23,11 @@ jobs:
       - name: PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.2'
+          php-version: '7.3'
           tools: composer
       - name: Composer
+        run: composer install
+      - name: Composer for vendor-bin
         run: composer install
       - name: PHPCS
         # https://cs.symfony.com/doc/usage.html

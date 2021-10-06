@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class CommandLineAuthenticatorListener implements EventSubscriberInterface
 {
-    const OPTION_AS_SYSTEM = 'as-system';
+    public const OPTION_AS_SYSTEM = 'as-system';
 
     /**
      * @var SystemAuthenticatorInterface

@@ -10,7 +10,7 @@ use JMS\Serializer\Annotation as Serializer;
  */
 class ActionCreate extends Action
 {
-    const TYPE = 'create';
+    public const TYPE = 'create';
 
     /**
      * @var array
