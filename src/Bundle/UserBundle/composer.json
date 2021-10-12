@@ -11,8 +11,6 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "draw/core": "^0.8",
-        "draw/messenger-bundle": "^0.8",
-        "draw/post-office-bundle": "^0.8",
         "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2.2",
         "doctrine/orm": "^2.8",
@@ -26,10 +24,13 @@
         "firebase/php-jwt": "^5.1",
         "scheb/2fa-bundle": "^5.12",
         "scheb/2fa-qr-code": "^5.12",
-        "scheb/2fa-totp": "^5.12"
+        "scheb/2fa-totp": "^5.12",
+        "draw/messenger-bundle": "^0.8",
+        "draw/post-office-bundle": "^0.8"
     },
     "suggest": {
         "draw/messenger-bundle": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",
+        "draw/post-office-bundle": "This allow to write and send email via email writer services.",
         "firebase/php-jwt": "Use for the jwt connection token system",
         "scheb/2fa-bundle": "Use for the 2FA",
         "scheb/2fa-totp": "Use to enable TOTP methdon for 2FA",
