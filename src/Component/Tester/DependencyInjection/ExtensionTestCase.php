@@ -126,8 +126,16 @@ abstract class ExtensionTestCase extends TestCase
     protected function load(array $config): ContainerBuilder
     {
         $containerBuilder = new ContainerBuilder();
+        $this->preLoad($config, $containerBuilder);
         $this->extension->load([$config], $containerBuilder);
 
         return $containerBuilder;
+    }
+
+    /**
+     * Override if you want to configure the container builder in some specific case.
+     */
+    protected function preLoad(array $config, ContainerBuilder $containerBuilder): void
+    {
     }
 }

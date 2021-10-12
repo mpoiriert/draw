@@ -4,6 +4,15 @@ namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Sonata\Controller\TwoFactorAuthenticationController;
+use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
+use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension3X;
+use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension4X;
+use ReflectionClass;
+use RuntimeException;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -17,15 +26,15 @@ class DrawUserExtension extends ConfigurableExtension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
+        $this->assignParameters($config, $container);
+
         $this->configureSonata($config['sonata'], $loader, $container);
         $this->configureJwtAuthenticator($config['jwt_authenticator'], $loader, $container);
 
-        $userClass = $config['user_entity_class'];
+        $userClass = $container->getParameter('draw_user.user_entity_class');
         if (!class_exists($userClass)) {
-            throw new \RuntimeException(sprintf('The class [%s] does not exists. Make sure you configured the [%s] node properly.', $userClass, 'draw_user.user_entity_class'));
+            throw new RuntimeException(sprintf('The class [%s] does not exists. Make sure you configured the [%s] node properly.', $userClass, 'draw_user.user_entity_class'));
         }
-
-        $this->assignParameters($config, $container);
 
         if ($config['encrypt_password_listener']['enabled']) {
             $container->getDefinition(EncryptPasswordUserEntityListener::class)
@@ -60,6 +69,32 @@ class DrawUserExtension extends ConfigurableExtension
 
         $container->setParameter('draw_user.sonata.user_admin_code', $config['user_admin_code']);
         $loader->load('sonata.xml');
+
+        if (!$config['2fa']['enabled'] ?? false) {
+            $container->removeDefinition(TwoFactorAuthenticationExtension::class);
+            $container->removeDefinition(TwoFactorAuthenticationController::class);
+        } else {
+            if (!isset($container->getParameter('kernel.bundles')['SchebTwoFactorBundle'])) {
+                throw new RuntimeException('The bundle SchebTwoFactorBundle needs to be registered to have 2FA enabled.');
+            }
+
+            $reflectionClass = new ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
+            if (!$reflectionClass->implementsInterface(TwoFactorAuthenticationUserInterface::class)) {
+                throw new RuntimeException(sprintf('The class [%s] must implements [%s] to have 2FA enabled.', $userEntityClass, TwoFactorAuthenticationUserInterface::class));
+            }
+
+            $type = (new \ReflectionClass(AbstractAdmin::class))
+                ->getMethod('configureRoutes')
+                ->getParameters()[0]->getType()->getName();
+            // TODO remove ExecutionAdmin3X when stop support of sonata admin 3.x
+            $extensionClass = RouteCollectionInterface::class === $type
+                ? TwoFactorAuthenticationExtension4X::class
+                : TwoFactorAuthenticationExtension3X::class;
+
+            $container->getDefinition(TwoFactorAuthenticationExtension::class)
+                ->setClass($extensionClass)
+                ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
+        }
     }
 
     private function configureJwtAuthenticator(array $config, LoaderInterface $loader, ContainerBuilder $container)
