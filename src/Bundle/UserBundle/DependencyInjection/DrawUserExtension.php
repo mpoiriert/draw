@@ -29,6 +29,7 @@ class DrawUserExtension extends ConfigurableExtension
         $this->assignParameters($config, $container);
 
         $this->configureSonata($config['sonata'], $loader, $container);
+        $this->configureEmailWriters($config['email_writers'], $loader, $container);
         $this->configureJwtAuthenticator($config['jwt_authenticator'], $loader, $container);
 
         $userClass = $container->getParameter('draw_user.user_entity_class');
@@ -59,6 +60,19 @@ class DrawUserExtension extends ConfigurableExtension
         foreach ($parameterNames as $parameterName) {
             $container->setParameter('draw_user.'.$parameterName, $config[$parameterName]);
         }
+    }
+
+    private function configureEmailWriters(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        if (!isset($container->getParameter('kernel.bundles')['DrawPostOfficeBundle'])) {
+            throw new RuntimeException(sprintf('The bundle [%] needs to be registered to have email_writers enabled.', 'DrawPostOfficeBundle'));
+        }
+
+        $loader->load('email-writers.xml');
     }
 
     private function configureSonata(array $config, LoaderInterface $loader, ContainerBuilder $container)

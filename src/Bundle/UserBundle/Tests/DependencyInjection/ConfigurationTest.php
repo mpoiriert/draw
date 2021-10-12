@@ -18,6 +18,9 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'email_writers' => [
+                'enabled' => false,
+            ],
             'sonata' => [
                 'enabled' => true,
                 'user_admin_code' => UserAdmin::class,

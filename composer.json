@@ -134,9 +134,9 @@
             "@auto-scripts"
         ]
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "extra": {
         "src-dir": "app/src"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

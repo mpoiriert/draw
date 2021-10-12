@@ -7,6 +7,7 @@ sonata_block:
         Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
 
 draw_user:
+    email_writers: ~
     sonata:
         enabled: true
         user_admin_code: App\Sonata\Admin\UserAdmin

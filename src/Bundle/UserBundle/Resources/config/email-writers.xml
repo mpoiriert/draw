@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="false" autoconfigure="true" autowire="true">
+            <bind key="Doctrine\ORM\EntityRepository $userEntityRepository" type="service" id="draw_user.user_repository" />
+            <bind key="string $resetPasswordRoute">%draw_user.reset_password_route%</bind>
+            <bind key="string $inviteCreateAccountRoute">%draw_user.invite_create_account_route%</bind>
+        </defaults>
+        <prototype namespace="Draw\Bundle\UserBundle\EmailWriter\" resource="../../EmailWriter" />
+    </services>
+</container>
