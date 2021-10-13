@@ -10,7 +10,7 @@
         "php": "^7.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "draw/open-api-bundle": "^0.8",
+        "draw/open-api-bundle": "^0.7.24",
         "symfony/framework-bundle": "^4.4|^5.3"
     },
     "autoload": {
