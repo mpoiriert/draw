@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\UserBundle\DependencyInjection\Configuration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class ConfigurationTest extends ConfigurationTestCase
@@ -26,6 +27,12 @@ class ConfigurationTest extends ConfigurationTestCase
                 'user_admin_code' => UserAdmin::class,
                 '2fa' => [
                     'enabled' => false,
+                    'field_positions' => [
+                        '2fa_enabled' => [
+                            'list' => ListMapper::NAME_ACTIONS,
+                            'form' => true,
+                        ],
+                    ],
                 ],
             ],
             'encrypt_password_listener' => [

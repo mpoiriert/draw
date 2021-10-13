@@ -35,7 +35,6 @@ security:
     firewalls:
         admin:
             two_factor:
-              two_factor:
                 provider: app_user_provider_email # If you have more than one user provider
                 auth_form_path: admin_2fa_login
                 check_path: admin_2fa_login_check
@@ -47,7 +46,7 @@ security:
 3. Implements Draw\Bundle\UserBundle\Security\TwoFactorAuthenticationUserInterface and 
 use \Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait for User entity.
 Migrate database changes.
-4Enable 2FA in DrawUserBundle.
+4. Enable 2FA in DrawUserBundle.
 ```yaml
 draw_user:
     sonata:
@@ -55,4 +54,13 @@ draw_user:
         user_admin_code: App\Sonata\Admin\UserAdmin
         2fa:
             enabled: true
+            field_positions:
+                2fa_enabled:
+                    #Those are the default
+                    list: '_action' #Before the _action list. Dynamically set to _actions for sonata 4.x
+                    form: true #at the end of the form
 ```
+
+Two actions will be available when 2fa is enabled: 2fa-enable and 2fa-disable.
+The access right are configure via the TwoFactorAuthenticationExtension::getAccessMapping.
+You can override this by overriding the getAccess method of your UserAdmin class.

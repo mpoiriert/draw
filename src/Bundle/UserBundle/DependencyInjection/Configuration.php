@@ -4,6 +4,8 @@ namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
+use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -77,7 +79,24 @@ class Configuration implements ConfigurationInterface
             ->{class_exists(SonataDoctrineORMAdminBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}()
             ->children()
                 ->scalarNode('user_admin_code')->defaultValue(UserAdmin::class)->end()
-                ->arrayNode('2fa')->canBeEnabled()->end()
+                ->arrayNode('2fa')
+                    ->canBeEnabled()
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('field_positions')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode(TwoFactorAuthenticationExtension::FIELD_2FA_ENABLED)
+                                ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('list')->defaultValue(ListMapper::NAME_ACTIONS)->end()
+                                        ->variableNode('form')->defaultValue(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 }

@@ -13,6 +13,15 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 {
+    public const FIELD_2FA_ENABLED = '2fa_enabled';
+
+    private $fieldPositions;
+
+    public function __construct(array $fieldPositions = [])
+    {
+        $this->fieldPositions = $fieldPositions;
+    }
+
     protected function backwardCompatibleConfigureRoute(AdminInterface $admin, RouteCollectionInterface $collection)
     {
         $collection->add(
@@ -38,29 +47,76 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 
     public function configureListFields(ListMapper $list): void
     {
-        $list->add('isTotpAuthenticationEnabled', 'boolean', ['label' => '2FA enabled']);
+        if (!isset($this->fieldPositions[static::FIELD_2FA_ENABLED]['list'])) {
+            return;
+        }
+
+        if ($list->has('totpAuthenticationEnabled')) {
+            return;
+        }
+
+        $before = $this->fieldPositions[static::FIELD_2FA_ENABLED]['list'];
+        $keys = $list->keys();
+        $list->add(
+            'totpAuthenticationEnabled',
+            'boolean',
+            [
+                'label' => 'admin.list.2fa_enabled',
+                'translation_domain' => 'DrawUserBundle'
+            ]
+        );
+        if (false !== $index = array_search($before, $keys, true)) {
+            array_splice($keys, $index, 0, 'totpAuthenticationEnabled');
+            $list->reorder($keys);
+        }
     }
 
     public function configureFormFields(FormMapper $form): void
     {
+        if (!$form->getAdmin()->id($form->getAdmin()->getSubject())) {
+            return;
+        }
+
+        if (!isset($this->fieldPositions[static::FIELD_2FA_ENABLED]['form'])) {
+            return;
+        }
+
+        if ($form->has('totpAuthenticationEnabled')) {
+            return;
+        }
+
+        $before = $this->fieldPositions[static::FIELD_2FA_ENABLED]['form'];
+        $keys = $form->keys();
         $form
             ->add(
-                'isTotpAuthenticationEnabled',
+                'totpAuthenticationEnabled',
                 CheckboxType::class,
                 [
-                    'label' => '2FA enabled',
+                    'label' => 'admin.form.2fa_enabled',
                     'disabled' => true,
                     'required' => false,
+                ],
+                [
+                    'translation_domain' => 'DrawUserBundle'
                 ]
             );
+
+        if (false !== $index = array_search($before, $keys, true)) {
+            array_splice($keys, $index, 0, 'totpAuthenticationEnabled');
+            $form->reorder($keys);
+        }
     }
 
     /**
      * @param TwoFactorAuthenticationUserInterface|object|null $object
      */
-    public function backwardCompatibleConfigureActionButtons(AdminInterface $admin, array $list, string $action, ?object $object = null): array
-    {
-        if (!$object) {
+    public function backwardCompatibleConfigureActionButtons(
+        AdminInterface $admin,
+        array $list,
+        string $action,
+        ?object $object = null
+    ): array {
+        if (!in_array($action, ['edit', 'show'])) {
             return $list;
         }
 

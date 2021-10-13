@@ -107,6 +107,7 @@ class DrawUserExtension extends ConfigurableExtension
 
             $container->getDefinition(TwoFactorAuthenticationExtension::class)
                 ->setClass($extensionClass)
+                ->setArgument(0, $config['2fa']['field_positions'])
                 ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
         }
     }

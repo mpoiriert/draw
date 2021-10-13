@@ -11,7 +11,10 @@ draw_user:
     sonata:
         enabled: true
         user_admin_code: App\Sonata\Admin\UserAdmin
-        2fa: ~
+        2fa:
+            field_positions:
+                2fa_enabled:
+                    list: 'email'
 
     jwt_authenticator:
         key: 'acme'
