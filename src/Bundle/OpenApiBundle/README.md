@@ -9,6 +9,31 @@ your controller method to document them.
 
 The bundle also provide some tools to provide a rest api without the need of FOSRestBundle.
 
+## Sandbox
+
+To install the sandbox you can run
+
+```SHELL
+bin/console draw:open-api:install-sandbox
+```
+
+The first argument is the version to install (E.g.: v3.52.5). By default it master.
+
+We recommend that you add this to your composer.json scripts section before the asset:install
+
+```JSON
+{
+    "scripts": {
+            "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "draw:open-api:install-sandbox": "symfony-cmd",
+            "assets:install": "symfony-cmd"
+        }
+    }
+}
+```
+
+
 ## Configuration
 
 Here is a example of the configuration:

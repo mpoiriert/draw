@@ -46,7 +46,7 @@ class OpenApiController
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );
 
-            return new RedirectResponse('http://petstore.swagger.io/?url='.$currentUrl);
+            return new RedirectResponse('/bundles/drawopenapi/sandbox/index.html?url='.$currentUrl);
         }
 
         return new JsonResponse(

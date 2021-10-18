@@ -30,6 +30,8 @@ class DrawOpenApiExtension extends ConfigurableExtension
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new XmlFileLoader($container, $fileLocator);
 
+        $loader->load('services.xml');
+
         $this->configOpenApi($config['openApi'], $loader, $container);
         $this->configDoctrine($config['doctrine'], $loader, $container);
         $this->configResponse($config['response'], $loader, $container);
