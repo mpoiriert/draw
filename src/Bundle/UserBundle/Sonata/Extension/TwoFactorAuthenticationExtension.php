@@ -62,7 +62,7 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
             'boolean',
             [
                 'label' => 'admin.list.2fa_enabled',
-                'translation_domain' => 'DrawUserBundle'
+                'translation_domain' => 'DrawUserBundle',
             ]
         );
         if (false !== $index = array_search($before, $keys, true)) {
@@ -97,7 +97,7 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
                     'required' => false,
                 ],
                 [
-                    'translation_domain' => 'DrawUserBundle'
+                    'translation_domain' => 'DrawUserBundle',
                 ]
             );
 
