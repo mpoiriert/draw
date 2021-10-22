@@ -89,7 +89,13 @@ class Configuration implements ConfigurationInterface
                                 ->arrayNode(TwoFactorAuthenticationExtension::FIELD_2FA_ENABLED)
                                 ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->variableNode('list')->defaultValue(ListMapper::NAME_ACTIONS)->end()
+                                        ->variableNode('list')
+                                            ->defaultValue(
+                                                defined(ListMapper::class . 'NAME_ACTIONS')
+                                                    ? ListMapper::NAME_ACTIONS
+                                                    : '_action'
+                                            )
+                                        ->end()
                                         ->variableNode('form')->defaultValue(true)->end()
                                     ->end()
                                 ->end()

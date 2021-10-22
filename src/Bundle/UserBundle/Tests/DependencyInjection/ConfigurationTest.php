@@ -29,7 +29,7 @@ class ConfigurationTest extends ConfigurationTestCase
                     'enabled' => false,
                     'field_positions' => [
                         '2fa_enabled' => [
-                            'list' => ListMapper::NAME_ACTIONS,
+                            'list' => defined(ListMapper::class . 'NAME_ACTIONS') ? ListMapper::NAME_ACTIONS : '_action',
                             'form' => true,
                         ],
                     ],
