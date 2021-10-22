@@ -91,7 +91,7 @@ class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->variableNode('list')
                                             ->defaultValue(
-                                                defined(ListMapper::class . 'NAME_ACTIONS')
+                                                defined(ListMapper::class.'NAME_ACTIONS')
                                                     ? ListMapper::NAME_ACTIONS
                                                     : '_action'
                                             )

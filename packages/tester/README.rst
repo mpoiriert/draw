@@ -1,10 +1,11 @@
 Php Data Tester
 ===============
-.. image:: https://travis-ci.org/mpoiriert/php-data-tester.svg?branch=master
+
+**Need to be updated**
 
 This library is a wrapper around **PHPUnit Assert** class to be able to use a fluent interface on the data you want to test.
 
-The library can be install via `Composer/Packagist <https://packagist.org/packages/draw/data-tester>`_.
+The library can be install via `Composer/Packagist <https://packagist.org/packages/draw/tester>`_.
 
 Here is a quick example of how to use it in a **PHPUnit TestCase**:
 

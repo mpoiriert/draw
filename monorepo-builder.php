@@ -7,7 +7,6 @@ require_once __DIR__.'/vendor/autoload.php';
 use Draw\Development\MonorepoBuilder\Release\ReleaseWorker as DrawReleaseWorker;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker;
-use Symplify\MonorepoBuilder\Split\ValueObject\ConvertFormat;
 use Symplify\MonorepoBuilder\ValueObject\Option;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -15,8 +14,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // where are the packages located?
     $parameters->set(Option::PACKAGE_DIRECTORIES, [
-        __DIR__.'/src/Bundle',
-        __DIR__.'/src/Component',
+        __DIR__.'/packages',
     ]);
 
     // "merge" command related
@@ -54,11 +52,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // How to split them on github ?
 
     $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES, [
-        __DIR__.'/src/Component/*' => 'git@github.com:mpoiriert/*.git',
-        __DIR__.'/src/Bundle/*' => 'git@github.com:mpoiriert/*.git',
+        __DIR__.'/packages/*' => 'git@github.com:mpoiriert/*.git',
     ]);
-
-    $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES_CONVERT_FORMAT, ConvertFormat::PASCAL_CASE_TO_KEBAB_CASE);
 
     // What is the release workflow
 
