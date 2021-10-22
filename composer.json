@@ -44,7 +44,6 @@
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/sql-formatter": "^1.1",
-        "draw/data-tester": "*",
         "firebase/php-jwt": "^5.1",
         "nelmio/cors-bundle": "^2.0",
         "pelago/emogrifier": "^6.0",
@@ -72,34 +71,32 @@
     },
     "autoload": {
         "files": [
-            "src/Bundle/DashboardBundle/./functions.php",
-            "src/Bundle/DashboardBundle/functions.php",
-            "src/Component/Core/ignore_annotations.php"
+            "packages/core/ignore_annotations.php",
+            "packages/dashboard-bundle/./functions.php"
         ],
         "psr-4": {
-            "Draw\\Bundle\\AwsToolKitBundle\\": "src/Bundle/AwsToolKitBundle/",
-            "Draw\\Bundle\\CommandBundle\\": "src/Bundle/CommandBundle/",
-            "Draw\\Bundle\\CronBundle\\": "src/Bundle/CronBundle/",
-            "Draw\\Bundle\\DashboardBundle\\": "src/Bundle/DashboardBundle/",
-            "Draw\\Bundle\\DoctrineBusMessageBundle\\": "src/Bundle/DoctrineBusMessageBundle/",
-            "Draw\\Bundle\\MessengerBundle\\": "src/Bundle/MessengerBundle/",
-            "Draw\\Bundle\\OpenApiBundle\\": "src/Bundle/OpenApiBundle/",
-            "Draw\\Bundle\\PostOfficeBundle\\": "src/Bundle/PostOfficeBundle/",
-            "Draw\\Bundle\\TesterBundle\\": "src/Bundle/TesterBundle/",
-            "Draw\\Bundle\\UserBundle\\": "src/Bundle/UserBundle/",
-            "Draw\\Component\\ClassInfo\\": "src/Component/ClassInfo/",
-            "Draw\\Component\\Core\\": "src/Component/Core/",
-            "Draw\\Component\\Messenger\\": "src/Component/Messenger/",
-            "Draw\\Component\\OpenApi\\": "src/Component/OpenApi/",
-            "Draw\\Component\\Profiling\\": "src/Component/Profiling/",
-            "Draw\\Component\\Tester\\": "src/Component/Tester/",
-            "Draw\\Component\\Validator\\": "src/Component/Validator/"
+            "Draw\\Bundle\\AwsToolKitBundle\\": "packages/aws-tool-kit-bundle/",
+            "Draw\\Bundle\\CommandBundle\\": "packages/command-bundle/",
+            "Draw\\Bundle\\CronBundle\\": "packages/cron-bundle/",
+            "Draw\\Bundle\\DashboardBundle\\": "packages/dashboard-bundle/",
+            "Draw\\Bundle\\DoctrineBusMessageBundle\\": "packages/doctrine-bus-message-bundle/",
+            "Draw\\Bundle\\MessengerBundle\\": "packages/messenger-bundle/",
+            "Draw\\Bundle\\OpenApiBundle\\": "packages/open-api-bundle/",
+            "Draw\\Bundle\\PostOfficeBundle\\": "packages/post-office-bundle/",
+            "Draw\\Bundle\\TesterBundle\\": "packages/tester-bundle/",
+            "Draw\\Bundle\\UserBundle\\": "packages/user-bundle/",
+            "Draw\\Component\\Core\\": "packages/core/",
+            "Draw\\Component\\Messenger\\": "packages/messenger/",
+            "Draw\\Component\\OpenApi\\": "packages/open-api/",
+            "Draw\\Component\\Profiling\\": "packages/profiling/",
+            "Draw\\Component\\Tester\\": "packages/tester/",
+            "Draw\\Component\\Validator\\": "packages/validator/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\": "app//src//",
-            "App\\Tests\\": "tests//",
+            "App\\": "app/src/",
+            "App\\Tests\\": "tests/",
             "Draw\\Development\\": "src/Development/"
         }
     },
@@ -108,7 +105,6 @@
         "draw/core": "self.version",
         "draw/cron-bundle": "self.version",
         "draw/dashboard-bundle": "self.version",
-        "draw/data-tester": "self.version",
         "draw/doctrine-bus-message-bundle": "self.version",
         "draw/messenger": "self.version",
         "draw/messenger-bundle": "self.version",

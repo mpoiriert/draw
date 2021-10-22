@@ -15,8 +15,7 @@
     <testsuites>
         <testsuite name="all">
             <directory>./tests/</directory>
-            <directory>./src/*/Tests</directory>
-            <directory>./src/*/*/Tests</directory>
+            <directory>./packages/*/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -24,8 +23,7 @@
         <whitelist>
             <directory suffix=".php">./src/*</directory>
             <exclude>
-                <directory>./src/*/Tests</directory>
-                <directory>./src/*/*/Tests</directory>
+                <directory>./packages/*/Tests</directory>
             </exclude>
         </whitelist>
     </filter>
