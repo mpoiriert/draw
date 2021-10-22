@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Tester\Http\Request;
 
-use function GuzzleHttp\Psr7\parse_request;
+use GuzzleHttp\Psr7\Message;
 
 class BodyParser
 {
@@ -55,7 +55,7 @@ class BodyParser
                 continue;
             }
 
-            $request = parse_request('GET /fake-start-line HTTP/1.1'.$content);
+            $request = Message::parseRequest('GET /fake-start-line HTTP/1.1'.$content);
 
             $contentDisposition = $this->parseContentDisposition($request->getHeaderLine('Content-Disposition'));
 
