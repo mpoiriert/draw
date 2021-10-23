@@ -63,7 +63,8 @@
         "symfony/phpunit-bridge": "^5.2",
         "symfony/stopwatch": "^4.4|^5.3",
         "symfony/web-profiler-bundle": "^4.4|^5.3",
-        "symplify/monorepo-builder": "^8.3.48"
+        "symplify/monorepo-builder": "^8.3.48",
+        "terminal42/service-annotation-bundle": "^1.1"
     },
     "conflict": {
         "symfony/security-bundle": "<4.4.1",
@@ -83,6 +84,7 @@
             "Draw\\Bundle\\MessengerBundle\\": "packages/messenger-bundle/",
             "Draw\\Bundle\\OpenApiBundle\\": "packages/open-api-bundle/",
             "Draw\\Bundle\\PostOfficeBundle\\": "packages/post-office-bundle/",
+            "Draw\\Bundle\\SonataExtraBundle\\": "packages/sonata-extra-bundle/",
             "Draw\\Bundle\\TesterBundle\\": "packages/tester-bundle/",
             "Draw\\Bundle\\UserBundle\\": "packages/user-bundle/",
             "Draw\\Component\\Core\\": "packages/core/",
@@ -112,6 +114,7 @@
         "draw/open-api-bundle": "self.version",
         "draw/post-office-bundle": "self.version",
         "draw/profiling": "self.version",
+        "draw/sonata-extra-bundle": "self.version",
         "draw/tester": "self.version",
         "draw/tester-bundle": "self.version",
         "draw/user-bundle": "self.version",

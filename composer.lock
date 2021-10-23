@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cfd1fabd481407c52ba8cb3a54973c02",
+    "content-hash": "ef99a2471b947525b1d568c1a71f1f97",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -11871,6 +11871,58 @@
                 "source": "https://github.com/symplify/symplify-kernel/tree/8.3.48"
             },
             "time": "2020-10-26T10:38:48+00:00"
+        },
+        {
+            "name": "terminal42/service-annotation-bundle",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/terminal42/service-annotation-bundle.git",
+                "reference": "c64a72081a4033178de196a75084b5764b53f603"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/terminal42/service-annotation-bundle/zipball/c64a72081a4033178de196a75084b5764b53f603",
+                "reference": "c64a72081a4033178de196a75084b5764b53f603",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "^1.6",
+                "php": "^7.1",
+                "symfony/dependency-injection": "^4.0 || ^5.0",
+                "symfony/http-kernel": "^4.0 || ^5.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.12"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Terminal42\\ServiceAnnotationBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "terminal42 gmbh",
+                    "homepage": "https://www.terminal42.ch/"
+                }
+            ],
+            "description": "Add service tags from class annotations",
+            "support": {
+                "issues": "https://github.com/terminal42/service-annotation-bundle/issues",
+                "source": "https://github.com/terminal42/service-annotation-bundle"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/terminal42",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-07-24T14:14:43+00:00"
         },
         {
             "name": "twig/extensions",
