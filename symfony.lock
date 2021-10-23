@@ -818,6 +818,9 @@
     "symplify/symplify-kernel": {
         "version": "8.3.48"
     },
+    "terminal42/service-annotation-bundle": {
+        "version": "1.1.0"
+    },
     "thecodingmachine/safe": {
         "version": "v1.3.3"
     },

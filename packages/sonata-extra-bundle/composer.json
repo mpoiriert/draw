@@ -1,0 +1,30 @@
+{
+  "name": "draw/sonata-extra-bundle",
+  "type": "symfony-bundle",
+  "keywords": [
+    "symfony",
+    "sonata"
+  ],
+  "license": "MIT",
+  "description": "",
+  "require": {
+    "php": "^7.3",
+    "symfony/framework-bundle": "^4.4|^5.3"
+  },
+  "require-dev": {
+    "terminal42/service-annotation-bundle": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Draw\\Bundle\\SonataExtraBundle\\": ""
+    }
+  },
+  "suggest": {
+    "terminal42/service-annotation-bundle": "This allow to use annotation tag for service."
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.8-dev"
+    }
+  }
+}

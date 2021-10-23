@@ -22,9 +22,11 @@ return [
     Draw\Bundle\OpenApiBundle\DrawOpenApiBundle::class => ['all' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Draw\Bundle\DashboardBundle\DrawDashboardBundle::class => ['all' => true],
+    Draw\Bundle\SonataExtraBundle\DrawSonataExtraBundle::class => ['all' => true],
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     Scheb\TwoFactorBundle\SchebTwoFactorBundle::class => ['all' => true],
     Symplify\ComposerJsonManipulator\ComposerJsonManipulatorBundle::class => ['dev' => true, 'test' => true],
+    Terminal42\ServiceAnnotationBundle\Terminal42ServiceAnnotationBundle::class => ['dev' => true, 'test' => true],
 ];
