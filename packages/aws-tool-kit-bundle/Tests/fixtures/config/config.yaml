@@ -2,6 +2,8 @@ framework:
     test: true
     session:
         enabled: false
+    secret: 'ThisIsVerySecret!'
+
 
 services:
     # This is just for auto-wiring

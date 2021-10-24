@@ -6,13 +6,14 @@ use Draw\Component\Core\FilterExpression\Expression\ExpressionEvaluator;
 use Draw\Component\Profiling\ProfilerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
-class DrawTesterExtension extends ConfigurableExtension
+class DrawTesterExtension extends Extension
 {
-    protected function loadInternal(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $container
             ->registerForAutoconfiguration(ProfilerInterface::class)
             ->addTag(ProfilerInterface::class);

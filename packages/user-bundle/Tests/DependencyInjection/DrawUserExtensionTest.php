@@ -19,6 +19,7 @@ use Draw\Bundle\UserBundle\Sonata\Form\ForgotPasswordForm;
 use Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminRuntime;
+use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
@@ -31,7 +32,9 @@ class DrawUserExtensionTest extends ExtensionTestCase
 
     public function getConfiguration(): array
     {
-        return [];
+        return [
+            'user_entity_class' => User::class,
+        ];
     }
 
     public function provideTestHasServiceDefinition(): iterable

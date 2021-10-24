@@ -6,23 +6,20 @@ use Draw\Bundle\CronBundle\Command\DumpToFileCommand;
 use Draw\Bundle\CronBundle\CronManager;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestCase;
-use Prophecy\Prophecy\ObjectProphecy;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 class DumpToFileCommandTest extends CommandTestCase
 {
-    /**
-     * @var ObjectProphecy
-     */
-    private $cronManagerProphecy;
-
     public function createCommand(): Command
     {
-        $this->cronManagerProphecy = $this->prophesize(CronManager::class);
+        $mock = $this->createMock(CronManager::class);
+        $mock->method('dumpJobs')
+            ->willReturn('Output');
 
-        return new DumpToFileCommand($this->cronManagerProphecy->reveal(CronManager::class));
+        return new DumpToFileCommand($mock);
     }
 
     public function getCommandName(): string
@@ -47,11 +44,6 @@ class DumpToFileCommandTest extends CommandTestCase
 
     public function testExecuteNewFile()
     {
-        $this->cronManagerProphecy
-            ->__call('dumpJobs', [])
-            ->shouldBeCalledOnce()
-            ->willReturn('Output');
-
         $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
         register_shutdown_function('unlink', $filePath);
         $this
@@ -63,11 +55,6 @@ class DumpToFileCommandTest extends CommandTestCase
 
     public function testExecuteNewFileOverride()
     {
-        $this->cronManagerProphecy
-            ->__call('dumpJobs', [])
-            ->shouldBeCalledOnce()
-            ->willReturn('Output');
-
         $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($filePath, 'Before');
         register_shutdown_function('unlink', $filePath);
@@ -84,7 +71,7 @@ class DumpToFileCommandTest extends CommandTestCase
         file_put_contents($filePath, 'Before');
         register_shutdown_function('unlink', $filePath);
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(sprintf(
             'The file [%s] already exists. Remove the file or use option --override.',
             $filePath

@@ -5,7 +5,7 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true"/>
         <prototype namespace="Draw\Bundle\MessengerBundle\" resource="../..">
-            <exclude>../../{DependencyInjection,Entity,Tests}</exclude>
+            <exclude>../../{vendor,DependencyInjection,Entity,Tests,Event}</exclude>
             <exclude>../../{Sonata}</exclude>
             <exclude>../../{DrawMessengerBundle.php}</exclude>
         </prototype>

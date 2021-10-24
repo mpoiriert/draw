@@ -9,13 +9,13 @@
             "email": "mpoiriert@gmail.com"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Draw\\Component\\Profiling\\": ""
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "require-dev": {
         "draw/tester": "^0.8",
         "phpunit/phpunit": "^8.0|^9.0"

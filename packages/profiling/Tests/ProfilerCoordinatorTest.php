@@ -5,7 +5,6 @@ namespace Draw\Component\Profiling\Tests;
 use Draw\Component\Profiling\ProfilerCoordinator;
 use Draw\Component\Profiling\ProfilerInterface;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 
 class ProfilerCoordinatorTest extends TestCase
 {
@@ -17,11 +16,6 @@ class ProfilerCoordinatorTest extends TestCase
     private $profilerCoordinator;
 
     /**
-     * @var ObjectProphecy
-     */
-    private $profilerProphecy;
-
-    /**
      * @var ProfilerInterface
      */
     private $profiler;
@@ -29,8 +23,7 @@ class ProfilerCoordinatorTest extends TestCase
     public function setUp(): void
     {
         $this->profilerCoordinator = new ProfilerCoordinator();
-        $this->profilerProphecy = $this->prophesize(ProfilerInterface::class);
-        $this->profiler = $this->profilerProphecy->reveal();
+        $this->profiler = $this->createMock(ProfilerInterface::class);
     }
 
     public function testIsStartedDefault(): void
@@ -53,21 +46,21 @@ class ProfilerCoordinatorTest extends TestCase
 
     public function testRegisterProfile()
     {
-        $this->profilerProphecy->__call('getType', [])->shouldBeCalled()->willReturn(self::PROFILER_TYPE);
+        $this->profiler->expects($this->once())->method('getType')->willReturn(self::PROFILER_TYPE);
         $this->profilerCoordinator->registerProfiler($this->profiler);
     }
 
     public function testStarAll()
     {
         $this->testRegisterProfile();
-        $this->profilerProphecy->__call('start', [])->shouldBeCalled();
+        $this->profiler->expects($this->once())->method('start');
         $this->profilerCoordinator->startAll();
     }
 
     public function testStopAll()
     {
         $this->testStarAll();
-        $this->profilerProphecy->__call('stop', [])->shouldBeCalledOnce()->willReturn($result = 'result');
+        $this->profiler->expects($this->once())->method('stop')->willReturn($result = 'result');
         $metrics = $this->profilerCoordinator->stopAll();
 
         $this->assertObjectHasAttribute(self::PROFILER_TYPE, $metrics);

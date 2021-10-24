@@ -8,15 +8,16 @@ use Draw\Bundle\PostOfficeBundle\Listener\EmailCssInlinerListener;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\Mime\Address;
 
-class DrawPostOfficeExtension extends ConfigurableExtension
+class DrawPostOfficeExtension extends Extension
 {
-    protected function loadInternal(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 

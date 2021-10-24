@@ -3,7 +3,6 @@ framework:
     test: true
     session:
         enabled: false
-    validation: { enable_annotations: true }
     messenger:
         transports:
             async: "in-memory://"

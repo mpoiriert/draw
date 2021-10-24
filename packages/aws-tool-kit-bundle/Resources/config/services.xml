@@ -7,7 +7,7 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
         <prototype namespace="Draw\Bundle\AwsToolKitBundle\" resource="../..">
-            <exclude>../../{DependencyInjection,Entity,Tests}</exclude>
+            <exclude>../../{vendor,DependencyInjection,Entity,Tests}</exclude>
             <exclude>../../DrawAwsToolKitBundle.php</exclude>
         </prototype>
     </services>
