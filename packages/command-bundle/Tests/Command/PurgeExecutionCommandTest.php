@@ -6,7 +6,7 @@ use Doctrine\DBAL\Connection;
 use Draw\Bundle\CommandBundle\Command\PurgeExecutionCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestCase;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,24 +14,21 @@ use Symfony\Component\Console\Input\InputOption;
 class PurgeExecutionCommandTest extends CommandTestCase
 {
     /**
-     * @var ObjectProphecy
+     * @var Connection|MockObject
      */
-    private $connectionProphecy;
+    private $connection;
 
     /**
-     * @var ObjectProphecy
+     * @var LoggerInterface|MockObject
      */
-    private $loggerProphecy;
+    private $logger;
 
     public function createCommand(): Command
     {
-        $this->connectionProphecy = $this->prophesize(Connection::class);
-        $command = new PurgeExecutionCommand($this->connectionProphecy->reveal(Connection::class));
+        $this->connection = $this->createMock(Connection::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->loggerProphecy = $this->prophesize(LoggerInterface::class);
-        $command->setLogger($this->loggerProphecy->reveal(LoggerInterface::class));
-
-        return $command;
+        return new PurgeExecutionCommand($this->connection, $this->logger);
     }
 
     public function getCommandName(): string
@@ -80,47 +77,40 @@ class PurgeExecutionCommandTest extends CommandTestCase
     {
         $date = '2000-01-01 00:00:01';
 
-        $this->loggerProphecy
-            ->__call(
-                'debug',
+        $this->logger->expects(
+            $this->exactly(3)
+        )
+            ->method('debug')
+            ->withConsecutive(
                 [
                     'Purging all records before {delay}, {batch_size} as the time, sleeping {seconds} per batch.',
                     ['delay' => $date, 'batch_size' => 1000, 'seconds' => 0],
-                ]
-            )
-            ->shouldBeCalledOnce();
-
-        $this->loggerProphecy
-            ->__call(
-                'debug',
+                ],
                 [
                     'Sleeping for {seconds} seconds during purge.',
                     ['seconds' => 0],
-                ]
-            )
-            ->shouldBeCalledOnce();
-
-        $this->loggerProphecy
-            ->__call(
-                'debug',
+                ],
                 [
                     'Successfully purged {record_count} records.',
                     ['record_count' => 1002],
                 ]
-            )
-            ->shouldBeCalledOnce();
+            );
 
-        $this->connectionProphecy
-            ->__call(
-                'executeUpdate',
+        $this->connection->expects($this->exactly(2))
+            ->method('executeUpdate')
+            ->withConsecutive(
+                [
+                    'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
+                    ['terminated', new \DateTime($date), 1000],
+                    ['string', 'datetime', 'integer'],
+                ],
                 [
                     'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
                     ['terminated', new \DateTime($date), 1000],
                     ['string', 'datetime', 'integer'],
                 ]
             )
-            ->shouldBeCalledTimes(2)
-            ->willReturn(1000, 2);
+            ->willReturnOnConsecutiveCalls(1000, 2);
 
         $this->execute(['--delay' => $date, '--sleep' => 0])
             ->test(CommandDataTester::create());

@@ -5,18 +5,15 @@ namespace Draw\Bundle\CommandBundle\Command;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Draw\Bundle\CommandBundle\Entity\Execution;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class PurgeExecutionCommand extends Command implements LoggerAwareInterface
+class PurgeExecutionCommand extends Command
 {
-    use LoggerAwareTrait;
-
     public const DEFAULT_DELAY = '-1 month';
     public const DEFAULT_WAIT_SECOND = 10;
     public const DEFAULT_BATCH_SIZE = 1000;
@@ -26,11 +23,16 @@ class PurgeExecutionCommand extends Command implements LoggerAwareInterface
      */
     private $connection;
 
-    public function __construct(Connection $executionConnection)
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(Connection $executionConnection, LoggerInterface $logger = null)
     {
         parent::__construct();
         $this->connection = $executionConnection;
-        $this->logger = new NullLogger();
+        $this->logger = $logger ?: new NullLogger();
     }
 
     protected function configure()

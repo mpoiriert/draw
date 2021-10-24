@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
+use Sonata\AdminBundle\SonataAdminBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -76,7 +76,7 @@ class Configuration implements ConfigurationInterface
     private function createSonataNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('sonata'))
-            ->{class_exists(SonataDoctrineORMAdminBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}()
+            ->{class_exists(SonataAdminBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}()
             ->children()
                 ->scalarNode('user_admin_code')->defaultValue(UserAdmin::class)->end()
                 ->arrayNode('2fa')

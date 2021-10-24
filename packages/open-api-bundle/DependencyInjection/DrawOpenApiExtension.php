@@ -12,21 +12,20 @@ use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
+use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class DrawOpenApiExtension extends ConfigurableExtension
+class DrawOpenApiExtension extends Extension
 {
-    /**
-     * @throws \Exception
-     */
-    public function loadInternal(array $config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
         $loader = new XmlFileLoader($container, $fileLocator);
 
@@ -47,7 +46,7 @@ class DrawOpenApiExtension extends ConfigurableExtension
         $container->setParameter('draw_open_api.root_schema', $config['schema']);
         $container->setParameter(
             'draw_open_api.component_dir',
-            dirname((new \ReflectionClass(OpenApi::class))->getFileName())
+            dirname((new ReflectionClass(OpenApi::class))->getFileName())
         );
 
         $container

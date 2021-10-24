@@ -6,7 +6,7 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
         <prototype namespace="Draw\Bundle\DoctrineBusMessageBundle\" resource="../..">
-            <exclude>../../{DependencyInjection,Tests}</exclude>
+            <exclude>../../{vendor,DependencyInjection,Tests}</exclude>
             <exclude>../../DrawDoctrineBusMessageBundle.php</exclude>
         </prototype>
         <service id="Draw\Bundle\DoctrineBusMessageBundle\Listener\DoctrineBusMessageEventSubscriber">

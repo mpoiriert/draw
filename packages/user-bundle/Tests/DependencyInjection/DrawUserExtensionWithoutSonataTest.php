@@ -13,12 +13,16 @@ use Draw\Bundle\UserBundle\Sonata\Form\ForgotPasswordForm;
 use Draw\Bundle\UserBundle\Sonata\Security\AdminLoginAuthenticator;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminRuntime;
+use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 
 class DrawUserExtensionWithoutSonataTest extends DrawUserExtensionTest
 {
     public function getConfiguration(): array
     {
-        return ['sonata' => false];
+        return [
+            'user_entity_class' => User::class,
+            'sonata' => false,
+        ];
     }
 
     public function provideTestHasServiceDefinition(): iterable

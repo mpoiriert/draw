@@ -16,6 +16,10 @@ class Tool
             return;
         }
 
+        if (!method_exists(AnnotationReader::class, 'addGlobalIgnoredNamespace')) {
+            return;
+        }
+
         foreach ($namespaces as $namespace) {
             AnnotationReader::addGlobalIgnoredNamespace($namespace);
         }

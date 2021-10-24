@@ -5,7 +5,7 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true"/>
         <prototype namespace="Draw\Bundle\DashboardBundle\" resource="../..">
-            <exclude>../../{DependencyInjection,Feedback,Event,Annotations}</exclude>
+            <exclude>../../{vendor,DependencyInjection,Feedback,Event,Annotations}</exclude>
             <exclude>../../{DrawDashboardBundle.php,functions.php}</exclude>
         </prototype>
         <prototype namespace="Draw\Bundle\DashboardBundle\Controller\" resource="../../Controller">

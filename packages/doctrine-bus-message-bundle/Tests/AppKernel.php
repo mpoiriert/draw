@@ -16,7 +16,6 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Draw\Bundle\DoctrineBusMessageBundle\DrawDoctrineBusMessageBundle(),
-            new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new \Draw\Bundle\TesterBundle\DrawTesterBundle(),
         ];
     }

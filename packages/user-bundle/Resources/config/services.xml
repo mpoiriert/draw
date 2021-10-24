@@ -7,7 +7,7 @@
             <bind key="Doctrine\ORM\EntityRepository $userEntityRepository" type="service" id="draw_user.user_repository" />
         </defaults>
         <prototype namespace="Draw\Bundle\UserBundle\" resource="../..">
-            <exclude>../../{DependencyInjection,DTO,Entity,Tests,Sonata,Email,Message,EmailWriter}</exclude>
+            <exclude>../../{vendor,DependencyInjection,DTO,Entity,Tests,Sonata,Email,Message,EmailWriter}</exclude>
             <exclude>../../{DrawUserBundle.php}</exclude>
         </prototype>
         <prototype namespace="Draw\Bundle\UserBundle\Controller\" resource="../../Controller">

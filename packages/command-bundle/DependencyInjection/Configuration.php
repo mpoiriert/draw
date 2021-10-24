@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\CommandBundle\DependencyInjection;
 
-use Doctrine\ORM\Version;
+use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticator;
 use Draw\Bundle\CommandBundle\Sonata\Controller\ExecutionController;
 use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
@@ -60,7 +60,7 @@ class Configuration implements ConfigurationInterface
     private function createDoctrineNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('doctrine'))
-            ->{class_exists(Version::class) ? 'canBeDisabled' : 'canBeEnabled'}()
+            ->{interface_exists(EntityManagerInterface::class) ? 'canBeDisabled' : 'canBeEnabled'}()
             ->children()
                 ->scalarNode('log_execution')->defaultTrue()->end()
             ->end();

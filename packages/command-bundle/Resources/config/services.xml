@@ -9,7 +9,7 @@
             </bind>
         </defaults>
         <prototype namespace="Draw\Bundle\CommandBundle\" resource="../..">
-            <exclude>../../{DependencyInjection,Entity,Model,Console,Tests}</exclude>
+            <exclude>../../{vendor,DependencyInjection,Entity,Model,Console,Tests}</exclude>
             <exclude>../../{Sonata}</exclude>
             <exclude>../../{Authentication}</exclude>
             <exclude>../../{DrawCommandBundle.php}</exclude>

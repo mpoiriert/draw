@@ -3,16 +3,13 @@
 namespace Draw\Bundle\CommandBundle\Listener;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Connections\MasterSlaveConnection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
+use Doctrine\DBAL\Exception as DBALException;
 use Draw\Bundle\CommandBundle\Entity\Execution;
-use ErrorException;
-use Exception;
 use Symfony\Component\Console\Event;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\Output;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CommandFlowListener implements EventSubscriberInterface
@@ -29,11 +26,11 @@ class CommandFlowListener implements EventSubscriberInterface
     ];
 
     /**
-     * @var Connection|MasterSlaveConnection
+     * @var Connection|PrimaryReadReplicaConnection
      */
     private $connection;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Event\ConsoleCommandEvent::class => [
@@ -139,15 +136,8 @@ class CommandFlowListener implements EventSubscriberInterface
     public function logCommandError(Event\ConsoleErrorEvent $exceptionEvent): void
     {
         if ($executionId = $this->getExecutionId($exceptionEvent)) {
-            $e = $exceptionEvent->getError();
-            if (!$e instanceof Exception) {
-                $e = class_exists(FatalThrowableError::class)
-                    ? new FatalThrowableError($e)
-                    : new ErrorException($e->getMessage(), $e->getCode(), E_ERROR, $e->getFile(), $e->getLine());
-            }
-
             $output = new BufferedOutput(Output::VERBOSITY_DEBUG, true);
-            $exceptionEvent->getCommand()->getApplication()->renderException($e, $output);
+            $exceptionEvent->getCommand()->getApplication()->renderThrowable($exceptionEvent->getError(), $output);
             $this->updateState($executionId, Execution::STATE_ERROR, $output->fetch());
         }
     }
@@ -199,7 +189,7 @@ SQL;
 
     private function mustReconnectToSlave(): bool
     {
-        return $this->connection instanceof MasterSlaveConnection && !$this->connection->isConnectedToMaster();
+        return $this->connection instanceof PrimaryReadReplicaConnection && !$this->connection->isConnectedToPrimary();
     }
 
     private function generateExecutionId(Event\ConsoleCommandEvent $consoleCommandEvent): string

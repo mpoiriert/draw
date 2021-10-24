@@ -6,7 +6,7 @@ use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestCase;
-use Prophecy\Prophecy\ObjectProphecy;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,9 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 class CloudWatchLogsDownloadCommandTest extends CommandTestCase
 {
     /**
-     * @var ObjectProphecy
+     * @var CloudWatchLogsClient|MockObject
      */
-    private $cloudWatchLogsClientProphecy;
+    private $cloudWatchLogsClient;
 
     public function getCommandName(): string
     {
@@ -30,11 +30,16 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
 
     public function createCommand(): Command
     {
-        $this->cloudWatchLogsClientProphecy = $this->prophesize(CloudWatchLogsClient::class);
+        $this->cloudWatchLogsClient = $this
+            ->getMockBuilder(CloudWatchLogsClient::class)
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->setMethods(['getLogEvents'])
+            ->getMock();
 
-        return new CloudWatchLogsDownloadCommand(
-            $this->cloudWatchLogsClientProphecy->reveal(CloudWatchLogsClient::class)
-        );
+        return new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
     }
 
     public function provideTestArgument(): iterable
@@ -73,25 +78,27 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
             'endTime' => 978393601000,
         ];
 
-        $this->cloudWatchLogsClientProphecy
-            ->__call('getLogEvents', [$logEvents])
-            ->shouldBeCalledOnce()
-            ->willReturn([
-                'events' => [
-                    ['message' => 'Line 1'],
+        $this->cloudWatchLogsClient
+            ->expects($this->exactly(2))
+            ->method('getLogEvents')
+            ->withConsecutive(
+                [$logEvents],
+                [$logEvents + ['nextToken' => 'next-token']]
+            )
+            ->willReturnOnConsecutiveCalls(
+                [
+                    'events' => [
+                        ['message' => 'Line 1'],
+                    ],
+                    'nextForwardToken' => 'next-token',
                 ],
-                'nextForwardToken' => 'next-token',
-            ]);
-
-        $this->cloudWatchLogsClientProphecy
-            ->__call('getLogEvents', [$logEvents + ['nextToken' => 'next-token']])
-            ->shouldBeCalledOnce()
-            ->willReturn([
-                'events' => [
-                    ['message' => 'Line 2'],
-                ],
-                'nextForwardToken' => 'next-token',
-            ]);
+                [
+                    'events' => [
+                        ['message' => 'Line 2'],
+                    ],
+                    'nextForwardToken' => 'next-token',
+                ]
+            );
 
         $this->execute(
             compact('logGroupName', 'logStreamName', 'output')
@@ -113,26 +120,26 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);
 
-        $this->cloudWatchLogsClientProphecy
-            ->__call(
-                'getLogEvents',
+        $this->cloudWatchLogsClient
+            ->expects($this->once())
+            ->method('getLogEvents')
+            ->with(
                 [
-                    [
-                        'startFromHead' => true,
-                        'logGroupName' => 'group-name',
-                        'logStreamName' => 'stream-name',
-                        'startTime' => 978307201000,
-                        'endTime' => 978393601000,
-                    ],
+                    'startFromHead' => true,
+                    'logGroupName' => 'group-name',
+                    'logStreamName' => 'stream-name',
+                    'startTime' => 978307201000,
+                    'endTime' => 978393601000,
                 ]
             )
-            ->shouldBeCalledOnce()
-            ->willReturn([
-                'events' => [
-                    ['message' => 'Line 1'],
-                ],
-                'nextForwardToken' => null,
-            ]);
+            ->willReturn(
+                [
+                    'events' => [
+                        ['message' => 'Line 1'],
+                    ],
+                    'nextForwardToken' => null,
+                ]
+            );
 
         $this->execute(
             compact('logGroupName', 'logStreamName', 'output')
