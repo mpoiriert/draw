@@ -6,8 +6,20 @@ sonata_admin:
             -   class: 'col-lg-3 col-xs-6'          # twitter bootstrap responsive code
                 position: 'top'                        # zone in the dashboard
                 type: 'Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock'  # block id
+            -   class: 'col-lg-3 col-xs-6'          # twitter bootstrap responsive code
+                position: 'top'                        # zone in the dashboard
+                type: 'Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService'  # block id
+                settings:
+                    code: 'App\Sonata\Admin\UserAdmin'
+                    thresholds:
+                        ok:
+                            if: 'count == 50'
+                            settings:
+                                css_class: 'bg-yellow'
 
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [ 'admin' ]
+
+        Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService: ~

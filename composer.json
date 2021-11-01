@@ -57,6 +57,7 @@
         "symfony/debug-bundle": "^4.4|^5.3",
         "symfony/dependency-injection": "^4.4|^5.3",
         "symfony/dotenv": "^4.4|^5.3",
+        "symfony/expression-language": "^4.4|^5.3",
         "symfony/flex": "^1.16",
         "symfony/form": "^4.4|^5.3",
         "symfony/monolog-bundle": "^3.7",
