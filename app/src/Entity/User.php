@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use App\Message\UserCreatedMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
+use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface;
+use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
@@ -30,8 +33,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class User implements SecurityUserInterface, TwoFactorAuthenticationUserInterface
+class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface
 {
+    use MessageHolderTrait;
     use SecurityUserTrait;
     use TwoFactorAuthenticationUserTrait;
 
@@ -168,6 +172,14 @@ class User implements SecurityUserInterface, TwoFactorAuthenticationUserInterfac
         $this->address = new Address();
         $this->tags = new ArrayCollection();
         $this->userAddresses = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PostPersist()
+     */
+    public function raiseUserCreated()
+    {
+        $this->messageQueue()->push(new UserCreatedMessage($this));
     }
 
     /**
