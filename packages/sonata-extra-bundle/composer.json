@@ -8,7 +8,8 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.3",
-        "symfony/framework-bundle": "^4.4|^5.3"
+        "symfony/framework-bundle": "^4.4|^5.3",
+        "symfony/expression-language": "^4.4|^5.3"
     },
     "require-dev": {
         "sonata-project/admin-bundle": "^3.105|^4.0",
