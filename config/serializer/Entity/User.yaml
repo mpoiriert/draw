@@ -1,5 +1,7 @@
 App\Entity\User:
     properties:
+        messageQueue:
+            exclude: true
         plainPassword:
             expose: true
             type: 'string'

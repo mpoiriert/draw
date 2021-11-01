@@ -15,12 +15,18 @@
     },
     "require-dev": {
         "draw/tester-bundle": "^0.8",
-        "phpunit/phpunit": "^8.0|^9.0"
+        "phpunit/phpunit": "^8.0|^9.0",
+        "sonata-project/admin-bundle": "^3.105|^4.0",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.35|^4.0"
     },
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\MessengerBundle\\": ""
         }
+    },
+    "suggest": {
+        "sonata-project/admin-bundle": "If you want to display doctrine message via sonata admin",
+        "sonata-project/doctrine-orm-admin-bundle": "Sonata integration only support orm",
     },
     "extra": {
         "branch-alias": {

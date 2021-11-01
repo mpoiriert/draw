@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 
+use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -12,9 +14,47 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('draw_messenger');
         $treeBuilder->getRootNode()
             ->children()
+                ->append($this->createSonataNode())
                 ->scalarNode('transport_service_name')->defaultValue('messenger.transport.draw')->end()
             ->end();
 
         return $treeBuilder;
+    }
+
+    private function createSonataNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('sonata'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('transports')
+                    ->beforeNormalization()
+                    ->always(function ($commands) {
+                        foreach ($commands as $name => $configuration) {
+                            if (is_int($name)) {
+                                continue;
+                            }
+                            if (!isset($configuration['queue_name'])) {
+                                $commands[$name]['queue_name'] = $name;
+                            }
+                        }
+
+                        return $commands;
+                    })
+                    ->end()
+                    ->useAttributeAsKey('queue_name', false)
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('queue_name')->isRequired()->end()
+                            ->scalarNode('transport_name')->isRequired()->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->scalarNode('table_name')->defaultValue('messenger_messages')->end()
+                ->scalarNode('group')->defaultValue('Messenger')->end()
+                ->scalarNode('controller_class')->defaultValue(CRUDController::class)->end()
+                ->scalarNode('icon')->defaultValue('fa fa-rss')->end()
+                ->scalarNode('label')->defaultValue('Message')->end()
+                ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
+            ->end();
     }
 }

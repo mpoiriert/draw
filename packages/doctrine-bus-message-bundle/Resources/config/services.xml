@@ -10,6 +10,7 @@
             <exclude>../../DrawDoctrineBusMessageBundle.php</exclude>
         </prototype>
         <service id="Draw\Bundle\DoctrineBusMessageBundle\Listener\DoctrineBusMessageEventSubscriber">
+            <argument key="$bus" type="service" id="messenger.default_bus" />
             <tag name="doctrine.event_subscriber" />
         </service>
     </services>

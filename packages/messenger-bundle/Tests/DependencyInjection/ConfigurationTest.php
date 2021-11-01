@@ -17,6 +17,16 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         return [
             'transport_service_name' => 'messenger.transport.draw',
+            'sonata' => [
+                'enabled' => false,
+                'transports' => [],
+                'table_name' => 'messenger_messages',
+                'group' => 'Messenger',
+                'controller_class' => 'Sonata\AdminBundle\Controller\CRUDController',
+                'icon' => 'fa fa-rss',
+                'label' => 'Message',
+                'pager_type' => 'simple',
+            ],
         ];
     }
 
