@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
+namespace Draw\Bundle\SonataExtraBundle\DependencyInjection\Compiler;
 
 use ReflectionClass;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
@@ -13,8 +13,10 @@ class ExtractArgumentFromDefaultValueCompilerPass implements CompilerPassInterfa
     {
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $definition = $container->getDefinition($id);
-            $class = $definition->getClass();
+
+            $class = $container->getParameterBag()->resolveValue($definition->getClass());
             $reflectionClass = new ReflectionClass($class);
+
             if (!$reflectionClass->hasMethod('__construct')) {
                 continue;
             }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
+namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection\Compiler;
 
-use Draw\Bundle\SonataExtraBundle\DependencyInjection\ExtractArgumentFromDefaultValueCompilerPass;
+use Draw\Bundle\SonataExtraBundle\DependencyInjection\Compiler\ExtractArgumentFromDefaultValueCompilerPass;
 use Draw\Bundle\SonataExtraBundle\Tests\Mock\Admin;
 use Draw\Bundle\SonataExtraBundle\Tests\Mock\Entity;
 use PHPUnit\Framework\TestCase;
@@ -24,9 +24,11 @@ class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
 
     public function testProcess(): void
     {
+        $this->containerBuilder->setParameter('admin.class', Admin::class);
+
         $definition = $this->containerBuilder->setDefinition(
             Admin::class,
-            new Definition(Admin::class)
+            new Definition('%admin.class%')
         )->addTag(TaggedAdminInterface::ADMIN_TAG);
 
         $this->compilerPass->process($this->containerBuilder);
