@@ -45,8 +45,8 @@ class MessengerMessageAdmin extends AbstractAdmin
                         array_combine(
                             array_keys($this->transportMapping),
                             array_keys($this->transportMapping),
-                        )
-                    ]
+                        ),
+                    ],
                 ]
             );
     }

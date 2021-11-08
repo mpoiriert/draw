@@ -29,7 +29,7 @@ class ExecutionController extends CRUDController
 
         if (!$request->get('command') && $request->isMethod('get')) {
             return $this->renderWithExtraParams(
-                '@DrawSonataCommand/ExecutionAdmin/select_command.html.twig',
+                '@DrawCommand/ExecutionAdmin/select_command.html.twig',
                 [
                     'commands' => $this->commandFactory->getCommands(),
                     'action' => 'create',

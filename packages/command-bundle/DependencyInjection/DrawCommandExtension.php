@@ -5,6 +5,7 @@ namespace Draw\Bundle\CommandBundle\DependencyInjection;
 use Draw\Bundle\CommandBundle\Authentication\Listener\CommandLineAuthenticatorListener;
 use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticatorInterface;
 use Draw\Bundle\CommandBundle\CommandRegistry;
+use Draw\Bundle\CommandBundle\Entity\Execution;
 use Draw\Bundle\CommandBundle\Listener\CommandFlowListener;
 use Draw\Bundle\CommandBundle\Model\Command;
 use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin;
@@ -87,6 +88,7 @@ class DrawCommandExtension extends Extension
             ExecutionAdmin::class => (new Definition($adminClass))
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
+                ->setArguments([null, Execution::class, $config['controller_class']])
                 ->addTag(
                     'sonata.admin',
                     array_intersect_key(

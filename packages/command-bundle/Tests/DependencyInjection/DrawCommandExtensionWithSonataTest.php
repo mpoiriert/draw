@@ -5,21 +5,17 @@ namespace Draw\Bundle\CommandBundle\Tests\DependencyInjection;
 use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin;
 use Draw\Bundle\CommandBundle\Sonata\Controller\ExecutionController;
 
-class DrawCommandExtensionWithoutSonataTest extends DrawCommandExtensionTest
+class DrawCommandExtensionWithSonataTest extends DrawCommandExtensionTest
 {
     public function getConfiguration(): array
     {
-        return ['sonata' => false];
+        return ['sonata' => true];
     }
 
     public function provideTestHasServiceDefinition(): iterable
     {
-        yield from $this->removeProvidedService(
-            [
-                ExecutionAdmin::class,
-                ExecutionController::class,
-            ],
-            parent::provideTestHasServiceDefinition()
-        );
+        yield from parent::provideTestHasServiceDefinition();
+        yield [ExecutionAdmin::class];
+        yield [ExecutionController::class];
     }
 }

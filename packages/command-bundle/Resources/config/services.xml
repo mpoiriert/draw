@@ -4,9 +4,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <defaults public="false" autoconfigure="true" autowire="true">
-            <bind key="Doctrine\DBAL\Connection $executionConnection" type="expression">
-                service('Doctrine\Persistence\ManagerRegistry').getEntityManagerForClass('Draw\Bundle\CommandBundle\Entity\Execution').getConnection()
-            </bind>
+            <bind key="Doctrine\DBAL\Connection $executionConnection" type="service" id="draw_command.dbal.connection" />
         </defaults>
         <prototype namespace="Draw\Bundle\CommandBundle\" resource="../..">
             <exclude>../../{vendor,DependencyInjection,Entity,Model,Console,Tests}</exclude>
@@ -14,5 +12,14 @@
             <exclude>../../{Authentication}</exclude>
             <exclude>../../{DrawCommandBundle.php}</exclude>
         </prototype>
+        <service id="draw_command.dbal.connection" class="Doctrine\DBAL\Connection">
+            <factory service="draw_command.place_holder" method="offsetGet" />
+            <argument>0</argument>
+        </service>
+        <service id="draw_command.place_holder" class="ArrayObject">
+            <argument type="collection">
+                <argument type="expression">service('doctrine').getManagerForClass('Draw\\Bundle\\CommandBundle\\Entity\\Execution').getConnection()</argument>
+            </argument>
+        </service>
     </services>
 </container>

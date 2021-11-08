@@ -23,10 +23,10 @@ class ConfigurationTest extends ConfigurationTestCase
                 'log_execution' => true,
             ],
             'sonata' => [
-                'enabled' => true,
+                'enabled' => false,
                 'group' => 'Command',
                 'controller_class' => ExecutionController::class,
-                'icon' => "<i class='fa fa-terminal'></i>",
+                'icon' => 'fa fa-terminal',
                 'label' => 'Execution',
                 'pager_type' => 'simple',
             ],

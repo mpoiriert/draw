@@ -9,24 +9,22 @@ class CommandRegistry
     /**
      * @var Command[]
      */
-    private $commands;
+    private $commands = [];
 
-    public function setCommand(Command $command)
+    public function setCommand(Command $command): void
     {
         $this->commands[$command->getName()] = $command;
     }
 
-    public function getCommands()
+    /**
+     * @return Command[]
+     */
+    public function getCommands(): array
     {
         return $this->commands;
     }
 
-    /**
-     * @param $name
-     *
-     * @return Command
-     */
-    public function getCommand($name)
+    public function getCommand(string $name): ?Command
     {
         return $this->commands[$name] ?? null;
     }

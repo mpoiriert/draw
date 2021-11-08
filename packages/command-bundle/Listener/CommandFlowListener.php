@@ -35,7 +35,7 @@ class CommandFlowListener implements EventSubscriberInterface
         return [
             Event\ConsoleCommandEvent::class => [
                 ['addOptions', 255],
-                ['setIgnoreFlag', -1],
+                ['setIgnoreFlag', 1],
                 ['logCommandStart', 0],
             ],
             Event\ConsoleTerminateEvent::class => ['logCommandTerminate'],

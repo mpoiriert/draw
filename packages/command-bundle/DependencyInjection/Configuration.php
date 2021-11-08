@@ -5,7 +5,6 @@ namespace Draw\Bundle\CommandBundle\DependencyInjection;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\CommandBundle\Authentication\SystemAuthenticator;
 use Draw\Bundle\CommandBundle\Sonata\Controller\ExecutionController;
-use Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -79,11 +78,11 @@ class Configuration implements ConfigurationInterface
     private function createSonataNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('sonata'))
-            ->{class_exists(SonataDoctrineORMAdminBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}()
+            ->canBeEnabled()
             ->children()
                 ->scalarNode('group')->defaultValue('Command')->end()
                 ->scalarNode('controller_class')->defaultValue(ExecutionController::class)->end()
-                ->scalarNode('icon')->defaultValue("<i class='fa fa-terminal'></i>")->end()
+                ->scalarNode('icon')->defaultValue('fa fa-terminal')->end()
                 ->scalarNode('label')->defaultValue('Execution')->end()
                 ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
             ->end();

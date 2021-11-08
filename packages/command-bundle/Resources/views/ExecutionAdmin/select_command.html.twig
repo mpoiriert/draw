@@ -1,6 +1,6 @@
 {% extends '@SonataAdmin/CRUD/action.html.twig' %}
 
-{% block title %}{{ 'title_select_command'|trans({}, 'DrawSonataCommandBundle') }}{% endblock %}
+{% block title %}{{ 'title_select_command'|trans({}, 'DrawCommandBundle') }}{% endblock %}
 
 {% block content %}
     <div class="box box-success">
@@ -16,7 +16,7 @@
                        class="btn btn-app btn-block"
                        data-toggle="tooltip"
                        data-placement="top"
-                       title="{{ command.label|trans({}, 'DrawSonataCommandBundle') }}"
+                       title="{{ command.label|trans({}, 'DrawCommandBundle') }}"
                     >
                         {% if command.icon %}
                             <i class="fa {{ command.icon }}"></i>
@@ -25,7 +25,10 @@
                     </a>
                 </div>
             {% else %}
-                <span class="alert alert-info">{{ 'no_command_available'|trans({}, 'DrawSonataCommandBundle') }}</span>
+                <span class="alert alert-info">{{ 'no_command_available'|trans({}, 'DrawCommandBundle') }}</span>
+                <br />
+                <br />
+                <br />
             {% endfor %}
             <div class="clearfix"></div>
         </div>

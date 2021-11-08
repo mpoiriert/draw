@@ -12,12 +12,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Console\Application;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class ExecutionAdmin extends AbstractAdmin
 {
@@ -27,26 +29,17 @@ class ExecutionAdmin extends AbstractAdmin
     private $commandFactory;
 
     /**
-     * @required
-     *
-     * @var Application
+     * @var KernelInterface
      */
-    private $application;
+    private $kernel;
 
     /**
      * @required
      */
-    public function setCommandFactory(CommandRegistry $commandFactory)
+    public function inject(CommandRegistry $commandFactory, KernelInterface $kernel)
     {
+        $this->kernel = $kernel;
         $this->commandFactory = $commandFactory;
-    }
-
-    /**
-     * @required
-     */
-    public function setKernel(Application $application)
-    {
-        $this->application = $application;
     }
 
     /**
@@ -82,8 +75,9 @@ class ExecutionAdmin extends AbstractAdmin
             ->add('commandName')
             ->add(
                 'state',
-                ChoiceType::class,
+                ChoiceFilter::class,
                 [],
+                ChoiceType::class,
                 [
                     'choices' => array_combine(
                         Execution::STATES,
@@ -109,19 +103,19 @@ class ExecutionAdmin extends AbstractAdmin
     {
         $show
             ->tab('Execution')
-            ->with('General')
-            ->add('id')
-            ->add('command')
-            ->add('commandName')
-            ->add('state')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('input', 'array')
-            ->end()
-            ->with('Execution')
-            ->add('commandLine', 'text')
-            ->add('outputHtml', 'html')
-            ->end()
+                ->with('General')
+                    ->add('id')
+                    ->add('command')
+                    ->add('commandName')
+                    ->add('state')
+                    ->add('createdAt')
+                    ->add('updatedAt')
+                    ->add('input', 'array')
+                ->end()
+                ->with('Execution')
+                    ->add('commandLine', 'text')
+                    ->add('outputHtml', 'html')
+                ->end()
             ->end();
     }
 
@@ -137,9 +131,14 @@ class ExecutionAdmin extends AbstractAdmin
      */
     protected function backwardCompatibleConfigureRoute($collection)
     {
-        $collection
-            ->get('create')
-            ->setDefault('_controller', $collection->getBaseControllerName().'::myCreateAction');
+        if (!\count($this->commandFactory->getCommands())) {
+            $collection->remove('create');
+        } else {
+            $collection
+                ->get('create')
+                ->setDefault('_controller', $collection->getBaseControllerName().'::myCreateAction');
+        }
+
         $collection->remove('edit');
         $collection->add('acknowledge', $this->getRouterIdParameter().'/acknowledge');
     }
@@ -147,7 +146,7 @@ class ExecutionAdmin extends AbstractAdmin
     public function backwardCompatibleConfigureActionButtons(array $buttonList, $action, $object = null): array
     {
         if ('show' == $action && Execution::STATE_ERROR == $object->getState()) {
-            $buttonList['acknowledge']['template'] = '@DrawSonataCommand\ExecutionAdmin\button_acknowledge.html.twig';
+            $buttonList['acknowledge']['template'] = '@DrawCommand\ExecutionAdmin\button_acknowledge.html.twig';
         }
 
         return $buttonList;
@@ -171,11 +170,12 @@ class ExecutionAdmin extends AbstractAdmin
      */
     public function postPersist($object): void
     {
-        $this->application->setAutoExit(false);
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
         $input = new ArrayInput(
             $object->getInput() + ['--'.CommandFlowListener::OPTION_EXECUTION_ID => $object->getId()]
         );
-        $output = new BufferedOutput(Output::OUTPUT_NORMAL, true);
-        $this->application->run($input, $output);
+        $output = new BufferedOutput(OutputInterface::OUTPUT_NORMAL, true);
+        $application->run($input, $output);
     }
 }
