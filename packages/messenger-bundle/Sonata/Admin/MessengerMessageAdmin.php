@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
@@ -39,15 +40,17 @@ class MessengerMessageAdmin extends AbstractAdmin
             ->add(
                 'queueName',
                 ChoiceFilter::class,
-                ['show_filter' => true],
                 [
-                    'choices' => [
-                        array_combine(
-                            array_keys($this->transportMapping),
-                            array_keys($this->transportMapping),
-                        ),
-                    ],
-                ]
+                    'show_filter' => true,
+                    'field_type' => ChoiceType::class,
+                    'field_options' =>   [
+                        'choices' =>
+                            array_combine(
+                                array_keys($this->transportMapping),
+                                array_keys($this->transportMapping),
+                            ),
+                    ]
+                ],
             );
     }
 
