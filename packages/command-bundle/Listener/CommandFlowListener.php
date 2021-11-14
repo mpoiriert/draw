@@ -34,7 +34,6 @@ class CommandFlowListener implements EventSubscriberInterface
     {
         return [
             Event\ConsoleCommandEvent::class => [
-                ['addOptions', 255],
                 ['setIgnoreFlag', 1],
                 ['logCommandStart', 0],
             ],
@@ -46,18 +45,6 @@ class CommandFlowListener implements EventSubscriberInterface
     public function __construct(Connection $executionConnection)
     {
         $this->connection = $executionConnection;
-    }
-
-    public function addOptions(Event\ConsoleCommandEvent $consoleCommandEvent): void
-    {
-        $consoleCommandEvent
-            ->getCommand()
-            ->addOption(
-                CommandFlowListener::OPTION_IGNORE,
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Flag to ignore login of the execution to the databases.'
-            );
     }
 
     public function setIgnoreFlag(Event\ConsoleCommandEvent $consoleCommandEvent): void
