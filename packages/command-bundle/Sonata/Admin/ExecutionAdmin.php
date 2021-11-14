@@ -76,13 +76,14 @@ class ExecutionAdmin extends AbstractAdmin
             ->add(
                 'state',
                 ChoiceFilter::class,
-                [],
-                ChoiceType::class,
                 [
-                    'choices' => array_combine(
-                        Execution::STATES,
-                        Execution::STATES
-                    ),
+                    'field_type' => ChoiceType::class,
+                    'field_options' => [
+                        'choices' => array_combine(
+                            Execution::STATES,
+                            Execution::STATES
+                        ),
+                    ],
                 ]
             )
             ->add('output')
