@@ -11,7 +11,7 @@ use Draw\Bundle\AwsToolKitBundle\Listener\NewestInstanceRoleListener;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
-class DrawAwsToolKitExtensionTest extends ExtensionTestCase
+class DrawAwsToolKitExtensionImdsV2Test extends ExtensionTestCase
 {
     public function createExtension(): Extension
     {
@@ -20,7 +20,7 @@ class DrawAwsToolKitExtensionTest extends ExtensionTestCase
 
     public function getConfiguration(): array
     {
-        return [];
+        return ['imds_version' => 2];
     }
 
     public function provideTestHasServiceDefinition(): iterable
@@ -28,7 +28,7 @@ class DrawAwsToolKitExtensionTest extends ExtensionTestCase
         yield [CloudWatchLogsDownloadCommand::class];
         yield [ImdsClientV1::class];
         yield [ImdsClientV2::class];
-        yield [ImdsClientInterface::class, ImdsClientV1::class];
+        yield [ImdsClientInterface::class, ImdsClientV2::class];
         yield [NewestInstanceRoleListener::class];
     }
 }

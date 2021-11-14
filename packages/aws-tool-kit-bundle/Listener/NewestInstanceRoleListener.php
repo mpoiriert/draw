@@ -3,8 +3,8 @@
 namespace Draw\Bundle\AwsToolKitBundle\Listener;
 
 use Aws\Ec2\Ec2Client;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Draw\Bundle\AwsToolKitBundle\Imds\ImdsClientInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -18,16 +18,24 @@ use Throwable;
  * Example:
  *   console/bin acme:purge-database --aws-newest-instance-role=prod
  */
-class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwareInterface
+class NewestInstanceRoleListener implements EventSubscriberInterface
 {
-    use LoggerAwareTrait;
-
     public const OPTION_AWS_NEWEST_INSTANCE_ROLE = 'aws-newest-instance-role';
 
     /**
      * @var Ec2Client
      */
     private $ec2Client;
+
+    /**
+     * @var ImdsClientInterface
+     */
+    private $imdsClient;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
     public static function getSubscribedEvents()
     {
@@ -38,10 +46,11 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
         ];
     }
 
-    public function __construct(Ec2Client $ec2Client)
+    public function __construct(Ec2Client $ec2Client, ImdsClientInterface $imdsClient, LoggerInterface $logger = null)
     {
         $this->ec2Client = $ec2Client;
-        $this->logger = new NullLogger();
+        $this->imdsClient = $imdsClient;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -58,7 +67,7 @@ class NewestInstanceRoleListener implements EventSubscriberInterface, LoggerAwar
         }
 
         try {
-            $currentInstanceId = file_get_contents('http://169.254.169.254/latest/meta-data/instance-id');
+            $currentInstanceId = $this->imdsClient->getCurrentInstanceId();
         } catch (Throwable $throwable) {
             $this->disableCommand($consoleCommandEvent, 'Cannot reach 169.254.169.254');
 
