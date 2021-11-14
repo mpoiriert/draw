@@ -41,7 +41,7 @@ class NewestInstanceRoleListener implements EventSubscriberInterface
     {
         return [
             ConsoleCommandEvent::class => [
-                ['checkNewestInstance', 0],
+                ['checkNewestInstance', 50],
             ],
         ];
     }
