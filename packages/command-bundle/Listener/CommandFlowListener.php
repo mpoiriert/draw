@@ -107,26 +107,30 @@ class CommandFlowListener implements EventSubscriberInterface
             );
     }
 
-    public function logCommandTerminate(Event\ConsoleTerminateEvent $consoleCommandEvent)
+    public function logCommandTerminate(Event\ConsoleTerminateEvent $consoleCommandEvent): void
     {
-        if ($executionId = $this->getExecutionId($consoleCommandEvent)) {
-            $output = $consoleCommandEvent->getOutput();
-            $outputString = null;
-            if (method_exists($output, 'fetch')) {
-                $outputString = $output->fetch();
-            }
-
-            $this->updateState($executionId, Execution::STATE_TERMINATED, $outputString);
+        if (null === $executionId = $this->getExecutionId($consoleCommandEvent)) {
+            return;
         }
+
+        $output = $consoleCommandEvent->getOutput();
+        $outputString = null;
+        if (method_exists($output, 'fetch')) {
+            $outputString = $output->fetch();
+        }
+
+        $this->updateState($executionId, Execution::STATE_TERMINATED, $outputString);
     }
 
     public function logCommandError(Event\ConsoleErrorEvent $exceptionEvent): void
     {
-        if ($executionId = $this->getExecutionId($exceptionEvent)) {
-            $output = new BufferedOutput(Output::VERBOSITY_DEBUG, true);
-            $exceptionEvent->getCommand()->getApplication()->renderThrowable($exceptionEvent->getError(), $output);
-            $this->updateState($executionId, Execution::STATE_ERROR, $output->fetch());
+        if (null === $executionId = $this->getExecutionId($exceptionEvent)) {
+            return;
         }
+
+        $output = new BufferedOutput(Output::VERBOSITY_DEBUG, true);
+        $exceptionEvent->getCommand()->getApplication()->renderThrowable($exceptionEvent->getError(), $output);
+        $this->updateState($executionId, Execution::STATE_ERROR, $output->fetch());
     }
 
     private function getExecutionId(Event\ConsoleEvent $event): ?string
