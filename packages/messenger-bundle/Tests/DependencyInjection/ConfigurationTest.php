@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\MessengerBundle\Tests\DependencyInjection;
 
+use App\Entity\MessengerMessage;
 use Draw\Bundle\MessengerBundle\DependencyInjection\Configuration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -20,7 +21,7 @@ class ConfigurationTest extends ConfigurationTestCase
             'sonata' => [
                 'enabled' => false,
                 'transports' => [],
-                'table_name' => 'messenger_messages',
+                'entity_class' => MessengerMessage::class,
                 'group' => 'Messenger',
                 'controller_class' => 'Sonata\AdminBundle\Controller\CRUDController',
                 'icon' => 'fa fa-rss',

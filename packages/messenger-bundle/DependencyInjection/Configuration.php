@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 
+use App\Entity\MessengerMessage;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -49,7 +50,15 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                ->scalarNode('table_name')->defaultValue('messenger_messages')->end()
+                ->scalarNode('entity_class')
+                    ->validate()
+                        ->ifTrue(function ($value) {
+                            return !class_exists($value) && MessengerMessage::class !== $value;
+                        })
+                        ->thenInvalid('The class [%s] for the admin must exists must exists.')
+                    ->end()
+                    ->defaultValue(MessengerMessage::class)
+                ->end()
                 ->scalarNode('group')->defaultValue('Messenger')->end()
                 ->scalarNode('controller_class')->defaultValue(CRUDController::class)->end()
                 ->scalarNode('icon')->defaultValue('fa fa-rss')->end()

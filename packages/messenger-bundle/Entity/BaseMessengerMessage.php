@@ -5,11 +5,7 @@ namespace Draw\Bundle\MessengerBundle\Entity;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="messenger_messages")
- */
-class MessengerMessage
+abstract class BaseMessengerMessage
 {
     /**
      * @var int|null

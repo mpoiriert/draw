@@ -2,18 +2,20 @@
 
 namespace Draw\Bundle\MessengerBundle\Sonata\Admin;
 
-use Draw\Bundle\MessengerBundle\Entity\MessengerMessage;
+use Draw\Bundle\MessengerBundle\Entity\BaseMessengerMessage;
 use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
-class MessengerMessageAdmin extends AbstractAdmin
+abstract class MessengerMessageAdmin extends AbstractAdmin
 {
     /**
      * @var array
@@ -43,13 +45,12 @@ class MessengerMessageAdmin extends AbstractAdmin
                 [
                     'show_filter' => true,
                     'field_type' => ChoiceType::class,
-                    'field_options' =>   [
-                        'choices' =>
-                            array_combine(
+                    'field_options' => [
+                        'choices' => array_combine(
                                 array_keys($this->transportMapping),
                                 array_keys($this->transportMapping),
                             ),
-                    ]
+                    ],
                 ],
             );
     }
@@ -64,7 +65,7 @@ class MessengerMessageAdmin extends AbstractAdmin
             ->add('deliveredAt');
     }
 
-    public function dumpMessage(MessengerMessage $message): string
+    public function dumpMessage(BaseMessengerMessage $message): string
     {
         $transportName = $this->transportMapping[$message->queueName] ?? null;
 
@@ -75,5 +76,14 @@ class MessengerMessageAdmin extends AbstractAdmin
         $dumper->setTheme('light');
 
         return $dumper->dump((new VarCloner())->cloneVar($receiver->find($message->id)), true);
+    }
+
+    /**
+     * @param RouteCollection|RouteCollectionInterface $collection
+     */
+    protected function backwardCompatibleConfigureRoute($collection)
+    {
+        $collection->remove('create');
+        $collection->remove('edit');
     }
 }

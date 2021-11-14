@@ -6,7 +6,8 @@
 
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
-        <prototype namespace="Draw\Bundle\MessengerBundle\Sonata\" resource="../../Sonata" />
-        <service id="Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin" />
+        <prototype namespace="Draw\Bundle\MessengerBundle\Sonata\" resource="../../Sonata">
+            <exclude>../../Sonata/Admin/{MessengerMessageAdmin3X,MessengerMessageAdmin4X}.php</exclude>
+        </prototype>
     </services>
 </container>
