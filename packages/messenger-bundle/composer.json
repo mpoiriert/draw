@@ -7,14 +7,14 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "draw/messenger": "^0.8",
+        "draw/messenger": "^0.7.33",
         "symfony/css-selector": "^4.4|^5.3",
         "symfony/framework-bundle": "^4.4|^5.3",
         "symfony/mailer": "^4.4|^5.3",
         "symfony/translation": "^4.4|^5.3"
     },
     "require-dev": {
-        "draw/tester-bundle": "^0.8",
+        "draw/tester-bundle": "^0.7.33",
         "phpunit/phpunit": "^8.0|^9.0",
         "sonata-project/admin-bundle": "^3.105|^4.0",
         "sonata-project/doctrine-orm-admin-bundle": "^3.35|^4.0"
