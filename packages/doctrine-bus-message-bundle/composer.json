@@ -16,7 +16,7 @@
         "symfony/framework-bundle": "^4.4|^5.3"
     },
     "require-dev": {
-        "draw/tester-bundle": "^0.7.32",
+        "draw/tester-bundle": "^0.8",
         "phpunit/phpunit": "^8.0|^9.0",
         "symfony/validator": "^4.4|^5.3",
         "symfony/yaml": "^4.4|^5.3"
