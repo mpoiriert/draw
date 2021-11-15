@@ -3,7 +3,7 @@
 namespace Draw\Bundle\CommandBundle\Entity;
 
 use DateTime;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
@@ -78,7 +78,7 @@ class Execution
     /**
      * @var array
      *
-     * @ORM\Column(name="input", type="json_array", nullable=false)
+     * @ORM\Column(name="input", type="json", nullable=false)
      */
     private $input = [];
 
@@ -105,142 +105,94 @@ class Execution
      */
     private $updatedAt;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
-    public function getCommand()
+    public function getCommand(): ?string
     {
         return $this->command;
     }
 
-    /**
-     * @param string $command
-     */
-    public function setCommand($command)
+    public function setCommand(?string $command): void
     {
         $this->command = $command;
     }
 
-    /**
-     * @return string
-     */
-    public function getCommandName()
+    public function getCommandName(): ?string
     {
         return $this->commandName;
     }
 
-    /**
-     * @param string $commandName
-     */
-    public function setCommandName($commandName)
+    public function setCommandName(?string $commandName): void
     {
         $this->commandName = $commandName;
     }
 
-    /**
-     * @return array
-     */
-    public function getInput()
+    public function getInput(): array
     {
         return $this->input;
     }
 
-    public function setInput(array $input)
+    public function setInput(array $input): void
     {
         $this->input = $input;
     }
 
-    /**
-     * @return string
-     */
-    public function getState()
+    public function getState(): ?string
     {
         return $this->state;
     }
 
-    /**
-     * @param string $state
-     */
-    public function setState($state)
+    public function setState(string $state): void
     {
         $this->state = $state;
     }
 
-    /**
-     * @return string
-     */
-    public function getOutput()
+    public function getOutput(): ?string
     {
         return $this->output;
     }
 
-    /**
-     * @param string $output
-     */
-    public function setOutput($output)
+    public function setOutput(?string $output)
     {
         $this->output = $output;
     }
 
-    public function getOutputHtml()
+    public function getOutputHtml(): string
     {
         $converter = new AnsiToHtmlConverter();
 
         return nl2br($converter->convert($this->getOutput()));
     }
 
-    /**
-     * @return string
-     */
-    public function getCommandLine()
+    public function getCommandLine(): string
     {
         return (string) (new ArrayInput($this->getInput()));
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTime $createdAt
-     */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(DateTime $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param DateTime $updatedAt
-     */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -248,7 +200,7 @@ class Execution
     /**
      * @ORM\PreUpdate()
      */
-    public function updateTimestamp(PreUpdateEventArgs $eventArgs)
+    public function updateTimestamp(PreUpdateEventArgs $eventArgs): void
     {
         if ($eventArgs->hasChangedField('updatedAt')) {
             return;
@@ -260,7 +212,7 @@ class Execution
     /**
      * @ORM\PrePersist()
      */
-    public function ensureTimestamp(LifecycleEventArgs $eventArgs)
+    public function ensureTimestamp(LifecycleEventArgs $eventArgs): void
     {
         if (null === $this->createdAt) {
             $this->createdAt = new DateTime();
