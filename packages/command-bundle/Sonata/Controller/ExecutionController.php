@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\CommandBundle\Sonata\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\CommandBundle\CommandRegistry;
 use Draw\Bundle\CommandBundle\Entity\Execution;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -60,5 +61,24 @@ class ExecutionController extends CRUDController
         }
 
         return $this->redirectTo($execution);
+    }
+
+    public function reportAction(EntityManagerInterface $entityManager): Response
+    {
+        $stats = $entityManager->createQueryBuilder()
+            ->from(Execution::class, 'execution')
+            ->addSelect('execution.autoAcknowledgeReason as reason')
+            ->addSelect('COUNT(execution.id) as count')
+            ->andWhere('execution.autoAcknowledgeReason IS NOT NULL')
+            ->andWhere('execution.state = :state')
+            ->setParameter('state', Execution::STATE_AUTO_ACKNOWLEDGE)
+            ->groupBy('execution.autoAcknowledgeReason')
+            ->getQuery()
+            ->getResult();
+
+        return $this->renderWithExtraParams('@DrawCommand/ExecutionAdmin/report.html.twig', [
+            'action' => 'report', // to show actions buttons
+            'stats' => $stats,
+        ]);
     }
 }

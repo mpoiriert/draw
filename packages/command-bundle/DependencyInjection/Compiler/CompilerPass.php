@@ -22,16 +22,25 @@ class CompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            $definition
-                ->addMethodCall(
-                    'addOption',
-                    [
-                        CommandFlowListener::OPTION_IGNORE,
-                        null,
-                        InputOption::VALUE_OPTIONAL,
-                        'Flag to ignore login of the execution to the databases.',
-                    ]
-                );
+            $definition->addMethodCall(
+                'addOption',
+                [
+                    CommandFlowListener::OPTION_EXECUTION_ID,
+                    null,
+                    InputOption::VALUE_REQUIRED,
+                    'The existing execution id of the command. Use internally by the DrawSonataCommandBundle.',
+                ]
+            );
+
+            $definition->addMethodCall(
+                'addOption',
+                [
+                    CommandFlowListener::OPTION_IGNORE,
+                    null,
+                    InputOption::VALUE_OPTIONAL,
+                    'Flag to ignore login of the execution to the databases.',
+                ]
+            );
         }
     }
 }
