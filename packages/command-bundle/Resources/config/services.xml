@@ -7,7 +7,7 @@
             <bind key="Doctrine\DBAL\Connection $executionConnection" type="service" id="draw_command.dbal.connection" />
         </defaults>
         <prototype namespace="Draw\Bundle\CommandBundle\" resource="../..">
-            <exclude>../../{vendor,DependencyInjection,Entity,Model,Console,Tests}</exclude>
+            <exclude>../../{vendor,DependencyInjection,Console,Entity,Event,Model,Tests}</exclude>
             <exclude>../../{Sonata}</exclude>
             <exclude>../../{Authentication}</exclude>
             <exclude>../../{DrawCommandBundle.php}</exclude>
