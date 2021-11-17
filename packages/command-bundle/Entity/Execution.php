@@ -17,7 +17,8 @@ use Symfony\Component\Console\Input\ArrayInput;
  *         @ORM\Index(name="state", columns={"state"}),
  *         @ORM\Index(name="command", columns={"command"}),
  *         @ORM\Index(name="command_name", columns={"command_name"}),
- *         @ORM\Index(name="state_updated", columns={"state", "updated_at"})
+ *         @ORM\Index(name="state_updated", columns={"state", "updated_at"}),
+ *         @ORM\Index(name="auto_acknowledge_reason", columns={"auto_acknowledge_reason"})
  *     }
  * )
  *
@@ -35,12 +36,15 @@ class Execution
 
     public const STATE_ACKNOWLEDGE = 'acknowledge';
 
+    public const STATE_AUTO_ACKNOWLEDGE = 'auto_acknowledge';
+
     public const STATES = [
         self::STATE_INITIALIZED,
         self::STATE_STARTED,
         self::STATE_ERROR,
         self::STATE_TERMINATED,
         self::STATE_ACKNOWLEDGE,
+        self::STATE_AUTO_ACKNOWLEDGE,
     ];
 
     /**
@@ -104,6 +108,13 @@ class Execution
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updatedAt;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="auto_acknowledge_reason", type="string", nullable=true)
+     */
+    private $autoAcknowledgeReason;
 
     public function getId(): ?int
     {
@@ -195,6 +206,16 @@ class Execution
     public function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getAutoAcknowledgeReason(): ?string
+    {
+        return $this->autoAcknowledgeReason;
+    }
+
+    public function setAutoAcknowledgeReason(string $autoAcknowledgeReason): void
+    {
+        $this->autoAcknowledgeReason = $autoAcknowledgeReason;
     }
 
     /**
