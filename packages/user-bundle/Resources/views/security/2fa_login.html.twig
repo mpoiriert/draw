@@ -1,0 +1,55 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block sonata_nav %}
+{% endblock sonata_nav %}
+
+{% block logo %}
+{% endblock logo %}
+
+{% block sonata_left_side %}
+{% endblock sonata_left_side %}
+
+{% block body_attributes %}class="sonata-bc login-page"{% endblock %}
+
+{% block sonata_wrapper %}
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="{{ path('sonata_admin_dashboard') }}">
+                <span>Two factor authentication</span>
+            </a>
+        </div>
+        <div class="login-box-body">
+            {# Authentication errors #}
+            {% if authenticationError %}
+                <p class="alert-error">{{ authenticationError|trans(authenticationErrorData, 'SchebTwoFactorBundle') }}</p>
+            {% endif %}
+
+            <p>Enter the 6-digit code from your authenticator application:</p>
+
+            <form class="form" action="{{ checkPathUrl ? checkPathUrl: path(checkPathRoute) }}" method="post">
+                <p>
+                    <input id="_auth_code" type="text" name="{{ authCodeParameterName }}" autocomplete="one-time-code" autofocus inputmode="numeric" pattern="[0-9]*"/>
+                </p>
+
+                {% if displayTrustedOption %}
+                    <p>
+                        <label for="_trusted">
+                            <input id="_trusted" type="checkbox" name="{{ trustedParameterName }}" /> {{ "trusted"|trans({}, 'SchebTwoFactorBundle') }}
+                        </label>
+                    </p>
+                {% endif %}
+                {% if isCsrfProtectionEnabled %}
+                    <input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
+                {% endif %}
+                <p class="submit">
+                    <input type="submit" value="{{ "login"|trans({}, 'SchebTwoFactorBundle') }}" />
+                </p>
+            </form>
+
+            {# The logout link gives the user a way out if they can't complete two-factor authentication #}
+            <p class="cancel">
+                <a href="{{ logoutPath }}">{{ "cancel"|trans({}, 'SchebTwoFactorBundle') }}</a>
+            </p>
+        </div>
+    </div>
+{% endblock sonata_wrapper %}

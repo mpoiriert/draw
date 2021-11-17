@@ -1,10 +1,11 @@
 {
-    "require": {
-        "symplify/easy-coding-standard": "^9.2"
-    },
-    "autoload": {
-        "files": [
-            "./override.php"
-        ]
-    }
+  "require": {
+    "friendsofphp/php-cs-fixer": "^3.1",
+    "symplify/easy-coding-standard": "^9.4"
+  },
+  "autoload": {
+    "files": [
+      "./override.php"
+    ]
+  }
 }

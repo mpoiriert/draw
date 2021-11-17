@@ -7,7 +7,14 @@ sonata_block:
         Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
 
 draw_user:
-    sonata: ~
+    email_writers: ~
+    sonata:
+        enabled: true
+        user_admin_code: App\Sonata\Admin\UserAdmin
+        2fa:
+            field_positions:
+                2fa_enabled:
+                    list: 'email'
 
     jwt_authenticator:
         key: 'acme'

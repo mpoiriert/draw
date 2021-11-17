@@ -1,0 +1,36 @@
+{
+    "name": "draw/messenger-bundle",
+    "type": "symfony-bundle",
+    "keywords": ["symfony", "messenger", "bundle"],
+    "license": "MIT",
+    "description": "",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "draw/messenger": "^0.8",
+        "symfony/css-selector": "^4.4|^5.3",
+        "symfony/framework-bundle": "^4.4|^5.3",
+        "symfony/mailer": "^4.4|^5.3",
+        "symfony/translation": "^4.4|^5.3"
+    },
+    "require-dev": {
+        "draw/tester-bundle": "^0.8",
+        "phpunit/phpunit": "^8.0|^9.0",
+        "sonata-project/admin-bundle": "^3.105|^4.0",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.35|^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Draw\\Bundle\\MessengerBundle\\": ""
+        }
+    },
+    "suggest": {
+        "sonata-project/admin-bundle": "If you want to display doctrine message via sonata admin",
+        "sonata-project/doctrine-orm-admin-bundle": "Sonata integration only support orm"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}

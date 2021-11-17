@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="false" autoconfigure="true" autowire="true"/>
+        <prototype namespace="Draw\Bundle\DashboardBundle\" resource="../..">
+            <exclude>../../{vendor,DependencyInjection,Feedback,Event,Annotations}</exclude>
+            <exclude>../../{DrawDashboardBundle.php,functions.php}</exclude>
+        </prototype>
+        <prototype namespace="Draw\Bundle\DashboardBundle\Controller\" resource="../../Controller">
+            <tag name="controller.service_arguments"/>
+        </prototype>
+        <service id="Draw\Bundle\DashboardBundle\ExpressionLanguage\SerializerFunctionProvider">
+            <tag name="jms.expression.function_provider" />
+        </service>
+        <service id="Draw\Bundle\DashboardBundle\Action\ButtonExecutionCheck" public="true" />
+
+        <service id="Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder" shared="false" />
+    </services>
+</container>

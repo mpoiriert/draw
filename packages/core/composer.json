@@ -1,0 +1,30 @@
+{
+    "name": "draw/core",
+    "type": "library",
+    "description": "Core library for draw component and bundle.",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Draw\\Component\\Core\\": ""
+        },
+        "files": [
+            "ignore_annotations.php"
+        ]
+    },
+    "require": {
+        "php": "^7.3",
+        "symfony/dependency-injection": "^4.4|^5.3",
+        "symfony/property-access": "^4.4|^5.3",
+        "symfony/validator": "^4.4|^5.3"
+    },
+    "require-dev": {
+        "doctrine/annotations": "^1.11",
+        "phpunit/phpunit": "^8.0|^9.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}

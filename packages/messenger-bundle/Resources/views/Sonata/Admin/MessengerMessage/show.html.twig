@@ -1,0 +1,19 @@
+{% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
+{% block show %}
+    <div class="sonata-ba-view draw-messenger-message-dump-{{ object.id }}">
+        {{ admin.dumpMessage(object)|raw }}
+    </div>
+    <script type="text/javascript">
+        (function () {
+            let event = new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+                ctrlKey: true
+            });
+            let dumpReference = document.querySelector('.draw-messenger-message-dump-{{ object.id }} .sf-dump-ref');
+            dumpReference.dispatchEvent(event);
+            dumpReference.dispatchEvent(event);
+        })();
+    </script>
+{% endblock %}

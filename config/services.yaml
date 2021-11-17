@@ -1,3 +1,6 @@
+imports:
+    - { resource: 'legacy.php' }
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -14,7 +17,7 @@ services:
     App\:
         resource: '../app/src'
         exclude:
-            - '../app/src/{DependencyInjection,Entity,Migrations,Tests,DTO}'
+            - '../app/src/{DependencyInjection,Entity,Migrations,Message,Tests,DTO}'
             - '../app/src/Kernel.php'
     App\Controller\:
         resource: '../app/src/Controller'

@@ -1,0 +1,31 @@
+{
+    "name": "draw/post-office-bundle",
+    "type": "symfony-bundle",
+    "keywords": ["symfony", "sonata", "mailer"],
+    "license": "MIT",
+    "description": "",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.3",
+        "symfony/dom-crawler": "^4.4|^5.3",
+        "symfony/css-selector": "^4.4|^5.3",
+        "symfony/mailer": "^4.4|^5.3",
+        "symfony/framework-bundle": "^4.4|^5.3",
+        "symfony/translation": "^4.4|^5.3"
+    },
+    "require-dev": {
+        "draw/tester": "^0.8",
+        "phpunit/phpunit": "^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Draw\\Bundle\\PostOfficeBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}

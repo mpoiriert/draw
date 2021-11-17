@@ -6,14 +6,23 @@ services:
     Draw\Component\Messenger\Transport\DrawTransportFactory: ~
     Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware: ~
     messengerTransportDraw: '@messenger.transport.draw'
+
 framework:
 
     messenger:
-        default_bus: 'command.bus'
+        default_bus: 'main.bus'
         transports:
             draw: 'draw://default'
         buses:
-            command.bus: ~
+            main.bus: ~
             messenger.bus.draw:
                 middleware:
                     - 'Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware'
+
+draw_messenger:
+    sonata:
+        transports:
+            default:
+                transport_name: 'async'
+            failed:
+                transport_name: 'failed'

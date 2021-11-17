@@ -22,7 +22,8 @@ services:
             MYSQL_DATABASE: draw
             MYSQL_USER: draw
             MYSQL_PASSWORD: draw
-
+        ports:
+            - '3306:3306'
     php:
         build:
             context: .docker/php

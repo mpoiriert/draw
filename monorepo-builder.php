@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
+require_once __DIR__.'/vendor/autoload.php';
+
 use Draw\Development\MonorepoBuilder\Release\ReleaseWorker as DrawReleaseWorker;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker;
-use Symplify\MonorepoBuilder\Split\ValueObject\ConvertFormat;
 use Symplify\MonorepoBuilder\ValueObject\Option;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -13,8 +14,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     // where are the packages located?
     $parameters->set(Option::PACKAGE_DIRECTORIES, [
-        __DIR__.'/src/Bundle',
-        __DIR__.'/src/Component',
+        __DIR__.'/packages',
     ]);
 
     // "merge" command related
@@ -23,30 +23,37 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::DATA_TO_APPEND, [
         'require-dev' => [
             'bamarni/composer-bin-plugin' => '^1.4',
+            'composer/semver' => '^3.2',
+            'doctrine/doctrine-migrations-bundle' => '^3.1',
+            'doctrine/doctrine-fixtures-bundle' => '^3.4',
+            'doctrine/sql-formatter' => '^1.1',
             'nelmio/cors-bundle' => '^2.0',
-            'phpunit/phpunit' => '^7.0',
-            'doctrine/doctrine-fixtures-bundle' => '^3.2',
-            'kunicmarko/sonata-auto-configure-bundle' => '^0.7.1',
-            'pelago/emogrifier' => '^3.0',
-            'ramsey/uuid' => '^3.8',
-            'sonata-project/admin-bundle' => '^3.54',
-            'sonata-project/doctrine-orm-admin-bundle' => '^3.10',
-            'symfony/debug-bundle' => '^4.4',
-            'symfony/dotenv' => '^4.4',
-            'symfony/web-profiler-bundle' => '^4.4',
-            'symfony/stopwatch' => '^4.4',
-            'symplify/monorepo-builder' => '^8.3.48',
+            'pelago/emogrifier' => '^6.0',
+            'phpunit/phpunit' => '^8.0|^9.0',
+            'ramsey/uuid' => '^4.2',
+            'sonata-project/admin-bundle' => '^3.105|^4.0',
+            'sonata-project/doctrine-orm-admin-bundle' => '^3.35|^4.0',
+            'symfony/debug-bundle' => '^4.4|^5.3',
+            'symfony/dotenv' => '^4.4|^5.3',
+            'symfony/flex' => '^1.16',
+            'symfony/form' => '^4.4|^5.3',
+            'symfony/monolog-bundle' => '^3.7',
+            'symfony/web-profiler-bundle' => '^4.4|^5.3',
+            'symfony/stopwatch' => '^4.4|^5.3',
+        ],
+    ]);
+
+    $parameters->set(Option::DATA_TO_APPEND, [
+        'conflict' => [
+            'symfony/security-bundle' => '<4.4.1',
         ],
     ]);
 
     // How to split them on github ?
 
     $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES, [
-        __DIR__.'/src/Component/*' => 'git@github.com:mpoiriert/*.git',
-        __DIR__.'/src/Bundle/*' => 'git@github.com:mpoiriert/*.git',
+        __DIR__.'/packages/*' => 'git@github.com:mpoiriert/*.git',
     ]);
-
-    $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES_CONVERT_FORMAT, ConvertFormat::PASCAL_CASE_TO_KEBAB_CASE);
 
     // What is the release workflow
 

@@ -1,0 +1,33 @@
+{
+    "name": "draw/dashboard-bundle",
+    "type": "symfony-bundle",
+    "keywords": ["symfony", "dashboard"],
+    "license": "MIT",
+    "description": "",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^7.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "draw/open-api-bundle": "^0.8",
+        "symfony/framework-bundle": "^4.4|^5.3"
+    },
+    "require-dev": {
+        "draw/tester-bundle": "^0.8",
+        "phpunit/phpunit": "^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Draw\\Bundle\\DashboardBundle\\": ""
+        },
+        "files": [
+            "./functions.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}

@@ -1,0 +1,60 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+{% if sonata_admin is defined %}
+    {% set logo_content = sonata_admin.adminPool.getOption('title_mode') %}
+    {% set logo = sonata_admin.adminPool.titlelogo %}
+    {% set title = sonata_admin.adminPool.title %}
+{% else %}
+    {% set logo_content = sonata_config.getOption('logo_content') %}
+    {% set logo = sonata_config.logo %}
+    {% set title = sonata_config.title %}
+{% endif %}
+{% set display_icon = logo_content in ['icon', 'single_image', 'both', 'all'] %}
+{% set display_text = logo_content in ['text', 'single_text', 'both', 'all'] %}
+
+{% block sonata_nav %}
+{% endblock sonata_nav %}
+
+{% block logo %}
+{% endblock logo %}
+
+{% block sonata_left_side %}
+{% endblock sonata_left_side %}
+
+{% block body_attributes %}class="sonata-bc login-page"{% endblock %}
+
+{% block sonata_wrapper %}
+    <div class="login-box">
+        {% block login_box_header %}
+            <div class="login-logo">
+                <a href="{{ path('sonata_admin_dashboard') }}">
+                    {% if display_icon %}
+                        <div>
+                            <img style="width:64px;" src="{{ asset(logo) }}" alt="{{ title }}">
+                        </div>
+                    {% endif %}
+                    {% if display_text %}
+                        <span>{{ title }}</span>
+                    {% endif %}
+                </a>
+            </div>
+            {% for label, flashes in app.session.flashbag.all %}
+                {% for flash in flashes %}
+                    <div class="alert alert-{{ label }}">
+                        {{ flash }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endblock login_box_header %}
+        <div class="login-box-body">
+            {% block login_box_body %}
+            {% endblock login_box_body %}
+            {% block login_box_footer %}
+                {% if not is_granted("ROLE_USER") %}
+                    <a href="{{ path('admin_login') }}">
+                        Authentication
+                    </a>
+                {% endif %}
+            {% endblock login_box_footer %}
+        </div>
+    </div>
+{% endblock sonata_wrapper %}

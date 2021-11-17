@@ -1,6 +1,7 @@
 doctrine_migrations:
     migrations_paths:
-        DoctrineMigrations: 'app/src/Migrations'
+        DoctrineMigrations: '%kernel.project_dir%/app/migrations'
     storage:
         table_storage:
             table_name: 'migration_versions'
+    enable_profiler: '%kernel.debug%'

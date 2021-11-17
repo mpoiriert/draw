@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+use App\Message\UserCreatedMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
+use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface;
+use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
+use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthenticationUserInterface;
 use Draw\Component\OpenApi\Doctrine\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
@@ -28,15 +33,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class User implements SecurityUserInterface
+class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface
 {
+    use MessageHolderTrait;
     use SecurityUserTrait;
+    use TwoFactorAuthenticationUserTrait;
 
-    const LEVEL_USER = 'user';
+    public const LEVEL_USER = 'user';
 
-    const LEVEL_ADMIN = 'admin';
+    public const LEVEL_ADMIN = 'admin';
 
-    const LEVELS = [
+    public const LEVELS = [
         User::LEVEL_USER,
         User::LEVEL_ADMIN,
     ];
@@ -165,6 +172,14 @@ class User implements SecurityUserInterface
         $this->address = new Address();
         $this->tags = new ArrayCollection();
         $this->userAddresses = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PostPersist()
+     */
+    public function raiseUserCreated()
+    {
+        $this->messageQueue()->push(new UserCreatedMessage($this));
     }
 
     /**

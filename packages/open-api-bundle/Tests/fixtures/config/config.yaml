@@ -1,0 +1,18 @@
+framework:
+    secret: fos
+    router:
+        resource: "%kernel.project_dir%/Tests/fixtures/config/routing.yaml"
+    test: true
+    session:
+        enabled: false
+    validation: { enable_annotations: true }
+
+draw_open_api:
+    openApi:
+        schema:
+            info:
+                title: "test"
+        definitionAliases:
+            -   class: 'Draw\Bundle\OpenApiBundle\Tests\Mock\Model\'
+                alias: ''
+    doctrine: false

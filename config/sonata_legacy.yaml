@@ -1,0 +1,3 @@
+sonata_admin:
+    options:
+        legacy_twig_text_extension: false
