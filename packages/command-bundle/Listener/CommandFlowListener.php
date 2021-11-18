@@ -8,6 +8,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use Draw\Bundle\CommandBundle\Entity\Execution;
 use Draw\Bundle\CommandBundle\Event\CommandErrorEvent;
 use Symfony\Component\Console\Event;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -58,28 +59,26 @@ class CommandFlowListener implements EventSubscriberInterface
 
     public function setIgnoreFlag(Event\ConsoleCommandEvent $consoleCommandEvent): void
     {
+        $commandName = $consoleCommandEvent->getCommand()->getName();
+
+        $definition = $consoleCommandEvent->getCommand()->getDefinition();
+
+        if (!$definition->hasOption(static::OPTION_IGNORE)) {
+            $definition->addOption(new InputOption(static::OPTION_IGNORE, null, InputOption::VALUE_OPTIONAL));
+        }
+
         $option = $consoleCommandEvent->getCommand()
             ->getDefinition()
             ->getOption(CommandFlowListener::OPTION_IGNORE);
 
-        $commandName = $consoleCommandEvent->getCommand()->getName();
+        switch (true) {
+            case in_array($commandName, $this->commandsToIgnore):
+            case !$definition->hasOption(static::OPTION_EXECUTION_ID):
+            case !$consoleCommandEvent->commandShouldRun():
+            case $consoleCommandEvent->getInput()->getOption('help'):
+                $option->setDefault(true);
 
-        if (in_array($commandName, $this->commandsToIgnore)) {
-            $option->setDefault(true);
-
-            return;
-        }
-
-        if (!$consoleCommandEvent->commandShouldRun()) {
-            $option->setDefault(true);
-
-            return;
-        }
-
-        if ($consoleCommandEvent->getInput()->getOption('help')) {
-            $option->setDefault(true);
-
-            return;
+                return;
         }
 
         try {
