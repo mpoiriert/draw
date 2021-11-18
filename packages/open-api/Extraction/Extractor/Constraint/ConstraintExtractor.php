@@ -24,9 +24,9 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
         $this->metadataFactory = $metadataFactoryInterface;
     }
 
-    abstract public function supportConstraint(Constraint $constraint);
+    abstract public function supportConstraint(Constraint $constraint): bool;
 
-    abstract public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context);
+    abstract public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void;
 
     protected function assertSupportConstraint(Constraint $constraint)
     {
@@ -35,7 +35,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
         }
     }
 
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         $constraints = [];
         switch (true) {
@@ -57,15 +57,21 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
         return count($constraints);
     }
 
-    private function getValidationGroups(ExtractionContextInterface $extractionContext)
+    private function getValidationGroups(ExtractionContextInterface $extractionContext): ?array
     {
         $context = $extractionContext->getParameter('model-context', []);
 
         return array_key_exists('validation-groups', $context) ? $context['validation-groups'] : null;
     }
 
-    private function getPropertiesConstraints(ReflectionClass $reflectionClass, Schema $schema, array $groups = null)
-    {
+    /**
+     * @return array|Constraint[]
+     */
+    private function getPropertiesConstraints(
+        ReflectionClass $reflectionClass,
+        Schema $schema,
+        array $groups = null
+    ): array {
         $class = $reflectionClass->getName();
         if (!$this->metadataFactory->hasMetadataFor($class)) {
             return [];
@@ -128,7 +134,7 @@ abstract class ConstraintExtractor implements ConstraintExtractorInterface
      *
      * @throws ExtractionImpossibleException
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();

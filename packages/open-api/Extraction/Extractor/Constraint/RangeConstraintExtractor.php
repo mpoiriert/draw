@@ -7,10 +7,7 @@ use Symfony\Component\Validator\Constraints\Range as SupportedConstraint;
 
 class RangeConstraintExtractor extends ConstraintExtractor
 {
-    /**
-     * @return bool
-     */
-    public function supportConstraint(Constraint $constraint)
+    public function supportConstraint(Constraint $constraint): bool
     {
         return $constraint instanceof SupportedConstraint;
     }
@@ -18,7 +15,7 @@ class RangeConstraintExtractor extends ConstraintExtractor
     /**
      * @param SupportedConstraint|Constraint $constraint
      */
-    public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context)
+    public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {
         $this->assertSupportConstraint($constraint);
         $context->validationConfiguration->maximum = $constraint->max;

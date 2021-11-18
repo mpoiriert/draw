@@ -21,15 +21,7 @@ class TagExtractor implements ExtractorInterface
         $this->annotationReader = $reader;
     }
 
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param SupportedSource $source
-     * @param SupportedTarget $target
-     *
-     * @return bool
-     */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$source instanceof SupportedSource) {
             return false;
@@ -51,7 +43,7 @@ class TagExtractor implements ExtractorInterface
      * @param SupportedSource $source
      * @param SupportedTarget $target
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         foreach ($this->annotationReader->getMethodAnnotations($source) as $annotation) {
             if ($annotation instanceof Tag) {

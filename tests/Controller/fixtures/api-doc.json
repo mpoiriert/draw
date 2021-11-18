@@ -5,6 +5,30 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/base-objects": {
+            "get": {
+                "operationId": "baseObjectList",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "The list of base object",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BaseObject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "base_object_list"
+            }
+        },
         "/api/tags": {
             "get": {
                 "operationId": "tagList",
@@ -803,6 +827,7 @@
                     {
                         "type": "string",
                         "name": "param1",
+                        "description": "param1 description",
                         "in": "query"
                     },
                     {
@@ -874,6 +899,27 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_array"
+            }
+        },
+        "/v2/void": {
+            "get": {
+                "tags": [
+                    "test"
+                ],
+                "operationId": "version2",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Nothing"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_version2"
             }
         },
         "/api/connection-tokens": {
@@ -1009,6 +1055,72 @@
         }
     },
     "definitions": {
+        "BaseObject": {
+            "required": [
+                "discriminator_type"
+            ],
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "discriminator_type": {
+                    "description": "The concrete class of the inheritance.",
+                    "enum": [
+                        "child-1",
+                        "child-2"
+                    ],
+                    "type": "string"
+                }
+            },
+            "discriminator": "discriminator_type",
+            "x-draw-dashboard-class-name": "App\\Entity\\BaseObject"
+        },
+        "ChildObject1": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "attribute1": {
+                    "type": "string"
+                },
+                "discriminator_type": {
+                    "description": "Discriminator property. Value will be ",
+                    "enum": [
+                        "child-1"
+                    ],
+                    "type": "string",
+                    "readOnly": true
+                }
+            },
+            "x-draw-open-api-keep": true,
+            "x-draw-dashboard-class-name": "App\\Entity\\ChildObject1"
+        },
+        "ChildObject2": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "attribute2": {
+                    "type": "string"
+                },
+                "discriminator_type": {
+                    "description": "Discriminator property. Value will be ",
+                    "enum": [
+                        "child-2"
+                    ],
+                    "type": "string",
+                    "readOnly": true
+                }
+            },
+            "x-draw-open-api-keep": true,
+            "x-draw-dashboard-class-name": "App\\Entity\\ChildObject2"
+        },
         "Tag": {
             "required": [
                 "label"

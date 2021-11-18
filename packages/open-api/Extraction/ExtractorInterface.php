@@ -9,10 +9,8 @@ interface ExtractorInterface
      *
      * @param mixed $source
      * @param mixed $target
-     *
-     * @return bool
      */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext);
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool;
 
     /**
      * Extract the requested data.
@@ -23,5 +21,5 @@ interface ExtractorInterface
      * @param mixed $source
      * @param mixed $target
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext);
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void;
 }

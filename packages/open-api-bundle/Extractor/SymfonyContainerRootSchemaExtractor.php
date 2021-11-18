@@ -3,13 +3,17 @@
 namespace Draw\Bundle\OpenApiBundle\Extractor;
 
 use Doctrine\Common\Annotations\Reader;
+use Draw\Bundle\OpenApiBundle\Versioning\VersionMatcherInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Tag;
+use ReflectionException;
+use ReflectionMethod;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -21,20 +25,18 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
      */
     private $annotationReader;
 
-    public function __construct(Reader $reader)
+    /**
+     * @var VersionMatcherInterface
+     */
+    private $versionMatcher;
+
+    public function __construct(Reader $reader, ?VersionMatcherInterface $versionMatcher = null)
     {
         $this->annotationReader = $reader;
+        $this->versionMatcher = $versionMatcher;
     }
 
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param $source
-     * @param $target
-     *
-     * @return bool
-     */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$source instanceof ContainerInterface) {
             return false;
@@ -56,7 +58,7 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
      * @param ContainerInterface $source
      * @param Root               $target
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
@@ -65,11 +67,21 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
         $this->triggerRouteExtraction($source->get('router'), $target, $extractionContext);
     }
 
-    private function triggerRouteExtraction(RouterInterface $router, Root $schema, ExtractionContextInterface $extractionContext)
-    {
+    private function triggerRouteExtraction(
+        RouterInterface $router,
+        Root $schema,
+        ExtractionContextInterface $extractionContext
+    ): void {
+        $versioning = $extractionContext->getParameter(PropertiesExtractor::CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY);
         foreach ($router->getRouteCollection() as $routeName => $route) {
             /* @var Route $route */
             if (!($path = $route->getPath())) {
+                continue;
+            }
+
+            if ($versioning
+                && $this->versionMatcher
+                && !$this->versionMatcher->matchVersion($schema->info->version, $route)) {
                 continue;
             }
 
@@ -82,8 +94,8 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
             list($class, $method) = $controller;
 
             try {
-                $reflectionMethod = new \ReflectionMethod($class, $method);
-            } catch (\ReflectionException $exception) {
+                $reflectionMethod = new ReflectionMethod($class, $method);
+            } catch (ReflectionException $exception) {
                 continue;
             }
 
@@ -116,10 +128,8 @@ class SymfonyContainerRootSchemaExtractor implements ExtractorInterface
 
     /**
      * Return the operation for the route if the route is a Api route.
-     *
-     * @return Operation|null
      */
-    private function getOperation(Route $route, \ReflectionMethod $method)
+    private function getOperation(Route $route, ReflectionMethod $method): ?Operation
     {
         $operation = $this->annotationReader->getMethodAnnotation($method, Operation::class);
 

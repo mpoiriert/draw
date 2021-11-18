@@ -12,7 +12,7 @@ use ReflectionMethod;
 
 class AssignActionTargetsDataExtractor implements ExtractorInterface
 {
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$source instanceof ReflectionMethod) {
             return false;
@@ -31,7 +31,7 @@ class AssignActionTargetsDataExtractor implements ExtractorInterface
      *
      * @throws ExtractionImpossibleException
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();

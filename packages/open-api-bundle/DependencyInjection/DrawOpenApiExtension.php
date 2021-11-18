@@ -43,6 +43,10 @@ class DrawOpenApiExtension extends Extension
             return;
         }
 
+        if ($config['versioning']['enabled']) {
+            $container->setParameter('draw_open_api.versions', $config['versioning']['versions']);
+        }
+
         $container->setParameter('draw_open_api.root_schema', $config['schema']);
         $container->setParameter(
             'draw_open_api.component_dir',

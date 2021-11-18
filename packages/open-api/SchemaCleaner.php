@@ -51,8 +51,8 @@ class SchemaCleaner
             foreach ($replaceSchemas as $toReplace => $replaceWith) {
                 $this->replaceSchemaReference(
                     $rootSchema,
-                    '#/definitions/' . $toReplace,
-                    '#/definitions/' . $replaceWith
+                    '#/definitions/'.$toReplace,
+                    '#/definitions/'.$replaceWith
                 );
 
                 unset($rootSchema->definitions[$toReplace]);
@@ -65,7 +65,7 @@ class SchemaCleaner
                 if ($definitionSchema->getVendorData()[static::VENDOR_DATA_KEEP] ?? false) {
                     continue;
                 }
-                if (!$this->hasSchemaReference($rootSchema, '#/definitions/' . $name)) {
+                if (!$this->hasSchemaReference($rootSchema, '#/definitions/'.$name)) {
                     unset($rootSchema->definitions[$name]);
                     $suppressionOccurred = true;
                 }
@@ -81,7 +81,7 @@ class SchemaCleaner
         foreach ($definitionsToRename as $objectName => $names) {
             array_walk($names,
                 function ($name, $index) use ($objectName, $rootSchema) {
-                    $replaceWith = $objectName . ($index ? '?' . $index : '');
+                    $replaceWith = $objectName.($index ? '?'.$index : '');
                     // If the replace name is the same as the current index we do not do anything
                     if ($replaceWith == $name) {
                         return;
@@ -90,8 +90,8 @@ class SchemaCleaner
                     unset($rootSchema->definitions[$name]);
                     $this->replaceSchemaReference(
                         $rootSchema,
-                        '#/definitions/' . $name,
-                        '#/definitions/' . $replaceWith
+                        '#/definitions/'.$name,
+                        '#/definitions/'.$replaceWith
                     );
                 });
         }

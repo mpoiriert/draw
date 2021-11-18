@@ -1,0 +1,67 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "test",
+        "description": "Go to <a href=\"http://localhost/api-doc/1\">Version 1</a><br/>",
+        "version": "2"
+    },
+    "paths": {
+        "/v2/void": {
+            "get": {
+                "tags": [
+                    "test"
+                ],
+                "operationId": "version2",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Nothing"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_version2"
+            }
+        }
+    },
+    "definitions": {
+        "Draw.OpenApi.Error.Validation": {
+            "required": [
+                "code"
+            ],
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "object",
+                    "properties": {
+                        "propertyPath": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
+                        "invalidValue": {
+                            "type": "mixed"
+                        },
+                        "code": {
+                            "type": "string"
+                        },
+                        "payload": {
+                            "type": "mixed"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

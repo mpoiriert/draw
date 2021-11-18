@@ -2,3 +2,8 @@ draw_open_api.api_doc:
     path: '/api-doc.{_format}'
     controller: 'Draw\Bundle\OpenApiBundle\Controller\OpenApiController::apiDocAction'
     defaults: { _format: 'html' }
+
+draw_open_api.versioned_api_doc:
+    path: '/api-doc/{version}.{_format}'
+    controller: 'Draw\Bundle\OpenApiBundle\Controller\OpenApiController::apiDocAction'
+    defaults: { _format: 'html' }
