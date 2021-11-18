@@ -39,9 +39,22 @@ class Configuration implements ConfigurationInterface
             ->canBeDisabled()
             ->children()
                 ->booleanNode('cleanOnDump')->defaultTrue()->end()
+                ->append($this->createVersioningNode())
                 ->append($this->createSchemaNode())
                 ->append($this->createDefinitionAliasesNode())
                 ->append($this->createNamingFiltersNode())
+            ->end();
+    }
+
+    private function createVersioningNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('versioning'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('versions')
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
+                ->end()
             ->end();
     }
 

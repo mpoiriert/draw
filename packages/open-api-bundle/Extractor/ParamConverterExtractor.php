@@ -24,15 +24,7 @@ class ParamConverterExtractor implements ExtractorInterface
         $this->reader = $reader;
     }
 
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param $source
-     * @param $target
-     *
-     * @return bool
-     */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$source instanceof ReflectionMethod) {
             return false;
@@ -58,7 +50,7 @@ class ParamConverterExtractor implements ExtractorInterface
      * @param ReflectionMethod $source
      * @param Operation        $target
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
@@ -119,10 +111,7 @@ class ParamConverterExtractor implements ExtractorInterface
         return null;
     }
 
-    /**
-     * @return ParamConverter|null
-     */
-    private function getParamConverter(ReflectionMethod $reflectionMethod)
+    private function getParamConverter(ReflectionMethod $reflectionMethod): ?ParamConverter
     {
         $converters = array_filter(
             $this->reader->getMethodAnnotations($reflectionMethod),
@@ -144,6 +133,6 @@ class ParamConverterExtractor implements ExtractorInterface
             }
         );
 
-        return reset($converters);
+        return reset($converters) ?: null;
     }
 }

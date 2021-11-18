@@ -7,5 +7,6 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
         <prototype namespace="Draw\Bundle\OpenApiBundle\Command\" resource="../../Command" />
+        <prototype namespace="Draw\Bundle\OpenApiBundle\Versioning\" resource="../../Versioning" />
     </services>
 </container>

@@ -28,15 +28,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         $this->classNamingFilters = $classNamingFilters;
     }
 
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param                 $source
-     * @param SupportedTarget $target
-     *
-     * @return bool
-     */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$target instanceof SupportedTarget) {
             return false;
@@ -60,7 +52,7 @@ class TypeSchemaExtractor implements ExtractorInterface
      *
      * @throws ExtractionImpossibleException
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
@@ -110,7 +102,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             }
 
             if (!$rootSchema->hasDefinition($definitionName)) {
-                $rootSchema->addDefinition($definitionName, $refSchema = new Schema());
+                $rootSchema->addDefinition($definitionName, $refSchema = clone $target);
                 $refSchema->type = 'object';
                 $extractionContext->getOpenApi()->extract(
                     $reflectionClass,
@@ -129,7 +121,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         }
     }
 
-    private function getDefinitionName($className, array $context)
+    private function getDefinitionName($className, array $context): string
     {
         $newName = $className;
         foreach ($this->classNamingFilters as $classNamingFilter) {
@@ -139,7 +131,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         return $newName;
     }
 
-    private function getHash($modelName, array $context = null)
+    private function getHash($modelName, array $context = null): string
     {
         $context = $context ?: [];
 
@@ -149,14 +141,14 @@ class TypeSchemaExtractor implements ExtractorInterface
             $this->definitionHashes[$modelName] = [];
         }
 
-        if (false === ($index = array_search($hash, $this->definitionHashes[$modelName]))) {
+        if (false === array_search($hash, $this->definitionHashes[$modelName])) {
             $this->definitionHashes[$modelName][] = $hash;
         }
 
         return array_search($hash, $this->definitionHashes[$modelName]);
     }
 
-    public static function getPrimitiveType($type, ExtractionContextInterface $extractionContext = null)
+    public static function getPrimitiveType($type, ExtractionContextInterface $extractionContext = null): ?array
     {
         if (!is_string($type)) {
             return null;

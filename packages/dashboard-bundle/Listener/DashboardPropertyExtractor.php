@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\Reader;
 use Draw\Bundle\DashboardBundle\Annotations\VendorPropertyInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event\PropertyExtractedEvent;
 use JMS\Serializer\Metadata\VirtualPropertyMetadata;
+use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DashboardPropertyExtractor implements EventSubscriberInterface
@@ -24,16 +25,20 @@ class DashboardPropertyExtractor implements EventSubscriberInterface
         $this->annotationReader = $annotationReader;
     }
 
-    public function addColumnInformation(PropertyExtractedEvent $propertyExtractedEvent)
+    public function addColumnInformation(PropertyExtractedEvent $propertyExtractedEvent): void
     {
         $propertyMetadata = $propertyExtractedEvent->getPropertyMetadata();
 
-        if ($propertyMetadata instanceof VirtualPropertyMetadata) {
-            $reflection = new \ReflectionMethod($propertyMetadata->class, $propertyMetadata->getter);
-            $annotations = $this->annotationReader->getMethodAnnotations($reflection);
-        } else {
-            $reflection = new \ReflectionProperty($propertyMetadata->class, $propertyMetadata->name);
-            $annotations = $this->annotationReader->getPropertyAnnotations($reflection);
+        try {
+            if ($propertyMetadata instanceof VirtualPropertyMetadata) {
+                $reflection = new \ReflectionMethod($propertyMetadata->class, $propertyMetadata->getter);
+                $annotations = $this->annotationReader->getMethodAnnotations($reflection);
+            } else {
+                $reflection = new \ReflectionProperty($propertyMetadata->class, $propertyMetadata->name);
+                $annotations = $this->annotationReader->getPropertyAnnotations($reflection);
+            }
+        } catch (ReflectionException $error) {
+            return;
         }
 
         foreach ($annotations as $annotation) {

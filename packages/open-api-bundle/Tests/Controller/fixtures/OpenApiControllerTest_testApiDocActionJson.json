@@ -15,6 +15,7 @@
                     {
                         "type": "string",
                         "name": "param1",
+                        "description": "param1 description",
                         "in": "query"
                     },
                     {
@@ -64,10 +65,10 @@
                     {
                         "type": "array",
                         "name": "param1",
+                        "description": "The parameter",
                         "required": true,
                         "collectionFormat": "csv",
-                        "in": "query",
-                        "description": "The parameter"
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -86,6 +87,27 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_array"
+            }
+        },
+        "/v2/void": {
+            "get": {
+                "tags": [
+                    "test"
+                ],
+                "operationId": "version2",
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "Nothing"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_version2"
             }
         }
     },

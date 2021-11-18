@@ -68,15 +68,7 @@ class PropertiesExtractor implements ExtractorInterface
         $this->typeToSchemaHandlers[] = $typeToSchemaHandler;
     }
 
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param $source
-     * @param $target
-     *
-     * @return bool
-     */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$source instanceof ReflectionClass) {
             return false;
@@ -98,7 +90,7 @@ class PropertiesExtractor implements ExtractorInterface
      * @param ReflectionClass $source
      * @param Schema          $target
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
@@ -147,7 +139,7 @@ class PropertiesExtractor implements ExtractorInterface
 
             if (!$propertySchema) {
                 if (!isset($propertyMetadata->type['name'])) {
-                    throw new \RuntimeException(sprintf('Type of property [%s::%s] is not set', $propertyMetadata->class, $propertyMetadata->name));
+                    throw new RuntimeException(sprintf('Type of property [%s::%s] is not set', $propertyMetadata->class, $propertyMetadata->name));
                 }
                 $propertySchema = $this->extractTypeSchema(
                     $propertyMetadata->type['name'],
@@ -162,7 +154,7 @@ class PropertiesExtractor implements ExtractorInterface
 
             $name = $this->namingStrategy->translateName($propertyMetadata);
             $target->properties[$name] = $propertySchema;
-            $propertySchema->description = (string) $this->getDescription($propertyMetadata) ?: null;
+            $propertySchema->description = $this->getDescription($propertyMetadata) ?: null;
 
             if ($this->eventDispatcher) {
                 $this->eventDispatcher->dispatch(new PropertyExtractedEvent($propertyMetadata, $propertySchema));
@@ -174,7 +166,7 @@ class PropertiesExtractor implements ExtractorInterface
         $type,
         ExtractionContextInterface $extractionContext,
         PropertyMetadata $propertyMetadata
-    ) {
+    ): Schema {
         $extractionContext = $extractionContext->createSubContext();
         $path = $extractionContext->getParameter('jms-path', []);
         $path[] = $propertyMetadata;
@@ -184,10 +176,7 @@ class PropertiesExtractor implements ExtractorInterface
         return $schema;
     }
 
-    /**
-     * @return string
-     */
-    private function getDescription(PropertyMetadata $item)
+    private function getDescription(PropertyMetadata $item): string
     {
         $factory = DocBlockFactory::createInstance();
 
@@ -211,14 +200,12 @@ class PropertiesExtractor implements ExtractorInterface
 
     /**
      * @param ExclusionStrategyInterface[] $exclusionStrategies
-     *
-     * @return bool
      */
     private function shouldSkipProperty(
-        $exclusionStrategies,
+        array $exclusionStrategies,
         PropertyMetadata $item,
         ExtractionContextInterface $extractionContext
-    ) {
+    ): bool {
         $serializationContext = SerializationContext::create();
 
         foreach ($extractionContext->getParameter('jms-path', []) as $metadata) {

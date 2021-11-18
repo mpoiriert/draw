@@ -11,15 +11,7 @@ use Symfony\Component\Routing\Route;
 
 class RouteOperationExtractor implements ExtractorInterface
 {
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param $source
-     * @param $target
-     *
-     * @return bool
-     */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$source instanceof Route) {
             return false;
@@ -41,7 +33,7 @@ class RouteOperationExtractor implements ExtractorInterface
      * @param Route     $source
      * @param Operation $target
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
