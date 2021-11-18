@@ -8,6 +8,7 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Schema;
+use Draw\Component\OpenApi\SchemaCleaner;
 use ReflectionClass;
 
 class InheritanceExtractor implements ExtractorInterface
@@ -65,8 +66,9 @@ class InheritanceExtractor implements ExtractorInterface
         if ($metaData->isRootEntity()) {
             $target->discriminator = $metaData->discriminatorColumn['name'];
             $target->required[] = $target->discriminator;
-            foreach ($metaData->discriminatorMap as $key => $class) {
+            foreach ($metaData->discriminatorMap as $class) {
                 $schema = new Schema();
+                $schema->setVendorDataKey(SchemaCleaner::VENDOR_DATA_KEEP, true);
                 $openApi->extract($class, $schema, $extractionContext);
             }
             $target->properties[$metaData->discriminatorColumn['name']] = $property = new Schema();

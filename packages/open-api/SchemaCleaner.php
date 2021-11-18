@@ -14,6 +14,8 @@ use Draw\Component\OpenApi\Schema\Schema;
  */
 class SchemaCleaner
 {
+    public const VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
+
     /**
      * @return Root The cleaned schema
      */
@@ -30,7 +32,7 @@ class SchemaCleaner
             }
 
             $replaceSchemas = [];
-            foreach ($definitionSchemasByObject as $objectName => $definitionSchemas) {
+            foreach ($definitionSchemasByObject as $definitionSchemas) {
                 /** @var Schema[] $selectedSchemas */
                 $selectedSchemas = [];
                 array_walk($definitionSchemas,
@@ -49,8 +51,8 @@ class SchemaCleaner
             foreach ($replaceSchemas as $toReplace => $replaceWith) {
                 $this->replaceSchemaReference(
                     $rootSchema,
-                    '#/definitions/'.$toReplace,
-                    '#/definitions/'.$replaceWith
+                    '#/definitions/' . $toReplace,
+                    '#/definitions/' . $replaceWith
                 );
 
                 unset($rootSchema->definitions[$toReplace]);
@@ -60,7 +62,10 @@ class SchemaCleaner
         do {
             $suppressionOccurred = false;
             foreach ($rootSchema->definitions as $name => $definitionSchema) {
-                if (!$this->hasSchemaReference($rootSchema, '#/definitions/'.$name)) {
+                if ($definitionSchema->getVendorData()[static::VENDOR_DATA_KEEP] ?? false) {
+                    continue;
+                }
+                if (!$this->hasSchemaReference($rootSchema, '#/definitions/' . $name)) {
                     unset($rootSchema->definitions[$name]);
                     $suppressionOccurred = true;
                 }
@@ -76,7 +81,7 @@ class SchemaCleaner
         foreach ($definitionsToRename as $objectName => $names) {
             array_walk($names,
                 function ($name, $index) use ($objectName, $rootSchema) {
-                    $replaceWith = $objectName.($index ? '?'.$index : '');
+                    $replaceWith = $objectName . ($index ? '?' . $index : '');
                     // If the replace name is the same as the current index we do not do anything
                     if ($replaceWith == $name) {
                         return;
@@ -85,8 +90,8 @@ class SchemaCleaner
                     unset($rootSchema->definitions[$name]);
                     $this->replaceSchemaReference(
                         $rootSchema,
-                        '#/definitions/'.$name,
-                        '#/definitions/'.$replaceWith
+                        '#/definitions/' . $name,
+                        '#/definitions/' . $replaceWith
                     );
                 });
         }
