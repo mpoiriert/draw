@@ -26,6 +26,9 @@
     "conflict": {
         "guzzlehttp/guzzle": "<6"
     },
+    "suggest": {
+        "aws/aws-sdk-php-symfony": "To configure aws-sdk-php into symfony"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.8-dev"

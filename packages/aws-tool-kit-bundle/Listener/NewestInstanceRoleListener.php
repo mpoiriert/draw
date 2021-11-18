@@ -58,9 +58,13 @@ class NewestInstanceRoleListener implements EventSubscriberInterface
      */
     public function checkNewestInstance(ConsoleCommandEvent $consoleCommandEvent)
     {
-        $role = $consoleCommandEvent
-            ->getInput()
-            ->getOption(NewestInstanceRoleListener::OPTION_AWS_NEWEST_INSTANCE_ROLE);
+        $input = $consoleCommandEvent->getInput();
+
+        if (!$input->hasOption(static::OPTION_AWS_NEWEST_INSTANCE_ROLE)) {
+            return;
+        }
+
+        $role = $input->getOption(static::OPTION_AWS_NEWEST_INSTANCE_ROLE);
 
         if (!$role) {
             return;

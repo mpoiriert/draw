@@ -22,6 +22,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // what extra parts to add after merge?
     $parameters->set(Option::DATA_TO_APPEND, [
         'require-dev' => [
+            'aws/aws-sdk-php-symfony' => '^2.2',
             'bamarni/composer-bin-plugin' => '^1.4',
             'composer/semver' => '^3.2',
             'doctrine/doctrine-migrations-bundle' => '^3.1',
