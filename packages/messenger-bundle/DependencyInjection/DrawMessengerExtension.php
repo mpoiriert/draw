@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 
+use Draw\Bundle\MessengerBundle\Broker\EventListener\DefaultValuesListener;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin3X;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin4X;
@@ -27,10 +28,31 @@ class DrawMessengerExtension extends Extension
             $container->setAlias(DrawTransport::class, $config['transport_service_name']);
         }
 
+        $this->configureBroker($config['broker'], $loader, $container);
         $this->configureSonata($config['sonata'], $loader, $container);
     }
 
-    private function configureSonata(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
+    private function configureBroker(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $fileLoader->load('broker.xml');
+
+        $container->setParameter('draw.messenger.broker.symfony_console_path', $config['symfony_console_path']);
+
+        $defaultOptions = [];
+        foreach ($config['default_options'] as $options) {
+            $defaultOptions[$options['name']] = $options['value'];
+        }
+
+        $container->getDefinition(DefaultValuesListener::class)
+            ->setArgument('$receivers', $config['receivers'])
+            ->setArgument('$defaultOptions', $defaultOptions);
+    }
+
+    private function configureSonata(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;

@@ -15,11 +15,53 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('draw_messenger');
         $treeBuilder->getRootNode()
             ->children()
-                ->append($this->createSonataNode())
-                ->scalarNode('transport_service_name')->defaultValue('messenger.transport.draw')->end()
+            ->append($this->createBrokerNode())
+            ->append($this->createSonataNode())
+            ->scalarNode('transport_service_name')->defaultValue('messenger.transport.draw')->end()
             ->end();
 
         return $treeBuilder;
+    }
+
+    private function createBrokerNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('broker'))
+            ->canBeEnabled()
+            ->children()
+                ->scalarNode('symfony_console_path')->defaultNull()->end()
+                ->arrayNode('receivers')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->scalarPrototype()->end()
+                ->end()
+                ->arrayNode('default_options')
+                    ->normalizeKeys(false)
+                    ->beforeNormalization()
+                    ->always(function ($options) {
+                        foreach ($options as $name => $configuration) {
+                            if (!is_array($configuration)) {
+                                $options[$name] = $configuration = ['name' => $name, 'value' => $configuration];
+                            }
+                            if (is_int($name)) {
+                                continue;
+                            }
+                            if (!isset($configuration['name'])) {
+                                $options[$name]['name'] = $name;
+                            }
+                        }
+
+                        return $options;
+                    })
+                    ->end()
+                    ->useAttributeAsKey('name', false)
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('name')->isRequired()->end()
+                            ->scalarNode('value')->defaultNull()->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     private function createSonataNode(): ArrayNodeDefinition

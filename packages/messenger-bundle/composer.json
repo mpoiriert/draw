@@ -14,6 +14,7 @@
         "symfony/translation": "^4.4|^5.3"
     },
     "require-dev": {
+        "ext-pcntl": "*",
         "draw/tester-bundle": "^0.8",
         "phpunit/phpunit": "^8.0|^9.0",
         "sonata-project/admin-bundle": "^3.105|^4.0",
@@ -26,7 +27,8 @@
     },
     "suggest": {
         "sonata-project/admin-bundle": "If you want to display doctrine message via sonata admin",
-        "sonata-project/doctrine-orm-admin-bundle": "Sonata integration only support orm"
+        "sonata-project/doctrine-orm-admin-bundle": "Sonata integration only support orm",
+        "ext-pcntl": "To allow message broker to catch signal"
     },
     "extra": {
         "branch-alias": {
