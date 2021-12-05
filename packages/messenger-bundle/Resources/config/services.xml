@@ -6,6 +6,7 @@
         <defaults public="false" autoconfigure="true" autowire="true"/>
         <prototype namespace="Draw\Bundle\MessengerBundle\" resource="../..">
             <exclude>../../{vendor,DependencyInjection,Entity,Event,Tests}</exclude>
+            <exclude>../../{Broker}</exclude>
             <exclude>../../{Sonata}</exclude>
             <exclude>../../{DrawMessengerBundle.php}</exclude>
         </prototype>

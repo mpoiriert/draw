@@ -17,7 +17,12 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
-            'transport_service_name' => 'messenger.transport.draw',
+            'broker' => [
+                'enabled' => false,
+                'symfony_console_path' => null,
+                'receivers' => [],
+                'default_options' => [],
+            ],
             'sonata' => [
                 'enabled' => false,
                 'transports' => [],
@@ -28,7 +33,48 @@ class ConfigurationTest extends ConfigurationTestCase
                 'label' => 'Message',
                 'pager_type' => 'simple',
             ],
+            'transport_service_name' => 'messenger.transport.draw',
         ];
+    }
+
+    public function testBrokerEnabledConfiguration(): void
+    {
+        $config = $this->processConfiguration([
+            [
+                'broker' => [
+                    'symfony_console_path' => 'test',
+                    'receivers' => ['sync'],
+                    'default_options' => [
+                        'as-system' => null,
+                        'sleep' => 60,
+                        'limit' => 1,
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertEquals(
+            [
+                'enabled' => true,
+                'symfony_console_path' => 'test',
+                'receivers' => ['sync'],
+                'default_options' => [
+                    'as-system' => [
+                        'name' => 'as-system',
+                        'value' => null,
+                    ],
+                    'sleep' => [
+                        'name' => 'sleep',
+                        'value' => 60,
+                    ],
+                    'limit' => [
+                        'name' => 'limit',
+                        'value' => 1,
+                    ],
+                ],
+            ],
+            $config['broker']
+        );
     }
 
     public function provideTestInvalidConfiguration(): iterable

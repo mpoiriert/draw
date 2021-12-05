@@ -20,6 +20,8 @@ framework:
                     - 'Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware'
 
 draw_messenger:
+    broker:
+        receivers: ['async']
     sonata:
         transports:
             default:
