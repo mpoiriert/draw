@@ -12,7 +12,7 @@
         }
     },
     "require": {
-        "draw/tester": "^0.7.37",
+        "draw/tester": "^0.8",
         "symfony/config": "^4.4|^5.3",
         "symfony/console": "^4.4|^5.3",
         "symfony/dependency-injection": "^4.4|^5.3"
