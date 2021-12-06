@@ -14,9 +14,9 @@
     },
     "require": {
         "php": "^7.3",
-        "symfony/dependency-injection": "^4.4|^5.3",
-        "symfony/property-access": "^4.4|^5.3",
-        "symfony/validator": "^4.4|^5.3"
+        "symfony/dependency-injection": "^4.4|^5.4",
+        "symfony/property-access": "^4.4|^5.4",
+        "symfony/validator": "^4.4|^5.4"
     },
     "require-dev": {
         "doctrine/annotations": "^1.11",
