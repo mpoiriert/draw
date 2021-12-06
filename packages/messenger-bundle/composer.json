@@ -8,10 +8,10 @@
     "prefer-stable": true,
     "require": {
         "draw/messenger": "^0.8",
-        "symfony/css-selector": "^4.4|^5.3",
-        "symfony/framework-bundle": "^4.4|^5.3",
-        "symfony/mailer": "^4.4|^5.3",
-        "symfony/translation": "^4.4|^5.3"
+        "symfony/css-selector": "^4.4|^5.4",
+        "symfony/framework-bundle": "^4.4|^5.4",
+        "symfony/mailer": "^4.4|^5.4",
+        "symfony/translation": "^4.4|^5.4"
     },
     "require-dev": {
         "ext-pcntl": "*",

@@ -13,9 +13,9 @@
     },
     "require": {
         "draw/tester": "^0.8",
-        "symfony/config": "^4.4|^5.3",
-        "symfony/console": "^4.4|^5.3",
-        "symfony/dependency-injection": "^4.4|^5.3"
+        "symfony/config": "^4.4|^5.4",
+        "symfony/console": "^4.4|^5.4",
+        "symfony/dependency-injection": "^4.4|^5.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0|^9.0"
