@@ -81,6 +81,7 @@ class TwoFactorAuthenticationController extends CRUDController
                     'action' => 'enable-2fa',
                     'form' => $form->createView(),
                     'qrCodeSvg' => $qrCode->getWriter('svg')->writeString($qrCode),
+                    'totpSecret' => $user->getTotpSecret(),
                 ]
             )
         );
