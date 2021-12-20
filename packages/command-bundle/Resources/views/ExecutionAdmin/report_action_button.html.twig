@@ -1,0 +1,9 @@
+{% if object is not defined %}
+    <li>
+        <a class="sonata-action-element"
+           href="{{ admin.generateUrl('report') }}">
+            <i class="fa fa-pie-chart"></i>
+            Report
+        </a>
+    </li>
+{% endif %}

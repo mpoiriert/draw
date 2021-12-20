@@ -6,10 +6,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\DBAL\Exception as DBALException;
 use Draw\Bundle\CommandBundle\Entity\Execution;
+use Draw\Bundle\CommandBundle\Event\CommandErrorEvent;
 use Symfony\Component\Console\Event;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\Output;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CommandFlowListener implements EventSubscriberInterface
@@ -30,6 +32,11 @@ class CommandFlowListener implements EventSubscriberInterface
      */
     private $connection;
 
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -42,35 +49,36 @@ class CommandFlowListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(Connection $executionConnection)
-    {
+    public function __construct(
+        Connection $executionConnection,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->connection = $executionConnection;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function setIgnoreFlag(Event\ConsoleCommandEvent $consoleCommandEvent): void
     {
+        $commandName = $consoleCommandEvent->getCommand()->getName();
+
+        $definition = $consoleCommandEvent->getCommand()->getDefinition();
+
+        if (!$definition->hasOption(static::OPTION_IGNORE)) {
+            $definition->addOption(new InputOption(static::OPTION_IGNORE, null, InputOption::VALUE_OPTIONAL));
+        }
+
         $option = $consoleCommandEvent->getCommand()
             ->getDefinition()
             ->getOption(CommandFlowListener::OPTION_IGNORE);
 
-        $commandName = $consoleCommandEvent->getCommand()->getName();
+        switch (true) {
+            case in_array($commandName, $this->commandsToIgnore):
+            case !$definition->hasOption(static::OPTION_EXECUTION_ID):
+            case !$consoleCommandEvent->commandShouldRun():
+            case $consoleCommandEvent->getInput()->getOption('help'):
+                $option->setDefault(true);
 
-        if (in_array($commandName, $this->commandsToIgnore)) {
-            $option->setDefault(true);
-
-            return;
-        }
-
-        if (!$consoleCommandEvent->commandShouldRun()) {
-            $option->setDefault(true);
-
-            return;
-        }
-
-        if ($consoleCommandEvent->getInput()->getOption('help')) {
-            $option->setDefault(true);
-
-            return;
+                return;
         }
 
         try {
@@ -88,23 +96,19 @@ class CommandFlowListener implements EventSubscriberInterface
 
     public function logCommandStart(Event\ConsoleCommandEvent $consoleCommandEvent): void
     {
-        $consoleCommandEvent->getInput()->bind($consoleCommandEvent->getCommand()->getDefinition());
-
-        if ($consoleCommandEvent->getInput()->getOption(CommandFlowListener::OPTION_IGNORE)) {
+        if ($consoleCommandEvent->getInput()->getOption(self::OPTION_IGNORE)) {
             return;
         }
 
-        $executionId = $this->generateExecutionId($consoleCommandEvent);
+        $input = $consoleCommandEvent->getInput();
+        if ($executionId = $input->getOption(self::OPTION_EXECUTION_ID)) {
+            $this->updateState($executionId, Execution::STATE_STARTED);
+        } else {
+            $executionId = $this->generateExecutionId($consoleCommandEvent);
+        }
 
-        $consoleCommandEvent
-            ->getCommand()
-            ->addOption(
-                CommandFlowListener::OPTION_EXECUTION_ID,
-                null,
-                InputOption::VALUE_REQUIRED,
-                'The existing execution id of the command. Use internally by the DrawCommandBundle.',
-                $executionId
-            );
+        $option = $consoleCommandEvent->getCommand()->getDefinition()->getOption(self::OPTION_EXECUTION_ID);
+        $option->setDefault($executionId);
     }
 
     public function logCommandTerminate(Event\ConsoleTerminateEvent $consoleCommandEvent): void
@@ -128,9 +132,18 @@ class CommandFlowListener implements EventSubscriberInterface
             return;
         }
 
+        $error = $exceptionEvent->getError();
+
         $output = new BufferedOutput(Output::VERBOSITY_DEBUG, true);
-        $exceptionEvent->getCommand()->getApplication()->renderThrowable($exceptionEvent->getError(), $output);
-        $this->updateState($executionId, Execution::STATE_ERROR, $output->fetch());
+        $exceptionEvent->getCommand()->getApplication()->renderThrowable($error, $output);
+        $outputString = $output->fetch();
+
+        $commandErrorEvent = new CommandErrorEvent($executionId, $outputString);
+        $this->eventDispatcher->dispatch($commandErrorEvent);
+
+        $executionState = $commandErrorEvent->isAutoAcknowledge() ? Execution::STATE_AUTO_ACKNOWLEDGE : Execution::STATE_ERROR;
+        $this->updateState($executionId, $executionState, $outputString,
+            $commandErrorEvent->getAutoAcknowledgeReason());
     }
 
     private function getExecutionId(Event\ConsoleEvent $event): ?string
@@ -143,8 +156,20 @@ class CommandFlowListener implements EventSubscriberInterface
         return $input->getOption(CommandFlowListener::OPTION_EXECUTION_ID);
     }
 
-    private function updateState(string $executionId, string $state, string $outputString = null): void
-    {
+    private function updateState(
+        string $executionId,
+        string $state,
+        ?string $outputString = null,
+        ?string $autoAcknowledgeReason = null
+    ): void {
+        if (mb_strlen((string) $outputString) > 50000) {
+            $outputString = mb_substr($outputString, 0,
+                    40000)."\n\n[OUTPUT WAS TOO BIG]\n\nTail of log:\n\n".mb_substr(
+                    $outputString,
+                    -10000
+                );
+        }
+
         $reconnectToSlave = $this->mustReconnectToSlave();
 
         $date = date('Y-m-d H:i:s');
@@ -160,12 +185,19 @@ class CommandFlowListener implements EventSubscriberInterface
             $parameters['output'] = $outputString;
         }
 
+        $setAutoAcknowledgeReason = null;
+        if ($autoAcknowledgeReason) {
+            $parameters['auto_acknowledge_reason'] = $autoAcknowledgeReason;
+            $setAutoAcknowledgeReason = 'auto_acknowledge_reason = :auto_acknowledge_reason,';
+        }
+
         $query = <<<SQL
 UPDATE 
   command__execution 
 SET 
   updated_at = :updated_at,
   $setOutput
+  $setAutoAcknowledgeReason
   state = IF(state != 'error', :state, state)
 WHERE
 id = :id
@@ -174,7 +206,7 @@ SQL;
         $this->connection->prepare($query)->execute($parameters);
 
         if ($reconnectToSlave) {
-            $this->connection->connect('slave');
+            $this->connection->ensureConnectedToReplica();
         }
     }
 
@@ -221,9 +253,9 @@ SQL;
         $executionId = $this->connection->lastInsertId();
 
         if ($reconnectToSlave) {
-            $this->connection->connect('slave');
+            $this->connection->ensureConnectedToReplica();
         }
 
-        return $executionId;
+        return (int) $executionId;
     }
 }

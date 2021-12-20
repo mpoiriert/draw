@@ -36,11 +36,11 @@ class TestController
      *     }
      * )
      *
-     * @param string $param1
+     * @param string $param1 param1 description
      *
      * @return Test The created test entity
      */
-    public function createAction(Test $test, $param1 = 'default')
+    public function createAction(Test $test, string $param1 = 'default'): Test
     {
         $test->setProperty($param1);
 
@@ -68,8 +68,22 @@ class TestController
      *
      * @return array The query parameter value
      */
-    public function arrayAction(?array $param1)
+    public function arrayAction(?array $param1): ?array
     {
         return $param1;
+    }
+
+    /**
+     * @Route(methods={"GET"}, path="/v2/void", defaults={"_api_version":2})
+     *
+     * @OpenApi\Operation(
+     *     operationId="version2",
+     *     tags={"test"}
+     * )
+     *
+     * @return void Nothing
+     */
+    public function version2Action(): void
+    {
     }
 }

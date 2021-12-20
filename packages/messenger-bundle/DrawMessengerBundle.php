@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\MessengerBundle;
 
+use Draw\Bundle\MessengerBundle\DependencyInjection\Compiler\BrokerCompilerPass;
 use Draw\Bundle\MessengerBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,5 +15,7 @@ class DrawMessengerBundle extends Bundle
         $container->addCompilerPass(
             new MessengerTransportNamesCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1
         );
+
+        $container->addCompilerPass(new BrokerCompilerPass());
     }
 }

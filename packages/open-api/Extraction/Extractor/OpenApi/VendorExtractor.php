@@ -8,6 +8,9 @@ use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\VendorExtensionSupportInterface;
 use Draw\Component\OpenApi\Schema\VendorInterface;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionProperty;
 use Reflector;
 use RuntimeException;
 
@@ -20,7 +23,7 @@ class VendorExtractor implements ExtractorInterface
         $this->annotationReader = $annotationReader;
     }
 
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$target instanceof VendorExtensionSupportInterface) {
             return false;
@@ -43,7 +46,7 @@ class VendorExtractor implements ExtractorInterface
      *
      * @throws ExtractionImpossibleException
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
@@ -61,20 +64,19 @@ class VendorExtractor implements ExtractorInterface
     {
         $classLevelAnnotations = [];
         switch (true) {
-            case $reflector instanceof \ReflectionMethod:
+            case $reflector instanceof ReflectionMethod:
                 $annotations = $this->annotationReader->getMethodAnnotations($reflector);
                 $classLevelAnnotations = $this->annotationReader->getClassAnnotations($reflector->getDeclaringClass());
                 break;
-            case $reflector instanceof \ReflectionProperty:
+            case $reflector instanceof ReflectionProperty:
                 $annotations = $this->annotationReader->getPropertyAnnotations($reflector);
                 $classLevelAnnotations = $this->annotationReader->getClassAnnotations($reflector->getDeclaringClass());
                 break;
-            case $reflector instanceof \ReflectionClass:
+            case $reflector instanceof ReflectionClass:
                 $annotations = $this->annotationReader->getClassAnnotations($reflector);
                 break;
             default:
                 throw new RuntimeException('Not supported reflection class ['.get_class($reflector).']');
-                break;
         }
 
         $filter = function ($annotation) {

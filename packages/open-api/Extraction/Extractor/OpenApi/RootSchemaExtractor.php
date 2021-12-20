@@ -20,15 +20,7 @@ class RootSchemaExtractor implements ExtractorInterface
         $this->serializer = $serializer;
     }
 
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param $source
-     * @param $target
-     *
-     * @return bool
-     */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!is_string($source)) {
             return false;
@@ -67,7 +59,7 @@ class RootSchemaExtractor implements ExtractorInterface
      * @param string $source
      * @param Root   $target
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();

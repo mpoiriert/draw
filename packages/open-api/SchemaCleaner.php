@@ -14,6 +14,8 @@ use Draw\Component\OpenApi\Schema\Schema;
  */
 class SchemaCleaner
 {
+    public const VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
+
     /**
      * @return Root The cleaned schema
      */
@@ -30,7 +32,7 @@ class SchemaCleaner
             }
 
             $replaceSchemas = [];
-            foreach ($definitionSchemasByObject as $objectName => $definitionSchemas) {
+            foreach ($definitionSchemasByObject as $definitionSchemas) {
                 /** @var Schema[] $selectedSchemas */
                 $selectedSchemas = [];
                 array_walk($definitionSchemas,
@@ -60,6 +62,9 @@ class SchemaCleaner
         do {
             $suppressionOccurred = false;
             foreach ($rootSchema->definitions as $name => $definitionSchema) {
+                if ($definitionSchema->getVendorData()[static::VENDOR_DATA_KEEP] ?? false) {
+                    continue;
+                }
                 if (!$this->hasSchemaReference($rootSchema, '#/definitions/'.$name)) {
                     unset($rootSchema->definitions[$name]);
                     $suppressionOccurred = true;

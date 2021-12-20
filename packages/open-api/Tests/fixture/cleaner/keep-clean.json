@@ -1,0 +1,23 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Documentation",
+        "description": "",
+        "termsOfService": "N\\A",
+        "version": "1.0"
+    },
+    "paths": {},
+    "definitions": {
+        "Keep": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Description",
+                    "type": "integer",
+                    "readOnly": true
+                }
+            },
+            "x-draw-open-api-keep": true
+        }
+    }
+}

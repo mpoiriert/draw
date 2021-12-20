@@ -1,0 +1,22 @@
+{% extends '@SonataAdmin/standard_layout.html.twig' %}
+
+{% block content %}
+    <h4>Command execution auto acknowledge report</h4>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>Reason</th>
+            <th>Count</th>
+        </tr>
+        {% for stat in stats %}
+            <tr>
+                <td>
+                    <a href="{{ admin.generateStatusFilterUrl(stat.reason) }}">
+                        {{ stat.reason }}
+                    </a>
+                </td>
+                <td>{{ stat.count }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

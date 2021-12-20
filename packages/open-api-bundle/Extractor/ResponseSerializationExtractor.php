@@ -23,15 +23,7 @@ class ResponseSerializationExtractor implements ExtractorInterface
         $this->annotationReader = $reader;
     }
 
-    /**
-     * Return if the extractor can extract the requested data or not.
-     *
-     * @param $source
-     * @param $target
-     *
-     * @return bool
-     */
-    public function canExtract($source, $target, ExtractionContextInterface $extractionContext)
+    public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$target instanceof Schema) {
             return false;
@@ -57,7 +49,7 @@ class ResponseSerializationExtractor implements ExtractorInterface
      * @param ReflectionMethod $source
      * @param Schema           $target
      */
-    public function extract($source, $target, ExtractionContextInterface $extractionContext)
+    public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
@@ -86,14 +78,8 @@ class ResponseSerializationExtractor implements ExtractorInterface
         }
     }
 
-    /**
-     * @return Serialization|null
-     */
-    private function getSerialization(ReflectionMethod $reflectionMethod)
+    private function getSerialization(ReflectionMethod $reflectionMethod): ?Serialization
     {
-        /** @var Serialization|null $serialization */
-        $serialization = $this->annotationReader->getMethodAnnotation($reflectionMethod, Serialization::class);
-
-        return $serialization;
+        return $this->annotationReader->getMethodAnnotation($reflectionMethod, Serialization::class);
     }
 }

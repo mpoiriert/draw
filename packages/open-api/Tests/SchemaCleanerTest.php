@@ -18,7 +18,7 @@ class SchemaCleanerTest extends TestCase
         $this->schemaCleaner = new SchemaCleaner();
     }
 
-    public function provideTestClean()
+    public function provideTestClean(): iterable
     {
         return [
             'simple' => ['simple'],
@@ -26,6 +26,7 @@ class SchemaCleanerTest extends TestCase
             'deep-reference' => ['deep-reference'],
             'not-needed-model' => ['not-needed-model'],
             'definition-index' => ['definition-index'],
+            'keep' => ['keep'],
         ];
     }
 

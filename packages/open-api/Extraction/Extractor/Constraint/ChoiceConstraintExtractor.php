@@ -8,10 +8,7 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 class ChoiceConstraintExtractor extends ConstraintExtractor
 {
-    /**
-     * @return bool
-     */
-    public function supportConstraint(Constraint $constraint)
+    public function supportConstraint(Constraint $constraint): bool
     {
         return $constraint instanceof SupportedConstraint;
     }
@@ -19,7 +16,7 @@ class ChoiceConstraintExtractor extends ConstraintExtractor
     /**
      * @param SupportedConstraint|Constraint $constraint
      */
-    public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context)
+    public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {
         $this->assertSupportConstraint($constraint);
 

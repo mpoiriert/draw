@@ -35,6 +35,15 @@ class CompilerPassTest extends TestCase
                 [
                     'addOption',
                     [
+                        CommandFlowListener::OPTION_EXECUTION_ID,
+                        null,
+                        InputOption::VALUE_REQUIRED,
+                        'The existing execution id of the command. Use internally by the DrawCommandBundle.',
+                    ],
+                ],
+                [
+                    'addOption',
+                    [
                         CommandFlowListener::OPTION_IGNORE,
                         null,
                         InputOption::VALUE_OPTIONAL,
