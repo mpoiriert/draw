@@ -5,6 +5,8 @@
         <h4>{{ 'form.enable_2fa.header' | trans([], 'DrawUserBundle') }}</h4>
         <p>{{ 'form.enable_2fa.description' | trans([], 'DrawUserBundle') }}</p>
         {{ qrCodeSvg|raw }}
+        <br>
+        <p><b>{{ 'form.enable_2fa.totp_label' | trans([], 'DrawUserBundle') }}:</b> {{ totpSecret }}</p>
 
         {{ form(form) }}
     </div>
