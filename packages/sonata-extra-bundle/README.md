@@ -73,3 +73,23 @@ class UserAdmin extends AbstractAdmin
     }
 }
 ```
+
+## Display date in admin according to user time zone
+Enable this feature in config.
+```YAML
+draw_sonata_extra:
+  user_timezone:
+    enabled: true
+```
+Add the javascript and modify sonata base layout template
+```YAML
+sonata_admin:
+  assets:
+    extra_javascripts:
+      - bundles/drawsonataextra/main.js
+```
+```html
+<script type="text/javascript">
+    setTimezoneCookie('{{ app.environment }}');
+</script>
+```

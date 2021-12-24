@@ -27,6 +27,10 @@ sonata_admin:
                     filters:
                         queueName: { value: [ 'failed' ] }
 
+    assets:
+        extra_javascripts:
+            - bundles/drawsonataextra/main.js
+
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:
