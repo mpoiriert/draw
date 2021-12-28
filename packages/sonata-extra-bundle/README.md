@@ -81,15 +81,10 @@ draw_sonata_extra:
   user_timezone:
     enabled: true
 ```
-Add the javascript and modify sonata base layout template
+Add the javascript
 ```YAML
 sonata_admin:
   assets:
     extra_javascripts:
       - bundles/drawsonataextra/main.js
-```
-```html
-<script type="text/javascript">
-    setTimezoneCookie('{{ app.environment }}');
-</script>
 ```

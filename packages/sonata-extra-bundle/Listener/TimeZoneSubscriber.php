@@ -11,18 +11,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class TimeZoneSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var string
-     */
-    private $timezone;
-
-    /**
      * @var ValidatorInterface
      */
     private $validator;
 
-    public function __construct(string $timezone, ValidatorInterface $validator)
+    public function __construct(ValidatorInterface $validator)
     {
-        $this->timezone = $timezone;
         $this->validator = $validator;
     }
 
@@ -37,12 +31,10 @@ class TimeZoneSubscriber implements EventSubscriberInterface
 
     public function setTimeZone(RequestEvent $event): void
     {
-        $timeZone = $event->getRequest()->cookies->get('timezone');
+        $timeZone = $event->getRequest()->cookies->get('adminUserTimezone');
         $violations = $this->validator->validate($timeZone, [new NotBlank(), new TimezoneConstraint()]);
-        if ($violations->count() > 0) {
-            $timeZone = $this->timezone;
+        if (0 === $violations->count()) {
+            date_default_timezone_set($timeZone);
         }
-
-        date_default_timezone_set($timeZone);
     }
 }

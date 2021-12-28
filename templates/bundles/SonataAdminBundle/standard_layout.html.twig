@@ -1,8 +1,0 @@
-{% extends '@!SonataAdmin/standard_layout.html.twig' %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
-        setTimezoneCookie('{{ app.environment }}');
-    </script>
-{% endblock %}
