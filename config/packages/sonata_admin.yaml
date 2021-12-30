@@ -27,6 +27,14 @@ sonata_admin:
                     filters:
                         queueName: { value: [ 'failed' ] }
 
+    assets:
+        extra_javascripts:
+            - bundles/drawsonataextra/main.js
+            - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js
+
+        extra_stylesheets:
+            - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
+
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:

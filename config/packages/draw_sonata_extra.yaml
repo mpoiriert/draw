@@ -1,0 +1,3 @@
+draw_sonata_extra:
+  user_timezone:
+    enabled: true
