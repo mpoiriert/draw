@@ -3,8 +3,8 @@ framework:
         failure_transport: 'failed'
 
         transports:
-            async: 'doctrine://default?queue_name=default'
-            failed: 'doctrine://default?queue_name=failed'
+            async: 'draw://default?queue_name=default'
+            failed: 'draw://default?queue_name=failed'
             sync: 'sync://'
         routing:
         # Route your messages to the transports

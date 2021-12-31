@@ -2,7 +2,8 @@
 
 namespace Draw\Bundle\MessengerBundle\Sonata\Admin;
 
-use Draw\Bundle\MessengerBundle\Entity\BaseMessengerMessage;
+use Draw\Bundle\MessengerBundle\Entity\DrawMessageInterface;
+use Draw\Bundle\MessengerBundle\Entity\DrawMessageTrait;
 use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -27,6 +28,34 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
      */
     private $receiverLocator;
 
+    private $supportDrawTransport;
+
+    public function __construct($code, $class, $baseControllerName = null)
+    {
+        parent::__construct($code, $class, $baseControllerName);
+
+        $this->supportDrawTransport = $this->supportDrawTransport();
+    }
+
+    private function supportDrawTransport(): bool
+    {
+        if (null === $this->supportDrawTransport) {
+            $class = $this->getClass();
+            $traits = [];
+            do {
+                $traits = array_merge(class_uses($class), $traits);
+            } while ($class = get_parent_class($class));
+
+            foreach ($traits as $trait => $same) {
+                $traits = array_merge(class_uses($trait), $traits);
+            }
+
+            $this->supportDrawTransport = in_array(DrawMessageTrait::class, array_unique($traits));
+        }
+
+        return $this->supportDrawTransport;
+    }
+
     public function inject(
         ContainerInterface $receiverLocator,
         array $transportMapping
@@ -47,12 +76,23 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
                     'field_type' => ChoiceType::class,
                     'field_options' => [
                         'choices' => array_combine(
-                                array_keys($this->transportMapping),
-                                array_keys($this->transportMapping),
-                            ),
+                            array_keys($this->transportMapping),
+                            array_keys($this->transportMapping),
+                        ),
+                        'multiple' => true,
                     ],
                 ],
             );
+
+        if ($this->supportDrawTransport) {
+            $filter->add(
+                'tags.name',
+                null,
+                [
+                    'show_filter' => true,
+                ]
+            );
+        }
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -63,11 +103,17 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
             ->add('createdAt')
             ->add('availableAt')
             ->add('deliveredAt');
+
+        if ($this->supportDrawTransport) {
+            $list
+                ->add('expiresAt')
+                ->add('tags');
+        }
     }
 
-    public function dumpMessage(BaseMessengerMessage $message): string
+    public function dumpMessage(DrawMessageInterface $message): string
     {
-        $transportName = $this->transportMapping[$message->queueName] ?? null;
+        $transportName = $this->transportMapping[$message->getQueueName()] ?? null;
 
         /** @var ListableReceiverInterface $receiver */
         $receiver = $this->receiverLocator->get($transportName);
@@ -75,7 +121,7 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
         $dumper = new HtmlDumper();
         $dumper->setTheme('light');
 
-        return $dumper->dump((new VarCloner())->cloneVar($receiver->find($message->id)), true);
+        return $dumper->dump((new VarCloner())->cloneVar($receiver->find($message->getMessageId())), true);
     }
 
     /**

@@ -3,12 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\MessengerBundle\Entity\BaseMessengerMessage;
+use Draw\Bundle\MessengerBundle\Entity\DrawMessageInterface;
+use Draw\Bundle\MessengerBundle\Entity\DrawMessageTrait;
+use Draw\Bundle\MessengerBundle\Entity\MessengerMessageTrait;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="messenger_messages")
+ * @ORM\Table(name="draw_messenger__message")
  */
-class MessengerMessage extends BaseMessengerMessage
+class MessengerMessage implements DrawMessageInterface
 {
+    use MessengerMessageTrait;
+    use DrawMessageTrait;
 }

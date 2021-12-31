@@ -3,6 +3,8 @@
 namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 
 use Draw\Bundle\MessengerBundle\Broker\EventListener\DefaultValuesListener;
+use Draw\Bundle\MessengerBundle\Entity\DrawMessageInterface;
+use Draw\Bundle\MessengerBundle\Entity\DrawMessageTagInterface;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin3X;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin4X;
@@ -13,12 +15,13 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 
-class DrawMessengerExtension extends Extension
+class DrawMessengerExtension extends Extension implements PrependExtensionInterface
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -30,6 +33,25 @@ class DrawMessengerExtension extends Extension
 
         $this->configureBroker($config['broker'], $loader, $container);
         $this->configureSonata($config['sonata'], $loader, $container);
+    }
+
+    public function prepend(ContainerBuilder $container)
+    {
+        $configs = $container->getExtensionConfig('draw_messenger');
+        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        if (!$this->isConfigEnabled($container, $config['sonata'])) {
+            return;
+        }
+
+        $container->prependExtensionConfig('doctrine', [
+            'orm' => [
+                'resolve_target_entities' => [
+                    DrawMessageInterface::class => $config['sonata']['entity_class'],
+                    DrawMessageTagInterface::class => $config['sonata']['tag_entity_class'],
+                ],
+            ],
+        ]);
     }
 
     private function configureBroker(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
