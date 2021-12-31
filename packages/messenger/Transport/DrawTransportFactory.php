@@ -12,6 +12,14 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class DrawTransportFactory extends DoctrineTransportFactory
 {
+    private const DEFAULT_OPTIONS = [
+        'table_name' => 'draw_messenger__message',
+        'tag_table_name' => '', // Will append _tag to the table_name
+        'queue_name' => 'default',
+        'redeliver_timeout' => 3600,
+        'auto_setup' => false,
+    ];
+
     private $registry;
 
     public function __construct(ManagerRegistry $registry)
@@ -22,24 +30,8 @@ class DrawTransportFactory extends DoctrineTransportFactory
 
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
-        if (false === $components = parse_url($dsn)) {
-            throw new InvalidArgumentException(sprintf('The given Draw Messenger DSN "%s" is invalid.', $dsn));
-        }
-
-        if (isset($components['query'])) {
-            $dsn .= '&';
-        } else {
-            $dsn .= '?';
-        }
-
-        $dsn .= 'auto_setup=false';
-
-        if (!isset($components['query']) || false === strpos($components['query'], 'table_name')) {
-            $dsn .= '&table_name=draw_messenger__message';
-        }
-
         unset($options['transport_name']);
-        $configuration = Connection::buildConfiguration($dsn, $options);
+        $configuration = static::buildConfiguration($dsn, $options);
 
         try {
             /** @var \Doctrine\DBAL\Connection $driverConnection */
@@ -51,6 +43,41 @@ class DrawTransportFactory extends DoctrineTransportFactory
         $connection = new Connection($configuration, $driverConnection);
 
         return new DrawTransport($driverConnection, $connection, $serializer);
+    }
+
+    public static function buildConfiguration(string $dsn, array $options = []): array
+    {
+        if (false === $components = parse_url($dsn)) {
+            throw new InvalidArgumentException(sprintf('The given Doctrine Messenger DSN "%s" is invalid.', $dsn));
+        }
+
+        $query = [];
+        if (isset($components['query'])) {
+            parse_str($components['query'], $query);
+        }
+
+        $configuration = ['connection' => $components['host']];
+        $configuration += $options + $query + self::DEFAULT_OPTIONS;
+
+        if (!$configuration['tag_table_name']) {
+            $configuration['tag_table_name'] = $configuration['table_name'].'_tag';
+        }
+
+        $configuration['auto_setup'] = filter_var($configuration['auto_setup'], FILTER_VALIDATE_BOOLEAN);
+
+        // check for extra keys in options
+        $optionsExtraKeys = array_diff(array_keys($options), array_keys(self::DEFAULT_OPTIONS));
+        if (0 < \count($optionsExtraKeys)) {
+            throw new InvalidArgumentException(sprintf('Unknown option found : [%s]. Allowed options are [%s]', implode(', ', $optionsExtraKeys), implode(', ', self::DEFAULT_OPTIONS)));
+        }
+
+        // check for extra keys in options
+        $queryExtraKeys = array_diff(array_keys($query), array_keys(self::DEFAULT_OPTIONS));
+        if (0 < \count($queryExtraKeys)) {
+            throw new InvalidArgumentException(sprintf('Unknown option found in DSN: [%s]. Allowed options are [%s]', implode(', ', $queryExtraKeys), implode(', ', self::DEFAULT_OPTIONS)));
+        }
+
+        return $configuration;
     }
 
     public function supports(string $dsn, array $options): bool

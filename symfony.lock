@@ -124,9 +124,6 @@
     "doctrine/persistence": {
         "version": "2.2.2"
     },
-    "doctrine/reflection": {
-        "version": "1.2.0"
-    },
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
@@ -500,7 +497,7 @@
         "version": "v5.3.8"
     },
     "symfony/deprecation-contracts": {
-        "version": "v2.4.0"
+        "version": "v2.1.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v5.3.8"

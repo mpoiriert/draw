@@ -10,8 +10,8 @@
         "php": "^7.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "doctrine/doctrine-bundle": "^2.2",
-        "doctrine/orm": "^2.8",
+        "doctrine/doctrine-bundle": "^2.5",
+        "doctrine/orm": "^2.10",
         "symfony/messenger": "^4.4.2|^5.3",
         "symfony/framework-bundle": "^4.4|^5.4"
     },

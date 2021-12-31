@@ -2,23 +2,27 @@
 
 namespace Draw\Component\Messenger\Transport;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\DBAL\Connection as DBALConnection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Synchronizer\SingleDatabaseSynchronizer;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Draw\Component\Messenger\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\Stamp\ManualTriggerStamp;
+use Draw\Component\Messenger\Stamp\SearchableTagStamp;
+use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Doctrine\Connection;
+use Symfony\Component\Messenger\Transport\Doctrine\DoctrineReceivedStamp;
 use Symfony\Component\Messenger\Transport\Doctrine\DoctrineTransport;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
-class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInterface
+class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInterface, SearchableInterface
 {
     private $driverConnection;
 
@@ -28,8 +32,11 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
 
     private $serializer;
 
-    public function __construct(DBALConnection $driverConnection, Connection $connection, SerializerInterface $serializer)
-    {
+    public function __construct(
+        DBALConnection $driverConnection,
+        Connection $connection,
+        SerializerInterface $serializer
+    ) {
         $this->driverConnection = $driverConnection;
         $this->connection = $connection;
         $this->serializer = $serializer;
@@ -42,6 +49,10 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
      */
     public function send(Envelope $envelope): Envelope
     {
+        $envelope = $envelope
+            ->withoutAll(TransportMessageIdStamp::class)
+            ->withoutAll(DoctrineReceivedStamp::class);
+
         $encodedMessage = $this->serializer->encode($envelope);
 
         $delayStamp = $envelope->last(DelayStamp::class);
@@ -49,24 +60,42 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         $delay = $delay ?? $envelope->last(ManualTriggerStamp::class) ? null : 0;
         $expirationStamp = $envelope->last(ExpirationStamp::class);
         $expiresAt = $expirationStamp ? $expirationStamp->getDateTime() : null;
+
         try {
             $id = $this->insert(
                 $encodedMessage['body'],
                 $encodedMessage['headers'] ?? [],
                 $delay,
-                $expiresAt
+                $expiresAt,
+                $this->getTags($envelope)
             );
-        } catch (DBALException $exception) {
+        } catch (Exception $exception) {
             throw new TransportException($exception->getMessage(), 0, $exception);
         }
 
         return $envelope->with(new TransportMessageIdStamp($id));
     }
 
-    private function insert(string $body, array $headers, int $delay = null, \DateTimeInterface $expiresAt = null)
+    private function getTags(Envelope $envelope): array
     {
-        $id = Uuid::uuid4()->toString();
-        $now = new \DateTime();
+        $tags = [];
+        /** @var SearchableTagStamp $stamp */
+        foreach ($envelope->all(SearchableTagStamp::class) as $stamp) {
+            $tags = array_merge($stamp->getTags(), $tags);
+        }
+
+        return array_values(array_unique($tags));
+    }
+
+    private function insert(
+        string $body,
+        array $headers,
+        int $delay = null,
+        DateTimeInterface $expiresAt = null,
+        array $tags = []
+    ): string {
+        $id = Uuid::uuid6()->toString();
+        $now = new DateTime();
         $availableAt = null;
         if (null !== $delay) {
             $availableAt = (clone $now)->modify(sprintf('+%d seconds', $delay / 1000));
@@ -83,57 +112,73 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
                 'available_at' => '?',
                 'expires_at' => '?',
             ]);
+        $this->driverConnection
+            ->prepare($queryBuilder->getSQL())
+            ->executeStatement([
+                $id,
+                $body,
+                json_encode($headers),
+                $this->connection->getConfiguration()['queue_name'],
+                self::formatDateTime($now),
+                $availableAt ? self::formatDateTime($availableAt) : null,
+                $expiresAt ? self::formatDateTime($expiresAt) : null,
+            ]);
 
-        $this->executeQuery($queryBuilder->getSQL(), [
-            $id,
-            $body,
-            json_encode($headers),
-            $this->connection->getConfiguration()['queue_name'],
-            self::formatDateTime($now),
-            $availableAt ? self::formatDateTime($availableAt) : null,
-            $expiresAt ? self::formatDateTime($expiresAt) : null,
-        ]);
+        if ($tags) {
+            $queryBuilder = $this->driverConnection->createQueryBuilder()
+                ->insert($this->connection->getConfiguration()['tag_table_name'])
+                ->values(['message_id' => '?', 'name' => '?']);
+            $statement = $this->driverConnection
+                ->prepare($queryBuilder->getSQL());
+            foreach ($tags as $tag) {
+                $statement->executeStatement([$id, $tag]);
+            }
+        }
 
         return $id;
     }
 
-    private static function formatDateTime(\DateTimeInterface $dateTime)
+    private static function formatDateTime(DateTimeInterface $dateTime): string
     {
         return $dateTime->format('Y-m-d\TH:i:s');
-    }
-
-    private function executeQuery(string $sql, array $parameters = [])
-    {
-        $stmt = $this->driverConnection->prepare($sql);
-        $stmt->execute($parameters);
-
-        return $stmt;
     }
 
     public function setup(): void
     {
         $configuration = $this->driverConnection->getConfiguration();
-        // Since Doctrine 2.9 the getFilterSchemaAssetsExpression is deprecated
-        $hasFilterCallback = method_exists($configuration, 'getSchemaAssetsFilter');
 
-        if ($hasFilterCallback) {
-            $assetFilter = $this->driverConnection->getConfiguration()->getSchemaAssetsFilter();
-            $this->driverConnection->getConfiguration()->setSchemaAssetsFilter(null);
-        } else {
-            $assetFilter = $this->driverConnection->getConfiguration()->getFilterSchemaAssetsExpression();
-            $this->driverConnection->getConfiguration()->setFilterSchemaAssetsExpression(null);
-        }
+        $assetFilter = $configuration->getSchemaAssetsFilter();
+        $configuration->setSchemaAssetsFilter();
 
         $this->schemaSynchronizer->updateSchema($this->getSchema(), true);
 
-        if ($hasFilterCallback) {
-            $this->driverConnection->getConfiguration()->setSchemaAssetsFilter($assetFilter);
-        } else {
-            $this->driverConnection->getConfiguration()->setFilterSchemaAssetsExpression($assetFilter);
-        }
+        $configuration->setSchemaAssetsFilter($assetFilter);
     }
 
-    public function purgeObsoleteMessages(\DateTimeInterface $since): int
+    public function findByTag(string $tag): array
+    {
+        $queryBuilder = $this->driverConnection->createQueryBuilder()
+            ->select('message.id')
+            ->from($this->connection->getConfiguration()['table_name'], 'message')
+            ->innerJoin(
+                'message',
+                $this->connection->getConfiguration()['tag_table_name'],
+                'tag',
+                'message.id = tag.message_id'
+            )
+            ->andWhere('tag.name = ?');
+
+        $envelopes = [];
+
+        foreach ($this->driverConnection->executeQuery($queryBuilder->getSQL(),
+            [$tag])->fetchAllAssociative() as $row) {
+            $envelopes[] = $this->find($row['id']);
+        }
+
+        return $envelopes;
+    }
+
+    public function purgeObsoleteMessages(DateTimeInterface $since): int
     {
         $tableName = $this->connection->getConfiguration()['table_name'];
         $batchSize = 1000;
@@ -141,10 +186,10 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
 
         $total = 0;
         do {
-            $total += $affectedRows = $this->driverConnection->executeUpdate(
+            $total += $affectedRows = $this->driverConnection->executeStatement(
                 'DELETE FROM '.$tableName.' WHERE expires_at < ? LIMIT ?',
                 [$since, $batchSize],
-                [Type::DATETIME, Type::INTEGER]
+                [Types::DATETIME_IMMUTABLE, Types::INTEGER]
             );
 
             if ($affectedRows < $batchSize) {
@@ -152,35 +197,59 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
             }
 
             usleep($seconds * 1000000);
-        } while ($affectedRows >= $batchSize);
+        } while (true);
 
         return $total;
     }
 
     private function getSchema(): Schema
     {
+        $messagesTableName = $this->connection->getConfiguration()['table_name'];
+        $tagsTableName = $this->connection->getConfiguration()['tag_table_name'];
         $schema = new Schema([], [], $this->driverConnection->getSchemaManager()->createSchemaConfig());
-        $table = $schema->createTable($this->connection->getConfiguration()['table_name']);
-        $table->addColumn('id', Type::GUID)
+
+        $messageTable = $schema->createTable($messagesTableName);
+        $messageTable
+            ->addColumn('id', Types::GUID)
             ->setNotnull(true);
-        $table->addColumn('body', Type::TEXT)
+        $messageTable
+            ->addColumn('body', Types::TEXT)
             ->setNotnull(true);
-        $table->addColumn('headers', Type::TEXT)
+        $messageTable
+            ->addColumn('headers', Types::TEXT)
             ->setNotnull(true);
-        $table->addColumn('queue_name', Type::STRING)
+        $messageTable
+            ->addColumn('queue_name', Types::STRING)
             ->setNotnull(true);
-        $table->addColumn('created_at', Type::DATETIME)
+        $messageTable
+            ->addColumn('created_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(true);
-        $table->addColumn('available_at', Type::DATETIME)
+        $messageTable
+            ->addColumn('available_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(false);
-        $table->addColumn('delivered_at', Type::DATETIME)
+        $messageTable
+            ->addColumn('delivered_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(false);
-        $table->addColumn('expires_at', Type::DATETIME)
+        $messageTable
+            ->addColumn('expires_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(false);
-        $table->setPrimaryKey(['id']);
-        $table->addIndex(['queue_name']);
-        $table->addIndex(['available_at']);
-        $table->addIndex(['delivered_at']);
+        $messageTable->setPrimaryKey(['id']);
+        $messageTable->addIndex(['queue_name', 'available_at']);
+        $messageTable->addIndex(['available_at']);
+        $messageTable->addIndex(['delivered_at']);
+        $messageTable->addIndex(['expires_at']);
+
+        $tagTable = $schema->createTable($tagsTableName);
+
+        $tagTable
+            ->addColumn('message_id', Types::GUID)
+            ->setNotnull(true);
+        $tagTable
+            ->addColumn('name', Types::STRING)
+            ->setNotnull(true);
+        $tagTable->setPrimaryKey(['message_id', 'name']);
+        $tagTable->addIndex(['name']);
+        $tagTable->addForeignKeyConstraint($messagesTableName, ['message_id'], ['id'], ['onDelete' => 'CASCADE']);
 
         return $schema;
     }

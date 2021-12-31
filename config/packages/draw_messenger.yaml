@@ -28,3 +28,5 @@ draw_messenger:
                 transport_name: 'async'
             failed:
                 transport_name: 'failed'
+            draw:
+                transport_name: 'draw'

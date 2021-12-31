@@ -5,17 +5,8 @@ namespace Draw\Bundle\MessengerBundle\Entity;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-abstract class BaseMessengerMessage
+trait MessengerMessageTrait
 {
-    /**
-     * @var int|null
-     *
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(name="id", type="bigint")
-     */
-    public $id;
-
     /**
      * @var string|null
      *
@@ -57,6 +48,11 @@ abstract class BaseMessengerMessage
      * @ORM\Column(name="delivered_at", type="datetime_immutable")
      */
     public $deliveredAt;
+
+    public function getQueueName(): ?string
+    {
+        return $this->queueName;
+    }
 
     public function __toString(): string
     {
