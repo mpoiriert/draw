@@ -4,6 +4,7 @@ namespace Draw\Bundle\MessengerBundle\Sonata\Admin;
 
 use Draw\Bundle\MessengerBundle\Entity\DrawMessageInterface;
 use Draw\Bundle\MessengerBundle\Entity\DrawMessageTrait;
+use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
 use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -92,6 +93,28 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
                     'show_filter' => true,
                 ]
             );
+        }
+
+        if (class_exists(RelativeDateTimeFilter::class)) {
+            $filter->add(
+                'availableAt',
+                RelativeDateTimeFilter::class,
+                [
+                    'show_filter' => true,
+                ]
+            );
+
+            $filter->add(
+                'deliveredAt',
+                RelativeDateTimeFilter::class,
+            );
+
+            if ($this->supportDrawTransport) {
+                $filter->add(
+                    'expiresAt',
+                    RelativeDateTimeFilter::class,
+                );
+            }
         }
     }
 
