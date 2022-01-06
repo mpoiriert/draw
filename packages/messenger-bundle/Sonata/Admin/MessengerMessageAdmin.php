@@ -7,6 +7,7 @@ use Draw\Bundle\MessengerBundle\Entity\DrawMessageTrait;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
 use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
@@ -38,6 +39,20 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
         $this->supportDrawTransport = $this->supportDrawTransport();
     }
 
+    public function inject(
+        ContainerInterface $receiverLocator,
+        array $transportMapping
+    ): void {
+        $this->receiverLocator = $receiverLocator;
+        $this->transportMapping = $transportMapping;
+    }
+
+    protected function configureDefaultSortValues(array &$sortValues): void
+    {
+        $sortValues[DatagridInterface::SORT_BY] = 'availableAt';
+        $sortValues[DatagridInterface::SORT_ORDER] = 'ASC';
+    }
+
     private function supportDrawTransport(): bool
     {
         if (null === $this->supportDrawTransport) {
@@ -55,14 +70,6 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
         }
 
         return $this->supportDrawTransport;
-    }
-
-    public function inject(
-        ContainerInterface $receiverLocator,
-        array $transportMapping
-    ): void {
-        $this->receiverLocator = $receiverLocator;
-        $this->transportMapping = $transportMapping;
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
