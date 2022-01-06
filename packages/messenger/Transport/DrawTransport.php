@@ -57,7 +57,7 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
 
         $delayStamp = $envelope->last(DelayStamp::class);
         $delay = null !== $delayStamp ? $delayStamp->getDelay() : null;
-        $delay = $delay ?? $envelope->last(ManualTriggerStamp::class) ? null : 0;
+        $delay = $delay ?? ($envelope->last(ManualTriggerStamp::class) ? null : 0);
         $expirationStamp = $envelope->last(ExpirationStamp::class);
         $expiresAt = $expirationStamp ? $expirationStamp->getDateTime() : null;
 
