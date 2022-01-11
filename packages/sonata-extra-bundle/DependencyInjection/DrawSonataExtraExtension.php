@@ -5,6 +5,7 @@ namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcDateTimeImmutableType;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcDateTimeType;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcTimeImmutableType;
+use Draw\Bundle\SonataExtraBundle\Listener\FixDepthMenuBuilderSubscriber;
 use Draw\Bundle\SonataExtraBundle\Listener\TimeZoneSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,12 +24,18 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         if (!($config['user_timezone']['enabled'] ?? false)) {
             $container->removeDefinition(TimeZoneSubscriber::class);
         }
+
+        if (!($config['fix_menu_depth']['enabled'] ?? false)) {
+            $container->removeDefinition(FixDepthMenuBuilderSubscriber::class);
+        }
     }
 
     public function prepend(ContainerBuilder $container)
     {
-        $config = array_merge_recursive(...$container->getExtensionConfig('draw_sonata_extra'));
-        if (!($config['user_timezone']['enabled'] ?? false)) {
+        $configs = $container->getExtensionConfig('draw_sonata_extra');
+        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        if (!$this->isConfigEnabled($container, $config['user_timezone'])) {
             return;
         }
 
