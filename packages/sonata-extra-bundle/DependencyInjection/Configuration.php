@@ -24,6 +24,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->append($this->createUserTimezoneNode())
+                ->append($this->fixMenuDepthNode())
             ->end()
         ;
 
@@ -33,6 +34,12 @@ class Configuration implements ConfigurationInterface
     private function createUserTimezoneNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('user_timezone'))
+            ->canBeEnabled();
+    }
+
+    private function fixMenuDepthNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('fix_menu_depth'))
             ->canBeEnabled();
     }
 }
