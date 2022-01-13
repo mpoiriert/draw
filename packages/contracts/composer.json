@@ -7,7 +7,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "draw/contracts": "^0.8"
+        "draw/contracts": "^0.7.42"
     },
     "autoload": {
         "psr-4": {
