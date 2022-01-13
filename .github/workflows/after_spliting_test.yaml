@@ -1,0 +1,63 @@
+name: After Split Testing
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  after_split_testing:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: 'mysql://root@127.0.0.1:3306/draw'
+    strategy:
+      fail-fast: false
+      matrix:
+        package_name:
+          - aws-tool-kit-bundle
+          - command-bundle
+          - core
+          - cron-bundle
+          - doctrine-bus-message-bundle
+          - messenger
+          - messenger-bundle
+          - open-api
+          - open-api-bundle
+          - post-office-bundle
+          - profiling
+          - sonata-extra-bundle
+          - tester
+          - tester-bundle
+          - user-bundle
+          - validator
+
+    name: After Split Testing of ${{ matrix.package_name }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.3
+          coverage: none
+      - name: Setup MySQL
+        uses: shogo82148/actions-setup-mysql@v1
+        with:
+          mysql-version: 5.7
+          distribution: mysql
+          auto-start: true
+      - name: Create Database
+        run: |
+          mysql -h 127.0.0.1 -uroot -e "CREATE DATABASE draw"
+      - name: 'Composer Setup'
+        run: |
+          composer install --no-progress
+          vendor/bin/monorepo-builder localize-composer-paths
+          cd packages/${{ matrix.package_name }}
+          composer update --no-progress
+      - name: 'Automation Test'
+        run: |
+          cd packages/${{ matrix.package_name }}
+          vendor/bin/phpunit

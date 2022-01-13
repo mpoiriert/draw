@@ -2,7 +2,8 @@
 
 namespace Draw\Component\Messenger\Transport;
 
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ConnectionRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Messenger\Exception\InvalidArgumentException;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\Doctrine\Connection;
@@ -20,12 +21,15 @@ class DrawTransportFactory extends DoctrineTransportFactory
         'auto_setup' => false,
     ];
 
+    /**
+     * @var RegistryInterface|ConnectionRegistry
+     */
     private $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct($registry)
     {
-        $this->registry = $registry;
         parent::__construct($registry);
+        $this->registry = $registry;
     }
 
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface

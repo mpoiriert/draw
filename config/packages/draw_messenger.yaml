@@ -3,7 +3,6 @@ services:
         autoconfigure: true
         autowire: true
 
-    Draw\Component\Messenger\Transport\DrawTransportFactory: ~
     Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware: ~
     messengerTransportDraw: '@messenger.transport.draw'
 

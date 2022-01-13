@@ -2,13 +2,15 @@
 
 namespace Draw\Component\Messenger\Tests\Transport;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\Messenger\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
+use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
+use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
+use Throwable;
 
 class DrawTransportTest extends TestCase
 {
@@ -23,16 +25,34 @@ class DrawTransportTest extends TestCase
      */
     public static function cleanUp(): void
     {
-        static::getService(EntityManagerInterface::class)
-            ->getConnection()
-            ->executeQuery('DELETE FROM draw_messenger__message');
+        try {
+            static::loadDefaultConnection()
+                ->executeStatement('DELETE FROM draw_messenger__message');
+        } catch (Throwable $throwable) {
+            // Table may not exists we ignore it
+        }
     }
 
     public function setUp(): void
     {
-        $this->drawTransport = static::getService(DrawTransport::class);
+        $this->drawTransport = (new DrawTransportFactory($this))->createTransport(
+            'draw://default',
+            [],
+            new PhpSerializer()
+        );
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testSetup(): void
+    {
+        $this->drawTransport->setup();
+    }
+
+    /**
+     * @depends testSetup
+     */
     public function testSendMessage(): Envelope
     {
         $envelope = $this->drawTransport->send(new Envelope(new stdClass(),
@@ -137,6 +157,7 @@ class DrawTransportTest extends TestCase
     }
 
     /**
+     * @depends testSetup
      * @dataProvider provideTestSendSearchableMessage
      *
      * @param array|Envelope[] $insertEnvelopes
