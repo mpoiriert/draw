@@ -6,9 +6,6 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "require": {
-        "draw/contracts": "^0.8"
-    },
     "autoload": {
         "psr-4": {
             "Draw\\Contracts\\": ""
