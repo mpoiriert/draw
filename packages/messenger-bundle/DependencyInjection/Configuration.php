@@ -4,6 +4,7 @@ namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
+use Draw\Contracts\Application\VersionVerificationInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -11,14 +12,15 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('draw_messenger');
         $treeBuilder->getRootNode()
             ->children()
-            ->append($this->createBrokerNode())
-            ->append($this->createSonataNode())
-            ->scalarNode('transport_service_name')->defaultValue('messenger.transport.draw')->end()
+                ->append($this->createBrokerNode())
+                ->append($this->createWorkerVersionMonitoring())
+                ->append($this->createSonataNode())
+                ->scalarNode('transport_service_name')->defaultValue('messenger.transport.draw')->end()
             ->end();
 
         return $treeBuilder;
@@ -62,6 +64,15 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+            ->end();
+    }
+
+    private function createWorkerVersionMonitoring(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('worker_version_monitoring'))
+            ->canBeEnabled()
+            ->children()
+                ->scalarNode('version_verification_service')->defaultValue(VersionVerificationInterface::class)->end()
             ->end();
     }
 
