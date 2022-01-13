@@ -6,6 +6,7 @@ use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
 use Draw\Bundle\MessengerBundle\DependencyInjection\Configuration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
+use Draw\Contracts\Application\VersionVerificationInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class ConfigurationTest extends ConfigurationTestCase
@@ -23,6 +24,10 @@ class ConfigurationTest extends ConfigurationTestCase
                 'symfony_console_path' => null,
                 'receivers' => [],
                 'default_options' => [],
+            ],
+            'worker_version_monitoring' => [
+                'enabled' => false,
+                'version_verification_service' => VersionVerificationInterface::class,
             ],
             'sonata' => [
                 'enabled' => false,

@@ -5,6 +5,7 @@ namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 use Draw\Bundle\MessengerBundle\Broker\EventListener\DefaultValuesListener;
 use Draw\Bundle\MessengerBundle\Entity\DrawMessageInterface;
 use Draw\Bundle\MessengerBundle\Entity\DrawMessageTagInterface;
+use Draw\Bundle\MessengerBundle\EventListener\StopWorkerOnNewVersionListener;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin3X;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin4X;
@@ -31,6 +32,7 @@ class DrawMessengerExtension extends Extension implements PrependExtensionInterf
             $container->setAlias(DrawTransport::class, $config['transport_service_name']);
         }
 
+        $this->configureWorkerVersionMonitoring($config['worker_version_monitoring'], $loader, $container);
         $this->configureBroker($config['broker'], $loader, $container);
         $this->configureSonata($config['sonata'], $loader, $container);
     }
@@ -52,6 +54,24 @@ class DrawMessengerExtension extends Extension implements PrependExtensionInterf
                 ],
             ],
         ]);
+    }
+
+    private function configureWorkerVersionMonitoring(
+        array $config,
+        Loader\FileLoader $fileLoader,
+        ContainerBuilder $container
+    ): void {
+        if (!$this->isConfigEnabled($container, $config)) {
+            $container->removeDefinition(StopWorkerOnNewVersionListener::class);
+
+            return;
+        }
+
+        $container->getDefinition(StopWorkerOnNewVersionListener::class)
+            ->setArgument(
+                '$versionVerification',
+                new Reference($config['version_verification_service'])
+            );
     }
 
     private function configureBroker(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void

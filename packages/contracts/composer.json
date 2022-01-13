@@ -1,0 +1,22 @@
+{
+    "name": "draw/contracts",
+    "type": "library",
+    "description": "A set of abstractions extracted out of the Draw components",
+    "keywords": ["abstractions", "contracts", "decoupling", "interfaces", "interoperability", "standards"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "draw/contracts": "^0.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Draw\\Contracts\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}

@@ -100,7 +100,8 @@
             "Draw\\Component\\OpenApi\\": "packages/open-api/",
             "Draw\\Component\\Profiling\\": "packages/profiling/",
             "Draw\\Component\\Tester\\": "packages/tester/",
-            "Draw\\Component\\Validator\\": "packages/validator/"
+            "Draw\\Component\\Validator\\": "packages/validator/",
+            "Draw\\Contracts\\": "packages/contracts/"
         }
     },
     "autoload-dev": {
@@ -113,6 +114,7 @@
     "replace": {
         "draw/aws-tool-kit-bundle": "self.version",
         "draw/command-bundle": "self.version",
+        "draw/contracts": "self.version",
         "draw/core": "self.version",
         "draw/cron-bundle": "self.version",
         "draw/dashboard-bundle": "self.version",
