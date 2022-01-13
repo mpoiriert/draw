@@ -11,11 +11,13 @@
         <env name="APP_ENV" value="test" />
         <env name="SHELL_VERBOSITY" value="-1" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+        <env name="DATABASE_URL" value="mysql://draw:draw@mysql:3306/draw" />
     </php>
     <testsuites>
         <testsuite name="all">
             <directory>./tests/</directory>
             <directory>./packages/*/Tests</directory>
+            <exclude>./packages/dashboard-bundle/Tests</exclude>
         </testsuite>
     </testsuites>
 

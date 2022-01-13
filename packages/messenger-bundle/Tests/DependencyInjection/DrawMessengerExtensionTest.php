@@ -9,6 +9,7 @@ use Draw\Bundle\MessengerBundle\DependencyInjection\DrawMessengerExtension;
 use Draw\Bundle\MessengerBundle\EventListener\StopWorkerOnSigintSignalListener;
 use Draw\Bundle\MessengerBundle\MessageHandler\RedirectToRouteMessageHandler;
 use Draw\Component\Messenger\Transport\DrawTransport;
+use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
@@ -32,5 +33,6 @@ class DrawMessengerExtensionTest extends ExtensionTestCase
         yield [MessageController::class];
         yield [RedirectToRouteMessageHandler::class];
         yield [StopWorkerOnSigintSignalListener::class];
+        yield [DrawTransportFactory::class];
     }
 }

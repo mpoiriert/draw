@@ -17,5 +17,8 @@
             <argument key="$transportLocator" type="service" id="messenger.receiver_locator" />
             <argument key="$transportNames">%draw.messenger.transport_names%</argument>
         </service>
+        <service id="Draw\Component\Messenger\Transport\DrawTransportFactory">
+            <argument key="$registry" type="service" id="Doctrine\Persistence\ManagerRegistry" />
+        </service>
     </services>
 </container>
