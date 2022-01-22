@@ -61,6 +61,8 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         $expirationStamp = $envelope->last(ExpirationStamp::class);
         $expiresAt = $expirationStamp ? $expirationStamp->getDateTime() : null;
 
+        $this->cleanQueue($envelope);
+
         try {
             $id = $this->insert(
                 $encodedMessage['body'],
@@ -74,6 +76,32 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         }
 
         return $envelope->with(new TransportMessageIdStamp($id));
+    }
+
+    private function cleanQueue(Envelope $envelope)
+    {
+        foreach ($envelope->all(SearchableTagStamp::class) as $stamp) {
+            if (!$stamp->getEnforceUniqueness()) {
+                continue;
+            }
+
+            if (!($tags = $stamp->getTags())) {
+                continue;
+            }
+
+            $ids = $this->findEnvelopeIds($tags);
+
+            if (!$ids) {
+                continue;
+            }
+
+            $sql = $this->driverConnection->createQueryBuilder()
+                ->delete($this->connection->getConfiguration()['table_name'])
+                ->andWhere('id IN ("'.implode('","', $ids).'")')
+                ->getSQL();
+
+            $this->driverConnection->executeStatement($sql);
+        }
     }
 
     private function getTags(Envelope $envelope): array
@@ -157,25 +185,58 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
 
     public function findByTag(string $tag): array
     {
-        $queryBuilder = $this->driverConnection->createQueryBuilder()
-            ->select('message.id')
-            ->from($this->connection->getConfiguration()['table_name'], 'message')
-            ->innerJoin(
-                'message',
-                $this->connection->getConfiguration()['tag_table_name'],
-                'tag',
-                'message.id = tag.message_id'
-            )
-            ->andWhere('tag.name = ?');
+        return $this->findByTags([$tag]);
+    }
+
+    public function findByTags(array $tags): array
+    {
+        $ids = $this->findEnvelopeIds($tags);
 
         $envelopes = [];
-
-        foreach ($this->driverConnection->executeQuery($queryBuilder->getSQL(),
-            [$tag])->fetchAllAssociative() as $row) {
-            $envelopes[] = $this->find($row['id']);
+        foreach ($ids as $id) {
+            $envelopes[] = $this->find($id);
         }
 
-        return $envelopes;
+        // The find above can return null
+        return array_values(array_filter($envelopes));
+    }
+
+    /**
+     * @param string[] $tags
+     *
+     * @return string[]
+     */
+    private function findEnvelopeIds(array $tags): array
+    {
+        $queryBuilder = $this->driverConnection->createQueryBuilder()
+            ->select('message.id')
+            ->from($this->connection->getConfiguration()['table_name'], 'message');
+
+        foreach ($tags as $index => $tag) {
+            $tagAlias = 'tag_'.$index;
+            $queryBuilder = $queryBuilder
+                ->innerJoin(
+                    'message',
+                    $this->connection->getConfiguration()['tag_table_name'],
+                    $tagAlias,
+                    'message.id = '.$tagAlias.'.message_id'
+                )
+                ->andWhere($tagAlias.'.name = ?');
+        }
+
+        $this->driverConnection->executeStatement(
+            $queryBuilder->getSQL(),
+            $tags
+        );
+
+        $rows = $this->driverConnection->executeQuery($queryBuilder->getSQL(), $tags)->fetchAllAssociative();
+
+        $ids = [];
+        foreach ($rows as $row) {
+            $ids[] = $row['id'];
+        }
+
+        return array_values(array_unique($ids));
     }
 
     public function purgeObsoleteMessages(DateTimeInterface $since): int
