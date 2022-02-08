@@ -1168,6 +1168,9 @@
             "x-draw-dashboard-class-name": "App\\Entity\\Tag"
         },
         "User": {
+            "required": [
+                "email"
+            ],
             "type": "object",
             "properties": {
                 "id": {
@@ -1473,6 +1476,10 @@
             "x-draw-dashboard-class-name": "Draw\\Bundle\\UserBundle\\DTO\\ConnectionToken"
         },
         "Draw.Bundle.UserBundle.DTO.Credential": {
+            "required": [
+                "username",
+                "password"
+            ],
             "type": "object",
             "properties": {
                 "username": {
