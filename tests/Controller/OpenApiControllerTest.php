@@ -9,7 +9,7 @@ class OpenApiControllerTest extends TestCase
 {
     private $writeFile = false;
 
-    public function testApiDoc()
+    public function testApiDoc(): void
     {
         $file = __DIR__.'/fixtures/api-doc.json';
 
