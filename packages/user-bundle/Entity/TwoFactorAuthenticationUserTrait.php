@@ -15,6 +15,11 @@ trait TwoFactorAuthenticationUserTrait
      */
     private $totpSecret;
 
+    /**
+     * @ORM\Column(name="force_enabling_two_factor_authentication", type="boolean", nullable=false, options={"default":"0"})
+     */
+    private $forceEnablingTwoFactorAuthentication = false;
+
     public function getTotpSecret(): ?string
     {
         return $this->totpSecret;
@@ -23,6 +28,16 @@ trait TwoFactorAuthenticationUserTrait
     public function setTotpSecret(?string $totpSecret): void
     {
         $this->totpSecret = $totpSecret;
+    }
+
+    public function isForceEnablingTwoFactorAuthentication(): bool
+    {
+        return $this->forceEnablingTwoFactorAuthentication;
+    }
+
+    public function setForceEnablingTwoFactorAuthentication(bool $forceEnablingTwoFactorAuthentication): void
+    {
+        $this->forceEnablingTwoFactorAuthentication = $forceEnablingTwoFactorAuthentication;
     }
 
     abstract public function getUsername();

@@ -19,82 +19,143 @@ class TwoFactorAuthorizationTest extends TestCase
 
     private static $user;
 
-    public function setUp(): void
+    public static function setUpBeforeClass(): void
     {
         self::$entityManager = static::getService(EntityManagerInterface::class);
-        $this->cleanUp();
 
-        self::$user = $this->createTestUser();
+        $user = new User();
+        $user->setEmail('test-2fa@example.com');
+        $user->setPlainPassword('test');
+
+        // This role for enabling 2fa as per configuration
+        $user->setRoles(['ROLE_2FA_ADMIN']);
+
+        self::$entityManager->persist($user);
+        self::$entityManager->flush();
+
+        self::$user = $user;
     }
 
-    public function tearDown(): void
+    /**
+     * @afterClass
+     * @beforeClass
+     */
+    public static function cleanUp(): void
     {
-        $this->cleanUp();
-    }
-
-    private function cleanUp(): void
-    {
-        self::$entityManager->createQueryBuilder()
+        static::getService(EntityManagerInterface::class)
+            ->createQueryBuilder()
             ->delete(User::class, 'user')
-            ->andWhere('user.email = :email')->setParameter('email', 'test-2fa@example.com')
-            ->getQuery()->execute();
+            ->andWhere('user.email like :email')
+            ->setParameter('email', 'test-2fa%@example.com')
+            ->getQuery()
+            ->execute();
     }
 
-    public function testEnable2faInAdmin(): void
+    public function testLoginRedirectEnable2fa(): KernelBrowser
     {
+        $this->assertTrue(self::$user->isForceEnablingTwoFactorAuthentication());
         /** @var KernelBrowser $client */
         $client = $this->getService('test.client');
         $client->followRedirects(true);
-        $this->loginToAdmin($client, 'admin@example.com', 'admin');
 
-        $crawler = $client->request(
-            'GET',
-            sprintf(self::ADMIN_URL.'/app/user/%s/enable-2fa', self::$user->getId())
+        $crawler = $this->loginToAdmin($client, static::$user->getUsername(), 'test');
+
+        $this->assertStringContainsString(
+            '/admin/app/user/'.self::$user->getId().'/enable-2fa',
+            $crawler->getUri(),
+            'User must be redirect to enable 2fa url'
         );
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $form = $crawler
-            ->selectButton('Enable')
-            ->form(['enable2fa_form[code]' => '123456'], 'POST');
-        $crawler = $client->submit($form);
+
+        return $client;
+    }
+
+    /**
+     * @depends testLoginRedirectEnable2fa
+     */
+    public function testEnable2faInAdminInvalidCode(KernelBrowser $client): KernelBrowser
+    {
+        $crawler = $client->submit(
+            $client->getCrawler()
+                ->selectButton('Enable')
+                ->form(['enable2fa_form[code]' => '111111'], 'POST')
+        );
+
+        $this->assertStringContainsString('/enable-2fa', $crawler->getUri());
+        $this->assertStringContainsString('Invalid code provided', $client->getResponse()->getContent());
+
+        return $client;
+    }
+
+    /**
+     * @depends testEnable2faInAdminInvalidCode
+     */
+    public function testEnable2faInAdmin(KernelBrowser $client): KernelBrowser
+    {
+        $crawler = $client->submit(
+            $client->getCrawler()
+                ->selectButton('Enable')
+                ->form(['enable2fa_form[code]' => '123456'], 'POST')
+        );
 
         $this->assertStringContainsString('/edit', $crawler->getUri());
         $this->assertStringContainsString('2FA successfully enabled.', $client->getResponse()->getContent());
 
         $user = self::$entityManager->find(User::class, self::$user->getId());
         $this->assertTrue($user->isTotpAuthenticationEnabled());
+
+        return $client;
     }
 
-    public function testEnable2faInAdminInvalidCode(): void
+    /**
+     * @depends testEnable2faInAdmin
+     */
+    public function test2faLoginToAdminFailed(KernelBrowser $client): KernelBrowser
     {
-        /** @var KernelBrowser $client */
-        $client = $this->getService('test.client');
-        $client->followRedirects(true);
-        $this->loginToAdmin($client, 'admin@example.com', 'admin');
-
-        $crawler = $client->request(
-            'GET',
-            sprintf(self::ADMIN_URL.'/app/user/%s/enable-2fa', self::$user->getId())
+        $crawler = $client->submit(
+            $this->loginToAdmin($client, static::$user->getUsername(), 'test')
+                ->selectButton('Login')
+                ->form(['_auth_code' => '11111'], 'POST')
         );
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $form = $crawler
-            ->selectButton('Enable')
-            ->form(['enable2fa_form[code]' => '111111'], 'POST');
-        $crawler = $client->submit($form);
 
-        $this->assertStringContainsString('/enable-2fa', $crawler->getUri());
-        $this->assertStringContainsString('Invalid code provided', $client->getResponse()->getContent());
+        $this->assertStringContainsString('The verification code is not valid.', $client->getResponse()->getContent());
+        $this->assertStringContainsString('/2fa', $crawler->getUri());
+
+        return $client;
     }
 
-    public function testDisable2faInAdmin(): void
+    /**
+     * @depends test2faLoginToAdminFailed
+     */
+    public function test2faLoginToAdmin(KernelBrowser $client): KernelBrowser
     {
-        self::$user->setTotpSecret('TEST_SECRET');
-        self::$entityManager->flush();
-        $this->assertTrue(self::$user->isTotpAuthenticationEnabled());
+        $crawler = $client->submit(
+            $client->getCrawler()
+                ->selectButton('Login')
+                ->form(['_auth_code' => '123456'], 'POST')
+        );
 
-        /** @var KernelBrowser $client */
-        $client = $this->getService('test.client');
-        $client->followRedirects(true);
-        $this->loginToAdmin($client, 'admin@example.com', 'admin');
+        $this->assertStringContainsString('/admin/dashboard', $crawler->getUri());
+
+        return $client;
+    }
+
+    /**
+     * @depends test2faLoginToAdmin
+     */
+    public function testDisable2faInAdmin(KernelBrowser $client): KernelBrowser
+    {
+        // This is to remove the force enable 2fa
+        $user = $this->reloadUser();
+        $user->setRoles(['ROLE_ADMIN']);
+        $user->setForceEnablingTwoFactorAuthentication(false);
+
+        static::$entityManager->flush();
+
+        $client->submit(
+            $this->loginToAdmin($client, static::$user->getUsername(), 'test')
+                ->selectButton('Login')
+                ->form(['_auth_code' => '123456'], 'POST')
+        );
 
         $crawler = $client->request(
             'GET',
@@ -104,96 +165,37 @@ class TwoFactorAuthorizationTest extends TestCase
         $this->assertStringContainsString('/edit', $crawler->getUri());
         $this->assertStringContainsString('2FA successfully disabled.', $client->getResponse()->getContent());
 
-        $user = self::$entityManager->find(User::class, self::$user->getId());
-        $this->assertFalse($user->isTotpAuthenticationEnabled());
+        $this->assertFalse($this->reloadUser()->isTotpAuthenticationEnabled());
+
+        return $client;
     }
 
-    public function test2faLoginToAdmin(): void
+    private function reloadUser(): User
     {
-        self::$user->setTotpSecret('TEST_SECRET');
-        self::$entityManager->flush();
+        static::$user = static::$entityManager->find(User::class, static::$user->getId());
+        static::$entityManager->refresh(static::$user);
 
-        /** @var KernelBrowser $client */
-        $client = $this->getService('test.client');
-        $client->followRedirects(true);
-
-        $this->loginToAdmin($client, 'test-2fa@example.com', 'test', false);
-        $crawler = $client->request('GET', self::ADMIN_URL.'/2fa');
-        $form = $crawler
-            ->selectButton('Login')
-            ->form(['_auth_code' => '123456'], 'POST');
-        $crawler = $client->submit($form);
-
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertStringContainsString('/admin/dashboard', $crawler->getUri());
+        return static::$user;
     }
 
-    public function test2faLoginToAdminFailed(): void
-    {
-        self::$user->setTotpSecret('TEST_SECRET');
-        self::$entityManager->flush();
-
-        /** @var KernelBrowser $client */
-        $client = $this->getService('test.client');
-        $client->followRedirects(true);
-
-        $this->loginToAdmin($client, 'test-2fa@example.com', 'test', false);
-        $crawler = $client->request('GET', self::ADMIN_URL.'/2fa');
-        $form = $crawler
-            ->selectButton('Login')
-            ->form(['_auth_code' => '11111'], 'POST');
-        $crawler = $client->submit($form);
-
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertStringContainsString('/2fa', $crawler->getUri());
-    }
-
-    public function loginToAdmin(
+    private function loginToAdmin(
         KernelBrowser $client,
         string $username,
-        string $password,
-        bool $validateSuccess = true
-    ): ?Crawler {
-        if (!$followingRedirects = $client->isFollowingRedirects()) {
-            $client->followRedirects(true);
-        }
-
+        string $password
+    ): Crawler {
         $client->request('GET', self::ADMIN_URL.'/logout');
         $crawler = $client->request('GET', self::ADMIN_URL.'/login');
 
-        $form = $crawler
-            ->selectButton('Login')
-            ->form(
-                [
-                    'admin_login_form[email]' => $username,
-                    'admin_login_form[password]' => $password,
-                ],
-                'POST'
-            );
-
-        $crawler = $client->submit($form);
-
-        if ($validateSuccess) {
-            $this->assertSame(200, $client->getResponse()->getStatusCode());
-            // Make sure the user is logged in
-            $this->assertStringContainsString('/admin/dashboard', $crawler->getUri());
-        }
-
-        $client->followRedirects($followingRedirects);
-
-        return $crawler;
-    }
-
-    private function createTestUser(): User
-    {
-        $user = new User();
-        $user->setEmail('test-2fa@example.com');
-        $user->setPlainPassword('test');
-        $user->setRoles(['ROLE_ADMIN']);
-
-        self::$entityManager->persist($user);
-        self::$entityManager->flush();
-
-        return $user;
+        return $client->submit(
+            $crawler
+                ->selectButton('Login')
+                ->form(
+                    [
+                        'admin_login_form[email]' => $username,
+                        'admin_login_form[password]' => $password,
+                    ],
+                    'POST'
+                )
+        );
     }
 }

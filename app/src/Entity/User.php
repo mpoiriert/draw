@@ -12,7 +12,7 @@ use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 use Draw\Component\OpenApi\Doctrine\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
@@ -190,7 +190,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public function getId()
     {
         if (null === $this->id) {
-            $this->id = Uuid::uuid4()->toString();
+            $this->id = Uuid::uuid6()->toString();
         }
 
         return $this->id;

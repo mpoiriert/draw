@@ -1355,6 +1355,9 @@
                 },
                 "totpSecret": {
                     "type": "string"
+                },
+                "forceEnablingTwoFactorAuthentication": {
+                    "type": "boolean"
                 }
             },
             "x-draw-dashboard-form-layout": {

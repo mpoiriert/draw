@@ -35,7 +35,15 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
 
-        foreach (range(1, 49) as $number) {
+        $user = new User();
+        $user->setEmail('2fa-admin@example.com');
+        $user->setPlainPassword('2fa-admin');
+        $user->setLevel(User::LEVEL_ADMIN);
+        $user->setRoles(['ROLE_2FA_ADMIN']);
+
+        $manager->persist($user);
+
+        foreach (range(1, 48) as $number) {
             $user = new User();
             $user->setEmail('user-'.str_pad($number, 4, '0', STR_PAD_LEFT).'@example.com');
             $user->setPlainPassword('password');

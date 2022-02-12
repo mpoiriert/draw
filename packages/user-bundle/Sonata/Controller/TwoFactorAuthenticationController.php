@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Sonata\Controller;
 
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 use Draw\Bundle\UserBundle\Sonata\Form\Enable2fa;
 use Draw\Bundle\UserBundle\Sonata\Form\Enable2faForm;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
