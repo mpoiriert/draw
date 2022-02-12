@@ -41,6 +41,9 @@ class ConfigurationTest extends ConfigurationTestCase
                 'bodyDeserialization' => [
                     'enabled' => true,
                 ],
+                'userRequestInterceptedException' => [
+                    'enabled' => false,
+                ],
             ],
             'response' => [
                 'enabled' => true,

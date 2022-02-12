@@ -7,6 +7,7 @@ use Draw\Bundle\OpenApiBundle\Request\Listener\QueryParameterFetcherSubscriber;
 use Draw\Bundle\OpenApiBundle\Request\Listener\ValidationSubscriber;
 use Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter;
 use Draw\Bundle\OpenApiBundle\Response\Listener\ApiExceptionSubscriber;
+use Draw\Bundle\UserBundle\Listener\UserRequestInterceptorSubscriber;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
@@ -149,6 +150,10 @@ class DrawOpenApiExtension extends Extension
 
         if (!$config['bodyDeserialization']['enabled']) {
             $container->removeDefinition(RequestBodyParamConverter::class);
+        }
+
+        if (!$config['userRequestInterceptedException']['enabled']) {
+            $container->removeDefinition(UserRequestInterceptorSubscriber::class);
         }
     }
 

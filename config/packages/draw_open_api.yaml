@@ -1,4 +1,7 @@
 draw_open_api:
+    request:
+        userRequestInterceptedException: true
+
     openApi:
         schema:
             info:
