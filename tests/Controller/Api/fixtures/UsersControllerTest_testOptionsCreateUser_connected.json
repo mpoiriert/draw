@@ -326,7 +326,8 @@
         "email": null,
         "plainPassword": null,
         "passwordUpdatedAt": null,
-        "totpSecret": null
+        "totpSecret": null,
+        "forceEnablingTwoFactorAuthentication": false
       }
     },
     "x-draw-dashboard-breadcrumbs": [

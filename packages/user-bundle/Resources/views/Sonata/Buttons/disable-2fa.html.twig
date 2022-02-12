@@ -1,4 +1,4 @@
-{% if object.id %}
+{% if object.id and not object.isForceEnablingTwoFactorAuthentication %}
     <li>
         <a class="sonata-action-element" href="{{ admin.generateObjectUrl('disable-2fa', object) }}">
             <i class="fa fa-unlock"></i>

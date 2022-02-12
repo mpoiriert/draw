@@ -4,7 +4,7 @@ namespace Draw\Bundle\UserBundle\Tests\Fixtures\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 
 /**
  * @ORM\Entity()

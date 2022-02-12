@@ -22,6 +22,11 @@ class ConfigurationTest extends ConfigurationTestCase
             'email_writers' => [
                 'enabled' => false,
             ],
+            'enforce_2fa' => [
+                'enabled' => false,
+                'enable_route' => 'admin_app_user_enable-2fa',
+                'enforcing_roles' => [],
+            ],
             'sonata' => [
                 'enabled' => true,
                 'user_admin_code' => UserAdmin::class,

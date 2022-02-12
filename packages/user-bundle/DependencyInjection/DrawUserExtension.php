@@ -4,7 +4,12 @@ namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveTwoFactorAuthenticationEnforcer;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\RolesTwoFactorAuthenticationEnforcer;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\TwoFactorAuthenticationEnforcerInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Listener\TwoFactorAuthenticationEntityListener;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Listener\TwoFactorAuthenticationSubscriber;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 use Draw\Bundle\UserBundle\Sonata\Controller\TwoFactorAuthenticationController;
 use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension3X;
@@ -30,6 +35,7 @@ class DrawUserExtension extends Extension
         $this->assignParameters($config, $container);
 
         $this->configureSonata($config['sonata'], $loader, $container);
+        $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
         $this->configureJwtAuthenticator($config['jwt_authenticator'], $loader, $container);
 
@@ -63,7 +69,50 @@ class DrawUserExtension extends Extension
         }
     }
 
-    private function configureEmailWriters(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    private function configureEnforce2fa(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
+        if (!$config['enabled']) {
+            $containerBuilder->removeDefinition(TwoFactorAuthenticationEntityListener::class);
+            $containerBuilder->removeDefinition(TwoFactorAuthenticationSubscriber::class);
+            $containerBuilder->removeDefinition(IndecisiveTwoFactorAuthenticationEnforcer::class);
+            $containerBuilder->removeDefinition(RolesTwoFactorAuthenticationEnforcer::class);
+
+            return;
+        }
+
+        $userClass = $containerBuilder->getParameter('draw_user.user_entity_class');
+
+        $containerBuilder->getDefinition(TwoFactorAuthenticationEntityListener::class)
+            ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'preUpdate'])
+            ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist']);
+
+        $containerBuilder->getDefinition(TwoFactorAuthenticationSubscriber::class)
+            ->setArgument('$enableRoute', $config['enable_route']);
+
+        if ($config['enforcing_roles']) {
+            $containerBuilder->getDefinition(RolesTwoFactorAuthenticationEnforcer::class)
+                ->setArgument('$enforcingRoles', $config['enforcing_roles']);
+
+            $containerBuilder
+                ->setAlias(
+                    TwoFactorAuthenticationEnforcerInterface::class,
+                    RolesTwoFactorAuthenticationEnforcer::class
+                );
+
+            return;
+        }
+
+        $containerBuilder
+            ->setAlias(
+                TwoFactorAuthenticationEnforcerInterface::class,
+                IndecisiveTwoFactorAuthenticationEnforcer::class
+            );
+    }
+
+    private function configureEmailWriters(array $config, LoaderInterface $loader, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -76,7 +125,7 @@ class DrawUserExtension extends Extension
         $loader->load('email-writers.xml');
     }
 
-    private function configureSonata(array $config, LoaderInterface $loader, ContainerBuilder $container)
+    private function configureSonata(array $config, LoaderInterface $loader, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -113,8 +162,11 @@ class DrawUserExtension extends Extension
         }
     }
 
-    private function configureJwtAuthenticator(array $config, LoaderInterface $loader, ContainerBuilder $container)
-    {
+    private function configureJwtAuthenticator(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $container
+    ): void {
         if (!$config['enabled']) {
             $container->removeDefinition(JwtAuthenticator::class);
 
