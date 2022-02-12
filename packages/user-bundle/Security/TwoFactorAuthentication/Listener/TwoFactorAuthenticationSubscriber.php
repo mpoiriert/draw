@@ -49,7 +49,7 @@ class TwoFactorAuthenticationSubscriber implements EventSubscriberInterface
 
         $event->setResponse(
             new RedirectResponse($this->urlGenerator->generate($this->enableRoute, ['id' => $user->getId()])),
-            '2fa_authentication_need_enabling'
+            '2fa_need_enabling'
         );
     }
 }

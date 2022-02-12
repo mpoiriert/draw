@@ -79,6 +79,9 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('bodyDeserialization')
                     ->canBeDisabled()
                 ->end()
+                ->arrayNode('userRequestInterceptedException')
+                    ->canBeEnabled()
+                ->end()
             ->end();
     }
 
