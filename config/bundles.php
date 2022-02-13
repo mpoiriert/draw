@@ -33,4 +33,5 @@ return [
     Terminal42\ServiceAnnotationBundle\Terminal42ServiceAnnotationBundle::class => ['dev' => true, 'test' => true],
     Aws\Symfony\AwsBundle::class => ['all' => true],
     Draw\Bundle\AwsToolKitBundle\DrawAwsToolKitBundle::class => ['all' => true],
+    Draw\Bundle\DoctrineBusMessageBundle\DrawDoctrineBusMessageBundle::class => ['all' => true],
 ];

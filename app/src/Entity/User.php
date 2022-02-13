@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
-use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface;
-use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderTrait;
+use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderInterface;
+use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
+use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeEnforcerUserTrait;
+use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeUserInterface;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 use Draw\Component\OpenApi\Doctrine\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
@@ -33,11 +35,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface
+class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface
 {
     use MessageHolderTrait;
     use SecurityUserTrait;
     use TwoFactorAuthenticationUserTrait;
+    use PasswordChangeEnforcerUserTrait;
 
     public const LEVEL_USER = 'user';
 
@@ -172,6 +175,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         $this->address = new Address();
         $this->tags = new ArrayCollection();
         $this->userAddresses = new ArrayCollection();
+        $this->setNeedChangePassword(true);
     }
 
     /**
@@ -179,7 +183,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      */
     public function raiseUserCreated()
     {
-        $this->messageQueue()->push(new UserCreatedMessage($this));
+        $this->onHoldMessages[] = new UserCreatedMessage($this);
     }
 
     /**

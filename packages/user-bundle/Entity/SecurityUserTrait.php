@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
+use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,8 +32,9 @@ trait SecurityUserTrait
     private $email;
 
     /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @var ?string The hashed password
+     *
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -80,14 +82,22 @@ trait SecurityUserTrait
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
-    public function setPassword(string $password)
+    public function setPassword(?string $password): void
     {
+        if ($this->password === $password) {
+            return;
+        }
+
         $this->password = $password;
+
+        if ($this->password && $this instanceof PasswordChangeUserInterface) {
+            $this->setNeedChangePassword(false);
+        }
     }
 
     /**
@@ -101,7 +111,7 @@ trait SecurityUserTrait
     /**
      * @param string $plainPassword
      */
-    public function setPlainPassword(?string $plainPassword)
+    public function setPlainPassword(?string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
         if ($this->plainPassword) {

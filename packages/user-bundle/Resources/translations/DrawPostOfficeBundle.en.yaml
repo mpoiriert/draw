@@ -20,3 +20,10 @@ email:
         bottom_section: |
             <p>If you didn't do this request, maybe someone made a typo in their email.</p>
             <p>Maybe you would be interested in our website ? Follow the link above to know more.</p>
+
+    password_change_requested:
+        subject: 'Password change request'
+        top_section: |
+          <p>The administrator requested to change your password. You are not able to login with the current password.</p>
+          <p>Please click on the button below to change it.</p>
+        call_to_action_text: 'Change my password'

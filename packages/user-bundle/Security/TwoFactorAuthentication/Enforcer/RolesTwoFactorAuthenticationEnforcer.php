@@ -35,6 +35,6 @@ class RolesTwoFactorAuthenticationEnforcer implements TwoFactorAuthenticationEnf
             }
         }
 
-        return false;
+        return $user->isForceEnablingTwoFactorAuthentication();
     }
 }

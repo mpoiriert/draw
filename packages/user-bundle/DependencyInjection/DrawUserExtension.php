@@ -4,6 +4,7 @@ namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
+use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Listener\PasswordChangeEnforcerSubscriber;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\RolesTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\TwoFactorAuthenticationEnforcerInterface;
@@ -38,6 +39,7 @@ class DrawUserExtension extends Extension
         $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
         $this->configureJwtAuthenticator($config['jwt_authenticator'], $loader, $container);
+        $this->configureNeedPasswordChangeEnforcer($config['password_change_enforcer'], $loader, $container);
 
         $userClass = $container->getParameter('draw_user.user_entity_class');
         if (!class_exists($userClass)) {
@@ -69,19 +71,31 @@ class DrawUserExtension extends Extension
         }
     }
 
+    private function configureNeedPasswordChangeEnforcer(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('password-change-enforcer.xml');
+
+        $containerBuilder->getDefinition(PasswordChangeEnforcerSubscriber::class)
+            ->setArgument('$changePasswordRoute', $config['change_password_route']);
+    }
+
     private function configureEnforce2fa(
         array $config,
         LoaderInterface $loader,
         ContainerBuilder $containerBuilder
     ): void {
         if (!$config['enabled']) {
-            $containerBuilder->removeDefinition(TwoFactorAuthenticationEntityListener::class);
-            $containerBuilder->removeDefinition(TwoFactorAuthenticationSubscriber::class);
-            $containerBuilder->removeDefinition(IndecisiveTwoFactorAuthenticationEnforcer::class);
-            $containerBuilder->removeDefinition(RolesTwoFactorAuthenticationEnforcer::class);
-
             return;
         }
+
+        $loader->load('enforce-2fa.xml');
 
         $userClass = $containerBuilder->getParameter('draw_user.user_entity_class');
 
