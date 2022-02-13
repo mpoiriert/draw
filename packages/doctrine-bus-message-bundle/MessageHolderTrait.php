@@ -4,6 +4,9 @@ namespace Draw\Bundle\DoctrineBusMessageBundle;
 
 use SplQueue;
 
+/**
+ * @deprecated
+ */
 trait MessageHolderTrait
 {
     private $messageQueue;

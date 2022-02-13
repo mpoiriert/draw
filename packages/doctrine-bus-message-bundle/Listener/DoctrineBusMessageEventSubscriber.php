@@ -8,9 +8,11 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnClearEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Proxy;
+use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderInterface;
 use Draw\Bundle\DoctrineBusMessageBundle\EnvelopeFactory\BasicEnvelopeFactory;
 use Draw\Bundle\DoctrineBusMessageBundle\EnvelopeFactory\EnvelopeFactoryInterface;
-use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface;
+use Draw\Bundle\DoctrineBusMessageBundle\Message\LifeCycleAwareMessageInterface;
+use Draw\Bundle\DoctrineBusMessageBundle\MessageHolderInterface as DeprecatedMessageHolderInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class DoctrineBusMessageEventSubscriber implements EventSubscriber
@@ -21,7 +23,7 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
     private $entityManager;
 
     /**
-     * @var MessageHolderInterface[]
+     * @var DeprecatedMessageHolderInterface[]|MessageHolderInterface[]
      */
     private $messageHolders = [];
 
@@ -89,15 +91,16 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
                 continue;
             }
 
-            $queue = $messageHolder->messageQueue();
+            $messages = $this->getMessages($messageHolder);
 
-            if ($queue->isEmpty()) {
+            if (!$messages) {
                 continue;
             }
 
-            $messages = [];
-            while (!$queue->isEmpty()) {
-                $messages[] = $queue->dequeue();
+            foreach ($messages as $message) {
+                if ($message instanceof LifeCycleAwareMessageInterface) {
+                    $message->preSend($messageHolder);
+                }
             }
 
             $envelopes = array_merge($this->envelopeFactory->createEnvelopes($messageHolder, $messages), $envelopes);
@@ -108,12 +111,37 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param DeprecatedMessageHolderInterface|MessageHolderInterface $messageHolder
+     */
+    private function getMessages($messageHolder): array
+    {
+        $messages = [];
+
+        if ($messageHolder instanceof MessageHolderInterface) {
+            $messages = $messageHolder->getOnHoldMessages(true);
+        }
+
+        if ($messageHolder instanceof DeprecatedMessageHolderInterface) {
+            $queue = $messageHolder->messageQueue();
+            while (!$queue->isEmpty()) {
+                $messages[] = $queue->dequeue();
+            }
+        }
+
+        return $messages;
+    }
+
     private function trackMessageHolder(LifecycleEventArgs $event): void
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof MessageHolderInterface) {
-            return;
+        switch (true) {
+            case $entity instanceof MessageHolderInterface:
+            case $entity instanceof DeprecatedMessageHolderInterface:
+                break;
+            default:
+                return;
         }
 
         $classMetadata = $this->entityManager->getClassMetadata(get_class($entity));
@@ -122,7 +150,7 @@ class DoctrineBusMessageEventSubscriber implements EventSubscriber
     }
 
     /**
-     * @return array|MessageHolderInterface[]
+     * @return array|MessageHolderInterface[]|DeprecatedMessageHolderInterface[]
      *
      * @internal
      */
