@@ -13,9 +13,9 @@ interface SecurityUserInterface extends UserInterface
     /**
      * Set the the plain (not encrypted) password to replace the current password upon save.
      *
-     * @param string $plainPassword The new password
+     * @param ?string $plainPassword The new password
      */
-    public function setPlainPassword(?string $plainPassword);
+    public function setPlainPassword(?string $plainPassword): void;
 
-    public function setPassword(string $password);
+    public function setPassword(?string $password): void;
 }

@@ -27,6 +27,10 @@ class ConfigurationTest extends ConfigurationTestCase
                 'enable_route' => 'admin_app_user_enable-2fa',
                 'enforcing_roles' => [],
             ],
+            'password_change_enforcer' => [
+                'enabled' => false,
+                'change_password_route' => 'admin_change_password',
+            ],
             'sonata' => [
                 'enabled' => true,
                 'user_admin_code' => UserAdmin::class,

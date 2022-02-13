@@ -1,6 +1,10 @@
 App\Entity\User:
     properties:
+        onHoldMessages:
+            exclude: true
         messageQueue:
+            exclude: true
+        needChangePassword:
             exclude: true
         plainPassword:
             expose: true

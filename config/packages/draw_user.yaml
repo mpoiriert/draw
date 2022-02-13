@@ -8,6 +8,7 @@ sonata_block:
 
 draw_user:
     email_writers: ~
+    password_change_enforcer: true
     enforce_2fa:
         enforcing_roles: ['ROLE_2FA_ADMIN']
     sonata:

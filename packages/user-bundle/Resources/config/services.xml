@@ -7,7 +7,7 @@
             <bind key="Doctrine\ORM\EntityRepository $userEntityRepository" type="service" id="draw_user.user_repository" />
         </defaults>
         <prototype namespace="Draw\Bundle\UserBundle\" resource="../..">
-            <exclude>../../{vendor,DependencyInjection,DTO,Entity,Tests,Sonata,Email,Message,Event,EmailWriter}</exclude>
+            <exclude>../../{vendor,DependencyInjection,DTO,Entity,Tests,Sonata,Email,Message,Event,EmailWriter,Security,PasswordChangeEnforcer}</exclude>
             <exclude>../../{DrawUserBundle.php}</exclude>
         </prototype>
         <prototype namespace="Draw\Bundle\UserBundle\Controller\" resource="../../Controller">
@@ -17,5 +17,8 @@
             <factory service="doctrine" method="getRepository" />
             <argument>%draw_user.user_entity_class%</argument>
         </service>
+        <service id="Draw\Bundle\UserBundle\Security\MessageAuthenticator"
+                 class="Draw\Bundle\UserBundle\Security\MessageAuthenticator"
+        />
     </services>
 </container>

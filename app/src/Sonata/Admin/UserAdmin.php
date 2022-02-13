@@ -62,6 +62,7 @@ class UserAdmin extends AbstractAdmin
                         'input' => 'datetime_immutable',
                     ]
                 )
+                ->add('needChangePassword')
             ->end();
     }
 }

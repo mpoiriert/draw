@@ -36,6 +36,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->append($this->createNeedPasswordChangeEnforcerNode())
                 ->arrayNode('email_writers')
                     ->canBeEnabled()
                 ->end()
@@ -72,6 +73,15 @@ class Configuration implements ConfigurationInterface
         ;
 
         return $treeBuilder;
+    }
+
+    private function createNeedPasswordChangeEnforcerNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('password_change_enforcer'))
+            ->canBeEnabled()
+            ->children()
+                ->scalarNode('change_password_route')->defaultValue('admin_change_password')->end()
+            ->end();
     }
 
     private function createSonataNode(): ArrayNodeDefinition
