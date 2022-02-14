@@ -9,6 +9,7 @@ use Draw\Component\Messenger\Transport\DrawTransport;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
@@ -19,17 +20,27 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
 
     private $entityRepository;
 
+    private $security;
+
     public function __construct(
         DrawTransport $drawTransport,
-        EntityRepository $userEntityRepository
+        EntityRepository $userEntityRepository,
+        Security $security
     ) {
+        $this->security = $security;
         $this->entityRepository = $userEntityRepository;
         $this->transport = $drawTransport;
     }
 
     public function supports(Request $request)
     {
-        return $request->get(MessageController::MESSAGE_ID_PARAMETER_NAME);
+        switch (true) {
+            case !$request->get(MessageController::MESSAGE_ID_PARAMETER_NAME):
+            case !$this->isDifferentUser($request->get(MessageController::MESSAGE_ID_PARAMETER_NAME)):
+                return false;
+            default:
+                return true;
+        }
     }
 
     public function getCredentials(Request $request)
@@ -39,7 +50,22 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $messageId = $credentials['messageId'] ?? null;
+        return $this->getMessageUser($credentials['messageId'] ?? null);
+    }
+
+    private function isDifferentUser(string $messageId): bool
+    {
+        switch (true) {
+            default:
+            case null === $user = $this->security->getUser():
+                return true;
+            case $user === $this->getMessageUser($messageId):
+                return false;
+        }
+    }
+
+    private function getMessageUser(?string $messageId): ?UserInterface
+    {
         if (null === $messageId) {
             return null;
         }
