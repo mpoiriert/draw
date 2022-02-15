@@ -81,6 +81,9 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->children()
                 ->scalarNode('change_password_route')->defaultValue('admin_change_password')->end()
+                ->arrayNode('email')
+                    ->canBeEnabled()
+                ->end()
             ->end();
     }
 

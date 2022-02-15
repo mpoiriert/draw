@@ -40,7 +40,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
     }
 
     public function __construct(
-        EntityRepository $userEntityRepository,
+        EntityRepository $drawUserEntityRepository,
         ?MessageBusInterface $messageBus,
         UrlGeneratorInterface $urlGenerator,
         string $resetPasswordRoute,
@@ -50,7 +50,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
         $this->urlGenerator = $urlGenerator;
         $this->inviteCreateAccountRoute = $inviteCreateAccountRoute;
         $this->resetPasswordRoute = $resetPasswordRoute;
-        $this->userEntityRepository = $userEntityRepository;
+        $this->userEntityRepository = $drawUserEntityRepository;
     }
 
     public function compose(ForgotPasswordEmail $forgotPasswordEmail)

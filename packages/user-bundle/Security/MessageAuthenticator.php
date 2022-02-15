@@ -24,11 +24,11 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
 
     public function __construct(
         DrawTransport $drawTransport,
-        EntityRepository $userEntityRepository,
+        EntityRepository $drawUserEntityRepository,
         Security $security
     ) {
         $this->security = $security;
-        $this->entityRepository = $userEntityRepository;
+        $this->entityRepository = $drawUserEntityRepository;
         $this->transport = $drawTransport;
     }
 

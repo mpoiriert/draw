@@ -7,9 +7,9 @@ use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Email\PasswordChangeRequestedE
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeUserInterface;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Message\PasswordChangeRequestedMessage;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class PasswordChangeRequestedMessageHandler implements MessageSubscriberInterface
+class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerInterface
 {
     private $mailer;
 
@@ -20,13 +20,13 @@ class PasswordChangeRequestedMessageHandler implements MessageSubscriberInterfac
         yield PasswordChangeRequestedMessage::class => 'handlePasswordChangeRequestedMessage';
     }
 
-    public function __construct(EntityRepository $userEntityRepository, MailerInterface $mailer)
+    public function __construct(EntityRepository $drawUserEntityRepository, MailerInterface $mailer)
     {
-        $this->userEntityRepository = $userEntityRepository;
+        $this->userEntityRepository = $drawUserEntityRepository;
         $this->mailer = $mailer;
     }
 
-    public function handlePasswordChangeRequestedMessage(PasswordChangeRequestedMessage $message): void
+    public function __invoke(PasswordChangeRequestedMessage $message): void
     {
         switch (true) {
             case null === $user = $this->userEntityRepository->find($message->getUserId()):

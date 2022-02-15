@@ -30,6 +30,9 @@ class ConfigurationTest extends ConfigurationTestCase
             'password_change_enforcer' => [
                 'enabled' => false,
                 'change_password_route' => 'admin_change_password',
+                'email' => [
+                    'enabled' => false,
+                ],
             ],
             'sonata' => [
                 'enabled' => true,
