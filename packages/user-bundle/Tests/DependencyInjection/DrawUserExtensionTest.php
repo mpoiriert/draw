@@ -9,6 +9,7 @@ use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\Listener\UserRequestInterceptorSubscriber;
 use Draw\Bundle\UserBundle\MessageHandler\AutoConnectMessageHandler;
+use Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler;
 use Draw\Bundle\UserBundle\Security\MessageAuthenticator;
 use Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock;
 use Draw\Bundle\UserBundle\Sonata\Controller\LoginController;
@@ -58,5 +59,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
         yield [UserAdminRuntime::class];
         yield ['draw_user.user_repository'];
         yield [UserFeedInterface::class, SessionUserFeed::class];
+        yield ['Doctrine\ORM\EntityRepository $drawUserEntityRepository', 'draw_user.user_repository'];
+        yield [PreventNotHandleMessageHandler::class];
     }
 }

@@ -2,9 +2,11 @@
 
 namespace Draw\Bundle\UserBundle\DependencyInjection;
 
+use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Listener\PasswordChangeEnforcerSubscriber;
+use Draw\Bundle\UserBundle\PasswordChangeEnforcer\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\RolesTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\TwoFactorAuthenticationEnforcerInterface;
@@ -30,6 +32,13 @@ class DrawUserExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        $container->registerAliasForArgument(
+            'draw_user.user_repository',
+            EntityRepository::class,
+            'drawUserEntityRepository'
+        );
+
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
@@ -84,6 +93,10 @@ class DrawUserExtension extends Extension
 
         $containerBuilder->getDefinition(PasswordChangeEnforcerSubscriber::class)
             ->setArgument('$changePasswordRoute', $config['change_password_route']);
+
+        if (!$config['email']['enabled']) {
+            $containerBuilder->removeDefinition(PasswordChangeRequestedSendEmailMessageHandler::class);
+        }
     }
 
     private function configureEnforce2fa(

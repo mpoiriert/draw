@@ -18,6 +18,9 @@ on:
     types:
       - created
 
+env:
+  APP_ENV: test
+
 jobs:
   automation_test_lowest:
     name: Automation Test [Lowest]
