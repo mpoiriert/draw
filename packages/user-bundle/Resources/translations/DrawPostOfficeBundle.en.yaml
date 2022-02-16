@@ -27,3 +27,12 @@ email:
           <p>The administrator requested to change your password. You are not able to login with the current password.</p>
           <p>Please click on the button below to change it.</p>
         call_to_action_text: 'Change my password'
+
+    user_onboarding:
+        subject: 'Welcome'
+        top_section: |
+            <p>Your account have been created.<p>
+            <p>Please click on the button below to finaly your account creation.</p>
+        call_to_action_text: 'Finalise my account creation'
+        bottom_section: |
+            <p>Follow the instruction on the site to finalise your account creation.</p>

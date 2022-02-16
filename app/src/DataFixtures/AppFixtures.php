@@ -51,7 +51,7 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
 
-        foreach (range(1, 47) as $number) {
+        foreach (range(1, 4) as $number) {
             $user = new User();
             $user->setEmail('user-'.str_pad($number, 4, '0', STR_PAD_LEFT).'@example.com');
             $user->setPlainPassword('password');

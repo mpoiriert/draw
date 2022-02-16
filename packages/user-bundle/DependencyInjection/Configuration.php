@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->append($this->createSonataNode())
+                ->append($this->createOnboardingNode())
                 ->arrayNode('encrypt_password_listener')
                     ->canBeDisabled()
                     ->children()
@@ -81,6 +82,17 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->children()
                 ->scalarNode('change_password_route')->defaultValue('admin_change_password')->end()
+                ->arrayNode('email')
+                    ->canBeEnabled()
+                ->end()
+            ->end();
+    }
+
+    private function createOnboardingNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('onboarding'))
+            ->canBeEnabled()
+            ->children()
                 ->arrayNode('email')
                     ->canBeEnabled()
                 ->end()

@@ -5,7 +5,11 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true" />
         <prototype namespace="Draw\Bundle\UserBundle\" resource="../..">
-            <exclude>../../{vendor,DependencyInjection,DTO,Entity,Tests,Sonata,Email,Message,Event,EmailWriter,Security,PasswordChangeEnforcer}</exclude>
+            <exclude>../../{vendor,DependencyInjection,DTO,Entity,Tests,Sonata,Email,Message,Event}</exclude>
+            <exclude>../../Security</exclude>
+            <exclude>../../EmailWriter</exclude>
+            <exclude>../../PasswordChangeEnforcer</exclude>
+            <exclude>../../Onboarding</exclude>
             <exclude>../../{DrawUserBundle.php}</exclude>
         </prototype>
         <prototype namespace="Draw\Bundle\UserBundle\Controller\" resource="../../Controller">

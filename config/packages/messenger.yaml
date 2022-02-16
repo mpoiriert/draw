@@ -6,6 +6,3 @@ framework:
             async: 'draw://default?queue_name=default'
             failed: 'draw://default?queue_name=failed'
             sync: 'sync://'
-        routing:
-        # Route your messages to the transports
-            'App\Message\UserCreatedMessage': 'async'
