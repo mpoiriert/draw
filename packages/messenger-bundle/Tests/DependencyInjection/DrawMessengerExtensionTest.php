@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\MessengerBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\MessengerBundle\CallToAction\MessageUrlGenerator;
 use Draw\Bundle\MessengerBundle\Command\PurgeExpiredMessageCommand;
 use Draw\Bundle\MessengerBundle\Controller\MessageController;
 use Draw\Bundle\MessengerBundle\DependencyInjection\DrawMessengerExtension;
@@ -26,6 +27,7 @@ class DrawMessengerExtensionTest extends ExtensionTestCase
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [DrawTransport::class, 'messenger.transport.draw'];
+        yield [MessageUrlGenerator::class];
         yield [PurgeExpiredMessageCommand::class];
         yield [MessageController::class];
         yield [RedirectToRouteMessageHandler::class];
