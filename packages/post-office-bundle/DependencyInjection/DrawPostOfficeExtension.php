@@ -2,8 +2,8 @@
 
 namespace Draw\Bundle\PostOfficeBundle\DependencyInjection;
 
-use Draw\Bundle\PostOfficeBundle\Email\DefaultFromEmailWriter;
-use Draw\Bundle\PostOfficeBundle\Email\EmailWriterInterface;
+use Draw\Bundle\PostOfficeBundle\EmailWriter\DefaultFromEmailWriter;
+use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\PostOfficeBundle\Listener\EmailCssInlinerListener;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,8 +35,6 @@ class DrawPostOfficeExtension extends Extension
     {
         if (!$config['enabled']) {
             $container->removeDefinition(EmailCssInlinerListener::class);
-
-            return;
         }
     }
 

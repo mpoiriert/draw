@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\PostOfficeBundle\DependencyInjection;
 
-use Draw\Bundle\PostOfficeBundle\Email\EmailWriterInterface;
+use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\PostOfficeBundle\Listener\EmailEventListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
