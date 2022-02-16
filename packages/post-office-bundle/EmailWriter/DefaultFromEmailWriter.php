@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\PostOfficeBundle\Email;
+namespace Draw\Bundle\PostOfficeBundle\EmailWriter;
 
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -21,7 +21,7 @@ class DefaultFromEmailWriter implements EmailWriterInterface
         $this->defaultFrom = $defaultFrom;
     }
 
-    public function setDefaultFrom(Email $email)
+    public function setDefaultFrom(Email $email): void
     {
         if (!$email->getFrom()) {
             $email->from($this->defaultFrom);

@@ -3,8 +3,8 @@
 namespace Draw\Bundle\PostOfficeBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\PostOfficeBundle\DependencyInjection\DrawPostOfficeExtension;
-use Draw\Bundle\PostOfficeBundle\Email\DefaultFromEmailWriter;
-use Draw\Bundle\PostOfficeBundle\Email\EmailWriterInterface;
+use Draw\Bundle\PostOfficeBundle\EmailWriter\DefaultFromEmailWriter;
+use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\PostOfficeBundle\Listener\EmailEventListener;
 use Draw\Bundle\PostOfficeBundle\Twig\TranslationExtension;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
