@@ -63,6 +63,14 @@ final class LoginController extends AbstractController
     }
 
     /**
+     * @Route("/confirmation", name="draw_user_account_confirmation")
+     */
+    public function confirmationAction(): Response
+    {
+        return $this->render('@DrawUser/security/confirmation.html.twig');
+    }
+
+    /**
      * @Route("/login", name="admin_login")
      */
     public function loginAction(): Response

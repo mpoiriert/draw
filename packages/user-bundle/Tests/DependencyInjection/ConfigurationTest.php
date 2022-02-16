@@ -22,6 +22,12 @@ class ConfigurationTest extends ConfigurationTestCase
             'email_writers' => [
                 'enabled' => false,
             ],
+            'onboarding' => [
+                'enabled' => false,
+                'email' => [
+                    'enabled' => false,
+                ],
+            ],
             'enforce_2fa' => [
                 'enabled' => false,
                 'enable_route' => 'admin_app_user_enable-2fa',

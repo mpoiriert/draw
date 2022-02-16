@@ -5,6 +5,7 @@ namespace Draw\Bundle\UserBundle\DependencyInjection;
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
+use Draw\Bundle\UserBundle\Onboarding\MessageHandler\NewUserSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Listener\PasswordChangeEnforcerSubscriber;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveTwoFactorAuthenticationEnforcer;
@@ -48,6 +49,7 @@ class DrawUserExtension extends Extension
         $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
         $this->configureJwtAuthenticator($config['jwt_authenticator'], $loader, $container);
+        $this->configureOnboarding($config['onboarding'], $loader, $container);
         $this->configureNeedPasswordChangeEnforcer($config['password_change_enforcer'], $loader, $container);
 
         $userClass = $container->getParameter('draw_user.user_entity_class');
@@ -96,6 +98,22 @@ class DrawUserExtension extends Extension
 
         if (!$config['email']['enabled']) {
             $containerBuilder->removeDefinition(PasswordChangeRequestedSendEmailMessageHandler::class);
+        }
+    }
+
+    private function configureOnBoarding(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('onboarding.xml');
+
+        if (!$config['email']['enabled']) {
+            $containerBuilder->removeDefinition(NewUserSendEmailMessageHandler::class);
         }
     }
 
