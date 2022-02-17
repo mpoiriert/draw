@@ -32,6 +32,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'enabled' => false,
                 'email' => [
                     'enabled' => false,
+                    'expiration_delay' => '+ 7 days',
                 ],
             ],
             'enforce_2fa' => [

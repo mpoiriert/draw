@@ -96,6 +96,9 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('email')
                     ->canBeEnabled()
+                    ->children()
+                        ->scalarNode('expiration_delay')->defaultValue('+ 7 days')->end()
+                    ->end()
                 ->end()
             ->end();
     }

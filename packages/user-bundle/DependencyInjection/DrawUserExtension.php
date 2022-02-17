@@ -5,6 +5,7 @@ namespace Draw\Bundle\UserBundle\DependencyInjection;
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
+use Draw\Bundle\UserBundle\Onboarding\EmailWriter\UserOnboardingEmailWriter;
 use Draw\Bundle\UserBundle\Onboarding\MessageHandler\NewUserSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\EmailWriter\PasswordChangeRequestedEmailWriter;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Listener\PasswordChangeEnforcerSubscriber;
@@ -120,6 +121,8 @@ class DrawUserExtension extends Extension
             $containerBuilder->removeDefinition(NewUserSendEmailMessageHandler::class);
         } else {
             $this->checkEmailWriter($containerBuilder, 'onboarding');
+            $containerBuilder->getDefinition(UserOnboardingEmailWriter::class)
+                ->setArgument('$messageExpirationDelay', $config['email']['expiration_delay']);
         }
     }
 

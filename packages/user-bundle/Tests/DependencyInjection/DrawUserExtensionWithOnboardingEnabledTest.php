@@ -12,7 +12,12 @@ class DrawUserExtensionWithOnboardingEnabledTest extends DrawUserExtensionTest
     {
         return [
             'user_entity_class' => User::class,
-            'onboarding' => ['email' => ['enabled' => true]],
+            'onboarding' => [
+                'email' => [
+                    'enabled' => true,
+                    'expiration_delay' => '+ 24 hours',
+                ],
+            ],
         ];
     }
 
@@ -21,5 +26,15 @@ class DrawUserExtensionWithOnboardingEnabledTest extends DrawUserExtensionTest
         yield from parent::provideTestHasServiceDefinition();
         yield [NewUserSendEmailMessageHandler::class];
         yield [UserOnboardingEmailWriter::class];
+    }
+
+    public function testUserOnboardingEmailWriterConfiguration(): void
+    {
+        $this->assertSame(
+            '+ 24 hours',
+            $this->getContainerBuilder()
+                ->getDefinition(UserOnboardingEmailWriter::class)
+                ->getArgument('$messageExpirationDelay')
+        );
     }
 }
