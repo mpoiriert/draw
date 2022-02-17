@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\UserBundle\PasswordChangeEnforcer\EmailWriter\PasswordChangeRequestedEmailWriter;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Listener\PasswordChangeEnforcerSubscriber;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
@@ -27,6 +28,7 @@ class DrawUserExtensionWithPasswordChangeEnforcerEnabledTest extends DrawUserExt
         yield from parent::provideTestHasServiceDefinition();
         yield [PasswordChangeEnforcerSubscriber::class];
         yield [PasswordChangeRequestedSendEmailMessageHandler::class];
+        yield [PasswordChangeRequestedEmailWriter::class];
     }
 
     public function testTwoFactorAuthenticationSubscriber(): void

@@ -8,7 +8,7 @@ use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Email\PasswordChangeRequestedEmail;
 
-class PasswordChangeRequestedEmailHandler implements EmailWriterInterface
+class PasswordChangeRequestedEmailWriter implements EmailWriterInterface
 {
     private $messageUrlGenerator;
 

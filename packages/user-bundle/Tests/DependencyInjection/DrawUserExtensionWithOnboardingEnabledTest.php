@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\UserBundle\Onboarding\EmailWriter\UserOnboardingEmailWriter;
 use Draw\Bundle\UserBundle\Onboarding\MessageHandler\NewUserSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 
@@ -19,5 +20,6 @@ class DrawUserExtensionWithOnboardingEnabledTest extends DrawUserExtensionTest
     {
         yield from parent::provideTestHasServiceDefinition();
         yield [NewUserSendEmailMessageHandler::class];
+        yield [UserOnboardingEmailWriter::class];
     }
 }

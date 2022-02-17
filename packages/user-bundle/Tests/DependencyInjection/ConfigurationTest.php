@@ -22,6 +22,12 @@ class ConfigurationTest extends ConfigurationTestCase
             'email_writers' => [
                 'enabled' => false,
             ],
+            'password_recovery' => [
+                'enabled' => false,
+                'email' => [
+                    'enabled' => false,
+                ],
+            ],
             'onboarding' => [
                 'enabled' => false,
                 'email' => [

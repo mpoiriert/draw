@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Email;
+namespace Draw\Bundle\UserBundle\PasswordRecovery\Email;
 
 use Draw\Bundle\PostOfficeBundle\Email\CallToActionEmail;
 
