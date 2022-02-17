@@ -97,7 +97,7 @@ class TwoFactorAuthorizationTest extends TestCase
                 ->form(['enable2fa_form[code]' => '123456'], 'POST')
         );
 
-        $this->assertStringContainsString('/edit', $crawler->getUri());
+        $this->assertStringContainsString('/admin/dashboard', $crawler->getUri());
         $this->assertStringContainsString('2FA successfully enabled.', $client->getResponse()->getContent());
 
         $user = self::$entityManager->find(User::class, self::$user->getId());
