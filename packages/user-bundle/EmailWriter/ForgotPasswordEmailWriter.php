@@ -2,36 +2,25 @@
 
 namespace Draw\Bundle\UserBundle\EmailWriter;
 
+use DateTimeImmutable;
 use Doctrine\ORM\EntityRepository;
-use Draw\Bundle\MessengerBundle\Controller\MessageController;
-use Draw\Bundle\PostOfficeBundle\Email\EmailWriterInterface;
+use Draw\Bundle\MessengerBundle\CallToAction\MessageUrlGenerator;
+use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
-use Draw\Bundle\UserBundle\Message\ResetPassword;
-use Draw\Component\Messenger\Stamp\ExpirationStamp;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
+use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ForgotPasswordEmailWriter implements EmailWriterInterface
 {
-    /**
-     * @var MessageBusInterface
-     */
-    private $messageBus;
+    private $messageUrlGenerator;
 
-    /**
-     * @var EntityRepository
-     */
     private $userEntityRepository;
 
     private $resetPasswordRoute;
 
     private $inviteCreateAccountRoute;
 
-    /**
-     * @var UrlGeneratorInterface
-     */
     private $urlGenerator;
 
     public static function getForEmails(): array
@@ -41,12 +30,12 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
 
     public function __construct(
         EntityRepository $drawUserEntityRepository,
-        ?MessageBusInterface $messageBus,
+        MessageUrlGenerator $messageUrlGenerator,
         UrlGeneratorInterface $urlGenerator,
         string $resetPasswordRoute,
         string $inviteCreateAccountRoute
     ) {
-        $this->messageBus = $messageBus;
+        $this->messageUrlGenerator = $messageUrlGenerator;
         $this->urlGenerator = $urlGenerator;
         $this->inviteCreateAccountRoute = $inviteCreateAccountRoute;
         $this->resetPasswordRoute = $resetPasswordRoute;
@@ -62,37 +51,31 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
         $user = $this->userEntityRepository
             ->findOneBy(['email' => $email]);
 
-        if ($user) {
-            $forgotPasswordEmail
-                ->user($user);
-
-            if ($this->messageBus) {
-                $messageId = $this->messageBus
-                    ->dispatch(
-                        new ResetPassword($user->getId(), $this->resetPasswordRoute),
-                        [new ExpirationStamp(new \DateTime('+ 1 days'))]
-                    )
-                    ->last(TransportMessageIdStamp::class)
-                    ->getId();
-
-                $url = $this->urlGenerator
-                    ->generate(
-                        'message_click',
-                        [
-                            MessageController::MESSAGE_ID_PARAMETER_NAME => $messageId,
-                            'type' => 'reset_password',
-                        ],
-                        UrlGeneratorInterface::ABSOLUTE_URL
-                    );
-
-                $forgotPasswordEmail->callToActionLink($url);
-            }
-        } else {
+        if (!$user) {
             $forgotPasswordEmail
                 ->htmlTemplate('@DrawUser/Email/reset_password_email_user_not_found.html.twig')
                 ->callToActionLink(
-                    $this->urlGenerator->generate($this->inviteCreateAccountRoute, [], UrlGeneratorInterface::ABSOLUTE_URL)
+                    $this->urlGenerator->generate(
+                        $this->inviteCreateAccountRoute,
+                        [],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    )
                 );
+
+            return;
         }
+
+        $forgotPasswordEmail
+            ->htmlTemplate('@DrawUser/Email/reset_password_email.html.twig')
+            ->callToActionLink(
+                $this->messageUrlGenerator->generateLink(
+                    new RedirectToSecuredRouteMessage(
+                        $user->getId(),
+                        $this->resetPasswordRoute
+                    ),
+                    new DateTimeImmutable('+ 1 day'),
+                    'reset_password'
+                )
+            );
     }
 }
