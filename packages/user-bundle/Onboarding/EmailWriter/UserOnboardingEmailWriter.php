@@ -12,13 +12,18 @@ class UserOnboardingEmailWriter implements EmailWriterInterface
 {
     private $messageUrlGenerator;
 
+    private $messageExpirationDelay;
+
     public static function getForEmails(): array
     {
         return ['compose' => 0];
     }
 
-    public function __construct(MessageUrlGenerator $messageUrlGenerator)
-    {
+    public function __construct(
+        MessageUrlGenerator $messageUrlGenerator,
+        $messageExpirationDelay = '+ 7 days'
+    ) {
+        $this->messageExpirationDelay = $messageExpirationDelay;
         $this->messageUrlGenerator = $messageUrlGenerator;
     }
 
@@ -35,7 +40,7 @@ class UserOnboardingEmailWriter implements EmailWriterInterface
                         $email->getUserIdentifier(),
                         'draw_user_account_confirmation'
                     ),
-                    new DateTimeImmutable('+ 7 days'),
+                    new DateTimeImmutable($this->messageExpirationDelay),
                     'account_confirmation'
                 )
             );
