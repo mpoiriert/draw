@@ -2,8 +2,8 @@
 
 namespace Draw\Bundle\UserBundle\Sonata\Controller;
 
-use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
+use Draw\Bundle\UserBundle\PasswordRecovery\Email\ForgotPasswordEmail;
 use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
 use Draw\Bundle\UserBundle\Sonata\Form\ChangePasswordForm;
 use Draw\Bundle\UserBundle\Sonata\Form\ForgotPasswordForm;

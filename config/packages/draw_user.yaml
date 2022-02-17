@@ -8,6 +8,8 @@ sonata_block:
 
 draw_user:
     email_writers: ~
+    password_recovery:
+        email: ~
     onboarding:
         email: ~
     password_change_enforcer:

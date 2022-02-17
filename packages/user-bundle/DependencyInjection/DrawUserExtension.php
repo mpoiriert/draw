@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\Onboarding\MessageHandler\NewUserSendEmailMessageHandler;
+use Draw\Bundle\UserBundle\PasswordChangeEnforcer\EmailWriter\PasswordChangeRequestedEmailWriter;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Listener\PasswordChangeEnforcerSubscriber;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveTwoFactorAuthenticationEnforcer;
@@ -46,8 +47,9 @@ class DrawUserExtension extends Extension
         $this->assignParameters($config, $container);
 
         $this->configureSonata($config['sonata'], $loader, $container);
-        $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
+        $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
+        $this->configurePasswordRecovery($config['password_recovery'], $loader, $container);
         $this->configureJwtAuthenticator($config['jwt_authenticator'], $loader, $container);
         $this->configureOnboarding($config['onboarding'], $loader, $container);
         $this->configureNeedPasswordChangeEnforcer($config['password_change_enforcer'], $loader, $container);
@@ -98,6 +100,8 @@ class DrawUserExtension extends Extension
 
         if (!$config['email']['enabled']) {
             $containerBuilder->removeDefinition(PasswordChangeRequestedSendEmailMessageHandler::class);
+        } else {
+            $this->checkEmailWriter($containerBuilder, 'password_change_enforcer');
         }
     }
 
@@ -114,6 +118,8 @@ class DrawUserExtension extends Extension
 
         if (!$config['email']['enabled']) {
             $containerBuilder->removeDefinition(NewUserSendEmailMessageHandler::class);
+        } else {
+            $this->checkEmailWriter($containerBuilder, 'onboarding');
         }
     }
 
@@ -157,15 +163,34 @@ class DrawUserExtension extends Extension
             );
     }
 
-    private function configureEmailWriters(array $config, LoaderInterface $loader, ContainerBuilder $container): void
-    {
+    private function configurePasswordRecovery(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
         if (!$config['enabled']) {
             return;
         }
 
-        if (!isset($container->getParameter('kernel.bundles')['DrawPostOfficeBundle'])) {
-            throw new RuntimeException(sprintf('The bundle [%] needs to be registered to have email_writers enabled.', 'DrawPostOfficeBundle'));
+        $loader->load('password-recovery.xml');
+
+        if (!$config['email']['enabled']) {
+            $containerBuilder->removeDefinition(PasswordChangeRequestedEmailWriter::class);
+        } else {
+            $this->checkEmailWriter($containerBuilder, 'password_recovery');
         }
+    }
+
+    private function configureEmailWriters(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $this->checkEmailWriter($containerBuilder, 'email_writers');
 
         $loader->load('email-writers.xml');
     }
@@ -228,5 +253,12 @@ class DrawUserExtension extends Extension
         }
 
         $definition->setArgument('$queryParameters', $config['query_parameters']['accepted_keys']);
+    }
+
+    private function checkEmailWriter(ContainerBuilder $containerBuilder, string $for): void
+    {
+        if (!isset($containerBuilder->getParameter('kernel.bundles')['DrawPostOfficeBundle'])) {
+            throw new RuntimeException(sprintf('The bundle [%s] needs to be registered to have email enabled for [%s].', $for, 'DrawPostOfficeBundle'));
+        }
     }
 }

@@ -38,6 +38,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->append($this->createNeedPasswordChangeEnforcerNode())
+                ->append($this->createPasswordRecoveryNode())
                 ->arrayNode('email_writers')
                     ->canBeEnabled()
                 ->end()
@@ -91,6 +92,17 @@ class Configuration implements ConfigurationInterface
     private function createOnboardingNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('onboarding'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('email')
+                    ->canBeEnabled()
+                ->end()
+            ->end();
+    }
+
+    private function createPasswordRecoveryNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('password_recovery'))
             ->canBeEnabled()
             ->children()
                 ->arrayNode('email')

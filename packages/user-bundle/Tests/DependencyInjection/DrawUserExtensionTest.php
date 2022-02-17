@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\PostOfficeBundle\DrawPostOfficeBundle;
 use Draw\Bundle\UserBundle\Controller\Api\ConnectionTokensController;
 use Draw\Bundle\UserBundle\DependencyInjection\DrawUserExtension;
 use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
@@ -23,6 +24,7 @@ use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminRuntime;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawUserExtensionTest extends ExtensionTestCase
@@ -61,5 +63,15 @@ class DrawUserExtensionTest extends ExtensionTestCase
         yield [UserFeedInterface::class, SessionUserFeed::class];
         yield ['Doctrine\ORM\EntityRepository $drawUserEntityRepository', 'draw_user.user_repository'];
         yield [PreventNotHandleMessageHandler::class];
+    }
+
+    protected function preLoad(array $config, ContainerBuilder $containerBuilder): void
+    {
+        $containerBuilder->setParameter(
+            'kernel.bundles',
+            [
+                'DrawPostOfficeBundle' => DrawPostOfficeBundle::class,
+            ]
+        );
     }
 }

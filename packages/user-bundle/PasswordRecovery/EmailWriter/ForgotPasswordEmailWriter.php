@@ -1,14 +1,14 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\EmailWriter;
+namespace Draw\Bundle\UserBundle\PasswordRecovery\EmailWriter;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\MessengerBundle\CallToAction\MessageUrlGenerator;
 use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
-use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
+use Draw\Bundle\UserBundle\PasswordRecovery\Email\ForgotPasswordEmail;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ForgotPasswordEmailWriter implements EmailWriterInterface
