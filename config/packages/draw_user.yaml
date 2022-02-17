@@ -26,5 +26,5 @@ draw_user:
 framework:
     messenger:
         routing:
-            Draw\Bundle\UserBundle\Message\ResetPassword: 'draw'
+            Draw\Component\Messenger\Message\ManuallyTriggeredInterface: 'draw'
             Draw\Bundle\UserBundle\Message\AutoConnect: 'draw'
