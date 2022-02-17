@@ -2,9 +2,9 @@
 
 namespace Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 
-interface PasswordChangeUserInterface extends UserInterface
+interface PasswordChangeUserInterface extends SecurityUserInterface
 {
     public function getNeedChangePassword(): bool;
 
