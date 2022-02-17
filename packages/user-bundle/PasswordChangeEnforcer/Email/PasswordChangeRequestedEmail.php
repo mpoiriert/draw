@@ -2,13 +2,11 @@
 
 namespace Draw\Bundle\UserBundle\PasswordChangeEnforcer\Email;
 
-use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
+use Draw\Bundle\PostOfficeBundle\Email\CallToActionEmail;
+use Draw\Bundle\UserBundle\Email\ToUserEmailInterface;
+use Draw\Bundle\UserBundle\Email\ToUserEmailTrait;
 
-class PasswordChangeRequestedEmail extends ForgotPasswordEmail
+class PasswordChangeRequestedEmail extends CallToActionEmail implements ToUserEmailInterface
 {
-    public function __construct(string $emailAddress)
-    {
-        parent::__construct($emailAddress);
-        $this->htmlTemplate('@DrawUser/Email/password_change_requested_email.html.twig');
-    }
+    use ToUserEmailTrait;
 }

@@ -33,10 +33,10 @@ class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerIn
             case !$user instanceof PasswordChangeUserInterface:
             case !$user->getNeedChangePassword():
             case !method_exists($user, 'getEmail'):
-            case !($email = $user->getEmail()):
+            case !$user->getEmail():
                 return;
         }
 
-        $this->mailer->send(new PasswordChangeRequestedEmail($email));
+        $this->mailer->send((new PasswordChangeRequestedEmail())->setUserIdentifier($user->getId()));
     }
 }
