@@ -5,6 +5,7 @@ namespace App\Sonata\Admin;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
@@ -19,6 +20,11 @@ class UserAdmin extends AbstractAdmin
     public function __construct($code, $class = User::class, $baseControllerName = null)
     {
         parent::__construct($code, $class, $baseControllerName);
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+        $filter->add('email');
     }
 
     protected function configureListFields(ListMapper $list): void

@@ -64,7 +64,7 @@ class UserRequestInterceptorSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($event->allowHandlingRequest()) {
+        if ($event->getAllowHandlingRequest()) {
             $requestEvent->stopPropagation();
         }
     }

@@ -1,0 +1,8 @@
+{% trans_default_domain 'DrawUserBundle' %}
+
+{% extends '@DrawUser/security/base_box.html.twig' %}
+
+{% block login_box_body %}
+    <p>Your account is locked.</p>
+    <p>Contact your administrator for more information.</p>
+{% endblock login_box_body %}

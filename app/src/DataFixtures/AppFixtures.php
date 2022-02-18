@@ -51,6 +51,16 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
 
+        $user = new User();
+        $user->setEmail('locked@example.com');
+        $user->setPlainPassword('locked');
+        $user->setLevel(User::LEVEL_ADMIN);
+        $user->setRoles(['ROLE_ADMIN']);
+
+        $user->setHasManualLock(true);
+
+        $manager->persist($user);
+
         foreach (range(1, 4) as $number) {
             $user = new User();
             $user->setEmail('user-'.str_pad($number, 4, '0', STR_PAD_LEFT).'@example.com');

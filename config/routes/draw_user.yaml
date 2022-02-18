@@ -8,3 +8,8 @@ api:
     type: "annotation"
     format: "json"
     prefix: "/api"
+
+account_locker:
+    resource: "@DrawUserBundle/AccountLocker/Controller"
+    type: "annotation"
+    prefix: "/admin"

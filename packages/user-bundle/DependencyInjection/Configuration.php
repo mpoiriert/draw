@@ -4,6 +4,8 @@ namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
+use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
+use Draw\Bundle\UserBundle\AccountLocker\Sonata\Controller\UserLockController;
 use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\SonataAdminBundle;
@@ -20,6 +22,7 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->append($this->createAccountLockerNode())
                 ->append($this->createSonataNode())
                 ->append($this->createOnboardingNode())
                 ->arrayNode('encrypt_password_listener')
@@ -75,6 +78,30 @@ class Configuration implements ConfigurationInterface
         ;
 
         return $treeBuilder;
+    }
+
+    private function createAccountLockerNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('account_locker'))
+            ->canBeEnabled()
+            ->children()
+                ->scalarNode('account_locked_route')->defaultValue('draw_user_account_locker_account_locked')->end()
+                ->arrayNode('entity')
+                    ->canBeEnabled()
+                ->end()
+                ->arrayNode('sonata')
+                    ->canBeEnabled()
+                    ->children()
+                        ->scalarNode('model_class')->defaultValue(UserLock::class)->end()
+                        ->scalarNode('controller')->defaultValue(UserLockController::class)->end()
+                        ->scalarNode('group')->defaultValue('User')->end()
+                        ->booleanNode('show_in_dashboard')->defaultTrue()->end()
+                        ->scalarNode('icon')->defaultValue('fa fa-ban')->end()
+                        ->scalarNode('label')->defaultValue('User lock')->end()
+                        ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     private function createNeedPasswordChangeEnforcerNode(): ArrayNodeDefinition

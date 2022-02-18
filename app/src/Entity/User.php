@@ -8,6 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderInterface;
 use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderTrait;
+use Draw\Bundle\UserBundle\AccountLocker\Entity\LockableUserInterface;
+use Draw\Bundle\UserBundle\AccountLocker\Entity\LockableUserTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
@@ -35,8 +37,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  */
-class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface
+class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface
 {
+    use LockableUserTrait;
     use MessageHolderTrait;
     use OnBoardingLifeCycleHookUserTrait;
     use PasswordChangeEnforcerUserTrait;

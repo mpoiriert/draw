@@ -7,6 +7,7 @@
         <prototype namespace="Draw\Bundle\UserBundle\" resource="../..">
             <exclude>../../{vendor,DependencyInjection,DTO,Entity,Tests,Email,Message,Event}</exclude>
             <exclude>../../DrawUserBundle.php</exclude>
+            <exclude>../../AccountLocker</exclude>
             <exclude>../../EmailWriter</exclude>
             <exclude>../../Onboarding</exclude>
             <exclude>../../PasswordRecovery</exclude>
