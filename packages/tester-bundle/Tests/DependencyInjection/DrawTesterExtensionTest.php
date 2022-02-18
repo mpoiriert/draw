@@ -3,6 +3,7 @@
 namespace Draw\Bundle\TesterBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\TesterBundle\DependencyInjection\DrawTesterExtension;
+use Draw\Bundle\TesterBundle\Messenger\HandleMessagesMappingProvider;
 use Draw\Bundle\TesterBundle\Profiling\SqlProfiler;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator;
 use Draw\Component\Core\FilterExpression\Expression\ConstraintExpressionEvaluator;
@@ -31,6 +32,7 @@ class DrawTesterExtensionTest extends ExtensionTestCase
         yield ['draw.tester.expression_filter'];
         yield [CompositeExpressionEvaluator::class];
         yield [ConstraintExpressionEvaluator::class];
+        yield [HandleMessagesMappingProvider::class];
     }
 
     public function testProfilerInterfaceIsAutoConfigured()
