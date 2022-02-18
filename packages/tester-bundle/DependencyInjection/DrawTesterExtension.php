@@ -34,7 +34,7 @@ class DrawTesterExtension extends Extension
         $container->setDefinition(
             HandleMessagesMappingProvider::class,
             new Definition(HandleMessagesMappingProvider::class)
-        );
+        )->setPublic(true);
     }
 
     private function configureProfiling($config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
