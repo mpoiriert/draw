@@ -1,0 +1,3 @@
+draw_user:
+  account_locker:
+    account_locked_exception: 'Your account is locked. Please contact your administrator.'

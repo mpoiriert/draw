@@ -1,0 +1,9 @@
+draw_user:
+  account_locker:
+    user_lock:
+      unlock_success: 'The user lock has been unlock for the next 24 hours'
+      refresh_success: 'The user locks has been refreshed'
+      reason:
+        unknow-explanation: 'No specific explanation has been defined'
+        password-expired:
+          explanation: 'Password is expired, it was updated too long ago.'

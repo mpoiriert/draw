@@ -1,21 +1,25 @@
 App\Entity\User:
     properties:
-        onHoldMessages:
+        address:
+            type: 'App\Entity\Address'
+        hasManualLock:
             exclude: true
         messageQueue:
             exclude: true
         needChangePassword:
+            exclude: true
+        onHoldMessages:
+            exclude: true
+        password:
             exclude: true
         plainPassword:
             expose: true
             type: 'string'
         roles:
             exclude: true
-        password:
-            exclude: true
-        address:
-            type: 'App\Entity\Address'
         userAddresses:
             type: 'ArrayCollection<App\Entity\UserAddress>'
             accessor:
                 setter: 'setUserAddresses'
+        userLocks:
+            exclude: true

@@ -3,6 +3,10 @@
 namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use Doctrine\ORM\EntityRepository;
+use Draw\Bundle\UserBundle\AccountLocker\Listener\AccountLockerSubscriber;
+use Draw\Bundle\UserBundle\AccountLocker\Sonata\Admin\UserLockAdmin;
+use Draw\Bundle\UserBundle\AccountLocker\Sonata\Extension\UserAdminExtension;
+use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\Onboarding\EmailWriter\UserOnboardingEmailWriter;
@@ -21,16 +25,17 @@ use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension3X;
 use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension4X;
 use ReflectionClass;
-use RuntimeException;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class DrawUserExtension extends Extension
+class DrawUserExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -47,6 +52,7 @@ class DrawUserExtension extends Extension
 
         $this->assignParameters($config, $container);
 
+        $this->configureAccountLocker($config['account_locker'], $loader, $container);
         $this->configureSonata($config['sonata'], $loader, $container);
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
         $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
@@ -83,6 +89,58 @@ class DrawUserExtension extends Extension
         foreach ($parameterNames as $parameterName) {
             $container->setParameter('draw_user.'.$parameterName, $config[$parameterName]);
         }
+
+        if ($config['sonata']['enabled']) {
+            $container->setParameter('draw_user.sonata.user_admin_code', $config['sonata']['user_admin_code']);
+        }
+    }
+
+    private function configureAccountLocker(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('account-locker.xml');
+
+        $containerBuilder
+            ->getDefinition(AccountLockerSubscriber::class)
+            ->setArgument('$accountLockedRoute', $config['account_locked_route']);
+
+        if (!$config['sonata']['enabled']) {
+            return;
+        }
+
+        if (!$containerBuilder->hasParameter('draw_user.sonata.user_admin_code')) {
+            throw new RuntimeException('To use [draw_user.account_locker.sonata] you must enabled [draw_user.sonata].');
+        }
+
+        $loader->load('account-locker-sonata.xml');
+
+        $containerBuilder->getDefinition(UserLockAdmin::class)
+            ->setArgument(1, $config['sonata']['model_class'])
+            ->setArgument(2, $config['sonata']['controller'])
+            ->addTag(
+                'sonata.admin',
+                array_filter(
+                    array_merge(
+                        $config['sonata'],
+                        ['manager_type' => 'orm']
+                    ),
+                    function ($value) {
+                        return null !== $value;
+                    }
+                )
+            );
+
+        $containerBuilder->getDefinition(UserAdminExtension::class)
+            ->addTag(
+                'sonata.admin.extension',
+                ['target' => $containerBuilder->getParameter('draw_user.sonata.user_admin_code')]
+            );
     }
 
     private function configureNeedPasswordChangeEnforcer(
@@ -262,6 +320,30 @@ class DrawUserExtension extends Extension
     {
         if (!isset($containerBuilder->getParameter('kernel.bundles')['DrawPostOfficeBundle'])) {
             throw new RuntimeException(sprintf('The bundle [%s] needs to be registered to have email enabled for [%s].', $for, 'DrawPostOfficeBundle'));
+        }
+    }
+
+    public function prepend(ContainerBuilder $container)
+    {
+        $configs = $container->getExtensionConfig('draw_user');
+        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        if ($this->isConfigEnabled($container, $config['account_locker']['entity'])) {
+            $container->prependExtensionConfig('doctrine', [
+                'orm' => [
+                    'mappings' => [
+                        'DrawUserAccountLocker' => [
+                            'type' => 'annotation',
+                            'dir' => realpath(__DIR__.'/../AccountLocker/Entity'),
+                            'is_bundle' => false,
+                            'prefix' => 'Draw\Bundle\UserBundle\AccountLocker\Entity',
+                        ],
+                    ],
+                    'resolve_target_entities' => [
+                        SecurityUserInterface::class => $config['user_entity_class'],
+                    ],
+                ],
+            ]);
         }
     }
 }

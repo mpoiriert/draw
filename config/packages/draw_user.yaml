@@ -7,6 +7,9 @@ sonata_block:
         Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
 
 draw_user:
+    account_locker:
+        entity: ~
+        sonata: ~
     email_writers: ~
     password_recovery:
         email: ~

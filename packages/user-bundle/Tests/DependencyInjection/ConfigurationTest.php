@@ -4,6 +4,8 @@ namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
+use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
+use Draw\Bundle\UserBundle\AccountLocker\Sonata\Controller\UserLockController;
 use Draw\Bundle\UserBundle\DependencyInjection\Configuration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,6 +21,23 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'account_locker' => [
+                'enabled' => false,
+                'account_locked_route' => 'draw_user_account_locker_account_locked',
+                'entity' => [
+                    'enabled' => false,
+                ],
+                'sonata' => [
+                    'enabled' => false,
+                    'model_class' => UserLock::class,
+                    'controller' => UserLockController::class,
+                    'group' => 'User',
+                    'show_in_dashboard' => true,
+                    'icon' => 'fa fa-ban',
+                    'label' => 'User lock',
+                    'pager_type' => 'simple',
+                ],
+            ],
             'email_writers' => [
                 'enabled' => false,
             ],

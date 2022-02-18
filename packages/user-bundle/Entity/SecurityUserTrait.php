@@ -6,8 +6,9 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
+use Draw\Bundle\UserBundle\AccountLocker\Entity\LockableUserInterface;
+use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 trait SecurityUserTrait
@@ -55,33 +56,22 @@ trait SecurityUserTrait
         return $this->email;
     }
 
-    public function setEmail(string $email)
+    public function setEmail(string $email): void
     {
         $this->email = strtolower($email);
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUsername(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         // guarantee every user at least has ROLE_USER
         return ['ROLE_USER'];
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -95,62 +85,56 @@ trait SecurityUserTrait
 
         $this->password = $password;
 
-        if ($this->password && $this instanceof PasswordChangeUserInterface) {
+        if (!$this->password) {
+            return;
+        }
+
+        if ($this instanceof PasswordChangeUserInterface) {
             $this->setNeedChangePassword(false);
         }
     }
 
-    /**
-     * @return string
-     */
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    /**
-     * @param string $plainPassword
-     */
     public function setPlainPassword(?string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
         if ($this->plainPassword) {
-            //This is needed to flag a property modified to trigger what's is needed for the flush
+            // This is needed to flag a property modified to trigger what's is needed for the flush
+            // We want to make sure the date change in case the previous value is on the same second
+            $this->passwordUpdatedAt = null;
             $this->setPasswordUpdatedAt(new DateTimeImmutable());
         }
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
     public function getPasswordUpdatedAt(): ?DateTimeInterface
     {
         return $this->passwordUpdatedAt;
     }
 
-    /**
-     * @param \DateTimeImmutable $passwordUpdatedAt
-     *
-     * @return SecurityUserTrait
-     */
-    public function setPasswordUpdatedAt(DateTimeInterface $passwordUpdatedAt)
+    public function setPasswordUpdatedAt(DateTimeInterface $passwordUpdatedAt): self
     {
-        $this->passwordUpdatedAt = \DateTimeImmutable::createFromFormat('U', $passwordUpdatedAt->getTimestamp());
+        switch (true) {
+            case null === $this->passwordUpdatedAt:
+            case $this->passwordUpdatedAt->getTimestamp() !== $passwordUpdatedAt->getTimestamp():
+                $this->passwordUpdatedAt = DateTimeImmutable::createFromFormat('U', $passwordUpdatedAt->getTimestamp());
+                if ($this instanceof LockableUserInterface) {
+                    $this->unlock(UserLock::REASON_PASSWORD_EXPIRED);
+                }
+                break;
+        }
 
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getSalt()
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials()
     {
         $this->plainPassword = null;

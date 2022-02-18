@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% trans_default_domain 'SonataAdminBundle' %}
+
+{% block field %}
+    {{  ['draw_user.account_locker.user_lock.reason.' ~  object.reason ~ '.explanation', 'draw_user.account_locker.user_lock.reason.unknow-explanation']|trans|raw }}
+{% endblock %}
