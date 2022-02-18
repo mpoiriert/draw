@@ -2,10 +2,12 @@
 
 namespace Draw\Bundle\TesterBundle\DependencyInjection;
 
+use Draw\Bundle\TesterBundle\Messenger\HandleMessagesMappingProvider;
 use Draw\Component\Core\FilterExpression\Expression\ExpressionEvaluator;
 use Draw\Component\Profiling\ProfilerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -28,6 +30,11 @@ class DrawTesterExtension extends Extension
         $this->configureProfiling($config['profiling'], $fileLoader, $container);
 
         $fileLoader->load('filter.xml');
+
+        $container->setDefinition(
+            HandleMessagesMappingProvider::class,
+            new Definition(HandleMessagesMappingProvider::class)
+        );
     }
 
     private function configureProfiling($config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
