@@ -1,13 +1,29 @@
 {% extends '@SonataAdmin/standard_layout.html.twig' %}
 
-{% block content %}
-    <div>
-        <h4>{{ 'form.enable_2fa.header' | trans([], 'DrawUserBundle') }}</h4>
-        <p>{{ 'form.enable_2fa.description' | trans([], 'DrawUserBundle') }}</p>
-        {{ qrCodeSvg|raw }}
-        <br>
-        <p><b>{{ 'form.enable_2fa.totp_label' | trans([], 'DrawUserBundle') }}:</b> {{ totpSecret }}</p>
-
-        {{ form(form) }}
+{% block sonata_admin_content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h1>{{ 'form.enable_2fa.header' | trans([], 'DrawUserBundle') |raw }}</h1>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {{ 'form.enable_2fa.description' | trans([], 'DrawUserBundle') | raw }}
+                        </div>
+                        <div class="col-sm-12">
+                            {{ qrCodeSvg|raw }}
+                        </div>
+                        <div class="col-sm-12">
+                            <label>{{ 'form.enable_2fa.totp_label' | trans([], 'DrawUserBundle') | raw }}</label>: {{ totpSecret }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

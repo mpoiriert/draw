@@ -22,7 +22,10 @@ form:
 
     enable_2fa:
         header: 'Enable 2FA'
-        description: 'Scan the QR code or use TOTP secret instead. Then enter the code from the authenticator app.'
+        description: |
+            Scan the QR code or use TOTP secret instead.
+            Then enter the code from the
+            <a href="https://www.google.com/search?q=authenticator+app" target="_blank">authenticator app</a>.
         totp_label: 'TOTP secret'
         field:
             code:
