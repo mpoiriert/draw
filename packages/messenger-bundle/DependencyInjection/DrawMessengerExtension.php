@@ -40,7 +40,11 @@ class DrawMessengerExtension extends Extension implements PrependExtensionInterf
     public function prepend(ContainerBuilder $container)
     {
         $configs = $container->getExtensionConfig('draw_messenger');
-        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        $config = $this->processConfiguration(
+            $this->getConfiguration($configs, $container),
+            $container->getParameterBag()->resolveValue($configs)
+        );
 
         if (!$this->isConfigEnabled($container, $config['sonata'])) {
             return;
