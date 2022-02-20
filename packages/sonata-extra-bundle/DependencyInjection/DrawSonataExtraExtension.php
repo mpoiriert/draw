@@ -33,7 +33,11 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
     public function prepend(ContainerBuilder $container)
     {
         $configs = $container->getExtensionConfig('draw_sonata_extra');
-        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        $config = $this->processConfiguration(
+            $this->getConfiguration($configs, $container),
+            $container->getParameterBag()->resolveValue($configs)
+        );
 
         if (!$this->isConfigEnabled($container, $config['user_timezone'])) {
             return;
