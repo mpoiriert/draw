@@ -326,7 +326,11 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
     public function prepend(ContainerBuilder $container)
     {
         $configs = $container->getExtensionConfig('draw_user');
-        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        $config = $this->processConfiguration(
+            $this->getConfiguration($configs, $container),
+            $container->getParameterBag()->resolveValue($configs)
+        );
 
         if ($this->isConfigEnabled($container, $config['account_locker']['entity'])) {
             $container->prependExtensionConfig('doctrine', [
