@@ -11,10 +11,7 @@ use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(
- *     name="draw_user__user_lock",
- *     uniqueConstraints={@ORM\UniqueConstraint(fields={"user", "reason"})}
- * )
+ * @ORM\Table(name="draw_user__user_lock")
  * @ORM\HasLifecycleCallbacks()
  */
 class UserLock
@@ -200,6 +197,18 @@ class UserLock
             case $this->expiresAt->getTimestamp() > time():
                 return true;
         }
+    }
+
+    public function isSame(UserLock $userLock): bool
+    {
+        switch (true) {
+            case $userLock->getReason() !== $this->getReason():
+            case !DateTimeUtils::isSameTimestamp($userLock->getLockOn(), $this->getLockOn()):
+            case !DateTimeUtils::isSameTimestamp($userLock->getExpiresAt(), $this->getExpiresAt()):
+                return false;
+        }
+
+        return true;
     }
 
     public function __toString(): string

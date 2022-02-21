@@ -55,14 +55,17 @@ trait LockableUserTrait
         }
 
         $currentLock = $this->getLocks()[$reason] ?? null;
-        if ($currentLock !== $userLock) {
-            if ($currentLock) {
-                $userLock->setUnlockUntil($currentLock->getUnlockUntil());
-                $this->getUserLocks()->removeElement($currentLock);
-            }
-
-            $this->addUserLock($userLock);
+        switch (true) {
+            case $userLock === $currentLock:
+            case null !== $currentLock && $currentLock->isSame($userLock):
+                return $currentLock;
         }
+
+        if ($currentLock) {
+            $userLock->setUnlockUntil($currentLock->getUnlockUntil());
+            $this->getUserLocks()->removeElement($currentLock);
+        }
+        $this->addUserLock($userLock);
 
         return $userLock;
     }
