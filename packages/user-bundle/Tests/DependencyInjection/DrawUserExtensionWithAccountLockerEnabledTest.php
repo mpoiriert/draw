@@ -7,6 +7,7 @@ use Draw\Bundle\UserBundle\AccountLocker\Command\RefreshUserLocksCommand;
 use Draw\Bundle\UserBundle\AccountLocker\Controller\AccountLockedController;
 use Draw\Bundle\UserBundle\AccountLocker\Listener\AccountLockerSubscriber;
 use Draw\Bundle\UserBundle\AccountLocker\MessageHandler\RefreshUserLockMessageHandler;
+use Draw\Bundle\UserBundle\AccountLocker\MessageHandler\UserLockLifeCycleMessageHandler;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 
 class DrawUserExtensionWithAccountLockerEnabledTest extends DrawUserExtensionTest
@@ -24,10 +25,11 @@ class DrawUserExtensionWithAccountLockerEnabledTest extends DrawUserExtensionTes
     public function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
-        yield [RefreshUserLocksCommand::class];
+        yield [AccountLocker::class];
         yield [AccountLockedController::class];
         yield [AccountLockerSubscriber::class];
+        yield [RefreshUserLocksCommand::class];
         yield [RefreshUserLockMessageHandler::class];
-        yield [AccountLocker::class];
+        yield [UserLockLifeCycleMessageHandler::class];
     }
 }

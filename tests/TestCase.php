@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\DependencyInjection\ServiceTesterTrait;
 use Draw\Bundle\TesterBundle\Http\BrowserFactoryInterface;
 use Draw\Bundle\TesterBundle\Http\HttpTesterTrait;
+use Draw\Bundle\TesterBundle\Messenger\MessengerTesterTrait;
 use Draw\Bundle\TesterBundle\Profiling\MetricTesterTrait;
 use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Component\Tester\Http\ClientInterface;
@@ -20,6 +21,7 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
     use HttpTesterTrait {
         createHttpTesterClient as defaultCreateHttpTesterClient;
     }
+    use MessengerTesterTrait;
     use MetricTesterTrait;
 
     public function createBrowser(): AbstractBrowser
