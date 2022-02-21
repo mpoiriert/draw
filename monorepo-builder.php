@@ -31,7 +31,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'nelmio/cors-bundle' => '^2.0',
             'pelago/emogrifier' => '^6.0',
             'phpunit/phpunit' => '^8.0|^9.0',
-            'ramsey/uuid' => '^4.2',
             'sonata-project/admin-bundle' => '^3.105|^4.0',
             'sonata-project/doctrine-orm-admin-bundle' => '^3.35|^4.0',
             'symfony/debug-bundle' => '^4.4|^5.3',
