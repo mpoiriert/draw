@@ -16,16 +16,9 @@ class AccountLocker
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function isLocked($user): bool
+    public function isLocked(LockableUserInterface $user): bool
     {
-        return 0 !== count(
-                array_filter(
-                    $this->refreshUserLocks($user),
-                    function (UserLock $userLock) {
-                        return $userLock->isActive();
-                    }
-                )
-            );
+        return 0 !== count($this->getActiveLocks($user));
     }
 
     /**
@@ -47,5 +40,18 @@ class AccountLocker
         }
 
         return $user->getLocks();
+    }
+
+    /**
+     * @return array|UserLock[]
+     */
+    public function getActiveLocks(LockableUserInterface $user): array
+    {
+        return array_filter(
+            $this->refreshUserLocks($user),
+            function (UserLock $userLock) {
+                return $userLock->isActive();
+            }
+        );
     }
 }

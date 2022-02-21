@@ -75,10 +75,10 @@ class AccountLockerSubscriber implements EventSubscriberInterface
         $user = $event->getUser();
         switch (true) {
             case !$user instanceof LockableUserInterface:
-            case !$this->accountLocker->isLocked($user):
+            case !($reasons = array_keys($this->accountLocker->getActiveLocks($user))):
                 return;
         }
 
-        throw new AccountLockedException('draw_user.account_locker.account_locked_exception');
+        throw new AccountLockedException('draw_user.account_locker.account_locked_exception', $reasons);
     }
 }
