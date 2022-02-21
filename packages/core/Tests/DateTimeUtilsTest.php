@@ -107,4 +107,28 @@ class DateTimeUtilsTest extends TestCase
         $this->assertTrue(DateTimeUtils::isSameTimestamp($dateTimeInterface, $dateTime));
         $this->assertNotSame($dateTimeInterface, $dateTime);
     }
+
+    public function provideTestMillisecondDiff(): array
+    {
+        return [
+            'now compare' => ['now', null, 0],
+            '5 seconds ago' => ['- 5 seconds', null, -5000],
+            '5 seconds in the future' => ['+ 5 seconds', null, 5000],
+            'specifying a compare to date' => ['+ 5 seconds', '+ 5 seconds', 0],
+        ];
+    }
+
+    /**
+     * @dataProvider provideTestMillisecondDiff
+     */
+    public function testMillisecondDiff(string $delay, ?string $compareToDelay, int $expected): void
+    {
+        $this->assertSame(
+            $expected,
+            DateTimeUtils::millisecondDiff(
+                new DateTimeImmutable($delay),
+                $compareToDelay ? new DateTimeImmutable($compareToDelay) : null
+            )
+        );
+    }
 }

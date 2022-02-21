@@ -44,4 +44,13 @@ final class DateTimeUtils
                 return DateTime::createFromFormat('U', $dateTime->getTimestamp());
         }
     }
+
+    public static function millisecondDiff(DateTimeInterface $dateTime, ?DateTimeInterface $compareTo = null): int
+    {
+        if (null === $compareTo) {
+            $compareTo = new DateTimeImmutable();
+        }
+
+        return ($dateTime->getTimestamp() - $compareTo->getTimestamp()) * 1000;
+    }
 }
