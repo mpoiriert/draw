@@ -8,3 +8,4 @@ framework:
             sync: 'sync://'
         routing:
             Draw\Bundle\UserBundle\AccountLocker\Message\NewUserLockMessage: 'sync'
+            Draw\Bundle\UserBundle\AccountLocker\Message\UserLockDelayedActivationMessage: 'sync'
