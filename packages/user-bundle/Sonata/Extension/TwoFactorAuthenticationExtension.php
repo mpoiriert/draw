@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Security\Core\Security;
 
 class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 {
@@ -17,8 +18,11 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 
     private $fieldPositions;
 
-    public function __construct(array $fieldPositions = [])
+    private $security;
+
+    public function __construct(array $fieldPositions, Security $security)
     {
+        $this->security = $security;
         $this->fieldPositions = $fieldPositions;
     }
 
@@ -120,14 +124,27 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
             return $list;
         }
 
-        if (!$object->getTotpSecret() && $admin->hasAccess('enable-2fa', $object)) {
-            $list['enable-2fa'] = [
-                'template' => '@DrawUser/Sonata/Buttons/enable-2fa.html.twig',
-            ];
-        } elseif ($admin->hasAccess('disable-2fa', $object)) {
-            $list['disable-2fa'] = [
-                'template' => '@DrawUser/Sonata/Buttons/disable-2fa.html.twig',
-            ];
+        switch (true) {
+            case $object->getTotpSecret():
+            case !$admin->hasAccess('enable-2fa', $object):
+            case $this->security->getUser() !== $object:
+                break;
+            default:
+                $list['enable-2fa'] = [
+                    'template' => '@DrawUser/Sonata/Buttons/enable-2fa.html.twig',
+                ];
+                break;
+        }
+
+        switch (true) {
+            case !$object->getTotpSecret():
+            case !$admin->hasAccess('disable-2fa', $object):
+                break;
+            default:
+                $list['disable-2fa'] = [
+                    'template' => '@DrawUser/Sonata/Buttons/disable-2fa.html.twig',
+                ];
+                break;
         }
 
         return $list;
