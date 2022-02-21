@@ -4,12 +4,28 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use App\Tests\TestCase;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
 use Draw\Bundle\UserBundle\AccountLocker\Message\NewUserLockMessage;
+use Draw\Bundle\UserBundle\AccountLocker\Message\UserLockDelayedActivationMessage;
+use Draw\Component\Messenger\Stamp\SearchableTagStamp;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 
 class UserTest extends TestCase
 {
+    private $entityManager;
+
+    private $transportTester;
+
+    public function setUp(): void
+    {
+        $this->entityManager = static::getService(EntityManagerInterface::class);
+        $this->transportTester = static::getTransportTester('sync');
+        $this->transportTester->reset();
+    }
+
     /**
      * @before
      * @after
@@ -37,8 +53,41 @@ class UserTest extends TestCase
         $entityManager->persist($user);
         $entityManager->flush();
 
-        $transportTester = static::getTransportTester('sync');
+        $this->transportTester->assertMessageMatch(NewUserLockMessage::class);
+    }
 
-        $transportTester->assertMessageMatch(NewUserLockMessage::class);
+    public function testLockDelayed(): void
+    {
+        $user = new User();
+        $user->setEmail('test-lock@example.com');
+
+        $user->lock(
+            $userLock = (new UserLock(UserLock::REASON_MANUAL_LOCK))
+                ->setLockOn(new DateTimeImmutable('+ 5 minutes'))
+        );
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $envelope = $this->transportTester->getTransport()->get()[0];
+
+        $this->assertInstanceOf(NewUserLockMessage::class, $envelope->getMessage());
+
+        $this->transportTester->reset();
+        static::getService(MessageBusInterface::class)
+            ->dispatch($envelope->with(new ReceivedStamp('sync')));
+
+        $this->transportTester->assertMessageMatch(UserLockDelayedActivationMessage::class);
+
+        $stamp = $this->transportTester->getTransport()->get()[0]->last(SearchableTagStamp::class);
+
+        $this->assertTrue($stamp->getEnforceUniqueness());
+        $this->assertSame(
+            [
+                'activateUserLock:'.$userLock->getReason(),
+                'userId:'.$userLock->getUser()->getId(),
+            ],
+            $stamp->getTags(),
+        );
     }
 }

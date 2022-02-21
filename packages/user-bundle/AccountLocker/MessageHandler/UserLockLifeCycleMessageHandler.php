@@ -9,6 +9,7 @@ use Draw\Bundle\UserBundle\AccountLocker\Message\NewUserLockMessage;
 use Draw\Bundle\UserBundle\AccountLocker\Message\UserLockActivatedMessage;
 use Draw\Bundle\UserBundle\AccountLocker\Message\UserLockDelayedActivationMessage;
 use Draw\Component\Core\DateTimeUtils;
+use Draw\Component\Messenger\Stamp\SearchableTagStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -60,13 +61,21 @@ class UserLockLifeCycleMessageHandler implements MessageSubscriberInterface
                 ));
                 break;
             default:
-                $this->messageBus->dispatch(new Envelope(
-                    new UserLockDelayedActivationMessage($userLockId),
-                    [
-                        new DelayStamp(DateTimeUtils::millisecondDiff($lockOn)),
-                        new DispatchAfterCurrentBusStamp(),
-                    ]
-                ));
+                $stamps = [
+                    new DelayStamp(DateTimeUtils::millisecondDiff($lockOn)),
+                    new DispatchAfterCurrentBusStamp(),
+                ];
+
+                if (class_exists(SearchableTagStamp::class)) {
+                    $stamps[] = new SearchableTagStamp(
+                        [
+                            'activateUserLock:'.$userLock->getReason(),
+                            'userId:'.$userLock->getUser()->getId(),
+                        ],
+                        true
+                    );
+                }
+                $this->messageBus->dispatch(new Envelope(new UserLockDelayedActivationMessage($userLockId), $stamps));
                 break;
         }
     }
