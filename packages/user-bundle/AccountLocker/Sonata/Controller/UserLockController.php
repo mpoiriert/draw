@@ -32,6 +32,6 @@ class UserLockController extends CRUDController
             );
         }
 
-        return $this->redirectToRoute($this->admin->generateObjectUrl('show', $userLock));
+        return $this->redirect($this->admin->generateObjectUrl('show', $userLock));
     }
 }
