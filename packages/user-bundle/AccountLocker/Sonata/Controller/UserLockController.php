@@ -11,7 +11,7 @@ class UserLockController extends CRUDController
 {
     public function unlockAction(UserLock $userLock): Response
     {
-        $this->admin->checkAccess('edit');
+        $this->admin->checkAccess('EDIT');
 
         $userLock->setUnlockUntil(new DateTimeImmutable('+ 24 hours'));
 
