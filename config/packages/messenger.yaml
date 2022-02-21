@@ -6,3 +6,5 @@ framework:
             async: 'draw://default?queue_name=default'
             failed: 'draw://default?queue_name=failed'
             sync: 'sync://'
+        routing:
+            Draw\Bundle\UserBundle\AccountLocker\Message\NewUserLockMessage: 'sync'

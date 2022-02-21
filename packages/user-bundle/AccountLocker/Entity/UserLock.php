@@ -7,11 +7,14 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Component\Core\DateTimeUtils;
-use InvalidArgumentException;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="draw_user__user_lock")
+ * @ORM\Table(
+ *     name="draw_user__user_lock",
+ *     uniqueConstraints={@ORM\UniqueConstraint(fields={"user", "reason"})}
+ * )
  * @ORM\HasLifecycleCallbacks()
  */
 class UserLock
@@ -21,11 +24,10 @@ class UserLock
     public const REASON_MANUAL_LOCK = 'manual-lock';
 
     /**
-     * @var ?int
+     * @var ?string
      *
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="guid")
      */
     private $id = null;
 
@@ -77,8 +79,15 @@ class UserLock
         }
     }
 
-    public function getId(): ?int
+    /**
+     * @ORM\PrePersist()
+     */
+    public function getId(): string
     {
+        if (null === $this->id) {
+            $this->id = Uuid::uuid6()->toString();
+        }
+
         return $this->id;
     }
 
@@ -98,6 +107,10 @@ class UserLock
     {
         $this->user = $user;
 
+        if ($user instanceof LockableUserInterface && $this->getReason()) {
+            $user->lock($this);
+        }
+
         return $this;
     }
 
@@ -109,6 +122,10 @@ class UserLock
     public function setReason(string $reason): self
     {
         $this->reason = $reason;
+
+        if ($this->reason && $this->user instanceof LockableUserInterface) {
+            $this->user->lock($this);
+        }
 
         return $this;
     }
@@ -183,22 +200,6 @@ class UserLock
             case $this->expiresAt->getTimestamp() > time():
                 return true;
         }
-    }
-
-    public function merge(UserLock $userLock): self
-    {
-        if ($this === $userLock) {
-            return $this;
-        }
-
-        if ($userLock->getReason() !== $this->getReason()) {
-            throw new InvalidArgumentException('Cannot merge lock ['.$this->getReason().'] with lock ['.$userLock->getReason().']');
-        }
-
-        $this->setExpiresAt($userLock->getExpiresAt());
-        $this->setLockOn($userLock->getLockOn());
-
-        return $this;
     }
 
     public function __toString(): string

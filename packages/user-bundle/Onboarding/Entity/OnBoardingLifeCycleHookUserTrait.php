@@ -7,9 +7,6 @@ use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Onboarding\Message\NewUserMessage;
 
-/**
- * @property array $onHoldMessages
- */
 trait OnBoardingLifeCycleHookUserTrait
 {
     /**

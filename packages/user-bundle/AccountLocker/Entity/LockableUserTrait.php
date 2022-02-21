@@ -6,6 +6,9 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderTrait;
+use Draw\Bundle\UserBundle\AccountLocker\Message\NewUserLockMessage;
+use RuntimeException;
 
 trait LockableUserTrait
 {
@@ -48,15 +51,20 @@ trait LockableUserTrait
     public function lock(UserLock $userLock): UserLock
     {
         if (!$reason = $userLock->getReason()) {
-            throw new \RuntimeException('User Lock must have a reason at this point.');
+            throw new RuntimeException('User Lock must have a reason at this point.');
         }
 
-        $lock = ($this->getLocks()[$reason] ?? $userLock)
-            ->merge($userLock);
+        $currentLock = $this->getLocks()[$reason] ?? null;
+        if ($currentLock !== $userLock) {
+            if ($currentLock) {
+                $userLock->setUnlockUntil($currentLock->getUnlockUntil());
+                $this->getUserLocks()->removeElement($currentLock);
+            }
 
-        $this->addUserLock($lock);
+            $this->addUserLock($userLock);
+        }
 
-        return $lock;
+        return $userLock;
     }
 
     public function unlock(string $reason, DateTimeInterface $until = null): ?UserLock
@@ -97,7 +105,16 @@ trait LockableUserTrait
     private function addUserLock(UserLock $userLock): void
     {
         $userLocks = $this->getUserLocks();
+
         if (!$userLocks->contains($userLock)) {
+            switch (true) {
+                case !trait_exists(MessageHolderTrait::class):
+                case !MessageHolderTrait::useMessageHolderTrait($this):
+                    break;
+                default:
+                    $this->onHoldMessages['user-lock-'.$userLock->getReason()] = new NewUserLockMessage($userLock->getId());
+                    break;
+            }
             $userLocks->add($userLock);
             $userLock->setUser($this);
         }
