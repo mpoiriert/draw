@@ -92,10 +92,13 @@ class UserLockAdmin extends AbstractAdmin
         $list = parent::configureActionButtons($action, $object);
 
         switch ($action) {
+            case 'show':
             case 'edit':
-                $list['unlock'] = [
-                    'template' => '@DrawUser/AccountLocker/Sonata/unlock_button.html.twig',
-                ];
+                if ($this->isGranted('EDIT', $object)) {
+                    $list['unlock'] = [
+                        'template' => '@DrawUser/AccountLocker/Sonata/unlock_button.html.twig',
+                    ];
+                }
                 break;
         }
 
