@@ -6,7 +6,7 @@ use DateTimeInterface;
 
 interface LockableUserInterface
 {
-    public function getHasManualLock(): bool;
+    public function hasManualLock(): bool;
 
     public function lock(UserLock $userLock): UserLock;
 

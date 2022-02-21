@@ -69,6 +69,7 @@ class UserAdmin extends AbstractAdmin
                     ]
                 )
                 ->add('needChangePassword')
+                ->add('manualLock')
             ->end();
     }
 }

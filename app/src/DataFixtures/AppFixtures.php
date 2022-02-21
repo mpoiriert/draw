@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
         $user->setLevel(User::LEVEL_ADMIN);
         $user->setRoles(['ROLE_ADMIN']);
 
-        $user->setHasManualLock(true);
+        $user->setManualLock(true);
 
         $manager->persist($user);
 

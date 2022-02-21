@@ -13,9 +13,9 @@ use RuntimeException;
 trait LockableUserTrait
 {
     /**
-     * @ORM\Column(name="has_manual_lock", type="boolean", nullable=false, options={"default":"0"})
+     * @ORM\Column(name="manual_lock", type="boolean", nullable=false, options={"default":"0"})
      */
-    private $hasManualLock = false;
+    private $manualLock = false;
 
     /**
      * @ORM\OneToMany(
@@ -28,20 +28,20 @@ trait LockableUserTrait
      */
     private $userLocks = null;
 
-    public function getHasManualLock(): bool
+    public function hasManualLock(): bool
     {
-        return $this->hasManualLock;
+        return $this->manualLock;
     }
 
-    public function setHasManualLock(bool $hasManualLock): void
+    public function setManualLock(bool $manualLock): void
     {
-        if ($this->hasManualLock === $hasManualLock) {
+        if ($this->manualLock === $manualLock) {
             return;
         }
 
-        $this->hasManualLock = $hasManualLock;
+        $this->manualLock = $manualLock;
 
-        if ($this->hasManualLock) {
+        if ($this->manualLock) {
             $this->lock(new UserLock(UserLock::REASON_MANUAL_LOCK));
         } else {
             $this->unlock(UserLock::REASON_MANUAL_LOCK);

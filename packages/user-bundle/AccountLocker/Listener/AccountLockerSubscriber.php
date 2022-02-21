@@ -65,7 +65,7 @@ class AccountLockerSubscriber implements EventSubscriberInterface
 
     public function handlerGetUserLocksEvent(GetUserLocksEvent $event): void
     {
-        if ($event->getUser()->getHasManualLock()) {
+        if ($event->getUser()->hasManualLock()) {
             $event->addLock(new UserLock(UserLock::REASON_MANUAL_LOCK));
         }
     }
