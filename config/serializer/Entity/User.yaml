@@ -2,7 +2,7 @@ App\Entity\User:
     properties:
         address:
             type: 'App\Entity\Address'
-        hasManualLock:
+        manualLock:
             exclude: true
         messageQueue:
             exclude: true
