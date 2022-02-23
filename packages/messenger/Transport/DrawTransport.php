@@ -208,9 +208,14 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
      */
     private function findEnvelopeIds(array $tags): array
     {
+        if (!$tags) {
+            return [];
+        }
+
         $queryBuilder = $this->driverConnection->createQueryBuilder()
             ->select('message.id')
-            ->from($this->connection->getConfiguration()['table_name'], 'message');
+            ->from($this->connection->getConfiguration()['table_name'], 'message')
+            ->andWhere('message.queue_name = ?');
 
         foreach ($tags as $index => $tag) {
             $tagAlias = 'tag_'.$index;
@@ -224,12 +229,13 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
                 ->andWhere($tagAlias.'.name = ?');
         }
 
-        $this->driverConnection->executeStatement(
+        $rows = $this->driverConnection->executeQuery(
             $queryBuilder->getSQL(),
-            $tags
-        );
-
-        $rows = $this->driverConnection->executeQuery($queryBuilder->getSQL(), $tags)->fetchAllAssociative();
+            array_merge(
+                [$this->connection->getConfiguration()['queue_name']],
+                $tags
+            )
+        )->fetchAllAssociative();
 
         $ids = [];
         foreach ($rows as $row) {
