@@ -20,5 +20,6 @@
         <service id="Draw\Component\Messenger\Transport\DrawTransportFactory">
             <argument key="$registry" type="service" id="Doctrine\Persistence\ManagerRegistry" />
         </service>
+        <service id="Draw\Component\Messenger\EventListener\AutoStampEnvelopeListener" />
     </services>
 </container>

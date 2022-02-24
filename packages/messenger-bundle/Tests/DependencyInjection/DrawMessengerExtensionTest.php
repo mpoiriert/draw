@@ -8,6 +8,7 @@ use Draw\Bundle\MessengerBundle\Controller\MessageController;
 use Draw\Bundle\MessengerBundle\DependencyInjection\DrawMessengerExtension;
 use Draw\Bundle\MessengerBundle\EventListener\StopWorkerOnSigintSignalListener;
 use Draw\Bundle\MessengerBundle\MessageHandler\RedirectToRouteMessageHandler;
+use Draw\Component\Messenger\EventListener\AutoStampEnvelopeListener;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
@@ -34,5 +35,6 @@ class DrawMessengerExtensionTest extends ExtensionTestCase
         yield [RedirectToRouteMessageHandler::class];
         yield [StopWorkerOnSigintSignalListener::class];
         yield [DrawTransportFactory::class];
+        yield [AutoStampEnvelopeListener::class];
     }
 }
