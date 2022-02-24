@@ -3,7 +3,6 @@ services:
         autoconfigure: true
         autowire: true
 
-    Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware: ~
     messengerTransportDraw: '@messenger.transport.draw'
 
 framework:
@@ -14,9 +13,6 @@ framework:
             draw: 'draw://default'
         buses:
             main.bus: ~
-            messenger.bus.draw:
-                middleware:
-                    - 'Draw\Component\Messenger\Middleware\ManualTriggerStamperMiddleware'
 
 draw_messenger:
     broker:
