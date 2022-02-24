@@ -8,6 +8,7 @@ use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 use Throwable;
@@ -150,6 +151,15 @@ class DrawTransportTest extends TestCase
                 new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
                 new Envelope(new stdClass(), [new SearchableTagStamp(['tag2', 'tag3'])]),
                 new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'], true)]),
+            ],
+            ['tag2'],
+            2,
+        ];
+
+        yield 'reinsertion-does-not-clean' => [
+            [
+                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new stdClass(), [new RedeliveryStamp(1), new SearchableTagStamp(['tag1', 'tag2'], true)]),
             ],
             ['tag2'],
             2,
