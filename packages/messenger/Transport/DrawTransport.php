@@ -16,6 +16,7 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Doctrine\Connection;
 use Symfony\Component\Messenger\Transport\Doctrine\DoctrineReceivedStamp;
@@ -78,8 +79,12 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         return $envelope->with(new TransportMessageIdStamp($id));
     }
 
-    private function cleanQueue(Envelope $envelope)
+    private function cleanQueue(Envelope $envelope): void
     {
+        if ($envelope->last(RedeliveryStamp::class)) {
+            return;
+        }
+
         foreach ($envelope->all(SearchableTagStamp::class) as $stamp) {
             if (!$stamp->getEnforceUniqueness()) {
                 continue;
