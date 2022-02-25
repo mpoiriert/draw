@@ -17,7 +17,6 @@
         <testsuite name="all">
             <directory>./tests/</directory>
             <directory>./packages/*/Tests</directory>
-            <exclude>./packages/dashboard-bundle/Tests</exclude>
         </testsuite>
     </testsuites>
 

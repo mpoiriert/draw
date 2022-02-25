@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderInterface;
 use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderTrait;
 use Draw\Bundle\UserBundle\AccountLocker\Entity\LockableUserInterface;
@@ -29,13 +28,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  *
  * @UniqueEntity(fields={"email"})
- *
- * @Dashboard\FormLayout\GridList(
- *     cols=1,
- *     tiles={
- *       @Dashboard\FormLayout\GridListTile(inputs={"*"})
- *     }
- * )
  */
 class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface
 {
@@ -61,17 +53,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @ORM\Id()
      * @ORM\Column(name="id", type="guid")
      *
-     * @Dashboard\Column(
-     *      sortable=true
-     * )
-     *
      * @Serializer\ReadOnly()
-     *
-     * @Dashboard\Filter(
-     *     input=@Dashboard\FormInputAutoComplete(
-     *          parameters=@Dashboard\EntityParameters(class=User::class, fields={"email"})
-     *     )
-     * )
      */
     private $id;
 
@@ -86,21 +68,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @ORM\ManyToMany(
      *     targetEntity="App\Entity\Tag"
      * )
-     *
-     * @Dashboard\Column(
-     *     type="list",
-     *     sortable=false,
-     *     options={"list": {"attribute":"label"}}
-     * )
-     *
-     * @Dashboard\FormInputChoices(
-     *     multiple=true,
-     *     expression="repository.findActive()"
-     * )
-     *
-     * @Dashboard\Filter(
-     *     input=@Dashboard\FormInputChoices()
-     * )
      */
     private $tags;
 
@@ -108,18 +75,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @var string
      *
      * @ORM\Column(name="level", type="string", nullable=false, options={"default":"user"})
-     *
-     * @Dashboard\Column(
-     *     type="choices",
-     *     options={"choices"=@Dashboard\Choices(User::LEVELS, assoc=true)}
-     * )
-     *
-     * @Dashboard\FormInputChoices(choices=User::LEVELS)
-     *
-     * @Dashboard\Filter(
-     *     input=@Dashboard\FormInputChoices(choices=User::LEVELS, multiple=true),
-     *     comparison="IN"
-     * )
      */
     private $level = 'user';
 
@@ -129,8 +84,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @ORM\Embedded(class="App\Entity\Address", columnPrefix="address_")
      *
      * @Assert\Valid()
-     *
-     * @Dashboard\FormInputComposite()
      */
     private $address;
 
@@ -146,11 +99,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"position":"ASC"})
-     *
-     * @Dashboard\FormInputCollection(
-     *     orderBy="position",
-     *     allowRemove=true
-     * )
      */
     private $userAddresses;
 
@@ -158,8 +106,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @var \DateTimeImmutable|null
      *
      * @ORM\Column(name="date_of_birth", type="datetime_immutable", nullable=true)
-     *
-     * @Dashboard\FormInputDatePicker()
      */
     private $dateOfBirth;
 
@@ -167,10 +113,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @var string
      *
      * @ORM\Column(type="text")
-     *
-     * @Dashboard\FormInput(
-     *     excludeIf="!is_granted('ROLE_ADMIN')"
-     * )
      */
     private $comment = '';
 
