@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
+use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
 use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -24,5 +25,6 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
     {
         yield [AdminMonitoringBlockService::class];
         yield [ExpressionLanguage::class];
+        yield [RelativeDateTimeFilter::class];
     }
 }

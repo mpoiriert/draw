@@ -24,8 +24,8 @@
         "draw/tester": "^0.8",
         "doctrine/orm": "^2.10",
         "phpunit/phpunit": "^8.0|^9.0",
-        "sonata-project/admin-bundle": "^3.105",
-        "sonata-project/doctrine-orm-admin-bundle": "^3.35",
+        "sonata-project/admin-bundle": "^4.8",
+        "sonata-project/doctrine-orm-admin-bundle": "^4.2",
         "symfony/security-core": "^4.4|^5.4"
     },
     "suggest": {

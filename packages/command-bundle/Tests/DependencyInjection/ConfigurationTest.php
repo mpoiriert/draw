@@ -26,7 +26,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'enabled' => false,
                 'group' => 'Command',
                 'controller_class' => ExecutionController::class,
-                'icon' => 'fa fa-terminal',
+                'icon' => 'fas fa-terminal',
                 'label' => 'Execution',
                 'pager_type' => 'simple',
             ],

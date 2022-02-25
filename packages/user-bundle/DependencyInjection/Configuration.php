@@ -96,7 +96,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('controller')->defaultValue(UserLockController::class)->end()
                         ->scalarNode('group')->defaultValue('User')->end()
                         ->booleanNode('show_in_dashboard')->defaultTrue()->end()
-                        ->scalarNode('icon')->defaultValue('fa fa-ban')->end()
+                        ->scalarNode('icon')->defaultValue('fas fa-ban')->end()
                         ->scalarNode('label')->defaultValue('User lock')->end()
                         ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
                     ->end()
