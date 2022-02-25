@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\Sonata\Extension;
 
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 use Draw\Bundle\UserBundle\Sonata\Controller\TwoFactorAuthenticationController;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -24,21 +23,6 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
     {
         $this->security = $security;
         $this->fieldPositions = $fieldPositions;
-    }
-
-    protected function backwardCompatibleConfigureRoute(AdminInterface $admin, RouteCollectionInterface $collection)
-    {
-        $collection->add(
-            'enable-2fa',
-            $admin->getRouterIdParameter().'/enable-2fa',
-            ['_controller' => TwoFactorAuthenticationController::class.':enable2faAction']
-        );
-
-        $collection->add(
-            'disable-2fa',
-            $admin->getRouterIdParameter().'/disable-2fa',
-            ['_controller' => TwoFactorAuthenticationController::class.':disable2faAction']
-        );
     }
 
     public function getAccessMapping(AdminInterface $admin): array
@@ -111,15 +95,23 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
         }
     }
 
-    /**
-     * @param TwoFactorAuthenticationUserInterface|object|null $object
-     */
-    public function backwardCompatibleConfigureActionButtons(
-        AdminInterface $admin,
-        array $list,
-        string $action,
-        ?object $object = null
-    ): array {
+    public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void
+    {
+        $collection->add(
+            'enable-2fa',
+            $admin->getRouterIdParameter().'/enable-2fa',
+            ['_controller' => TwoFactorAuthenticationController::class.':enable2faAction']
+        );
+
+        $collection->add(
+            'disable-2fa',
+            $admin->getRouterIdParameter().'/disable-2fa',
+            ['_controller' => TwoFactorAuthenticationController::class.':disable2faAction']
+        );
+    }
+
+    public function configureActionButtons(AdminInterface $admin, $list, $action, ?object $object = null): array
+    {
         if (!in_array($action, ['edit', 'show'])) {
             return $list;
         }

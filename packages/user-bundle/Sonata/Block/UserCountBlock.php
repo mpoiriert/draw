@@ -64,7 +64,7 @@ class UserCountBlock extends AbstractBlockService
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'icon' => 'fa fa-user',
+            'icon' => 'fas fa-user',
             'text' => 'Total users',
             'translation_domain' => null,
             'color' => 'bg-aqua',

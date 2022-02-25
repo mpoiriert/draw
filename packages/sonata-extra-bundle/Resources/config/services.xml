@@ -5,11 +5,15 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true"/>
         <prototype namespace="Draw\Bundle\SonataExtraBundle\" resource="../..">
-            <exclude>../../{vendor,Annotation,Doctrine,DependencyInjection,Entity,Event,Tests}</exclude>
+            <exclude>../../{vendor,Annotation,DependencyInjection,Entity,Event,Tests}</exclude>
+            <exclude>../../Doctrine/DBALTypes</exclude>
             <exclude>../../{DrawSonataExtraBundle.php}</exclude>
         </prototype>
+        <service id="Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter">
+            <tag name="sonata.admin.filter.type"/>
+        </service>
         <service id="Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService">
-            <tag name="sonata.block" />
+            <tag name="sonata.block"/>
         </service>
     </services>
 </container>

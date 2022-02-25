@@ -9,10 +9,6 @@ use Draw\Bundle\CommandBundle\Entity\Execution;
 use Draw\Bundle\CommandBundle\Listener\CommandFlowListener;
 use Draw\Bundle\CommandBundle\Model\Command;
 use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin;
-use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin3X;
-use Draw\Bundle\CommandBundle\Sonata\Admin\ExecutionAdmin4X;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -54,7 +50,7 @@ class DrawCommandExtension extends Extension
         }
     }
 
-    private function configureAuthentication(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
+    private function configureAuthentication(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -69,7 +65,7 @@ class DrawCommandExtension extends Extension
         $container->setAlias(SystemAuthenticatorInterface::class, $config['system_authentication_service']);
     }
 
-    private function configureSonata(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
+    private function configureSonata(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -77,25 +73,16 @@ class DrawCommandExtension extends Extension
 
         $fileLoader->load('sonata.xml');
 
-        $type = (new \ReflectionClass(AbstractAdmin::class))
-            ->getMethod('configureRoutes')
-            ->getParameters()[0]->getType()->getName();
-
-        // TODO remove ExecutionAdmin3X when stop support of sonata admin 3.x
-        $adminClass = RouteCollectionInterface::class === $type ? ExecutionAdmin4X::class : ExecutionAdmin3X::class;
-
-        $container->addDefinitions([
-            ExecutionAdmin::class => (new Definition($adminClass))
-                ->setAutoconfigured(true)
-                ->setAutowired(true)
-                ->setArguments([null, Execution::class, $config['controller_class']])
-                ->addTag(
-                    'sonata.admin',
-                    array_intersect_key(
-                        $config,
-                        array_flip(['group', 'icon', 'label', 'pager_type'])
-                    ) + ['manager_type' => 'orm']
-                ),
-        ]);
+        $container->getDefinition(ExecutionAdmin::class)
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->setArguments([null, Execution::class, $config['controller_class']])
+            ->addTag(
+                'sonata.admin',
+                array_intersect_key(
+                    $config,
+                    array_flip(['group', 'icon', 'label', 'pager_type'])
+                ) + ['manager_type' => 'orm']
+            );
     }
 }

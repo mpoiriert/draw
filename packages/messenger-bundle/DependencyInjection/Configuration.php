@@ -5,7 +5,6 @@ namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
 use Draw\Contracts\Application\VersionVerificationInterface;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -123,8 +122,8 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue(MessengerMessageTag::class)
                 ->end()
                 ->scalarNode('group')->defaultValue('Messenger')->end()
-                ->scalarNode('controller_class')->defaultValue(CRUDController::class)->end()
-                ->scalarNode('icon')->defaultValue('fa fa-rss')->end()
+                ->scalarNode('controller_class')->defaultNull()->end()
+                ->scalarNode('icon')->defaultValue('fas fa-rss')->end()
                 ->scalarNode('label')->defaultValue('Message')->end()
                 ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
             ->end();

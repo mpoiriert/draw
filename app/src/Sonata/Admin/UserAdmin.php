@@ -13,7 +13,7 @@ use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
- * @TagSonataAdmin(group="User", manager_type="orm", pager_type="simple", icon="fa fa-user")
+ * @TagSonataAdmin(group="User", manager_type="orm", pager_type="simple", icon="fas fa-user")
  */
 class UserAdmin extends AbstractAdmin
 {
@@ -22,7 +22,7 @@ class UserAdmin extends AbstractAdmin
         parent::__construct($code, $class, $baseControllerName);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter->add('email');
     }

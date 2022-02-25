@@ -735,9 +735,6 @@
     "symfony/string": {
         "version": "v5.3.7"
     },
-    "symfony/templating": {
-        "version": "v4.3.0"
-    },
     "symfony/translation": {
         "version": "5.3",
         "recipe": {
@@ -835,18 +832,6 @@
     },
     "theseer/tokenizer": {
         "version": "1.2.1"
-    },
-    "twig/extensions": {
-        "version": "1.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "a86723ee8d8b2f9437c8ce60a5546a1c267da5ed"
-        },
-        "files": [
-            "config/packages/twig_extensions.yaml"
-        ]
     },
     "twig/string-extra": {
         "version": "v3.3.3"

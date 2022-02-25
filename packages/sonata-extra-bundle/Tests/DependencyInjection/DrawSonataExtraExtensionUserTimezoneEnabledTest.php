@@ -2,9 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
-use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
-use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Bundle\SonataExtraBundle\Listener\TimeZoneSubscriber;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
@@ -26,8 +24,7 @@ class DrawSonataExtraExtensionUserTimezoneEnabledTest extends DrawSonataExtraExt
 
     public function provideTestHasServiceDefinition(): iterable
     {
-        yield [AdminMonitoringBlockService::class];
-        yield [ExpressionLanguage::class];
+        yield from parent::provideTestHasServiceDefinition();
         yield [TimeZoneSubscriber::class];
     }
 }
