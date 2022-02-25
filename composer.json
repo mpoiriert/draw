@@ -83,7 +83,6 @@
         "draw/contracts": "self.version",
         "draw/core": "self.version",
         "draw/cron-bundle": "self.version",
-        "draw/dashboard-bundle": "self.version",
         "draw/doctrine-bus-message-bundle": "self.version",
         "draw/framework-extra-bundle": "self.version",
         "draw/messenger": "self.version",
@@ -111,7 +110,6 @@
             "Draw\\Bundle\\AwsToolKitBundle\\": "packages/aws-tool-kit-bundle/",
             "Draw\\Bundle\\CommandBundle\\": "packages/command-bundle/",
             "Draw\\Bundle\\CronBundle\\": "packages/cron-bundle/",
-            "Draw\\Bundle\\DashboardBundle\\": "packages/dashboard-bundle/",
             "Draw\\Bundle\\DoctrineBusMessageBundle\\": "packages/doctrine-bus-message-bundle/",
             "Draw\\Bundle\\FrameworkExtraBundle\\": "packages/framework-extra-bundle/",
             "Draw\\Bundle\\MessengerBundle\\": "packages/messenger-bundle/",
@@ -130,8 +128,7 @@
             "Draw\\Contracts\\": "packages/contracts/"
         },
         "files": [
-            "packages/core/ignore_annotations.php",
-            "packages/dashboard-bundle/./functions.php"
+            "packages/core/ignore_annotations.php"
         ]
     },
     "autoload-dev": {

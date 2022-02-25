@@ -2,11 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\Controller\Api;
 
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
-use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
-use Draw\Bundle\DashboardBundle\Feedback\DefaultHeader;
-use Draw\Bundle\DashboardBundle\Feedback\SignedIn;
-use Draw\Bundle\DashboardBundle\Feedback\SignedOut;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Bundle\UserBundle\DTO\ConnectionToken;
@@ -42,26 +37,7 @@ class ConnectionTokensController extends AbstractController
      *
      * @Serialization(statusCode=201)
      *
-     * @Dashboard\ActionCreate(
-     *     button=@Dashboard\Button\Button(label="_drawUserBundle.connect"),
-     *     dialog=true,
-     *     flow=@Dashboard\FormFlow(
-     *        dialog=true,
-     *        buttons={
-     *           @Dashboard\Button\ButtonCancel(),
-     *           @Dashboard\Button\ButtonSave(label="_drawUserBundle.connect", thenList={})
-     *        }
-     *     ),
-     *     templates={
-     *       "notification_save":"{{ '_drawUserBundle.notification.connect'|trans({}, 'DrawDashboardBundle')|raw }}"
-     *     }
-     * )
-     *
-     * @Dashboard\Breadcrumb(label="_drawUserBundle.breadcrumb.createConnectionToken")
-     *
      * @Security("not is_granted('IS_AUTHENTICATED_FULLY')")
-     *
-     * @param FeedbackNotifier $feedbackNotifier
      *
      * @return ConnectionToken The newly created token
      */
@@ -69,9 +45,8 @@ class ConnectionTokensController extends AbstractController
         Credential $credential,
         UserProviderInterface $userProvider,
         JwtAuthenticator $authenticator,
-        UserPasswordEncoderInterface $passwordEncoder,
-        ?FeedbackNotifier $feedbackNotifier
-    ) {
+        UserPasswordEncoderInterface $passwordEncoder
+    ): ConnectionToken {
         $user = $userProvider->loadUserByUsername($credential->getUsername());
 
         if (is_null($user)) {
@@ -82,14 +57,7 @@ class ConnectionTokensController extends AbstractController
             throw new HttpException(403, 'Invalid credential');
         }
 
-        $connectionToken = new ConnectionToken($authenticator->encode($user));
-
-        if ($feedbackNotifier) {
-            $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', 'Bearer '.$connectionToken->token));
-            $feedbackNotifier->sendFeedback(new SignedIn());
-        }
-
-        return $connectionToken;
+        return new ConnectionToken($authenticator->encode($user));
     }
 
     /**
@@ -106,7 +74,7 @@ class ConnectionTokensController extends AbstractController
      *
      * @return ConnectionToken The refreshed token
      */
-    public function refreshAction(JwtAuthenticator $authenticator)
+    public function refreshAction(JwtAuthenticator $authenticator): ConnectionToken
     {
         return new ConnectionToken($authenticator->encode($this->getUser()));
     }
@@ -123,20 +91,9 @@ class ConnectionTokensController extends AbstractController
      *
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
-     * @Dashboard\ActionDelete(
-     *     button=@Dashboard\Button\Button(label="_drawUserBundle.disconnect", style="icon-button", icon="exit_to_app"),
-     *     flow=@Dashboard\ConfirmFlow(message="_drawUserBundle.confirm_disconnect")
-     * )
-     *
-     * @param FeedbackNotifier $feedbackNotifier
-     *
      * @return void Nothing to be returned
      */
-    public function clearAction(?FeedbackNotifier $feedbackNotifier)
+    public function clearAction(): void
     {
-        if ($feedbackNotifier) {
-            $feedbackNotifier->sendFeedback(new DefaultHeader('Authorization', '', true));
-            $feedbackNotifier->sendFeedback(new SignedOut());
-        }
     }
 }

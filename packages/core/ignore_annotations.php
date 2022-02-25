@@ -1,9 +1,6 @@
 <?php
 
 $namespaces = [
-    Draw\Bundle\DashboardBundle\DrawDashboardBundle::class => [
-        "Draw\Bundle\DashboardBundle\Annotations",
-    ],
     Draw\Component\OpenApi\OpenApi::class => [
         "Draw\Component\OpenApi\Schema",
     ],

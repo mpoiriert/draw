@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\DTO;
 
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,11 +12,6 @@ class Credential
      *
      * @Assert\NotBlank()
      *
-     * @Dashboard\FormInput(
-     *     type="string",
-     *     label="_drawUserBundle.credential.username"
-     * )
-     *
      * @Serializer\Type("string")
      */
     private $username;
@@ -26,11 +20,6 @@ class Credential
      * @var string
      *
      * @Assert\NotBlank()
-     *
-     * @Dashboard\FormInput(
-     *     type="password",
-     *     label="_drawUserBundle.credential.password"
-     * )
      *
      * @Serializer\Type("string")
      */

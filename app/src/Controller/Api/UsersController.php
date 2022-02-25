@@ -4,24 +4,14 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Draw\Bundle\DashboardBundle\Action\ActionFinder;
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
-use Draw\Bundle\DashboardBundle\Client\FeedbackNotifier;
-use Draw\Bundle\DashboardBundle\Doctrine\Paginator;
-use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;
-use Draw\Bundle\DashboardBundle\Feedback\Notification;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Dashboard\Breadcrumb(parentOperationId="userList")
- * @Dashboard\Targets({User::class})
- *
  * @method user getUser()
  */
 class UsersController extends AbstractController
@@ -33,13 +23,11 @@ class UsersController extends AbstractController
      *
      * @Deserialization()
      *
-     * @Dashboard\ActionCreate()
-     *
      * @IsGranted("ROLE_ADMIN")
      *
      * @return User The newly created user
      */
-    public function createAction(User $target, EntityManagerInterface $entityManager)
+    public function createAction(User $target, EntityManagerInterface $entityManager): User
     {
         $entityManager->persist($target);
         $entityManager->flush();
@@ -54,14 +42,9 @@ class UsersController extends AbstractController
      *
      * @Serialization(statusCode=204)
      *
-     * @Dashboard\Action(
-     *     targets={},
-     *     button=@Dashboard\Button\Button(id="me", icon="account_circle", behaviours={"navigateTo-userEdit"})
-     * )
-     *
      * @return User The currently connected user
      */
-    public function meAction(FeedbackNotifier $notifier, ActionFinder $actionFinder)
+    public function meAction(): User
     {
         return $this->getUser();
     }
@@ -75,13 +58,11 @@ class UsersController extends AbstractController
      *     propertiesMap={"id":"id"}
      * )
      *
-     * @Dashboard\ActionEdit()
-     *
      * @IsGranted("ROLE_ADMIN")
      *
      * @return User The update user
      */
-    public function editAction(User $target, EntityManagerInterface $entityManager)
+    public function editAction(User $target, EntityManagerInterface $entityManager): User
     {
         $entityManager->flush();
 
@@ -93,13 +74,11 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userGet")
      *
-     * @Dashboard\ActionShow()
-     *
      * @IsGranted("ROLE_ADMIN")
      *
      * @return User The user
      */
-    public function getAction(User $target)
+    public function getAction(User $target): User
     {
         return $target;
     }
@@ -111,15 +90,11 @@ class UsersController extends AbstractController
      *
      * @IsGranted("ROLE_ADMIN")
      *
-     * @Dashboard\ActionDelete(
-     *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the user {{target.email}} ?")
-     * )
-     *
      * @Serialization(statusCode=204)
      *
      * @return void Empty response mean success
      */
-    public function deleteAction(User $target, EntityManagerInterface $entityManager)
+    public function deleteAction(User $target, EntityManagerInterface $entityManager): void
     {
         $entityManager->remove($target);
         $entityManager->flush();
@@ -132,20 +107,11 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userList")
      *
-     * @Dashboard\ActionList(
-     *     title="_action.userList.title"
-     * )
-     *
-     * @Dashboard\Breadcrumb()
-     *
-     * @return Paginator<User> A paginated user list
+     * @return User[] All users
      */
-    public function listAction(PaginatorBuilder $paginatorBuilder, Request $request)
+    public function listAction(EntityManagerInterface $entityManager): array
     {
-        return $paginatorBuilder
-            ->fromClass(User::class)
-            ->extractFromRequest($request)
-            ->build();
+        return $entityManager->getRepository(User::class)->findAll();
     }
 
     /**
@@ -155,15 +121,9 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userSendResetPasswordEmail")
      *
-     * @Dashboard\Action(
-     *     isInstanceTarget=true,
-     *     button=@Dashboard\Button\Button(label="Send forgot password email", icon="email")
-     * )
-     *
      * @return void No return value mean email has been sent
      */
-    public function sendResetPasswordEmail(User $target, FeedbackNotifier $notifier)
+    public function sendResetPasswordEmail(User $target): void
     {
-        $notifier->sendFeedback(new Notification('success', 'Email sent! (not really)'));
     }
 }

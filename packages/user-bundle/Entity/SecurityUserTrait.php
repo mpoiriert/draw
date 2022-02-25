@@ -5,7 +5,6 @@ namespace Draw\Bundle\UserBundle\Entity;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Draw\Bundle\UserBundle\AccountLocker\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeUserInterface;
@@ -18,17 +17,6 @@ trait SecurityUserTrait
      *
      * @Assert\Email()
      * @Assert\NotBlank()
-     *
-     * @Dashboard\Column(
-     *     visible=true,
-     *     type="email",
-     *     isActive=true,
-     *     sortable=true
-     * )
-     *
-     * @Dashboard\FormInput(
-     *     type="email"
-     * )
      */
     private $email;
 

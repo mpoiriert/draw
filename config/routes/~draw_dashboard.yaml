@@ -1,6 +1,0 @@
-#This file need to be last since there is a catch all for the options method on any routes
-dashboard:
-    resource: '@DrawDashboardBundle/Controller/'
-    type: 'annotation'
-    prefix: '/api'
-    format: 'json'
