@@ -5,11 +5,11 @@
     "type": "symfony-bundle",
     "keywords": ["symfony", "sonata", "mailer"],
     "require": {
-        "php": "^7.3",
-        "symfony/css-selector": "^4.4 || ^5.4",
+        "php": "^7.4",
         "symfony/dom-crawler": "^4.4 || ^5.4",
-        "symfony/framework-bundle": "^4.4 || ^5.4",
+        "symfony/css-selector": "^4.4 || ^5.4",
         "symfony/mailer": "^4.4 || ^5.4",
+        "symfony/framework-bundle": "^4.4 || ^5.4",
         "symfony/translation": "^4.4 || ^5.4"
     },
     "require-dev": {

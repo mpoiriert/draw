@@ -5,7 +5,7 @@
     "type": "symfony-bundle",
     "keywords": ["symfony", "sonata"],
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "symfony/expression-language": "^4.4 || ^5.4",
         "symfony/framework-bundle": "^4.4 || ^5.4"
     },
