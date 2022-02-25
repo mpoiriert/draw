@@ -4,18 +4,11 @@ namespace App\Controller\Api;
 
 use App\Entity\Tag;
 use Doctrine\ORM\EntityManagerInterface;
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
-use Draw\Bundle\DashboardBundle\Doctrine\Paginator;
-use Draw\Bundle\DashboardBundle\Doctrine\PaginatorBuilder;
 use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Dashboard\Targets({Tag::class})
- */
 class TagsController
 {
     /**
@@ -25,13 +18,11 @@ class TagsController
      *
      * @Deserialization()
      *
-     * @Dashboard\ActionCreate()
-     *
      * @Serialization(statusCode=201)
      *
      * @return Tag The newly created tag
      */
-    public function createAction(Tag $target, EntityManagerInterface $entityManager)
+    public function createAction(Tag $target, EntityManagerInterface $entityManager): Tag
     {
         $entityManager->persist($target);
         $entityManager->flush();
@@ -48,11 +39,9 @@ class TagsController
      *     propertiesMap={"id":"id"}
      * )
      *
-     * @Dashboard\ActionEdit()
-     *
      * @return Tag The update tag
      */
-    public function editAction(Tag $target, EntityManagerInterface $entityManager)
+    public function editAction(Tag $target, EntityManagerInterface $entityManager): Tag
     {
         $entityManager->flush();
 
@@ -64,11 +53,9 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagGet")
      *
-     * @Dashboard\ActionShow()
-     *
      * @return Tag The tag
      */
-    public function getAction(Tag $target)
+    public function getAction(Tag $target): Tag
     {
         return $target;
     }
@@ -78,13 +65,9 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagDelete")
      *
-     * @Dashboard\ActionDelete(
-     *     flow=@Dashboard\ConfirmFlow(message="Are you sure you want to delete the tag {{target.label}} ?")
-     * )
-     *
      * @return void Empty response mean success
      */
-    public function deleteAction(Tag $target, EntityManagerInterface $entityManager)
+    public function deleteAction(Tag $target, EntityManagerInterface $entityManager): void
     {
         $entityManager->remove($target);
         $entityManager->flush();
@@ -95,16 +78,11 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagList")
      *
-     * @Dashboard\ActionList()
-     *
-     * @return Paginator<Tag> Tags Paginator
+     * @return Tag[] All tags
      */
-    public function listAction(Request $request, PaginatorBuilder $paginatorBuilder)
+    public function listAction(EntityManagerInterface $entityManager): array
     {
-        return $paginatorBuilder
-            ->fromClass(Tag::class)
-            ->extractFromRequest($request)
-            ->build();
+        return $entityManager->getRepository(Tag::class)->findAll();
     }
 
     /**
@@ -112,16 +90,11 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagActivateAll")
      *
-     * @Dashboard\Action(
-     *     isInstanceTarget=false,
-     *     button=@Dashboard\Button\Button(id="activateAll", label="activateAll", behaviours={"navigateTo-tagList"})
-     * )
-     *
      * @Serialization(statusCode=204)
      *
      * @return void Empty return value mean success
      */
-    public function activateAllAction(EntityManagerInterface $entityManager)
+    public function activateAllAction(EntityManagerInterface $entityManager): void
     {
         $tags = $entityManager->getRepository(Tag::class)->findBy(['active' => false]);
         foreach ($tags as $tag) {

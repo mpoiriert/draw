@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,10 +18,6 @@ class UserAddress
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(name="id", type="integer")
-     *
-     * @Dashboard\FormInput(
-     *     type="hidden"
-     * )
      */
     private $id;
 
@@ -45,8 +40,6 @@ class UserAddress
      *
      * @Serializer\Type("App\Entity\Address")
      *
-     * @Dashboard\FormInputComposite()
-     *
      * @Assert\Valid()
      */
     private $address;
@@ -55,10 +48,6 @@ class UserAddress
      * @var int|null
      *
      * @ORM\Column(name="position", type="integer", options={"default":"0"}, nullable=false)
-     *
-     * @Dashboard\FormInput(
-     *     type="hidden"
-     * )
      */
     private $position;
 
