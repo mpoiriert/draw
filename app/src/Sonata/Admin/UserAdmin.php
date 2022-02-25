@@ -9,7 +9,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -62,8 +62,9 @@ class UserAdmin extends AbstractAdmin
                 ->add('plainPassword', TextType::class, ['required' => false])
                 ->add(
                     'dateOfBirth',
-                    DateTimePickerType::class,
+                    DateTimeType::class,
                     [
+                        'widget' => 'single_text',
                         'required' => false,
                         'input' => 'datetime_immutable',
                     ]

@@ -12,13 +12,13 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
-        "symfony/validator": "^4.4|^5.4",
+        "symfony/validator": "^5.4.3",
         "jms/serializer": "^3.11",
         "phpdocumentor/reflection-docblock": "^5.2"
     },
     "require-dev": {
         "doctrine/common": "^3.1",
-        "doctrine/orm": "^2.10",
+        "doctrine/orm": "^2.11",
         "phpunit/phpunit": "^8.0|^9.0"
     },
     "conflict": {

@@ -7,10 +7,10 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "symfony/browser-kit": "^4.4|^5.4",
-        "symfony/framework-bundle": "^4.4|^5.4",
-        "symfony/http-foundation": "^4.4|^5.4",
-        "symfony/validator": "^4.4|^5.4",
+        "symfony/browser-kit": "^5.4.3",
+        "symfony/framework-bundle": "^5.4.3",
+        "symfony/http-foundation": "^5.4.3",
+        "symfony/validator": "^5.4.3",
         "draw/core": "^0.8",
         "draw/tester": "^0.8"
     },
@@ -18,8 +18,8 @@
         "doctrine/annotations": "^1.11",
         "draw/profiling": "^0.8",
         "phpunit/phpunit": "^8.0|^9.0",
-        "symfony/messenger": "^4.4.2|^5.3",
-        "symfony/yaml": "^4.4|^5.4"
+        "symfony/messenger": "^5.4.3",
+        "symfony/yaml": "^5.4.3"
     },
     "autoload": {
         "psr-4": {

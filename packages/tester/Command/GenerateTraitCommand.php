@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateTraitCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:tester:generate-trait')
@@ -24,7 +24,7 @@ class GenerateTraitCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('assertMethodsFilePath');
         $reflectionClass = new ReflectionClass(Assert::class);

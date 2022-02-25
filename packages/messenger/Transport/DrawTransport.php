@@ -5,22 +5,22 @@ namespace Draw\Component\Messenger\Transport;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection as DBALConnection;
+use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Synchronizer\SingleDatabaseSynchronizer;
 use Doctrine\DBAL\Types\Types;
 use Draw\Component\Messenger\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\Stamp\ManualTriggerStamp;
 use Draw\Component\Messenger\Stamp\SearchableTagStamp;
 use Exception;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection;
+use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineReceivedStamp;
+use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
-use Symfony\Component\Messenger\Transport\Doctrine\Connection;
-use Symfony\Component\Messenger\Transport\Doctrine\DoctrineReceivedStamp;
-use Symfony\Component\Messenger\Transport\Doctrine\DoctrineTransport;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
 class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInterface, SearchableInterface
@@ -28,8 +28,6 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
     private $driverConnection;
 
     private $connection;
-
-    private $schemaSynchronizer;
 
     private $serializer;
 
@@ -41,7 +39,6 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         $this->driverConnection = $driverConnection;
         $this->connection = $connection;
         $this->serializer = $serializer;
-        $this->schemaSynchronizer = new SingleDatabaseSynchronizer($this->driverConnection);
         parent::__construct($connection, $serializer);
     }
 
@@ -181,9 +178,17 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         $configuration = $this->driverConnection->getConfiguration();
 
         $assetFilter = $configuration->getSchemaAssetsFilter();
-        $configuration->setSchemaAssetsFilter();
+        $configuration->setSchemaAssetsFilter(null);
 
-        $this->schemaSynchronizer->updateSchema($this->getSchema(), true);
+        $comparator = new Comparator();
+        $schemaDiff = $comparator->compareSchemas(
+            $this->driverConnection->createSchemaManager()->createSchema(),
+            $this->getSchema()
+        );
+
+        foreach ($schemaDiff->toSaveSql($this->driverConnection->getDatabasePlatform()) as $sql) {
+            $this->driverConnection->executeStatement($sql);
+        }
 
         $configuration->setSchemaAssetsFilter($assetFilter);
     }
