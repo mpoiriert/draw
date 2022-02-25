@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
@@ -16,8 +15,6 @@ class Address
      *
      * @ORM\Column(name="street", type="string", options={"default": ""})
      *
-     * @Dashboard\FormInput()
-     *
      * @Serializer\Type("string")
      */
     private $street = '';
@@ -26,8 +23,6 @@ class Address
      * @var string|null
      *
      * @ORM\Column(name="postal_code", type="string", options={"default": ""})
-     *
-     * @Dashboard\FormInput()
      *
      * @Serializer\Type("string")
      */
@@ -38,8 +33,6 @@ class Address
      *
      * @ORM\Column(name="city", type="string", options={"default": ""})
      *
-     * @Dashboard\FormInput()
-     *
      * @Serializer\Type("string")
      */
     private $city = '';
@@ -48,8 +41,6 @@ class Address
      * @var string|null
      *
      * @ORM\Column(name="country", type="string", options={"default": ""})
-     *
-     * @Dashboard\FormInput()
      *
      * @Serializer\Type("string")
      */

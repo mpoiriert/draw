@@ -24,7 +24,6 @@ return [
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     Draw\Bundle\OpenApiBundle\DrawOpenApiBundle::class => ['all' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
-    Draw\Bundle\DashboardBundle\DrawDashboardBundle::class => ['all' => true],
     Draw\Bundle\SonataExtraBundle\DrawSonataExtraBundle::class => ['all' => true],
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],

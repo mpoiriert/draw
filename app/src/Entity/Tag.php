@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\DashboardBundle\Annotations as Dashboard;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,15 +27,6 @@ class Tag
      * @var bool
      *
      * @ORM\Column(name="active", type="boolean", options={"default":"1"})
-     *
-     * @Dashboard\Column(
-     *     type="boolean",
-     *     sortable=true
-     * )
-     *
-     * @Dashboard\FormInput(
-     *     type="checkbox"
-     * )
      */
     private $active = true;
 
@@ -47,10 +37,6 @@ class Tag
      *
      * @Assert\NotNull()
      * @Assert\Length(min=3, max=255, allowEmptyString=false)
-     *
-     * @Dashboard\Column()
-     *
-     * @Dashboard\FormInput()
      */
     private $label;
 
