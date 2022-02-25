@@ -23,18 +23,10 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
-                ->append($this->createUserTimezoneNode())
                 ->append($this->fixMenuDepthNode())
-            ->end()
-        ;
+            ->end();
 
         return $treeBuilder;
-    }
-
-    private function createUserTimezoneNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('user_timezone'))
-            ->canBeEnabled();
     }
 
     private function fixMenuDepthNode(): ArrayNodeDefinition

@@ -6,7 +6,6 @@
         <defaults public="false" autoconfigure="true" autowire="true"/>
         <prototype namespace="Draw\Bundle\SonataExtraBundle\" resource="../..">
             <exclude>../../{vendor,Annotation,DependencyInjection,Entity,Event,Tests}</exclude>
-            <exclude>../../Doctrine/DBALTypes</exclude>
             <exclude>../../{DrawSonataExtraBundle.php}</exclude>
         </prototype>
         <service id="Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter">
