@@ -2,12 +2,8 @@
 
 namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 
-use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcDateTimeImmutableType;
-use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcDateTimeType;
-use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcTimeImmutableType;
 use Draw\Bundle\SonataExtraBundle\Listener\AutoHelpSubscriber;
 use Draw\Bundle\SonataExtraBundle\Listener\FixDepthMenuBuilderSubscriber;
-use Draw\Bundle\SonataExtraBundle\Listener\TimeZoneSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -22,10 +18,6 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        if (!($config['user_timezone']['enabled'] ?? false)) {
-            $container->removeDefinition(TimeZoneSubscriber::class);
-        }
-
         if (!($config['fix_menu_depth']['enabled'] ?? false)) {
             $container->removeDefinition(FixDepthMenuBuilderSubscriber::class);
         }
@@ -37,13 +29,6 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
 
     public function prepend(ContainerBuilder $container)
     {
-        $configs = $container->getExtensionConfig('draw_sonata_extra');
-
-        $config = $this->processConfiguration(
-            $this->getConfiguration($configs, $container),
-            $container->getParameterBag()->resolveValue($configs)
-        );
-
         if ($container->hasExtension('twig')) {
             $container->prependExtensionConfig(
                 'twig',
@@ -91,20 +76,5 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 ]
             );
         }
-
-        if (!$this->isConfigEnabled($container, $config['user_timezone'])) {
-            return;
-        }
-
-        $container->prependExtensionConfig('doctrine', [
-            'dbal' => [
-                'types' => [
-                    'datetime' => UtcDateTimeType::class,
-                    'datetime_immutable' => UtcDateTimeImmutableType::class,
-                    'time' => UtcDateTimeType::class,
-                    'time_immutable' => UtcTimeImmutableType::class,
-                ],
-            ],
-        ]);
     }
 }

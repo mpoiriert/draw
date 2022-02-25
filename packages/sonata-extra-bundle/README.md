@@ -74,26 +74,6 @@ class UserAdmin extends AbstractAdmin
 }
 ```
 
-## Display date in admin according to user time zone
-
-Date from doctrine will be displayed in user timezone.
-
-Any save will be done on base on server configuration (UTC recommended).
-
-Enable this feature in config:
-```YAML
-draw_sonata_extra:
-  user_timezone:
-    enabled: true
-```
-Add the javascript
-```YAML
-sonata_admin:
-  assets:
-    extra_javascripts:
-      - bundles/drawsonataextra/main.js
-```
-
 ## Fix menu depth when only 1 sub menu
 
 When a menu just have one submenu it can be fix to remove the submenu.
