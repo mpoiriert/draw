@@ -6,11 +6,11 @@
     "keywords": ["symfony", "sonata", "mailer"],
     "require": {
         "php": "^7.4",
-        "symfony/dom-crawler": "^4.4 || ^5.4",
-        "symfony/css-selector": "^4.4 || ^5.4",
-        "symfony/mailer": "^4.4 || ^5.4",
-        "symfony/framework-bundle": "^4.4 || ^5.4",
-        "symfony/translation": "^4.4 || ^5.4"
+        "symfony/dom-crawler": "^5.4.3",
+        "symfony/css-selector": "^5.4.3",
+        "symfony/mailer": "^5.4.3",
+        "symfony/framework-bundle": "^5.4.3",
+        "symfony/translation": "^5.4.3"
     },
     "require-dev": {
         "draw/tester": "^0.8",

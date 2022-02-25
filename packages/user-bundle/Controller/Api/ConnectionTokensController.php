@@ -12,8 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ConnectionTokensController extends AbstractController
@@ -45,11 +45,11 @@ class ConnectionTokensController extends AbstractController
         Credential $credential,
         UserProviderInterface $userProvider,
         JwtAuthenticator $authenticator,
-        UserPasswordEncoderInterface $passwordEncoder
+        UserPasswordHasherInterface $passwordEncoder
     ): ConnectionToken {
-        $user = $userProvider->loadUserByUsername($credential->getUsername());
+        $user = $userProvider->loadUserByIdentifier($credential->getUsername());
 
-        if (is_null($user)) {
+        if (null === $user) {
             throw new HttpException(400, 'User not found');
         }
 
