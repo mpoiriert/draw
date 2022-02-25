@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateAssertsDocumentationPageCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:tester:generate-asserts-documentation-page')
@@ -22,7 +22,7 @@ class GenerateAssertsDocumentationPageCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('assertMethodsFilePath');
         $methods = json_decode(file_get_contents($filePath), true);

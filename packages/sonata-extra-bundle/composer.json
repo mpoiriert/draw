@@ -6,8 +6,8 @@
     "keywords": ["symfony", "sonata"],
     "require": {
         "php": "^7.4",
-        "symfony/expression-language": "^4.4 || ^5.4",
-        "symfony/framework-bundle": "^4.4 || ^5.4"
+        "symfony/framework-bundle": "^5.4.3",
+        "symfony/expression-language": "^5.4.3"
     },
     "require-dev": {
         "draw/tester": "^0.8",

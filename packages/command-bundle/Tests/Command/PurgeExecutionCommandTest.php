@@ -97,7 +97,7 @@ class PurgeExecutionCommandTest extends CommandTestCase
             );
 
         $this->connection->expects($this->exactly(2))
-            ->method('executeUpdate')
+            ->method('executeStatement')
             ->withConsecutive(
                 [
                     'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class DumpAssertMethodsCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:tester:dump-assert-methods')
@@ -19,7 +19,7 @@ class DumpAssertMethodsCommand extends Command
             ->addArgument('filePath', InputArgument::REQUIRED, 'The file path where to dump.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('filePath');
 
