@@ -5,7 +5,7 @@ namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcDateTimeImmutableType;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcDateTimeType;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcTimeImmutableType;
-use Draw\Bundle\SonataExtraBundle\Extension\AutoHelpExtension;
+use Draw\Bundle\SonataExtraBundle\Listener\AutoHelpSubscriber;
 use Draw\Bundle\SonataExtraBundle\Listener\FixDepthMenuBuilderSubscriber;
 use Draw\Bundle\SonataExtraBundle\Listener\TimeZoneSubscriber;
 use Symfony\Component\Config\FileLocator;
@@ -31,7 +31,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         }
 
         if (!($config['auto_help']['enabled'] ?? false)) {
-            $container->removeDefinition(AutoHelpExtension::class);
+            $container->removeDefinition(AutoHelpSubscriber::class);
         }
     }
 
@@ -65,6 +65,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                                 'actions' => '@DrawSonataExtra/CRUD/show_actions.html.twig',
                                 'json' => '@DrawSonataExtra/CRUD/show_json.html.twig',
                                 'list' => '@DrawSonataExtra/CRUD/show_list.html.twig',
+                                'static' => '@DrawSonataExtra/CRUD/show_static.html.twig',
                             ],
                             'list' => [
                                 'list' => '@DrawSonataExtra/CRUD/list_list.html.twig',

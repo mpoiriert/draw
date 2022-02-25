@@ -28,7 +28,7 @@
         "scheb/2fa-bundle": "^5.12",
         "scheb/2fa-qr-code": "^5.12",
         "scheb/2fa-totp": "^5.12",
-        "sonata-project/admin-bundle": "^3.105"
+        "sonata-project/admin-bundle": "^4.8"
     },
     "suggest": {
         "draw/messenger-bundle": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",

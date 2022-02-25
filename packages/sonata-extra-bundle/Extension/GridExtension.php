@@ -11,7 +11,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class GridExtension extends AbstractAdminExtension
 {
-    private $guesser;
+    private TypeGuesserInterface $guesser;
 
     public function __construct(TypeGuesserInterface $guesser)
     {
@@ -86,10 +86,8 @@ class GridExtension extends AbstractAdminExtension
         $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
 
         if (!$type) {
-            $guessType = $this->guesser->guessType(
-                $admin->getClass(),
-                $fieldDescription->getName(),
-                $admin->getModelManager()
+            $guessType = $this->guesser->guess(
+                $fieldDescription
             );
             $fieldDescription->setType($guessType->getType());
         } else {
@@ -97,7 +95,7 @@ class GridExtension extends AbstractAdminExtension
         }
 
         $builder = $admin->getShowBuilder();
-        $builder->fixFieldDescription($admin, $fieldDescription);
+        $builder->fixFieldDescription($fieldDescription);
 
         if ('grid' === $type) {
             $this->configureGrid($fieldDescription, $admin);

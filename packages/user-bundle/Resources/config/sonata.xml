@@ -8,17 +8,13 @@
         <defaults public="false" autoconfigure="true" autowire="true">
             <bind key="$userAdminCode" type="string">%draw_user.sonata.user_admin_code%</bind>
         </defaults>
-        <prototype namespace="Draw\Bundle\UserBundle\Sonata\" resource="../../Sonata">
-            <exclude>../../Sonata/Extension/{TwoFactorAuthenticationExtension3X,TwoFactorAuthenticationExtension4X}.php</exclude>
-        </prototype>
+        <prototype namespace="Draw\Bundle\UserBundle\Sonata\" resource="../../Sonata"/>
         <prototype namespace="Draw\Bundle\UserBundle\Sonata\Controller\" resource="../../Sonata/Controller">
-            <tag name="controller.service_arguments" />
+            <tag name="controller.service_arguments"/>
         </prototype>
 
         <service id="Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock" public="true">
             <tag name="sonata.block"/>
         </service>
-
-        <service id="Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension" />
     </services>
 </container>

@@ -8,7 +8,7 @@ use Sonata\DoctrineORMAdminBundle\Filter\Filter;
 
 class InFilter extends Filter
 {
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data)
+    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data): void
     {
         if (!$data || !\is_array($data) || !\array_key_exists('value', $data)) {
             return;
@@ -30,12 +30,12 @@ class InFilter extends Filter
         $queryBuilder->setParameter($parameterName, $values);
     }
 
-    public function getDefaultOptions()
+    public function getDefaultOptions(): array
     {
         return ['advanced_filter' => false];
     }
 
-    public function getRenderSettings()
+    public function getRenderSettings(): array
     {
         return [ChoiceType::class, [
             'field_type' => $this->getFieldType(),

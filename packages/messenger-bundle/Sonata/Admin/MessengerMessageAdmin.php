@@ -10,7 +10,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,7 +17,7 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
-abstract class MessengerMessageAdmin extends AbstractAdmin
+class MessengerMessageAdmin extends AbstractAdmin
 {
     /**
      * @var array
@@ -32,6 +31,8 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
 
     private $supportDrawTransport;
 
+    private bool $supportRelativeTimeFilter = false;
+
     public function __construct($code, $class, $baseControllerName = null)
     {
         parent::__construct($code, $class, $baseControllerName);
@@ -41,10 +42,12 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
 
     public function inject(
         ContainerInterface $receiverLocator,
-        array $transportMapping
+        array $transportMapping,
+        ?RelativeDateTimeFilter $relativeDateTimeFilter
     ): void {
         $this->receiverLocator = $receiverLocator;
         $this->transportMapping = $transportMapping;
+        $this->supportRelativeTimeFilter = null !== $relativeDateTimeFilter;
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void
@@ -102,7 +105,7 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
             );
         }
 
-        if (class_exists(RelativeDateTimeFilter::class)) {
+        if ($this->supportRelativeTimeFilter) {
             $filter->add(
                 'availableAt',
                 RelativeDateTimeFilter::class,
@@ -154,10 +157,7 @@ abstract class MessengerMessageAdmin extends AbstractAdmin
         return $dumper->dump((new VarCloner())->cloneVar($receiver->find($message->getMessageId())), true);
     }
 
-    /**
-     * @param RouteCollection|RouteCollectionInterface $collection
-     */
-    protected function backwardCompatibleConfigureRoute($collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->remove('create');
         $collection->remove('edit');

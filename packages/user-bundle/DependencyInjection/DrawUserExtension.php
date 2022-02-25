@@ -22,11 +22,7 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Listener\TwoFactorAu
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 use Draw\Bundle\UserBundle\Sonata\Controller\TwoFactorAuthenticationController;
 use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
-use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension3X;
-use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension4X;
 use ReflectionClass;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -268,29 +264,22 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         if (!$config['2fa']['enabled'] ?? false) {
             $container->removeDefinition(TwoFactorAuthenticationExtension::class);
             $container->removeDefinition(TwoFactorAuthenticationController::class);
-        } else {
-            if (!isset($container->getParameter('kernel.bundles')['SchebTwoFactorBundle'])) {
-                throw new RuntimeException('The bundle SchebTwoFactorBundle needs to be registered to have 2FA enabled.');
-            }
 
-            $reflectionClass = new ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
-            if (!$reflectionClass->implementsInterface(TwoFactorAuthenticationUserInterface::class)) {
-                throw new RuntimeException(sprintf('The class [%s] must implements [%s] to have 2FA enabled.', $userEntityClass, TwoFactorAuthenticationUserInterface::class));
-            }
-
-            $type = (new \ReflectionClass(AbstractAdmin::class))
-                ->getMethod('configureRoutes')
-                ->getParameters()[0]->getType()->getName();
-            // TODO remove ExecutionAdmin3X when stop support of sonata admin 3.x
-            $extensionClass = RouteCollectionInterface::class === $type
-                ? TwoFactorAuthenticationExtension4X::class
-                : TwoFactorAuthenticationExtension3X::class;
-
-            $container->getDefinition(TwoFactorAuthenticationExtension::class)
-                ->setClass($extensionClass)
-                ->setArgument(0, $config['2fa']['field_positions'])
-                ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
+            return;
         }
+
+        if (!isset($container->getParameter('kernel.bundles')['SchebTwoFactorBundle'])) {
+            throw new RuntimeException('The bundle SchebTwoFactorBundle needs to be registered to have 2FA enabled.');
+        }
+
+        $reflectionClass = new ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
+        if (!$reflectionClass->implementsInterface(TwoFactorAuthenticationUserInterface::class)) {
+            throw new RuntimeException(sprintf('The class [%s] must implements [%s] to have 2FA enabled.', $userEntityClass, TwoFactorAuthenticationUserInterface::class));
+        }
+
+        $container->getDefinition(TwoFactorAuthenticationExtension::class)
+            ->setArgument(0, $config['2fa']['field_positions'])
+            ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
     }
 
     private function configureJwtAuthenticator(

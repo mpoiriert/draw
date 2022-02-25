@@ -33,7 +33,7 @@ class ConfigurationTest extends ConfigurationTestCase
                     'controller' => UserLockController::class,
                     'group' => 'User',
                     'show_in_dashboard' => true,
-                    'icon' => 'fa fa-ban',
+                    'icon' => 'fas fa-ban',
                     'label' => 'User lock',
                     'pager_type' => 'simple',
                 ],

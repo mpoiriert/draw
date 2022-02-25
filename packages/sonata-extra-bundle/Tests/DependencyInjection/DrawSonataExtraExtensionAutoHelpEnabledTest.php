@@ -3,7 +3,7 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
-use Draw\Bundle\SonataExtraBundle\Extension\AutoHelpExtension;
+use Draw\Bundle\SonataExtraBundle\Listener\AutoHelpSubscriber;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawSonataExtraExtensionAutoHelpEnabledTest extends DrawSonataExtraExtensionTest
@@ -25,6 +25,6 @@ class DrawSonataExtraExtensionAutoHelpEnabledTest extends DrawSonataExtraExtensi
     public function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
-        yield [AutoHelpExtension::class];
+        yield [AutoHelpSubscriber::class];
     }
 }
