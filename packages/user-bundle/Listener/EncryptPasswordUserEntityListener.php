@@ -4,18 +4,18 @@ namespace Draw\Bundle\UserBundle\Listener;
 
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeUserInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class EncryptPasswordUserEntityListener
 {
-    private $passwordEncoder;
+    private $passwordHasher;
     private $autoGeneratePassword;
 
     public function __construct(
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         $autoGeneratePassword = true
     ) {
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->autoGeneratePassword = $autoGeneratePassword;
     }
 
@@ -53,7 +53,7 @@ class EncryptPasswordUserEntityListener
         }
 
         if ($user->getPlainPassword()) {
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
+            $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPlainPassword()));
         }
     }
 }

@@ -3,9 +3,10 @@
 namespace Draw\Bundle\UserBundle\Entity;
 
 use DateTimeInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface SecurityUserInterface extends UserInterface
+interface SecurityUserInterface extends PasswordAuthenticatedUserInterface, UserInterface
 {
     public function getId();
 

@@ -6,10 +6,10 @@ use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
@@ -32,9 +32,9 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
     private $router;
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private $passwordEncoder;
+    private $passwordHasher;
 
     /**
      * @var RoleHierarchyInterface
@@ -49,14 +49,14 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
     public function __construct(
         FormFactoryInterface $formFactory,
         RouterInterface $router,
-        UserPasswordEncoderInterface $passwordEncoder,
+        UserPasswordHasherInterface $passwordHasher,
         UrlGeneratorInterface $urlGenerator,
         RoleHierarchyInterface $roleHierarchy
     ) {
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->roleHierarchy = $roleHierarchy;
-        $this->passwordEncoder = $passwordEncoder;
+        $this->passwordHasher = $passwordHasher;
         $this->urlGenerator = $urlGenerator;
         $this->roleHierarchy = $roleHierarchy;
     }
@@ -98,7 +98,7 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
+        if (!$this->passwordHasher->isPasswordValid($user, $credentials['password'])) {
             return false;
         }
 
@@ -116,9 +116,9 @@ final class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator imple
         return new RedirectResponse($this->router->generate('admin_login'));
     }
 
-    protected function getLoginUrl(): RedirectResponse
+    protected function getLoginUrl(): string
     {
-        return new RedirectResponse($this->router->generate('admin_login'));
+        return $this->router->generate('admin_login');
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse

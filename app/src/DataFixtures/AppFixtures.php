@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $tag = $adminTag = new Tag();
         $tag->setLabel('Admin');

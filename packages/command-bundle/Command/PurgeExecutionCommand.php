@@ -2,9 +2,11 @@
 
 namespace Draw\Bundle\CommandBundle\Command;
 
+use DateTime;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Draw\Bundle\CommandBundle\Entity\Execution;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Command\Command;
@@ -35,7 +37,7 @@ class PurgeExecutionCommand extends Command
         $this->logger = $logger ?: new NullLogger();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:command:purge-execution')
@@ -63,18 +65,18 @@ class PurgeExecutionCommand extends Command
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $delay = new \DateTime($input->getOption('delay'));
+        $delay = new DateTime($input->getOption('delay'));
         $batchSize = (int) $input->getOption('batch-size');
         $seconds = (int) $input->getOption('sleep');
 
         if ($batchSize < 1) {
-            throw new \InvalidArgumentException('Batch size must be a integer >= 1');
+            throw new InvalidArgumentException('Batch size must be a integer >= 1');
         }
 
         if ($seconds < 0) {
-            throw new \InvalidArgumentException('Sleep must be integer >= 0');
+            throw new InvalidArgumentException('Sleep must be integer >= 0');
         }
 
         $this->logger->debug(
@@ -93,14 +95,12 @@ class PurgeExecutionCommand extends Command
     }
 
     /**
-     * @param int $seconds
-     *
      * @return int The total number of records purged
      */
     private function purge(
-        \DateTime $before,
+        DateTime $before,
         int $batchSize = self::DEFAULT_BATCH_SIZE,
-        $seconds = self::DEFAULT_WAIT_SECOND
+        int $seconds = self::DEFAULT_WAIT_SECOND
     ): int {
         $total = 0;
         while ($affectedRows = $this->purgeBatch($before, $batchSize)) {
@@ -120,12 +120,12 @@ class PurgeExecutionCommand extends Command
     /**
      * @return int The number of affected rows
      */
-    private function purgeBatch(\DateTime $before, int $batchSize): int
+    private function purgeBatch(DateTime $before, int $batchSize): int
     {
-        return $this->connection->executeUpdate(
+        return $this->connection->executeStatement(
             'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
             [Execution::STATE_TERMINATED, $before, $batchSize],
-            [Type::STRING, Type::DATETIME, Type::INTEGER]
+            [Types::STRING, Types::DATETIME_MUTABLE, Types::INTEGER]
         );
     }
 }
