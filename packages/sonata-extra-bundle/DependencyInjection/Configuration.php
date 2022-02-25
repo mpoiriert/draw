@@ -24,10 +24,8 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->append($this->createAutoHelpNode())
-                ->append($this->createUserTimezoneNode())
                 ->append($this->fixMenuDepthNode())
-            ->end()
-        ;
+            ->end();
 
         return $treeBuilder;
     }
@@ -35,12 +33,6 @@ class Configuration implements ConfigurationInterface
     private function createAutoHelpNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('auto_help'))
-            ->canBeEnabled();
-    }
-
-    private function createUserTimezoneNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('user_timezone'))
             ->canBeEnabled();
     }
 

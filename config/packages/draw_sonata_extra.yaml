@@ -1,4 +1,3 @@
 draw_sonata_extra:
   auto_help: true
-  user_timezone: true
   fix_menu_depth: true
