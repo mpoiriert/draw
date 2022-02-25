@@ -47,7 +47,7 @@ You can now go from:
 ```YAML
 App\Sonata\Admin\UserAdmin:
     tags:
-        - { name: 'sonata.admin', manager_type: 'orm', group: 'User', pager_type: 'simple', icon: 'fa fa-user' }
+        - { name: 'sonata.admin', manager_type: 'orm', group: 'User', pager_type: 'simple', icon: 'fas fa-user' }
 ```
 
 To:
@@ -63,7 +63,7 @@ use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 /**
- * @TagSonataAdmin(group="User", pager_type="simple", icon="fa fa-user")
+ * @TagSonataAdmin(group="User", pager_type="simple", icon="fas fa-user")
  */
 class UserAdmin extends AbstractAdmin
 {

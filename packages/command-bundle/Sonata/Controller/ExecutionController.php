@@ -55,12 +55,7 @@ class ExecutionController extends CRUDController
             )
         );
 
-        // TODO drop when stop supporting sonata 3.x
-        if ((new \ReflectionObject($this))->getMethod('redirectTo')->getNumberOfParameters() > 1) {
-            return $this->redirectTo($request, $execution);
-        }
-
-        return $this->redirectTo($execution);
+        return $this->redirectTo($request, $execution);
     }
 
     public function reportAction(EntityManagerInterface $entityManager): Response

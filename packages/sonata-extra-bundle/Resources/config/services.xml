@@ -5,9 +5,19 @@
     <services>
         <defaults public="false" autoconfigure="true" autowire="true"/>
         <prototype namespace="Draw\Bundle\SonataExtraBundle\" resource="../..">
-            <exclude>../../{vendor,Annotation,Doctrine,DependencyInjection,Entity,Event,FieldDescription,Tests}</exclude>
+            <exclude>../../{vendor,Annotation,Builder,DependencyInjection,Entity,Event,Tests}</exclude>
+            <exclude>../../Doctrine/DBALTypes</exclude>
             <exclude>../../{DrawSonataExtraBundle.php}</exclude>
         </prototype>
+
+        <service id="Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter">
+            <tag name="sonata.admin.filter.type"/>
+        </service>
+
+        <service id="Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter">
+            <tag name="sonata.admin.filter.type"/>
+        </service>
+
         <service id="Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService">
             <tag name="sonata.block"/>
         </service>
@@ -15,10 +25,6 @@
         <service id="Draw\Bundle\SonataExtraBundle\Extension\GridExtension">
             <tag name="sonata.admin.extension" global="true"/>
             <argument key="$guesser" type="service" id="sonata.admin.guesser.orm_show_chain"/>
-        </service>
-
-        <service id="Draw\Bundle\SonataExtraBundle\Extension\AutoHelpExtension">
-            <tag name="sonata.admin.extension" global="true"/>
         </service>
     </services>
 </container>

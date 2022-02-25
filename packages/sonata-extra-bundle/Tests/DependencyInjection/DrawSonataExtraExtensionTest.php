@@ -4,6 +4,8 @@ namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
+use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
+use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
 use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Bundle\SonataExtraBundle\Extension\GridExtension;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
@@ -32,6 +34,8 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         yield [AdminMonitoringBlockService::class];
         yield [ExpressionLanguage::class];
         yield [GridExtension::class];
+        yield [InFilter::class];
+        yield [RelativeDateTimeFilter::class];
     }
 
     public function testPrepend(): void
@@ -69,6 +73,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
                                 'actions' => '@DrawSonataExtra/CRUD/show_actions.html.twig',
                                 'json' => '@DrawSonataExtra/CRUD/show_json.html.twig',
                                 'list' => '@DrawSonataExtra/CRUD/show_list.html.twig',
+                                'static' => '@DrawSonataExtra/CRUD/show_static.html.twig',
                             ],
                             'list' => [
                                 'list' => '@DrawSonataExtra/CRUD/list_list.html.twig',

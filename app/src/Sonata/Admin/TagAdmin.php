@@ -26,7 +26,7 @@ class TagAdmin extends AbstractAdmin
             ->add('label')
             ->add('active')
             ->add(
-                constant(ListMapper::class.'::NAME_ACTIONS') ?: '_action',
+                $list::NAME_ACTIONS,
                 null,
                 [
                     'label' => 'Action',
@@ -57,8 +57,6 @@ class TagAdmin extends AbstractAdmin
 
     public function configureGridFields(array $fields): array
     {
-        $admin = $this;
-
         return array_merge(
             $fields,
             [
@@ -68,14 +66,15 @@ class TagAdmin extends AbstractAdmin
                 'actions' => [
                     'type' => 'actions',
                     'options' => [
+                        'virtual_field' => true,
                         'admin' => $this,
                         'actions' => [
                             'show' => [
                                 'label' => 'Show',
                                 'icon' => 'fa-eye',
                                 'route_object' => 'show',
-                                'check_callback' => function (object $object) use ($admin) {
-                                    return $admin->hasAccess('show', $object);
+                                'check_callback' => function (object $object) {
+                                    return $this->hasAccess('show', $object);
                                 },
                             ],
                         ],

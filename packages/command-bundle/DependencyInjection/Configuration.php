@@ -82,7 +82,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('group')->defaultValue('Command')->end()
                 ->scalarNode('controller_class')->defaultValue(ExecutionController::class)->end()
-                ->scalarNode('icon')->defaultValue('fa fa-terminal')->end()
+                ->scalarNode('icon')->defaultValue('fas fa-terminal')->end()
                 ->scalarNode('label')->defaultValue('Execution')->end()
                 ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
             ->end();

@@ -8,24 +8,12 @@ use Draw\Bundle\UserBundle\Sonata\Form\Enable2faForm;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\QrCode\QrCodeGenerator;
 use Sonata\AdminBundle\Controller\CRUDController;
-use Sonata\AdminBundle\EventListener\ConfigureCRUDControllerListener;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TwoFactorAuthenticationController extends CRUDController
 {
-    public function __construct(ContainerInterface $container)
-    {
-        if (class_exists(ConfigureCRUDControllerListener::class)) {
-            return;
-        }
-        $this->setContainer($container);
-
-        $this->configureAdmin($container->get('request_stack')->getMasterRequest());
-    }
-
     public function enable2faAction(
         Request $request,
         TotpAuthenticatorInterface $totpAuthenticator,

@@ -6,7 +6,6 @@ use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
-use Draw\Bundle\SonataExtraBundle\FieldDescription\SimpleFieldDescription;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -16,7 +15,7 @@ use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
- * @TagSonataAdmin(group="User", manager_type="orm", pager_type="simple", icon="fa fa-user")
+ * @TagSonataAdmin(group="User", manager_type="orm", pager_type="simple", icon="fas fa-user")
  */
 class UserAdmin extends AbstractAdmin
 {
@@ -25,7 +24,7 @@ class UserAdmin extends AbstractAdmin
         parent::__construct($code, $class, $baseControllerName);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('ids',
@@ -70,12 +69,7 @@ class UserAdmin extends AbstractAdmin
             ->add('dateOfBirth')
             ->add('roles', 'json')
             ->add('rolesList', 'list')
-            ->add(
-                SimpleFieldDescription::create(
-                    'static',
-                    'Static Value'
-                )
-            )
+            ->add('static', 'static', ['virtual_field' => true, 'value' => 'Static value'])
             ->add(
                 'tags',
                 'grid',

@@ -12,9 +12,9 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
 {
-    private $compilerPass;
+    private ExtractArgumentFromDefaultValueCompilerPass $compilerPass;
 
-    private $containerBuilder;
+    private ContainerBuilder $containerBuilder;
 
     public function setUp(): void
     {

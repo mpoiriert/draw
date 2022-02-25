@@ -6,9 +6,10 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter;
+use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class UserLockAdmin extends AbstractAdmin
@@ -17,9 +18,10 @@ class UserLockAdmin extends AbstractAdmin
     {
         $filter->add(
             'user',
-            ModelAutocompleteFilter::class,
+            ModelFilter::class,
             [
                 'show_filter' => true,
+                'field_type' => ModelAutocompleteType::class,
                 'field_options' => [
                     'property' => 'email',
                 ],
@@ -27,7 +29,7 @@ class UserLockAdmin extends AbstractAdmin
         );
     }
 
-    public function configureListFields(ListMapper $list)
+    public function configureListFields(ListMapper $list): void
     {
         $list
             ->add('reason')
@@ -62,7 +64,7 @@ class UserLockAdmin extends AbstractAdmin
         );
     }
 
-    public function configureShowFields(ShowMapper $show)
+    public function configureShowFields(ShowMapper $show): void
     {
         $show
             ->add('user')
@@ -81,27 +83,25 @@ class UserLockAdmin extends AbstractAdmin
             );
     }
 
-    protected function configureRoutes(RouteCollection $collection): void
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['list', 'edit', 'show']);
         $collection->add('unlock', $this->getRouterIdParameter().'/unlock');
     }
 
-    public function configureActionButtons($action, $object = null): array
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
-        $list = parent::configureActionButtons($action, $object);
-
         switch ($action) {
             case 'show':
             case 'edit':
                 if ($this->isGranted('EDIT', $object)) {
-                    $list['unlock'] = [
+                    $buttonList['unlock'] = [
                         'template' => '@DrawUser/AccountLocker/Sonata/unlock_button.html.twig',
                     ];
                 }
                 break;
         }
 
-        return $list;
+        return $buttonList;
     }
 }

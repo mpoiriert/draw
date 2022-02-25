@@ -11,7 +11,6 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
@@ -150,10 +149,7 @@ class ExecutionAdmin extends AbstractAdmin
             ->add('commandName', null, ['attr' => ['readonly' => true]]);
     }
 
-    /**
-     * @param RouteCollection|RouteCollectionInterface $collection
-     */
-    protected function backwardCompatibleConfigureRoute($collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         if (!\count($this->commandFactory->getCommands())) {
             $collection->remove('create');
@@ -168,7 +164,7 @@ class ExecutionAdmin extends AbstractAdmin
         $collection->add('report', 'report');
     }
 
-    public function backwardCompatibleConfigureActionButtons(array $buttonList, $action, $object = null): array
+    public function configureActionButtons(array $buttonList, $action, $object = null): array
     {
         if ('show' == $action && Execution::STATE_ERROR == $object->getState()) {
             $buttonList['acknowledge']['template'] = '@DrawCommand/ExecutionAdmin/button_acknowledge.html.twig';
