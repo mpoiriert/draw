@@ -18,7 +18,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "ext-json": "*",
         "symfony/messenger": "^4.4.2|^5.3",
         "symfony/doctrine-bridge": "^4.4|^5.4",
