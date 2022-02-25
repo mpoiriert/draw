@@ -16,9 +16,6 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
-            'user_timezone' => [
-                'enabled' => false,
-            ],
             'fix_menu_depth' => [
                 'enabled' => false,
             ],
@@ -27,16 +24,6 @@ class ConfigurationTest extends ConfigurationTestCase
 
     public function provideTestInvalidConfiguration(): iterable
     {
-        yield [
-            ['user_timezone' => ['enabled' => []]],
-            'Invalid type for path "draw_sonata_extra.user_timezone.enabled". Expected bool, but got array.',
-        ];
-
-        yield [
-            ['user_timezone' => ['enabled' => 'test']],
-            'Invalid type for path "draw_sonata_extra.user_timezone.enabled". Expected bool, but got string.',
-        ];
-
         yield [
             ['fix_menu_depth' => ['enabled' => []]],
             'Invalid type for path "draw_sonata_extra.fix_menu_depth.enabled". Expected bool, but got array.',
