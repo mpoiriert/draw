@@ -50,6 +50,16 @@ security:
                 provider: app_user_provider_email
                 auth_form_path: admin_2fa_login
                 check_path: admin_2fa_login_check
+
+        api:
+            pattern: /api(.*)
+            stateless: true
+            anonymous: true
+            guard:
+                provider: chain_provider
+                authenticators:
+                    - 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'
+
         main:
             context: user
             anonymous: true
