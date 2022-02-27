@@ -4,13 +4,12 @@ namespace Draw\Bundle\AwsToolKitBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand;
 use Draw\Bundle\AwsToolKitBundle\DependencyInjection\DrawAwsToolKitExtension;
-use Draw\Bundle\AwsToolKitBundle\Imds\ImdsClientInterface;
-use Draw\Bundle\AwsToolKitBundle\Imds\ImdsClientV1;
-use Draw\Bundle\AwsToolKitBundle\Imds\ImdsClientV2;
-use Draw\Bundle\AwsToolKitBundle\Listener\NewestInstanceRoleListener;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @covers \Draw\Bundle\AwsToolKitBundle\DependencyInjection\DrawAwsToolKitExtension
+ */
 class DrawAwsToolKitExtensionTest extends ExtensionTestCase
 {
     public function createExtension(): Extension
@@ -25,10 +24,7 @@ class DrawAwsToolKitExtensionTest extends ExtensionTestCase
 
     public function provideTestHasServiceDefinition(): iterable
     {
-        yield [CloudWatchLogsDownloadCommand::class];
-        yield [ImdsClientV1::class];
-        yield [ImdsClientV2::class];
-        yield [ImdsClientInterface::class, ImdsClientV1::class];
-        yield [NewestInstanceRoleListener::class];
+        yield ['draw.aws_tool_kit.cloud_watch_logs_download_command'];
+        yield [CloudWatchLogsDownloadCommand::class, 'draw.aws_tool_kit.cloud_watch_logs_download_command'];
     }
 }

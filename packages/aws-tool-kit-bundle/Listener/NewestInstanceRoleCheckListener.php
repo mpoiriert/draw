@@ -18,26 +18,17 @@ use Throwable;
  * Example:
  *   console/bin acme:purge-database --aws-newest-instance-role=prod
  */
-class NewestInstanceRoleListener implements EventSubscriberInterface
+class NewestInstanceRoleCheckListener implements EventSubscriberInterface
 {
     public const OPTION_AWS_NEWEST_INSTANCE_ROLE = 'aws-newest-instance-role';
 
-    /**
-     * @var Ec2Client
-     */
-    private $ec2Client;
+    private Ec2Client $ec2Client;
 
-    /**
-     * @var ImdsClientInterface
-     */
-    private $imdsClient;
+    private ImdsClientInterface $imdsClient;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ConsoleCommandEvent::class => [
@@ -53,10 +44,7 @@ class NewestInstanceRoleListener implements EventSubscriberInterface
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * @return void
-     */
-    public function checkNewestInstance(ConsoleCommandEvent $consoleCommandEvent)
+    public function checkNewestInstance(ConsoleCommandEvent $consoleCommandEvent): void
     {
         $input = $consoleCommandEvent->getInput();
 
@@ -85,7 +73,7 @@ class NewestInstanceRoleListener implements EventSubscriberInterface
         }
 
         try {
-            if ($currentInstanceId != $this->getNewestInstanceIdForRole($role)) {
+            if ($currentInstanceId !== $this->getNewestInstanceIdForRole($role)) {
                 $this->disableCommand($consoleCommandEvent, 'Current instance is not the newest');
 
                 return;
@@ -103,7 +91,10 @@ class NewestInstanceRoleListener implements EventSubscriberInterface
         $this->logger->info('Command disabled', ['reason' => $reason, 'service' => 'NewestInstanceRoleListener']);
     }
 
-    private function getNewestInstanceIdForRole($role)
+    /**
+     * @internal
+     */
+    public function getNewestInstanceIdForRole($role): ?string
     {
         $result = $this->ec2Client->describeInstances([
             'DryRun' => false,

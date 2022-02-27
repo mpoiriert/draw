@@ -7,37 +7,26 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
-    /**
-     * {@inheritdoc}
-     */
     public function registerBundles()
     {
         return [
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Draw\Bundle\AwsToolKitBundle\DrawAwsToolKitBundle(),
+            new \Aws\Symfony\AwsBundle(),
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__.'/fixtures/config/config.yaml');
+        $loader->load(__DIR__.'/config.php');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return sys_get_temp_dir().'/aws_tool_kit_bundle/var/cache/'.$this->environment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return sys_get_temp_dir().'/aws_tool_kit_bundle/var/log';
     }

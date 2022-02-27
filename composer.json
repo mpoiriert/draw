@@ -53,7 +53,7 @@
     },
     "require-dev": {
         "ext-pcntl": "*",
-        "aws/aws-sdk-php-symfony": "^2.2",
+        "aws/aws-sdk-php-symfony": "^2.3",
         "bamarni/composer-bin-plugin": "^1.4",
         "composer/semver": "^3.2",
         "doctrine/data-fixtures": "^1.5",
@@ -77,6 +77,8 @@
         "symfony/expression-language": "^5.4.3",
         "symfony/flex": "^1.18",
         "symfony/form": "^5.4.3",
+        "symfony/http-client": "^5.4.3",
+        "symfony/http-client-contracts": "^2.5",
         "symfony/monolog-bundle": "^3.7",
         "symfony/phpunit-bridge": "^5.4.3",
         "symfony/stopwatch": "^5.4.3",
@@ -109,8 +111,8 @@
         "draw/validator": "self.version"
     },
     "conflict": {
-        "guzzlehttp/guzzle": "<6",
-        "doctrine/data-fixtures": "<1.5.2"
+        "doctrine/data-fixtures": "<1.5.2",
+        "guzzlehttp/guzzle": "<6"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

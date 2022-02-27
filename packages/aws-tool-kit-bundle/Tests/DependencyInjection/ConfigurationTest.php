@@ -6,6 +6,9 @@ use Draw\Bundle\AwsToolKitBundle\DependencyInjection\Configuration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * @covers \Draw\Bundle\AwsToolKitBundle\DependencyInjection\Configuration
+ */
 class ConfigurationTest extends ConfigurationTestCase
 {
     public function createConfiguration(): ConfigurationInterface
@@ -16,7 +19,10 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
-            'imds_version' => 1,
+            'imds_version' => null,
+            'newest_instance_role_check' => [
+                'enabled' => false,
+            ],
         ];
     }
 
@@ -25,6 +31,11 @@ class ConfigurationTest extends ConfigurationTestCase
         yield [
             ['imds_version' => 3],
             'The value 3 is not allowed for path "draw_aws_tool_kit.imds_version". Permissible values: 1, 2, null',
+        ];
+
+        yield [
+            ['newest_instance_role_check' => true],
+            'Invalid configuration for path "draw_aws_tool_kit": You must define a imds_version since you enabled newest_instance_role_check',
         ];
     }
 }

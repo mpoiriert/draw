@@ -20,14 +20,17 @@
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./src/*</directory>
-            <exclude>
-                <directory>./packages/*/Tests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+    <coverage>
+        <include>
+            <directory>./packages/*</directory>
+            <directory>./src</directory>
+        </include>
+        <exclude>
+            <directory>./packages/*/Tests</directory>
+            <directory>./packages/*/vendor</directory>
+            <directory>tests</directory>
+        </exclude>
+    </coverage>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>

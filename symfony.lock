@@ -555,6 +555,12 @@
             "app/src/Kernel.php"
         ]
     },
+    "symfony/http-client": {
+        "version": "v5.4.7"
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.5.0"
+    },
     "symfony/http-foundation": {
         "version": "v5.3.7"
     },
