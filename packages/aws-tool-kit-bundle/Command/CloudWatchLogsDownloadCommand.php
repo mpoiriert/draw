@@ -3,33 +3,28 @@
 namespace Draw\Bundle\AwsToolKitBundle\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Command to download a cloud watch log locally base on it's log group name, log stream name and a start time/end time.
- */
 class CloudWatchLogsDownloadCommand extends Command
 {
-    /**
-     * @var CloudWatchLogsClient
-     */
-    private $cloudWatchClient;
+    private ?CloudWatchLogsClient $cloudWatchClient;
 
-    public function __construct(CloudWatchLogsClient $cloudWatchClient)
+    public function __construct(?CloudWatchLogsClient $cloudWatchClient)
     {
         $this->cloudWatchClient = $cloudWatchClient;
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:aws:cloud-watch-logs:download')
-            ->setDescription('Download logs from cloud watch.')
+            ->setDescription('Download logs from cloud watch locally base on it\'s log group name, log stream name and a start time/end time')
             ->addArgument('logGroupName', InputArgument::REQUIRED, 'The log group name')
             ->addArgument('logStreamName', InputArgument::REQUIRED, 'The log stream name')
             ->addArgument('output', InputArgument::REQUIRED, 'The output file name')
@@ -38,8 +33,12 @@ class CloudWatchLogsDownloadCommand extends Command
             ->addOption('fileMode', null, InputOption::VALUE_REQUIRED, 'Mode in which the output file will be open to write to.', 'w+');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (null === $this->cloudWatchClient) {
+            throw new RuntimeException(sprintf('Service [%s] is required for command [%s] to run.', CloudWatchLogsClient::class, CloudWatchLogsDownloadCommand::class));
+        }
+
         $startTime = strtotime($input->getOption('startTime')) * 1000;
         $endTime = strtotime($input->getOption('endTime')) * 1000;
 
