@@ -149,5 +149,12 @@
         "src-dir": "app/src"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
+    }
 }

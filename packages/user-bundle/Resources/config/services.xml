@@ -3,7 +3,7 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <defaults public="false" autoconfigure="true" autowire="true" />
+        <defaults public="false" autoconfigure="true" autowire="true"/>
         <prototype namespace="Draw\Bundle\UserBundle\" resource="../..">
             <exclude>../../{vendor,DependencyInjection,DTO,Entity,Tests,Email,Message,Event}</exclude>
             <exclude>../../DrawUserBundle.php</exclude>
@@ -16,14 +16,17 @@
             <exclude>../../Sonata</exclude>
         </prototype>
         <prototype namespace="Draw\Bundle\UserBundle\Controller\" resource="../../Controller">
-            <tag name="controller.service_arguments" />
+            <tag name="controller.service_arguments"/>
         </prototype>
         <service id="draw_user.user_repository" class="Doctrine\ORM\EntityRepository">
-            <factory service="doctrine" method="getRepository" />
+            <factory service="doctrine" method="getRepository"/>
             <argument>%draw_user.user_entity_class%</argument>
         </service>
         <service id="Draw\Bundle\UserBundle\Security\MessageAuthenticator"
                  class="Draw\Bundle\UserBundle\Security\MessageAuthenticator"
         />
+        <service id="Draw\Bundle\UserBundle\Listener\UserRequestInterceptorSubscriber">
+            <argument key="$firewallMap" type="service" id="security.firewall.map" on-invalid="null"/>
+        </service>
     </services>
 </container>

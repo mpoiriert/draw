@@ -4,9 +4,13 @@ namespace Draw\Bundle\UserBundle\Listener;
 
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptedEvent;
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptionEvent;
+use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -17,6 +21,8 @@ class UserRequestInterceptorSubscriber implements EventSubscriberInterface
     private const INTERCEPTION_REASON = 'original_request_url';
 
     private $eventDispatcher;
+
+    private $firewallMap;
 
     private $security;
 
@@ -31,16 +37,24 @@ class UserRequestInterceptorSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, Security $security)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        Security $security,
+        ?FirewallMap $firewallMap
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->security = $security;
+        $this->firewallMap = $firewallMap;
     }
 
     public function handleRequestEvent(RequestEvent $requestEvent)
     {
         $user = $this->security->getUser();
         if (!$user) {
+            return;
+        }
+
+        if (HttpKernelInterface::SUB_REQUEST === $requestEvent->getRequestType()) {
             return;
         }
 
@@ -74,8 +88,7 @@ class UserRequestInterceptorSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
 
         switch (true) {
-            case !$request->hasSession():
-            case null === $session = $request->getSession():
+            case null === $session = $this->getAccessibleSession($request):
             case !$session->has(self::REQUEST_INTERCEPTION_ORIGINAL_URL):
                 return;
         }
@@ -94,12 +107,29 @@ class UserRequestInterceptorSubscriber implements EventSubscriberInterface
 
         switch (true) {
             case self::INTERCEPTION_REASON === $event->getReason():
-            case !$request->hasSession():
-            case null === $session = $request->getSession():
+            case null === $session = $this->getAccessibleSession($request):
             case $session->has(self::REQUEST_INTERCEPTION_ORIGINAL_URL):
                 return;
         }
 
         $session->set(self::REQUEST_INTERCEPTION_ORIGINAL_URL, $request->getUri());
+    }
+
+    private function getAccessibleSession(Request $request): ?SessionInterface
+    {
+        if ($this->firewallMap) {
+            $firewallConfig = $this->firewallMap->getFirewallConfig($request);
+            if ($firewallConfig->isStateless()) {
+                return null;
+            }
+        }
+
+        switch (true) {
+            case !$request->hasSession():
+            case null === $session = $request->getSession():
+                return null;
+            default:
+                return $session;
+        }
     }
 }
