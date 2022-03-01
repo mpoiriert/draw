@@ -21,7 +21,7 @@
         "psr/log": "@stable"
     },
     "require-dev": {
-        "draw/tester": "^0.7.52",
+        "draw/tester": "^0.8",
         "doctrine/orm": "^2.10",
         "phpunit/phpunit": "^8.0|^9.0",
         "sonata-project/admin-bundle": "^3.105",
