@@ -27,7 +27,7 @@
         "ramsey/uuid": "^4.2"
     },
     "require-dev": {
-        "draw/tester-bundle": "^0.8",
+        "draw/tester-bundle": "^0.7.52",
         "phpunit/phpunit": "^8.0|^9.0",
         "symfony/event-dispatcher": "^4.4|^5.4"
     },
