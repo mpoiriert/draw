@@ -10,6 +10,8 @@ trait RedirectToRouteMessageTrait
 {
     protected $route;
 
+    protected $urlParameters = [];
+
     /**
      * @var Response
      */
@@ -17,7 +19,7 @@ trait RedirectToRouteMessageTrait
 
     public function generateUrlToRedirectTo(UrlGeneratorInterface $urlGenerator): ?string
     {
-        $url = $urlGenerator->generate($this->route, [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $url = $urlGenerator->generate($this->route, $this->urlParameters, UrlGeneratorInterface::ABSOLUTE_URL);
 
         $this->response = new RedirectResponse($url);
 
