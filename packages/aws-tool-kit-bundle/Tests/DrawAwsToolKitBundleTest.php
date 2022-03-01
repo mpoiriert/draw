@@ -11,7 +11,13 @@ class DrawAwsToolKitBundleTest extends KernelTestCase
 {
     use ServiceTesterTrait;
 
+    // For symfony 4.x
     protected static $class = AppKernel::class;
+
+    protected static function getKernelClass(): string
+    {
+        return AppKernel::class;
+    }
 
     public function testCloudWatchLogsDownloadCommand()
     {
