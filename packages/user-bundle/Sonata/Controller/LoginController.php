@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Sonata\Controller;
 
+use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\PasswordRecovery\Email\ForgotPasswordEmail;
 use Draw\Bundle\UserBundle\Sonata\Form\AdminLoginForm;
@@ -115,6 +116,17 @@ final class LoginController extends AbstractController
         );
 
         $form->handleRequest($request);
+
+        switch (true) {
+            case $form->isSubmitted():
+            case !$request->query->has('t'):
+            case !$user instanceof SecurityUserInterface:
+            case null === $passwordUpdatedAt = $user->getPasswordUpdatedAt():
+            case $passwordUpdatedAt->getTimestamp() <= $request->query->getInt('t'):
+                break;
+            default:
+                return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManagerForClass(get_class($user))->flush();

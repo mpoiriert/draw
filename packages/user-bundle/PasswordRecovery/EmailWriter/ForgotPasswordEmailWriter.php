@@ -71,10 +71,11 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
                 $this->messageUrlGenerator->generateLink(
                     new RedirectToSecuredRouteMessage(
                         $user->getId(),
-                        $this->resetPasswordRoute
+                        $this->resetPasswordRoute,
+                        ['t' => time()]
                     ),
                     new DateTimeImmutable('+ 1 day'),
-                    'reset_password'
+                    'reset_password',
                 )
             );
     }

@@ -12,10 +12,11 @@ class RedirectToSecuredRouteMessage implements ManuallyTriggeredInterface, AutoC
 
     private $userId;
 
-    public function __construct($userId, string $route)
+    public function __construct($userId, string $route, array $urlParameters = [])
     {
         $this->userId = $userId;
         $this->route = $route;
+        $this->urlParameters = $urlParameters;
     }
 
     public function getUserId()
