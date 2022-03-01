@@ -16,7 +16,14 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
     use HttpTesterTrait {
         createHttpTesterClient as defaultCreateHttpTesterClient;
     }
+
+    // For symfony 4.x
     protected static $class = AppKernel::class;
+
+    protected static function getKernelClass(): string
+    {
+        return AppKernel::class;
+    }
 
     public function createHttpTesterClient(): ClientInterface
     {
