@@ -83,6 +83,7 @@
             "packages/dashboard-bundle/./functions.php"
         ],
         "psr-4": {
+            "Draw\\Bundle\\ApplicationBundle\\": "packages/application-bundle/",
             "Draw\\Bundle\\AwsToolKitBundle\\": "packages/aws-tool-kit-bundle/",
             "Draw\\Bundle\\CommandBundle\\": "packages/command-bundle/",
             "Draw\\Bundle\\CronBundle\\": "packages/cron-bundle/",
@@ -110,6 +111,7 @@
         }
     },
     "replace": {
+        "draw/application-bundle": "self.version",
         "draw/aws-tool-kit-bundle": "self.version",
         "draw/command-bundle": "self.version",
         "draw/contracts": "self.version",

@@ -1,0 +1,4 @@
+draw:
+  sonata:
+    group:
+      application: 'Application'
