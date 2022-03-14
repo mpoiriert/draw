@@ -2,16 +2,15 @@
 
 namespace Draw\Bundle\TesterBundle;
 
-use Draw\Bundle\TesterBundle\Config\ServiceIdsResourceCheck;
 use Draw\Bundle\TesterBundle\DependencyInjection\Compiler\MessengerPass;
+use Draw\Bundle\TesterBundle\DependencyInjection\Compiler\PublicPass;
 use Draw\Bundle\TesterBundle\DependencyInjection\CompilerPass;
 use Draw\Component\Profiling\ProfilerCoordinator;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class DrawTesterBundle extends Bundle implements CompilerPassInterface
+class DrawTesterBundle extends Bundle
 {
     public static $ids = [];
 
@@ -25,23 +24,7 @@ class DrawTesterBundle extends Bundle implements CompilerPassInterface
     {
         $container->addCompilerPass(new CompilerPass());
         $container->addCompilerPass(new MessengerPass(), PassConfig::TYPE_OPTIMIZE);
-        $container->addCompilerPass($this, PassConfig::TYPE_BEFORE_REMOVING);
-    }
-
-    public function process(ContainerBuilder $container)
-    {
-        $file = $container->getParameter('kernel.cache_dir').'/serviceIdsToTest.json';
-        $container->addResource(new ServiceIdsResourceCheck($file));
-        self::$ids = array_unique(self::$ids);
-        foreach (self::$ids as $id) {
-            if ($container->hasDefinition($id)) {
-                $container->getDefinition($id)->setPublic(true);
-            }
-
-            if ($container->hasAlias($id)) {
-                $container->getAlias($id)->setPublic(true);
-            }
-        }
+        $container->addCompilerPass(new PublicPass(), PassConfig::TYPE_AFTER_REMOVING);
     }
 
     public function boot()

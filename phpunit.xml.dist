@@ -31,7 +31,6 @@
     </filter>
 
     <listeners>
-        <listener class="Draw\Bundle\TesterBundle\PhpUnit\ServiceTestsListener" />
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
     </listeners>
 </phpunit>
