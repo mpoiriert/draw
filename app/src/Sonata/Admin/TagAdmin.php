@@ -63,6 +63,22 @@ class TagAdmin extends AbstractAdmin
                 'id' => [],
                 'label' => [],
                 'active' => [],
+                'actions' => [
+                    'type' => 'actions',
+                    'options' => [
+                        'admin' => $this,
+                        'actions' => [
+                            'show' => [
+                                'label' => 'Show',
+                                'icon' => 'fa-eye',
+                                'route_object' => 'show',
+                                'check_callback' => function (object $object) {
+                                    return $this->hasAccess('show', $object);
+                                },
+                            ],
+                        ],
+                    ],
+                ],
             ]
         );
     }
