@@ -300,4 +300,9 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     {
         $this->level = $level;
     }
+
+    public function getRolesList(): array
+    {
+        return $this->getRoles();
+    }
 }
