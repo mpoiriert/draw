@@ -5,6 +5,7 @@ namespace App\Sonata\Admin;
 use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
+use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -25,7 +26,16 @@ class UserAdmin extends AbstractAdmin
 
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
-        $filter->add('email');
+        $filter
+            ->add('ids',
+                InFilter::class,
+                [
+                    'field_name' => 'id',
+                    'show_filter' => true,
+                    'label' => 'Ids (separated by comma)',
+                ]
+            )
+            ->add('email');
     }
 
     protected function configureListFields(ListMapper $list): void
