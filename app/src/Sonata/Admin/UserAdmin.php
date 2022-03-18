@@ -68,6 +68,7 @@ class UserAdmin extends AbstractAdmin
             ->add('email')
             ->add('dateOfBirth')
             ->add('roles', 'json')
+            ->add('rolesList', 'list')
             ->add(
                 SimpleFieldDescription::create(
                     'static',
