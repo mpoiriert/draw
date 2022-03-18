@@ -23,7 +23,7 @@ final class Version20220315160551 extends AbstractMigration
         $this->addSql('CREATE TABLE draw__config (
           id VARCHAR(255) NOT NULL,
           data JSON NOT NULL,
-          update_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\',
+          updated_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\',
           created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\',
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

@@ -33,7 +33,7 @@ class Config
     private $data = ['value' => null];
 
     /**
-     * @ORM\Column(name="update_at", type="datetime_immutable", nullable=false)
+     * @ORM\Column(name="updated_at", type="datetime_immutable", nullable=false)
      */
     private $updatedAt = null;
 
