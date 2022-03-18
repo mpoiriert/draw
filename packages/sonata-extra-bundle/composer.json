@@ -14,6 +14,7 @@
     "require-dev": {
         "draw/tester": "^0.8",
         "sonata-project/admin-bundle": "^3.105",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.35",
         "terminal42/service-annotation-bundle": "^1.1",
         "phpunit/phpunit": "^8.0|^9.0"
     },

@@ -1,0 +1,21 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    <div class="btn-group">
+        {% for action in field_description.options.actions %}
+            {% if action.check_callback is not defined or action.check_callback.call(admin, object) %}
+                {% if action.route_callback is defined %}
+                    {% set href = action.route_callback.call(admin, object) %}
+                {% elseif action.route_object is defined %}
+                    {% set href = field_description.options.admin.generateObjectUrl(action.route_object, object, action.route_parameters|default([])) %}
+                {% else %}
+                    {% set href = action.href %}
+                {% endif %}
+                <a href="{{ href }}" class="btn btn-sm btn-default">
+                    {% if action.icon is defined %}<i class="fa {{ action.icon }}"></i> {% endif %}
+                    {{ action.label }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
