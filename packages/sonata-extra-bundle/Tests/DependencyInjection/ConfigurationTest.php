@@ -16,6 +16,9 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'auto_help' => [
+                'enabled' => false,
+            ],
             'user_timezone' => [
                 'enabled' => false,
             ],

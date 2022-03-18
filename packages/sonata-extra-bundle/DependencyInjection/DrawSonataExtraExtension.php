@@ -5,6 +5,7 @@ namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcDateTimeImmutableType;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcDateTimeType;
 use Draw\Bundle\SonataExtraBundle\Doctrine\DBALTypes\UtcTimeImmutableType;
+use Draw\Bundle\SonataExtraBundle\Extension\AutoHelpExtension;
 use Draw\Bundle\SonataExtraBundle\Listener\FixDepthMenuBuilderSubscriber;
 use Draw\Bundle\SonataExtraBundle\Listener\TimeZoneSubscriber;
 use Symfony\Component\Config\FileLocator;
@@ -27,6 +28,10 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
 
         if (!($config['fix_menu_depth']['enabled'] ?? false)) {
             $container->removeDefinition(FixDepthMenuBuilderSubscriber::class);
+        }
+
+        if (!($config['auto_help']['enabled'] ?? false)) {
+            $container->removeDefinition(AutoHelpExtension::class);
         }
     }
 
