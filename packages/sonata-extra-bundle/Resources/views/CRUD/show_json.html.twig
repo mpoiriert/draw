@@ -1,0 +1,14 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {% if not value %}
+        <i>No data</i>
+    {% endif %}
+    <div id="jsonViewer_{{ field_description.fieldName }}"></div>
+    <script>
+        $(document).ready(function () {
+            $('#jsonViewer_{{ field_description.fieldName }}')
+                .jsonViewer({{ value|json_encode()|raw }}, {withLinks:false});
+        });
+    </script>
+{% endblock %}
