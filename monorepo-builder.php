@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__.'/vendor-bin/monorepo/vendor/autoload.php';
 
 use Draw\Development\MonorepoBuilder\Release\ReleaseWorker as DrawReleaseWorker;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
