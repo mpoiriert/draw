@@ -12,7 +12,7 @@
         "symfony/expression-language": "^4.4|^5.4"
     },
     "require-dev": {
-        "draw/tester": "^0.7.54",
+        "draw/tester": "^0.8",
         "sonata-project/admin-bundle": "^3.105",
         "sonata-project/doctrine-orm-admin-bundle": "^3.35",
         "terminal42/service-annotation-bundle": "^1.1",
