@@ -6,6 +6,7 @@ use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
+use Draw\Bundle\SonataExtraBundle\FieldDescription\SimpleFieldDescription;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -68,6 +69,12 @@ class UserAdmin extends AbstractAdmin
             ->add('dateOfBirth')
             ->add('roles', 'json')
             ->add(
+                SimpleFieldDescription::create(
+                    'static',
+                    'Static Value'
+                )
+            )
+            ->add(
                 'tags',
                 'grid',
                 [
@@ -95,7 +102,6 @@ class UserAdmin extends AbstractAdmin
                 )
                 ->add('needChangePassword')
                 ->add('manualLock')
-
             ->end();
     }
 }
