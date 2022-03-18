@@ -4,8 +4,10 @@ namespace Draw\Bundle\ApplicationBundle\DependencyInjection;
 
 use Draw\Bundle\ApplicationBundle\Configuration\Repository\ConfigRepository;
 use Draw\Bundle\ApplicationBundle\Configuration\Sonata\Admin\ConfigAdmin;
+use Draw\Bundle\ApplicationBundle\Versioning\VersionManager;
 use Draw\Component\Core\Configuration\SonataAdminNodeConfiguration;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
+use Draw\Contracts\Application\VersionVerificationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -68,6 +70,11 @@ class DrawApplicationExtension extends Extension implements PrependExtensionInte
         }
 
         $loader->load('versioning.xml');
+
+        $containerBuilder->setAlias(
+            VersionVerificationInterface::class,
+            VersionManager::class
+        );
     }
 
     public function prepend(ContainerBuilder $container)
