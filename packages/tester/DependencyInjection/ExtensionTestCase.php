@@ -137,6 +137,11 @@ abstract class ExtensionTestCase extends TestCase
         return self::$containerBuilder;
     }
 
+    protected function getExtension(): Extension
+    {
+        return $this->extension;
+    }
+
     /**
      * Override if you want to configure the container builder in some specific case.
      */
