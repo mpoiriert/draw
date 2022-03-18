@@ -56,6 +56,7 @@ class UserAdmin extends AbstractAdmin
             ->add('id')
             ->add('email')
             ->add('dateOfBirth')
+            ->add('roles', 'json')
             ->add(
                 'tags',
                 'grid',

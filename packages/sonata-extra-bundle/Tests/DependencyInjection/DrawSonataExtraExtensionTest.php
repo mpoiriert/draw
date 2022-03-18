@@ -7,6 +7,7 @@ use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
 use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Bundle\SonataExtraBundle\Extension\GridExtension;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
+use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\DoctrineORMAdminBundle\DependencyInjection\SonataDoctrineORMAdminExtension;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -38,6 +39,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         $containerBuilder = static::getContainerBuilder();
         $containerBuilder->registerExtension(new TwigExtension());
         $containerBuilder->registerExtension(new SonataDoctrineORMAdminExtension());
+        $containerBuilder->registerExtension(new SonataAdminExtension());
 
         $this->getExtension()->prepend($containerBuilder);
 
@@ -65,7 +67,27 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
                         'types' => [
                             'show' => [
                                 'actions' => '@DrawSonataExtra/CRUD/show_actions.html.twig',
+                                'json' => '@DrawSonataExtra/CRUD/show_json.html.twig',
                             ],
+                        ],
+                    ],
+                ],
+            ],
+            $result
+        );
+
+        $result = $containerBuilder
+            ->getExtensionConfig('sonata_admin');
+
+        $this->assertSame(
+            [
+                [
+                    'assets' => [
+                        'extra_javascripts' => [
+                            'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.js',
+                        ],
+                        'extra_stylesheets' => [
+                            'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.css',
                         ],
                     ],
                 ],

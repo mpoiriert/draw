@@ -58,7 +58,24 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                         'types' => [
                             'show' => [
                                 'actions' => '@DrawSonataExtra/CRUD/show_actions.html.twig',
+                                'json' => '@DrawSonataExtra/CRUD/show_json.html.twig',
                             ],
+                        ],
+                    ],
+                ]
+            );
+        }
+
+        if ($container->hasExtension('sonata_admin')) {
+            $container->prependExtensionConfig(
+                'sonata_admin',
+                [
+                    'assets' => [
+                        'extra_javascripts' => [
+                            'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.js',
+                        ],
+                        'extra_stylesheets' => [
+                            'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.css',
                         ],
                     ],
                 ]
