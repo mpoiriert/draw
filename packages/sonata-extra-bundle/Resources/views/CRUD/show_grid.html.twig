@@ -1,0 +1,47 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    {{ block("_display_grid") }}
+{% endblock %}
+
+{% block _display_grid %}
+    {% set colCount = 0 %}
+    <table class="table">
+        <thead>
+        <tr>
+            {% for field in field_description.options.fields %}
+                {% if field.type != 'grid' %}
+                    {% set colCount = colCount +1 %}
+                    <th>{{ field.label }}</th>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for entry in value %}
+            <tr>
+                {% for key, field in field_description.options.fields %}
+                    {% if field.type != 'grid' %}
+                        {{ field|render_view_element(entry) }}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% for key, field in field_description.options.fields %}
+                {% if field.type == 'grid' %}
+                    <tr>
+                        <td colspan="{{ colCount }}">
+                            {% with %}
+                                {% set field_description = field %}
+                                {% set value = field.getValue(entry) %}
+                                {% set admin = field.admin %}
+                                {% set object = entry %}
+                                {{ block("_display_grid") }}
+                            {% endwith %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace App\Sonata\Admin;
 
+use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -48,10 +49,23 @@ class UserAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
+        $tagAdmin = $this->getConfigurationPool()
+            ->getAdminByClass(Tag::class);
+
         $show
             ->add('id')
             ->add('email')
-            ->add('dateOfBirth');
+            ->add('dateOfBirth')
+            ->add(
+                'tags',
+                'grid',
+                [
+                    'fieldValueOnly' => false,
+                    'colspan' => true,
+                    'fieldsAdmin' => $tagAdmin,
+                    'fields' => $tagAdmin->configureGridFields([]),
+                ]
+            );
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -70,6 +84,7 @@ class UserAdmin extends AbstractAdmin
                 )
                 ->add('needChangePassword')
                 ->add('manualLock')
+
             ->end();
     }
 }
