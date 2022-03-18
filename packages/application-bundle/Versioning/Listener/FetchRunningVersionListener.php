@@ -54,7 +54,7 @@ class FetchRunningVersionListener implements EventSubscriberInterface
 
         switch (true) {
             case 0 !== $code:
-            case 2 <= mb_strlen($version):
+            case 2 >= mb_strlen($version):
                 return;
         }
 
