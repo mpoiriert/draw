@@ -9,7 +9,12 @@
             <exclude>../../{DrawSonataExtraBundle.php}</exclude>
         </prototype>
         <service id="Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService">
-            <tag name="sonata.block" />
+            <tag name="sonata.block"/>
+        </service>
+
+        <service id="Draw\Bundle\SonataExtraBundle\Extension\GridExtension">
+            <tag name="sonata.admin.extension" global="true"/>
+            <argument key="$guesser" type="service" id="sonata.admin.guesser.orm_show_chain"/>
         </service>
     </services>
 </container>

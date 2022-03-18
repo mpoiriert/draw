@@ -39,6 +39,15 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             $container->getParameterBag()->resolveValue($configs)
         );
 
+        $container->prependExtensionConfig(
+            'twig',
+            [
+                'paths' => [
+                    realpath(__DIR__.'/../Resources/SonataAdminBundle/views') => 'SonataAdmin',
+                ],
+            ]
+        );
+
         if (!$this->isConfigEnabled($container, $config['user_timezone'])) {
             return;
         }
