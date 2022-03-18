@@ -16,5 +16,9 @@
             <tag name="sonata.admin.extension" global="true"/>
             <argument key="$guesser" type="service" id="sonata.admin.guesser.orm_show_chain"/>
         </service>
+
+        <service id="Draw\Bundle\SonataExtraBundle\Extension\AutoHelpExtension">
+            <tag name="sonata.admin.extension" global="true"/>
+        </service>
     </services>
 </container>

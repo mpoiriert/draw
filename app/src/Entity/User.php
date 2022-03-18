@@ -155,6 +155,8 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     private $userAddresses;
 
     /**
+     * User date of birth.
+     *
      * @var \DateTimeImmutable|null
      *
      * @ORM\Column(name="date_of_birth", type="datetime_immutable", nullable=true)

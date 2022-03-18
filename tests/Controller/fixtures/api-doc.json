@@ -1312,6 +1312,7 @@
                 },
                 "dateOfBirth": {
                     "format": "date-time",
+                    "description": "User date of birth.",
                     "type": "string",
                     "x-draw-dashboard-form-input": {
                         "id": "dateOfBirth",
