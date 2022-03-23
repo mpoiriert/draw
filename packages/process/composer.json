@@ -3,11 +3,7 @@
     "description": "Package to add some feature related to symfony/process component",
     "license": "MIT",
     "type": "library",
-    "keywords": [
-        "draw",
-        "process",
-        "symfony"
-    ],
+    "keywords": ["draw", "process", "symfony"],
     "authors": [
         {
             "name": "Martin Poirier Theoret",
@@ -15,7 +11,7 @@
         }
     ],
     "require": {
-        "draw/contracts": "^0.8",
+        "draw/contracts": "^0.7.55",
         "symfony/process": "^4.4 || ^5.4"
     },
     "require-dev": {

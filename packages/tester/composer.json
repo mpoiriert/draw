@@ -3,12 +3,7 @@
     "description": "Library base on phpunit to test your data with a fluent interface.",
     "license": "MIT",
     "type": "library",
-    "keywords": [
-        "draw",
-        "test",
-        "http",
-        "phpunit"
-    ],
+    "keywords": ["draw", "test", "http", "phpunit"],
     "authors": [
         {
             "name": "Martin Poirier Theoret",
