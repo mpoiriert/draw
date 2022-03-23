@@ -3,12 +3,9 @@
     "description": "This bundle allow cron configuration that can be dump into a compatible cron job file format.",
     "license": "MIT",
     "type": "symfony-bundle",
-    "keywords": [
-        "symfony",
-        "cron"
-    ],
+    "keywords": ["symfony", "cron"],
     "require": {
-        "draw/tester": "^0.8",
+        "draw/tester": "^0.7.56",
         "symfony/config": "^4.4 || ^5.4",
         "symfony/console": "^4.4 || ^5.4",
         "symfony/dependency-injection": "^4.4 || ^5.4"

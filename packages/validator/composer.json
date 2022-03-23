@@ -2,11 +2,7 @@
     "name": "draw/validator",
     "license": "MIT",
     "type": "library",
-    "keywords": [
-        "draw",
-        "validator",
-        "symfony"
-    ],
+    "keywords": ["draw", "validator", "symfony"],
     "authors": [
         {
             "name": "Martin Poirier Theoret",

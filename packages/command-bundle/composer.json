@@ -3,11 +3,7 @@
     "description": "This bundle track command execution in the database.",
     "license": "MIT",
     "type": "symfony-bundle",
-    "keywords": [
-        "symfony",
-        "command",
-        "sonata"
-    ],
+    "keywords": ["symfony", "command", "sonata"],
     "require": {
         "doctrine/dbal": "^2.13",
         "psr/log": "@stable",
@@ -19,7 +15,7 @@
     },
     "require-dev": {
         "doctrine/orm": "^2.10",
-        "draw/tester": "^0.8",
+        "draw/tester": "^0.7.56",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "sonata-project/admin-bundle": "^3.105",
         "sonata-project/doctrine-orm-admin-bundle": "^3.35",

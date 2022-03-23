@@ -3,10 +3,7 @@
     "description": "",
     "license": "MIT",
     "type": "symfony-bundle",
-    "keywords": [
-        "symfony",
-        "messenger"
-    ],
+    "keywords": ["symfony", "messenger"],
     "require": {
         "php": "^7.3",
         "ext-ctype": "*",
@@ -17,7 +14,7 @@
         "symfony/messenger": "^4.4.2 || ^5.3"
     },
     "require-dev": {
-        "draw/tester-bundle": "^0.8",
+        "draw/tester-bundle": "^0.7.56",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "symfony/validator": "^4.4 || ^5.4",
         "symfony/yaml": "^4.4 || ^5.4"

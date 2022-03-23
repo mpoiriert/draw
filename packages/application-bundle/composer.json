@@ -3,11 +3,7 @@
     "description": "Bundle to handle application domain logic",
     "license": "MIT",
     "type": "symfony-bundle",
-    "keywords": [
-        "symfony",
-        "application",
-        "configuration"
-    ],
+    "keywords": ["symfony", "application", "configuration"],
     "require": {
         "php": "^7.3",
         "ext-ctype": "*",
@@ -15,13 +11,13 @@
         "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.10",
-        "draw/contracts": "^0.8",
-        "draw/core": "^0.8",
+        "draw/contracts": "^0.7.56",
+        "draw/core": "^0.7.56",
         "symfony/doctrine-bridge": "^4.4 || ^5.4",
         "symfony/framework-bundle": "^4.4 || ^5.4"
     },
     "require-dev": {
-        "draw/tester-bundle": "^0.8",
+        "draw/tester-bundle": "^0.7.56",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "sonata-project/admin-bundle": "^3.105"
     },

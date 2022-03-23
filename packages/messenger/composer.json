@@ -3,12 +3,7 @@
     "description": "Symfony messenger transport offering more option (base on doctrine transport)",
     "license": "MIT",
     "type": "library",
-    "keywords": [
-        "draw",
-        "messenger",
-        "symfony",
-        "doctrine"
-    ],
+    "keywords": ["draw", "messenger", "symfony", "doctrine"],
     "authors": [
         {
             "name": "Martin Poirier Theoret",
@@ -25,7 +20,7 @@
         "symfony/messenger": "^4.4.2 || ^5.3"
     },
     "require-dev": {
-        "draw/tester-bundle": "^0.8",
+        "draw/tester-bundle": "^0.7.56",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "symfony/event-dispatcher": "^4.4 || ^5.4"
     },
