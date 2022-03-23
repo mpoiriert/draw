@@ -1,28 +1,29 @@
 {
     "name": "draw/open-api",
-    "type": "library",
     "description": "Open Api PHP manipulation library. Only support v 2.0",
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": "^7.3",
+        "ext-json": "*",
+        "jms/serializer": "^3.11",
+        "phpdocumentor/reflection-docblock": "^5.2",
+        "symfony/validator": "^4.4 || ^5.4"
+    },
+    "require-dev": {
+        "doctrine/common": "^3.1",
+        "doctrine/orm": "^2.10",
+        "phpunit/phpunit": "^8.0 || ^9.0"
+    },
+    "conflict": {
+        "draw/swagger": "*"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Draw\\Component\\OpenApi\\": ""
         }
-    },
-    "require": {
-        "php": "^7.3",
-        "ext-json": "*",
-        "symfony/validator": "^4.4|^5.4",
-        "jms/serializer": "^3.11",
-        "phpdocumentor/reflection-docblock": "^5.2"
-    },
-    "require-dev": {
-        "doctrine/common": "^3.1",
-        "doctrine/orm": "^2.10",
-        "phpunit/phpunit": "^8.0|^9.0"
-    },
-    "conflict": {
-        "draw/swagger": "*"
     },
     "extra": {
         "branch-alias": {

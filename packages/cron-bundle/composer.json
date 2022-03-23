@@ -1,24 +1,27 @@
 {
     "name": "draw/cron-bundle",
-    "type": "symfony-bundle",
-    "keywords": ["symfony", "cron"],
-    "license": "MIT",
     "description": "This bundle allow cron configuration that can be dump into a compatible cron job file format.",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "keywords": [
+        "symfony",
+        "cron"
+    ],
+    "require": {
+        "draw/tester": "^0.8",
+        "symfony/config": "^4.4 || ^5.4",
+        "symfony/console": "^4.4 || ^5.4",
+        "symfony/dependency-injection": "^4.4 || ^5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0 || ^9.0"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\CronBundle\\": ""
         }
-    },
-    "require": {
-        "draw/tester": "^0.8",
-        "symfony/config": "^4.4|^5.4",
-        "symfony/console": "^4.4|^5.4",
-        "symfony/dependency-injection": "^4.4|^5.4"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^8.0|^9.0"
     },
     "extra": {
         "branch-alias": {

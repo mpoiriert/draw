@@ -1,32 +1,34 @@
 {
     "name": "draw/user-bundle",
-    "type": "symfony-bundle",
-    "keywords": ["symfony", "sonata", "user"],
-    "license": "MIT",
     "description": "",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "keywords": [
+        "symfony",
+        "sonata",
+        "user"
+    ],
     "require": {
         "php": "^7.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "draw/core": "^0.8",
         "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.10",
+        "draw/core": "^0.8",
         "ramsey/uuid": "^4.2",
-        "symfony/framework-bundle": "^4.4|^5.4",
-        "symfony/security-core": "^4.4|^5.4",
-        "symfony/security-guard": "^4.4|^5.4",
-        "symfony/security-http": "^4.4|^5.4",
-        "symfony/yaml": "^4.4|^5.4"
+        "symfony/framework-bundle": "^4.4 || ^5.4",
+        "symfony/security-core": "^4.4 || ^5.4",
+        "symfony/security-guard": "^4.4 || ^5.4",
+        "symfony/security-http": "^4.4 || ^5.4",
+        "symfony/yaml": "^4.4 || ^5.4"
     },
     "require-dev": {
         "draw/messenger-bundle": "^0.8",
         "draw/post-office-bundle": "^0.8",
         "draw/tester": "^0.8",
         "firebase/php-jwt": "^5.1",
-        "phpunit/phpunit": "^8.0|^9.0",
+        "phpunit/phpunit": "^8.0 || ^9.0",
         "scheb/2fa-bundle": "^5.12",
         "scheb/2fa-qr-code": "^5.12",
         "scheb/2fa-totp": "^5.12",
@@ -37,9 +39,11 @@
         "draw/post-office-bundle": "This allow to write and send email via email writer services.",
         "firebase/php-jwt": "Use for the jwt connection token system",
         "scheb/2fa-bundle": "Use for the 2FA",
-        "scheb/2fa-totp": "Use to enable TOTP methdon for 2FA",
-        "scheb/2fa-qr-code": "Use for the 2FA secret code generation using QR code"
+        "scheb/2fa-qr-code": "Use for the 2FA secret code generation using QR code",
+        "scheb/2fa-totp": "Use to enable TOTP methdon for 2FA"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\UserBundle\\": ""

@@ -1,28 +1,32 @@
 {
     "name": "draw/application-bundle",
-    "type": "symfony-bundle",
-    "keywords": ["symfony", "application", "configuration"],
+    "description": "Bundle to handle application domain logic",
     "license": "MIT",
-    "description": "",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "type": "symfony-bundle",
+    "keywords": [
+        "symfony",
+        "application",
+        "configuration"
+    ],
     "require": {
         "php": "^7.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "draw/core": "^0.8",
-        "draw/contracts": "^0.8",
         "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.10",
-        "symfony/doctrine-bridge": "^4.4|^5.4",
-        "symfony/framework-bundle": "^4.4|^5.4"
+        "draw/contracts": "^0.8",
+        "draw/core": "^0.8",
+        "symfony/doctrine-bridge": "^4.4 || ^5.4",
+        "symfony/framework-bundle": "^4.4 || ^5.4"
     },
     "require-dev": {
         "draw/tester-bundle": "^0.8",
-        "phpunit/phpunit": "^8.0|^9.0",
+        "phpunit/phpunit": "^8.0 || ^9.0",
         "sonata-project/admin-bundle": "^3.105"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\ApplicationBundle\\": ""

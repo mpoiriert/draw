@@ -1,28 +1,32 @@
 {
     "name": "draw/process",
     "description": "Package to add some feature related to symfony/process component",
-    "type": "library",
-    "keywords": ["draw", "process", "symfony"],
     "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "draw",
+        "process",
+        "symfony"
+    ],
     "authors": [
         {
             "name": "Martin Poirier Theoret",
             "email": "mpoiriert@gmail.com"
         }
     ],
+    "require": {
+        "draw/contracts": "^0.8",
+        "symfony/process": "^4.4 || ^5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0 || ^9.0"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Draw\\Component\\Process\\": ""
         }
-    },
-    "require": {
-        "draw/contracts": "^0.8",
-        "symfony/process": "^4.4|^5.4"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^8.0|^9.0"
     },
     "extra": {
         "branch-alias": {

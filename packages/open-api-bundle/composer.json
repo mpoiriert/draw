@@ -1,38 +1,38 @@
 {
     "name": "draw/open-api-bundle",
-    "type": "symfony-bundle",
     "description": "draw/open-api library integration into Symfony4.",
     "license": "MIT",
+    "type": "symfony-bundle",
     "authors": [
         {
             "name": "Martin Poirier-Theoret",
             "email": "mpoiriert@gmail.com"
         }
     ],
+    "require": {
+        "php": "^7.3",
+        "ext-json": "*",
+        "doctrine/annotations": "^1.11",
+        "draw/open-api": "^0.8",
+        "jms/serializer-bundle": "^3.7",
+        "symfony/framework-bundle": "^4.4 || ^5.4"
+    },
+    "require-dev": {
+        "doctrine/doctrine-bundle": "^2.5",
+        "draw/tester-bundle": "^0.8",
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "sensio/framework-extra-bundle": "^5.6 || ^6.2",
+        "symfony/yaml": "^4.4 || ^5.4"
+    },
+    "suggest": {
+        "nelmio/cors-bundle": "If you have a api exposed for browser on different domain/sub-domain you might need cors."
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\OpenApiBundle\\": ""
         }
-    },
-    "require": {
-        "php": "^7.3",
-        "ext-json": "*",
-        "draw/open-api": "^0.8",
-        "doctrine/annotations": "^1.11",
-        "symfony/framework-bundle": "^4.4|^5.4",
-        "jms/serializer-bundle": "^3.7"
-    },
-    "require-dev": {
-        "doctrine/doctrine-bundle": "^2.5",
-        "draw/tester-bundle": "^0.8",
-        "phpunit/phpunit": "^8.0|^9.0",
-        "sensio/framework-extra-bundle": "^5.6|^6.2",
-        "symfony/yaml": "^4.4|^5.4"
-    },
-    "suggest": {
-        "nelmio/cors-bundle": "If you have a api exposed for browser on different domain/sub-domain you might need cors."
     },
     "extra": {
         "branch-alias": {
