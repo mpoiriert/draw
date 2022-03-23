@@ -24,11 +24,13 @@ jobs:
           - core
           - cron-bundle
           - doctrine-bus-message-bundle
+          - framework-extra-bundle
           - messenger
           - messenger-bundle
           - open-api
           - open-api-bundle
           - post-office-bundle
+          - process
           - profiling
           - sonata-extra-bundle
           - tester
