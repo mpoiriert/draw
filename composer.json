@@ -14,37 +14,37 @@
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.10",
         "doctrine/persistence": "^2.2",
-        "guzzlehttp/psr7": "^1.8|^2.0",
+        "guzzlehttp/psr7": "^1.8 || ^2.0",
         "jms/serializer": "^3.11",
         "jms/serializer-bundle": "^3.7",
         "pdeans/http": "^1.1",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "phpunit/phpunit": "^8.0|^9.0",
+        "phpunit/phpunit": "^8.0 || ^9.0",
         "psr/http-message": "^1.0",
         "psr/log": "@stable",
         "ramsey/uuid": "^4.2",
         "sensiolabs/ansi-to-html": "^1.2",
-        "symfony/browser-kit": "^4.4|^5.4",
-        "symfony/config": "^4.4|^5.4",
-        "symfony/console": "^4.4|^5.4",
-        "symfony/css-selector": "^4.4|^5.4",
-        "symfony/dependency-injection": "^4.4|^5.4",
-        "symfony/doctrine-bridge": "^4.4|^5.4",
-        "symfony/dom-crawler": "^4.4|^5.4",
-        "symfony/expression-language": "^4.4|^5.4",
-        "symfony/framework-bundle": "^4.4|^5.4",
-        "symfony/http-foundation": "^4.4|^5.4",
-        "symfony/http-kernel": "^4.4|^5.4",
-        "symfony/mailer": "^4.4|^5.4",
-        "symfony/messenger": "^4.4.2|^5.3",
-        "symfony/process": "^4.4|^5.4",
-        "symfony/property-access": "^4.4|^5.4",
-        "symfony/security-core": "^4.4|^5.4",
-        "symfony/security-guard": "^4.4|^5.4",
-        "symfony/security-http": "^4.4|^5.4",
-        "symfony/translation": "^4.4|^5.4",
-        "symfony/validator": "^4.4|^5.4",
-        "symfony/yaml": "^4.4|^5.4"
+        "symfony/browser-kit": "^4.4 || ^5.4",
+        "symfony/config": "^4.4 || ^5.4",
+        "symfony/console": "^4.4 || ^5.4",
+        "symfony/css-selector": "^4.4 || ^5.4",
+        "symfony/dependency-injection": "^4.4 || ^5.4",
+        "symfony/doctrine-bridge": "^4.4 || ^5.4",
+        "symfony/dom-crawler": "^4.4 || ^5.4",
+        "symfony/expression-language": "^4.4 || ^5.4",
+        "symfony/framework-bundle": "^4.4 || ^5.4",
+        "symfony/http-foundation": "^4.4 || ^5.4",
+        "symfony/http-kernel": "^4.4 || ^5.4",
+        "symfony/mailer": "^4.4 || ^5.4",
+        "symfony/messenger": "^4.4.2 || ^5.3",
+        "symfony/process": "^4.4 || ^5.4",
+        "symfony/property-access": "^4.4 || ^5.4",
+        "symfony/security-core": "^4.4 || ^5.4",
+        "symfony/security-guard": "^4.4 || ^5.4",
+        "symfony/security-http": "^4.4 || ^5.4",
+        "symfony/translation": "^4.4 || ^5.4",
+        "symfony/validator": "^4.4 || ^5.4",
+        "symfony/yaml": "^4.4 || ^5.4"
     },
     "require-dev": {
         "ext-pcntl": "*",
@@ -60,60 +60,21 @@
         "scheb/2fa-bundle": "^5.12",
         "scheb/2fa-qr-code": "^5.12",
         "scheb/2fa-totp": "^5.12",
-        "sensio/framework-extra-bundle": "^5.6|^6.2",
+        "sensio/framework-extra-bundle": "^5.6 || ^6.2",
         "sonata-project/admin-bundle": "^3.105",
         "sonata-project/doctrine-orm-admin-bundle": "^3.35",
-        "symfony/debug-bundle": "^4.4|^5.3",
-        "symfony/dependency-injection": "^4.4|^5.3",
-        "symfony/dotenv": "^4.4|^5.3",
-        "symfony/event-dispatcher": "^4.4|^5.4",
-        "symfony/expression-language": "^4.4|^5.3",
+        "symfony/debug-bundle": "^4.4 || ^5.3",
+        "symfony/dependency-injection": "^4.4 || ^5.3",
+        "symfony/dotenv": "^4.4 || ^5.3",
+        "symfony/event-dispatcher": "^4.4 || ^5.4",
+        "symfony/expression-language": "^4.4 || ^5.3",
         "symfony/flex": "^1.16",
-        "symfony/form": "^4.4|^5.3",
+        "symfony/form": "^4.4 || ^5.3",
         "symfony/monolog-bundle": "^3.7",
         "symfony/phpunit-bridge": "^5.2",
-        "symfony/stopwatch": "^4.4|^5.3",
-        "symfony/web-profiler-bundle": "^4.4|^5.3",
+        "symfony/stopwatch": "^4.4 || ^5.3",
+        "symfony/web-profiler-bundle": "^4.4 || ^5.3",
         "terminal42/service-annotation-bundle": "^1.1"
-    },
-    "conflict": {
-        "symfony/security-bundle": "<4.4.1",
-        "guzzlehttp/guzzle": "<6"
-    },
-    "autoload": {
-        "files": [
-            "packages/core/ignore_annotations.php",
-            "packages/dashboard-bundle/./functions.php"
-        ],
-        "psr-4": {
-            "Draw\\Bundle\\ApplicationBundle\\": "packages/application-bundle/",
-            "Draw\\Bundle\\AwsToolKitBundle\\": "packages/aws-tool-kit-bundle/",
-            "Draw\\Bundle\\CommandBundle\\": "packages/command-bundle/",
-            "Draw\\Bundle\\CronBundle\\": "packages/cron-bundle/",
-            "Draw\\Bundle\\DashboardBundle\\": "packages/dashboard-bundle/",
-            "Draw\\Bundle\\DoctrineBusMessageBundle\\": "packages/doctrine-bus-message-bundle/",
-            "Draw\\Bundle\\FrameworkExtraBundle\\": "packages/framework-extra-bundle/",
-            "Draw\\Bundle\\MessengerBundle\\": "packages/messenger-bundle/",
-            "Draw\\Bundle\\OpenApiBundle\\": "packages/open-api-bundle/",
-            "Draw\\Bundle\\PostOfficeBundle\\": "packages/post-office-bundle/",
-            "Draw\\Bundle\\SonataExtraBundle\\": "packages/sonata-extra-bundle/",
-            "Draw\\Bundle\\TesterBundle\\": "packages/tester-bundle/",
-            "Draw\\Bundle\\UserBundle\\": "packages/user-bundle/",
-            "Draw\\Component\\Core\\": "packages/core/",
-            "Draw\\Component\\Messenger\\": "packages/messenger/",
-            "Draw\\Component\\OpenApi\\": "packages/open-api/",
-            "Draw\\Component\\Process\\": "packages/process/",
-            "Draw\\Component\\Profiling\\": "packages/profiling/",
-            "Draw\\Component\\Tester\\": "packages/tester/",
-            "Draw\\Component\\Validator\\": "packages/validator/",
-            "Draw\\Contracts\\": "packages/contracts/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\": "app/src/",
-            "App\\Tests\\": "tests/"
-        }
     },
     "replace": {
         "draw/application-bundle": "self.version",
@@ -138,22 +99,46 @@
         "draw/user-bundle": "self.version",
         "draw/validator": "self.version"
     },
-    "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "draw:open-api:install-sandbox": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+    "conflict": {
+        "guzzlehttp/guzzle": "<6",
+        "symfony/security-bundle": "<4.4.1"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Draw\\Bundle\\ApplicationBundle\\": "packages/application-bundle/",
+            "Draw\\Bundle\\AwsToolKitBundle\\": "packages/aws-tool-kit-bundle/",
+            "Draw\\Bundle\\CommandBundle\\": "packages/command-bundle/",
+            "Draw\\Bundle\\CronBundle\\": "packages/cron-bundle/",
+            "Draw\\Bundle\\DashboardBundle\\": "packages/dashboard-bundle/",
+            "Draw\\Bundle\\DoctrineBusMessageBundle\\": "packages/doctrine-bus-message-bundle/",
+            "Draw\\Bundle\\FrameworkExtraBundle\\": "packages/framework-extra-bundle/",
+            "Draw\\Bundle\\MessengerBundle\\": "packages/messenger-bundle/",
+            "Draw\\Bundle\\OpenApiBundle\\": "packages/open-api-bundle/",
+            "Draw\\Bundle\\PostOfficeBundle\\": "packages/post-office-bundle/",
+            "Draw\\Bundle\\SonataExtraBundle\\": "packages/sonata-extra-bundle/",
+            "Draw\\Bundle\\TesterBundle\\": "packages/tester-bundle/",
+            "Draw\\Bundle\\UserBundle\\": "packages/user-bundle/",
+            "Draw\\Component\\Core\\": "packages/core/",
+            "Draw\\Component\\Messenger\\": "packages/messenger/",
+            "Draw\\Component\\OpenApi\\": "packages/open-api/",
+            "Draw\\Component\\Process\\": "packages/process/",
+            "Draw\\Component\\Profiling\\": "packages/profiling/",
+            "Draw\\Component\\Tester\\": "packages/tester/",
+            "Draw\\Component\\Validator\\": "packages/validator/",
+            "Draw\\Contracts\\": "packages/contracts/"
         },
-        "post-install-cmd": [
-            "@auto-scripts",
-            "@composer bin all install --ansi"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
+        "files": [
+            "packages/core/ignore_annotations.php",
+            "packages/dashboard-bundle/./functions.php"
         ]
     },
-    "extra": {
-        "src-dir": "app/src"
+    "autoload-dev": {
+        "psr-4": {
+            "App\\": "app/src/",
+            "App\\Tests\\": "tests/"
+        }
     },
     "config": {
         "allow-plugins": {
@@ -162,6 +147,21 @@
             "symfony/runtime": true
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "extra": {
+        "src-dir": "app/src"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "@auto-scripts",
+            "@composer bin all install --ansi"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ],
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "draw:open-api:install-sandbox": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+        }
+    }
 }

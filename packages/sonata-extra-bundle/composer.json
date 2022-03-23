@@ -1,30 +1,33 @@
 {
     "name": "draw/sonata-extra-bundle",
-    "type": "symfony-bundle",
-    "keywords": ["symfony", "sonata"],
-    "license": "MIT",
     "description": "",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "keywords": [
+        "symfony",
+        "sonata"
+    ],
     "require": {
         "php": "^7.3",
-        "symfony/framework-bundle": "^4.4|^5.4",
-        "symfony/expression-language": "^4.4|^5.4"
+        "symfony/expression-language": "^4.4 || ^5.4",
+        "symfony/framework-bundle": "^4.4 || ^5.4"
     },
     "require-dev": {
         "draw/tester": "^0.8",
+        "phpunit/phpunit": "^8.0 || ^9.0",
         "sonata-project/admin-bundle": "^3.105",
         "sonata-project/doctrine-orm-admin-bundle": "^3.35",
-        "terminal42/service-annotation-bundle": "^1.1",
-        "phpunit/phpunit": "^8.0|^9.0"
+        "terminal42/service-annotation-bundle": "^1.1"
     },
+    "suggest": {
+        "terminal42/service-annotation-bundle": "This allow to use annotation tag for service."
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\SonataExtraBundle\\": ""
         }
-    },
-    "suggest": {
-        "terminal42/service-annotation-bundle": "This allow to use annotation tag for service."
     },
     "extra": {
         "branch-alias": {

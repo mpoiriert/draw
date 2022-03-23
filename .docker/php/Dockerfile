@@ -1,4 +1,4 @@
-FROM php:7.3.24-fpm
+FROM php:7.4.2-fpm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends vim curl debconf subversion git apt-transport-https apt-utils \
@@ -10,7 +10,7 @@ RUN apt-get update \
     libzip-dev \
     openssh-server
 
-RUN docker-php-ext-configure gd --with-jpeg-dir=/usr/include/
+RUN docker-php-ext-configure gd --with-jpeg
 RUN docker-php-ext-install pdo pdo_mysql gd zip pcntl
 
 COPY php.ini /usr/local/etc/php/php.ini

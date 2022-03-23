@@ -3,7 +3,7 @@
 /.subsplit
 /docker-compose.yml
 /draw.iml
-
+composer-normalize
 /vendor-bin/**/vendor
 
 ###> symfony/framework-bundle ###

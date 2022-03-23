@@ -1,7 +1,18 @@
 {
     "name": "draw/core",
-    "type": "library",
     "description": "Core library for draw component and bundle.",
+    "license": "MIT",
+    "type": "library",
+    "require": {
+        "php": "^7.3",
+        "symfony/dependency-injection": "^4.4 || ^5.4",
+        "symfony/property-access": "^4.4 || ^5.4",
+        "symfony/validator": "^4.4 || ^5.4"
+    },
+    "require-dev": {
+        "doctrine/annotations": "^1.11",
+        "phpunit/phpunit": "^8.0 || ^9.0"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {
@@ -11,16 +22,6 @@
         "files": [
             "ignore_annotations.php"
         ]
-    },
-    "require": {
-        "php": "^7.3",
-        "symfony/dependency-injection": "^4.4|^5.4",
-        "symfony/property-access": "^4.4|^5.4",
-        "symfony/validator": "^4.4|^5.4"
-    },
-    "require-dev": {
-        "doctrine/annotations": "^1.11",
-        "phpunit/phpunit": "^8.0|^9.0"
     },
     "extra": {
         "branch-alias": {
