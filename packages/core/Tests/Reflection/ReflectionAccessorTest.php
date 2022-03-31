@@ -23,7 +23,7 @@ class ReflectionAccessorTest extends TestCase
 
     public function testSetPropertyValue(): void
     {
-        ReflectionAccessor::setPropertyValue($this, 'privateProperty', $value = 'private-property-value');
+        ReflectionAccessor::setPropertyValue($this, 'privateProperty', $value = uniqid());
 
         $this->assertSame(
             $value,
@@ -42,7 +42,7 @@ class ReflectionAccessorTest extends TestCase
 
     public function testSetPropertyValueStatic(): void
     {
-        ReflectionAccessor::setPropertyValue($this, 'privateStaticProperty', $value = 'private-static-property-value');
+        ReflectionAccessor::setPropertyValue($this, 'privateStaticProperty', $value = uniqid());
 
         $this->assertSame(
             $value,
@@ -59,6 +59,27 @@ class ReflectionAccessorTest extends TestCase
         );
     }
 
+    public function testSetPropertiesValue(): void
+    {
+        ReflectionAccessor::setPropertiesValue(
+            $this,
+            [
+                'privateProperty' => $instance = uniqid(),
+                'privateStaticProperty' => $static = uniqid(),
+            ]
+        );
+
+        $this->assertSame(
+            $instance,
+            $this->privateProperty
+        );
+
+        $this->assertSame(
+            $static,
+            static::$privateStaticProperty
+        );
+    }
+
     public function testCallMethodStaticFunctionNoArgument(): void
     {
         $this->assertSame(
@@ -69,9 +90,8 @@ class ReflectionAccessorTest extends TestCase
 
     public function testCallMethodStaticFunctionWithArgument(): void
     {
-        $value = uniqid();
         $this->assertSame(
-            static::privateStaticFunction($value),
+            static::privateStaticFunction($value = uniqid()),
             ReflectionAccessor::callMethod($this, 'privateStaticFunction', $value)
         );
     }
@@ -86,9 +106,8 @@ class ReflectionAccessorTest extends TestCase
 
     public function testCallMethodFunctionWithArgument(): void
     {
-        $value = uniqid();
         $this->assertSame(
-            $this->privateFunction($value),
+            $this->privateFunction($value = uniqid()),
             ReflectionAccessor::callMethod($this, 'privateFunction', $value)
         );
     }

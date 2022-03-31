@@ -25,13 +25,20 @@ class ReflectionAccessor
             : $property->getValue($objectOrClass);
     }
 
-    public static function setPropertyValue($objectOrProperty, string $propertyName, $value): void
+    public static function setPropertyValue($objectOrClass, string $propertyName, $value): void
     {
-        $property = static::createAccessiblePropertyReflection($objectOrProperty, $propertyName);
+        $property = static::createAccessiblePropertyReflection($objectOrClass, $propertyName);
 
         $property->isStatic()
             ? $property->setValue($value)
-            : $property->setValue($objectOrProperty, $value);
+            : $property->setValue($objectOrClass, $value);
+    }
+
+    public static function setPropertiesValue($objectOrClass, array $map): void
+    {
+        foreach ($map as $property => $value) {
+            static::setPropertyValue($objectOrClass, $property, $value);
+        }
     }
 
     private static function createAccessibleMethodReflection($objectOrClass, string $methodName): ReflectionMethod
