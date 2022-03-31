@@ -16,6 +16,12 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'messenger' => [
+                'enabled' => true,
+                'async_routing_configuration' => [
+                    'enabled' => false,
+                ],
+            ],
             'process' => [
                 'enabled' => true,
             ],
@@ -26,7 +32,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available option is process.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are messenger, process.',
         ];
     }
 }
