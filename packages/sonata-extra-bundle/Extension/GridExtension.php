@@ -37,6 +37,12 @@ class GridExtension extends AbstractAdminExtension
         $fields = [];
         $field->setTemplate('@DrawSonataExtra/CRUD/show_grid.html.twig');
         $fieldAdmin = $field->getOption('fieldsAdmin');
+        if (null === $fieldAdmin) {
+            $configurationPool = $admin->getConfigurationPool();
+            if ($configurationPool->hasAdminByClass($model = $field->getTargetModel())) {
+                $fieldAdmin = $configurationPool->getAdminByClass($model);
+            }
+        }
         foreach ($field->getOption('fields', []) as $key => $options) {
             $fieldName = $options['fieldName'] ?? ($fieldAdmin ? $key : $field->getName().'.'.$key);
             $fieldAdmin = $options['admin'] ?? $fieldAdmin ?? $admin;

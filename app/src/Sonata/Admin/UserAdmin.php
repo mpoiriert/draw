@@ -44,6 +44,7 @@ class UserAdmin extends AbstractAdmin
         $list
             ->addIdentifier('id')
             ->add('email')
+            ->add('tags', 'list')
             ->add(
                 constant(ListMapper::class.'::NAME_ACTIONS') ?: '_action',
                 null,
@@ -81,7 +82,6 @@ class UserAdmin extends AbstractAdmin
                 [
                     'fieldValueOnly' => false,
                     'colspan' => true,
-                    'fieldsAdmin' => $tagAdmin,
                     'fields' => $tagAdmin->configureGridFields([]),
                 ]
             );
