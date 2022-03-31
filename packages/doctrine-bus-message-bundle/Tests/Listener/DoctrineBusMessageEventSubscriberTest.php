@@ -4,10 +4,10 @@ namespace Draw\Bundle\DoctrineBusMessageBundle\Tests\Listener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\DoctrineBusMessageBundle\Listener\DoctrineBusMessageEventSubscriber;
-use Draw\Bundle\DoctrineBusMessageBundle\Message\AsyncMessageInterface;
-use Draw\Bundle\DoctrineBusMessageBundle\Tests\fixtures\Message\TestMessage;
 use Draw\Bundle\DoctrineBusMessageBundle\Tests\TestCase;
+use Draw\Bundle\TesterBundle\Messenger\MessengerTesterTrait;
 use Draw\Bundle\TesterBundle\Messenger\TransportTester;
+use stdClass;
 use Test\Entity\MessageHolder;
 use Test\Entity\NotMessageHolder;
 
@@ -16,6 +16,8 @@ use Test\Entity\NotMessageHolder;
  */
 class DoctrineBusMessageEventSubscriberTest extends TestCase
 {
+    use MessengerTesterTrait;
+
     /**
      * @var DoctrineBusMessageEventSubscriber
      */
@@ -45,7 +47,7 @@ class DoctrineBusMessageEventSubscriberTest extends TestCase
     {
         $this->entityManager = static::getService(EntityManagerInterface::class);
         $this->entityManager->clear(); // This is to test postLoad
-        $this->transportTester = static::getService('messenger.transport.async.draw.tester');
+        $this->transportTester = $this->getTransportTester('async');
         $this->transportTester->reset();
         $this->doctrineBusMessageEventSubscriber = static::getService(DoctrineBusMessageEventSubscriber::class);
     }
@@ -115,25 +117,40 @@ class DoctrineBusMessageEventSubscriberTest extends TestCase
     public function testPostFlushEmpty(): void
     {
         $this->entityManager->flush();
-        $this->transportTester->assertMessageMatch(AsyncMessageInterface::class, null, 0);
+        $this->transportTester->assertMessageMatch(stdClass::class, null, 0);
     }
 
     public function testPostFlushWithOneMessage(): void
     {
         $messageHolder = $this->entityManager->find(MessageHolder::class, 1);
-        $messageHolder->messageQueue()->enqueue(new TestMessage());
+        $messageHolder->messageQueue()->enqueue(new stdClass());
         $this->entityManager->flush();
 
-        $this->transportTester->assertMessageMatch(AsyncMessageInterface::class);
+        $this->transportTester->assertMessageMatch(stdClass::class);
     }
 
     public function testPostFlushWithMultipleMessage(): void
     {
         $messageHolder = $this->entityManager->find(MessageHolder::class, 1);
-        $messageHolder->messageQueue()->enqueue(new TestMessage());
-        $messageHolder->messageQueue()->enqueue(new TestMessage());
+        $messageHolder->messageQueue()->enqueue(new stdClass());
+        $messageHolder->messageQueue()->enqueue(new stdClass());
         $this->entityManager->flush();
 
-        $this->transportTester->assertMessageMatch(AsyncMessageInterface::class, null, 2);
+        $this->transportTester->assertMessageMatch(stdClass::class, null, 2);
+    }
+
+    public function testPostFlushDouble(): void
+    {
+        $messageHolder = $this->entityManager->find(MessageHolder::class, 1);
+        $messageHolder->messageQueue()->enqueue(new stdClass());
+        $this->entityManager->flush();
+
+        $this->transportTester->assertMessageMatch(stdClass::class);
+
+        $this->transportTester->reset();
+
+        $this->entityManager->flush();
+
+        $this->transportTester->assertMessageMatch(stdClass::class, null, 0);
     }
 }
