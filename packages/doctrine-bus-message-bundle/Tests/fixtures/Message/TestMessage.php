@@ -2,9 +2,7 @@
 
 namespace Draw\Bundle\DoctrineBusMessageBundle\Tests\fixtures\Message;
 
-use Draw\Bundle\DoctrineBusMessageBundle\Message\AsyncMessageInterface;
-
-class TestMessage implements AsyncMessageInterface
+class TestMessage
 {
     public $value = null;
 }

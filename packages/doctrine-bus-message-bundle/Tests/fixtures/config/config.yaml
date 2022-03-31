@@ -8,7 +8,7 @@ framework:
             async: "in-memory://"
 
         routing:
-            'Draw\Bundle\DoctrineBusMessageBundle\Message\AsyncMessageInterface': 'async'
+            'stdClass': 'async'
 
 doctrine:
     dbal:
