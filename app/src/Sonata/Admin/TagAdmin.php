@@ -57,6 +57,8 @@ class TagAdmin extends AbstractAdmin
 
     public function configureGridFields(array $fields): array
     {
+        $admin = $this;
+
         return array_merge(
             $fields,
             [
@@ -72,8 +74,8 @@ class TagAdmin extends AbstractAdmin
                                 'label' => 'Show',
                                 'icon' => 'fa-eye',
                                 'route_object' => 'show',
-                                'check_callback' => function (object $object) {
-                                    return $this->hasAccess('show', $object);
+                                'check_callback' => function (object $object) use ($admin) {
+                                    return $admin->hasAccess('show', $object);
                                 },
                             ],
                         ],
