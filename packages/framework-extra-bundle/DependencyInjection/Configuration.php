@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
+use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Process\ProcessFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -25,15 +26,28 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->append($this->createMessengerNode())
                 ->append($this->createProcessNode())
             ->end();
 
         return $treeBuilder;
     }
 
+    private function createMessengerNode(): ArrayNodeDefinition
+    {
+        return $this->canBe(DrawTransport::class, new ArrayNodeDefinition('messenger'))
+            ->children()
+                ->arrayNode('async_routing_configuration')->canBeEnabled()->end()
+            ->end();
+    }
+
     private function createProcessNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('process'))
-            ->{class_exists(ProcessFactory::class) ? 'canBeDisabled' : 'canBeEnabled'}();
+        return $this->canBe(ProcessFactory::class, new ArrayNodeDefinition('process'));
+    }
+
+    private function canBe(string $class, ArrayNodeDefinition $arrayNodeDefinition): ArrayNodeDefinition
+    {
+        return class_exists($class) ? $arrayNodeDefinition->canBeDisabled() : $arrayNodeDefinition->canBeEnabled();
     }
 }
