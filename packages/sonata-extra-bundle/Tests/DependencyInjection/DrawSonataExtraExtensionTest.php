@@ -70,6 +70,9 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
                                 'json' => '@DrawSonataExtra/CRUD/show_json.html.twig',
                                 'list' => '@DrawSonataExtra/CRUD/show_list.html.twig',
                             ],
+                            'list' => [
+                                'list' => '@DrawSonataExtra/CRUD/list_list.html.twig',
+                            ],
                         ],
                     ],
                 ],

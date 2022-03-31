@@ -1,0 +1,15 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% block field %}
+    <ul>
+        {% for val in value %}
+            <li>
+                {% if field_description.options.entry_callback is defined %}
+                    {{ field_description.options.entry_callback.call(val, val) | raw | spaceless }}
+                {% else %}
+                    {{ val | spaceless }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
