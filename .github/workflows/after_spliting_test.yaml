@@ -25,6 +25,7 @@ jobs:
           - cron-bundle
           - doctrine-bus-message-bundle
           - framework-extra-bundle
+          - log
           - messenger
           - messenger-bundle
           - open-api
