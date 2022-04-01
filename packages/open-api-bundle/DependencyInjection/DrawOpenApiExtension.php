@@ -3,6 +3,7 @@
 namespace Draw\Bundle\OpenApiBundle\DependencyInjection;
 
 use Draw\Bundle\OpenApiBundle\Exception\ConstraintViolationListException;
+use Draw\Bundle\OpenApiBundle\Listener\OpenApiEventSubscriber;
 use Draw\Bundle\OpenApiBundle\Request\Listener\QueryParameterFetcherSubscriber;
 use Draw\Bundle\OpenApiBundle\Request\Listener\ValidationSubscriber;
 use Draw\Bundle\OpenApiBundle\Request\RequestBodyParamConverter;
@@ -17,6 +18,7 @@ use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -46,6 +48,16 @@ class DrawOpenApiExtension extends Extension
 
         if ($config['versioning']['enabled']) {
             $container->setParameter('draw_open_api.versions', $config['versioning']['versions']);
+        }
+
+        if ($config['headers']) {
+            $container->setDefinition(
+                'draw.open_api.open_api_event_subscriber',
+                new Definition(OpenApiEventSubscriber::class)
+            )
+                ->setArgument('$headers', $config['headers'])
+                ->setAutoconfigured(true)
+                ->setAutowired(true);
         }
 
         $container->setParameter('draw_open_api.root_schema', $config['schema']);
