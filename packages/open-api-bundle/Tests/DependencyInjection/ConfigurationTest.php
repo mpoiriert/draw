@@ -29,6 +29,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'classNamingFilters' => [
                     0 => 'Draw\\Component\\OpenApi\\Naming\\AliasesClassNamingFilter',
                 ],
+                'headers' => [],
             ],
             'doctrine' => [
                 'enabled' => true,

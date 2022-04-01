@@ -12,7 +12,14 @@
                     "test"
                 ],
                 "operationId": "version2",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "Nothing"
