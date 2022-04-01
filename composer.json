@@ -7,6 +7,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-simplexml": "*",
         "aws/aws-sdk-php": "^3.171",
         "doctrine/annotations": "^1.11",
         "doctrine/common": "^3.1",
