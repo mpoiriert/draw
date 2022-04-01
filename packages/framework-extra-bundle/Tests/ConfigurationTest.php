@@ -25,6 +25,9 @@ class ConfigurationTest extends ConfigurationTestCase
             'process' => [
                 'enabled' => true,
             ],
+            'tester' => [
+                'enabled' => true,
+            ],
         ];
     }
 
@@ -32,7 +35,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are messenger, process.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are messenger, process, tester.',
         ];
     }
 }

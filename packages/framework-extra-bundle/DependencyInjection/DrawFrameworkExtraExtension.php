@@ -19,6 +19,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
 
         $this->configureProcess($config['process'], $loader, $container);
+        $this->configureTester($config['tester'], $loader, $container);
     }
 
     private function configureProcess(array $config, PhpFileLoader $loader, ContainerBuilder $containerBuilder): void
@@ -28,6 +29,15 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
 
         $loader->load('process.php');
+    }
+
+    private function configureTester(array $config, PhpFileLoader $loader, ContainerBuilder $containerBuilder): void
+    {
+        if (!$this->isConfigEnabled($containerBuilder, $config)) {
+            return;
+        }
+
+        $loader->load('tester.php');
     }
 
     public function prepend(ContainerBuilder $container)

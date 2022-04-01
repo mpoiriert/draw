@@ -8,6 +8,5 @@ use Draw\Contracts\Process\ProcessFactoryInterface;
 return static function (ContainerConfigurator $container) {
     $container->services()
         ->set('draw.process.factory', ProcessFactory::class)
-
         ->alias(ProcessFactoryInterface::class, 'draw.process.factory');
 };
