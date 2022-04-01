@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Process\ProcessFactory;
+use Draw\Component\Tester\DataTester;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -28,6 +29,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->append($this->createMessengerNode())
                 ->append($this->createProcessNode())
+                ->append($this->createTesterNode())
             ->end();
 
         return $treeBuilder;
@@ -44,6 +46,11 @@ class Configuration implements ConfigurationInterface
     private function createProcessNode(): ArrayNodeDefinition
     {
         return $this->canBe(ProcessFactory::class, new ArrayNodeDefinition('process'));
+    }
+
+    private function createTesterNode(): ArrayNodeDefinition
+    {
+        return $this->canBe(DataTester::class, new ArrayNodeDefinition('tester'));
     }
 
     private function canBe(string $class, ArrayNodeDefinition $arrayNodeDefinition): ArrayNodeDefinition
