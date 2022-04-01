@@ -14,6 +14,10 @@ draw_open_api:
     schema:
       info:
         title: "test"
+    headers:
+      - name: 'X-Draw-Language'
+        type: 'string'
+        default: 'en'
     definitionAliases:
       - class: 'Draw\Bundle\OpenApiBundle\Tests\Mock\Model\'
         alias: ''

@@ -24,6 +24,12 @@
                         "schema": {
                             "$ref": "#/definitions/Test"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -69,6 +75,12 @@
                         "required": true,
                         "collectionFormat": "csv",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -95,7 +107,14 @@
                     "test"
                 ],
                 "operationId": "version2",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "Nothing"

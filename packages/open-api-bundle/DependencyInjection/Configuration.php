@@ -41,6 +41,7 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('cleanOnDump')->defaultTrue()->end()
                 ->append($this->createVersioningNode())
                 ->append($this->createSchemaNode())
+                ->append($this->createHeadersNode())
                 ->append($this->createDefinitionAliasesNode())
                 ->append($this->createNamingFiltersNode())
             ->end();
@@ -152,6 +153,15 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('basePath')->end()
                 ->scalarNode('swagger')->defaultValue('2.0')->end()
+            ->end();
+    }
+
+    private function createHeadersNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('headers'))
+            ->arrayPrototype()
+                ->normalizeKeys(false)
+                ->ignoreExtraKeys(false)
             ->end();
     }
 }
