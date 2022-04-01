@@ -11,6 +11,7 @@
         }
     ],
     "require": {
+        "ext-simplexml": "*",
         "guzzlehttp/psr7": "^1.8 || ^2.0",
         "pdeans/http": "^1.1",
         "phpunit/phpunit": "^8.0 || ^9.0",

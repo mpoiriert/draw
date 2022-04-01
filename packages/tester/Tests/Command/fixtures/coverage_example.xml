@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1611930254">
+    <project timestamp="1611930254">
+        <package name="Test">
+            <file name="Test1.php">
+                <class name="Test1" namespace="Test">
+                    <metrics complexity="3" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0"
+                             statements="5" coveredstatements="5" elements="8" coveredelements="8"/>
+                </class>
+                <line num="26" type="method" name="getTest" visibility="public" complexity="1" crap="1" count="1"/>
+                <line num="28" type="stmt" count="1"/>
+                <metrics loc="29" ncloc="26" classes="1" methods="3" coveredmethods="3" conditionals="0"
+                         coveredconditionals="0" statements="50" coveredstatements="20" elements="8" coveredelements="8"/>
+            </file>
+            <file name="Test2.php">
+                <class name="Test2" namespace="Test">
+                    <metrics complexity="3" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0"
+                             statements="5" coveredstatements="5" elements="20" coveredelements="5"/>
+                </class>
+                <line num="16" type="method" name="getTest" visibility="public" complexity="1" crap="1" count="1"/>
+                <line num="18" type="stmt" count="1"/>
+                <metrics loc="29" ncloc="26" classes="1" methods="3" coveredmethods="3" conditionals="0"
+                         coveredconditionals="0" statements="49" coveredstatements="26" elements="20"
+                         coveredelements="5"/>
+            </file>
+        </package>
+    </project>
+</coverage>
