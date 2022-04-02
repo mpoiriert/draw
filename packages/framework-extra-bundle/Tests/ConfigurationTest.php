@@ -16,6 +16,32 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'log' => [
+                'enabled' => false,
+                'enable_all_processors' => false,
+                'processor' => [
+                    'console_command' => [
+                        'enabled' => false,
+                        'key' => 'command',
+                        'includeArguments' => true,
+                        'includeOptions' => false,
+                    ],
+                    'delay' => [
+                        'enabled' => false,
+                        'key' => 'delay',
+                    ],
+                    'request_headers' => [
+                        'enabled' => false,
+                        'key' => 'request_headers',
+                        'onlyHeaders' => [],
+                        'ignoreHeaders' => [],
+                    ],
+                    'token' => [
+                        'enabled' => false,
+                        'key' => 'token',
+                    ],
+                ],
+            ],
             'messenger' => [
                 'enabled' => true,
                 'async_routing_configuration' => [
@@ -35,7 +61,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are messenger, process, tester.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are log, messenger, process, tester.',
         ];
     }
 }
