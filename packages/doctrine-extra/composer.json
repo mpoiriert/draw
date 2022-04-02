@@ -1,0 +1,32 @@
+{
+    "name": "draw/doctrine-extra",
+    "description": "Log related tool, mainly for monolog",
+    "license": "MIT",
+    "type": "library",
+    "keywords": ["draw", "log", "monolog"],
+    "authors": [
+        {
+            "name": "Martin Poirier Theoret",
+            "email": "mpoiriert@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "doctrine/data-fixtures": "^1.5",
+        "phpunit/phpunit": "^8.0 || ^9.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Draw\\DoctrineExtra\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}
