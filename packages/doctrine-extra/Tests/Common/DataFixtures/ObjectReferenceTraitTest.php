@@ -1,0 +1,106 @@
+<?php
+
+namespace Draw\DoctrineExtra\Tests\Common\DataFixtures;
+
+use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Draw\DoctrineExtra\Common\DataFixtures\ObjectReferenceTrait;
+use PHPUnit\Framework\TestCase;
+
+class ObjectReferenceTraitTest extends TestCase
+{
+    /**
+     * @var object|ObjectReferenceTrait
+     */
+    private object $trait;
+
+    private ReferenceRepository $referenceRepository;
+
+    public function setUp(): void
+    {
+        $this->referenceRepository = $this->createMock(ReferenceRepository::class);
+
+        $this->trait = new class($this->referenceRepository) {
+            use ObjectReferenceTrait;
+
+            protected ReferenceRepository $referenceRepository;
+
+            public function __construct(ReferenceRepository $referenceRepository)
+            {
+                $this->referenceRepository = $referenceRepository;
+            }
+        };
+    }
+
+    public function testAddObjectReference(): void
+    {
+        $this->referenceRepository
+            ->expects($this->once())
+            ->method('addReference')
+            ->with(
+                sprintf(
+                    '%s.%s',
+                    $class = uniqid('class-'),
+                    $name = uniqid('name-')
+                ),
+                $object = new \stdClass()
+            );
+
+        $this->trait->addObjectReference($class, $name, $object);
+    }
+
+    public function testHasObjectReference(): void
+    {
+        $this->referenceRepository
+            ->expects($this->once())
+            ->method('hasReference')
+            ->with(
+                sprintf(
+                    '%s.%s',
+                    $class = uniqid('class-'),
+                    $name = uniqid('name-')
+                )
+            )
+            ->willReturn(false);
+
+        $this->assertFalse(
+            $this->trait->hasObjectReference($class, $name)
+        );
+    }
+
+    public function testGetObjectReference(): void
+    {
+        $this->referenceRepository
+            ->expects($this->once())
+            ->method('getReference')
+            ->with(
+                sprintf(
+                    '%s.%s',
+                    $class = uniqid('class-'),
+                    $name = uniqid('name-')
+                )
+            )
+            ->willReturn($object = new \stdClass());
+
+        $this->assertSame(
+            $object,
+            $this->trait->getObjectReference($class, $name)
+        );
+    }
+
+    public function testSetObjectReference(): void
+    {
+        $this->referenceRepository
+            ->expects($this->once())
+            ->method('setReference')
+            ->with(
+                sprintf(
+                    '%s.%s',
+                    $class = uniqid('class-'),
+                    $name = uniqid('name-')
+                ),
+                $object = new \stdClass()
+            );
+
+        $this->trait->setObjectReference($class, $name, $object);
+    }
+}
