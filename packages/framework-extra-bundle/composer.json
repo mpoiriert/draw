@@ -19,11 +19,15 @@
     },
     "require-dev": {
         "draw/contracts": "^0.8",
+        "draw/log": "^0.8",
         "draw/messenger": "^0.8",
         "draw/process": "^0.8",
         "draw/tester": "^0.8",
         "draw/tester-bundle": "^0.8",
-        "phpunit/phpunit": "^8.0 || ^9.0"
+        "draw/user-bundle": "^0.8",
+        "monolog/monolog": "^2.4.0",
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "symfony/security-core": "^5.4.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
