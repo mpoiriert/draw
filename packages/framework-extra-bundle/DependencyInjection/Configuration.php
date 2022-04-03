@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->append($this->createLogNode())
+                ->append($this->createLoggerNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createProcessNode())
                 ->append($this->createTesterNode())
@@ -82,6 +83,30 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
+    private function createLoggerNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('logger'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('slow_request')
+                    ->canBeEnabled()
+                    ->addDefaultsIfNotSet()
+                    ->fixXmlConfig('request_matcher', 'request_matchers')
+                    ->children()
+                        ->integerNode('default_duration')->min(0)->defaultValue(10000)->end()
+                        ->append(
+                            $this
+                                ->createRequestMatcherNode('request_matchers')
+                                    ->children()
+                                        ->scalarNode('duration')->end()
+                                    ->end()
+                                ->end()
+                        )
+                    ->end()
+                ->end()
+            ->end();
+    }
+
     private function createMessengerNode(): ArrayNodeDefinition
     {
         return $this->canBe(DrawTransport::class, new ArrayNodeDefinition('messenger'))
@@ -103,5 +128,41 @@ class Configuration implements ConfigurationInterface
     private function canBe(string $class, ArrayNodeDefinition $arrayNodeDefinition): ArrayNodeDefinition
     {
         return class_exists($class) ? $arrayNodeDefinition->canBeDisabled() : $arrayNodeDefinition->canBeEnabled();
+    }
+
+    private function createRequestMatcherNode(string $name, bool $multiple = true): ArrayNodeDefinition
+    {
+        $node = new ArrayNodeDefinition($name);
+        if ($multiple) {
+            $node = $node->prototype('array');
+        }
+
+        $node
+            ->fixXmlConfig('ip')
+            ->fixXmlConfig('method')
+            ->fixXmlConfig('scheme')
+            ->children()
+                ->scalarNode('path')
+                    ->defaultNull()
+                    ->info('use the urldecoded format')
+                    ->example('^/path to resource/')
+                ->end()
+                ->scalarNode('host')->defaultNull()->end()
+                ->integerNode('port')->defaultNull()->end()
+                ->arrayNode('schemes')
+                    ->beforeNormalization()->ifString()->then(function ($v) { return [$v]; })->end()
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('ips')
+                    ->beforeNormalization()->ifString()->then(function ($v) { return [$v]; })->end()
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('methods')
+                    ->beforeNormalization()->ifString()->then(function ($v) { return preg_split('/\s*,\s*/', $v); })->end()
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end();
+
+        return $node;
     }
 }

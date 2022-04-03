@@ -5,6 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\ChangeKeyProcessorDecorator;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
+use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
@@ -17,6 +18,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\RequestMatcher;
 
 class DrawFrameworkExtraExtension extends Extension implements PrependExtensionInterface
 {
@@ -26,6 +28,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
 
         $this->configureLog($config['log'], $loader, $container);
+        $this->configureLogger($config['logger'], $loader, $container);
         $this->configureProcess($config['process'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
     }
@@ -75,17 +78,14 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 $containerBuilder->setAlias($class, $serviceName);
             }
 
-            foreach ($processorConfig[$service] as $argumentName => $value) {
-                if ('enabled' === $argumentName) {
-                    continue;
-                }
+            $arguments = $processorConfig[$service];
 
-                if ('key' === $argumentName && $keyDecorator) {
-                    continue;
-                }
-
-                $definition->setArgument('$'.$argumentName, $value);
+            unset($arguments['enabled']);
+            if ($keyDecorator) {
+                unset($arguments['key']);
             }
+
+            $definition->setArguments($this->arrayToArgumentsArray($arguments));
 
             if ($keyDecorator) {
                 $containerBuilder->setDefinition(
@@ -97,6 +97,57 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                     ->setArgument('$key', $processorConfig[$service]['key']);
             }
         }
+    }
+
+    private function configureLogger(array $config, PhpFileLoader $loader, ContainerBuilder $containerBuilder): void
+    {
+        if (!$this->isConfigEnabled($containerBuilder, $config)) {
+            return;
+        }
+
+        $this->configureSlowRequestLogger($config['slow_request'], $loader, $containerBuilder);
+    }
+
+    private function configureSlowRequestLogger(
+        array $config,
+        PhpFileLoader $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
+        if (!$this->isConfigEnabled($containerBuilder, $config)) {
+            return;
+        }
+
+        $defaultDuration = $config['default_duration'];
+        $requestMatchers = $config['request_matchers'] ?? [];
+
+        if (null !== $defaultDuration && !$requestMatchers) {
+            $requestMatchers[] = ['duration' => $defaultDuration];
+        }
+
+        $requestMatcherReferences = [];
+        foreach ($requestMatchers as $requestMatcher) {
+            $requestMatcherDefinition = new Definition(
+                RequestMatcher::class
+            );
+
+            $duration = $requestMatcher['duration'] ?? $defaultDuration ?: 10000;
+
+            $requestMatcherReferences[(int) $duration][] = $requestMatcherDefinition;
+
+            unset($requestMatcher['duration']);
+
+            $requestMatcherDefinition->setArguments(
+                $this->arrayToArgumentsArray($requestMatcher)
+            );
+        }
+
+        $containerBuilder->setDefinition(
+            'draw.logger.slow_request_logger',
+            new Definition(SlowRequestLogger::class)
+        )
+            ->setAutowired(true)
+            ->setAutoconfigured(true)
+            ->setArgument('$requestMatchers', $requestMatcherReferences);
     }
 
     private function configureProcess(array $config, PhpFileLoader $loader, ContainerBuilder $containerBuilder): void
@@ -142,5 +193,15 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 ],
             ]
         );
+    }
+
+    private function arrayToArgumentsArray(array $arguments): array
+    {
+        $result = [];
+        foreach ($arguments as $key => $value) {
+            $result['$'.$key] = $value;
+        }
+
+        return $result;
     }
 }

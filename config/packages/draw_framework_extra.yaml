@@ -1,0 +1,6 @@
+draw_framework_extra:
+  logger:
+    slow_request:
+      default_duration: 5000
+      request_matchers:
+        - path: '^/api'
