@@ -11,7 +11,7 @@
         "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.11",
-        "draw/core": "^0.8",
+        "draw/core": "^0.9",
         "ramsey/uuid": "^4.2",
         "symfony/framework-bundle": "^5.4.3",
         "symfony/security-core": "^5.4.3",
@@ -20,9 +20,9 @@
         "symfony/yaml": "^5.4.3"
     },
     "require-dev": {
-        "draw/messenger-bundle": "^0.8",
-        "draw/post-office-bundle": "^0.8",
-        "draw/tester": "^0.8",
+        "draw/messenger-bundle": "^0.9",
+        "draw/post-office-bundle": "^0.9",
+        "draw/tester": "^0.9",
         "firebase/php-jwt": "^5.1",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "scheb/2fa-bundle": "^5.12",
@@ -47,7 +47,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.8-dev"
+            "dev-master": "0.9-dev"
         }
     }
 }

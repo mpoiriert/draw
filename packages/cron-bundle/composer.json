@@ -5,7 +5,7 @@
     "type": "symfony-bundle",
     "keywords": ["symfony", "cron"],
     "require": {
-        "draw/tester": "^0.8",
+        "draw/tester": "^0.9",
         "symfony/config": "^5.4.3",
         "symfony/console": "^5.4.3",
         "symfony/dependency-injection": "^5.4.3"
@@ -22,7 +22,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.8-dev"
+            "dev-master": "0.9-dev"
         }
     }
 }
