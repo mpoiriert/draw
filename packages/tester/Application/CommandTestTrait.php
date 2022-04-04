@@ -14,15 +14,9 @@ trait CommandTestTrait
 {
     private static $argumentsCount;
 
-    /**
-     * @var CommandTester
-     */
-    protected $commandTester;
+    protected CommandTester $commandTester;
 
-    /**
-     * @var Command
-     */
-    private $command;
+    protected Command $command;
 
     abstract public function createCommand(): Command;
 
