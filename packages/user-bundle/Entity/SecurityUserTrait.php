@@ -49,6 +49,11 @@ trait SecurityUserTrait
         $this->email = strtolower($email);
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->getUsername();
+    }
+
     public function getUsername(): string
     {
         return (string) $this->email;
