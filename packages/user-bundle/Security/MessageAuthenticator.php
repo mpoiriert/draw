@@ -7,20 +7,25 @@ use Draw\Bundle\MessengerBundle\Controller\MessageController;
 use Draw\Bundle\UserBundle\Message\AutoConnectInterface;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class MessageAuthenticator extends AbstractGuardAuthenticator
+class MessageAuthenticator extends AbstractAuthenticator
 {
-    private $transport;
+    private TransportInterface $transport;
 
-    private $entityRepository;
+    private EntityRepository $entityRepository;
 
-    private $security;
+    private Security $security;
 
     public function __construct(
         DrawTransport $drawTransport,
@@ -29,10 +34,10 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
     ) {
         $this->security = $security;
         $this->entityRepository = $drawUserEntityRepository;
-        $this->transport = $drawTransport;
+        $this->transport = $drawTransport; // todo configure which transport to use
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): ?bool
     {
         switch (true) {
             case !$request->get(MessageController::MESSAGE_ID_PARAMETER_NAME):
@@ -43,14 +48,20 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
         }
     }
 
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): Passport
     {
-        return ['messageId' => $request->get(MessageController::MESSAGE_ID_PARAMETER_NAME)];
-    }
+        $messageId = $request->get(MessageController::MESSAGE_ID_PARAMETER_NAME);
+        switch (true) {
+            case null === $messageId:
+            case null === $user = $this->getMessageUser($messageId):
+                throw new CustomUserMessageAuthenticationException('Invalid message id');
+        }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
-    {
-        return $this->getMessageUser($credentials['messageId'] ?? null);
+        return new SelfValidatingPassport(
+            new UserBadge($user->getUserIdentifier().'+'.$messageId, function () use ($user) {
+                return $user;
+            })
+        );
     }
 
     private function isDifferentUser(string $messageId): bool
@@ -66,44 +77,24 @@ class MessageAuthenticator extends AbstractGuardAuthenticator
 
     private function getMessageUser(?string $messageId): ?UserInterface
     {
-        if (null === $messageId) {
-            return null;
-        }
-
-        if (null === ($envelope = $this->transport->find($messageId))) {
-            return null;
-        }
-
-        $message = $envelope->getMessage();
-        if (!$message instanceof AutoConnectInterface) {
-            return null;
+        switch (true) {
+            case null === $messageId:
+            case null === $envelope = $this->transport->find($messageId):
+            case null === $message = $envelope->getMessage():
+            case !$message instanceof AutoConnectInterface:
+                return null;
         }
 
         return $this->entityRepository->find($message->getUserId());
     }
 
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         return null;
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
-    {
-        return true;
-    }
-
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         return null;
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
-        return null;
-    }
-
-    public function supportsRememberMe()
-    {
-        return false;
     }
 }

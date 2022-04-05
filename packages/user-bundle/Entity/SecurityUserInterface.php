@@ -10,6 +10,8 @@ interface SecurityUserInterface extends PasswordAuthenticatedUserInterface, User
 {
     public function getId();
 
+    public function getUserIdentifier(): string;
+
     public function getPasswordUpdatedAt(): ?DateTimeInterface;
 
     public function getPlainPassword(): ?string;
