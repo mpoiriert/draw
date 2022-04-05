@@ -8,7 +8,9 @@
         <defaults public="false" autoconfigure="true" autowire="true">
             <bind key="$userAdminCode" type="string">%draw_user.sonata.user_admin_code%</bind>
         </defaults>
-        <prototype namespace="Draw\Bundle\UserBundle\Sonata\" resource="../../Sonata"/>
+        <prototype namespace="Draw\Bundle\UserBundle\Sonata\" resource="../../Sonata">
+            <exclude>../../Sonata/Security/AdminLoginAuthenticator.php</exclude>
+        </prototype>
         <prototype namespace="Draw\Bundle\UserBundle\Sonata\Controller\" resource="../../Sonata/Controller">
             <tag name="controller.service_arguments"/>
         </prototype>
