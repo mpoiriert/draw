@@ -5,8 +5,8 @@
     "type": "symfony-bundle",
     "keywords": ["symfony", "messenger", "bundle"],
     "require": {
-        "draw/contracts": "^0.7.58",
-        "draw/messenger": "^0.7.58",
+        "draw/contracts": "^0.8",
+        "draw/messenger": "^0.8",
         "symfony/css-selector": "^4.4 || ^5.4",
         "symfony/framework-bundle": "^4.4 || ^5.4",
         "symfony/mailer": "^4.4 || ^5.4",
@@ -14,7 +14,7 @@
     },
     "require-dev": {
         "ext-pcntl": "*",
-        "draw/tester-bundle": "^0.7.58",
+        "draw/tester-bundle": "^0.8",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "sonata-project/admin-bundle": "^3.105",
         "sonata-project/doctrine-orm-admin-bundle": "^3.35"
