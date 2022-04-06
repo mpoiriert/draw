@@ -217,10 +217,18 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
             return [];
         }
 
-        $queryBuilder = $this->driverConnection->createQueryBuilder()
+        $queryBuilder = $this->driverConnection->createQueryBuilder();
+        $queryBuilder
             ->select('message.id')
             ->from($this->connection->getConfiguration()['table_name'], 'message')
-            ->andWhere('message.queue_name = ?');
+            ->andWhere('message.queue_name = ?')
+            // From DoctrineTransport patch for deadlock
+            ->andWhere(
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->neq('message.delivered_at', '?'),
+                    $queryBuilder->expr()->isNull('message.delivered_at')
+                )
+            );
 
         foreach ($tags as $index => $tag) {
             $tagAlias = 'tag_'.$index;
@@ -238,6 +246,7 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
             $queryBuilder->getSQL(),
             array_merge(
                 [$this->connection->getConfiguration()['queue_name']],
+                ['9999-12-31'],
                 $tags
             )
         )->fetchAllAssociative();
