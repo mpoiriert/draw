@@ -2,68 +2,66 @@
 
 namespace Draw\Bundle\UserBundle\Jwt;
 
-use Firebase\JWT\JWT;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use DateTimeImmutable;
+use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class JwtAuthenticator extends AbstractGuardAuthenticator
+class JwtAuthenticator extends AbstractAuthenticator
 {
-    private $algorithm = 'HS256';
+    private UserProviderInterface $userProvider;
 
-    private $key;
+    private JwtEncoder $encoder;
 
-    private $userProvider;
+    private string $userIdPayloadKey;
 
-    private $queryParameters;
-
-    private $translator;
+    private ?TranslatorInterface $translator;
 
     public function __construct(
+        JwtEncoder $encoder,
         UserProviderInterface $userProvider,
-        ?TranslatorInterface $translator,
-        $key,
-        $queryParameters = []
+        string $userIdPayloadKey,
+        ?TranslatorInterface $translator = null
     ) {
+        $this->encoder = $encoder;
         $this->userProvider = $userProvider;
+        $this->userIdPayloadKey = $userIdPayloadKey;
         $this->translator = $translator;
-        $this->key = $key;
-        $this->queryParameters = $queryParameters;
     }
 
-    public function supportQueryParameter()
-    {
-        return !empty($this->queryParameters);
-    }
-
-    public function getFirstSupportedQueryParameter(): ?string
-    {
-        return reset($this->queryParameters) ?: null;
-    }
-
-    public function supports(Request $request)
+    public function supports(Request $request): ?bool
     {
         return null !== $this->getToken($request);
     }
 
-    public function encode(UserInterface $user, $expiration = '+ 7 days'): string
+    public function generaToken(SecurityUserInterface $user, ?string $expiration = '+ 7 days'): string
     {
-        return JWT::encode(
-            [
-                'id' => $user->getId(),
-                'exp' => (new \DateTime($expiration))->getTimestamp(),
-            ],
-            $this->key,
-            $this->algorithm
+        return $this->encoder->encode(
+            [$this->userIdPayloadKey => $user->getId()],
+            $expiration ? new DateTimeImmutable($expiration) : null
         );
+    }
+
+    public function getUserFromToken(string $token): UserInterface
+    {
+        $userId = ((array) $this->encoder->decode($token))[$this->userIdPayloadKey] ?? null;
+
+        if (null === $userId) {
+            throw new UserNotFoundException('Token attribute ['.$this->userIdPayloadKey.'] not found');
+        }
+
+        return $this->userProvider->loadUserByIdentifier($userId);
     }
 
     private function getToken(Request $request): ?string
@@ -74,80 +72,36 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
             }
         }
 
-        foreach ($this->queryParameters as $queryParameter) {
-            if (!$request->query->has($queryParameter)) {
-                continue;
-            }
-
-            return $request->query->get($queryParameter);
-        }
-
         return null;
     }
 
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): Passport
     {
-        return [
-            'token' => $this->getToken($request),
-        ];
+        $user = $this->getUserFromToken($this->getToken($request));
+
+        return new SelfValidatingPassport(
+            new UserBadge($user->getUserIdentifier().'+jwt-token', function () use ($user) {
+                return $user;
+            })
+        );
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        try {
-            $data = $this->decode($credentials['token']);
-        } catch (\Throwable $error) {
-            throw new CustomUserMessageAuthenticationException($error->getMessage());
-        }
-
-        if (!isset($data->id)) {
-            return null;
-        }
-
-        return $this->userProvider->loadUserByUsername($data->id);
-    }
-
-    public function decode($token)
-    {
-        return JWT::decode($token, $this->key, [$this->algorithm]);
-    }
-
-    public function checkCredentials($credentials, UserInterface $user)
-    {
-        return true;
-    }
-
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
-    {
-        // on success, let the request continue
         return null;
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         throw new HttpException(Response::HTTP_FORBIDDEN, $this->translate($exception->getMessageKey(), $exception->getMessageData()));
     }
 
-    private function translate($message, array $data = [])
+    private function translate($message, array $data = []): string
     {
         if (!$this->translator) {
             return strtr($message, $data);
         }
 
         return $this->translator->trans($message, $data, 'security');
-    }
-
-    public function start(Request $request, AuthenticationException $authException = null)
-    {
-        $data = [
-            'message' => 'Authentication Required',
-        ];
-
-        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
-    }
-
-    public function supportsRememberMe()
-    {
-        return false;
     }
 }

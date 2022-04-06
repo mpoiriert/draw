@@ -23,7 +23,7 @@
         "draw/messenger-bundle": "^1.0",
         "draw/post-office-bundle": "^1.0",
         "draw/tester": "^1.0",
-        "firebase/php-jwt": "^5.1",
+        "firebase/php-jwt": "^v6.1",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "scheb/2fa-bundle": "^5.12",
         "scheb/2fa-qr-code": "^5.12",
