@@ -49,25 +49,21 @@ security:
         api:
             pattern: /api(.*)
             stateless: true
-            guard:
-                provider: chain_provider
-                authenticators:
-                    - 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'
+            draw_jwt_authenticator:
+                provider: 'chain_provider'
+                key: 'acme'
+                algorithm: 'HS256'
+                service_alias: 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'
 
         main:
             context: user
             custom_authenticators:
                 - 'Draw\Bundle\UserBundle\Security\MessageAuthenticator'
-            guard:
-                provider: chain_provider
-                authenticators:
-                    - 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            draw_jwt_authenticator:
+                provider: 'chain_provider'
+                key: 'acme'
+                algorithm: 'HS256'
+                service_alias: 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used

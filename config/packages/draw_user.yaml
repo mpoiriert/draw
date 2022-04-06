@@ -27,9 +27,6 @@ draw_user:
                 2fa_enabled:
                     list: 'email'
 
-    jwt_authenticator:
-        key: 'acme'
-
 framework:
     messenger:
         routing:
