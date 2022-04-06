@@ -54,7 +54,7 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
                 throw new \InvalidArgumentException('User with email ['.$email.'] not found.');
             }
 
-            $this->connectionTokens[$email] = $this->getService(JwtAuthenticator::class)->encode($user);
+            $this->connectionTokens[$email] = $this->getService(JwtAuthenticator::class)->generaToken($user);
         }
 
         return $this->connectionTokens[$email];

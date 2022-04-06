@@ -4,6 +4,7 @@ namespace Draw\Bundle\UserBundle;
 
 use Draw\Bundle\UserBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Bundle\UserBundle\DependencyInjection\Factory\Security\AdminLoginFactory;
+use Draw\Bundle\UserBundle\DependencyInjection\Factory\Security\JwtAuthenticatorFactory;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,6 +23,7 @@ class DrawUserBundle extends Bundle
             /** @var SecurityExtension $extension */
             $extension = $container->getExtension('security');
             $extension->addAuthenticatorFactory(new AdminLoginFactory());
+            $extension->addAuthenticatorFactory(new JwtAuthenticatorFactory());
         }
     }
 }
