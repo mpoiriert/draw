@@ -5,7 +5,7 @@
     "type": "symfony-bundle",
     "keywords": ["symfony", "cron"],
     "require": {
-        "draw/tester": "^0.8",
+        "draw/tester": "^0.7.59",
         "symfony/config": "^4.4 || ^5.4",
         "symfony/console": "^4.4 || ^5.4",
         "symfony/dependency-injection": "^4.4 || ^5.4"

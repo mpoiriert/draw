@@ -18,10 +18,10 @@
         "symfony/http-kernel": "^4.4 || ^5.4"
     },
     "require-dev": {
-        "draw/contracts": "^0.8",
-        "draw/messenger": "^0.8",
-        "draw/process": "^0.8",
-        "draw/tester-bundle": "^0.8",
+        "draw/contracts": "^0.7.59",
+        "draw/messenger": "^0.7.59",
+        "draw/process": "^0.7.59",
+        "draw/tester-bundle": "^0.7.59",
         "phpunit/phpunit": "^8.0 || ^9.0"
     },
     "minimum-stability": "dev",
