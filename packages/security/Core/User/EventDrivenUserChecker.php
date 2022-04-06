@@ -1,18 +1,18 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Security\User;
+namespace Draw\Component\Security\Core\User;
 
-use Draw\Bundle\UserBundle\Event\CheckPostAuthEvent;
-use Draw\Bundle\UserBundle\Event\CheckPreAuthEvent;
+use Draw\Component\Security\Core\Event\CheckPostAuthEvent;
+use Draw\Component\Security\Core\Event\CheckPreAuthEvent;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventDrivenUserChecker implements UserCheckerInterface
 {
-    private $decoratedUserChecker;
+    private UserCheckerInterface $decoratedUserChecker;
 
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(UserCheckerInterface $decoratedUserChecker, EventDispatcherInterface $eventDispatcher)
     {
@@ -20,14 +20,14 @@ class EventDrivenUserChecker implements UserCheckerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function checkPreAuth(UserInterface $user)
+    public function checkPreAuth(UserInterface $user): void
     {
         $this->decoratedUserChecker->checkPreAuth($user);
 
         $this->eventDispatcher->dispatch(new CheckPreAuthEvent($user));
     }
 
-    public function checkPostAuth(UserInterface $user)
+    public function checkPostAuth(UserInterface $user): void
     {
         $this->decoratedUserChecker->checkPostAuth($user);
 

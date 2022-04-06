@@ -39,8 +39,9 @@ security:
             logout:
                 path: admin_logout
                 target: admin_login
-            custom_authenticators:
-                - 'Draw\Bundle\UserBundle\Security\MessageAuthenticator'
+            draw_messenger_message:
+                provider: 'app_user_provider_id'
+                transport_service: 'messenger.transport.draw'
             two_factor:
                 provider: app_user_provider_email
                 auth_form_path: admin_2fa_login
@@ -49,21 +50,21 @@ security:
         api:
             pattern: /api(.*)
             stateless: true
-            draw_jwt_authenticator:
-                provider: 'chain_provider'
+            draw_jwt:
+                provider: 'app_user_provider_id'
                 key: 'acme'
                 algorithm: 'HS256'
-                service_alias: 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'
+                service_alias: 'Draw\Component\Security\Http\Authenticator\JwtAuthenticator'
 
         main:
             context: user
-            custom_authenticators:
-                - 'Draw\Bundle\UserBundle\Security\MessageAuthenticator'
-            draw_jwt_authenticator:
-                provider: 'chain_provider'
+            draw_messenger_message:
+                provider: 'app_user_provider_id'
+                transport_service: 'messenger.transport.draw'
+            draw_jwt:
+                provider: 'app_user_provider_id'
                 key: 'acme'
                 algorithm: 'HS256'
-                service_alias: 'Draw\Bundle\UserBundle\Jwt\JwtAuthenticator'
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used

@@ -15,9 +15,9 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 {
     public const FIELD_2FA_ENABLED = '2fa_enabled';
 
-    private $fieldPositions;
+    private array $fieldPositions;
 
-    private $security;
+    private Security $security;
 
     public function __construct(array $fieldPositions, Security $security)
     {

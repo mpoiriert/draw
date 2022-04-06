@@ -9,7 +9,7 @@ use Draw\Bundle\TesterBundle\Http\BrowserFactoryInterface;
 use Draw\Bundle\TesterBundle\Http\HttpTesterTrait;
 use Draw\Bundle\TesterBundle\Messenger\MessengerTesterTrait;
 use Draw\Bundle\TesterBundle\Profiling\MetricTesterTrait;
-use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
+use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Tester\Http\ClientInterface;
 use Draw\Component\Tester\Http\Request\DefaultValueObserver;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

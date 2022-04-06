@@ -7,14 +7,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Enable2fa
 {
     /**
-     * @var string
      * @Assert\NotBlank()
      * @Assert\Length(6)
      */
-    public $code;
+    public ?string $code = null;
 
-    /**
-     * @var string
-     */
-    public $totpSecret;
+    public ?string $totpSecret = null;
 }

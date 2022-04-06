@@ -12,7 +12,7 @@ trait PasswordChangeEnforcerUserTrait
     /**
      * @ORM\Column(type="boolean", nullable=false, options={"default":"0"})
      */
-    private $needChangePassword = false;
+    private bool $needChangePassword = false;
 
     public function setNeedChangePassword(bool $needChangePassword): void
     {
@@ -27,6 +27,7 @@ trait PasswordChangeEnforcerUserTrait
             }
         }
 
+        // todo helper in core
         if (!trait_exists(MessageHolderTrait::class) || !MessageHolderTrait::useMessageHolderTrait($this)) {
             return;
         }

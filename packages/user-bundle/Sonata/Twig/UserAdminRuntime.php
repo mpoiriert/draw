@@ -8,8 +8,8 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class UserAdminRuntime implements RuntimeExtensionInterface
 {
-    private $userAdminCode;
-    private $pool;
+    private string $userAdminCode;
+    private Pool $pool;
 
     public function __construct(Pool $pool, string $userAdminCode)
     {

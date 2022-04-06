@@ -10,7 +10,7 @@ use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Email\PasswordChangeRequestedE
 
 class PasswordChangeRequestedEmailWriter implements EmailWriterInterface
 {
-    private $messageUrlGenerator;
+    private MessageUrlGenerator $messageUrlGenerator;
 
     public static function getForEmails(): array
     {

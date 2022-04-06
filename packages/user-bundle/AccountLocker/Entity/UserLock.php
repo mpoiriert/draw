@@ -21,53 +21,41 @@ class UserLock
     public const REASON_MANUAL_LOCK = 'manual-lock';
 
     /**
-     * @var ?string
-     *
      * @ORM\Id()
      * @ORM\Column(name="id", type="guid")
      */
-    private $id = null;
+    private ?string $id = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Draw\Bundle\UserBundle\Entity\SecurityUserInterface")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $user = null;
+    private ?SecurityUserInterface $user = null;
 
     /**
-     * @var ?string
-     *
      * @ORM\Column(name="reason", type="string", length=255, nullable=false)
      */
-    private $reason = null;
+    private ?string $reason = null;
 
     /**
-     * @var ?DateTimeImmutable
-     *
      * @ORM\Column(name="created_at", type="datetime_immutable", nullable=false)
      */
-    private $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     /**
-     * @var ?DateTimeImmutable
-     *
      * @ORM\Column(name="lock_on", type="datetime_immutable", nullable=true)
      */
-    private $lockOn = null;
+    private ?DateTimeImmutable $lockOn = null;
 
     /**
-     * @var ?DateTimeImmutable
-     *
      * @ORM\Column(name="expires_at", type="datetime_immutable", nullable=true)
      */
-    private $expiresAt = null;
+    private ?DateTimeImmutable $expiresAt = null;
 
     /**
-     * @var ?DateTimeImmutable
-     *
      * @ORM\Column(name="unlock_until", type="datetime_immutable", nullable=true)
      */
-    private $unlockUntil = null;
+    private ?DateTimeImmutable $unlockUntil = null;
 
     public function __construct(?string $reason = null)
     {

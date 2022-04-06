@@ -1,9 +1,9 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\DependencyInjection\Factory\Security;
+namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security;
 
-use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
-use Draw\Bundle\UserBundle\Jwt\JwtEncoder;
+use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
+use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AuthenticatorFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -27,7 +27,8 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
             ->setAutoconfigured(true)
             ->setAutowired(true)
             ->setArgument('$userProvider', new Reference($userProviderId))
-            ->setArgument('$userIdPayloadKey', $config['user_id_payload_key'])
+            ->setArgument('$userIdentifierPayloadKey', $config['user_identifier_payload_key'])
+            ->setArgument('$userIdentifierGetter', $config['user_identifier_getter'])
             ->setArgument(
                 '$encoder',
                 (new Definition(JwtEncoder::class))
@@ -44,7 +45,7 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
 
     public function getKey(): string
     {
-        return 'draw_jwt_authenticator';
+        return 'draw_jwt';
     }
 
     /**
@@ -58,7 +59,8 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
                 ->scalarNode('key')->isRequired()->end()
                 ->enumNode('algorithm')->values(['HS256'])->isRequired()->end()
                 ->scalarNode('service_alias')->defaultNull()->end()
-                ->scalarNode('user_id_payload_key')->defaultValue('userId')->end()
+                ->scalarNode('user_identifier_payload_key')->defaultValue('userId')->end()
+                ->scalarNode('user_identifier_getter')->defaultValue('getId')->end()
             ->end();
     }
 }

@@ -6,9 +6,12 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class AccountLockedException extends AuthenticationException
 {
-    private $messageKey;
+    private string $messageKey;
 
-    private $reasons;
+    /**
+     * @var array|string[]
+     */
+    private array $reasons = [];
 
     public function __construct(string $messageKey, array $reasons)
     {

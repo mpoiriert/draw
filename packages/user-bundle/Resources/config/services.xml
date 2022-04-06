@@ -9,6 +9,7 @@
             <exclude>../../DrawUserBundle.php</exclude>
             <exclude>../../AccountLocker</exclude>
             <exclude>../../EmailWriter</exclude>
+            <exclude>../../Jwt</exclude>
             <exclude>../../Onboarding</exclude>
             <exclude>../../PasswordRecovery</exclude>
             <exclude>../../PasswordChangeEnforcer</exclude>
@@ -22,9 +23,6 @@
             <factory service="doctrine" method="getRepository"/>
             <argument>%draw_user.user_entity_class%</argument>
         </service>
-        <service id="Draw\Bundle\UserBundle\Security\MessageAuthenticator"
-                 class="Draw\Bundle\UserBundle\Security\MessageAuthenticator"
-        />
         <service id="Draw\Bundle\UserBundle\Listener\UserRequestInterceptorSubscriber">
             <argument key="$firewallMap" type="service" id="security.firewall.map" on-invalid="null"/>
         </service>

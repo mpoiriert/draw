@@ -1,10 +1,10 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Sonata\Security;
+namespace Draw\Component\Security\Http\Authenticator\Passport\Badge;
 
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\BadgeInterface;
 
-class AdminLoginBadge implements BadgeInterface
+class RoleRestrictedBadge implements BadgeInterface
 {
     private bool $resolved = false;
 
