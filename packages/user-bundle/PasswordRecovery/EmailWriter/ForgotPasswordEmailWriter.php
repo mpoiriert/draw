@@ -13,15 +13,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ForgotPasswordEmailWriter implements EmailWriterInterface
 {
-    private $messageUrlGenerator;
+    private MessageUrlGenerator $messageUrlGenerator;
 
-    private $userEntityRepository;
+    private EntityRepository $userEntityRepository;
 
-    private $resetPasswordRoute;
+    private string $resetPasswordRoute;
 
-    private $inviteCreateAccountRoute;
+    private string $inviteCreateAccountRoute;
 
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
     public static function getForEmails(): array
     {

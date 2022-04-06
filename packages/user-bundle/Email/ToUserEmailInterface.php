@@ -4,5 +4,5 @@ namespace Draw\Bundle\UserBundle\Email;
 
 interface ToUserEmailInterface
 {
-    public function getUserIdentifier();
+    public function getUserIdentifier(): ?string;
 }

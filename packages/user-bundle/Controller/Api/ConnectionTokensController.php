@@ -6,8 +6,8 @@ use Draw\Bundle\OpenApiBundle\Request\Deserialization;
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Bundle\UserBundle\DTO\ConnectionToken;
 use Draw\Bundle\UserBundle\DTO\Credential;
-use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Component\OpenApi\Schema as OpenApi;
+use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+// todo refactor to be reusable
 class ConnectionTokensController extends AbstractController
 {
     /**
@@ -23,7 +24,7 @@ class ConnectionTokensController extends AbstractController
      *
      * The token returned is a JWT token (https://jwt.io/).
      * Once you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).
-     * If you decode the token you can read the **exp** attribute and see until when it's valid. Before the expiration
+     * If you decode the token you can read the **exp** attribute and see until when it's valid. Before the expiration
      * is reach you should call the POST /api/connection-tokens endpoint to get a new one.
      *
      * @Route(name="connection_token_create", methods={"POST"}, path="/connection-tokens")
@@ -57,7 +58,7 @@ class ConnectionTokensController extends AbstractController
             throw new HttpException(403, 'Invalid credential');
         }
 
-        return new ConnectionToken($authenticator->encode($user));
+        return new ConnectionToken($authenticator->generaToken($user));
     }
 
     /**
@@ -76,7 +77,7 @@ class ConnectionTokensController extends AbstractController
      */
     public function refreshAction(JwtAuthenticator $authenticator): ConnectionToken
     {
-        return new ConnectionToken($authenticator->encode($this->getUser()));
+        return new ConnectionToken($authenticator->generaToken($this->getUser()));
     }
 
     /**

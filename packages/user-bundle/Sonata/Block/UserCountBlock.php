@@ -11,15 +11,9 @@ use Twig\Environment;
 
 class UserCountBlock extends AbstractBlockService
 {
-    /**
-     * @var string
-     */
-    private $adminCode;
+    private string $adminCode;
 
-    /**
-     * @var Pool
-     */
-    protected $pool;
+    protected Pool $pool;
 
     public function __construct(Environment $twig, Pool $pool, string $userAdminCode)
     {

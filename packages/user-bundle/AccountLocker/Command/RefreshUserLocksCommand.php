@@ -12,9 +12,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class RefreshUserLocksCommand extends Command
 {
-    private $entityRepository;
+    private EntityRepository $entityRepository;
 
-    private $messageBus;
+    private MessageBusInterface $messageBus;
 
     public function __construct(
         MessageBusInterface $messageBus,

@@ -1,19 +1,19 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Tests;
+namespace Draw\Bundle\FrameworkExtraBundle\Tests;
 
-use Draw\Bundle\UserBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
-use Draw\Bundle\UserBundle\DrawUserBundle;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
+use Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class DrawUserBundleTest extends TestCase
+class DrawFrameworkExtraBundleTest extends TestCase
 {
-    private $bundle;
+    private DrawFrameworkExtraBundle $bundle;
 
     public function setUp(): void
     {
-        $this->bundle = new DrawUserBundle();
+        $this->bundle = new DrawFrameworkExtraBundle();
     }
 
     public function testBuild(): void

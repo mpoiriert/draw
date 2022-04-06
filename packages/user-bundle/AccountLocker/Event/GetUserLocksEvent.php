@@ -8,11 +8,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class GetUserLocksEvent extends Event
 {
-    private $locks = [];
+    private array $locks = [];
 
-    private $user;
+    private LockableUserInterface $user;
 
-    public function __construct($user)
+    public function __construct(LockableUserInterface $user)
     {
         $this->user = $user;
     }

@@ -4,7 +4,7 @@ namespace Draw\Bundle\UserBundle\AccountLocker\Message;
 
 class UserLockActivatedMessage
 {
-    private $userLockId;
+    private string $userLockId;
 
     public function __construct(string $userLockId)
     {

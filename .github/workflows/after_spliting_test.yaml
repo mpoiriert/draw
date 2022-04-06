@@ -34,6 +34,7 @@ jobs:
           - post-office-bundle
           - process
           - profiling
+          - security
           - sonata-extra-bundle
           - tester
           - tester-bundle

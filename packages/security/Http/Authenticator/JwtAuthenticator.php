@@ -1,9 +1,10 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Jwt;
+namespace Draw\Component\Security\Http\Authenticator;
 
 use DateTimeImmutable;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
+use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -24,19 +25,23 @@ class JwtAuthenticator extends AbstractAuthenticator
 
     private JwtEncoder $encoder;
 
-    private string $userIdPayloadKey;
+    private string $userIdentifierPayloadKey;
+
+    private string $userIdentifierGetter;
 
     private ?TranslatorInterface $translator;
 
     public function __construct(
         JwtEncoder $encoder,
         UserProviderInterface $userProvider,
-        string $userIdPayloadKey,
+        string $userIdentifierPayloadKey,
+        string $userIdentifierGetter,
         ?TranslatorInterface $translator = null
     ) {
         $this->encoder = $encoder;
         $this->userProvider = $userProvider;
-        $this->userIdPayloadKey = $userIdPayloadKey;
+        $this->userIdentifierPayloadKey = $userIdentifierPayloadKey;
+        $this->userIdentifierGetter = $userIdentifierGetter;
         $this->translator = $translator;
     }
 
@@ -48,17 +53,17 @@ class JwtAuthenticator extends AbstractAuthenticator
     public function generaToken(SecurityUserInterface $user, ?string $expiration = '+ 7 days'): string
     {
         return $this->encoder->encode(
-            [$this->userIdPayloadKey => $user->getId()],
+            [$this->userIdentifierPayloadKey => call_user_func([$user, $this->userIdentifierGetter])],
             $expiration ? new DateTimeImmutable($expiration) : null
         );
     }
 
     public function getUserFromToken(string $token): UserInterface
     {
-        $userId = ((array) $this->encoder->decode($token))[$this->userIdPayloadKey] ?? null;
+        $userId = ((array) $this->encoder->decode($token))[$this->userIdentifierPayloadKey] ?? null;
 
         if (null === $userId) {
-            throw new UserNotFoundException('Token attribute ['.$this->userIdPayloadKey.'] not found');
+            throw new UserNotFoundException('Token attribute ['.$this->userIdentifierPayloadKey.'] not found');
         }
 
         return $this->userProvider->loadUserByIdentifier($userId);

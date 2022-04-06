@@ -1,14 +1,16 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Sonata\Security;
+namespace Draw\Component\Security\Http\EventListener;
 
+use Draw\Component\Security\Http\Authenticator\Passport\Badge\RoleRestrictedBadge;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 
-class CheckAdminFormLoginListener implements EventSubscriberInterface
+class RoleRestrictedAuthenticatorListener implements EventSubscriberInterface
 {
     private RoleHierarchyInterface $roleHierarchy;
 
@@ -24,10 +26,10 @@ class CheckAdminFormLoginListener implements EventSubscriberInterface
 
     public function checkPassport(CheckPassportEvent $event): void
     {
+        /** @var Passport $passport */
         $passport = $event->getPassport();
-        $badge = $event->getPassport()->getBadge(AdminLoginBadge::class);
 
-        if (!$badge) {
+        if (!$badge = $passport->getBadge(RoleRestrictedBadge::class)) {
             return;
         }
 

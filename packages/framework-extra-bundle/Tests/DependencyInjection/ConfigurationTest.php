@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests;
+namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Configuration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
@@ -16,6 +16,10 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'jwt_encoder' => [
+                'enabled' => false,
+                'algorithm' => 'HS256',
+            ],
             'log' => [
                 'enabled' => false,
                 'enable_all_processors' => false,
@@ -59,6 +63,9 @@ class ConfigurationTest extends ConfigurationTestCase
             'process' => [
                 'enabled' => true,
             ],
+            'security' => [
+                'enabled' => true,
+            ],
             'tester' => [
                 'enabled' => true,
             ],
@@ -69,7 +76,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are log, logger, messenger, process, tester.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are jwt_encoder, log, logger, messenger, process, security, tester.',
         ];
     }
 }

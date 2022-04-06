@@ -10,7 +10,7 @@ interface SecurityUserInterface extends PasswordAuthenticatedUserInterface, User
 {
     public function getId();
 
-    public function getUserIdentifier(): string;
+    public function getUserIdentifier(): ?string;
 
     public function getPasswordUpdatedAt(): ?DateTimeInterface;
 
@@ -21,7 +21,7 @@ interface SecurityUserInterface extends PasswordAuthenticatedUserInterface, User
      *
      * @param ?string $plainPassword The new password
      */
-    public function setPlainPassword(?string $plainPassword): void;
+    public function setPlainPassword(?string $plainPassword): self;
 
-    public function setPassword(?string $password): void;
+    public function setPassword(?string $password): self;
 }

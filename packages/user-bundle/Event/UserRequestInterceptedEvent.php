@@ -9,13 +9,13 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class UserRequestInterceptedEvent extends Event
 {
-    private $reason;
+    private string $reason;
 
-    private $request;
+    private Request $request;
 
-    private $response;
+    private Response $response;
 
-    private $user;
+    private UserInterface $user;
 
     public function __construct(UserInterface $user, Request $request, Response $response, string $reason)
     {

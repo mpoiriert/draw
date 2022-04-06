@@ -7,8 +7,8 @@ use Draw\Bundle\UserBundle\AccountLocker\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
 use Draw\Bundle\UserBundle\AccountLocker\Event\GetUserLocksEvent;
 use Draw\Bundle\UserBundle\AccountLocker\Exception\AccountLockedException;
-use Draw\Bundle\UserBundle\Event\CheckPreAuthEvent;
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptionEvent;
+use Draw\Component\Security\Core\Event\CheckPreAuthEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -17,13 +17,13 @@ class AccountLockerSubscriber implements EventSubscriberInterface
 {
     private const INTERCEPTION_REASON = 'account_locked';
 
-    private $accountLocker;
+    private AccountLocker $accountLocker;
 
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    private $accountLockedRoute;
+    private string $accountLockedRoute;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserRequestInterceptionEvent::class => ['handleUserRequestInterceptionEvent', 10000],

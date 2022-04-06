@@ -10,9 +10,9 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class NewUserSendEmailMessageHandler implements MessageHandlerInterface
 {
-    private $mailer;
+    private MailerInterface $mailer;
 
-    private $userEntityRepository;
+    private EntityRepository $userEntityRepository;
 
     public static function getHandledMessages(): iterable
     {

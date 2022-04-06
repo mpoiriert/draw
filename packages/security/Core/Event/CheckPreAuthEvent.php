@@ -1,12 +1,12 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Event;
+namespace Draw\Component\Security\Core\Event;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class CheckPostAuthEvent
+class CheckPreAuthEvent
 {
-    private $user;
+    private UserInterface $user;
 
     public function __construct(UserInterface $user)
     {

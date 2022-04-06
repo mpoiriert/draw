@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Sonata\Security;
 
+use Draw\Component\Security\Http\Authenticator\Passport\Badge\RoleRestrictedBadge;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
@@ -28,6 +29,6 @@ class AdminLoginAuthenticator extends FormLoginAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        return parent::authenticate($request)->addBadge(new AdminLoginBadge($this->requiredRole));
+        return parent::authenticate($request)->addBadge(new RoleRestrictedBadge($this->requiredRole));
     }
 }

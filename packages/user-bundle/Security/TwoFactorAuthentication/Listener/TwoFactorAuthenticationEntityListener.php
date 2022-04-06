@@ -7,7 +7,7 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticat
 
 class TwoFactorAuthenticationEntityListener
 {
-    private $twoFactorAuthenticationEnforcer;
+    private TwoFactorAuthenticationEnforcerInterface $twoFactorAuthenticationEnforcer;
 
     public function __construct(TwoFactorAuthenticationEnforcerInterface $twoFactorAuthenticationEnforcer)
     {
