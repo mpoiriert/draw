@@ -9,15 +9,15 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class UserRequestInterceptionEvent extends Event
 {
-    private $allowHandlingRequest = false;
+    private bool $allowHandlingRequest = false;
 
-    private $reason;
+    private ?string $reason = null;
 
-    private $request;
+    private Request $request;
 
-    private $response;
+    private ?Response $response = null;
 
-    private $user;
+    private UserInterface $user;
 
     public function __construct(UserInterface $user, Request $request)
     {

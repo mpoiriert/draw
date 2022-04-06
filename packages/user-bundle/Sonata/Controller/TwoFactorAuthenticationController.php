@@ -36,12 +36,7 @@ class TwoFactorAuthenticationController extends CRUDController
                     $this->trans('admin.flash.2fa_enabled', [], 'DrawUserBundle')
                 );
 
-                // TODO drop when stop supporting sonata 3.x
-                if ((new \ReflectionObject($this))->getMethod('redirectTo')->getNumberOfParameters() > 1) {
-                    return $this->redirectTo($request, $user);
-                }
-
-                return $this->redirectTo($user);
+                return $this->redirectTo($request, $user);
             }
 
             $this->addFlash(
@@ -89,11 +84,6 @@ class TwoFactorAuthenticationController extends CRUDController
             $this->trans('admin.flash.2fa_disabled', [], 'DrawUserBundle')
         );
 
-        // TODO drop when stop supporting sonata 3.x
-        if ((new \ReflectionObject($this))->getMethod('redirectTo')->getNumberOfParameters() > 1) {
-            return $this->redirectTo($request, $user);
-        }
-
-        return $this->redirectTo($user);
+        return $this->redirectTo($request, $user);
     }
 }

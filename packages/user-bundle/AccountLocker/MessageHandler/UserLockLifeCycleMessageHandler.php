@@ -18,9 +18,9 @@ use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 class UserLockLifeCycleMessageHandler implements MessageSubscriberInterface
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    private $messageBus;
+    private MessageBusInterface $messageBus;
 
     public static function getHandledMessages(): iterable
     {

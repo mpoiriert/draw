@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Process\ProcessFactory;
+use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use Draw\Component\Tester\DataTester;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -27,14 +28,27 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->append($this->createJwtEncoder())
                 ->append($this->createLogNode())
                 ->append($this->createLoggerNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createProcessNode())
+                ->append($this->createSecurityNode())
                 ->append($this->createTesterNode())
             ->end();
 
         return $treeBuilder;
+    }
+
+    private function createJwtEncoder(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('jwt_encoder'))
+            ->canBeEnabled()
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->scalarNode('key')->isRequired()->end()
+                ->enumNode('algorithm')->values(['HS256'])->defaultValue('HS256')->end()
+            ->end();
     }
 
     private function createLogNode(): ArrayNodeDefinition
@@ -118,6 +132,11 @@ class Configuration implements ConfigurationInterface
     private function createProcessNode(): ArrayNodeDefinition
     {
         return $this->canBe(ProcessFactory::class, new ArrayNodeDefinition('process'));
+    }
+
+    private function createSecurityNode(): ArrayNodeDefinition
+    {
+        return $this->canBe(RoleRestrictedAuthenticatorListener::class, new ArrayNodeDefinition('security'));
     }
 
     private function createTesterNode(): ArrayNodeDefinition

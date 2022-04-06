@@ -14,20 +14,16 @@ class User implements TwoFactorAuthenticationUserInterface
     use TwoFactorAuthenticationUserTrait;
 
     /**
-     * @var int|null
-     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(name="id", type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="username", type="string")
      */
-    private $username;
+    private ?string $username = null;
 
     public function getId(): ?int
     {
@@ -47,5 +43,10 @@ class User implements TwoFactorAuthenticationUserInterface
     public function setUsername(?string $username): void
     {
         $this->username = $username;
+    }
+
+    public function getUserIdentifier(): ?string
+    {
+        return $this->getUsername();
     }
 }

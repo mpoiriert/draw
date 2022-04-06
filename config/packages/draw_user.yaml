@@ -31,4 +31,3 @@ framework:
     messenger:
         routing:
             Draw\Component\Messenger\Message\ManuallyTriggeredInterface: 'draw'
-            Draw\Bundle\UserBundle\Message\AutoConnect: 'draw'

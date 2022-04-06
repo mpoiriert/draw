@@ -20,20 +20,22 @@ class UserRequestInterceptorSubscriber implements EventSubscriberInterface
 
     private const INTERCEPTION_REASON = 'original_request_url';
 
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
-    private $firewallMap;
+    private ?FirewallMap $firewallMap = null;
 
-    private $security;
+    private Security $security;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        yield RequestEvent::class => 'handleRequestEvent';
-        yield UserRequestInterceptedEvent::class => [
-            ['handleUserRequestInterceptedEventForRedirect', 10000],
-        ];
-        yield UserRequestInterceptionEvent::class => [
-            ['handleUserRequestInterceptionEventForRedirect', -10000],
+        return [
+            RequestEvent::class => 'handleRequestEvent',
+            UserRequestInterceptedEvent::class => [
+                ['handleUserRequestInterceptedEventForRedirect', 10000],
+            ],
+            UserRequestInterceptionEvent::class => [
+                ['handleUserRequestInterceptionEventForRedirect', -10000],
+            ],
         ];
     }
 

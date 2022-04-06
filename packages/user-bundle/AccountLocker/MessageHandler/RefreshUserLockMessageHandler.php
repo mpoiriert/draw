@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\AccountLocker\MessageHandler;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\AccountLocker\AccountLocker;
@@ -10,15 +11,17 @@ use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 class RefreshUserLockMessageHandler implements MessageSubscriberInterface
 {
-    private $accountLocker;
+    private AccountLocker $accountLocker;
 
-    private $entityManager;
+    private EntityManager $entityManager;
 
-    private $userEntityRepository;
+    private EntityRepository $userEntityRepository;
 
-    public static function getHandledMessages(): iterable
+    public static function getHandledMessages(): array
     {
-        yield RefreshUserLockMessage::class => 'handleRefreshUserLockMessage';
+        return [
+            RefreshUserLockMessage::class => 'handleRefreshUserLockMessage',
+        ];
     }
 
     public function __construct(

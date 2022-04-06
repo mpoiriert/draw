@@ -6,7 +6,7 @@ use Draw\Bundle\PostOfficeBundle\Email\CallToActionEmail;
 
 class ForgotPasswordEmail extends CallToActionEmail
 {
-    private $emailAddress;
+    private string $emailAddress;
 
     public function __construct(string $emailAddress)
     {

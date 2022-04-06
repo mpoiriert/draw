@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+// todo check if it's safe how we rely on the session
 class SessionUserFeed implements UserFeedInterface
 {
     /**
@@ -18,7 +19,7 @@ class SessionUserFeed implements UserFeedInterface
         $this->session = $session;
     }
 
-    public function addToFeed(UserInterface $user, string $type, string $message)
+    public function addToFeed(UserInterface $user, string $type, string $message): void
     {
         $this->session->getFlashBag()->add($type, $message);
     }

@@ -1,0 +1,34 @@
+{
+    "name": "draw/security",
+    "description": "Security related class compatible with symfony/security* component",
+    "license": "MIT",
+    "type": "library",
+    "keywords": ["draw", "symfony", "security"],
+    "authors": [
+        {
+            "name": "Martin Poirier Theoret",
+            "email": "mpoiriert@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "firebase/php-jwt": "^6.1",
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "symfony/security-http": "^5.4.3",
+        "symfony/security-core": "^5.4.3"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Draw\\Component\\Security\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

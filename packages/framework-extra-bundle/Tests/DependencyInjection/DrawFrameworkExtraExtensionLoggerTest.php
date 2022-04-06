@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests;
+namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection;
 
 class DrawFrameworkExtraExtensionLoggerTest extends DrawFrameworkExtraExtensionTest
 {

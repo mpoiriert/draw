@@ -7,7 +7,6 @@ use Draw\Bundle\UserBundle\AccountLocker\Listener\AccountLockerSubscriber;
 use Draw\Bundle\UserBundle\AccountLocker\Sonata\Admin\UserLockAdmin;
 use Draw\Bundle\UserBundle\AccountLocker\Sonata\Extension\UserAdminExtension;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
-use Draw\Bundle\UserBundle\Jwt\JwtAuthenticator;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\Onboarding\EmailWriter\UserOnboardingEmailWriter;
 use Draw\Bundle\UserBundle\Onboarding\MessageHandler\NewUserSendEmailMessageHandler;
@@ -33,7 +32,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class DrawUserExtension extends Extension implements PrependExtensionInterface
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
@@ -53,7 +52,6 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
         $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
         $this->configurePasswordRecovery($config['password_recovery'], $loader, $container);
-        $this->configureJwtAuthenticator($config['jwt_authenticator'], $loader, $container);
         $this->configureOnboarding($config['onboarding'], $loader, $container);
         $this->configureNeedPasswordChangeEnforcer($config['password_change_enforcer'], $loader, $container);
 
@@ -280,29 +278,6 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         $container->getDefinition(TwoFactorAuthenticationExtension::class)
             ->setArgument(0, $config['2fa']['field_positions'])
             ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
-    }
-
-    private function configureJwtAuthenticator(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $container
-    ): void {
-        if (!$config['enabled']) {
-            $container->removeDefinition(JwtAuthenticator::class);
-
-            return;
-        }
-
-        $definition = $container
-            ->getDefinition(JwtAuthenticator::class);
-
-        $definition->setArgument('$key', $config['key']);
-
-        if (!$config['query_parameters']['enabled']) {
-            return;
-        }
-
-        $definition->setArgument('$queryParameters', $config['query_parameters']['accepted_keys']);
     }
 
     private function checkEmailWriter(ContainerBuilder $containerBuilder, string $for): void

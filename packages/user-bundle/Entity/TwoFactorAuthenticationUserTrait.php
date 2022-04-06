@@ -9,16 +9,14 @@ use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 trait TwoFactorAuthenticationUserTrait
 {
     /**
-     * @var string
-     *
      * @ORM\Column(name="totp_secret", type="string", nullable=true)
      */
-    private $totpSecret;
+    private ?string $totpSecret = null;
 
     /**
      * @ORM\Column(name="force_enabling_two_factor_authentication", type="boolean", nullable=false, options={"default":"0"})
      */
-    private $forceEnablingTwoFactorAuthentication = false;
+    private bool $forceEnablingTwoFactorAuthentication = false;
 
     public function getTotpSecret(): ?string
     {
@@ -40,7 +38,7 @@ trait TwoFactorAuthenticationUserTrait
         $this->forceEnablingTwoFactorAuthentication = $forceEnablingTwoFactorAuthentication;
     }
 
-    abstract public function getUsername();
+    abstract public function getUserIdentifier(): ?string;
 
     public function isTotpAuthenticationEnabled(): bool
     {
@@ -49,7 +47,7 @@ trait TwoFactorAuthenticationUserTrait
 
     public function getTotpAuthenticationUsername(): string
     {
-        return $this->getUsername();
+        return $this->getUserIdentifier();
     }
 
     public function getTotpAuthenticationConfiguration(): TotpConfigurationInterface

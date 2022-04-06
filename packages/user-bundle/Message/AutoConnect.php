@@ -2,7 +2,9 @@
 
 namespace Draw\Bundle\UserBundle\Message;
 
-class AutoConnect implements AutoConnectInterface
+use Draw\Component\Messenger\Message\ManuallyTriggeredInterface;
+
+class AutoConnect implements AutoConnectInterface, ManuallyTriggeredInterface
 {
     private $userId;
 

@@ -10,9 +10,9 @@ use Draw\Bundle\UserBundle\Onboarding\Email\UserOnboardingEmail;
 
 class UserOnboardingEmailWriter implements EmailWriterInterface
 {
-    private $messageUrlGenerator;
+    private MessageUrlGenerator $messageUrlGenerator;
 
-    private $messageExpirationDelay;
+    private string $messageExpirationDelay;
 
     public static function getForEmails(): array
     {
@@ -21,7 +21,7 @@ class UserOnboardingEmailWriter implements EmailWriterInterface
 
     public function __construct(
         MessageUrlGenerator $messageUrlGenerator,
-        $messageExpirationDelay = '+ 7 days'
+        string $messageExpirationDelay = '+ 7 days'
     ) {
         $this->messageExpirationDelay = $messageExpirationDelay;
         $this->messageUrlGenerator = $messageUrlGenerator;

@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class Enable2faForm extends AbstractType
 {
@@ -21,6 +22,9 @@ final class Enable2faForm extends AbstractType
                     'label' => 'form.enable_2fa.field.code.label',
                     'attr' => [
                         'placeholder' => 'form.enable_2fa.field.code.placeholder',
+                    ],
+                    'constraints' => [
+                        new NotBlank(),
                     ],
                 ]
             )

@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Jwt;
+namespace Draw\Component\Security\Jwt;
 
 use DateTimeInterface;
 use Firebase\JWT\JWT;

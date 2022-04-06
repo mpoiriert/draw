@@ -85,7 +85,7 @@ class TokenProcessorTest extends TestCase
                 return $this;
             }
 
-            public function getUserIdentifier(): string
+            public function getUserIdentifier(): ?string
             {
                 return $this->userIdentifier;
             }

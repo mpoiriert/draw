@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RefreshUserLockController extends CRUDController
 {
-    private $accountLocker;
+    private AccountLocker $accountLocker;
 
     public function __construct(AccountLocker $accountLocker)
     {

@@ -12,17 +12,19 @@ use Symfony\Component\Security\Core\Security;
 
 class TwoFactorAuthenticationSubscriber implements EventSubscriberInterface
 {
-    private $enableRoute;
+    private string $enableRoute;
 
-    private $security;
+    private Security $security;
 
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        yield UserRequestInterceptionEvent::class => [
-            ['checkNeedToEnableTwoFactorAuthentication', 50],
-            ['allowHandlingRequestWhenTwoFactorAuthenticationInProgress', 1000],
+        return [
+            UserRequestInterceptionEvent::class => [
+                ['checkNeedToEnableTwoFactorAuthentication', 50],
+                ['allowHandlingRequestWhenTwoFactorAuthenticationInProgress', 1000],
+            ],
         ];
     }
 
