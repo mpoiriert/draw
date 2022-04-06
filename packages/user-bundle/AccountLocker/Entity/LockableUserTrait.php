@@ -15,7 +15,7 @@ trait LockableUserTrait
     /**
      * @ORM\Column(name="manual_lock", type="boolean", nullable=false, options={"default":"0"})
      */
-    private $manualLock = false;
+    private bool $manualLock = false;
 
     /**
      * @ORM\OneToMany(
@@ -26,7 +26,7 @@ trait LockableUserTrait
      * )
      * @ORM\OrderBy({"lockOn":"ASC", "createdAt":"ASC"})
      */
-    private $userLocks = null;
+    private ?Collection $userLocks = null;
 
     public function hasManualLock(): bool
     {

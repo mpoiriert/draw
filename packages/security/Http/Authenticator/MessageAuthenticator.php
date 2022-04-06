@@ -1,19 +1,18 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Security;
+namespace Draw\Component\Security\Http\Authenticator;
 
-use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\MessengerBundle\Controller\MessageController;
 use Draw\Bundle\UserBundle\Message\AutoConnectInterface;
-use Draw\Component\Messenger\Transport\DrawTransport;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Transport\TransportInterface;
+use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -21,20 +20,20 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class MessageAuthenticator extends AbstractAuthenticator
 {
-    private TransportInterface $transport;
+    private ListableReceiverInterface $transport;
 
-    private EntityRepository $entityRepository;
+    private UserProviderInterface $userProvider;
 
     private Security $security;
 
     public function __construct(
-        DrawTransport $drawTransport,
-        EntityRepository $drawUserEntityRepository,
+        ListableReceiverInterface $transport,
+        UserProviderInterface $userProvider,
         Security $security
     ) {
         $this->security = $security;
-        $this->entityRepository = $drawUserEntityRepository;
-        $this->transport = $drawTransport; // todo configure which transport to use
+        $this->userProvider = $userProvider;
+        $this->transport = $transport;
     }
 
     public function supports(Request $request): ?bool
@@ -85,7 +84,7 @@ class MessageAuthenticator extends AbstractAuthenticator
                 return null;
         }
 
-        return $this->entityRepository->find($message->getUserId());
+        return $this->userProvider->loadUserByIdentifier($message->getUserId());
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response

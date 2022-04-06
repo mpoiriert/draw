@@ -22,6 +22,7 @@
         "draw/log": "^1.0",
         "draw/messenger": "^1.0",
         "draw/process": "^1.0",
+        "draw/security": "^1.0",
         "draw/tester": "^1.0",
         "draw/tester-bundle": "^1.0",
         "draw/user-bundle": "^1.0",

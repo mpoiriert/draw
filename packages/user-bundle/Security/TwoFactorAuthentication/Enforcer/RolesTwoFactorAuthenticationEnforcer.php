@@ -7,13 +7,13 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Does not change the current configuration of the user.
+ * Enforce base on a list roles. Does not change the current user configuration if not roles get match.
  */
 class RolesTwoFactorAuthenticationEnforcer implements TwoFactorAuthenticationEnforcerInterface
 {
-    private $roleHierarchy;
+    private RoleHierarchyInterface $roleHierarchy;
 
-    private $enforcingRoles;
+    private array $enforcingRoles;
 
     public function __construct(RoleHierarchyInterface $roleHierarchy, array $enforcingRoles)
     {

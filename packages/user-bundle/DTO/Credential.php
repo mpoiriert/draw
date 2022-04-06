@@ -8,34 +8,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Credential
 {
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      *
      * @Serializer\Type("string")
      */
-    private $username;
+    private ?string $username = null;
 
     /**
-     * @var string
-     *
      * @Assert\NotBlank()
      *
      * @Serializer\Type("string")
      */
-    private $password;
+    private ?string $password = null;
 
-    /**
-     * @return string
-     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): ?string
     {
         return $this->password;

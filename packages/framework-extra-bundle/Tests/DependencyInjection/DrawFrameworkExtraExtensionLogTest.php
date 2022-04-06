@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests;
+namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;

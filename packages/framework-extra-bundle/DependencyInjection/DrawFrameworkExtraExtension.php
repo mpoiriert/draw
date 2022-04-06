@@ -10,8 +10,10 @@ use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
+use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -27,15 +29,37 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
 
+        $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
         $this->configureProcess($config['process'], $loader, $container);
+        $this->configureSecurity($config['security'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
     }
 
-    private function configureLog(array $config, PhpFileLoader $loader, ContainerBuilder $containerBuilder): void
+    private function configureJwtEncoder(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $container
+    ): void {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $container
+            ->setDefinition(
+                'draw.jwt_encoder',
+                new Definition(JwtEncoder::class)
+            )
+            ->setArgument('$key', $config['key'])
+            ->setArgument('$algorithm', $config['algorithm']);
+
+        $container->setAlias(JwtEncoder::class, 'draw.jwt_encoder');
+    }
+
+    private function configureLog(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        if (!$this->isConfigEnabled($containerBuilder, $config)) {
+        if (!$this->isConfigEnabled($container, $config)) {
             return;
         }
 
@@ -60,14 +84,14 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         ];
 
         foreach ($services as $service => $serviceConfiguration) {
-            if (!$enableAllProcessors && !$this->isConfigEnabled($containerBuilder, $processorConfig[$service])) {
+            if (!$enableAllProcessors && !$this->isConfigEnabled($container, $processorConfig[$service])) {
                 continue;
             }
 
             $class = $serviceConfiguration['class'];
             $keyDecorator = $serviceConfiguration['keyDecorator'] ?? false;
 
-            $definition = $containerBuilder->setDefinition(
+            $definition = $container->setDefinition(
                 $serviceName = 'draw.log.'.$service.'_processor',
                 new Definition($class)
             );
@@ -75,7 +99,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             $definition->addTag('monolog.processor');
 
             if (!$keyDecorator) {
-                $containerBuilder->setAlias($class, $serviceName);
+                $container->setAlias($class, $serviceName);
             }
 
             $arguments = $processorConfig[$service];
@@ -88,7 +112,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             $definition->setArguments($this->arrayToArgumentsArray($arguments));
 
             if ($keyDecorator) {
-                $containerBuilder->setDefinition(
+                $container->setDefinition(
                     $serviceName.'.key_decorator',
                     new Definition(ChangeKeyProcessorDecorator::class)
                 )
@@ -99,21 +123,21 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
     }
 
-    private function configureLogger(array $config, PhpFileLoader $loader, ContainerBuilder $containerBuilder): void
+    private function configureLogger(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        if (!$this->isConfigEnabled($containerBuilder, $config)) {
+        if (!$this->isConfigEnabled($container, $config)) {
             return;
         }
 
-        $this->configureSlowRequestLogger($config['slow_request'], $loader, $containerBuilder);
+        $this->configureSlowRequestLogger($config['slow_request'], $loader, $container);
     }
 
     private function configureSlowRequestLogger(
         array $config,
         PhpFileLoader $loader,
-        ContainerBuilder $containerBuilder
+        ContainerBuilder $container
     ): void {
-        if (!$this->isConfigEnabled($containerBuilder, $config)) {
+        if (!$this->isConfigEnabled($container, $config)) {
             return;
         }
 
@@ -141,7 +165,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             );
         }
 
-        $containerBuilder->setDefinition(
+        $container->setDefinition(
             'draw.logger.slow_request_logger',
             new Definition(SlowRequestLogger::class)
         )
@@ -150,18 +174,27 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             ->setArgument('$requestMatchers', $requestMatcherReferences);
     }
 
-    private function configureProcess(array $config, PhpFileLoader $loader, ContainerBuilder $containerBuilder): void
+    private function configureProcess(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        if (!$this->isConfigEnabled($containerBuilder, $config)) {
+        if (!$this->isConfigEnabled($container, $config)) {
             return;
         }
 
         $loader->load('process.php');
     }
 
-    private function configureTester(array $config, PhpFileLoader $loader, ContainerBuilder $containerBuilder): void
+    private function configureSecurity(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        if (!$this->isConfigEnabled($containerBuilder, $config)) {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $loader->load('security.php');
+    }
+
+    private function configureTester(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
             return;
         }
 

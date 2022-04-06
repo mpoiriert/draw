@@ -6,7 +6,13 @@ use Draw\Component\Process\ProcessFactory;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 
 return static function (ContainerConfigurator $container) {
-    $container->services()
+    $container
+        ->services()
+
+        ->defaults()
+        ->autowire()
+        ->autoconfigure()
+
         ->set('draw.process.factory', ProcessFactory::class)
         ->alias(ProcessFactoryInterface::class, 'draw.process.factory');
 };

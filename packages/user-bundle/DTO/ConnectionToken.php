@@ -7,11 +7,9 @@ use JMS\Serializer\Annotation as Serializer;
 class ConnectionToken
 {
     /**
-     * @var string
-     *
      * @Serializer\Type("string")
      */
-    public $token;
+    public string $token;
 
     public function __construct(string $token)
     {

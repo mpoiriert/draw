@@ -9,7 +9,7 @@ use Symfony\Component\Mime\Email;
 
 class ToUserEmailWriter implements EmailWriterInterface
 {
-    private $userEntityRepository;
+    private EntityRepository $userEntityRepository;
 
     public static function getForEmails(): array
     {

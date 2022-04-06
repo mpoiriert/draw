@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Sonata\Controller;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\PasswordRecovery\Email\ForgotPasswordEmail;
@@ -19,10 +20,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class LoginController extends AbstractController
 {
-    /**
-     * @var AuthenticationUtils
-     */
-    private $authenticationUtils;
+    private AuthenticationUtils $authenticationUtils;
 
     public function __construct(AuthenticationUtils $authenticationUtils)
     {
@@ -106,9 +104,11 @@ final class LoginController extends AbstractController
     /**
      * @Route("/change-password", name="admin_change_password")
      */
-    public function changePasswordAction(Request $request, UserFeedInterface $userFeed): Response
-    {
-        /** @var UserInterface $user */
+    public function changePasswordAction(
+        Request $request,
+        UserFeedInterface $userFeed,
+        ManagerRegistry $managerRegistry
+    ): Response {
         $user = $this->getUser();
         $form = $this->createForm(
             ChangePasswordForm::class,
@@ -129,7 +129,7 @@ final class LoginController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManagerForClass(get_class($user))->flush();
+            $managerRegistry->getManagerForClass(get_class($user))->flush();
             $userFeed->addToFeed($user, 'success', 'Password changed');
 
             return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));

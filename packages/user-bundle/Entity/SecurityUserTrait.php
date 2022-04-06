@@ -18,38 +18,38 @@ trait SecurityUserTrait
      * @Assert\Email()
      * @Assert\NotBlank()
      */
-    private $email;
+    private ?string $email = null;
 
     /**
-     * @var ?string The hashed password
+     * The hashed password.
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    private $password;
+    private ?string $password = null;
 
     /**
-     * @var string The plain password to update the password itself
+     * The plain password to update the password itself.
      */
-    private $plainPassword;
+    private ?string $plainPassword = null;
 
     /**
-     * @var DateTimeImmutable
-     *
      * @ORM\Column(name="last_password_updated_at", type="datetime_immutable", nullable=true)
      */
-    private $passwordUpdatedAt;
+    private ?DateTimeImmutable $passwordUpdatedAt = null;
 
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): void
+    public function setEmail(string $email): self
     {
         $this->email = strtolower($email);
+
+        return $this;
     }
 
-    public function getUserIdentifier(): string
+    public function getUserIdentifier(): ?string
     {
         return $this->getUsername();
     }
@@ -70,21 +70,23 @@ trait SecurityUserTrait
         return $this->password;
     }
 
-    public function setPassword(?string $password): void
+    public function setPassword(?string $password): self
     {
         if ($this->password === $password) {
-            return;
+            return $this;
         }
 
         $this->password = $password;
 
         if (!$this->password) {
-            return;
+            return $this;
         }
 
         if ($this instanceof PasswordChangeUserInterface) {
             $this->setNeedChangePassword(false);
         }
+
+        return $this;
     }
 
     public function getPlainPassword(): ?string
@@ -92,7 +94,7 @@ trait SecurityUserTrait
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(?string $plainPassword): void
+    public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
         if ($this->plainPassword) {
@@ -101,6 +103,8 @@ trait SecurityUserTrait
             $this->passwordUpdatedAt = null;
             $this->setPasswordUpdatedAt(new DateTimeImmutable());
         }
+
+        return $this;
     }
 
     public function getPasswordUpdatedAt(): ?DateTimeInterface
@@ -125,16 +129,16 @@ trait SecurityUserTrait
 
     public function getSalt()
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
+        return null;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->plainPassword = null;
     }
 
     public function __toString()
     {
-        return $this->getUsername();
+        return $this->getUserIdentifier();
     }
 }

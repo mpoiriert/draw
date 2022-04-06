@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 class UserLockTest extends TestCase
 {
-    private $entity;
+    private UserLock $entity;
 
     public function setUp(): void
     {
