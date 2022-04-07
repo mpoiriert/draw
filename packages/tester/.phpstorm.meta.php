@@ -4,4 +4,9 @@
             "" == "@",
         ],
     ];
+
+    override(
+        \Draw\Component\Tester\MockBuilderTrait::createMockWithExtractMethods(0),
+        map([""=>"$0"])
+    );
 }
