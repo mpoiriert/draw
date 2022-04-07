@@ -82,6 +82,7 @@
         "symfony/monolog-bundle": "^3.7",
         "symfony/phpunit-bridge": "^5.4.3",
         "symfony/stopwatch": "^5.4.3",
+        "symfony/translation-contracts": "^2.5",
         "symfony/web-profiler-bundle": "^5.4.3",
         "symplify/monorepo-builder": "^8.3.48",
         "terminal42/service-annotation-bundle": "^1.1"

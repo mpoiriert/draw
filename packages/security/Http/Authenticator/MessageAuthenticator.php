@@ -39,8 +39,8 @@ class MessageAuthenticator extends AbstractAuthenticator
     public function supports(Request $request): ?bool
     {
         switch (true) {
-            case !$request->get(MessageController::MESSAGE_ID_PARAMETER_NAME):
-            case !$this->isDifferentUser($request->get(MessageController::MESSAGE_ID_PARAMETER_NAME)):
+            case !$messageId = $request->get(MessageController::MESSAGE_ID_PARAMETER_NAME):
+            case !$this->isDifferentUser($messageId):
                 return false;
             default:
                 return true;
@@ -53,11 +53,11 @@ class MessageAuthenticator extends AbstractAuthenticator
         switch (true) {
             case null === $messageId:
             case null === $user = $this->getMessageUser($messageId):
-                throw new CustomUserMessageAuthenticationException('Invalid message id');
+                throw new CustomUserMessageAuthenticationException('Invalid message id.');
         }
 
         return new SelfValidatingPassport(
-            new UserBadge($user->getUserIdentifier().'+'.$messageId, function () use ($user) {
+            new UserBadge($user->getUserIdentifier().'+message-'.$messageId, function () use ($user) {
                 return $user;
             })
         );

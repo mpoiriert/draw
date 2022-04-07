@@ -11,7 +11,7 @@ class ConnectionTokensControllerTest extends TestCase
     {
         $token = JWT::encode(
             [
-                'id' => 'invalid',
+                'userId' => 'invalid',
                 'exp' => (new \DateTime('+ 7 days'))->getTimestamp(),
             ],
             'acme',

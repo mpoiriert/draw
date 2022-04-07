@@ -3,7 +3,7 @@
 namespace Draw\Component\Security\Http\Authenticator;
 
 use DateTimeImmutable;
-use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
+use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,17 +50,25 @@ class JwtAuthenticator extends AbstractAuthenticator
         return null !== $this->getToken($request);
     }
 
-    public function generaToken(SecurityUserInterface $user, ?string $expiration = '+ 7 days'): string
+    public function generaToken(UserInterface $user, ?string $expiration = '+ 7 days', array $extraPayload = []): string
     {
         return $this->encoder->encode(
-            [$this->userIdentifierPayloadKey => call_user_func([$user, $this->userIdentifierGetter])],
+            array_merge(
+                [$this->userIdentifierPayloadKey => call_user_func([$user, $this->userIdentifierGetter])],
+                $extraPayload
+            ),
             $expiration ? new DateTimeImmutable($expiration) : null
         );
     }
 
     public function getUserFromToken(string $token): UserInterface
     {
-        $userId = ((array) $this->encoder->decode($token))[$this->userIdentifierPayloadKey] ?? null;
+        return $this->getUserFromPayload($this->encoder->decode($token));
+    }
+
+    private function getUserFromPayload(object $payload): UserInterface
+    {
+        $userId = $payload->{$this->userIdentifierPayloadKey} ?? null;
 
         if (null === $userId) {
             throw new UserNotFoundException('Token attribute ['.$this->userIdentifierPayloadKey.'] not found');
@@ -69,7 +77,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         return $this->userProvider->loadUserByIdentifier($userId);
     }
 
-    private function getToken(Request $request): ?string
+    public function getToken(Request $request): ?string
     {
         if ($request->headers->has('Authorization')) {
             if (preg_match('/Bearer\s(\S+)/', $request->headers->get('Authorization'), $matches)) {
@@ -82,12 +90,20 @@ class JwtAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $user = $this->getUserFromToken($this->getToken($request));
+        $token = $this->getToken($request);
+        $payload = $this->encoder->decode($token);
+        $user = $this->getUserFromPayload($payload);
+
+        $badges = [];
+        if ($badge = JwtPayloadBadge::createIfNeeded((array) $payload, [$this->userIdentifierPayloadKey])) {
+            $badges[] = $badge;
+        }
 
         return new SelfValidatingPassport(
             new UserBadge($user->getUserIdentifier().'+jwt-token', function () use ($user) {
                 return $user;
-            })
+            }),
+            $badges
         );
     }
 
