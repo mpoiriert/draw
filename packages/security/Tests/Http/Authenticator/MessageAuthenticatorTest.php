@@ -3,8 +3,8 @@
 namespace Draw\Component\Security\Tests\Http\Authenticator;
 
 use Draw\Bundle\MessengerBundle\Controller\MessageController;
-use Draw\Bundle\UserBundle\Message\AutoConnect;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
+use Draw\Component\Security\Http\Message\AutoConnectInterface;
 use Draw\Component\Tester\MockBuilderTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,12 +86,12 @@ class MessageAuthenticatorTest extends TestCase
             ->expects($this->once())
             ->method('find')
             ->with($messageId)
-            ->willReturn(new Envelope(new AutoConnect($userId = uniqid('user-id-'))));
+            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
 
         $this->userProvider
             ->expects($this->once())
             ->method('loadUserByIdentifier')
-            ->with($userId)
+            ->with($userIdentifier)
             ->willReturn($this->createMock(UserInterface::class));
 
         $this->assertTrue($this->service->supports($request));
@@ -116,12 +116,12 @@ class MessageAuthenticatorTest extends TestCase
             ->expects($this->once())
             ->method('find')
             ->with($messageId)
-            ->willReturn(new Envelope(new AutoConnect($userId = uniqid('user-id-'))));
+            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
 
         $this->userProvider
             ->expects($this->once())
             ->method('loadUserByIdentifier')
-            ->with($userId)
+            ->with($userIdentifier)
             ->willReturn($user);
 
         $this->assertFalse($this->service->supports($request));
@@ -153,7 +153,7 @@ class MessageAuthenticatorTest extends TestCase
             ->expects($this->once())
             ->method('find')
             ->with($messageId)
-            ->willReturn(new Envelope(new AutoConnect($userId = uniqid('user-id-'))));
+            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
 
         $user = $this->createMockWithExtractMethods(
             UserInterface::class,
@@ -163,12 +163,12 @@ class MessageAuthenticatorTest extends TestCase
         $user
             ->expects($this->once())
             ->method('getUserIdentifier')
-            ->willReturn($userId);
+            ->willReturn($userIdentifier);
 
         $this->userProvider
             ->expects($this->once())
             ->method('loadUserByIdentifier')
-            ->with($userId)
+            ->with($userIdentifier)
             ->willReturn($user);
 
         $passport = $this->service->authenticate($request);
@@ -181,7 +181,7 @@ class MessageAuthenticatorTest extends TestCase
         $userBadge = $passport->getBadge(UserBadge::class);
 
         $this->assertSame(
-            $userId.'+message-'.$messageId,
+            $userIdentifier.'+message-'.$messageId,
             $userBadge->getUserIdentifier()
         );
 
@@ -254,5 +254,16 @@ class MessageAuthenticatorTest extends TestCase
             $firewallName,
             $token->getFirewallName()
         );
+    }
+
+    private function createAutoConnectMessage(string $userIdentifier): AutoConnectInterface
+    {
+        $message = $this->createMock(AutoConnectInterface::class);
+
+        $message->expects($this->any())
+            ->method('getUserIdentifier')
+            ->willReturn($userIdentifier);
+
+        return $message;
     }
 }
