@@ -49,7 +49,7 @@ class RequestHeadersProcessorTest extends TestCase
             [$header1 => $requestHeaders[$header1]],
         ];
 
-        yield 'only-and-ignore-' => [
+        yield 'only-and-ignore' => [
             $requestHeaders,
             [$header1],
             [$header2],
@@ -94,7 +94,7 @@ class RequestHeadersProcessorTest extends TestCase
             $mainRequest->headers->replace($requestHeaders);
         }
 
-        $originalRecords = [uniqid() => uniqid()];
+        $originalRecords = [uniqid('header-name-') => uniqid()];
         $records = $service->__invoke($originalRecords);
 
         if (null === $expectedHeaders) {
