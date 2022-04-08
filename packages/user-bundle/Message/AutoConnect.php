@@ -3,18 +3,19 @@
 namespace Draw\Bundle\UserBundle\Message;
 
 use Draw\Component\Messenger\Message\ManuallyTriggeredInterface;
+use Draw\Component\Security\Http\Message\AutoConnectInterface;
 
 class AutoConnect implements AutoConnectInterface, ManuallyTriggeredInterface
 {
-    private $userId;
+    private string $userIdentifier;
 
-    public function __construct($userId)
+    public function __construct(string $userIdentifier)
     {
-        $this->userId = $userId;
+        $this->userIdentifier = $userIdentifier;
     }
 
-    public function getUserId()
+    public function getUserIdentifier(): string
     {
-        return $this->userId;
+        return $this->userIdentifier;
     }
 }

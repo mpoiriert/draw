@@ -3,7 +3,7 @@
 namespace Draw\Component\Security\Http\Authenticator;
 
 use Draw\Bundle\MessengerBundle\Controller\MessageController;
-use Draw\Bundle\UserBundle\Message\AutoConnectInterface;
+use Draw\Component\Security\Http\Message\AutoConnectInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
@@ -84,7 +84,7 @@ class MessageAuthenticator extends AbstractAuthenticator
                 return null;
         }
 
-        return $this->userProvider->loadUserByIdentifier($message->getUserId());
+        return $this->userProvider->loadUserByIdentifier($message->getUserIdentifier());
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
