@@ -9,7 +9,6 @@ use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\Listener\UserRequestInterceptorSubscriber;
-use Draw\Bundle\UserBundle\MessageHandler\AutoConnectMessageHandler;
 use Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler;
 use Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock;
 use Draw\Bundle\UserBundle\Sonata\Controller\LoginController;
@@ -45,7 +44,6 @@ class DrawUserExtensionTest extends ExtensionTestCase
         yield [SessionUserFeed::class];
         yield [EncryptPasswordUserEntityListener::class];
         yield [UserRequestInterceptorSubscriber::class];
-        yield [AutoConnectMessageHandler::class];
         yield [UserCountBlock::class];
         yield [LoginController::class];
         yield [AdminLoginForm::class];
