@@ -452,7 +452,7 @@
                     "Security"
                 ],
                 "summary": "Create a token base on the username/password of a user.",
-                "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp**\u00a0attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
+                "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp** attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
                 "operationId": "drawUserBundleCreateConnectionToken",
                 "parameters": [
                     {
@@ -587,6 +587,7 @@
                     "type": "string"
                 },
                 "plainPassword": {
+                    "description": "The plain password to update the password itself.",
                     "type": "string"
                 },
                 "passwordUpdatedAt": {
