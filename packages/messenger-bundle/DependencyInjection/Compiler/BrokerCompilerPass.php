@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\MessengerBundle\DependencyInjection\Compiler;
 
-use Draw\Bundle\MessengerBundle\Broker\Broker;
+use Draw\Component\Messenger\Broker;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

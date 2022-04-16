@@ -1,16 +1,16 @@
 <?php
 
-namespace Draw\Bundle\MessengerBundle\Broker\EventListener;
+namespace Draw\Component\Messenger\EventListener;
 
-use Draw\Bundle\MessengerBundle\Broker\Event\NewConsumerProcessEvent;
+use Draw\Component\Messenger\Event\NewConsumerProcessEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class DefaultValuesListener implements EventSubscriberInterface
+class BrokerDefaultValuesListener implements EventSubscriberInterface
 {
-    private $defaultOptions;
-    private $receivers;
+    private array $defaultOptions;
+    private array $receivers;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             NewConsumerProcessEvent::class => ['initializeDefaultValues', 255],

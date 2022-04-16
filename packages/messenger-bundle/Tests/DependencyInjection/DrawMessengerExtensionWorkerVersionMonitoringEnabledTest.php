@@ -3,7 +3,7 @@
 namespace Draw\Bundle\MessengerBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\MessengerBundle\DependencyInjection\DrawMessengerExtension;
-use Draw\Bundle\MessengerBundle\EventListener\StopWorkerOnNewVersionListener;
+use Draw\Component\Messenger\EventListener\StopOnNewVersionListener;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawMessengerExtensionWorkerVersionMonitoringEnabledTest extends DrawMessengerExtensionTest
@@ -25,6 +25,6 @@ class DrawMessengerExtensionWorkerVersionMonitoringEnabledTest extends DrawMesse
     public function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
-        yield [StopWorkerOnNewVersionListener::class];
+        yield [StopOnNewVersionListener::class];
     }
 }

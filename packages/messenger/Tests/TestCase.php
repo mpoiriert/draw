@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Tests;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Persistence\ConnectionRegistry;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase implements ConnectionRegistry
@@ -29,7 +30,7 @@ class TestCase extends BaseTestCase implements ConnectionRegistry
     {
         $name = $name ?: $this->getDefaultConnectionName();
         if ('default' !== $name) {
-            throw new \InvalidArgumentException('Connection named ['.$name.'] does not exists.');
+            throw new InvalidArgumentException('Connection named ['.$name.'] does not exists.');
         }
 
         return static::loadDefaultConnection();
