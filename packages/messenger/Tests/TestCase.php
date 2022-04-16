@@ -9,9 +9,9 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase implements ConnectionRegistry
 {
-    private static $connection = null;
+    private static ?Connection $connection = null;
 
-    public function getDefaultConnectionName()
+    public function getDefaultConnectionName(): string
     {
         return 'default';
     }
@@ -25,7 +25,7 @@ class TestCase extends BaseTestCase implements ConnectionRegistry
         return self::$connection;
     }
 
-    public function getConnection($name = null)
+    public function getConnection($name = null): Connection
     {
         $name = $name ?: $this->getDefaultConnectionName();
         if ('default' !== $name) {
@@ -35,14 +35,14 @@ class TestCase extends BaseTestCase implements ConnectionRegistry
         return static::loadDefaultConnection();
     }
 
-    public function getConnections()
+    public function getConnections(): array
     {
         return [
             'default' => $this->getConnection(),
         ];
     }
 
-    public function getConnectionNames()
+    public function getConnectionNames(): array
     {
         return ['default'];
     }
