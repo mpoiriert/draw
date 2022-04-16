@@ -170,8 +170,11 @@ trait CommandTestTrait
      */
     public function execute(array $input, array $options = []): DataTester
     {
+        $columns = getenv('COLUMNS');
+        putenv('COLUMNS=120');
         $options += ['capture_stderr_separately' => true];
         $this->commandTester->execute($input, $options);
+        putenv('COLUMNS='.$columns);
 
         return new DataTester($this->commandTester);
     }
