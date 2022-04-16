@@ -1,13 +1,13 @@
 <?php
 
-namespace Draw\Bundle\MessengerBundle\Broker\Event;
+namespace Draw\Component\Messenger\Event;
 
-use Draw\Bundle\MessengerBundle\Broker\Broker;
+use Draw\Component\Messenger\Broker;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class BrokerRunningEvent extends Event
 {
-    private $broker;
+    private Broker $broker;
 
     public function __construct(Broker $broker)
     {

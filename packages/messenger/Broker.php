@@ -1,28 +1,34 @@
 <?php
 
-namespace Draw\Bundle\MessengerBundle\Broker;
+namespace Draw\Component\Messenger;
 
-use Draw\Bundle\MessengerBundle\Broker\Event\BrokerRunningEvent;
-use Draw\Bundle\MessengerBundle\Broker\Event\BrokerStartedEvent;
-use Draw\Bundle\MessengerBundle\Broker\Event\NewConsumerProcessEvent;
+use Draw\Component\Messenger\Event\BrokerRunningEvent;
+use Draw\Component\Messenger\Event\BrokerStartedEvent;
+use Draw\Component\Messenger\Event\NewConsumerProcessEvent;
+use Draw\Contracts\Process\ProcessFactoryInterface;
+use RuntimeException;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Broker
 {
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
-    private $stopped = false;
+    private bool $stopped = false;
 
-    private $allowFinishingProcess = true;
+    private ProcessFactoryInterface $processFactory;
 
-    private $symfonyConsolePath;
+    private bool $allowFinishingProcess = true;
+
+    private string $consolePath;
 
     public function __construct(
-        string $symfonyConsolePath,
+        string $consolePath,
+        ProcessFactoryInterface $processFactory,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->symfonyConsolePath = $symfonyConsolePath;
+        $this->consolePath = $consolePath;
+        $this->processFactory = $processFactory;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -45,19 +51,16 @@ class Broker
                     unset($processes[$key]);
                 }
             }
+
+            switch (true) {
+                case !$this->stopped:
+                    break;
+                case !$processes:
+                case !$this->allowFinishingProcess:
+                    break 2;
+            }
+
             sleep(1);
-
-            if (!$this->stopped) {
-                continue;
-            }
-
-            if (!$processes) {
-                break;
-            }
-
-            if (!$this->allowFinishingProcess) {
-                break;
-            }
         }
 
         $this->stopProcesses($processes, $timeout);
@@ -76,13 +79,13 @@ class Broker
     {
         foreach ($processes as $process) {
             if ($process->isRunning()) {
+                // given SIGTERM may not be defined and that "proc_terminate" uses the constant value and not the constant itself, we use the same here
                 $process->signal(15); //15 is SIGTERM
             }
         }
 
         $timeoutMicro = microtime(true) + $timeout;
 
-        // given SIGTERM may not be defined and that "proc_terminate" uses the constant value and not the constant itself, we use the same here
         do {
             usleep(1000);
             foreach ($processes as $key => $process) {
@@ -90,10 +93,7 @@ class Broker
                     unset($processes[$key]);
                 }
             }
-            if (!$processes) {
-                break;
-            }
-        } while (microtime(true) < $timeoutMicro);
+        } while (count($processes) && microtime(true) < $timeoutMicro);
 
         foreach ($processes as $process) {
             $process->stop(0);
@@ -109,23 +109,22 @@ class Broker
         for ($i = 0; $i < $amount; ++$i) {
             $this->eventDispatcher->dispatch($event = new NewConsumerProcessEvent());
 
-            if ($event->isStartPrevented()) {
-                continue;
-            }
-
             if (!$receivers = $event->getReceivers()) {
-                throw new \RuntimeException(sprintf('You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.', NewConsumerProcessEvent::class.'::preventStart'));
+                throw new RuntimeException(sprintf('You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.', NewConsumerProcessEvent::class.'::preventStart'));
             }
 
-            $process = new Process(
+            $process = $this->processFactory->create(
                 array_merge(
-                    [$this->symfonyConsolePath, 'messenger:consume'],
+                    [$this->consolePath, 'messenger:consume'],
                     $receivers,
                     $this->buildOptionsFromArray($event->getOptions())
-                )
+                ),
+                null,
+                null,
+                null,
+                null,
             );
 
-            $process->setTimeout(null);
             $process->start();
 
             $processes[] = $process;

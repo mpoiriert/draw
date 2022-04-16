@@ -1,16 +1,14 @@
 <?php
 
-namespace Draw\Bundle\MessengerBundle\Broker\Event;
+namespace Draw\Component\Messenger\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 class NewConsumerProcessEvent extends Event
 {
-    private $receivers;
+    private array $receivers;
 
-    private $options;
-
-    private $preventStart = false;
+    private array $options;
 
     public function __construct(array $receivers = [], array $options = [])
     {
@@ -23,9 +21,11 @@ class NewConsumerProcessEvent extends Event
         return $this->receivers;
     }
 
-    public function setReceivers(array $receivers): void
+    public function setReceivers(array $receivers): self
     {
         $this->receivers = $receivers;
+
+        return $this;
     }
 
     public function getOptions(): array
@@ -33,18 +33,10 @@ class NewConsumerProcessEvent extends Event
         return $this->options;
     }
 
-    public function setOptions(array $options): void
+    public function setOptions(array $options): self
     {
         $this->options = $options;
-    }
 
-    public function preventStart(): void
-    {
-        $this->preventStart = true;
-    }
-
-    public function isStartPrevented(): bool
-    {
-        return $this->preventStart;
+        return $this;
     }
 }

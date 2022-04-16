@@ -1,17 +1,17 @@
 <?php
 
-namespace Draw\Bundle\MessengerBundle\Broker\Event;
+namespace Draw\Component\Messenger\Event;
 
-use Draw\Bundle\MessengerBundle\Broker\Broker;
+use Draw\Component\Messenger\Broker;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class BrokerStartedEvent extends Event
 {
-    private $broker;
+    private Broker $broker;
 
-    private $concurrent;
+    private int $concurrent;
 
-    private $timeout;
+    private int $timeout;
 
     public function __construct(Broker $broker, int $concurrent, int $timeout)
     {
