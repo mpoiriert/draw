@@ -5,9 +5,9 @@ namespace Draw\Bundle\MessengerBundle\DependencyInjection;
 use Draw\Bundle\MessengerBundle\Broker\EventListener\DefaultValuesListener;
 use Draw\Bundle\MessengerBundle\Entity\DrawMessageInterface;
 use Draw\Bundle\MessengerBundle\Entity\DrawMessageTagInterface;
-use Draw\Bundle\MessengerBundle\EventListener\StopWorkerOnNewVersionListener;
 use Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
+use Draw\Component\Messenger\EventListener\StopOnNewVersionListener;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -63,12 +63,12 @@ class DrawMessengerExtension extends Extension implements PrependExtensionInterf
         ContainerBuilder $container
     ): void {
         if (!$this->isConfigEnabled($container, $config)) {
-            $container->removeDefinition(StopWorkerOnNewVersionListener::class);
+            $container->removeDefinition(StopOnNewVersionListener::class);
 
             return;
         }
 
-        $container->getDefinition(StopWorkerOnNewVersionListener::class)
+        $container->getDefinition(StopOnNewVersionListener::class)
             ->setArgument(
                 '$versionVerification',
                 new Reference($config['version_verification_service'])

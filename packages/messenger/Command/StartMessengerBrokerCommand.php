@@ -1,29 +1,38 @@
 <?php
 
-namespace Draw\Bundle\MessengerBundle\Broker\Command;
+namespace Draw\Component\Messenger\Command;
 
-use Draw\Bundle\MessengerBundle\Broker\Broker;
+use Draw\Component\Messenger\Broker;
+use Draw\Contracts\Process\ProcessFactoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class StartMessageBrokerCommand extends Command
+class StartMessengerBrokerCommand extends Command
 {
-    private $broker;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(Broker $broker)
+    private ProcessFactoryInterface $processFactory;
+
+    private string $consolePath;
+
+    public function __construct(string $consolePath, ProcessFactoryInterface $processFactory, EventDispatcherInterface $eventDispatcher)
     {
-        $this->broker = $broker;
+        $this->consolePath = $consolePath;
+        $this->processFactory = $processFactory;
+        $this->eventDispatcher = $eventDispatcher;
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:messenger:start-broker')
+            ->setDescription('Start multiple messenger:consume base on concurrent option. Automatically restart them if stopped.')
             ->addOption(
                 'concurrent',
                 null,
@@ -50,16 +59,23 @@ class StartMessageBrokerCommand extends Command
         }
 
         $timeout = (int) $input->getOption('timeout');
-        if (0 === $timeout) {
+        if ($timeout < 0) {
             throw new InvalidOptionException('Timeout value ['.$timeout.'] is invalid. Must be 0 or greater');
         }
 
-        $io->success('Broker started. Concurrency '.$concurrent.', timeout '.$timeout);
+        $io->success('Broker starting.');
+        $io->note('Concurrency '.$concurrent);
+        $io->note('Timeout '.$timeout);
 
-        $this->broker->start($concurrent, $timeout);
+        $this->createBroker()->start($concurrent, $timeout);
 
         $io->success('Broker stopped.');
 
         return 0;
+    }
+
+    protected function createBroker(): Broker
+    {
+        return new Broker($this->consolePath, $this->processFactory, $this->eventDispatcher);
     }
 }

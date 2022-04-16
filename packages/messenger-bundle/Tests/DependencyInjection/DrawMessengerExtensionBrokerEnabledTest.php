@@ -2,11 +2,11 @@
 
 namespace Draw\Bundle\MessengerBundle\Tests\DependencyInjection;
 
-use Draw\Bundle\MessengerBundle\Broker\Broker;
 use Draw\Bundle\MessengerBundle\Broker\Command\StartMessageBrokerCommand;
 use Draw\Bundle\MessengerBundle\Broker\EventListener\DefaultValuesListener;
 use Draw\Bundle\MessengerBundle\Broker\EventListener\PcntSignalListener;
 use Draw\Bundle\MessengerBundle\DependencyInjection\DrawMessengerExtension;
+use Draw\Component\Messenger\Broker;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawMessengerExtensionBrokerEnabledTest extends DrawMessengerExtensionTest

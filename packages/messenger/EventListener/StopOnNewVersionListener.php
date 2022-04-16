@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\MessengerBundle\EventListener;
+namespace Draw\Component\Messenger\EventListener;
 
-use Draw\Bundle\MessengerBundle\Broker\Event\BrokerRunningEvent;
+use Draw\Component\Messenger\Event\BrokerRunningEvent;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -10,19 +10,13 @@ use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 use Symfony\Component\Messenger\Worker;
 
-class StopWorkerOnNewVersionListener implements EventSubscriberInterface
+class StopOnNewVersionListener implements EventSubscriberInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private ?LoggerInterface $logger;
 
-    /**
-     * @var VersionVerificationInterface
-     */
-    private $versionVerification;
+    private VersionVerificationInterface $versionVerification;
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             WorkerStartedEvent::class => 'onWorkerStarted',

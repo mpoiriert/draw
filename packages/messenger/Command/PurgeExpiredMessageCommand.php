@@ -1,9 +1,11 @@
 <?php
 
-namespace Draw\Bundle\MessengerBundle\Command;
+namespace Draw\Component\Messenger\Command;
 
+use DateTime;
 use Draw\Component\Messenger\Transport\ObsoleteMessageAwareInterface;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,8 +17,8 @@ class PurgeExpiredMessageCommand extends Command
 {
     public const DEFAULT_DELAY = '-1 month';
 
-    private $transportLocator;
-    private $transportNames;
+    private ContainerInterface $transportLocator;
+    private array $transportNames;
 
     public function __construct(ContainerInterface $transportLocator, array $transportNames)
     {
@@ -29,33 +31,33 @@ class PurgeExpiredMessageCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('draw:messenger:purge-obsolete')
+            ->setName('draw:messenger:purge-obsolete-messages')
             ->setDescription('Purge obsolete message from transports.')
             ->addArgument('transport', InputArgument::OPTIONAL, 'Name of the transport to setup', null)
             ->addOption(
                 'delay',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Records older than this date interval will be deleted.',
+                'Records older than this date (compatible with strtotime) will be deleted.',
                 self::DEFAULT_DELAY
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $delay = new \DateTime($input->getOption('delay'));
+        $delay = new DateTime($input->getOption('delay'));
         $io = new SymfonyStyle($input, $output);
 
         $transportNames = $this->transportNames;
         // do we want to setup only one transport?
         if ($transport = $input->getArgument('transport')) {
             if (!$this->transportLocator->has($transport)) {
-                throw new \RuntimeException(sprintf('The "%s" transport does not exist.', $transport));
+                throw new RuntimeException(sprintf('The "%s" transport does not exist.', $transport));
             }
             $transportNames = [$transport];
         }
 
-        foreach ($transportNames as $id => $transportName) {
+        foreach ($transportNames as $transportName) {
             $transport = $this->transportLocator->get($transportName);
             if ($transport instanceof ObsoleteMessageAwareInterface) {
                 $count = $transport->purgeObsoleteMessages($delay);
