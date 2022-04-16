@@ -8,6 +8,7 @@ use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
+use Draw\Component\Core\DateTimeUtils;
 use Draw\Component\Messenger\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\Stamp\ManualTriggerStamp;
 use Draw\Component\Messenger\Stamp\SearchableTagStamp;
@@ -25,11 +26,11 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
 class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInterface, SearchableInterface
 {
-    private $driverConnection;
+    private DBALConnection $driverConnection;
 
-    private $connection;
+    private Connection $connection;
 
-    private $serializer;
+    private SerializerInterface $serializer;
 
     public function __construct(
         DBALConnection $driverConnection,
@@ -178,7 +179,7 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
         $configuration = $this->driverConnection->getConfiguration();
 
         $assetFilter = $configuration->getSchemaAssetsFilter();
-        $configuration->setSchemaAssetsFilter(null);
+        $configuration->setSchemaAssetsFilter();
 
         $comparator = new Comparator();
         $schemaDiff = $comparator->compareSchemas(
@@ -267,32 +268,19 @@ class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInt
     public function purgeObsoleteMessages(DateTimeInterface $since): int
     {
         $tableName = $this->connection->getConfiguration()['table_name'];
-        $batchSize = 1000;
-        $seconds = 10;
 
-        $total = 0;
-        do {
-            $total += $affectedRows = $this->driverConnection->executeStatement(
-                'DELETE FROM '.$tableName.' WHERE expires_at < ? LIMIT ?',
-                [$since, $batchSize],
-                [Types::DATETIME_IMMUTABLE, Types::INTEGER]
-            );
-
-            if ($affectedRows < $batchSize) {
-                break;
-            }
-
-            usleep($seconds * 1000000);
-        } while (true);
-
-        return $total;
+        return $this->driverConnection->executeStatement(
+            'DELETE FROM '.$tableName.' WHERE expires_at < ?',
+            [DateTimeUtils::toDateTimeImmutable($since)],
+            [Types::DATETIME_IMMUTABLE]
+        );
     }
 
     private function getSchema(): Schema
     {
         $messagesTableName = $this->connection->getConfiguration()['table_name'];
         $tagsTableName = $this->connection->getConfiguration()['tag_table_name'];
-        $schema = new Schema([], [], $this->driverConnection->getSchemaManager()->createSchemaConfig());
+        $schema = new Schema([], [], $this->driverConnection->createSchemaManager()->createSchemaConfig());
 
         $messageTable = $schema->createTable($messagesTableName);
         $messageTable

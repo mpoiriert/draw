@@ -10,7 +10,7 @@ use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
 class AutoStampEnvelopeListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SendMessageToTransportsEvent::class => [

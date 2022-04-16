@@ -3,11 +3,10 @@
 namespace Draw\Component\Messenger\Transport;
 
 use Doctrine\Persistence\ConnectionRegistry;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection;
+use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransportFactory;
 use Symfony\Component\Messenger\Exception\InvalidArgumentException;
 use Symfony\Component\Messenger\Exception\TransportException;
-use Symfony\Component\Messenger\Transport\Doctrine\Connection;
-use Symfony\Component\Messenger\Transport\Doctrine\DoctrineTransportFactory;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
@@ -21,17 +20,17 @@ class DrawTransportFactory extends DoctrineTransportFactory
         'auto_setup' => false,
     ];
 
-    /**
-     * @var RegistryInterface|ConnectionRegistry
-     */
-    private $registry;
+    private ConnectionRegistry $registry;
 
-    public function __construct($registry)
+    public function __construct(ConnectionRegistry $registry)
     {
         parent::__construct($registry);
         $this->registry = $registry;
     }
 
+    /**
+     * @return TransportInterface|DrawTransport
+     */
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
         unset($options['transport_name']);
@@ -40,8 +39,8 @@ class DrawTransportFactory extends DoctrineTransportFactory
         try {
             /** @var \Doctrine\DBAL\Connection $driverConnection */
             $driverConnection = $this->registry->getConnection($configuration['connection']);
-        } catch (\InvalidArgumentException $e) {
-            throw new TransportException(sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn), 0, $e);
+        } catch (\InvalidArgumentException $error) {
+            throw new TransportException(sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn), 0, $error);
         }
 
         $connection = new Connection($configuration, $driverConnection);
@@ -51,8 +50,8 @@ class DrawTransportFactory extends DoctrineTransportFactory
 
     public static function buildConfiguration(string $dsn, array $options = []): array
     {
-        if (false === $components = parse_url($dsn)) {
-            throw new InvalidArgumentException(sprintf('The given Doctrine Messenger DSN "%s" is invalid.', $dsn));
+        if ((false === $components = parse_url($dsn)) || !isset($components['host'])) {
+            throw new InvalidArgumentException(sprintf('The given Draw Messenger DSN "%s" is invalid.', $dsn));
         }
 
         $query = [];
@@ -68,17 +67,18 @@ class DrawTransportFactory extends DoctrineTransportFactory
         }
 
         $configuration['auto_setup'] = filter_var($configuration['auto_setup'], FILTER_VALIDATE_BOOLEAN);
+        $configuration['redeliver_timeout'] = filter_var($configuration['redeliver_timeout'], FILTER_VALIDATE_INT);
 
         // check for extra keys in options
         $optionsExtraKeys = array_diff(array_keys($options), array_keys(self::DEFAULT_OPTIONS));
         if (0 < \count($optionsExtraKeys)) {
-            throw new InvalidArgumentException(sprintf('Unknown option found : [%s]. Allowed options are [%s]', implode(', ', $optionsExtraKeys), implode(', ', self::DEFAULT_OPTIONS)));
+            throw new InvalidArgumentException(sprintf('Unknown option found : [%s]. Allowed options are [%s]', implode(', ', $optionsExtraKeys), implode(', ', array_keys(self::DEFAULT_OPTIONS))));
         }
 
         // check for extra keys in options
         $queryExtraKeys = array_diff(array_keys($query), array_keys(self::DEFAULT_OPTIONS));
         if (0 < \count($queryExtraKeys)) {
-            throw new InvalidArgumentException(sprintf('Unknown option found in DSN: [%s]. Allowed options are [%s]', implode(', ', $queryExtraKeys), implode(', ', self::DEFAULT_OPTIONS)));
+            throw new InvalidArgumentException(sprintf('Unknown option found in DSN: [%s]. Allowed options are [%s]', implode(', ', $queryExtraKeys), implode(', ', array_keys(self::DEFAULT_OPTIONS))));
         }
 
         return $configuration;

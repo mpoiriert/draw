@@ -2,11 +2,12 @@
 
 namespace Draw\Component\Messenger\Exception;
 
+use Exception;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 
-class MessageNotFoundException extends \Exception implements ExceptionInterface
+class MessageNotFoundException extends Exception implements ExceptionInterface
 {
-    public function __construct($messageId)
+    public function __construct(string $messageId)
     {
         parent::__construct(sprintf('Message id [%s] not found', $messageId));
     }
