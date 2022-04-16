@@ -6,65 +6,69 @@ use Draw\Component\Tester\DataTester;
 
 class CommandDataTester
 {
-    private $display = '';
+    private ?string $display = null;
 
-    private $statusCode = 0;
+    private array $expectedDisplayStrings = [];
 
-    private $errorOutput = '';
+    private int $statusCode = 0;
 
-    public static function create(int $statusCode = 0, string $display = ''): CommandDataTester
+    private ?string $errorOutput = '';
+
+    public static function create(int $statusCode = 0, $display = ''): CommandDataTester
     {
-        return (new static())->setStatusCode($statusCode)->setDisplay($display);
+        $self = (new static())->setStatusCode($statusCode);
+
+        if (is_array($display)) {
+            $self->setExpectedDisplayStrings($display);
+        } else {
+            $self->setDisplay($display);
+        }
+
+        return $self;
     }
 
-    /**
-     * @return string
-     */
-    public function getDisplay()
+    public function getExpectedDisplayStrings(): array
+    {
+        return $this->expectedDisplayStrings;
+    }
+
+    public function setExpectedDisplayStrings(array $strings): self
+    {
+        $this->expectedDisplayStrings = $strings;
+
+        return $this;
+    }
+
+    public function getDisplay(): ?string
     {
         return $this->display;
     }
 
-    /**
-     * @return CommandDataTester
-     */
-    public function setDisplay(string $display)
+    public function setDisplay(?string $display): self
     {
         $this->display = $display;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatusCode()
+    public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
-    /**
-     * @return CommandDataTester
-     */
-    public function setStatusCode(int $statusCode)
+    public function setStatusCode(int $statusCode): self
     {
         $this->statusCode = $statusCode;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getErrorOutput()
+    public function getErrorOutput(): ?string
     {
         return $this->errorOutput;
     }
 
-    /**
-     * @return CommandDataTester
-     */
-    public function setErrorOutput(string $errorOutput)
+    public function setErrorOutput(?string $errorOutput): self
     {
         $this->errorOutput = $errorOutput;
 
@@ -74,7 +78,17 @@ class CommandDataTester
     public function __invoke(DataTester $dataTester)
     {
         $dataTester->path('statusCode')->assertEquals($this->statusCode);
-        $dataTester->path('display')->assertEquals($this->display);
-        $dataTester->path('errorOutput')->assertEquals($this->errorOutput);
+
+        if (null !== $this->errorOutput) {
+            $dataTester->path('errorOutput')->assertEquals($this->errorOutput);
+        }
+
+        if (null !== $this->display) {
+            $dataTester->path('display')->assertEquals($this->display);
+        }
+
+        foreach ($this->expectedDisplayStrings as $expectedDisplayString) {
+            $dataTester->path('display')->assertStringContainsString($expectedDisplayString);
+        }
     }
 }
