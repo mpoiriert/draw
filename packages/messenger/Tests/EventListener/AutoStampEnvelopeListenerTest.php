@@ -7,7 +7,7 @@ use Draw\Component\Messenger\Message\ManuallyTriggeredInterface;
 use Draw\Component\Messenger\Message\StampingAwareInterface;
 use Draw\Component\Messenger\Stamp\ManualTriggerStamp;
 use PHPUnit\Framework\TestCase;
-use stdClass;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
@@ -16,19 +16,40 @@ use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
  */
 class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInterface
 {
-    private $listener;
+    private AutoStampEnvelopeListener $service;
 
-    private static $newEnvelope;
+    private static Envelope $newEnvelope;
 
     public function setUp(): void
     {
-        $this->listener = new AutoStampEnvelopeListener();
+        $this->service = new AutoStampEnvelopeListener();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->service
+        );
+    }
+
+    public function testGetSubscribedEvents(): void
+    {
+        $this->assertSame(
+            [
+                SendMessageToTransportsEvent::class => [
+                    ['handleManuallyTriggeredMessage'],
+                    ['handleStampingAwareMessage'],
+                ],
+            ],
+            $this->service::getSubscribedEvents()
+        );
     }
 
     public function provideTestHandleManuallyTriggeredMessage(): iterable
     {
         yield 'no-stamp-message-object' => [
-            new Envelope(new stdClass()),
+            new Envelope((object) []),
             0,
         ];
 
@@ -48,7 +69,7 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
      */
     public function testHandleManuallyTriggeredMessage(Envelope $envelope, int $expectedCount): void
     {
-        $this->listener->handleManuallyTriggeredMessage($event = new SendMessageToTransportsEvent($envelope));
+        $this->service->handleManuallyTriggeredMessage($event = new SendMessageToTransportsEvent($envelope));
 
         $this->assertCount(
             $expectedCount,
@@ -58,18 +79,36 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
 
     public function stamp(Envelope $envelope): Envelope
     {
-        return static::$newEnvelope = new Envelope(new stdClass());
+        return static::$newEnvelope = new Envelope((object) []);
     }
 
     public function testHandleStampingAwareMessage(): void
     {
         $envelope = new Envelope($this);
 
-        $this->listener->handleStampingAwareMessage($event = new SendMessageToTransportsEvent($envelope));
+        $this->service->handleStampingAwareMessage($event = new SendMessageToTransportsEvent($envelope));
 
         $this->assertSame(
             static::$newEnvelope,
             $event->getEnvelope()
         );
+    }
+
+    public function testHandleStampingAwareMessageMessageStampingAwareInterface(): void
+    {
+        $envelope = new Envelope(
+            $message = new class() {
+                public bool $called = false;
+
+                public function stamp(): void
+                {
+                    $this->called = true;
+                }
+            }
+        );
+
+        $this->service->handleStampingAwareMessage(new SendMessageToTransportsEvent($envelope));
+
+        $this->assertFalse($message->called, 'Stamp should not have been called.');
     }
 }

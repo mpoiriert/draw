@@ -2,23 +2,35 @@
 
 namespace Draw\Component\Messenger\Tests\Transport;
 
+use DateTimeImmutable;
+use Doctrine\DBAL\Connection;
+use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Messenger\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
+use Draw\Component\Messenger\Transport\ObsoleteMessageAwareInterface;
+use Draw\Component\Messenger\Transport\SearchableInterface;
+use Exception;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
+use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
+use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
+use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Throwable;
 
+/**
+ * @covers \Draw\Component\Messenger\Transport\DrawTransport
+ */
 class DrawTransportTest extends TestCase
 {
-    /**
-     * @var DrawTransport
-     */
-    private $drawTransport;
+    private DrawTransport $service;
 
     /**
      * @beforeClass
@@ -36,27 +48,82 @@ class DrawTransportTest extends TestCase
 
     public function setUp(): void
     {
-        $this->drawTransport = (new DrawTransportFactory($this))->createTransport(
+        $this->service = (new DrawTransportFactory($this))->createTransport(
             'draw://default',
             [],
             new PhpSerializer()
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            TransportInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            ObsoleteMessageAwareInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            SearchableInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            SetupableTransportInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            MessageCountAwareInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            ListableReceiverInterface::class,
+            $this->service
+        );
+    }
+
     public function testSetup(): void
     {
-        $this->drawTransport->setup();
+        static::loadDefaultConnection()
+            ->executeStatement('DROP TABLE IF EXISTS draw_messenger__message_tag, draw_messenger__message');
+
+        $this->service->setup();
+        $this->assertTrue(true);
     }
 
     /**
      * @depends testSetup
      */
-    public function testSendMessage(): Envelope
+    public function testSendException(): void
     {
-        $envelope = $this->drawTransport->send(new Envelope(new stdClass(),
+        ReflectionAccessor::setPropertyValue(
+            $this->service,
+            'driverConnection',
+            $driverConnection = $this->createMock(Connection::class)
+        );
+
+        $driverConnection->expects($this->once())
+            ->method('createQueryBuilder')
+            ->willThrowException(new Exception($exceptionMessage = uniqid('exception-message-')));
+
+        $this->expectException(TransportException::class);
+        $this->expectExceptionMessage($exceptionMessage);
+
+        $this->service->send(new Envelope(new stdClass()));
+    }
+
+    /**
+     * @depends testSetup
+     */
+    public function testSend(): Envelope
+    {
+        $envelope = $this->service->send(new Envelope(new stdClass(),
             [new SearchableTagStamp(['tag1', 'tag2'])]));
 
         $this->assertNotNull($envelope->last(TransportMessageIdStamp::class)->getId());
@@ -65,11 +132,11 @@ class DrawTransportTest extends TestCase
     }
 
     /**
-     * @depends testSendMessage
+     * @depends testSend
      */
     public function testFindByTag(Envelope $referencedEnvelope): void
     {
-        $envelopes = $this->drawTransport->findByTag('tag1');
+        $envelopes = $this->service->findByTag('tag1');
 
         $this->assertCount(1, $envelopes);
         $this->assertInstanceOf(Envelope::class, $envelopes[0]);
@@ -81,11 +148,11 @@ class DrawTransportTest extends TestCase
     }
 
     /**
-     * @depends testSendMessage
+     * @depends testSend
      */
     public function testFindByTags(Envelope $referencedEnvelope): void
     {
-        $envelopes = $this->drawTransport->findByTags(['tag1', 'tag2']);
+        $envelopes = $this->service->findByTags(['tag1', 'tag2']);
 
         $this->assertCount(1, $envelopes);
         $this->assertInstanceOf(Envelope::class, $envelopes[0]);
@@ -97,11 +164,28 @@ class DrawTransportTest extends TestCase
     }
 
     /**
-     * @depends testSendMessage
+     * @depends testSetup
+     */
+    public function testFindByTagsNoTags(): void
+    {
+        ReflectionAccessor::setPropertyValue(
+            $this->service,
+            'driverConnection',
+            $driverConnection = $this->createMock(Connection::class)
+        );
+
+        $driverConnection->expects($this->never())
+            ->method('createQueryBuilder');
+
+        $this->assertEmpty($this->service->findByTags([]));
+    }
+
+    /**
+     * @depends testSend
      */
     public function testFindByTagsNotMatch(): void
     {
-        $this->assertCount(0, $this->drawTransport->findByTags(['tag3']));
+        $this->assertCount(0, $this->service->findByTags(['tag3']));
     }
 
     public function provideTestSendSearchableMessage(): iterable
@@ -164,10 +248,19 @@ class DrawTransportTest extends TestCase
             ['tag2'],
             2,
         ];
+
+        yield 'no-tag' => [
+            [
+                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new stdClass(), [new SearchableTagStamp([], true)]),
+            ],
+            ['tag2'],
+            1,
+        ];
     }
 
     /**
-     * @depends testSetup
+     * @depends      testSetup
      * @dataProvider provideTestSendSearchableMessage
      *
      * @param array|Envelope[] $insertEnvelopes
@@ -178,9 +271,33 @@ class DrawTransportTest extends TestCase
         static::cleanUp();
 
         foreach ($insertEnvelopes as $envelope) {
-            $this->drawTransport->send($envelope);
+            $this->service->send($envelope);
         }
 
-        $this->assertCount($resultCount, $this->drawTransport->findByTags($searchTags));
+        $this->assertCount($resultCount, $this->service->findByTags($searchTags));
+    }
+
+    /**
+     * @depends      testSetup
+     */
+    public function testPurgeObsoleteMessages(): void
+    {
+        static::cleanUp();
+
+        $this->service->send(
+            new Envelope(
+                new stdClass(),
+                [
+                    new ExpirationStamp(new DateTimeImmutable('- 5 minutes')),
+                    new SearchableTagStamp($tags = ['tag1']),
+                ]
+            )
+        );
+
+        $this->assertCount(1, $this->service->findByTags($tags));
+
+        $this->service->purgeObsoleteMessages(new DateTimeImmutable());
+
+        $this->assertCount(0, $this->service->findByTags($tags));
     }
 }
