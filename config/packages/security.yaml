@@ -41,7 +41,6 @@ security:
                 target: admin_login
             draw_messenger_message:
                 provider: 'app_user_provider_id'
-                transport_service: 'messenger.transport.draw'
             two_factor:
                 provider: app_user_provider_email
                 auth_form_path: admin_2fa_login
@@ -60,7 +59,6 @@ security:
             context: user
             draw_messenger_message:
                 provider: 'app_user_provider_id'
-                transport_service: 'messenger.transport.draw'
             draw_jwt:
                 provider: 'app_user_provider_id'
                 key: 'acme'

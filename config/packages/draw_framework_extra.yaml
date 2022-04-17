@@ -4,3 +4,7 @@ draw_framework_extra:
       default_duration: 5000
       request_matchers:
         - path: '^/api'
+
+  messenger:
+    broker:
+      receivers: [ 'async' ]

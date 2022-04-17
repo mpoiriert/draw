@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security;
 
+use Draw\Component\Messenger\Controller\MessageController;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AuthenticatorFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -26,7 +27,8 @@ class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterf
             ->setAutoconfigured(true)
             ->setAutowired(true)
             ->setArgument('$userProvider', new Reference($userProviderId))
-            ->setArgument('$transport', new Reference($config['transport_service']));
+            ->setArgument('$envelopeFinder', new Reference('draw.messenger.envelope_finder'))
+            ->setArgument('$requestParameterKey', $config['request_parameter_key']);
 
         if ($serviceAlias = $config['service_alias'] ?? null) {
             $container->setAlias($serviceAlias, $serviceId);
@@ -47,8 +49,8 @@ class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterf
     {
         $builder
             ->children()
-            ->scalarNode('provider')->end()
-            ->scalarNode('transport_service')->defaultValue('manual')->end()
+                ->scalarNode('provider')->end()
+                ->scalarNode('request_parameter_key')->defaultValue(MessageController::MESSAGE_ID_PARAMETER_NAME)->end()
             ->end();
     }
 }

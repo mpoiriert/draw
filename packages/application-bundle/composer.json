@@ -13,6 +13,7 @@
         "doctrine/orm": "^2.11",
         "draw/contracts": "^0.9",
         "draw/core": "^0.9",
+        "draw/sonata-extra-bundle": "^1.0",
         "symfony/doctrine-bridge": "^5.4.3",
         "symfony/framework-bundle": "^5.4.3"
     },

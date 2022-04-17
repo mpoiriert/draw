@@ -28,13 +28,13 @@ jobs:
           - framework-extra-bundle
           - log
           - messenger
-          - messenger-bundle
           - open-api
           - open-api-bundle
           - post-office-bundle
           - process
           - profiling
           - security
+          - sonata-integration-bundle
           - sonata-extra-bundle
           - tester
           - tester-bundle

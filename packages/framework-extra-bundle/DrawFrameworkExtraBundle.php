@@ -2,9 +2,13 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle;
 
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\JwtAuthenticatorFactory;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\MessengerMessageAuthenticatorFactory;
+use Draw\Component\Messenger\Broker;
+use Draw\Component\Messenger\Command\PurgeExpiredMessageCommand;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
@@ -18,9 +22,18 @@ class DrawFrameworkExtraBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         if (class_exists(EventDrivenUserChecker::class)) {
+            $container->addCompilerPass(new UserCheckerDecoratorPass());
+        }
+
+        if (class_exists(Broker::class)) {
+            $container->addCompilerPass(new MessengerBrokerCompilerPass());
+        }
+
+        if (class_exists(PurgeExpiredMessageCommand::class)) {
             $container->addCompilerPass(
-                new UserCheckerDecoratorPass(),
-                PassConfig::TYPE_BEFORE_OPTIMIZATION
+                new MessengerTransportNamesCompilerPass(),
+                PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                -1
             );
         }
 

@@ -46,7 +46,7 @@ class JwtAuthenticatorTest extends TestCase
 
     public function setUp(): void
     {
-        $this->userProvider = $this->createMockWithExtractMethods(
+        $this->userProvider = $this->createMockWithExtraMethods(
             UserProviderInterface::class,
             ['loadUserByIdentifier']
         );
@@ -83,7 +83,7 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateToken(): void
     {
-        $user = $this->createMockWithExtractMethods(
+        $user = $this->createMockWithExtraMethods(
             UserInterface::class,
             [$this->userIdentifierGetter]
         );
@@ -110,7 +110,7 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateTokenWithExpiration(): void
     {
-        $user = $this->createMockWithExtractMethods(
+        $user = $this->createMockWithExtraMethods(
             UserInterface::class,
             [$this->userIdentifierGetter]
         );
@@ -139,7 +139,7 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateTokenWithExtraPayload(): void
     {
-        $user = $this->createMockWithExtractMethods(
+        $user = $this->createMockWithExtraMethods(
             UserInterface::class,
             [$this->userIdentifierGetter]
         );
@@ -182,7 +182,7 @@ class JwtAuthenticatorTest extends TestCase
             ->with($token)
             ->willReturn((object) [$this->userIdentifierPayloadKey => $userId = uniqid('id-')]);
 
-        $user = $this->createMockWithExtractMethods(
+        $user = $this->createMockWithExtraMethods(
             UserInterface::class,
             ['getUserIdentifier']
         );
@@ -234,7 +234,7 @@ class JwtAuthenticatorTest extends TestCase
                 ]
             );
 
-        $user = $this->createMockWithExtractMethods(
+        $user = $this->createMockWithExtraMethods(
             UserInterface::class,
             ['getUserIdentifier']
         );

@@ -5,7 +5,7 @@ namespace Draw\Bundle\ApplicationBundle\DependencyInjection;
 use Draw\Bundle\ApplicationBundle\Configuration\Repository\ConfigRepository;
 use Draw\Bundle\ApplicationBundle\Configuration\Sonata\Admin\ConfigAdmin;
 use Draw\Bundle\ApplicationBundle\Versioning\VersionManager;
-use Draw\Component\Core\Configuration\SonataAdminNodeConfiguration;
+use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use Symfony\Component\Config\FileLocator;

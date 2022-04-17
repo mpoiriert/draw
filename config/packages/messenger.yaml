@@ -6,6 +6,8 @@ framework:
             async: 'draw://default?queue_name=default'
             failed: 'draw://default?queue_name=failed'
             sync: 'sync://'
+
         routing:
+            Draw\Component\Messenger\Message\ManuallyTriggeredInterface: 'async'
             Draw\Bundle\UserBundle\AccountLocker\Message\NewUserLockMessage: 'sync'
             Draw\Bundle\UserBundle\AccountLocker\Message\UserLockDelayedActivationMessage: 'sync'
