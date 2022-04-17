@@ -2,9 +2,11 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection;
 
+use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
+use ReflectionClass;
 
 class DrawFrameworkExtraExtensionMessengerTest extends DrawFrameworkExtraExtensionTest
 {
@@ -32,6 +34,8 @@ class DrawFrameworkExtraExtensionMessengerTest extends DrawFrameworkExtraExtensi
         $result = $containerBuilder
             ->getExtensionConfig('framework');
 
+        $installationPath = dirname((new ReflectionClass(Broker::class))->getFileName());
+
         $this->assertSame(
             [
                 [
@@ -40,6 +44,13 @@ class DrawFrameworkExtraExtensionMessengerTest extends DrawFrameworkExtraExtensi
                             AsyncMessageInterface::class => 'async',
                             AsyncHighPriorityMessageInterface::class => 'async_high_priority',
                             AsyncLowPriorityMessageInterface::class => 'async_low_priority',
+                        ],
+                    ],
+                ],
+                [
+                    'translator' => [
+                        'paths' => [
+                            'draw-messenger' => $installationPath.'/Resources/translations',
                         ],
                     ],
                 ],

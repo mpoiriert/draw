@@ -94,7 +94,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls(
                 $transport1 = $this->createMock(ObsoleteMessageAwareInterface::class),
-                $transport2 = $this->createMockWithExtractMethods(
+                $transport2 = $this->createMockWithExtraMethods(
                     TransportInterface::class,
                     ['purgeObsoleteMessages']
                 )

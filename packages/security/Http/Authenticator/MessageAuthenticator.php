@@ -2,11 +2,10 @@
 
 namespace Draw\Component\Security\Http\Authenticator;
 
-use Draw\Bundle\MessengerBundle\Controller\MessageController;
+use Draw\Component\Messenger\EnvelopeFinder;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -20,26 +19,30 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class MessageAuthenticator extends AbstractAuthenticator
 {
-    private ListableReceiverInterface $transport;
+    private EnvelopeFinder $envelopeFinder;
 
     private UserProviderInterface $userProvider;
 
     private Security $security;
 
+    private string $requestParameterKey;
+
     public function __construct(
-        ListableReceiverInterface $transport,
+        EnvelopeFinder $envelopeFinder,
         UserProviderInterface $userProvider,
-        Security $security
+        Security $security,
+        string $requestParameterKey = 'dMUuid'
     ) {
         $this->security = $security;
         $this->userProvider = $userProvider;
-        $this->transport = $transport;
+        $this->envelopeFinder = $envelopeFinder;
+        $this->requestParameterKey = $requestParameterKey;
     }
 
     public function supports(Request $request): ?bool
     {
         switch (true) {
-            case !$messageId = $request->get(MessageController::MESSAGE_ID_PARAMETER_NAME):
+            case !$messageId = $request->get($this->requestParameterKey):
             case !$this->isDifferentUser($messageId):
                 return false;
             default:
@@ -49,7 +52,7 @@ class MessageAuthenticator extends AbstractAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $messageId = $request->get(MessageController::MESSAGE_ID_PARAMETER_NAME);
+        $messageId = $request->get($this->requestParameterKey);
         switch (true) {
             case null === $messageId:
             case null === $user = $this->getMessageUser($messageId):
@@ -78,7 +81,7 @@ class MessageAuthenticator extends AbstractAuthenticator
     {
         switch (true) {
             case null === $messageId:
-            case null === $envelope = $this->transport->find($messageId):
+            case null === $envelope = $this->envelopeFinder->findById($messageId):
             case null === $message = $envelope->getMessage():
             case !$message instanceof AutoConnectInterface:
                 return null;

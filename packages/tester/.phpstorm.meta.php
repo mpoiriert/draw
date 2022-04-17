@@ -6,7 +6,7 @@
     ];
 
     override(
-        \Draw\Component\Tester\MockBuilderTrait::createMockWithExtractMethods(0),
+        \Draw\Component\Tester\MockBuilderTrait::createMockWithExtraMethods(0),
         map([""=>"$0"])
     );
 }

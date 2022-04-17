@@ -3,7 +3,7 @@
 namespace Draw\Bundle\ApplicationBundle\DependencyInjection;
 
 use Draw\Bundle\ApplicationBundle\Configuration\Entity\Config;
-use Draw\Component\Core\Configuration\SonataAdminNodeConfiguration;
+use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->append(
                 (new SonataAdminNodeConfiguration(Config::class, 'draw.sonata.group.application'))
+                    ->canBeEnabled()
                     ->labelDefaultValue('config')
                     ->iconDefaultValue('fa fa-server')
             );

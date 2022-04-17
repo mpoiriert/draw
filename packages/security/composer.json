@@ -15,7 +15,8 @@
     },
     "require-dev": {
         "draw/core": "^1.0",
-        "draw/messenger-bundle": "^1.0",
+        "draw/framework-extra-bundle": "^1.0",
+        "draw/messenger": "^1.0",
         "draw/tester": "^1.0",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^8.0 || ^9.0",

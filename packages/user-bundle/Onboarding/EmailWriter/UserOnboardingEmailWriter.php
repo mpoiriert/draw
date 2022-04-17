@@ -3,14 +3,14 @@
 namespace Draw\Bundle\UserBundle\Onboarding\EmailWriter;
 
 use DateTimeImmutable;
-use Draw\Bundle\MessengerBundle\CallToAction\MessageUrlGenerator;
 use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Bundle\UserBundle\Onboarding\Email\UserOnboardingEmail;
+use Draw\Component\Messenger\ManuallyTriggeredMessageUrlGenerator;
 
 class UserOnboardingEmailWriter implements EmailWriterInterface
 {
-    private MessageUrlGenerator $messageUrlGenerator;
+    private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator;
 
     private string $messageExpirationDelay;
 
@@ -20,7 +20,7 @@ class UserOnboardingEmailWriter implements EmailWriterInterface
     }
 
     public function __construct(
-        MessageUrlGenerator $messageUrlGenerator,
+        ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
         string $messageExpirationDelay = '+ 7 days'
     ) {
         $this->messageExpirationDelay = $messageExpirationDelay;

@@ -1,0 +1,3 @@
+draw_sonata_integration:
+  messenger:
+    queue_names: ['default', 'failed']

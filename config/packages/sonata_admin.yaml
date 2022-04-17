@@ -21,7 +21,7 @@ sonata_admin:
                 position: 'top'
                 type: 'Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService'
                 settings:
-                    code: 'Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin'
+                    code: 'Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin'
                     icon: 'fa fa-rss'
                     text: 'Failed messages'
                     filters:
@@ -31,7 +31,7 @@ sonata_admin:
               position: 'top'
               type: 'Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService'
               settings:
-                  code: 'Draw\Bundle\MessengerBundle\Sonata\Admin\MessengerMessageAdmin'
+                  code: 'Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin'
                   icon: 'fa fa-rss'
                   text: 'Available messages'
                   filters:

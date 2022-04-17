@@ -47,23 +47,6 @@ provision: up
 copy-docker-compose-dist:
 	cp ./docker-compose.yml.dist ./docker-compose.yml
 
-subsplit:
-	rm -rf .subsplit
-	git subsplit init https://github.com/mpoiriert/draw
-	git subsplit publish " \
-	    src/Component/Tester:https://github.com/mpoiriert/tester.git \
-	    src/Component/Profiling:https://github.com/mpoiriert/profiling.git \
-	    src/Component/Messenger:https://github.com/mpoiriert/messenger.git \
-	    src/Bundle/AwsToolKitBundle:https://github.com/mpoiriert/aws-tool-kit-bundle.git \
-		src/Bundle/CommandBundle:https://github.com/mpoiriert/command-bundle.git \
-		src/Bundle/CronBundle:https://github.com/mpoiriert/cron-bundle.git \
-		src/Bundle/MessengerBundle:https://github.com/mpoiriert/messenger-bundle.git \
-        src/Bundle/PostOfficeBundle:https://github.com/mpoiriert/post-office-bundle.git \
-        src/Bundle/TesterBundle:https://github.com/mpoiriert/tester-bundle.git \
-        src/Bundle/UserBundle:https://github.com/mpoiriert/user-bundle.git \
-	"
-	rm -rf .subsplit
-
 migrations-diff:
 	docker-compose exec php php bin/console doctrine:migrations:diff --formatted
 

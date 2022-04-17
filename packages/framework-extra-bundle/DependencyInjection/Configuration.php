@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
+use App\Entity\MessengerMessage;
+use App\Entity\MessengerMessageTag;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Process\ProcessFactory;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
@@ -10,17 +12,12 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * This is the class that validates and merges configuration from your app/config files.
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
- */
 class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('draw_framework_extra');
 
@@ -28,6 +25,7 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->scalarNode('symfony_console_path')->defaultNull()->end()
                 ->append($this->createJwtEncoder())
                 ->append($this->createLogNode())
                 ->append($this->createLoggerNode())
@@ -126,6 +124,72 @@ class Configuration implements ConfigurationInterface
         return $this->canBe(DrawTransport::class, new ArrayNodeDefinition('messenger'))
             ->children()
                 ->arrayNode('async_routing_configuration')->canBeEnabled()->end()
+                ->scalarNode('entity_class')
+                    ->validate()
+                        ->ifTrue(function ($value) {
+                            return !class_exists($value) && MessengerMessage::class !== $value;
+                        })
+                        ->thenInvalid('The class [%s] must exists.')
+                    ->end()
+                    ->defaultValue(MessengerMessage::class)
+                ->end()
+                ->scalarNode('tag_entity_class')
+                    ->validate()
+                        ->ifTrue(function ($value) {
+                            return !class_exists($value) && MessengerMessageTag::class !== $value;
+                        })
+                        ->thenInvalid('The class [%s] must exists.')
+                    ->end()
+                    ->defaultValue(MessengerMessageTag::class)
+                ->end()
+                ->append($this->createMessengerApplicationVersionMonitoring())
+                ->append($this->createMessengerBrokerNode())
+            ->end();
+    }
+
+    private function createMessengerApplicationVersionMonitoring(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('application_version_monitoring'))
+            ->canBeEnabled();
+    }
+
+    private function createMessengerBrokerNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('broker'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('receivers')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->scalarPrototype()->end()
+                ->end()
+                ->arrayNode('default_options')
+                    ->normalizeKeys(false)
+                    ->beforeNormalization()
+                    ->always(function ($options) {
+                        foreach ($options as $name => $configuration) {
+                            if (!is_array($configuration)) {
+                                $options[$name] = $configuration = ['name' => $name, 'value' => $configuration];
+                            }
+                            if (is_int($name)) {
+                                continue;
+                            }
+                            if (!isset($configuration['name'])) {
+                                $options[$name]['name'] = $name;
+                            }
+                        }
+
+                        return $options;
+                    })
+                    ->end()
+                    ->useAttributeAsKey('name', false)
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('name')->isRequired()->end()
+                            ->scalarNode('value')->defaultNull()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 
