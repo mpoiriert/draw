@@ -7,10 +7,14 @@ use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProc
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
+use Draw\Component\Messenger\Broker;
+use Draw\Component\Messenger\Entity\DrawMessageInterface;
+use Draw\Component\Messenger\Entity\DrawMessageTagInterface;
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
 use Draw\Component\Security\Jwt\JwtEncoder;
+use ReflectionClass;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -29,9 +33,12 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
 
+        $container->setParameter('draw.symfony_console_path', $config['symfony_console_path']);
+
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
+        $this->configureMessenger($config['messenger'], $loader, $container);
         $this->configureProcess($config['process'], $loader, $container);
         $this->configureSecurity($config['security'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
@@ -174,6 +181,35 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             ->setArgument('$requestMatchers', $requestMatcherReferences);
     }
 
+    private function configureMessenger(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $loader->load('messenger.php');
+
+        if ($this->isConfigEnabled($container, $config['application_version_monitoring'])) {
+            $loader->load('messenger-application-version-monitoring.php');
+        }
+
+        if ($this->isConfigEnabled($container, $config['broker'])) {
+            $brokerConfig = $config['broker'];
+            $loader->load('messenger-broker.php');
+
+            $defaultOptions = [];
+            foreach ($brokerConfig['default_options'] as $options) {
+                $defaultOptions[$options['name']] = $options['value'];
+            }
+
+            $container->getDefinition('draw.messenger.command.start_messenger_broker');
+
+            $container->getDefinition('draw.messenger.broker_default_values_listener')
+                ->setArgument('$receivers', $brokerConfig['receivers'])
+                ->setArgument('$defaultOptions', $defaultOptions);
+        }
+    }
+
     private function configureProcess(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
@@ -210,22 +246,65 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             $container->getParameterBag()->resolveValue($configs)
         );
 
-        if (!$this->isConfigEnabled($container, $config['messenger']['async_routing_configuration'])) {
-            return;
+        if ($this->isConfigEnabled($container, $config['messenger'])
+            && class_exists(Broker::class)
+        ) {
+            $installationPath = dirname((new ReflectionClass(Broker::class))->getFileName());
+            $container->prependExtensionConfig(
+                'framework',
+                [
+                    'translator' => [
+                        'paths' => [
+                            'draw-messenger' => $installationPath.'/Resources/translations',
+                        ],
+                    ],
+                ]
+            );
+
+            if (class_exists($config['messenger']['entity_class'])) {
+                if ($container->hasExtension('doctrine')) {
+                    $container->prependExtensionConfig(
+                        'doctrine',
+                        [
+                            'orm' => [
+                                'resolve_target_entities' => [
+                                    DrawMessageInterface::class => $config['messenger']['entity_class'],
+                                    DrawMessageTagInterface::class => $config['messenger']['tag_entity_class'],
+                                ],
+                            ],
+                        ]
+                    );
+                }
+
+                if ($container->hasExtension('draw_sonata_integration')) {
+                    $container->prependExtensionConfig(
+                        'draw_sonata_integration',
+                        [
+                            'messenger' => [
+                                'admin' => [
+                                    'entity_class' => $config['messenger']['entity_class'],
+                                ],
+                            ],
+                        ]
+                    );
+                }
+            }
         }
 
-        $container->prependExtensionConfig(
-            'framework',
-            [
-                'messenger' => [
-                    'routing' => [
-                        AsyncMessageInterface::class => 'async',
-                        AsyncHighPriorityMessageInterface::class => 'async_high_priority',
-                        AsyncLowPriorityMessageInterface::class => 'async_low_priority',
+        if ($this->isConfigEnabled($container, $config['messenger']['async_routing_configuration'])) {
+            $container->prependExtensionConfig(
+                'framework',
+                [
+                    'messenger' => [
+                        'routing' => [
+                            AsyncMessageInterface::class => 'async',
+                            AsyncHighPriorityMessageInterface::class => 'async_high_priority',
+                            AsyncLowPriorityMessageInterface::class => 'async_low_priority',
+                        ],
                     ],
-                ],
-            ]
-        );
+                ]
+            );
+        }
     }
 
     private function arrayToArgumentsArray(array $arguments): array

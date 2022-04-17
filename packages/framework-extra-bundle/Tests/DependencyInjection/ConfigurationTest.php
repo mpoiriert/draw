@@ -16,6 +16,7 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'symfony_console_path' => null,
             'jwt_encoder' => [
                 'enabled' => false,
                 'algorithm' => 'HS256',
@@ -56,7 +57,17 @@ class ConfigurationTest extends ConfigurationTestCase
             ],
             'messenger' => [
                 'enabled' => true,
+                'entity_class' => 'App\Entity\MessengerMessage',
+                'tag_entity_class' => 'App\Entity\MessengerMessageTag',
                 'async_routing_configuration' => [
+                    'enabled' => false,
+                ],
+                'broker' => [
+                    'enabled' => false,
+                    'receivers' => [],
+                    'default_options' => [],
+                ],
+                'application_version_monitoring' => [
                     'enabled' => false,
                 ],
             ],
@@ -76,7 +87,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are jwt_encoder, log, logger, messenger, process, security, tester.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are jwt_encoder, log, logger, messenger, process, security, symfony_console_path, tester.',
         ];
     }
 }

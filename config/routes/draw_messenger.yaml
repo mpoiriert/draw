@@ -1,4 +1,4 @@
 site:
-    resource: "@DrawMessengerBundle/Controller"
+    resource: "@DrawFrameworkExtraBundle/Controller/Messenger"
     type: "annotation"
     prefix: "/admin"

@@ -3,21 +3,21 @@
 namespace Draw\Bundle\UserBundle\PasswordChangeEnforcer\EmailWriter;
 
 use DateTimeImmutable;
-use Draw\Bundle\MessengerBundle\CallToAction\MessageUrlGenerator;
 use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Email\PasswordChangeRequestedEmail;
+use Draw\Component\Messenger\ManuallyTriggeredMessageUrlGenerator;
 
 class PasswordChangeRequestedEmailWriter implements EmailWriterInterface
 {
-    private MessageUrlGenerator $messageUrlGenerator;
+    private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator;
 
     public static function getForEmails(): array
     {
         return ['compose' => 0];
     }
 
-    public function __construct(MessageUrlGenerator $messageUrlGenerator)
+    public function __construct(ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator)
     {
         $this->messageUrlGenerator = $messageUrlGenerator;
     }

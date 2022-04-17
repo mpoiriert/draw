@@ -20,7 +20,7 @@ class PurgeExpiredMessageCommand extends Command
     private ContainerInterface $transportLocator;
     private array $transportNames;
 
-    public function __construct(ContainerInterface $transportLocator, array $transportNames)
+    public function __construct(ContainerInterface $transportLocator, array $transportNames = [])
     {
         $this->transportLocator = $transportLocator;
         $this->transportNames = $transportNames;

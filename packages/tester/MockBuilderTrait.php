@@ -9,7 +9,7 @@ trait MockBuilderTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
-    protected function createMockWithExtractMethods(string $originalClassName, array $methods): MockObject
+    protected function createMockWithExtraMethods(string $originalClassName, array $methods): MockObject
     {
         return $this->getMockBuilder($originalClassName)
             ->disableOriginalConstructor()

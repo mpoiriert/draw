@@ -2,14 +2,13 @@
 
 namespace Draw\Component\Security\Tests\Http\Authenticator;
 
-use Draw\Bundle\MessengerBundle\Controller\MessageController;
+use Draw\Component\Messenger\EnvelopeFinder;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
 use Draw\Component\Tester\MockBuilderTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Security;
@@ -31,7 +30,7 @@ class MessageAuthenticatorTest extends TestCase
 
     private MessageAuthenticator $service;
 
-    private ListableReceiverInterface $transport;
+    private EnvelopeFinder $envelopeFinder;
 
     private UserProviderInterface $userProvider;
 
@@ -39,13 +38,13 @@ class MessageAuthenticatorTest extends TestCase
 
     public function setUp(): void
     {
-        $this->userProvider = $this->createMockWithExtractMethods(
+        $this->userProvider = $this->createMockWithExtraMethods(
             UserProviderInterface::class,
             ['loadUserByIdentifier']
         );
 
         $this->service = new MessageAuthenticator(
-            $this->transport = $this->createMock(ListableReceiverInterface::class),
+            $this->envelopeFinder = $this->createMock(EnvelopeFinder::class),
             $this->userProvider,
             $this->security = $this->createMock(Security::class),
         );
@@ -62,7 +61,7 @@ class MessageAuthenticatorTest extends TestCase
     public function testSupportsNoConnectedUser(): void
     {
         $request = new Request();
-        $request->query->set(MessageController::MESSAGE_ID_PARAMETER_NAME, uniqid('message-id'));
+        $request->query->set('dMUuid', uniqid('message-id'));
 
         $this->security
             ->expects($this->once())
@@ -75,16 +74,16 @@ class MessageAuthenticatorTest extends TestCase
     public function testSupportsDifferentUser(): void
     {
         $request = new Request();
-        $request->query->set(MessageController::MESSAGE_ID_PARAMETER_NAME, $messageId = uniqid('message-id'));
+        $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $this->security
             ->expects($this->once())
             ->method('getUser')
             ->willReturn($this->createMock(UserInterface::class));
 
-        $this->transport
+        $this->envelopeFinder
             ->expects($this->once())
-            ->method('find')
+            ->method('findById')
             ->with($messageId)
             ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
 
@@ -105,16 +104,16 @@ class MessageAuthenticatorTest extends TestCase
     public function testSupportsSameUser(): void
     {
         $request = new Request();
-        $request->query->set(MessageController::MESSAGE_ID_PARAMETER_NAME, $messageId = uniqid('message-id'));
+        $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $this->security
             ->expects($this->once())
             ->method('getUser')
             ->willReturn($user = $this->createMock(UserInterface::class));
 
-        $this->transport
+        $this->envelopeFinder
             ->expects($this->once())
-            ->method('find')
+            ->method('findById')
             ->with($messageId)
             ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
 
@@ -130,11 +129,11 @@ class MessageAuthenticatorTest extends TestCase
     public function testAuthenticateNoMessage(): void
     {
         $request = new Request();
-        $request->query->set(MessageController::MESSAGE_ID_PARAMETER_NAME, $messageId = uniqid('message-id'));
+        $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
-        $this->transport
+        $this->envelopeFinder
             ->expects($this->once())
-            ->method('find')
+            ->method('findById')
             ->with($messageId)
             ->willReturn(null);
 
@@ -147,15 +146,15 @@ class MessageAuthenticatorTest extends TestCase
     public function testAuthenticate(): void
     {
         $request = new Request();
-        $request->query->set(MessageController::MESSAGE_ID_PARAMETER_NAME, $messageId = uniqid('message-id'));
+        $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
-        $this->transport
+        $this->envelopeFinder
             ->expects($this->once())
-            ->method('find')
+            ->method('findById')
             ->with($messageId)
             ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
 
-        $user = $this->createMockWithExtractMethods(
+        $user = $this->createMockWithExtraMethods(
             UserInterface::class,
             ['getUserIdentifier']
         );

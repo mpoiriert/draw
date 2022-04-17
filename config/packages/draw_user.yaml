@@ -26,8 +26,3 @@ draw_user:
             field_positions:
                 2fa_enabled:
                     list: 'email'
-
-framework:
-    messenger:
-        routing:
-            Draw\Component\Messenger\Message\ManuallyTriggeredInterface: 'draw'

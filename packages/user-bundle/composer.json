@@ -21,8 +21,9 @@
         "symfony/yaml": "^5.4.3"
     },
     "require-dev": {
-        "draw/messenger-bundle": "^1.0",
+        "draw/framework-extra-bundle": "^1.0",
         "draw/post-office-bundle": "^1.0",
+        "draw/messenger": "^1.0",
         "draw/tester": "^1.0",
         "firebase/php-jwt": "^v6.1",
         "phpunit/phpunit": "^8.0 || ^9.0",
@@ -32,7 +33,7 @@
         "sonata-project/admin-bundle": "^4.8"
     },
     "suggest": {
-        "draw/messenger-bundle": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",
+        "draw/messenger": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",
         "draw/post-office-bundle": "This allow to write and send email via email writer services.",
         "firebase/php-jwt": "Use for the jwt connection token system",
         "scheb/2fa-bundle": "Use for the 2FA",

@@ -17,7 +17,6 @@ return [
     Draw\Bundle\PostOfficeBundle\DrawPostOfficeBundle::class => ['all' => true],
     Draw\Bundle\UserBundle\DrawUserBundle::class => ['all' => true],
     Draw\Bundle\CommandBundle\DrawCommandBundle::class => ['all' => true],
-    Draw\Bundle\MessengerBundle\DrawMessengerBundle::class => ['all' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
@@ -33,6 +32,7 @@ return [
     Aws\Symfony\AwsBundle::class => ['all' => true],
     Draw\Bundle\AwsToolKitBundle\DrawAwsToolKitBundle::class => ['all' => true],
     Draw\Bundle\DoctrineBusMessageBundle\DrawDoctrineBusMessageBundle::class => ['all' => true],
+    Draw\Bundle\SonataIntegrationBundle\DrawSonataIntegrationBundle::class => ['all' => true],
     Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle::class => ['all' => true],
     Symplify\ComposerJsonManipulator\ComposerJsonManipulatorBundle::class => ['dev' => true, 'test' => true],
 ];

@@ -6,7 +6,7 @@
         <defaults public="false" autoconfigure="true" autowire="true"/>
 
         <prototype namespace="Draw\Bundle\SonataExtraBundle\" resource="../..">
-            <exclude>../../{vendor,Annotation,Builder,DependencyInjection,Entity,Event,Tests}</exclude>
+            <exclude>../../{vendor,Annotation,Builder,Configuration,DependencyInjection,Entity,Event,Tests}</exclude>
             <exclude>../../{DrawSonataExtraBundle.php}</exclude>
         </prototype>
 
