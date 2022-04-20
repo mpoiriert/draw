@@ -13,9 +13,9 @@ help:
 	@echo "    clear-temp:            empty and reset permission on the ./var folder"
 	@echo "    test:                  run phpunit test"
 	@echo "                           you should use your IDE instead but it's a good way to test your setup first"
-	@echo "    test-coverage:         run phpunit test with codecoverage enabled"
+	@echo "    test-coverage:         run phpunit test with code coverage enabled"
 	@echo "                           this will take a couple of hours to run"
-	@echo "    dump-assert-methods:   this will dump the assert methos for the tester trait"
+	@echo "    dump-assert-methods:   this will dump the assert methods for the tester trait"
 
 .ONESHELL:
 down:
@@ -39,7 +39,7 @@ test:
 	docker-compose exec php php vendor/bin/phpunit
 
 test-coverage:
-	docker-compose exec php php vendor/bin/phpunit --coverage-html ./tmp/phpunit/report
+	docker-compose exec php php vendor/bin/phpunit --coverage
 
 provision: up
 	docker-compose exec php composer install

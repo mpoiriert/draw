@@ -67,5 +67,5 @@ jobs:
           php bin/console messenger:setup-transports --no-interaction
           php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -q
           php bin/console doctrine:fixtures:load --no-interaction
-          TRAVIS=1 vendor/bin/phpunit --testdox -v
+          vendor/bin/phpunit --testdox -v --no-coverage
           echo "::endgroup::"

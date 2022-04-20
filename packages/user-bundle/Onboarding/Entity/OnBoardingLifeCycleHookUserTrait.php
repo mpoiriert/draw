@@ -3,9 +3,10 @@
 namespace Draw\Bundle\UserBundle\Onboarding\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Onboarding\Message\NewUserMessage;
+use function Draw\Component\Core\use_trait;
+use Draw\Component\Messenger\Entity\MessageHolderTrait;
 
 trait OnBoardingLifeCycleHookUserTrait
 {
@@ -16,8 +17,7 @@ trait OnBoardingLifeCycleHookUserTrait
     {
         switch (true) {
             case !$this instanceof SecurityUserInterface:
-            case !trait_exists(MessageHolderTrait::class):
-            case !MessageHolderTrait::useMessageHolderTrait($this):
+            case !use_trait($this, MessageHolderTrait::class):
                 return;
         }
 

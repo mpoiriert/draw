@@ -2,8 +2,8 @@
 
 namespace Draw\Bundle\UserBundle\PasswordChangeEnforcer\Message;
 
-use Draw\Bundle\DoctrineBusMessageBundle\Message\LifeCycleAwareMessageInterface;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeUserInterface;
+use Draw\Component\Messenger\Message\LifeCycleAwareMessageInterface;
 
 class PasswordChangeRequestedMessage implements LifeCycleAwareMessageInterface
 {

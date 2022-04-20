@@ -6,8 +6,9 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderTrait;
 use Draw\Bundle\UserBundle\AccountLocker\Message\NewUserLockMessage;
+use function Draw\Component\Core\use_trait;
+use Draw\Component\Messenger\Entity\MessageHolderTrait;
 use RuntimeException;
 
 trait LockableUserTrait
@@ -110,14 +111,10 @@ trait LockableUserTrait
         $userLocks = $this->getUserLocks();
 
         if (!$userLocks->contains($userLock)) {
-            switch (true) {
-                case !trait_exists(MessageHolderTrait::class):
-                case !MessageHolderTrait::useMessageHolderTrait($this):
-                    break;
-                default:
-                    $this->onHoldMessages['user-lock-'.$userLock->getReason()] = new NewUserLockMessage($userLock->getId());
-                    break;
+            if (use_trait($this, MessageHolderTrait::class)) {
+                $this->onHoldMessages['user-lock-'.$userLock->getReason()] = new NewUserLockMessage($userLock->getId());
             }
+
             $userLocks->add($userLock);
             $userLock->setUser($this);
         }

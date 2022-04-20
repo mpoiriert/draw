@@ -144,6 +144,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->append($this->createMessengerApplicationVersionMonitoring())
                 ->append($this->createMessengerBrokerNode())
+                ->append($this->createMessengerDoctrineMessageBusHookNode())
             ->end();
     }
 
@@ -191,6 +192,12 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+    }
+
+    private function createMessengerDoctrineMessageBusHookNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('doctrine_message_bus_hook'))
+            ->canBeEnabled();
     }
 
     private function createProcessNode(): ArrayNodeDefinition
