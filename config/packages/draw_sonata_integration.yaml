@@ -1,3 +1,5 @@
 draw_sonata_integration:
+  configuration: ~
+
   messenger:
     queue_names: ['default', 'failed']
