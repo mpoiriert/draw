@@ -20,6 +20,7 @@
             "Draw\\Component\\Core\\": ""
         },
         "files": [
+            "functions.php",
             "ignore_annotations.php"
         ]
     },

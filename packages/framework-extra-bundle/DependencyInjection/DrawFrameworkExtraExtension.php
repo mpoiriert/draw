@@ -208,6 +208,10 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 ->setArgument('$receivers', $brokerConfig['receivers'])
                 ->setArgument('$defaultOptions', $defaultOptions);
         }
+
+        if ($this->isConfigEnabled($container, $config['doctrine_message_bus_hook'])) {
+            $loader->load('messenger-doctrine-message-bus-hook.php');
+        }
     }
 
     private function configureProcess(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

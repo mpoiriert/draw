@@ -3,9 +3,10 @@
 namespace Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\DoctrineBusMessageBundle\Entity\MessageHolderTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Message\PasswordChangeRequestedMessage;
+use function Draw\Component\Core\use_trait;
+use Draw\Component\Messenger\Entity\MessageHolderTrait;
 
 trait PasswordChangeEnforcerUserTrait
 {
@@ -27,8 +28,7 @@ trait PasswordChangeEnforcerUserTrait
             }
         }
 
-        // todo helper in core
-        if (!trait_exists(MessageHolderTrait::class) || !MessageHolderTrait::useMessageHolderTrait($this)) {
+        if (!use_trait($this, MessageHolderTrait::class)) {
             return;
         }
 

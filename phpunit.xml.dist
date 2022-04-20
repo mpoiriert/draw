@@ -31,6 +31,9 @@
             <directory>./packages/*/vendor</directory>
             <directory>tests</directory>
         </exclude>
+        <report>
+            <html outputDirectory="tmp/phpunit/report" lowUpperBound="80" highLowerBound="100"/>
+        </report>
     </coverage>
 
     <listeners>

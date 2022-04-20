@@ -94,7 +94,6 @@
         "draw/contracts": "self.version",
         "draw/core": "self.version",
         "draw/cron-bundle": "self.version",
-        "draw/doctrine-bus-message-bundle": "self.version",
         "draw/doctrine-extra": "self.version",
         "draw/framework-extra-bundle": "self.version",
         "draw/log": "self.version",
@@ -124,7 +123,6 @@
             "Draw\\Bundle\\AwsToolKitBundle\\": "packages/aws-tool-kit-bundle/",
             "Draw\\Bundle\\CommandBundle\\": "packages/command-bundle/",
             "Draw\\Bundle\\CronBundle\\": "packages/cron-bundle/",
-            "Draw\\Bundle\\DoctrineBusMessageBundle\\": "packages/doctrine-bus-message-bundle/",
             "Draw\\Bundle\\FrameworkExtraBundle\\": "packages/framework-extra-bundle/",
             "Draw\\Bundle\\OpenApiBundle\\": "packages/open-api-bundle/",
             "Draw\\Bundle\\PostOfficeBundle\\": "packages/post-office-bundle/",
@@ -145,6 +143,7 @@
             "Draw\\DoctrineExtra\\": "packages/doctrine-extra/"
         },
         "files": [
+            "packages/core/functions.php",
             "packages/core/ignore_annotations.php"
         ]
     },
