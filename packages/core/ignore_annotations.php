@@ -1,5 +1,9 @@
 <?php
 
+if (class_exists(\Doctrine\Common\Annotations\AnnotationRegistry::class)) {
+    \Doctrine\Common\Annotations\AnnotationRegistry::registerUniqueLoader('class_exists');
+}
+
 $namespaces = [
     Draw\Component\OpenApi\OpenApi::class => [
         "Draw\Component\OpenApi\Schema",

@@ -1,4 +1,6 @@
 draw_framework_extra:
+  configuration: ~
+
   logger:
     slow_request:
       default_duration: 5000
@@ -10,3 +12,5 @@ draw_framework_extra:
       receivers: [ 'async' ]
     doctrine_message_bus_hook:
       enabled: true
+
+  versioning: ~

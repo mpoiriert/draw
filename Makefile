@@ -39,7 +39,7 @@ test:
 	docker-compose exec php php vendor/bin/phpunit
 
 test-coverage:
-	docker-compose exec php php vendor/bin/phpunit --coverage
+	docker-compose exec php php vendor/bin/phpunit --coverage-html ./tmp/phpunit/report
 
 provision: up
 	docker-compose exec php composer install

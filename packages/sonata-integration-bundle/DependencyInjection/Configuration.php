@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataIntegrationBundle\DependencyInjection;
 
 use App\Entity\MessengerMessage;
 use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
+use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Messenger\Broker;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -16,10 +17,23 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('draw_sonata_integration');
         $treeBuilder->getRootNode()
             ->children()
+                ->append($this->createConfigurationNode())
                 ->append($this->createMessengerNode())
             ->end();
 
         return $treeBuilder;
+    }
+
+    private function createConfigurationNode(): ArrayNodeDefinition
+    {
+        return $this->canBe(Config::class, new ArrayNodeDefinition('configuration'))
+            ->canBeEnabled()
+            ->append(
+                (new SonataAdminNodeConfiguration(Config::class, 'draw.sonata.group.application', 'admin'))
+                    ->addDefaultsIfNotSet()
+                    ->labelDefaultValue('config')
+                    ->iconDefaultValue('fa fa-server')
+            );
     }
 
     private function createMessengerNode(): ArrayNodeDefinition

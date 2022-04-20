@@ -6,6 +6,7 @@ use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\ChangeKeyProcessor
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
+use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Entity\DrawMessageInterface;
@@ -35,6 +36,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
         $container->setParameter('draw.symfony_console_path', $config['symfony_console_path']);
 
+        $this->configureConfiguration($config['configuration'], $loader, $container);
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
@@ -42,6 +44,19 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureProcess($config['process'], $loader, $container);
         $this->configureSecurity($config['security'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
+        $this->configureVersioning($config['versioning'], $loader, $container);
+    }
+
+    private function configureConfiguration(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('configuration.php');
     }
 
     private function configureJwtEncoder(
@@ -241,6 +256,18 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $loader->load('tester.php');
     }
 
+    private function configureVersioning(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $containerBuilder
+    ): void {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('versioning.php');
+    }
+
     public function prepend(ContainerBuilder $container)
     {
         $configs = $container->getExtensionConfig('draw_framework_extra');
@@ -309,6 +336,33 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 ]
             );
         }
+
+        $this->prependConfiguration($config['configuration'], $container);
+    }
+
+    private function prependConfiguration(array $config, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $reflection = new ReflectionClass(Config::class);
+
+        $container->prependExtensionConfig(
+            'doctrine',
+            [
+                'orm' => [
+                    'mappings' => [
+                        'DrawConfiguration' => [
+                            'is_bundle' => false,
+                            'type' => 'annotation',
+                            'dir' => dirname($reflection->getFileName()),
+                            'prefix' => $reflection->getNamespaceName(),
+                        ],
+                    ],
+                ],
+            ]
+        );
     }
 
     private function arrayToArgumentsArray(array $arguments): array

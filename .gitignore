@@ -5,6 +5,7 @@
 /draw.iml
 composer-normalize
 /vendor-bin/**/vendor
+/public/version.txt
 
 ###> symfony/framework-bundle ###
 /.env.local
