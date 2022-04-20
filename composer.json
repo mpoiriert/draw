@@ -88,7 +88,7 @@
         "terminal42/service-annotation-bundle": "^1.1"
     },
     "replace": {
-        "draw/application-bundle": "self.version",
+        "draw/application": "self.version",
         "draw/aws-tool-kit-bundle": "self.version",
         "draw/command-bundle": "self.version",
         "draw/contracts": "self.version",
@@ -119,7 +119,6 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Draw\\Bundle\\ApplicationBundle\\": "packages/application-bundle/",
             "Draw\\Bundle\\AwsToolKitBundle\\": "packages/aws-tool-kit-bundle/",
             "Draw\\Bundle\\CommandBundle\\": "packages/command-bundle/",
             "Draw\\Bundle\\CronBundle\\": "packages/cron-bundle/",
@@ -130,6 +129,7 @@
             "Draw\\Bundle\\SonataIntegrationBundle\\": "packages/sonata-integration-bundle/",
             "Draw\\Bundle\\TesterBundle\\": "packages/tester-bundle/",
             "Draw\\Bundle\\UserBundle\\": "packages/user-bundle/",
+            "Draw\\Component\\Application\\": "packages/application/",
             "Draw\\Component\\Core\\": "packages/core/",
             "Draw\\Component\\Log\\": "packages/log/",
             "Draw\\Component\\Messenger\\": "packages/messenger/",

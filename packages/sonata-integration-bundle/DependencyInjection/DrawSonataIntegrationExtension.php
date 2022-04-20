@@ -3,6 +3,7 @@
 namespace Draw\Bundle\SonataIntegrationBundle\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
+use Draw\Bundle\SonataIntegrationBundle\Configuration\Admin\ConfigAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,7 +19,28 @@ class DrawSonataIntegrationExtension extends Extension
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+        $this->configureConfiguration($config['configuration'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
+    }
+
+    private function configureConfiguration(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $container
+            ->setDefinition(
+                ConfigAdmin::class,
+                SonataAdminNodeConfiguration::configureFromConfiguration(
+                    new Definition(ConfigAdmin::class),
+                    $config['admin']
+                )
+            )
+            ->addMethodCall(
+                'setTranslationDomain',
+                ['DrawConfigurationSonata']
+            );
     }
 
     private function configureMessenger(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void

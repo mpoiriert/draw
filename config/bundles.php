@@ -3,7 +3,6 @@
 return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
-    Draw\Bundle\ApplicationBundle\DrawApplicationBundle::class => ['all' => true],
     Draw\Bundle\TesterBundle\DrawTesterBundle::class => ['test' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
     Sonata\BlockBundle\SonataBlockBundle::class => ['dev' => true, 'test' => true],
