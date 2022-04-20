@@ -7,7 +7,6 @@ use Draw\Bundle\OpenApiBundle\Request\Listener\QueryParameterFetcherSubscriber;
 use Draw\Bundle\OpenApiBundle\Tests\Mock\Controller\TestController;
 use Draw\Bundle\OpenApiBundle\Tests\TestCase;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -19,17 +18,15 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class QueryParameterFetcherSubscriberTest extends TestCase
 {
-    /**
-     * @var QueryParameterFetcherSubscriber
-     */
-    private $queryParameterFetcherSubscriber;
+    private QueryParameterFetcherSubscriber $service;
 
-    private $reader;
+    private Reader $reader;
 
     public function setUp(): void
     {
-        $this->reader = $this->prophesize(Reader::class);
-        $this->queryParameterFetcherSubscriber = new QueryParameterFetcherSubscriber($this->reader->reveal());
+        $this->service = new QueryParameterFetcherSubscriber(
+            $this->reader = $this->createMock(Reader::class)
+        );
     }
 
     /**
@@ -87,11 +84,13 @@ class QueryParameterFetcherSubscriberTest extends TestCase
         $queryParameter->name = 'test';
         $queryParameter->type = $type;
 
-        $this->reader->getMethodAnnotations(Argument::any())->shouldBeCalledOnce()->willReturn([$queryParameter]);
+        $this->reader
+            ->expects($this->once())
+            ->method('getMethodAnnotations')
+            ->willReturn([$queryParameter]);
 
-        $kernel = $this->prophesize(KernelInterface::class);
         $controllerEvent = new ControllerEvent(
-            $kernel->reveal(),
+            $this->createMock(KernelInterface::class),
             [$this, 'testOnKernelController'],
             $request = new Request(),
             constant(HttpKernelInterface::class.'::MASTER_REQUEST') ?: constant(HttpKernelInterface::class.'::MAIN_REQUEST')
@@ -99,7 +98,7 @@ class QueryParameterFetcherSubscriberTest extends TestCase
 
         $request->query->set('test', $value);
 
-        $this->queryParameterFetcherSubscriber->onKernelController($controllerEvent);
+        $this->service->onKernelController($controllerEvent);
 
         $this->assertSame(
             $expectedValue,
