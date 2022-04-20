@@ -70,6 +70,9 @@ class ConfigurationTest extends ConfigurationTestCase
                 'application_version_monitoring' => [
                     'enabled' => false,
                 ],
+                'doctrine_message_bus_hook' => [
+                    'enabled' => false,
+                ],
             ],
             'process' => [
                 'enabled' => true,

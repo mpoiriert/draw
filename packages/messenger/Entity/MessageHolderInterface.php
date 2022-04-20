@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\DoctrineBusMessageBundle\Entity;
+namespace Draw\Component\Messenger\Entity;
 
 interface MessageHolderInterface
 {
