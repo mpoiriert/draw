@@ -10,11 +10,13 @@ class DrawFrameworkExtraExtensionLogTest extends DrawFrameworkExtraExtensionTest
 {
     public function getConfiguration(): array
     {
-        return [
-            'log' => [
-                'enable_all_processors' => true,
-            ],
+        $configuration = parent::getConfiguration();
+
+        $configuration['log'] = [
+            'enable_all_processors' => true,
         ];
+
+        return $configuration;
     }
 
     public function provideTestHasServiceDefinition(): iterable

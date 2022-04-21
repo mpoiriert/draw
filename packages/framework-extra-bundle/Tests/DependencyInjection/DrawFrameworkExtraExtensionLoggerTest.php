@@ -6,27 +6,29 @@ class DrawFrameworkExtraExtensionLoggerTest extends DrawFrameworkExtraExtensionT
 {
     public function getConfiguration(): array
     {
-        return [
-            'logger' => [
-                'enabled' => true,
-                'slow_request' => [
-                    'request_matchers' => [
-                        [
-                            'duration' => 5000,
-                            'ips' => ['127.0.0.1'],
-                            'path' => '^/api',
-                            'host' => 'example.com',
-                            'port' => 80,
-                            'methods' => ['GET', 'POST'],
-                        ],
-                        [
-                            'duration' => 9000,
-                            'path' => '^/admin',
-                        ],
+        $configuration = parent::getConfiguration();
+
+        $configuration['logger'] = [
+            'enabled' => true,
+            'slow_request' => [
+                'request_matchers' => [
+                    [
+                        'duration' => 5000,
+                        'ips' => ['127.0.0.1'],
+                        'path' => '^/api',
+                        'host' => 'example.com',
+                        'port' => 80,
+                        'methods' => ['GET', 'POST'],
+                    ],
+                    [
+                        'duration' => 9000,
+                        'path' => '^/admin',
                     ],
                 ],
             ],
         ];
+
+        return $configuration;
     }
 
     public function provideTestHasServiceDefinition(): iterable

@@ -8,11 +8,13 @@ class DrawFrameworkExtraExtensionJwtEncoderTest extends DrawFrameworkExtraExtens
 {
     public function getConfiguration(): array
     {
-        return [
-            'jwt_encoder' => [
-                'key' => 'unique-key',
-            ],
+        $configuration = parent::getConfiguration();
+
+        $configuration['jwt_encoder'] = [
+            'key' => 'unique-key',
         ];
+
+        return $configuration;
     }
 
     public function provideTestHasServiceDefinition(): iterable
