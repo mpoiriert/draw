@@ -1,25 +1,31 @@
 <?php
 
-namespace Draw\Bundle\CronBundle\Tests\Command;
+namespace Draw\Component\Application\Tests\Command;
 
-use Draw\Bundle\CronBundle\Command\DumpToFileCommand;
-use Draw\Bundle\CronBundle\CronManager;
+use Draw\Component\Application\Command\CronDumpToFileCommand;
+use Draw\Component\Application\CronManager;
 use Draw\Component\Tester\Application\CommandDataTester;
-use Draw\Component\Tester\Application\CommandTestCase;
+use Draw\Component\Tester\Application\CommandTestTrait;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class DumpToFileCommandTest extends CommandTestCase
+/**
+ * @covers \Draw\Component\Application\Command\CronDumpToFileCommand
+ */
+class CronDumpToFileCommandTest extends TestCase
 {
+    use CommandTestTrait;
+
+    private CronManager $cronManager;
+
     public function createCommand(): Command
     {
-        $mock = $this->createMock(CronManager::class);
-        $mock->method('dumpJobs')
-            ->willReturn('Output');
-
-        return new DumpToFileCommand($mock);
+        return new CronDumpToFileCommand(
+            $this->cronManager = $this->createMock(CronManager::class)
+        );
     }
 
     public function getCommandName(): string
@@ -42,8 +48,13 @@ class DumpToFileCommandTest extends CommandTestCase
         yield ['override', null, InputOption::VALUE_NONE, 'If the file is present we override it.'];
     }
 
-    public function testExecuteNewFile()
+    public function testExecuteNewFile(): void
     {
+        $this->cronManager
+            ->expects($this->once())
+            ->method('dumpJobs')
+            ->willReturn('Output');
+
         $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
         register_shutdown_function('unlink', $filePath);
         $this
@@ -53,8 +64,13 @@ class DumpToFileCommandTest extends CommandTestCase
         $this->assertSame('Output', file_get_contents($filePath));
     }
 
-    public function testExecuteNewFileOverride()
+    public function testExecuteNewFileOverride(): void
     {
+        $this->cronManager
+            ->expects($this->once())
+            ->method('dumpJobs')
+            ->willReturn('Output');
+
         $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($filePath, 'Before');
         register_shutdown_function('unlink', $filePath);
@@ -65,10 +81,14 @@ class DumpToFileCommandTest extends CommandTestCase
         $this->assertSame('Output', file_get_contents($filePath));
     }
 
-    public function testExecuteNewFileNoOverrideException()
+    public function testExecuteNewFileNoOverrideException(): void
     {
+        $this->cronManager
+            ->expects($this->never())
+            ->method('dumpJobs');
+
         $filePath = sys_get_temp_dir().'/'.uniqid().'.txt';
-        file_put_contents($filePath, 'Before');
+        touch($filePath);
         register_shutdown_function('unlink', $filePath);
 
         $this->expectException(RuntimeException::class);

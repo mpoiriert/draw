@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\CronBundle\Command;
+namespace Draw\Component\Application\Command;
 
-use Draw\Bundle\CronBundle\CronManager;
+use Draw\Component\Application\CronManager;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,12 +10,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DumpToFileCommand extends Command
+class CronDumpToFileCommand extends Command
 {
-    /**
-     * @var CronManager
-     */
-    private $cronManager;
+    private CronManager $cronManager;
 
     public function __construct(CronManager $cronManager)
     {
@@ -23,7 +20,7 @@ class DumpToFileCommand extends Command
         $this->cronManager = $cronManager;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:cron:dump-to-file')
@@ -32,7 +29,7 @@ class DumpToFileCommand extends Command
             ->addOption('override', null, InputOption::VALUE_NONE, 'If the file is present we override it.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('filePath');
 

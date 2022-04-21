@@ -1,9 +1,9 @@
 {
     "name": "draw/application",
-    "description": "Component to handle application domain logic",
+    "description": "Component to handle application domain logic like configuration, cron, versioning",
     "license": "MIT",
     "type": "symfony-bundle",
-    "keywords": ["symfony", "application", "configuration", "versioning"],
+    "keywords": ["symfony", "application", "configuration", "cron", "versioning"],
     "require": {
         "php": "^7.4",
         "ext-ctype": "*",
@@ -17,7 +17,8 @@
     },
     "require-dev": {
         "draw/tester-bundle": "^1.0",
-        "phpunit/phpunit": "^8.0 || ^9.0"
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "symfony/console": "^5.4.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -1,27 +1,27 @@
 <?php
 
-namespace Draw\Bundle\CronBundle\Tests;
+namespace Draw\Component\Application\Tests;
 
-use Draw\Bundle\CronBundle\CronManager;
-use Draw\Bundle\CronBundle\Model\Job;
+use Draw\Component\Application\Cron\Job;
+use Draw\Component\Application\CronManager;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Draw\Component\Application\CronManager
+ */
 class CronManagerTest extends TestCase
 {
-    /**
-     * @var CronManager
-     */
-    private $cronManager;
+    private CronManager $service;
 
     public function setUp(): void
     {
-        $this->cronManager = new CronManager();
+        $this->service = new CronManager();
     }
 
     public function testDumpJobs(): void
     {
         $job = new Job('Job name', 'echo "test"');
-        $this->cronManager->addJob($job);
+        $this->service->addJob($job);
         $cronTab = <<<CRONTAB
 #Description: 
 * * * * * echo "test" >/dev/null 2>&1
@@ -30,17 +30,17 @@ CRONTAB;
 
         $this->assertSame(
             $cronTab,
-            $this->cronManager->dumpJobs()
+            $this->service->dumpJobs()
         );
     }
 
     public function testDumpJobsTwoJobs(): void
     {
         $job = new Job('Job name', 'echo "test"');
-        $this->cronManager->addJob($job);
+        $this->service->addJob($job);
 
         $job = new Job('Job 2', 'echo "test"', '*/5 * * * *', true, 'Job every 5 minutes');
-        $this->cronManager->addJob($job);
+        $this->service->addJob($job);
         $cronTab = <<<CRONTAB
 #Description: 
 * * * * * echo "test" >/dev/null 2>&1
@@ -52,7 +52,7 @@ CRONTAB;
 
         $this->assertSame(
             $cronTab,
-            $this->cronManager->dumpJobs()
+            $this->service->dumpJobs()
         );
     }
 
@@ -60,11 +60,11 @@ CRONTAB;
     {
         $job = new Job('Job 2', 'echo "test"');
         $job->setEnabled(false);
-        $this->cronManager->addJob($job);
+        $this->service->addJob($job);
 
         $this->assertSame(
             PHP_EOL,
-            $this->cronManager->dumpJobs()
+            $this->service->dumpJobs()
         );
     }
 }

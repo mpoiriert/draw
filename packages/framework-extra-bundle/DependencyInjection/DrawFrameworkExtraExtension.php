@@ -7,6 +7,7 @@ use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProc
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Application\Configuration\Entity\Config;
+use Draw\Component\Application\Cron\Job;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Entity\DrawMessageInterface;
@@ -37,6 +38,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $container->setParameter('draw.symfony_console_path', $config['symfony_console_path']);
 
         $this->configureConfiguration($config['configuration'], $loader, $container);
+        $this->configureCron($config['cron'], $loader, $container);
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
@@ -50,13 +52,41 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
     private function configureConfiguration(
         array $config,
         LoaderInterface $loader,
-        ContainerBuilder $containerBuilder
+        ContainerBuilder $container
     ): void {
         if (!$config['enabled']) {
             return;
         }
 
         $loader->load('configuration.php');
+    }
+
+    private function configureCron(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $container
+    ): void {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('cron.php');
+
+        $cronManagerDefinition = $container->getDefinition('draw.cron.manager');
+        foreach ($config['jobs'] as $jobData) {
+            $jobDefinition = new Definition(Job::class);
+            $jobDefinition->setArguments([
+                $jobData['name'],
+                $jobData['command'],
+                $jobData['expression'],
+                $jobData['enabled'],
+                $jobData['description'],
+            ]);
+
+            $jobDefinition->addMethodCall('setOutput', [$jobData['output']]);
+
+            $cronManagerDefinition->addMethodCall('addJob', [$jobDefinition]);
+        }
     }
 
     private function configureJwtEncoder(
