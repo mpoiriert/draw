@@ -25,7 +25,11 @@ class DrawFrameworkExtraExtensionTest extends ExtensionTestCase
 
     public function getConfiguration(): array
     {
-        return [];
+        return [
+            'cron' => [
+                'enabled' => false,
+            ],
+        ];
     }
 
     public function provideTestHasServiceDefinition(): iterable

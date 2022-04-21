@@ -1,52 +1,40 @@
 <?php
 
-namespace Draw\Bundle\CronBundle\Model;
+namespace Draw\Component\Application\Cron;
 
 class Job
 {
     /**
      * The name of the job for reference.
-     *
-     * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * The description of the job.
-     *
-     * @var string
      */
-    private $description;
+    private ?string $description;
 
     /**
      * The cron execution expression configuration.
-     *
-     * @var string
      */
-    private $expression = '* * * * *';
+    private string $expression;
 
     /**
      * The command to execute.
-     *
-     * @var string
      */
-    private $command;
+    private string $command;
 
     /**
      * If the job is enabled or not.
-     *
-     * @var bool
      */
-    private $enabled = true;
+    private bool $enabled;
 
     /**
      * Where the output will be redirect.
-     *
-     * @var string
      */
-    private $output = '>/dev/null 2>&1';
+    private string $output = '>/dev/null 2>&1';
 
-    public function __construct($name, $command, $expression = '* * * * *', $enabled = true, $description = '')
+    public function __construct(string $name, string $command, string $expression = '* * * * *', bool $enabled = true, ?string $description = null)
     {
         $this->name = $name;
         $this->expression = $expression;
@@ -60,19 +48,23 @@ class Job
         return $this->name;
     }
 
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description)
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     public function getExpression(): string
@@ -80,9 +72,11 @@ class Job
         return $this->expression;
     }
 
-    public function setExpression(string $expression)
+    public function setExpression(string $expression): self
     {
         $this->expression = $expression;
+
+        return $this;
     }
 
     public function getCommand(): string
@@ -90,9 +84,11 @@ class Job
         return $this->command;
     }
 
-    public function setCommand(string $command)
+    public function setCommand(string $command): self
     {
         $this->command = $command;
+
+        return $this;
     }
 
     public function getEnabled(): bool
@@ -100,9 +96,11 @@ class Job
         return $this->enabled;
     }
 
-    public function setEnabled(bool $enabled): void
+    public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
     }
 
     public function getOutput(): string
@@ -110,9 +108,11 @@ class Job
         return $this->output;
     }
 
-    public function setOutput(string $output): void
+    public function setOutput(string $output): self
     {
         $this->output = $output;
+
+        return $this;
     }
 
     public function toArray(): array

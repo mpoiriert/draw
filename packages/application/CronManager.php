@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\CronBundle;
+namespace Draw\Component\Application;
 
-use Draw\Bundle\CronBundle\Model\Job;
+use Draw\Component\Application\Cron\Job;
 
 class CronManager
 {
@@ -11,7 +11,7 @@ class CronManager
     /**
      * @var array|Job[]
      */
-    private $jobs = [];
+    private array $jobs = [];
 
     public function addJob(Job $job): void
     {
@@ -34,7 +34,11 @@ class CronManager
                 $mapping['{'.$key.'}'] = $value;
             }
 
-            $cronLine = str_replace(array_keys($mapping), array_values($mapping), self::JOB_STRING_PATTERN);
+            $cronLine = str_replace(
+                array_keys($mapping),
+                array_values($mapping),
+                self::JOB_STRING_PATTERN
+            );
 
             $result[] = $cronLine;
         }

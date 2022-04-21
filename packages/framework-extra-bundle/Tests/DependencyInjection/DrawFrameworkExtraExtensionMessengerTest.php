@@ -12,13 +12,15 @@ class DrawFrameworkExtraExtensionMessengerTest extends DrawFrameworkExtraExtensi
 {
     public function getConfiguration(): array
     {
-        return [
-            'messenger' => [
-                'async_routing_configuration' => [
-                    'enabled' => true,
-                ],
+        $configuration = parent::getConfiguration();
+
+        $configuration['messenger'] = [
+            'async_routing_configuration' => [
+                'enabled' => true,
             ],
         ];
+
+        return $configuration;
     }
 
     public function testPrepend(): void

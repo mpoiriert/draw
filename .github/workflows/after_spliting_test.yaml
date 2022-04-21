@@ -22,7 +22,6 @@ jobs:
           - aws-tool-kit-bundle
           - command-bundle
           - core
-          - cron-bundle
           - doctrine-extra
           - framework-extra-bundle
           - log
