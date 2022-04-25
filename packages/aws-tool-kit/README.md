@@ -1,5 +1,4 @@
-DrawAwsToolKitBundle
-====================
+# Aws Tool Kit
 
 Multiple tools related to Aws infrastructure.
 
@@ -16,8 +15,8 @@ A user case would be to download slow query log from a rds cluster and aggregate
 
 Allowing to ignore a command if it's not the newest instance in a pool of instance base on it's role.
 
-Sometime it's complex to configure cron that should be executed only on one instance in a pool of server that are
-auto scaling. A good way to do that is to check if the current instance is the newest one, that way only one instance
+Sometimes it's complex to configure cron that should be executed only on one instance in a pool of server that are
+auto-scaling. A good way to do that is to check if the current instance is the newest one, that way only one instance
 can be the newest at a specific time.
 
     bin/console acme:purge-database --aws-newest-instance-role=prod

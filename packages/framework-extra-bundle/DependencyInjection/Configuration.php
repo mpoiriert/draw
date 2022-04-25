@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->scalarNode('symfony_console_path')->defaultNull()->end()
+                ->append($this->createAwsToolKitNode())
                 ->append($this->createConfigurationNode())
                 ->append($this->createCronNode())
                 ->append($this->createJwtEncoder())
@@ -40,6 +41,30 @@ class Configuration implements ConfigurationInterface
             ->end();
 
         return $treeBuilder;
+    }
+
+    private function createAwsToolKitNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('aws_tool_kit'))
+            ->canBeEnabled()
+            ->validate()
+                ->ifTrue(function (array $config) {
+                    switch (true) {
+                        case !$config['newest_instance_role_check']['enabled']:
+                        case null !== $config['imds_version']:
+                            return false;
+                    }
+
+                    return true;
+                })
+                ->thenInvalid('You must define a imds_version since you enabled newest_instance_role_check')
+            ->end()
+            ->children()
+                ->enumNode('imds_version')->values([1, 2, null])->defaultNull()->end()
+                ->arrayNode('newest_instance_role_check')
+                    ->canBeEnabled()
+                ->end()
+            ->end();
     }
 
     private function createConfigurationNode(): ArrayNodeDefinition

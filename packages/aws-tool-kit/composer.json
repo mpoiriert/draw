@@ -1,24 +1,18 @@
 {
-    "name": "draw/aws-tool-kit-bundle",
-    "description": "[BETA] This bundle offer a few AWS tool for symfony.",
+    "name": "draw/aws-tool-kit",
+    "description": "This package offer a few AWS tool kit.",
     "license": "MIT",
-    "type": "symfony-bundle",
-    "keywords": ["symfony", "aws"],
+    "type": "library",
+    "keywords": ["draw", "aws"],
     "require": {
         "aws/aws-sdk-php": "^3.171",
-        "symfony/console": "^5.4.3",
-        "symfony/framework-bundle": "^5.4.3",
-        "symfony/css-selector": "^5.4.3"
+        "symfony/console": "^5.4.3"
     },
     "require-dev": {
-        "aws/aws-sdk-php-symfony": "^2.3",
         "draw/core": "^0.9",
-        "draw/tester-bundle": "^0.9",
         "phpunit/phpunit": "^8.0 || ^9.0",
-        "sensio/framework-extra-bundle": "^5.6 || ^6.2",
         "symfony/http-client": "^5.4.3",
-        "symfony/http-client-contracts": "^2.5",
-        "symfony/yaml": "^5.4.3"
+        "symfony/http-client-contracts": "^2.5"
     },
     "conflict": {
         "guzzlehttp/guzzle": "<6"
@@ -30,7 +24,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Draw\\Bundle\\AwsToolKitBundle\\": ""
+            "Draw\\Component\\AwsToolKit\\": ""
         }
     },
     "extra": {

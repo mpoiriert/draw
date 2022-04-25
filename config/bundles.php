@@ -29,7 +29,6 @@ return [
     Scheb\TwoFactorBundle\SchebTwoFactorBundle::class => ['all' => true],
     Terminal42\ServiceAnnotationBundle\Terminal42ServiceAnnotationBundle::class => ['dev' => true, 'test' => true],
     Aws\Symfony\AwsBundle::class => ['all' => true],
-    Draw\Bundle\AwsToolKitBundle\DrawAwsToolKitBundle::class => ['all' => true],
     Draw\Bundle\SonataIntegrationBundle\DrawSonataIntegrationBundle::class => ['all' => true],
     Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle::class => ['all' => true],
     Symplify\ComposerJsonManipulator\ComposerJsonManipulatorBundle::class => ['dev' => true, 'test' => true],

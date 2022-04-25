@@ -1,9 +1,9 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\Tests\DependencyInjection\Compiler;
+namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
 
-use Draw\Bundle\AwsToolKitBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
-use Draw\Bundle\AwsToolKitBundle\Listener\NewestInstanceRoleCheckListener;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
+use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @covers \Draw\Bundle\AwsToolKitBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass
+ * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass
  */
 class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
 {

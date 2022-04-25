@@ -1,21 +1,21 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\Tests\Listener;
+namespace Draw\Component\AwsToolKit\Tests\Listener;
 
 use Aws\Ec2\Ec2Client;
 use DateTimeImmutable;
-use Draw\Bundle\AwsToolKitBundle\Imds\ImdsClientInterface;
-use Draw\Bundle\AwsToolKitBundle\Listener\NewestInstanceRoleCheckListener;
-use Draw\Bundle\AwsToolKitBundle\Tests\TestCase;
+use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
+use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Exception;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @covers \Draw\Bundle\AwsToolKitBundle\Listener\NewestInstanceRoleCheckListener
+ * @covers \Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener
  */
 class NewestInstanceRoleListenerCheckTest extends TestCase
 {
@@ -27,13 +27,9 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function setUp(): void
     {
-        $this->service = clone $this->getService(NewestInstanceRoleCheckListener::class);
-
-        ReflectionAccessor::setPropertiesValue(
-            $this->service,
-            [
-                'imdsClient' => $this->imdsClient = $this->createMock(ImdsClientInterface::class),
-            ]
+        $this->service = new NewestInstanceRoleCheckListener(
+            $this->createMock(Ec2Client::class),
+            $this->imdsClient = $this->createMock(ImdsClientInterface::class),
         );
     }
 

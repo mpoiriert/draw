@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\Imds;
+namespace Draw\Component\AwsToolKit\Imds;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 

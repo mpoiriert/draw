@@ -1,9 +1,9 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\Listener;
+namespace Draw\Component\AwsToolKit\Listener;
 
 use Aws\Ec2\Ec2Client;
-use Draw\Bundle\AwsToolKitBundle\Imds\ImdsClientInterface;
+use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;

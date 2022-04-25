@@ -19,7 +19,7 @@ jobs:
       matrix:
         package_name:
           - application
-          - aws-tool-kit-bundle
+          - aws-tool-kit
           - command-bundle
           - core
           - doctrine-extra
