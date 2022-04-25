@@ -8,6 +8,8 @@ use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Application\Cron\Job;
+use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
+use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Entity\DrawMessageInterface;
@@ -37,6 +39,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
         $container->setParameter('draw.symfony_console_path', $config['symfony_console_path']);
 
+        $this->configureAwsToolKit($config['aws_tool_kit'], $loader, $container);
         $this->configureConfiguration($config['configuration'], $loader, $container);
         $this->configureCron($config['cron'], $loader, $container);
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
@@ -47,6 +50,50 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureSecurity($config['security'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
         $this->configureVersioning($config['versioning'], $loader, $container);
+    }
+
+    private function configureAwsToolKit(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $container
+    ): void {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $loader->load('aws-tool-kit.php');
+
+        if ($config['imds_version']) {
+            $container
+                ->setDefinition(
+                    $serviceId = 'draw.aws_tool_kit.imds_client_v'.$config['imds_version'],
+                    new Definition(
+                        'Draw\Component\AwsToolKit\Imds\ImdsClientV'.$config['imds_version']
+                    )
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true);
+
+            $container->setAlias(
+                ImdsClientInterface::class,
+                $serviceId
+            );
+        }
+
+        if ($this->isConfigEnabled($container, $config['newest_instance_role_check'])) {
+            $container
+                ->setDefinition(
+                    'draw.aws_tool_kit.newest_instance_role_check_listener',
+                    new Definition(NewestInstanceRoleCheckListener::class)
+                )
+                ->setAutowired(true)
+                ->setAutoconfigured(true);
+
+            $container->setAlias(
+                NewestInstanceRoleCheckListener::class,
+                'draw.aws_tool_kit.newest_instance_role_check_listener'
+            );
+        }
     }
 
     private function configureConfiguration(

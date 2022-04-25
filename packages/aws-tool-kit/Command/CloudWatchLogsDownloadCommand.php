@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\Command;
+namespace Draw\Component\AwsToolKit\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use RuntimeException;

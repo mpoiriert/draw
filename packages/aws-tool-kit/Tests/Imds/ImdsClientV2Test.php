@@ -1,14 +1,14 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\Tests\Imds;
+namespace Draw\Component\AwsToolKit\Tests\Imds;
 
-use Draw\Bundle\AwsToolKitBundle\Imds\ImdsClientV2;
+use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
- * @covers \Draw\Bundle\AwsToolKitBundle\Imds\ImdsClientV2
+ * @covers \Draw\Component\AwsToolKit\Imds\ImdsClientV2
  */
 class ImdsClientV2Test extends TestCase
 {

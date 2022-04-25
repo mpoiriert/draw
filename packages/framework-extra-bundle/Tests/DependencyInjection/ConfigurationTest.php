@@ -17,6 +17,13 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         return [
             'symfony_console_path' => null,
+            'aws_tool_kit' => [
+                'enabled' => false,
+                'imds_version' => null,
+                'newest_instance_role_check' => [
+                    'enabled' => false,
+                ],
+            ],
             'configuration' => [
                 'enabled' => false,
             ],
@@ -100,7 +107,17 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are configuration, cron, jwt_encoder, log, logger, messenger, process, security, symfony_console_path, tester, versioning.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, configuration, cron, jwt_encoder, log, logger, messenger, process, security, symfony_console_path, tester, versioning.',
+        ];
+
+        yield [
+            ['aws_tool_kit' => ['imds_version' => 3]],
+            'The value 3 is not allowed for path "draw_framework_extra.aws_tool_kit.imds_version". Permissible values: 1, 2, null',
+        ];
+
+        yield [
+            ['aws_tool_kit' => ['newest_instance_role_check' => true]],
+            'Invalid configuration for path "draw_framework_extra.aws_tool_kit": You must define a imds_version since you enabled newest_instance_role_check',
         ];
     }
 }

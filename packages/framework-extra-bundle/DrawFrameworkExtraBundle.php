@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle;
 
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
@@ -27,6 +28,10 @@ class DrawFrameworkExtraBundle extends Bundle
 
         if (class_exists(Broker::class)) {
             $container->addCompilerPass(new MessengerBrokerCompilerPass());
+        }
+
+        if (class_exists(AddNewestInstanceRoleCommandOptionPass::class)) {
+            $container->addCompilerPass(new AddNewestInstanceRoleCommandOptionPass());
         }
 
         if (class_exists(PurgeExpiredMessageCommand::class)) {

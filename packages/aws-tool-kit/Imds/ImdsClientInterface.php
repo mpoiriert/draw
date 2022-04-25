@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\Imds;
+namespace Draw\Component\AwsToolKit\Imds;
 
 interface ImdsClientInterface
 {
