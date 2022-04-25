@@ -1,38 +1,29 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\Tests\Command;
+namespace Draw\Component\AwsToolKit\Tests\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use DateTimeImmutable;
-use Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand;
+use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\Application\CommandDataTester;
-use Draw\Component\Tester\Application\CommandTestCase;
+use Draw\Component\Tester\Application\CommandTestTrait;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * @covers \Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand
+ * @covers \Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand
  */
-class CloudWatchLogsDownloadCommandTest extends CommandTestCase
+class CloudWatchLogsDownloadCommandTest extends TestCase
 {
-    /**
-     * @var CloudWatchLogsClient|MockObject
-     */
+    use CommandTestTrait;
+
+    /** @var CloudWatchLogsClient|MockObject */
     private CloudWatchLogsClient $cloudWatchLogsClient;
-
-    public function getCommandName(): string
-    {
-        return 'draw:aws:cloud-watch-logs:download';
-    }
-
-    public function getCommandDescription(): string
-    {
-        return 'Download logs from cloud watch locally base on it\'s log group name, log stream name and a start time/end time';
-    }
 
     public function createCommand(): Command
     {
@@ -46,6 +37,16 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
             ->getMock();
 
         return new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
+    }
+
+    public function getCommandName(): string
+    {
+        return 'draw:aws:cloud-watch-logs:download';
+    }
+
+    public function getCommandDescription(): string
+    {
+        return 'Download logs from cloud watch locally base on it\'s log group name, log stream name and a start time/end time';
     }
 
     public function provideTestArgument(): iterable
@@ -77,7 +78,7 @@ class CloudWatchLogsDownloadCommandTest extends CommandTestCase
         );
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Service [Aws\CloudWatchLogs\CloudWatchLogsClient] is required for command [Draw\Bundle\AwsToolKitBundle\Command\CloudWatchLogsDownloadCommand] to run.');
+        $this->expectExceptionMessage('Service [Aws\CloudWatchLogs\CloudWatchLogsClient] is required for command [Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand] to run.');
 
         $this->execute([
             'logGroupName' => 'group-name',

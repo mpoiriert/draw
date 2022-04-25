@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\AwsToolKitBundle\DependencyInjection\Compiler;
+namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
 
-use Draw\Bundle\AwsToolKitBundle\Listener\NewestInstanceRoleCheckListener;
+use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
