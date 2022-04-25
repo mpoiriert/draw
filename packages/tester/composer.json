@@ -24,6 +24,7 @@
         "symfony/dependency-injection": "^5.4.3"
     },
     "suggest": {
+        "symfony/cache": "If you want to use the orm setup tool",
         "symfony/dependency-injection": "If you want to test extension/configuration"
     },
     "minimum-stability": "dev",

@@ -20,7 +20,7 @@ jobs:
         package_name:
           - application
           - aws-tool-kit
-          - command-bundle
+          - console
           - core
           - doctrine-extra
           - framework-extra-bundle

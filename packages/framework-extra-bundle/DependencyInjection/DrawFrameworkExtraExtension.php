@@ -10,6 +10,7 @@ use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Application\Cron\Job;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
+use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Entity\DrawMessageInterface;
@@ -17,6 +18,9 @@ use Draw\Component\Messenger\Entity\DrawMessageTagInterface;
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
+use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
+use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
+use Draw\Component\Security\Core\Listener\CommandLineAuthenticatorListener;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use ReflectionClass;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
@@ -41,6 +45,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
         $this->configureAwsToolKit($config['aws_tool_kit'], $loader, $container);
         $this->configureConfiguration($config['configuration'], $loader, $container);
+        $this->configureConsole($config['console'], $loader, $container);
         $this->configureCron($config['cron'], $loader, $container);
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
@@ -106,6 +111,18 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
 
         $loader->load('configuration.php');
+    }
+
+    private function configureConsole(
+        array $config,
+        LoaderInterface $loader,
+        ContainerBuilder $container
+    ): void {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $loader->load('console.php');
     }
 
     private function configureCron(
@@ -322,6 +339,39 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
 
         $loader->load('security.php');
+        if ($this->isConfigEnabled($container, $config['system_authentication'])) {
+            $container
+                ->setDefinition(
+                    'draw.security.system_authentication',
+                    (new Definition(SystemAuthenticator::class))
+                        ->setArgument('$role', $config['system_authentication']['roles'])
+                        ->setAutoconfigured(true)
+                        ->setAutowired(true)
+                );
+
+            $container
+                ->setAlias(
+                    SystemAuthenticatorInterface::class,
+                    'draw.security.system_authentication'
+                );
+        }
+
+        if ($this->isConfigEnabled($container, $config['console_authentication'])) {
+            $container
+                ->setDefinition(
+                    'draw.security.command_line_authenticator_listener',
+                    (new Definition(CommandLineAuthenticatorListener::class))
+                        ->setAutoconfigured(true)
+                        ->setAutowired(true)
+                        ->setArgument('$systemAutoLogin', $config['console_authentication']['system_auto_login'])
+                );
+
+            $container
+                ->setAlias(
+                    CommandLineAuthenticatorListener::class,
+                    'draw.security.command_line_authenticator_listener'
+                );
+        }
     }
 
     private function configureTester(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -353,6 +403,8 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             $this->getConfiguration($configs, $container),
             $container->getParameterBag()->resolveValue($configs)
         );
+
+        $this->prependConsole($config['console'], $container);
 
         if ($this->isConfigEnabled($container, $config['messenger'])
             && class_exists(Broker::class)
@@ -431,6 +483,31 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 'orm' => [
                     'mappings' => [
                         'DrawConfiguration' => [
+                            'is_bundle' => false,
+                            'type' => 'annotation',
+                            'dir' => dirname($reflection->getFileName()),
+                            'prefix' => $reflection->getNamespaceName(),
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    private function prependConsole(array $config, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $reflection = new ReflectionClass(Execution::class);
+
+        $container->prependExtensionConfig(
+            'doctrine',
+            [
+                'orm' => [
+                    'mappings' => [
+                        'DrawConsole' => [
                             'is_bundle' => false,
                             'type' => 'annotation',
                             'dir' => dirname($reflection->getFileName()),
