@@ -1,6 +1,6 @@
 draw_framework_extra:
   configuration: ~
-
+  console: ~
   logger:
     slow_request:
       default_duration: 5000

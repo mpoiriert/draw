@@ -20,6 +20,7 @@
     "require-dev": {
         "draw/application": "^1.0",
         "draw/aws-tool-kit": "^1.0",
+        "draw/console": "^1.0",
         "draw/contracts": "^1.0",
         "draw/log": "^1.0",
         "draw/messenger": "^1.0",

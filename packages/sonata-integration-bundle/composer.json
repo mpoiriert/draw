@@ -14,6 +14,8 @@
         "sonata-project/doctrine-orm-admin-bundle": "^4.2"
     },
     "require-dev": {
+        "draw/application": "^1.0",
+        "draw/console": "^1.0",
         "draw/messenger": "^1.0",
         "draw/tester": "^1.0",
         "phpunit/phpunit": "^8.0 || ^9.0"

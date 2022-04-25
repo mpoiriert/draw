@@ -1,6 +1,0 @@
-draw_command:
-    sonata: true
-    commands:
-        'null':
-            commandName: 'app:null'
-            label: 'Null'

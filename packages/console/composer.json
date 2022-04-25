@@ -1,0 +1,34 @@
+{
+    "name": "draw/console",
+    "description": "This component allow to command execution in the database.",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "keywords": ["draw", "console"],
+    "require": {
+        "doctrine/dbal": "^3.3",
+        "draw/core": "^1.0",
+        "psr/log": "@stable",
+        "sensiolabs/ansi-to-html": "^1.2",
+        "symfony/event-dispatcher": "^5.4.3",
+        "symfony/console": "^5.4.3"
+    },
+    "require-dev": {
+        "doctrine/annotations": "^1.11",
+        "doctrine/orm": "^2.11",
+        "draw/tester": "^1.0",
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "symfony/cache": "^5.4.3"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Draw\\Component\\Console\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
