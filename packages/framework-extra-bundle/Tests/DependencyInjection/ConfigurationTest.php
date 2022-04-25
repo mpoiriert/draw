@@ -27,6 +27,9 @@ class ConfigurationTest extends ConfigurationTestCase
             'configuration' => [
                 'enabled' => false,
             ],
+            'console' => [
+                'enabled' => false,
+            ],
             'cron' => [
                 'enabled' => true,
                 'jobs' => [],
@@ -93,6 +96,14 @@ class ConfigurationTest extends ConfigurationTestCase
             ],
             'security' => [
                 'enabled' => true,
+                'system_authentication' => [
+                    'enabled' => false,
+                    'roles' => ['ROLE_SYSTEM'],
+                ],
+                'console_authentication' => [
+                    'enabled' => false,
+                    'system_auto_login' => false,
+                ],
             ],
             'tester' => [
                 'enabled' => true,
@@ -107,7 +118,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, configuration, cron, jwt_encoder, log, logger, messenger, process, security, symfony_console_path, tester, versioning.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, configuration, console, cron, jwt_encoder, log, logger, messenger, process, security, symfony_console_path, tester, versioning.',
         ];
 
         yield [

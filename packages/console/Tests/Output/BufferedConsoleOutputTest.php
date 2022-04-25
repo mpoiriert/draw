@@ -1,0 +1,87 @@
+<?php
+
+namespace Draw\Component\Console\Tests\Output;
+
+use Draw\Component\Console\Output\BufferedConsoleOutput;
+use Draw\Component\Core\Reflection\ReflectionAccessor;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+
+/**
+ * @covers \Draw\Component\Console\Output\BufferedConsoleOutput
+ */
+class BufferedConsoleOutputTest extends TestCase
+{
+    private BufferedConsoleOutput $object;
+
+    public function setUp(): void
+    {
+        $this->object = new BufferedConsoleOutput(OutputInterface::VERBOSITY_NORMAL);
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ConsoleOutput::class,
+            $this->object
+        );
+    }
+
+    public function testSetDecorated(): void
+    {
+        ReflectionAccessor::setPropertyValue(
+            $this->object,
+            'formatter',
+            $formatter = $this->createMock(OutputFormatterInterface::class)
+        );
+
+        $formatter
+            ->expects($this->exactly(3))
+            ->method('isDecorated')
+            ->willReturnOnConsecutiveCalls(false, true, true);
+
+        $formatter
+            ->expects($this->once())
+            ->method('setDecorated')
+            ->with(true);
+
+        $this->object->setDecorated(true);
+
+        // Call twice to make sure formatter the call expectations above
+        $this->object->setDecorated(true);
+    }
+
+    public function testSetFormatter(): void
+    {
+        // This is to test we are not in a infinite loop
+        $this->object->setFormatter($this->createMock(OutputFormatterInterface::class));
+
+        $this->addToAssertionCount(1);
+    }
+
+    public function testSetVerbosity(): void
+    {
+        // This is to test we are not in a infinite loop
+        $this->object->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
+
+        $this->addToAssertionCount(1);
+    }
+
+    public function testFetch(): void
+    {
+        $this->assertSame('', $this->object->fetch());
+
+        $message = uniqid('message-');
+
+        $this->object->write($message, true);
+
+        $this->assertSame(
+            $message.PHP_EOL,
+            $this->object->fetch()
+        );
+
+        $this->assertSame('', $this->object->fetch());
+    }
+}

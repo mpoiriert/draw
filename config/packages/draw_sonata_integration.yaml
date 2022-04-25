@@ -1,5 +1,11 @@
 draw_sonata_integration:
   configuration: ~
 
+  console:
+    commands:
+      'null':
+        commandName: 'app:null'
+        label: 'Null'
+
   messenger:
     queue_names: ['default', 'failed']

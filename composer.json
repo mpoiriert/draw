@@ -90,8 +90,8 @@
     "replace": {
         "draw/application": "self.version",
         "draw/aws-tool-kit": "self.version",
-        "draw/command-bundle": "self.version",
         "draw/contracts": "self.version",
+        "draw/console": "self.version",
         "draw/core": "self.version",
         "draw/doctrine-extra": "self.version",
         "draw/framework-extra-bundle": "self.version",
@@ -118,7 +118,6 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Draw\\Bundle\\CommandBundle\\": "packages/command-bundle/",
             "Draw\\Bundle\\FrameworkExtraBundle\\": "packages/framework-extra-bundle/",
             "Draw\\Bundle\\OpenApiBundle\\": "packages/open-api-bundle/",
             "Draw\\Bundle\\PostOfficeBundle\\": "packages/post-office-bundle/",
@@ -128,6 +127,7 @@
             "Draw\\Bundle\\UserBundle\\": "packages/user-bundle/",
             "Draw\\Component\\AwsToolKit\\": "packages/aws-tool-kit/",
             "Draw\\Component\\Application\\": "packages/application/",
+            "Draw\\Component\\Console\\": "packages/console/",
             "Draw\\Component\\Core\\": "packages/core/",
             "Draw\\Component\\Log\\": "packages/log/",
             "Draw\\Component\\Messenger\\": "packages/messenger/",

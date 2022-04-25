@@ -45,19 +45,41 @@ class ReflectionAccessor
     {
         $class = is_object($objectOrClass) ? get_class($objectOrClass) : $objectOrClass;
 
-        $reflectionMethod = new ReflectionMethod($class, $methodName);
-        $reflectionMethod->setAccessible(true);
+        $reflectionClass = new \ReflectionClass($class);
 
-        return $reflectionMethod;
+        do {
+            if ($reflectionClass->hasMethod($methodName)) {
+                $reflectionMethod = $reflectionClass->getMethod($methodName);
+                $reflectionMethod->setAccessible(true);
+
+                return $reflectionMethod;
+            }
+
+            if (!$reflectionClass = $reflectionClass->getParentClass()) {
+                // This will throw an exception
+                new ReflectionMethod($class, $methodName);
+            }
+        } while (true);
     }
 
     private static function createAccessiblePropertyReflection($objectOrClass, string $propertyName): ReflectionProperty
     {
         $class = is_object($objectOrClass) ? get_class($objectOrClass) : $objectOrClass;
 
-        $reflectionProperty = new ReflectionProperty($class, $propertyName);
-        $reflectionProperty->setAccessible(true);
+        $reflectionClass = new \ReflectionClass($class);
 
-        return $reflectionProperty;
+        do {
+            if ($reflectionClass->hasProperty($propertyName)) {
+                $reflectionProperty = $reflectionClass->getProperty($propertyName);
+                $reflectionProperty->setAccessible(true);
+
+                return $reflectionProperty;
+            }
+
+            if (!$reflectionClass = $reflectionClass->getParentClass()) {
+                // This will throw an exception
+                new ReflectionProperty($class, $propertyName);
+            }
+        } while (true);
     }
 }

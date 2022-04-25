@@ -19,6 +19,12 @@ class DrawSonataIntegrationExtensionTest extends ExtensionTestCase
     public function getConfiguration(): array
     {
         return [
+            'configuration' => [
+                'enabled' => false,
+            ],
+            'console' => [
+                'enabled' => false,
+            ],
             'messenger' => [
                 'enabled' => false,
             ],

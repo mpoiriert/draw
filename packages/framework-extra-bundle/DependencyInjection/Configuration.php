@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('symfony_console_path')->defaultNull()->end()
                 ->append($this->createAwsToolKitNode())
                 ->append($this->createConfigurationNode())
+                ->append($this->createConsoleNode())
                 ->append($this->createCronNode())
                 ->append($this->createJwtEncoder())
                 ->append($this->createLogNode())
@@ -70,6 +71,12 @@ class Configuration implements ConfigurationInterface
     private function createConfigurationNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('configuration'))
+            ->canBeEnabled();
+    }
+
+    private function createConsoleNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('console'))
             ->canBeEnabled();
     }
 
@@ -299,7 +306,24 @@ class Configuration implements ConfigurationInterface
 
     private function createSecurityNode(): ArrayNodeDefinition
     {
-        return $this->canBe(RoleRestrictedAuthenticatorListener::class, new ArrayNodeDefinition('security'));
+        return $this->canBe(RoleRestrictedAuthenticatorListener::class, new ArrayNodeDefinition('security'))
+            ->children()
+                ->arrayNode('system_authentication')
+                    ->canBeEnabled()
+                    ->children()
+                        ->arrayNode('roles')
+                            ->addDefaultChildrenIfNoneSet()
+                            ->scalarPrototype()->defaultValue('ROLE_SYSTEM')->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('console_authentication')
+                    ->canBeEnabled()
+                    ->children()
+                        ->booleanNode('system_auto_login')->defaultValue(false)->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     private function createTesterNode(): ArrayNodeDefinition

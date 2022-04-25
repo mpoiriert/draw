@@ -2,7 +2,7 @@
 <?php
 
 use App\Kernel;
-use Draw\Bundle\CommandBundle\Console\Output\BufferedConsoleOutput;
+use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\ErrorHandler\Debug;
