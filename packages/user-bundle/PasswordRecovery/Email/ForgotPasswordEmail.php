@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\PasswordRecovery\Email;
 
-use Draw\Bundle\PostOfficeBundle\Email\CallToActionEmail;
+use Draw\Component\Mailer\Email\CallToActionEmail;
 
 class ForgotPasswordEmail extends CallToActionEmail
 {

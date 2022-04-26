@@ -3,9 +3,9 @@
 namespace Draw\Bundle\UserBundle\PasswordChangeEnforcer\EmailWriter;
 
 use DateTimeImmutable;
-use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Email\PasswordChangeRequestedEmail;
+use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\ManuallyTriggeredMessageUrlGenerator;
 
 class PasswordChangeRequestedEmailWriter implements EmailWriterInterface

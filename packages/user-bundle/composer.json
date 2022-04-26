@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "draw/framework-extra-bundle": "^1.0",
-        "draw/post-office-bundle": "^1.0",
+        "draw/mailer": "^1.0",
         "draw/messenger": "^1.0",
         "draw/tester": "^1.0",
         "firebase/php-jwt": "^v6.1",

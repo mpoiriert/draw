@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
@@ -29,7 +30,7 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder
-            ->expects($this->exactly(5))
+            ->expects($this->exactly(6))
             ->method('addCompilerPass')
             ->withConsecutive(
                 [
@@ -43,6 +44,9 @@ class DrawFrameworkExtraBundleTest extends TestCase
                 ],
                 [
                     $this->isInstanceOf(AddCommandExecutionOptionsCompilerPass::class),
+                ],
+                [
+                    $this->isInstanceOf(EmailWriterCompilerPass::class),
                 ],
                 [
                     $this->isInstanceOf(MessengerTransportNamesCompilerPass::class),

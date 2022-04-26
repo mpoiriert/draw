@@ -6,7 +6,11 @@ draw_framework_extra:
       default_duration: 5000
       request_matchers:
         - path: '^/api'
-
+  mailer:
+    css_inliner: ~
+    default_from:
+      email: 'support@example.com'
+      name: 'Example - Support'
   messenger:
     broker:
       receivers: [ 'async' ]
