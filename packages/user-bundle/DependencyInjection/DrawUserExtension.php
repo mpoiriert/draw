@@ -21,6 +21,7 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Listener\TwoFactorAu
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 use Draw\Bundle\UserBundle\Sonata\Controller\TwoFactorAuthenticationController;
 use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
+use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -282,8 +283,9 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
     private function checkEmailWriter(ContainerBuilder $containerBuilder, string $for): void
     {
-        if (!isset($containerBuilder->getParameter('kernel.bundles')['DrawPostOfficeBundle'])) {
-            throw new RuntimeException(sprintf('The bundle [%s] needs to be registered to have email enabled for [%s].', $for, 'DrawPostOfficeBundle'));
+        // todo check base on something else
+        if (!interface_exists(EmailWriterInterface::class)) {
+            throw new RuntimeException(sprintf('The bundle [%s] needs to be registered to have email enabled for [%s].', 'DrawPostOfficeBundle', $for));
         }
     }
 

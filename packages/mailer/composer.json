@@ -1,0 +1,34 @@
+{
+    "name": "draw/mailer",
+    "description": "",
+    "license": "MIT",
+    "type": "library",
+    "keywords": ["draw", "mailer", "symfony"],
+    "require": {
+        "php": "^7.4",
+        "draw/core": "^1.0",
+        "symfony/dom-crawler": "^5.4.3",
+        "symfony/css-selector": "^5.4.3",
+        "symfony/mailer": "^5.4.3",
+        "symfony/translation": "^5.4.3",
+        "symfony/twig-bridge": "^5.4.3",
+        "twig/twig": "^3.3"
+    },
+    "require-dev": {
+        "draw/tester": "^0.9",
+        "pelago/emogrifier": "^6.0",
+        "phpunit/phpunit": "^8.0 || ^9.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Draw\\Component\\Mailer\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.9-dev"
+        }
+    }
+}

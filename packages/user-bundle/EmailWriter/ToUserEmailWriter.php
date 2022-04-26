@@ -3,8 +3,8 @@
 namespace Draw\Bundle\UserBundle\EmailWriter;
 
 use Doctrine\ORM\EntityRepository;
-use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\UserBundle\Email\ToUserEmailInterface;
+use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Symfony\Component\Mime\Email;
 
 class ToUserEmailWriter implements EmailWriterInterface

@@ -25,10 +25,10 @@ jobs:
           - doctrine-extra
           - framework-extra-bundle
           - log
+          - mailer
           - messenger
           - open-api
           - open-api-bundle
-          - post-office-bundle
           - process
           - profiling
           - security

@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
-use Draw\Bundle\PostOfficeBundle\DrawPostOfficeBundle;
 use Draw\Bundle\UserBundle\Controller\Api\ConnectionTokensController;
 use Draw\Bundle\UserBundle\DependencyInjection\DrawUserExtension;
 use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
@@ -20,6 +19,7 @@ use Draw\Bundle\UserBundle\Sonata\Form\ForgotPasswordForm;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminExtension;
 use Draw\Bundle\UserBundle\Sonata\Twig\UserAdminRuntime;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
+use Draw\Component\Mailer\DrawPostOfficeBundle;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
