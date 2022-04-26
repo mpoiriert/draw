@@ -12,6 +12,12 @@ use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
+use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
+use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
+use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
+use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
+use Draw\Component\Mailer\EventListener\EmailWriterListener;
+use Draw\Component\Mailer\Twig\TranslationExtension;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Entity\DrawMessageTagInterface;
@@ -33,6 +39,7 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\RequestMatcher;
+use Symfony\Component\Mime\Address;
 
 class DrawFrameworkExtraExtension extends Extension implements PrependExtensionInterface
 {
@@ -50,6 +57,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
+        $this->configureMailer($config['mailer'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
         $this->configureProcess($config['process'], $loader, $container);
         $this->configureSecurity($config['security'], $loader, $container);
@@ -290,6 +298,101 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             ->setArgument('$requestMatchers', $requestMatcherReferences);
     }
 
+    private function configureMailer(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $container
+            ->registerForAutoconfiguration(EmailWriterInterface::class)
+            ->addTag(EmailWriterInterface::class);
+
+        // This is to remove singly implemented aliases
+        $container->removeAlias(EmailWriterInterface::class);
+
+        $container
+            ->setDefinition(
+                'draw.mailer.email_writer_listener',
+                new Definition(EmailWriterListener::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true);
+
+        $container
+            ->setAlias(
+                EmailWriterListener::class,
+                'draw.mailer.email_writer_listener'
+            );
+
+        $container
+            ->setDefinition(
+                'draw.mailer.twig.translation_extension',
+                new Definition(TranslationExtension::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true);
+
+        $container
+            ->setAlias(
+                TranslationExtension::class,
+                'draw.mailer.twig.translation_extension',
+            );
+
+        if ($this->isConfigEnabled($container, $config['subject_from_html_title'])) {
+            $container
+                ->setDefinition(
+                    'draw.mailer.email_subject_from_html_title_listener',
+                    new Definition(EmailSubjectFromHtmlTitleListener::class)
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true);
+
+            $container
+                ->setAlias(
+                    EmailSubjectFromHtmlTitleListener::class,
+                    'draw.mailer.email_subject_from_html_title_listener'
+                );
+        }
+
+        if ($this->isConfigEnabled($container, $config['css_inliner'])) {
+            $container
+                ->setDefinition(
+                    'draw.mailer.email_css_inline_listener',
+                    new Definition(EmailCssInlinerListener::class)
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true);
+
+            $container
+                ->setAlias(
+                    EmailCssInlinerListener::class,
+                    'draw.mailer.email_css_inline_listener'
+                );
+        }
+
+        if ($this->isConfigEnabled($container, $config['default_from'])) {
+            $container
+                ->setDefinition(
+                    'draw.mailer.default_from_email_writer',
+                    new Definition(DefaultFromEmailWriter::class)
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->setArgument(
+                    '$defaultFrom',
+                    (new Definition(Address::class))
+                        ->setArguments([$config['default_from']['email'], $config['default_from']['name'] ?? ''])
+                );
+
+            $container
+                ->setAlias(
+                    DefaultFromEmailWriter::class,
+                    'draw.mailer.default_from_email_writer'
+                );
+        }
+    }
+
     private function configureMessenger(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
@@ -405,6 +508,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         );
 
         $this->prependConsole($config['console'], $container);
+        $this->prependMailer($config['mailer'], $container);
 
         if ($this->isConfigEnabled($container, $config['messenger'])
             && class_exists(Broker::class)
@@ -517,6 +621,37 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 ],
             ]
         );
+    }
+
+    private function prependMailer(array $config, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $installationPath = dirname((new ReflectionClass(EmailWriterInterface::class))->getFileName(), 2);
+
+        $container->prependExtensionConfig(
+            'framework',
+            [
+                'translator' => [
+                    'paths' => [
+                        'draw-mailer' => $installationPath.'/Resources/translations',
+                    ],
+                ],
+            ]
+        );
+
+        if ($container->hasExtension('twig')) {
+            $container->prependExtensionConfig(
+                'twig',
+                [
+                    'paths' => [
+                        $installationPath.'/Resources/views' => 'draw-mailer',
+                    ],
+                ]
+            );
+        }
     }
 
     private function arrayToArgumentsArray(array $arguments): array

@@ -72,6 +72,18 @@ class ConfigurationTest extends ConfigurationTestCase
                     'request_matchers' => [],
                 ],
             ],
+            'mailer' => [
+                'enabled' => false,
+                'css_inliner' => [
+                    'enabled' => false,
+                ],
+                'default_from' => [
+                    'enabled' => false,
+                ],
+                'subject_from_html_title' => [
+                    'enabled' => true,
+                ],
+            ],
             'messenger' => [
                 'enabled' => true,
                 'entity_class' => 'App\Entity\MessengerMessage',
@@ -118,7 +130,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, configuration, console, cron, jwt_encoder, log, logger, messenger, process, security, symfony_console_path, tester, versioning.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, configuration, console, cron, jwt_encoder, log, logger, mailer, messenger, process, security, symfony_console_path, tester, versioning.',
         ];
 
         yield [
@@ -129,6 +141,21 @@ class ConfigurationTest extends ConfigurationTestCase
         yield [
             ['aws_tool_kit' => ['newest_instance_role_check' => true]],
             'Invalid configuration for path "draw_framework_extra.aws_tool_kit": You must define a imds_version since you enabled newest_instance_role_check',
+        ];
+
+        yield [
+            ['mailer' => ['default_from' => ['name' => []]]],
+            'Invalid type for path "draw_framework_extra.mailer.default_from.name". Expected scalar, but got array.',
+        ];
+
+        yield [
+            ['mailer' => ['default_from' => ['email' => []]]],
+            'Invalid type for path "draw_framework_extra.mailer.default_from.email". Expected scalar, but got array.',
+        ];
+
+        yield [
+            ['mailer' => ['default_from' => ['name' => 'Acme']]],
+            'The child node "email" at path "draw_framework_extra.mailer.default_from" must be configured.',
         ];
     }
 }

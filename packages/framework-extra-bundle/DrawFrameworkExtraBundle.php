@@ -4,12 +4,14 @@ namespace Draw\Bundle\FrameworkExtraBundle;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\JwtAuthenticatorFactory;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\MessengerMessageAuthenticatorFactory;
 use Draw\Component\Console\Listener\CommandFlowListener;
+use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Command\PurgeExpiredMessageCommand;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
@@ -38,6 +40,10 @@ class DrawFrameworkExtraBundle extends Bundle
 
         if (class_exists(CommandFlowListener::class)) {
             $container->addCompilerPass(new AddCommandExecutionOptionsCompilerPass());
+        }
+
+        if (interface_exists(EmailWriterInterface::class)) {
+            $container->addCompilerPass(new EmailWriterCompilerPass());
         }
 
         if (class_exists(PurgeExpiredMessageCommand::class)) {

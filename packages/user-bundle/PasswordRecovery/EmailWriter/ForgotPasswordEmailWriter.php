@@ -4,10 +4,10 @@ namespace Draw\Bundle\UserBundle\PasswordRecovery\EmailWriter;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityRepository;
-use Draw\Bundle\PostOfficeBundle\EmailWriter\EmailWriterInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Bundle\UserBundle\PasswordRecovery\Email\ForgotPasswordEmail;
+use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\ManuallyTriggeredMessageUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
