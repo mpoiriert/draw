@@ -8,17 +8,14 @@ class CompositeExpression extends Expression
 
     public const TYPE_OR = 'OR';
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
     /**
      * @var array|Expression[]
      */
-    private $expressions = [];
+    private array $expressions;
 
-    public function __construct($type, $expressions)
+    public function __construct(string $type, array $expressions)
     {
         $this->type = $type;
         $this->expressions = $expressions;

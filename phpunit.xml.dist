@@ -26,6 +26,8 @@
             <directory>./src</directory>
         </include>
         <exclude>
+            <file>./packages/core/.phpstorm.meta.php</file>
+            <file>./packages/core/ignore_annotations.php</file>
             <file>./packages/messenger/.phpstorm.meta.php</file>
             <directory>./packages/*/Tests</directory>
             <directory>./packages/*/vendor</directory>

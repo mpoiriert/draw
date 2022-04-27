@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Core\FilterExpression\Expression;
 
-use RuntimeException;
+use InvalidArgumentException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -11,15 +11,9 @@ use Symfony\Component\Validator\ValidatorBuilder;
 
 class ConstraintExpressionEvaluator extends ExpressionEvaluator
 {
-    /**
-     * @var PropertyAccessorInterface
-     */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
-    /**
-     * @var ValidatorInterface
-     */
-    private $validator;
+    private ValidatorInterface $validator;
 
     public function __construct(?PropertyAccessor $propertyAccessor = null, ?ValidatorInterface $validator = null)
     {
@@ -33,7 +27,7 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
     public function evaluate($data, Expression $expression): bool
     {
         if (!$expression instanceof ConstraintExpression) {
-            throw new RuntimeException('Expression of class ['.get_class($expression).'] is not supported');
+            throw new InvalidArgumentException('Expression of class ['.get_class($expression).'] is not supported');
         }
 
         $value = $data;

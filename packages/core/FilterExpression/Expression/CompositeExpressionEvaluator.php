@@ -3,11 +3,11 @@
 namespace Draw\Component\Core\FilterExpression\Expression;
 
 use Draw\Component\Core\FilterExpression\Evaluator;
-use RuntimeException;
+use InvalidArgumentException;
 
 class CompositeExpressionEvaluator extends ExpressionEvaluator
 {
-    private $evaluator;
+    private Evaluator $evaluator;
 
     public function __construct(Evaluator $evaluator)
     {
@@ -17,10 +17,15 @@ class CompositeExpressionEvaluator extends ExpressionEvaluator
     public function evaluate($data, Expression $expression): bool
     {
         if (!$expression instanceof CompositeExpression) {
-            throw new RuntimeException('Expression of class ['.get_class($expression).'] is not supported');
+            throw new InvalidArgumentException('Expression of class ['.get_class($expression).'] is not supported');
         }
 
         $type = $expression->getType();
+
+        if (!in_array($type, [CompositeExpression::TYPE_AND, CompositeExpression::TYPE_OR])) {
+            throw new InvalidArgumentException('Unsupported CompositeExpression type ['.$type.']');
+        }
+
         if (!count($expressions = $expression->getExpressions())) {
             return true;
         }
@@ -36,13 +41,7 @@ class CompositeExpressionEvaluator extends ExpressionEvaluator
             }
         }
 
-        switch ($type) {
-            case CompositeExpression::TYPE_AND:
-                return true;
-            case CompositeExpression::TYPE_OR:
-                return false;
-            default:
-                throw new RuntimeException('Unsupported CompositeExpression type ['.$type.']');
-        }
+        // If we pass trough the loop above no early exit happen. This is the logic base on that
+        return CompositeExpression::TYPE_AND === $type;
     }
 }
