@@ -11,7 +11,7 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
         ExtractionContextInterface $extractionContext
-    ) {
+    ): ?Schema {
         if ($genericType = $this->getGenericType($propertyMetadata)) {
             $extractionContext->getOpenApi()
                 ->extract(
@@ -43,7 +43,7 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
         return $propertySchema;
     }
 
-    private function getGenericType(PropertyMetadata $item)
+    private function getGenericType(PropertyMetadata $item): ?string
     {
         switch (true) {
             case !isset($item->type['name']):

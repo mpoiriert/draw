@@ -1,20 +1,45 @@
 draw_framework_extra:
   configuration: ~
+
   console: ~
+
   logger:
     slow_request:
       default_duration: 5000
       request_matchers:
         - path: '^/api'
+
   mailer:
     css_inliner: ~
     default_from:
       email: 'support@example.com'
       name: 'Example - Support'
+
   messenger:
     broker:
       receivers: [ 'async' ]
     doctrine_message_bus_hook:
       enabled: true
+
+  open_api:
+
+    request:
+      userRequestInterceptedException: true
+
+    openApi:
+      schema:
+        info:
+          title: "test"
+
+      definitionAliases:
+        - class: 'App\Entity\'
+          alias: ''
+        - class: 'App\DTO\'
+          alias: ''
+
+      headers:
+        - name: 'X-Draw-Language'
+          type: 'string'
+          default: 'en'
 
   versioning: ~

@@ -9,61 +9,30 @@ use JMS\Serializer\Annotation as JMS;
  */
 class SecurityScheme
 {
-    /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $type;
+    public ?string $type = null;
+
+    public ?string $description = null;
+
+    public ?string $name = null;
+
+    public ?string $in = null;
+
+    public ?string $flow = null;
 
     /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $description;
-
-    /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $name;
-
-    /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $in;
-
-    /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $flow;
-
-    /**
-     * @var string
-     *
-     * @JMS\Type("string")
      * @JMS\SerializedName("authorizationUrl")
      */
-    public $authorizationUrl;
+    public ?string $authorizationUrl = null;
 
     /**
-     * @var string
-     *
-     * @JMS\Type("string")
      * @JMS\SerializedName("tokenUrl")
      */
-    public $tokenUrl;
+    public ?string $tokenUrl = null;
 
     /**
      * @var string[]
      *
      * @JMS\Type("array<string,string>")
      */
-    public $scopes;
+    public ?array $scopes = null;
 }

@@ -4,8 +4,8 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Draw\Bundle\OpenApiBundle\Request\Deserialization;
-use Draw\Bundle\OpenApiBundle\Response\Serialization;
+use Draw\Component\OpenApi\Configuration\Deserialization;
+use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

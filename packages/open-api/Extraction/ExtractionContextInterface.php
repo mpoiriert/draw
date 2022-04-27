@@ -3,12 +3,13 @@
 namespace Draw\Component\OpenApi\Extraction;
 
 use Draw\Component\OpenApi\OpenApi;
+use Draw\Component\OpenApi\Schema\Root;
 
 interface ExtractionContextInterface
 {
     public function getOpenApi(): OpenApi;
 
-    public function getRootSchema(): \Draw\Component\OpenApi\Schema\Root;
+    public function getRootSchema(): Root;
 
     public function hasParameter($name): bool;
 

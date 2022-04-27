@@ -11,9 +11,7 @@ use JMS\Serializer\Annotation as Serializer;
 class QueryParameter extends Parameter
 {
     /**
-     * @var array
-     *
      * @Serializer\Exclude()
      */
-    public $constraints = [];
+    public array $constraints = [];
 }

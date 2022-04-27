@@ -2,13 +2,21 @@
     "swagger": "2.0",
     "info": {
         "title": "test",
+        "description": "Go to <a href=\"http://localhost/api-doc/1\">Version 1</a><br/>Go to <a href=\"http://localhost/api-doc/2\">Version 2</a><br/>Go to <a href=\"http://localhost/api-doc/1\">Version 1</a><br/>Go to <a href=\"http://localhost/api-doc/2\">Version 2</a><br/>",
         "version": "1.0"
     },
     "paths": {
         "/api/tags": {
             "get": {
                 "operationId": "tagList",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "All tags",
@@ -37,6 +45,12 @@
                         "schema": {
                             "$ref": "#/definitions/Tag"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -65,6 +79,12 @@
                         "name": "id",
                         "required": true,
                         "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -98,6 +118,12 @@
                         "schema": {
                             "$ref": "#/definitions/Tag"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -124,6 +150,12 @@
                         "name": "id",
                         "required": true,
                         "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -143,7 +175,14 @@
         "/api/tags/activate-all": {
             "post": {
                 "operationId": "tagActivateAll",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "Empty return value mean success"
@@ -162,7 +201,14 @@
             "get": {
                 "summary": "Return a paginator list of users.",
                 "operationId": "userList",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "All users",
@@ -191,6 +237,12 @@
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -213,7 +265,14 @@
         "/api/me": {
             "get": {
                 "operationId": "me",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "The currently connected user",
@@ -240,6 +299,12 @@
                         "name": "id",
                         "required": true,
                         "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -273,6 +338,12 @@
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -299,6 +370,12 @@
                         "name": "id",
                         "required": true,
                         "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -325,6 +402,12 @@
                         "name": "id",
                         "required": true,
                         "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -358,15 +441,21 @@
                         "in": "body",
                         "name": "body",
                         "schema": {
-                            "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+                            "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Mock.Model.Test"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "The created test entity",
                         "schema": {
-                            "$ref": "#/definitions/Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test"
+                            "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Mock.Model.Test"
                         },
                         "headers": {
                             "X-Draw": {
@@ -382,7 +471,7 @@
                         }
                     }
                 },
-                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_create",
+                "x-draw-open-api-symfony-route": "draw_component_openapi_tests_mock_test_create",
                 "x-test": {
                     "key": "value",
                     "object": {
@@ -405,6 +494,12 @@
                         "required": true,
                         "collectionFormat": "csv",
                         "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -422,7 +517,7 @@
                         }
                     }
                 },
-                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_array"
+                "x-draw-open-api-symfony-route": "draw_component_openapi_tests_mock_test_array"
             }
         },
         "/v2/void": {
@@ -431,7 +526,14 @@
                     "test"
                 ],
                 "operationId": "version2",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "Nothing"
@@ -443,7 +545,7 @@
                         }
                     }
                 },
-                "x-draw-open-api-symfony-route": "draw_openapi_tests_mock_test_version2"
+                "x-draw-open-api-symfony-route": "draw_component_openapi_tests_mock_test_version2"
             }
         },
         "/api/connection-tokens": {
@@ -461,6 +563,12 @@
                         "schema": {
                             "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.Credential"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -486,7 +594,14 @@
                     "Security"
                 ],
                 "operationId": "drawUserBundleRefreshConnectionToken",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "The refreshed token",
@@ -510,7 +625,14 @@
                     "Security"
                 ],
                 "operationId": "drawUserBundleDeleteConnectionToken",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "204": {
                         "description": "Nothing to be returned"
@@ -638,7 +760,7 @@
                 }
             }
         },
-        "Draw.Bundle.OpenApiBundle.Tests.Mock.Model.Test": {
+        "Draw.Component.OpenApi.Tests.Mock.Model.Test": {
             "type": "object",
             "properties": {
                 "property": {
@@ -647,14 +769,6 @@
                 },
                 "propertyFromBody": {
                     "description": "Property deserialize from body in test.",
-                    "type": "string"
-                }
-            }
-        },
-        "Draw.Bundle.UserBundle.DTO.ConnectionToken": {
-            "type": "object",
-            "properties": {
-                "token": {
                     "type": "string"
                 }
             }
@@ -672,6 +786,14 @@
                 },
                 "password": {
                     "format": "not empty",
+                    "type": "string"
+                }
+            }
+        },
+        "Draw.Bundle.UserBundle.DTO.ConnectionToken": {
+            "type": "object",
+            "properties": {
+                "token": {
                     "type": "string"
                 }
             }

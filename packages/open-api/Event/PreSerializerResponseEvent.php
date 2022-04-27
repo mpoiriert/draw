@@ -2,7 +2,7 @@
 
 namespace Draw\Component\OpenApi\Event;
 
-use Draw\Bundle\OpenApiBundle\Response\Serialization;
+use Draw\Component\OpenApi\Configuration\Serialization;
 use JMS\Serializer\SerializationContext;
 use Symfony\Contracts\EventDispatcher\Event;
 
@@ -13,43 +13,28 @@ class PreSerializerResponseEvent extends Event
      */
     private $result;
 
-    /**
-     * @var View
-     */
-    private $view;
+    private ?Serialization $serialization;
 
-    /**
-     * @var SerializationContext
-     */
-    private $context;
+    private SerializationContext $context;
 
     public function __construct($result, ?Serialization $view, SerializationContext $context)
     {
         $this->result = $result;
-        $this->view = $view;
+        $this->serialization = $view;
         $this->context = $context;
     }
 
-    /**
-     * @return mixed
-     */
     public function getResult()
     {
         return $this->result;
     }
 
-    /**
-     * @return View
-     */
-    public function getView()
+    public function getSerialization(): ?Serialization
     {
-        return $this->view;
+        return $this->serialization;
     }
 
-    /**
-     * @return SerializationContext
-     */
-    public function getContext()
+    public function getContext(): SerializationContext
     {
         return $this->context;
     }

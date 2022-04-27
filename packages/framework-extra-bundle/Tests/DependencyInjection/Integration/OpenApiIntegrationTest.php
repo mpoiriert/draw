@@ -1,0 +1,504 @@
+<?php
+
+namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\DrawFrameworkExtraExtension;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
+use Draw\Component\OpenApi\Command\InstallSandboxCommand;
+use Draw\Component\OpenApi\Controller\OpenApiController;
+use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
+use Draw\Component\OpenApi\EventListener\RequestValidationListener;
+use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
+use Draw\Component\OpenApi\EventListener\ResponseSerializerListener;
+use Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener;
+use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
+use Draw\Component\OpenApi\Extraction\Extractor\Caching\FileTrackingExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Caching\LoadFromCacheExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Caching\StoreInCacheExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Constraint\ChoiceConstraintExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Constraint\CountConstraintExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Constraint\LengthConstraintExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Constraint\NotBlankConstraintExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Constraint\NotNullConstraintExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Constraint\RangeConstraintExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Doctrine\InheritanceExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\ArrayHandler;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\DoctrineObjectReferenceSchemaHandler;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\DynamicObjectHandler;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\GenericTemplateHandler;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\ParameterExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\SerializationConfigurationExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\TagExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VendorExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VersioningRootSchemaExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VersionLinkDocumentationExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\PhpDoc\OperationExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Sensio\ParamConverterExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Symfony\RouteOperationExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\Symfony\RouterRootSchemaExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
+use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
+use Draw\Component\OpenApi\OpenApi;
+use Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter;
+use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
+use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
+use Draw\Component\OpenApi\SchemaCleaner;
+use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
+use Draw\Component\OpenApi\Serializer\Construction\SimpleObjectConstructor;
+use Draw\Component\OpenApi\Serializer\Handler\GenericSerializerHandler;
+use Draw\Component\OpenApi\Serializer\Handler\ObjectReferenceHandler;
+use Draw\Component\OpenApi\Serializer\Handler\OpenApiHandler;
+use Draw\Component\OpenApi\Serializer\Subscriber\OpenApiSubscriber;
+use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
+use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
+use Metadata\MetadataFactoryInterface;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+class OpenApiIntegrationTest extends TestCase
+{
+    private OpenApiIntegration $object;
+
+    public function setUp(): void
+    {
+        $this->object = new OpenApiIntegration();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            IntegrationInterface::class,
+            $this->object
+        );
+    }
+
+    public function testGetConfigSectionName(): void
+    {
+        $this->assertSame(
+            'open_api',
+            $this->object->getConfigSectionName()
+        );
+    }
+
+    public function testLoad(): void
+    {
+        $dirname = \dirname((new \ReflectionClass(DrawFrameworkExtraExtension::class))->getFileName(), 2);
+        $container = new ContainerBuilder();
+        $loader = new PhpFileLoader($container, new FileLocator($dirname.'/Resources/config'));
+
+        $this->object->load(
+            [
+                'openApi' => [
+                    'enabled' => true,
+                    'caching_enabled' => true,
+                    'sandbox_url' => '/test/sandbox',
+                    'schema' => [
+                        'info' => [
+                            'title' => 'test',
+                        ],
+                    ],
+                    'versioning' => [
+                        'enabled' => true,
+                        'versions' => ['1', '2'],
+                    ],
+                    'headers' => [
+                        'name' => 'X-Draw-Language',
+                        'type' => 'string',
+                        'default' => 'en',
+                    ],
+                    'cleanOnDump' => true,
+                    'definitionAliases' => [
+                        ['class' => 'App\\Entity\\', 'alias' => ''],
+                        ['class' => 'App\\DTO\\', 'alias' => ''],
+                    ],
+                    'classNamingFilters' => [
+                        AliasesClassNamingFilter::class,
+                    ],
+                ],
+                'response' => [
+                    'enabled' => true,
+                    'serializeNull' => true,
+                    'exceptionHandler' => [
+                        'enabled' => true,
+                        'exceptionsStatusCodes' => [],
+                        'useDefaultExceptionsStatusCodes' => true,
+                        'violationKey' => 'errors',
+                        'omitConstraintInvalidValue' => false,
+                    ],
+                ],
+                'request' => [
+                    'enabled' => true,
+                    'queryParameter' => [
+                        'enabled' => true,
+                    ],
+                    'bodyDeserialization' => [
+                        'enabled' => true,
+                    ],
+                ],
+            ],
+            $loader,
+            $container
+        );
+
+        $this->assertContainerBuilder(
+            [
+                new ServiceConfiguration(
+                    'draw.open_api',
+                    [OpenApi::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.schema_builder',
+                    [SchemaBuilderInterface::class],
+                    function (Definition $definition) {
+                        $this->assertSame(SymfonySchemaBuilder::class, $definition->getClass());
+                    }
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.param_converter.deserialize_body_param_converter',
+                    [DeserializeBodyParamConverter::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.constraint.choice_constraint_extractor',
+                    [ChoiceConstraintExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.constraint.count_constraint_extractor',
+                    [CountConstraintExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.constraint.length_constraint_extractor',
+                    [LengthConstraintExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.constraint.not_blank_constraint_extractor',
+                    [NotBlankConstraintExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.constraint.not_null_constraint_extractor',
+                    [NotNullConstraintExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.constraint.range_constraint_extractor',
+                    [RangeConstraintExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.doctrine.inheritance_extractor',
+                    [InheritanceExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.caching.file_tracking_extractor',
+                    [FileTrackingExtractor::class]
+                ),
+                 new ServiceConfiguration(
+                     'draw.open_api.extractor.caching.load_from_cache_extractor',
+                     [LoadFromCacheExtractor::class]
+                 ),
+                 new ServiceConfiguration(
+                     'draw.open_api.extractor.caching.store_in_cache_extractor',
+                     [StoreInCacheExtractor::class]
+                 ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.jms_serializer.properties_extractor',
+                    [PropertiesExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.jms_serializer.type_handler.array_handler',
+                    [ArrayHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.jms_serializer.type_handler.doctrine_object_reference_schema_handler',
+                    [DoctrineObjectReferenceSchemaHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.jms_serializer.type_handler.dynamic_object_handler',
+                    [DynamicObjectHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.jms_serializer.type_handler.generic_template_handler',
+                    [GenericTemplateHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.json_root_schema_extractor',
+                    [JsonRootSchemaExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.parameter_extractor',
+                    [ParameterExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.serialization_configuration_extractor',
+                    [SerializationConfigurationExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.tag_extractor',
+                    [TagExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.vendor_extractor',
+                    [VendorExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.versioning_root_schema_extractor',
+                    [VersioningRootSchemaExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.version_link_documentation_extractor',
+                    [VersionLinkDocumentationExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.php_doc.operation_extractor',
+                    [OperationExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.sensio.param_converter_extractor',
+                    [ParamConverterExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.symfony.route_operation_extractor',
+                    [RouteOperationExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.symfony.router_root_schema_extractor',
+                    [RouterRootSchemaExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.type_schema_extractor',
+                    [TypeSchemaExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.jms_serializer.construction.doctrine_object_constructor',
+                    [
+                        'jms_serializer.object_constructor',
+                        DoctrineObjectConstructor::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.jms_serializer.construction.simple_object_constructor',
+                    [
+                        'jms_serializer.unserialize_object_constructor',
+                        SimpleObjectConstructor::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.jms_serializer.handler.generic_serializer_handler',
+                    [GenericSerializerHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.jms_serializer.handler.object_reference_handler',
+                    [ObjectReferenceHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.jms_serializer.handler.open_api_handler',
+                    [OpenApiHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.jms_serializer.subscriber.open_api_subscriber',
+                    [OpenApiSubscriber::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.command.install_sandbox_command',
+                    [InstallSandboxCommand::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.controller.open_api_controller',
+                    [OpenApiController::class],
+                    function (Definition $definition) {
+                        $this->assertSame(
+                            [
+                                'controller.service_arguments' => [[]],
+                            ],
+                            $definition->getTags()
+                        );
+
+                        $this->assertSame(
+                            '/test/sandbox',
+                            $definition->getArgument('$sandboxUrl')
+                        );
+                    }
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.schema_add_default_headers_listener',
+                    [SchemaAddDefaultHeadersListener::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.naming.aliases_class_naming_filter',
+                    [AliasesClassNamingFilter::class],
+                    function (Definition $definition) {
+                        $this->assertSame(
+                            [
+                                ['class' => 'App\\Entity\\', 'alias' => ''],
+                                ['class' => 'App\\DTO\\', 'alias' => ''],
+                            ],
+                            $definition->getArgument('$definitionAliases')
+                        );
+                    }
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.schema_cleaner',
+                    [SchemaCleaner::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.versioning.route_default_api_route_version_matcher',
+                    [RouteDefaultApiRouteVersionMatcher::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.response_api_exception_listener',
+                    [ResponseApiExceptionListener::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.response_serializer_listener',
+                    [ResponseSerializerListener::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.request_query_parameter_fetcher_listener',
+                    [RequestQueryParameterFetcherListener::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.request_validation_listener',
+                    [RequestValidationListener::class]
+                ),
+            ],
+            [
+                'draw_open_api.root_schema' => [
+                    'info' => [
+                        'title' => 'test',
+                    ],
+                ],
+                'draw_open_api.response.serialize_null' => true,
+                'draw_open_api.response.exception_status_codes' => [
+                    ConstraintViolationListException::class => 400,
+                    AccessDeniedException::class => 403,
+                ],
+            ],
+            $container,
+            [
+                'jms_serializer.naming_strategy' => [
+                    PropertyNamingStrategyInterface::class,
+                ],
+                'jms_serializer.metadata_factory' => [
+                    MetadataFactoryInterface::class,
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @param array|ServiceConfiguration[] $services
+     */
+    public function assertContainerBuilder(
+        array $services,
+        array $parameters,
+        ContainerBuilder $container,
+        array $extraAliases = []
+    ): void {
+        $definedServiceIds = array_values(
+            array_diff(
+                array_keys($container->getDefinitions()),
+                array_keys((new ContainerBuilder())->getDefinitions())
+            )
+        );
+
+        $definedAliasIds = array_values(
+            array_diff(
+                array_keys($container->getAliases()),
+                array_keys((new ContainerBuilder())->getAliases())
+            )
+        );
+
+        $definedParameters = array_diff_key(
+            $container->getParameterBag()->all(),
+            (new ContainerBuilder())->getParameterBag()->all()
+        );
+
+        $serviceAliases = [];
+
+        foreach ($definedAliasIds as $aliasId) {
+            $serviceAliases[(string) $container->getAlias($aliasId)][] = $aliasId;
+        }
+
+        foreach ($services as $service) {
+            $this->assertContains(
+                $service->getId(),
+                $definedServiceIds
+            );
+
+            unset($definedServiceIds[array_search($service->getId(), $definedServiceIds)]);
+
+            $this->assertSame(
+                $serviceAliases[$service->getId()],
+                $service->getAliases(),
+                'Service ['.$service->getId().'] aliases do not match.'
+            );
+
+            unset($serviceAliases[$service->getId()]);
+
+            if ($callback = $service->getDefinitionCheckCallback()) {
+                $callback($container->getDefinition($service->getId()));
+            }
+        }
+
+        $this->assertSame(
+            [],
+            $definedServiceIds,
+            'All service should be tested'
+        );
+
+        foreach ($extraAliases as $serviceId => $aliases) {
+            $this->assertSame(
+                $serviceAliases[$serviceId],
+                $aliases
+            );
+            unset($serviceAliases[$serviceId]);
+        }
+
+        $this->assertSame(
+            [],
+            $serviceAliases,
+            'All aliases need to be accounted for'
+        );
+
+        $this->assertSame(
+            $parameters,
+            $definedParameters,
+            'Defined parameters do not match'
+        );
+    }
+}
+
+class ServiceConfiguration
+{
+    private string $id;
+
+    private array $aliases;
+
+    private $definitionCheckCallback;
+
+    public function __construct(string $id, array $aliases, callable $definitionCheckCallback = null)
+    {
+        $this->id = $id;
+        $this->aliases = $aliases;
+        $this->definitionCheckCallback = $definitionCheckCallback;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getAliases(): array
+    {
+        return $this->aliases;
+    }
+
+    public function getDefinitionCheckCallback(): ?callable
+    {
+        return $this->definitionCheckCallback;
+    }
+}

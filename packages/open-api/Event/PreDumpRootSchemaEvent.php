@@ -7,17 +7,14 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PreDumpRootSchemaEvent extends Event
 {
-    private $schema;
+    private Root $schema;
 
     public function __construct(Root $schema)
     {
         $this->schema = $schema;
     }
 
-    /**
-     * @return Root
-     */
-    public function getSchema()
+    public function getSchema(): Root
     {
         return $this->schema;
     }

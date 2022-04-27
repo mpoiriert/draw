@@ -2,9 +2,9 @@
 
 namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\OpenApi;
 
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
-use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\RootSchemaExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
 use Draw\Component\OpenApi\Schema\Root;
 use JMS\Serializer\SerializerBuilder;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +33,7 @@ class RootSchemaExtractorTest extends TestCase
      */
     public function testCanExtract($source, $type, $expected)
     {
-        $extractor = new RootSchemaExtractor(SerializerBuilder::create()->build());
+        $extractor = new JsonRootSchemaExtractor(SerializerBuilder::create()->build());
 
         /** @var ExtractionContextInterface $context */
         $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
@@ -46,7 +46,7 @@ class RootSchemaExtractorTest extends TestCase
         } else {
             try {
                 $extractor->extract($source, $type, $context);
-                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Extraction\ExtractionImpossibleException]');
+                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
             } catch (ExtractionImpossibleException $e) {
                 $this->assertTrue(true);
             }

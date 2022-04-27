@@ -2,9 +2,9 @@
 
 namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\PhpDoc;
 
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\Extractor\PhpDoc\OperationExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\OpenApi;
@@ -19,17 +19,14 @@ use RuntimeException;
 
 class OperationExtractorTest extends TestCase
 {
-    /**
-     * @var OperationExtractor
-     */
-    private $phpDocOperationExtractor;
+    private OperationExtractor $phpDocOperationExtractor;
 
     public function setUp(): void
     {
         $this->phpDocOperationExtractor = new OperationExtractor();
     }
 
-    public function provideTestCanExtract()
+    public function provideTestCanExtract(): iterable
     {
         $reflectionMethod = new ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', 'operation');
 
@@ -48,27 +45,25 @@ class OperationExtractorTest extends TestCase
      * @param $type
      * @param $canBeExtract
      */
-    public function testCanExtract($source, $type, $canBeExtract)
+    public function testCanExtract($source, $type, $canBeExtract): void
     {
         /** @var ExtractionContextInterface $context */
         $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
 
         $this->assertSame($canBeExtract, $this->phpDocOperationExtractor->canExtract($source, $type, $context));
 
-        if (!$canBeExtract) {
-            try {
-                $this->phpDocOperationExtractor->extract($source, $type, $context);
-                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Extraction\ExtractionImpossibleException]');
-            } catch (ExtractionImpossibleException $e) {
-                $this->assertTrue(true);
-            }
+        if ($canBeExtract) {
+            return;
         }
+
+        $this->expectException(ExtractionImpossibleException::class);
+        $this->phpDocOperationExtractor->extract($source, $type, $context);
     }
 
     public function testExtract()
     {
         $this->phpDocOperationExtractor->registerExceptionResponseCodes(
-            'Draw\Component\OpenApi\Extraction\ExtractionImpossibleException',
+            'Draw\Component\OpenApi\Exception\ExtractionImpossibleException',
             400
         );
         $this->phpDocOperationExtractor->registerExceptionResponseCodes('LengthException', 408, 'Define message');
@@ -134,12 +129,11 @@ class OperationExtractorTest extends TestCase
         $this->extractStubServiceMethod('invalidTypeParameter', $operation);
     }
 
-    private function extractStubServiceMethod(string $method, Operation $operation = null)
+    private function extractStubServiceMethod(string $method, Operation $operation = null): ExtractionContextInterface
     {
         $reflectionMethod = new ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', $method);
 
-        $context = $this->getExtractionContext();
-        $context->getOpenApi()->registerExtractor(new TypeSchemaExtractor());
+        $context = $this->getExtractionContext([new TypeSchemaExtractor()]);
         $schema = $context->getRootSchema();
         $schema->paths['/service'] = $pathItem = new PathItem();
 
@@ -150,9 +144,9 @@ class OperationExtractorTest extends TestCase
         return $context;
     }
 
-    public function getExtractionContext()
+    public function getExtractionContext(array $extractors = []): ExtractionContext
     {
-        $openApi = new OpenApi();
+        $openApi = new OpenApi($extractors);
         $schema = $openApi->extract('{"swagger":"2.0","definitions":{}}');
 
         return new ExtractionContext($openApi, $schema);

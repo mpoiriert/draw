@@ -2,13 +2,26 @@
 
 namespace Draw\Component\OpenApi\Tests;
 
+use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
+use Draw\Component\OpenApi\Exception\ExtractionCompletedException;
+use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Draw\Component\OpenApi\OpenApi
+ */
 class OpenApiTest extends TestCase
 {
-    public function provideTestExtractSwaggerSchema()
+    private OpenApi $object;
+
+    public function setUp(): void
+    {
+        $this->object = new OpenApi();
+    }
+
+    public function provideTestExtractSwaggerSchema(): iterable
     {
         foreach (glob(__DIR__.'/fixture/schema/*.json') as $file) {
             yield basename($file) => [$file];
@@ -17,16 +30,36 @@ class OpenApiTest extends TestCase
 
     /**
      * @dataProvider provideTestExtractSwaggerSchema
-     *
-     * @param $file
      */
-    public function testExtractSwaggerSchema($file)
+    public function testExtractSwaggerSchema(string $file): void
     {
-        $openApi = new OpenApi();
-
-        $schema = $openApi->extract(file_get_contents($file));
+        $schema = $this->object->extract(file_get_contents($file));
         $this->assertInstanceOf(Root::class, $schema);
 
-        $this->assertJsonStringEqualsJsonString(file_get_contents($file), $openApi->dump($schema, false));
+        $this->assertJsonStringEqualsJsonString(file_get_contents($file), $this->object->dump($schema, false));
+    }
+
+    public function testValidateError(): void
+    {
+        $this->expectException(ConstraintViolationListException::class);
+
+        $schema = new Root();
+        $schema->swagger = '';
+
+        $this->object->validate($schema);
+    }
+
+    public function testExtractExtractionCompletedException(): void
+    {
+        $this->object = new OpenApi([
+            $extractor1 = $this->createMock(ExtractorInterface::class),
+            $extractor2 = $this->createMock(ExtractorInterface::class),
+        ]);
+
+        $extractor1->expects($this->once())->method('canExtract')->willReturn(true);
+        $extractor1->expects($this->once())->method('extract')->willThrowException(new ExtractionCompletedException());
+        $extractor2->expects($this->never())->method('canExtract');
+
+        $this->object->extract('');
     }
 }

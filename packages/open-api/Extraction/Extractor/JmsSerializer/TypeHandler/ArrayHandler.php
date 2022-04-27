@@ -12,7 +12,7 @@ class ArrayHandler implements TypeToSchemaHandlerInterface
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
         ExtractionContextInterface $extractionContext
-    ) {
+    ): ?Schema {
         if (!($type = $this->getNestedTypeInArray($propertyMetadata))) {
             return null;
         }
@@ -24,7 +24,7 @@ class ArrayHandler implements TypeToSchemaHandlerInterface
         return $propertySchema;
     }
 
-    private function getNestedTypeInArray(PropertyMetadata $item)
+    private function getNestedTypeInArray(PropertyMetadata $item): ?string
     {
         switch (true) {
             case !isset($item->type['name']):

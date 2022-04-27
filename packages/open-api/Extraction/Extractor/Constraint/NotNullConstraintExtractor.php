@@ -4,17 +4,17 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
 use Draw\Component\OpenApi\Schema\BaseParameter;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\NotNull as SupportedConstraint;
+use Symfony\Component\Validator\Constraints\NotNull;
 
-class NotNullConstraintExtractor extends ConstraintExtractor
+class NotNullConstraintExtractor extends BaseConstraintExtractor
 {
     public function supportConstraint(Constraint $constraint): bool
     {
-        return $constraint instanceof SupportedConstraint;
+        return $constraint instanceof NotNull;
     }
 
     /**
-     * @param SupportedConstraint|Constraint $constraint
+     * @param NotNull|Constraint $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {

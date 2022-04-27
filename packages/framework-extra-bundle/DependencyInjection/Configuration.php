@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Configuration\OpenApiNodeDefinition;
 use Draw\Component\Application\CronManager;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Process\ProcessFactory;
@@ -38,6 +39,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createMailerNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createProcessNode())
+                ->append(new OpenApiNodeDefinition())
                 ->append($this->createSecurityNode())
                 ->append($this->createTesterNode())
                 ->append($this->createVersioningNode())

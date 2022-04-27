@@ -5,29 +5,31 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
-use Draw\Component\OpenApi\Schema\Operation as SupportedTarget;
+use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Tag;
-use ReflectionMethod as SupportedSource;
+use ReflectionMethod;
 
 class TagExtractor implements ExtractorInterface
 {
-    /**
-     * @var Reader
-     */
-    private $annotationReader;
+    private Reader $annotationReader;
 
     public function __construct(Reader $reader)
     {
         $this->annotationReader = $reader;
     }
 
+    public static function getDefaultPriority(): int
+    {
+        return 128;
+    }
+
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!$source instanceof SupportedSource) {
+        if (!$source instanceof ReflectionMethod) {
             return false;
         }
 
-        if (!$target instanceof SupportedTarget) {
+        if (!$target instanceof Operation) {
             return false;
         }
 
@@ -35,13 +37,8 @@ class TagExtractor implements ExtractorInterface
     }
 
     /**
-     * Extract the requested data.
-     *
-     * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
-     * extraction.
-     *
-     * @param SupportedSource $source
-     * @param SupportedTarget $target
+     * @param ReflectionMethod $source
+     * @param Operation        $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {

@@ -22,51 +22,36 @@ class Operation implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<string>")
      */
-    public $tags;
+    public ?array $tags = null;
 
     /**
      * A short summary of what the operation does.
      * For maximum readability in the swagger-ui, this field SHOULD be less than 120 characters.
-     *
-     * @var string
-     *
-     * @JMS\Type("string")
      */
-    public $summary;
+    public ?string $summary = null;
 
     /**
      * A verbose explanation of the operation behavior. GFM syntax can be used for rich text representation.
      *
      * @see https://help.github.com/articles/github-flavored-markdown/
-     *
-     * @var string
-     *
-     * @JMS\Type("string")
      */
-    public $description;
+    public ?string $description = null;
 
     /**
      * Additional external documentation for this operation.
      *
-     * @var ExternalDocumentation
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\ExternalDocumentation")
      */
-    public $externalDocs;
+    public ?ExternalDocumentation $externalDocs = null;
 
     /**
      * A friendly name for the operation.
      * The id MUST be unique among all operations described in the API.
      * Tools and libraries MAY use the operation id to uniquely identify an operation.
      *
-     * @var string
-     *
-     * @JMS\Type("string")
      * @JMS\SerializedName("operationId")
      */
-    public $operationId;
+    public ?string $operationId = null;
 
     /**
      * A list of MIME types the operation can consume.
@@ -77,7 +62,7 @@ class Operation implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<string>")
      */
-    public $consumes;
+    public ?array $consumes = null;
 
     /**
      * A list of MIME types the operation can produce.
@@ -88,7 +73,7 @@ class Operation implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<string>")
      */
-    public $produces;
+    public ?array $produces = null;
 
     /**
      * A list of parameters that are applicable for this operation.
@@ -104,7 +89,7 @@ class Operation implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\BaseParameter>")
      */
-    public $parameters = [];
+    public array $parameters = [];
 
     /**
      * The list of possible responses as they are returned from executing this operation.
@@ -117,7 +102,7 @@ class Operation implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Response>")
      */
-    public $responses = [];
+    public array $responses = [];
 
     /**
      * The transfer protocol for the operation. Values MUST be from the list: "http", "https", "ws", "wss".
@@ -128,18 +113,14 @@ class Operation implements VendorExtensionSupportInterface
      * @Assert\Choice({"http","https","ws","wss"}, multiple=true)
      * @JMS\Type("array<string>")
      */
-    public $schemes;
+    public ?array $schemes = null;
 
     /**
      * Declares this operation to be deprecated.
      * Usage of the declared operation should be refrained.
      * Default value is false.
-     *
-     * @var bool
-     *
-     * @JMS\Type("boolean")
      */
-    public $deprecated;
+    public ?bool $deprecated = null;
 
     /**
      * A declaration of which security schemes are applied for this operation.
@@ -154,5 +135,5 @@ class Operation implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\SecurityRequirement>")
      */
-    public $security;
+    public ?array $security = null;
 }

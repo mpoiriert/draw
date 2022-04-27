@@ -6,11 +6,8 @@ if (class_exists(\Doctrine\Common\Annotations\AnnotationRegistry::class)) {
 
 $namespaces = [
     Draw\Component\OpenApi\OpenApi::class => [
+        "Draw\Component\Configuration",
         "Draw\Component\OpenApi\Schema",
-    ],
-    Draw\Bundle\OpenApiBundle\DrawOpenApiBundle::class => [
-        "Draw\Bundle\OpenApiBundle\Request",
-        "Draw\Bundle\OpenApiBundle\Response",
     ],
 ];
 

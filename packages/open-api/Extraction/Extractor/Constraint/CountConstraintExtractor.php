@@ -3,17 +3,17 @@
 namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Count as SupportedConstraint;
+use Symfony\Component\Validator\Constraints\Count;
 
-class CountConstraintExtractor extends ConstraintExtractor
+class CountConstraintExtractor extends BaseConstraintExtractor
 {
     public function supportConstraint(Constraint $constraint): bool
     {
-        return $constraint instanceof SupportedConstraint;
+        return $constraint instanceof Count;
     }
 
     /**
-     * @param SupportedConstraint|Constraint $constraint
+     * @param Count|Constraint $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {

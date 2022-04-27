@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -14,30 +13,20 @@ class Contact
 {
     /**
      * The identifying name of the contact person/organization.
-     *
-     * @var string
-     *
-     * @JMS\Type("string")
      */
-    public $name;
+    public ?string $name = null;
 
     /**
      * The URL pointing to the contact information. MUST be in the format of a URL.
      *
-     * @var string
-     *
      * @Assert\Url()
-     * @JMS\Type("string")
      */
-    public $url;
+    public ?string $url = null;
 
     /**
      * The email address of the contact person/organization. MUST be in the format of an email address.
      *
-     * @var string
-     *
      * @Assert\Email()
-     * @JMS\Type("string")
      */
-    public $email;
+    public ?string $email = null;
 }

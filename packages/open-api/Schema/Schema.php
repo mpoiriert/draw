@@ -15,26 +15,11 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
 {
     use VendorExtensionSupportTrait;
 
-    /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $format;
+    public ?string $format = null;
 
-    /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $title;
+    public ?string $title = null;
 
-    /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $description;
+    public ?string $description = null;
 
     /**
      * @var mixed
@@ -44,127 +29,76 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
     public $default;
 
     /**
-     * @var number
-     *
      * @JMS\Type("double")
      */
-    public $maximum;
+    public ?float $maximum = null;
+
+    public ?bool $exclusiveMaximum = null;
 
     /**
-     * @var bool
-     *
-     * @JMS\Type("boolean")
-     */
-    public $exclusiveMaximum;
-
-    /**
-     * @var number
-     *
      * @JMS\Type("double")
      */
-    public $minimum;
+    public ?float $minimum = null;
 
     /**
-     * @var bool
-     *
-     * @JMS\Type("boolean")
      * @JMS\SerializedName("exclusiveMinimum")
      */
-    public $exclusiveMinimum;
+    public ?bool $exclusiveMinimum = null;
 
     /**
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("maxLength")
      */
-    public $maxLength;
+    public ?int $maxLength = null;
 
     /**
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("minLength")
      */
-    public $minLength;
+    public ?int $minLength = null;
+
+    public ?string $pattern = null;
 
     /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     */
-    public $pattern;
-
-    /**
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("maxItems")
      */
-    public $maxItems;
+    public ?int $maxItems = null;
 
     /**
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("minItems")
      */
-    public $minItems;
+    public ?int $minItems = null;
 
     /**
-     * @var bool
-     *
-     * @JMS\Type("boolean")
      * @JMS\SerializedName("uniqueItems")
      */
-    public $uniqueItems;
+    public ?bool $uniqueItems = null;
 
     /**
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("maxProperties")
      */
-    public $maxProperties;
+    public ?int $maxProperties = null;
 
     /**
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("minProperties")
      */
-    public $minProperties;
+    public ?int $minProperties = null;
 
     /**
-     * @var string[]
-     *
      * @JMS\Type("array<string>")
      */
-    public $required;
+    public ?array $required = null;
 
     /**
-     * @var mixed[]
-     *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\Mixed>")
      */
-    public $enum;
+    public ?array $enum = null;
 
     /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     *
      * @Assert\NotBlank(groups={"Type"}, message="You must define a [type] or [ref|allOf]")
      * @Assert\IsNull(groups={"Ref"}, message="You cannot define a [type] when [ref|allOf] is defined.")
      */
-    public $type;
+    public ?string $type = null;
 
-    /**
-     * @var Schema
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Schema")
-     */
-    public $items;
+    public ?Schema $items = null;
 
     /**
      * @var Schema[]
@@ -172,26 +106,21 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\Schema>")
      * @JMS\SerializedName("allOf")
      */
-    public $allOf;
+    public ?array $allOf = null;
 
     /**
-     * @var Schema[]
-     *
      * @Assert\Valid()
      *
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Schema>")
      */
-    public $properties;
+    public ?array $properties = null;
 
     /**
-     * @var Schema
-     *
      * @Assert\Valid()
      *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Schema")
      * @JMS\SerializedName("additionalProperties")
      */
-    public $additionalProperties;
+    public ?Schema $additionalProperties = null;
 
     /**
      * Adds support for polymorphism.
@@ -199,10 +128,8 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      * The discriminator is the schema property name that is used to differentiate between other schema that inherit this schema.
      * The property name used MUST be defined at this schema and it MUST be in the required property list.
      * When used, the value MUST be the name of this schema or any schema that inherits it.
-     *
-     * @var string
      */
-    public $discriminator;
+    public ?string $discriminator = null;
 
     /**
      * Relevant only for Schema "properties" definitions. Declares the property as "read only".
@@ -210,37 +137,27 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      * Properties marked as readOnly being true SHOULD NOT be in the required list of the defined schema.
      * Default value is false.
      *
-     * @var bool
-     *
-     * @JMS\Type("boolean")
      * @JMS\SerializedName("readOnly")
      */
-    public $readOnly;
+    public ?bool $readOnly = null;
 
     /**
      * This MAY be used only on properties schemas.
      * It has no effect on root schemas.
      * Adds Additional metadata to describe the XML representation format of this property.
      *
-     * @var Xml
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Xml")
      */
-    public $xml;
+    public ?Xml $xml = null;
 
     /**
      * Additional external documentation.
      *
-     * @var ExternalDocumentation
-     *
      * @Assert\Valid()
      *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\ExternalDocumentation")
      * @JMS\SerializedName("externalDocs")
      */
-    public $externalDocs;
+    public ?ExternalDocumentation $externalDocs = null;
 
     /**
      * A free-form property to include a an example of an instance for this schema.
@@ -254,24 +171,21 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
     public $example;
 
     /**
-     * @var string
-     *
-     * @JMS\Type("string")
      * @JMS\SerializedName("$ref")
      */
-    public $ref;
+    public ?string $ref = null;
 
     /**
      * @JMS\PreSerialize()
      */
-    public function preSerialize()
+    public function preSerialize(): void
     {
         $this->default = Mixed::convert($this->default);
         $this->example = Mixed::convert($this->example);
         $this->enum = Mixed::convert($this->enum, true);
     }
 
-    public function getGroupSequence()
+    public function getGroupSequence(): array
     {
         $groups = ['Schema'];
 
