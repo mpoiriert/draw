@@ -14,51 +14,39 @@ class PhpCallable extends Constraint
 {
     /**
      * The default message.
-     *
-     * @var string
      */
-    public $message = 'Execution of function with {{ value }} does not return expected result.';
+    public ?string $message = 'Execution of function with {{ value }} does not return expected result.';
 
     /**
      * The php callable.
      *
-     * @var string
+     * @var callable
      */
-    public $callable;
+    public $callable = null;
 
     /**
      * If we must validate null value or not.
-     *
-     * @var bool
      */
-    public $ignoreNull = true;
+    public bool $ignoreNull = true;
 
     /**
      * A constraint to validate the return value of the callable.
      *
      * Some callable will throw a exception other will return false, null or predefined value when input is invalid
-     *
-     * @var Constraint|null
      */
-    public $returnValueConstraint;
+    public ?Constraint $returnValueConstraint = null;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultOption(): ?string
     {
         return 'callable';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequiredOptions(): array
     {
         return ['callable'];
     }
 
-    public function validatedBy(): string
+    final public function validatedBy(): string
     {
         return PhpCallableValidator::class;
     }

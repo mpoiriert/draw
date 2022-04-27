@@ -12,9 +12,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class Strtotime extends PhpCallable
 {
-    public $callable = 'strtotime';
+    public ?string $message = 'The value {{ value }} is not valid to use in strtotime.';
 
-    public $message = 'The value {{ value }} is not valid to use in strtotime.';
+    public $callable = 'strtotime';
 
     public function __construct($options = null)
     {
