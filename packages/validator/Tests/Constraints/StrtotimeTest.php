@@ -3,54 +3,47 @@
 namespace Draw\Component\Validator\Tests\Constraints;
 
 use Draw\Component\Validator\Constraints\PhpCallable;
-use Draw\Component\Validator\Constraints\PhpCallableValidator;
 use Draw\Component\Validator\Constraints\Strtotime;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Type;
 
+/**
+ * @covers \Draw\Component\Validator\Constraints\Strtotime
+ */
 class StrtotimeTest extends TestCase
 {
-    /**
-     * @var Strtotime
-     */
-    private $constraint;
+    private Strtotime $object;
 
     public function setUp(): void
     {
-        $this->constraint = new Strtotime();
+        $this->object = new Strtotime();
     }
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(PhpCallable::class, $this->constraint);
-    }
-
-    public function testValidateBy(): void
-    {
-        $this->assertSame(
-            PhpCallableValidator::class,
-            $this->constraint->validatedBy()
-        );
+        $this->assertInstanceOf(PhpCallable::class, $this->object);
     }
 
     public function testCallable(): void
     {
         $this->assertSame(
             'strtotime',
-            $this->constraint->callable
+            $this->object->callable
         );
     }
 
     public function testReturnValueConstraint(): void
     {
+        $constraint = $this->object->returnValueConstraint;
+
         $this->assertInstanceOf(
             Type::class,
-            $this->constraint->returnValueConstraint
+            $constraint
         );
 
         $this->assertSame(
             'int',
-            $this->constraint->returnValueConstraint->type
+            $constraint->type
         );
     }
 }

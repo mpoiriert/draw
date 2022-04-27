@@ -3,25 +3,65 @@
 namespace Draw\Component\Validator\Tests\Constraints;
 
 use Draw\Component\Validator\Constraints\PhpCallable;
+use Draw\Component\Validator\Constraints\PhpCallableValidator;
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
+/**
+ * @covers \Draw\Component\Validator\Constraints\PhpCallableValidator
+ */
 class PhpCallableValidatorTest extends TestCase
 {
+    private PhpCallableValidator $object;
+
+    public function setUp(): void
+    {
+        $this->object = new PhpCallableValidator();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ConstraintValidatorInterface::class,
+            $this->object
+        );
+    }
+
+    public function testValidateInvalidConstraint(): void
+    {
+        $this->expectException(UnexpectedTypeException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'Expected argument of type "%s", "%s" given',
+                PhpCallable::class,
+                NotNull::class
+            )
+        );
+
+        $this->object->validate(null, new NotNull());
+    }
+
     public function provideTestValidate(): array
     {
         return [
-            'no-error' => [true, new IsTrue(), 0],
-            'with-error' => [false, new IsTrue(), 1],
+            'execution-only' => [null, null, 0],
+            'null' => [null, new IsTrue(), 0],
+            'exception' => [new Exception(), new IsTrue(), 1],
+            'match-return-value-constraint' => [true, new IsTrue(), 0],
+            'does-not-match-return-value-constraint' => [false, new IsTrue(), 1],
         ];
     }
 
     /**
      * @dataProvider provideTestValidate
      */
-    public function testValidate($value, Constraint $returnValueConstraint, int $violationsCount): void
+    public function testValidate($value, ?Constraint $returnValueConstraint, int $violationsCount): void
     {
         $validator = Validation::createValidator();
 
@@ -30,6 +70,10 @@ class PhpCallableValidatorTest extends TestCase
             [
                 new PhpCallable([
                     'callable' => function ($value) {
+                        if ($value instanceof Exception) {
+                            throw $value;
+                        }
+
                         return $value;
                     },
                     'returnValueConstraint' => $returnValueConstraint,

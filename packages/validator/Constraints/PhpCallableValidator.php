@@ -27,13 +27,10 @@ class PhpCallableValidator extends ConstraintValidator
 
         try {
             $result = \call_user_func($constraint->callable, $value);
-            if ($constraint->returnValueConstraint) {
-                $violations = $this->context->getValidator()->validate($result, $constraint->returnValueConstraint);
-                if (!\count($violations)) {
+            switch (true) {
+                case null === $constraint->returnValueConstraint:
+                case !count($this->context->getValidator()->validate($result, $constraint->returnValueConstraint)):
                     return;
-                }
-            } else {
-                return;
             }
         } catch (Throwable $throwable) {
         }
