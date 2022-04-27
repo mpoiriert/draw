@@ -7,9 +7,9 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class ConstraintRemoteFileExists extends Constraint
+class RemoteFileExists extends Constraint
 {
-    public $message = 'Remote file "{{ value }}" does not exist.';
+    public ?string $message = 'Remote file "{{ value }}" does not exist.';
 
     public function getTargets()
     {

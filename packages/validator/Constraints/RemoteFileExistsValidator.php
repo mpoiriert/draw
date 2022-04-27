@@ -6,12 +6,12 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class ConstraintRemoteFileExistsValidator extends ConstraintValidator
+class RemoteFileExistsValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof ConstraintRemoteFileExists) {
-            throw new UnexpectedTypeException($constraint, ConstraintRemoteFileExists::class);
+        if (!$constraint instanceof RemoteFileExists) {
+            throw new UnexpectedTypeException($constraint, RemoteFileExists::class);
         }
 
         if (!$this->remoteFileExists($value)) {
