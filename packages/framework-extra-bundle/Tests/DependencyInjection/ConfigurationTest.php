@@ -103,6 +103,50 @@ class ConfigurationTest extends ConfigurationTestCase
                     'enabled' => false,
                 ],
             ],
+            'open_api' => [
+                'enabled' => false,
+                'openApi' => [
+                    'enabled' => true,
+                    'caching_enabled' => true,
+                    'sandbox_url' => '/open-api/sandbox',
+                    'cleanOnDump' => true,
+                    'versioning' => [
+                        'enabled' => false,
+                        'versions' => [
+                        ],
+                    ],
+                    'definitionAliases' => [
+                    ],
+                    'classNamingFilters' => [
+                        0 => 'Draw\\Component\\OpenApi\\Naming\\AliasesClassNamingFilter',
+                    ],
+                    'headers' => [],
+                ],
+                'request' => [
+                    'enabled' => true,
+                    'queryParameter' => [
+                        'enabled' => true,
+                    ],
+                    'bodyDeserialization' => [
+                        'enabled' => true,
+                    ],
+                    'userRequestInterceptedException' => [
+                        'enabled' => false,
+                    ],
+                ],
+                'response' => [
+                    'enabled' => true,
+                    'serializeNull' => true,
+                    'exceptionHandler' => [
+                        'enabled' => true,
+                        'useDefaultExceptionsStatusCodes' => true,
+                        'omitConstraintInvalidValue' => false,
+                        'exceptionsStatusCodes' => [
+                        ],
+                        'violationKey' => 'errors',
+                    ],
+                ],
+            ],
             'process' => [
                 'enabled' => true,
             ],
@@ -130,7 +174,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, configuration, console, cron, jwt_encoder, log, logger, mailer, messenger, process, security, symfony_console_path, tester, versioning.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, configuration, console, cron, jwt_encoder, log, logger, mailer, messenger, open_api, process, security, symfony_console_path, tester, versioning.',
         ];
 
         yield [

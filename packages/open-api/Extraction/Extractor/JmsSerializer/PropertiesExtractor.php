@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer;
 
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event\PropertyExtractedEvent;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\ArrayHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\DynamicObjectHandler;
@@ -29,43 +29,42 @@ class PropertiesExtractor implements ExtractorInterface
 {
     public const CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY = 'jms-enable-version-exclusion-strategy';
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var MetadataFactoryInterface
-     */
-    private $factory;
+    private MetadataFactoryInterface $factory;
 
-    /**
-     * @var PropertyNamingStrategyInterface
-     */
-    private $namingStrategy;
+    private PropertyNamingStrategyInterface $namingStrategy;
 
     /**
      * @var array|TypeToSchemaHandlerInterface[]
      */
-    private $typeToSchemaHandlers = [];
+    private iterable $typeToSchemaHandlers;
+
+    public static function getDefaultPriority(): int
+    {
+        return 128;
+    }
 
     public function __construct(
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
-        EventDispatcherInterface $eventDispatcher = null
+        EventDispatcherInterface $eventDispatcher,
+        iterable $typeToSchemaHandlers = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;
         $this->eventDispatcher = $eventDispatcher;
 
-        $this->registerTypeToSchemaHandler(new DynamicObjectHandler());
-        $this->registerTypeToSchemaHandler(new ArrayHandler());
-        $this->registerTypeToSchemaHandler(new GenericTemplateHandler());
+        $this->typeToSchemaHandlers = $typeToSchemaHandlers ?: $this::getDefaultHandlers();
     }
 
-    public function registerTypeToSchemaHandler(TypeToSchemaHandlerInterface $typeToSchemaHandler)
+    public static function getDefaultHandlers(): array
     {
-        $this->typeToSchemaHandlers[] = $typeToSchemaHandler;
+        return [
+            new DynamicObjectHandler(),
+            new ArrayHandler(),
+            new GenericTemplateHandler(),
+        ];
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
@@ -156,9 +155,7 @@ class PropertiesExtractor implements ExtractorInterface
             $target->properties[$name] = $propertySchema;
             $propertySchema->description = $this->getDescription($propertyMetadata) ?: null;
 
-            if ($this->eventDispatcher) {
-                $this->eventDispatcher->dispatch(new PropertyExtractedEvent($propertyMetadata, $propertySchema));
-            }
+            $this->eventDispatcher->dispatch(new PropertyExtractedEvent($propertyMetadata, $propertySchema));
         }
     }
 

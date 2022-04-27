@@ -5,6 +5,8 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\ChangeKeyProcessorDecorator;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Application\Cron\Job;
@@ -43,12 +45,37 @@ use Symfony\Component\Mime\Address;
 
 class DrawFrameworkExtraExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * @var array|IntegrationInterface[]
+     */
+    private array $integrations = [];
+
+    public function __construct(array $integrations = null)
+    {
+        if (null === $integrations) {
+            $this->registerDefaultIntegrations();
+        } else {
+            $this->integrations = $integrations;
+        }
+    }
+
+    private function registerDefaultIntegrations(): void
+    {
+        $this->integrations[] = new OpenApiIntegration();
+    }
+
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
 
         $container->setParameter('draw.symfony_console_path', $config['symfony_console_path']);
+
+        foreach ($this->integrations as $integration) {
+            if ($this->isConfigEnabled($container, $config[$integration->getConfigSectionName()])) {
+                $integration->load($config[$integration->getConfigSectionName()], $loader, $container);
+            }
+        }
 
         $this->configureAwsToolKit($config['aws_tool_kit'], $loader, $container);
         $this->configureConfiguration($config['configuration'], $loader, $container);

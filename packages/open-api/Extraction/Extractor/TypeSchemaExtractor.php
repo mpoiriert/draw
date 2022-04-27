@@ -2,12 +2,11 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor;
 
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Naming\ClassNamingFilterInterface;
 use Draw\Component\OpenApi\Schema\Schema;
-use Draw\Component\OpenApi\Schema\Schema as SupportedTarget;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Collection;
 use ReflectionClass;
@@ -17,20 +16,29 @@ class TypeSchemaExtractor implements ExtractorInterface
     /**
      * @var array|ClassNamingFilterInterface[]
      */
-    private $classNamingFilters = [];
+    private array $classNamingFilters;
 
-    private $definitionHashes = [];
+    private array $definitionHashes = [];
 
-    private static $typeResolver;
+    private static ?TypeResolver $typeResolver = null;
 
-    public function __construct($classNamingFilters = [])
+    public static function getDefaultPriority(): int
+    {
+        return 128;
+    }
+
+    public function __construct(array $classNamingFilters = [])
     {
         $this->classNamingFilters = $classNamingFilters;
     }
 
+    /**
+     * @param string $source
+     * @param Schema $target
+     */
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!$target instanceof SupportedTarget) {
+        if (!$target instanceof Schema) {
             return false;
         }
 
@@ -42,13 +50,8 @@ class TypeSchemaExtractor implements ExtractorInterface
     }
 
     /**
-     * Extract the requested data.
-     *
-     * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
-     * extraction.
-     *
-     * @param string          $source
-     * @param SupportedTarget $target
+     * @param string $source
+     * @param Schema $target
      *
      * @throws ExtractionImpossibleException
      */
@@ -141,7 +144,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             $this->definitionHashes[$modelName] = [];
         }
 
-        if (false === array_search($hash, $this->definitionHashes[$modelName])) {
+        if (false === !in_array($hash, $this->definitionHashes[$modelName])) {
             $this->definitionHashes[$modelName][] = $hash;
         }
 

@@ -12,12 +12,13 @@ use JMS\Serializer\Annotation as Serializer;
 class Vendor implements VendorInterface
 {
     /**
-     * @var string
-     *
      * @Serializer\Exclude()
      */
-    public $name;
+    public ?string $name = null;
 
+    /**
+     * @var mixed
+     */
     public $value;
 
     public function getVendorName(): string

@@ -4,6 +4,7 @@ namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\UserBundle\Controller\Api\ConnectionTokensController;
 use Draw\Bundle\UserBundle\DependencyInjection\DrawUserExtension;
+use Draw\Bundle\UserBundle\EventListener\UserRequestInterceptedSubscriber;
 use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
@@ -41,6 +42,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [ConnectionTokensController::class];
+        yield [UserRequestInterceptedSubscriber::class];
         yield [SessionUserFeed::class];
         yield [EncryptPasswordUserEntityListener::class];
         yield [UserRequestInterceptorSubscriber::class];

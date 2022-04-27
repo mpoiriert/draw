@@ -15,79 +15,51 @@ class PathItem
     /**
      * A definition of a GET operation on this path.
      *
-     * @var Operation
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Operation")
      */
-    public $get;
+    public ?Operation $get = null;
 
     /**
      * A definition of a PUT operation on this path.
      *
-     * @var Operation
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Operation")
      */
-    public $put;
+    public ?Operation $put = null;
 
     /**
      * A definition of a POST operation on this path.
      *
-     * @var Operation
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Operation")
      */
-    public $post;
+    public ?Operation $post = null;
 
     /**
      * A definition of a DELETE operation on this path.
      *
-     * @var Operation
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Operation")
      */
-    public $delete;
+    public ?Operation $delete = null;
 
     /**
      * A definition of a OPTIONS operation on this path.
      *
-     * @var Operation
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Operation")
      */
-    public $options;
+    public ?Operation $options = null;
 
     /**
      * A definition of a HEAD operation on this path.
      *
-     * @var Operation
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Operation")
      */
-    public $head;
+    public ?Operation $head = null;
 
     /**
      * A definition of a PATCH operation on this path.
      *
-     * @var Operation
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Operation")
      */
-    public $patch;
+    public ?Operation $patch = null;
 
     /**
      * A list of parameters that are applicable for all the operations described under this path.
@@ -103,20 +75,17 @@ class PathItem
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\BaseParameter>")
      */
-    public $parameters;
+    public ?array $parameters = null;
 
     /**
-     * @var string
-     *
-     * @JMS\Type("string")
      * @JMS\SerializedName("$ref")
      */
-    public $ref;
+    public ?string $ref = null;
 
     /**
      * @return array|Operation[]
      */
-    public function getOperations()
+    public function getOperations(): array
     {
         $operations = [];
         foreach ($this as $key => $value) {

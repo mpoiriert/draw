@@ -8,11 +8,8 @@ use JMS\Serializer\Metadata\PropertyMetadata;
 
 interface TypeToSchemaHandlerInterface
 {
-    /**
-     * @return Schema|null
-     */
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
         ExtractionContextInterface $extractionContext
-    );
+    ): ?Schema;
 }

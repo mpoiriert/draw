@@ -3,50 +3,42 @@
 namespace Draw\Component\OpenApi\Tests;
 
 use Draw\Component\OpenApi\OpenApi;
+use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\SchemaCleaner;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Draw\Component\OpenApi\SchemaCleaner
+ */
 class SchemaCleanerTest extends TestCase
 {
-    /**
-     * @var SchemaCleaner
-     */
-    private $schemaCleaner;
+    private SchemaCleaner $object;
 
     public function setUp(): void
     {
-        $this->schemaCleaner = new SchemaCleaner();
+        $this->object = new SchemaCleaner();
     }
 
     public function provideTestClean(): iterable
     {
-        return [
-            'simple' => ['simple'],
-            'difference' => ['difference'],
-            'deep-reference' => ['deep-reference'],
-            'not-needed-model' => ['not-needed-model'],
-            'definition-index' => ['definition-index'],
-            'keep' => ['keep'],
-        ];
+        foreach (glob(__DIR__.'/fixture/cleaner/*-dirty.json') as $file) {
+            yield str_replace('-dirty.json', '', basename($file)) => [$file, str_replace('dirty.json', 'clean.json', $file)];
+        }
     }
 
     /**
      * @dataProvider provideTestClean
-     *
-     * @param $case
      */
-    public function testClean($case)
+    public function testClean(string $dirty, string $clean): void
     {
         $openApi = new OpenApi();
-        $schema = $openApi->extract(
-            file_get_contents(__DIR__.'/fixture/cleaner/'.$case.'-dirty.json')
-        );
-        $this->assertInstanceOf(\Draw\Component\OpenApi\Schema\Root::class, $schema);
+        $schema = $openApi->extract(file_get_contents($dirty));
+        $this->assertInstanceOf(Root::class, $schema);
 
-        $cleanedSchema = $this->schemaCleaner->clean($schema);
+        $cleanedSchema = $this->object->clean($schema);
 
         $this->assertEquals(
-            json_decode(file_get_contents(__DIR__.'/fixture/cleaner/'.$case.'-clean.json'), true),
+            json_decode(file_get_contents($clean), true),
             json_decode($openApi->dump($cleanedSchema, false), true)
         );
     }

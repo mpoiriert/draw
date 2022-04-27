@@ -3,8 +3,8 @@
 namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
 
 use Doctrine\Common\Annotations\Reader;
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\BaseParameter;
 use Draw\Component\OpenApi\Schema\Operation;
@@ -12,10 +12,7 @@ use ReflectionMethod;
 
 class ParameterExtractor implements ExtractorInterface
 {
-    /**
-     * @var Reader
-     */
-    private $reader;
+    private Reader $reader;
 
     public function __construct(Reader $reader)
     {

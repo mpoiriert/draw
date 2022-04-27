@@ -5,6 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCompilerPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
@@ -14,6 +15,7 @@ use Draw\Component\Console\Listener\CommandFlowListener;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Command\PurgeExpiredMessageCommand;
+use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
@@ -52,6 +54,10 @@ class DrawFrameworkExtraBundle extends Bundle
                 PassConfig::TYPE_BEFORE_OPTIMIZATION,
                 -1
             );
+        }
+
+        if (class_exists(OpenApi::class)) {
+            $container->addCompilerPass(new JmsDoctrineObjectConstructionCompilerPass());
         }
 
         if ($container->hasExtension('security')) {

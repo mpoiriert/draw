@@ -2,10 +2,10 @@
 
 namespace Draw\Bundle\UserBundle\Controller\Api;
 
-use Draw\Bundle\OpenApiBundle\Request\Deserialization;
-use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Draw\Bundle\UserBundle\DTO\ConnectionToken;
 use Draw\Bundle\UserBundle\DTO\Credential;
+use Draw\Component\OpenApi\Configuration\Deserialization;
+use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

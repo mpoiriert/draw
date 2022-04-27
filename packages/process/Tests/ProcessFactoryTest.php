@@ -9,7 +9,7 @@ use Symfony\Component\Process\Process;
 
 class ProcessFactoryTest extends TestCase
 {
-    private $service;
+    private ProcessFactory $service;
 
     public function setUp(): void
     {
@@ -40,7 +40,7 @@ class ProcessFactoryTest extends TestCase
             $process->getWorkingDirectory()
         );
 
-        $this->assertNull(
+        $this->assertEmpty(
             $process->getEnv()
         );
 

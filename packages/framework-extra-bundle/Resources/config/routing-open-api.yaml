@@ -1,0 +1,9 @@
+draw_open_api.api_doc:
+  path: '/api-doc.{_format}'
+  controller: 'draw.open_api.controller.open_api_controller::apiDocAction'
+  defaults: { _format: 'html' }
+
+draw_open_api.versioned_api_doc:
+  path: '/api-doc/{version}.{_format}'
+  controller: 'draw.open_api.controller.open_api_controller::apiDocAction'
+  defaults: { _format: 'html' }

@@ -1,7 +1,7 @@
 swagger:
-    resource: '@DrawOpenApiBundle/Resources/config/routing.yaml'
+    resource: '@DrawFrameworkExtraBundle/Resources/config/routing-open-api.yaml'
 
 test:
-    resource: '@DrawOpenApiBundle/Tests/Mock/Controller/TestController.php'
+    resource: '../../packages/open-api/Tests/Mock/Controller/TestController.php'
     type: 'annotation'
     format: 'json'

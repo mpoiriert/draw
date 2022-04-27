@@ -3,17 +3,17 @@
 namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Length as SupportedConstraint;
+use Symfony\Component\Validator\Constraints\Length;
 
-class LengthConstraintExtractor extends ConstraintExtractor
+class LengthConstraintExtractor extends BaseConstraintExtractor
 {
     public function supportConstraint(Constraint $constraint): bool
     {
-        return $constraint instanceof SupportedConstraint;
+        return $constraint instanceof Length;
     }
 
     /**
-     * @param SupportedConstraint|Constraint $constraint
+     * @param Length|Constraint $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {
