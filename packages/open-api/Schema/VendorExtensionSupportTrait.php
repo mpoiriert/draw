@@ -5,28 +5,27 @@ namespace Draw\Component\OpenApi\Schema;
 trait VendorExtensionSupportTrait
 {
     /**
-     * @var mixed
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Mixed>")
      * @JMS\Accessor(getter="getFakeVendor")
      */
-    public $vendor = [];
+    public ?array $vendor = [];
 
     public function getFakeVendor()
     {
         return null;
     }
 
-    public function getVendorData()
+    public function getVendorData(): ?array
     {
         return $this->vendor;
     }
 
-    public function setVendorData(array $data = null)
+    public function setVendorData(array $data = null): void
     {
-        return $this->vendor = $data;
+        $this->vendor = $data;
     }
 
-    public function setVendorDataKey($key, $data)
+    public function setVendorDataKey($key, $data): void
     {
         $this->vendor[$key] = $data;
     }

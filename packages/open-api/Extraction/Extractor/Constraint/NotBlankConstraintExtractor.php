@@ -4,17 +4,17 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Constraint;
 
 use Draw\Component\OpenApi\Schema\BaseParameter;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\NotBlank as SupportedConstraint;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
-class NotBlankConstraintExtractor extends ConstraintExtractor
+class NotBlankConstraintExtractor extends BaseConstraintExtractor
 {
     public function supportConstraint(Constraint $constraint): bool
     {
-        return $constraint instanceof SupportedConstraint;
+        return $constraint instanceof NotBlank;
     }
 
     /**
-     * @param Constraint|SupportedConstraint $constraint
+     * @param Constraint|NotBlank $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {

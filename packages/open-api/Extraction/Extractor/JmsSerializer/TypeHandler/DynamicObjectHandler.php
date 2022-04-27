@@ -11,7 +11,7 @@ class DynamicObjectHandler implements TypeToSchemaHandlerInterface
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
         ExtractionContextInterface $extractionContext
-    ) {
+    ): ?Schema {
         if (!($type = $this->getDynamicObjectType($propertyMetadata))) {
             return null;
         }
@@ -24,7 +24,7 @@ class DynamicObjectHandler implements TypeToSchemaHandlerInterface
         return $propertySchema;
     }
 
-    private function getDynamicObjectType(PropertyMetadata $item)
+    private function getDynamicObjectType(PropertyMetadata $item): ?string
     {
         switch (true) {
             case !isset($item->type['name']):

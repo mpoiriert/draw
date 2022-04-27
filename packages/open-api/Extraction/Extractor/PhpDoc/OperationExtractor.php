@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\PhpDoc;
 
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\BodyParameter;
@@ -27,9 +27,14 @@ use RuntimeException;
 
 class OperationExtractor implements ExtractorInterface
 {
-    private $contextFactory;
-    private $docBlockFactory;
-    private $exceptionResponseCodes = [];
+    private ContextFactory $contextFactory;
+    private DocBlockFactoryInterface $docBlockFactory;
+    private array $exceptionResponseCodes = [];
+
+    public static function getDefaultPriority(): int
+    {
+        return -128;
+    }
 
     public function __construct(
         DocBlockFactoryInterface $docBlockFactory = null
@@ -51,21 +56,7 @@ class OperationExtractor implements ExtractorInterface
         return true;
     }
 
-    private function createDocBlock(Reflector $reflector): DocBlock
-    {
-        return $this->docBlockFactory
-            ->create(
-                $reflector,
-                $this->contextFactory->createFromReflector($reflector)
-            );
-    }
-
     /**
-     * Extract the requested data.
-     *
-     * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
-     * extraction.
-     *
      * @param ReflectionMethod $source
      * @param Operation        $target
      */
@@ -98,7 +89,16 @@ class OperationExtractor implements ExtractorInterface
         $this->extractParameters($docBlock, $target, $extractionContext);
     }
 
-    private function getExceptionInformation(Exception $exception)
+    private function createDocBlock(Reflector $reflector): DocBlock
+    {
+        return $this->docBlockFactory
+            ->create(
+                $reflector,
+                $this->contextFactory->createFromReflector($reflector)
+            );
+    }
+
+    private function getExceptionInformation(Exception $exception): array
     {
         foreach ($this->exceptionResponseCodes as $class => $information) {
             if ($exception instanceof $class) {
@@ -109,7 +109,7 @@ class OperationExtractor implements ExtractorInterface
         return [500, null];
     }
 
-    public function registerExceptionResponseCodes($exceptionClass, $code = 500, $message = null)
+    public function registerExceptionResponseCodes($exceptionClass, $code = 500, $message = null): void
     {
         $this->exceptionResponseCodes[$exceptionClass] = [$code, $message];
     }

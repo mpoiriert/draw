@@ -4,69 +4,54 @@ namespace Draw\Component\OpenApi;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
+use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
+use Draw\Component\OpenApi\Exception\ExtractionCompletedException;
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\RootSchemaExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Root as Schema;
-use Draw\Component\OpenApi\Serializer\SerializerHandler;
-use Draw\Component\OpenApi\Serializer\SerializerListener;
-use InvalidArgumentException;
+use Draw\Component\OpenApi\Serializer\Handler\OpenApiHandler;
+use Draw\Component\OpenApi\Serializer\Subscriber\OpenApiSubscriber;
 use JMS\Serializer\EventDispatcher\EventDispatcher;
 use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class OpenApi
 {
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
+    private SerializerInterface $serializer;
+
+    private ?EventDispatcherInterface $eventDispatcher;
 
     /**
-     * @var array
+     * @var iterable|ExtractorInterface[]
      */
-    private $extractors = [];
+    private iterable $extractors;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private bool $cleanOnDump = false;
 
-    /**
-     * @var ExtractorInterface[]
-     */
-    private $sortedExtractors;
+    private SchemaCleaner $schemaCleaner;
 
-    /**
-     * Whether or not we want to clean the schema on dump.
-     *
-     * @var bool
-     */
-    private $cleanOnDump = false;
-
-    /**
-     * @var SchemaCleaner
-     */
-    private $schemaCleaner;
-
-    public function __construct(SerializerInterface $serializer = null, SchemaCleaner $schemaCleaner = null)
-    {
+    public function __construct(
+        iterable $extractors = null,
+        SerializerInterface $serializer = null,
+        SchemaCleaner $schemaCleaner = null,
+        EventDispatcherInterface $eventDispatcher = null
+    ) {
         if (null === $serializer) {
             $serializer = SerializerBuilder::create()
                 ->configureListeners(
                     function (EventDispatcher $dispatcher) {
-                        $dispatcher->addSubscriber(new SerializerListener());
+                        $dispatcher->addSubscriber(new OpenApiSubscriber());
                     }
                 )
                 ->configureHandlers(
                     function (HandlerRegistry $handlerRegistry) {
-                        $handlerRegistry->registerSubscribingHandler(new SerializerHandler());
+                        $handlerRegistry->registerSubscribingHandler(new OpenApiHandler());
                     }
                 )
                 ->build();
@@ -74,52 +59,27 @@ class OpenApi
 
         $this->serializer = $serializer;
         $this->schemaCleaner = $schemaCleaner ?: new SchemaCleaner();
-
-        $this->registerExtractor(new RootSchemaExtractor($this->serializer), -1, 'open_api');
-    }
-
-    /**
-     * @required
-     */
-    public function setEventDispatcher(?EventDispatcherInterface $eventDispatcher)
-    {
         $this->eventDispatcher = $eventDispatcher;
+        $this->extractors = $extractors ?: [new JsonRootSchemaExtractor($this->serializer)];
     }
 
-    public function registerExtractor(ExtractorInterface $extractorInterface, $position = 0, $section = 'default')
-    {
-        $this->extractors[$section][$position][] = $extractorInterface;
-        $this->sortedExtractors = null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getCleanOnDump()
+    public function getCleanOnDump(): bool
     {
         return $this->cleanOnDump;
     }
 
-    /**
-     * @param bool $cleanOnDump
-     */
-    public function setCleanOnDump($cleanOnDump)
+    public function setCleanOnDump(bool $cleanOnDump): void
     {
         $this->cleanOnDump = $cleanOnDump;
     }
 
-    /**
-     * @param bool $validate
-     *
-     * @return string
-     */
-    public function dump(Schema $schema, $validate = true)
+    public function dump(Schema $schema, bool $validate = true): string
     {
         if ($this->eventDispatcher) {
             $this->eventDispatcher->dispatch(new PreDumpRootSchemaEvent($schema));
         }
 
-        if ($this->cleanOnDump) {
+        if ($this->getCleanOnDump()) {
             $schema = $this->schemaCleaner->clean($schema);
         }
 
@@ -130,34 +90,20 @@ class OpenApi
         return $this->serializer->serialize($schema, 'json');
     }
 
-    public function validate(Schema $schema)
+    public function validate(Schema $schema): void
     {
-        /** @var ConstraintViolationList $result */
         $annotationReader = new AnnotationReader();
-        $builder = Validation::createValidatorBuilder();
-        if (method_exists($builder, 'setDoctrineAnnotationReader')) {
-            $builder
-                ->enableAnnotationMapping(true)
-                ->setDoctrineAnnotationReader($annotationReader);
-        } else {
-            $builder->enableAnnotationMapping($annotationReader);
-        }
-
-        $result = $builder
+        $result = Validation::createValidatorBuilder()
+            ->enableAnnotationMapping(true)
+            ->setDoctrineAnnotationReader($annotationReader)
             ->getValidator()
             ->validate($schema, null, [Constraint::DEFAULT_GROUP]);
 
         if (count($result)) {
-            throw new InvalidArgumentException(''.$result);
+            throw new ConstraintViolationListException($result);
         }
     }
 
-    /**
-     * @param $source
-     * @param null $type
-     *
-     * @return Schema
-     */
     public function extract($source, $type = null, ExtractionContextInterface $extractionContext = null)
     {
         if (null === $type) {
@@ -168,29 +114,16 @@ class OpenApi
             $extractionContext = new ExtractionContext($this, $type);
         }
 
-        foreach ($this->getSortedExtractors() as $extractor) {
+        foreach ($this->extractors as $extractor) {
             if ($extractor->canExtract($source, $type, $extractionContext)) {
-                $extractor->extract($source, $type, $extractionContext);
+                try {
+                    $extractor->extract($source, $type, $extractionContext);
+                } catch (ExtractionCompletedException $error) {
+                    break;
+                }
             }
         }
 
         return $type;
-    }
-
-    /**
-     * @return ExtractorInterface[]
-     */
-    private function getSortedExtractors()
-    {
-        if (null === $this->sortedExtractors) {
-            $this->sortedExtractors = [];
-            foreach ($this->extractors as $section => $extractors) {
-                ksort($extractors);
-                array_unshift($extractors, $this->sortedExtractors);
-                $this->sortedExtractors = call_user_func_array('array_merge', $extractors);
-            }
-        }
-
-        return $this->sortedExtractors;
     }
 }

@@ -16,7 +16,7 @@ use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Entity\PasswordChangeUserInter
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 use Draw\Component\Messenger\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\Entity\MessageHolderTrait;
-use Draw\Component\OpenApi\Doctrine\CollectionUtil;
+use Draw\DoctrineExtra\Common\Collections\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -188,15 +188,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public function setAddress(Address $address): void
     {
         $this->address = $address;
-    }
-
-    public function setUserAddresses($userAddresses)
-    {
-        CollectionUtil::replace(
-            $this,
-            'userAddresses',
-            $userAddresses
-        );
     }
 
     /**

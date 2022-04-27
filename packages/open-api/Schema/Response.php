@@ -11,29 +11,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Response
 {
     /**
-     * @var string
-     *
-     * @JMS\Type("string")
-     *
-     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
-    public $description = '';
+    public ?string $description = null;
 
     /**
-     * @var Schema
-     *
      * @Assert\Valid()
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Schema")
      */
-    public $schema;
+    public ?Schema $schema = null;
 
     /**
-     * @var Header[]
-     *
      * @Assert\Valid()
      *
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Header>")
      */
-    public $headers;
+    public ?array $headers = null;
 }

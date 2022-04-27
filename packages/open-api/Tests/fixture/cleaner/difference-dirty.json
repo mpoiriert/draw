@@ -17,14 +17,16 @@
                     {
                         "type": "integer",
                         "name": "id",
-                        "in": "path"
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "schema": {
                             "$ref": "#/definitions/User"
-                        }
+                        },
+                        "description": ""
                     }
                 }
             }
@@ -40,7 +42,8 @@
                     "200": {
                         "schema": {
                             "$ref": "#/definitions/User?1"
-                        }
+                        },
+                        "description": ""
                     }
                 }
             }

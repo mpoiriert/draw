@@ -7,17 +7,11 @@ use Draw\Component\OpenApi\Schema\Root;
 
 class ExtractionContext implements ExtractionContextInterface
 {
-    /**
-     * @var Root
-     */
-    private $rootSchema;
+    private Root $rootSchema;
 
-    /**
-     * @var OpenApi
-     */
-    private $openApi;
+    private OpenApi $openApi;
 
-    private $parameters = [];
+    private array $parameters = [];
 
     public function __construct(OpenApi $openApi, Root $rootSchema)
     {

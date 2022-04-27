@@ -28,7 +28,6 @@ jobs:
           - mailer
           - messenger
           - open-api
-          - open-api-bundle
           - process
           - profiling
           - security

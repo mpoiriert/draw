@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -16,21 +15,14 @@ class ExternalDocumentation
      * A short description of the target documentation. GFM syntax can be used for rich text representation.
      *
      * @see https://help.github.com/articles/github-flavored-markdown/
-     *
-     * @var string
-     *
-     * @JMS\Type("string")
      */
-    public $description;
+    public ?string $description = null;
 
     /**
      * The URL for the target documentation. Value MUST be in the format of a URL.
      *
-     * @var string
-     *
      * @Assert\NotBlank()
      * @Assert\Url()
-     * @JMS\Type("string")
      */
-    public $url;
+    public ?string $url = null;
 }

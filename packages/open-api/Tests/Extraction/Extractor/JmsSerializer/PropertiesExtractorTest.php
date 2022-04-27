@@ -2,9 +2,9 @@
 
 namespace Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer;
 
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\OpenApi;
@@ -16,15 +16,16 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * @covers \Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor
+ */
 class PropertiesExtractorTest extends TestCase
 {
-    /**
-     * @var PropertiesExtractor
-     */
-    private $jmsExtractor;
+    private PropertiesExtractor $jmsExtractor;
 
-    public function provideTestCanExtract()
+    public function provideTestCanExtract(): iterable
     {
         return [
             [null, null, false],
@@ -42,7 +43,8 @@ class PropertiesExtractorTest extends TestCase
 
         $this->jmsExtractor = new PropertiesExtractor(
             $context->getMetadataFactory(),
-            new SerializedNameAnnotationStrategy(new CamelCaseNamingStrategy())
+            new SerializedNameAnnotationStrategy(new CamelCaseNamingStrategy()),
+            new EventDispatcher()
         );
     }
 
@@ -67,7 +69,7 @@ class PropertiesExtractorTest extends TestCase
         if (!$canBeExtract) {
             try {
                 $this->jmsExtractor->extract($source, $type, $context);
-                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Extraction\ExtractionImpossibleException]');
+                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
             } catch (ExtractionImpossibleException $e) {
                 $this->assertTrue(true);
             }
@@ -78,12 +80,11 @@ class PropertiesExtractorTest extends TestCase
     {
         $reflectionClass = new ReflectionClass(__NAMESPACE__.'\JmsExtractorStubModel');
 
-        $context = $this->getExtractionContext();
-
         //Need to be there to validate that JMS extract it's type properly
-        $openApi = $context->getOpenApi();
-        $openApi->registerExtractor(new TypeSchemaExtractor());
-        $openApi->registerExtractor($this->jmsExtractor);
+        $context = $this->getExtractionContext([
+            new TypeSchemaExtractor(),
+            $this->jmsExtractor,
+        ]);
 
         $context->setParameter('model-context', ['serializer-groups' => ['test']]);
         $schema = $context->getRootSchema();
@@ -100,9 +101,9 @@ class PropertiesExtractorTest extends TestCase
         );
     }
 
-    public function getExtractionContext()
+    public function getExtractionContext(array $extractors = []): ExtractionContext
     {
-        $openApi = new OpenApi();
+        $openApi = new OpenApi($extractors);
         $schema = $openApi->extract('{"swagger":"2.0","definitions":{}}');
 
         return new ExtractionContext($openApi, $schema);

@@ -4,8 +4,8 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Doctrine;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Schema;
 use Draw\Component\OpenApi\SchemaCleaner;
@@ -13,10 +13,7 @@ use ReflectionClass;
 
 class InheritanceExtractor implements ExtractorInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $managerRegistry;
+    private ManagerRegistry $managerRegistry;
 
     public function __construct(ManagerRegistry $managerRegistry)
     {

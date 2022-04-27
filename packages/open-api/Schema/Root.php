@@ -19,46 +19,33 @@ class Root implements VendorExtensionSupportInterface
      * It can be used by the Swagger UI and other clients to interpret the API listing.
      * The value MUST be "2.0".
      *
-     * @var string
-     *
      * @Assert\NotBlank()
-     * @JMS\Type("string")
      */
-    public $swagger = '2.0';
+    public ?string $swagger = '2.0';
 
     /**
      * Provides metadata about the API. The metadata can be used by the clients if needed.
      *
-     * @var Info
-     *
      * @Assert\NotNull()
      * @Assert\Valid()
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Info")
      */
-    public $info;
+    public ?Info $info = null;
 
     /**
      * The host (name or ip) serving the API. This MUST be the host only and does not include the scheme nor sub-paths.
      * It MAY include a port. If the host is not included, the host serving the documentation is to be used (including the port).
      * The host does not support path templating.
-     *
-     * @var string
-     *
-     * @JMS\Type("string")
      */
-    public $host;
+    public ?string $host = null;
 
     /**
      * The base path on which the API is served, which is relative to the host.
      * If it is not included, the API is served directly under the host.
      * The value MUST start with a leading slash (/). The basePath does not support path templating.
      *
-     * @var string
-     *
-     * @JMS\Type("string")
      * @JMS\SerializedName("basePath")
      */
-    public $basePath;
+    public ?string $basePath = null;
 
     /**
      * The transfer protocol of the API.
@@ -70,7 +57,7 @@ class Root implements VendorExtensionSupportInterface
      * @Assert\Choice({"http","https","ws","wss"}, multiple=true)
      * @JMS\Type("array<string>")
      */
-    public $schemes;
+    public ?array $schemes = null;
 
     /**
      * A list of MIME types the APIs can consume.
@@ -81,7 +68,7 @@ class Root implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<string>")
      */
-    public $consumes;
+    public ?array $consumes = null;
 
     /**
      * A list of MIME types the APIs can produce.
@@ -92,7 +79,7 @@ class Root implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<string>")
      */
-    public $produces;
+    public ?array $produces = null;
 
     /**
      * The available paths and operations for the API.
@@ -103,7 +90,7 @@ class Root implements VendorExtensionSupportInterface
      * @Assert\Valid()
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\PathItem>")
      */
-    public $paths;
+    public ?array $paths = null;
 
     /**
      * An object to hold data types produced and consumed by operations.
@@ -113,7 +100,7 @@ class Root implements VendorExtensionSupportInterface
      * @Assert\Valid()
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Schema>")
      */
-    public $definitions;
+    public array $definitions = [];
 
     /**
      * An object to hold parameters that can be used across operations.
@@ -124,7 +111,7 @@ class Root implements VendorExtensionSupportInterface
      * @Assert\Valid()
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\BaseParameter>")
      */
-    public $parameters;
+    public ?array $parameters = null;
 
     /**
      * An object to hold responses that can be used across operations.
@@ -135,7 +122,7 @@ class Root implements VendorExtensionSupportInterface
      * @Assert\Valid()
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Response>")
      */
-    public $responses;
+    public ?array $responses = null;
 
     /**
      * Security scheme definitions that can be used across the specification.
@@ -147,7 +134,7 @@ class Root implements VendorExtensionSupportInterface
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\SecurityScheme>")
      * @JMS\SerializedName("securityDefinitions")
      */
-    public $securityDefinitions;
+    public ?array $securityDefinitions = null;
 
     /**
      * A declaration of which security schemes are applied for the API as a whole.
@@ -161,7 +148,7 @@ class Root implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\SecurityRequirement>")
      */
-    public $security;
+    public ?array $security = null;
 
     /**
      * A list of tags used by the specification with additional metadata.
@@ -174,32 +161,25 @@ class Root implements VendorExtensionSupportInterface
      *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\Tag>")
      */
-    public $tags;
+    public ?array $tags = null;
 
     /**
      * Additional external documentation.
      *
-     * @var ExternalDocumentation
-     *
      * @Assert\Valid()
      *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\ExternalDocumentation")
      * @JMS\SerializedName("externalDocs")
      */
-    public $externalDocs;
+    public ?ExternalDocumentation $externalDocs = null;
 
-    public function hasDefinition($name)
+    public function hasDefinition(string $name): bool
     {
-        if (null === $this->definitions) {
-            return false;
-        }
-
         $name = $this->sanitizeReferenceName($name);
 
         return array_key_exists($name, $this->definitions);
     }
 
-    public function addDefinition($name, Schema $schema)
+    public function addDefinition(string $name, Schema $schema): string
     {
         $name = $this->sanitizeReferenceName($name);
         $this->definitions[$name] = $schema;
@@ -219,12 +199,12 @@ class Root implements VendorExtensionSupportInterface
         return $this->{$section}[$name];
     }
 
-    public function getDefinitionReference($name)
+    public function getDefinitionReference(string $name): string
     {
         return '#/definitions/'.$this->sanitizeReferenceName($name);
     }
 
-    public function sanitizeReferenceName($name)
+    public function sanitizeReferenceName(string $name): string
     {
         return trim(str_replace('\\', '.', $name), '.');
     }

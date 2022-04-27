@@ -17,7 +17,8 @@
                     {
                         "type": "integer",
                         "name": "id",
-                        "in": "path"
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {

@@ -8,30 +8,16 @@ use Draw\Component\OpenApi\Schema\ValidationConfigurationInterface;
 
 class ConstraintExtractionContext
 {
-    /**
-     * @var ValidationConfigurationInterface
-     */
-    public $validationConfiguration;
+    public ?ValidationConfigurationInterface $validationConfiguration = null;
 
-    /**
-     * @var Schema
-     */
-    public $classSchema;
+    public ?Schema $classSchema = null;
 
     /**
      * class or property.
-     *
-     * @var string
      */
-    public $context;
+    public ?string $context = null;
 
-    /**
-     * @var string
-     */
-    public $propertyName;
+    public ?string $propertyName = null;
 
-    /**
-     * @var ExtractionContextInterface
-     */
-    public $extractionContext;
+    public ?ExtractionContextInterface $extractionContext = null;
 }

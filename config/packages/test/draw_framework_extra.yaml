@@ -1,0 +1,6 @@
+draw_framework_extra:
+  open_api:
+    openApi:
+      caching_enabled: false
+      versioning:
+        versions: ['1', '2']

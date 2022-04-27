@@ -17,31 +17,20 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
      * If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded"
      * and the parameter MUST be in "formData".
      *
-     * @var string
-     *
      * @Assert\NotNull()
      * @Assert\Choice({"string", "number", "integer", "boolean", "array", "file"})
-     *
-     * @JMS\Type("string")
      */
-    public $type;
+    public ?string $type = null;
 
     /**
      * The extending format for the previously mentioned type. See Data Type Formats for further details.
-     *
-     * @var string
-     * @JMS\Type("string")
      */
-    public $format;
+    public ?string $format = null;
 
     /**
      * Required if type is "array". Describes the type of items in the array.
-     *
-     * @var Items
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Items")
      */
-    public $items;
+    public ?Items $items = null;
 
     /**
      * Determines the format of the array if type array is used. Possible values are:
@@ -54,13 +43,11 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
      *
      *   Default value is csv.
      *
-     * @var string
-     *
      * @Assert\Choice({"csv", "ssv", "tsv", "pipes", "multi"})
-     * @JMS\Type("string")
+     *
      * @JMS\SerializedName("collectionFormat")
      */
-    public $collectionFormat;
+    public ?string $collectionFormat = null;
 
     /**
      * Sets a default value to the parameter. The type of the value depends on the defined type.
@@ -75,125 +62,88 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
 
     /**
      * @see  http://json-schema.org/latest/json-schema-validation.html#anchor17
-     *
-     * @var int
-     *
-     * @JMS\Type("integer")
      */
-    public $maximum;
+    public ?int $maximum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor17
      *
-     * @var bool
-     *
-     * @JMS\Type("boolean")
      * @JMS\SerializedName("exclusiveMaximum")
      */
-    public $exclusiveMaximum;
+    public ?bool $exclusiveMaximum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
      *
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("minimum")
      */
-    public $minimum;
+    public ?int $minimum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
      *
-     * @var bool
-     *
-     * @JMS\Type("boolean")
      * @JMS\SerializedName("exclusiveMinimum")
      */
-    public $exclusiveMinimum;
+    public ?bool $exclusiveMinimum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor26
      *
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("maxLength")
      */
-    public $maxLength;
+    public ?int $maxLength = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor29
      *
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("minLength")
      */
-    public $minLength;
+    public ?int $minLength = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor33
-     *
-     * @var string
-     *
-     * @JMS\Type("string")
      */
-    public $pattern;
+    public ?string $pattern = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor42
      *
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("maxItems")
      */
-    public $maxItems;
+    public ?int $maxItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor45
      *
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("minItems")
      */
-    public $minItems;
+    public ?int $minItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor49
      *
-     * @var bool
-     *
-     * @JMS\Type("boolean")
      * @JMS\SerializedName("uniqueItems")
      */
-    public $uniqueItems;
+    public ?bool $uniqueItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor76
      *
-     * @var mixed[]
-     *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\Mixed>")
      */
-    public $enum;
+    public ?array $enum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor14
      *
-     * @var int
-     *
-     * @JMS\Type("integer")
      * @JMS\SerializedName("multipleOf")
      */
-    public $multipleOf;
+    public ?int $multipleOf = null;
 
     /**
      * @JMS\PreSerialize()
      */
-    public function preSerialize()
+    public function preSerialize(): void
     {
         $this->default = Mixed::convert($this->default);
         $this->enum = Mixed::convert($this->enum, true);

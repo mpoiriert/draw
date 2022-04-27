@@ -2,17 +2,18 @@
 
 namespace Draw\Component\OpenApi\Tests\Extraction\Extractor;
 
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\OpenApi;
+use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
 use PHPUnit\Framework\TestCase;
 
 class TypeSchemaExtractorTest extends TestCase
 {
-    public function provideTestCanExtract()
+    public function provideTestCanExtract(): iterable
     {
         return [
             ['string', null, false],
@@ -42,7 +43,7 @@ class TypeSchemaExtractorTest extends TestCase
         if (!$canBeExtract) {
             try {
                 $extractor->extract($source, $type, $context);
-                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Extraction\ExtractionImpossibleException]');
+                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
             } catch (ExtractionImpossibleException $e) {
                 $this->assertTrue(true);
             }
@@ -53,8 +54,7 @@ class TypeSchemaExtractorTest extends TestCase
     {
         $extractor = new TypeSchemaExtractor();
 
-        $context = $this->getExtractionContext();
-        $context->getOpenApi()->registerExtractor($extractor);
+        $context = $this->getExtractionContext([$extractor]);
 
         $schema = $context->getRootSchema();
 
@@ -78,12 +78,9 @@ class TypeSchemaExtractorTest extends TestCase
         );
     }
 
-    public function getExtractionContext()
+    public function getExtractionContext(array $extractors = []): ExtractionContextInterface
     {
-        $openApi = new OpenApi();
-        $schema = $openApi->extract('{"swagger":"2.0","definitions":{}}');
-
-        return new ExtractionContext($openApi, $schema);
+        return new ExtractionContext(new OpenApi($extractors), new Root());
     }
 }
 

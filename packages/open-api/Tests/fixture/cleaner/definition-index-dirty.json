@@ -17,19 +17,22 @@
                     {
                         "type": "integer",
                         "name": "id",
-                        "in": "path"
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "schema": {
                             "$ref": "#/definitions/User?1"
-                        }
+                        },
+                        "description": ""
                     },
                     "201": {
                         "schema": {
                             "$ref": "#/definitions/User?4"
-                        }
+                        },
+                        "description": ""
                     }
                 }
             }

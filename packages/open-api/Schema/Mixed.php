@@ -4,6 +4,9 @@ namespace Draw\Component\OpenApi\Schema;
 
 class Mixed
 {
+    /**
+     * @var mixed
+     */
     public $data;
 
     public function __construct($data)

@@ -7,20 +7,17 @@ namespace Draw\Component\OpenApi\Schema;
  */
 class SecurityRequirement
 {
+    /**
+     * @var mixed
+     */
     private $data;
 
-    /**
-     * @return mixed
-     */
     public function getData()
     {
         return $this->data;
     }
 
-    /**
-     * @param mixed $data
-     */
-    public function setData($data)
+    public function setData($data): void
     {
         $this->data = $data;
     }
@@ -30,15 +27,14 @@ class SecurityRequirement
      * If the security scheme is of type "oauth2", then the value is a list of scope names required for the execution.
      * For other security scheme types, the array MUST be empty.
      *
-     * @param $name
      * @param string[] $value
      */
-    public function __set($name, $value)
+    public function __set(string $name, array $value): void
     {
         $this->data[$name] = $value;
     }
 
-    public function __get($name)
+    public function __get($name): ?array
     {
         return $this->data[$name];
     }

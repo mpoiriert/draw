@@ -26,6 +26,7 @@
         "draw/log": "^0.9",
         "draw/mailer": "^0.9",
         "draw/messenger": "^0.9",
+        "draw/open-api": "^0.9",
         "draw/process": "^0.9",
         "draw/security": "^0.9",
         "draw/tester": "^0.9",
