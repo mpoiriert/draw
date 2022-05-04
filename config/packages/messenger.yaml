@@ -9,5 +9,5 @@ framework:
 
         routing:
             Draw\Component\Messenger\Message\ManuallyTriggeredInterface: 'async'
-            Draw\Bundle\UserBundle\AccountLocker\Message\NewUserLockMessage: 'sync'
-            Draw\Bundle\UserBundle\AccountLocker\Message\UserLockDelayedActivationMessage: 'sync'
+            Draw\Bundle\UserBundle\Message\NewUserLockMessage: 'sync'
+            Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage: 'sync'

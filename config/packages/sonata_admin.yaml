@@ -5,7 +5,7 @@ sonata_admin:
             - { type: 'sonata.admin.block.admin_list', position: 'left' }
             -   class: 'col-lg-3 col-xs-6'          # twitter bootstrap responsive code
                 position: 'top'                        # zone in the dashboard
-                type: 'Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock'  # block id
+                type: 'Draw\Bundle\SonataIntegrationBundle\User\Block\UserCountBlock'  # block id
             -   class: 'col-lg-3 col-xs-6'          # twitter bootstrap responsive code
                 position: 'top'                        # zone in the dashboard
                 type: 'Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService'  # block id

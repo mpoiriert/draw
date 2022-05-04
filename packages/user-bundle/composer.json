@@ -29,8 +29,7 @@
         "phpunit/phpunit": "^8.0 || ^9.0",
         "scheb/2fa-bundle": "^5.12",
         "scheb/2fa-qr-code": "^5.12",
-        "scheb/2fa-totp": "^5.12",
-        "sonata-project/admin-bundle": "^4.8"
+        "scheb/2fa-totp": "^5.12"
     },
     "suggest": {
         "draw/messenger": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",

@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
-use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
+use Draw\Bundle\UserBundle\EventListener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 
 class DrawUserExtensionWithoutEncryptPasswordListenerTest extends DrawUserExtensionTest

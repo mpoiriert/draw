@@ -28,6 +28,9 @@ class DrawSonataIntegrationExtensionTest extends ExtensionTestCase
             'messenger' => [
                 'enabled' => false,
             ],
+            'user' => [
+                'enabled' => false,
+            ],
         ];
     }
 

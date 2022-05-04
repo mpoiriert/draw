@@ -2,9 +2,9 @@
 
 namespace Draw\Bundle\UserBundle\MessageHandler;
 
-use Draw\Bundle\UserBundle\AccountLocker\Message\UserLockActivatedMessage;
-use Draw\Bundle\UserBundle\Onboarding\Message\NewUserMessage;
-use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Message\PasswordChangeRequestedMessage;
+use Draw\Bundle\UserBundle\Message\NewUserMessage;
+use Draw\Bundle\UserBundle\Message\PasswordChangeRequestedMessage;
+use Draw\Bundle\UserBundle\Message\UserLockActivatedMessage;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
 class PreventNotHandleMessageHandler implements MessageSubscriberInterface
