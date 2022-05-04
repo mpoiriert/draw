@@ -4,11 +4,11 @@ namespace Draw\Bundle\UserBundle\Tests\AccountLocker\Entity;
 
 use DateTime;
 use DateTimeInterface;
-use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
+use Draw\Bundle\UserBundle\Entity\UserLock;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock
+ * @covers \Draw\Bundle\UserBundle\Entity\UserLock
  */
 class UserLockTest extends TestCase
 {

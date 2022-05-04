@@ -3,12 +3,17 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use App\Entity\MessengerMessage;
+use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\Configuration;
+use Draw\Bundle\SonataIntegrationBundle\User\Controller\UserLockUnlockController;
+use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
+use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class ConfigurationTest extends ConfigurationTestCase
@@ -30,6 +35,7 @@ class ConfigurationTest extends ConfigurationTestCase
                     'icon' => 'fa fa-server',
                     'label' => 'config',
                     'pager_type' => 'default',
+                    'show_in_dashboard' => true,
                 ],
             ],
             'console' => [
@@ -41,6 +47,7 @@ class ConfigurationTest extends ConfigurationTestCase
                     'icon' => 'fas fa-terminal',
                     'label' => 'Execution',
                     'pager_type' => 'simple',
+                    'show_in_dashboard' => true,
                 ],
                 'commands' => [],
             ],
@@ -54,6 +61,32 @@ class ConfigurationTest extends ConfigurationTestCase
                     'icon' => 'fas fa-rss',
                     'label' => 'Message',
                     'pager_type' => 'simple',
+                    'show_in_dashboard' => true,
+                ],
+            ],
+            'user' => [
+                'enabled' => true,
+                'user_admin_code' => UserAdmin::class,
+                '2fa' => [
+                    'enabled' => false,
+                    'field_positions' => [
+                        TwoFactorAuthenticationExtension::FIELD_2FA_ENABLED => [
+                            'list' => ListMapper::NAME_ACTIONS,
+                            'form' => true,
+                        ],
+                    ],
+                ],
+                'user_lock' => [
+                    'enabled' => true,
+                    'admin' => [
+                        'group' => 'User',
+                        'entity_class' => UserLock::class,
+                        'controller_class' => UserLockUnlockController::class,
+                        'icon' => 'fas fa-ba',
+                        'label' => 'User lock',
+                        'pager_type' => 'simple',
+                        'show_in_dashboard' => true,
+                    ],
                 ],
             ],
         ];
@@ -64,6 +97,11 @@ class ConfigurationTest extends ConfigurationTestCase
         yield [
             ['messenger' => ['queue_names' => 'test']],
             'Invalid type for path "draw_sonata_integration.messenger.queue_names". Expected array, but got string',
+        ];
+
+        yield [
+            ['user' => ['user_admin_code' => []]],
+            'Invalid type for path "draw_sonata_integration.user.user_admin_code". Expected scalar, but got array.',
         ];
     }
 }

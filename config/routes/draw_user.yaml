@@ -1,5 +1,5 @@
 sonata:
-    resource: "@DrawUserBundle/Sonata/Controller"
+    resource: "@DrawSonataIntegrationBundle/User/Controller"
     type: "annotation"
     prefix: "/admin"
 
@@ -8,8 +8,3 @@ api:
     type: "annotation"
     format: "json"
     prefix: "/api"
-
-account_locker:
-    resource: "@DrawUserBundle/AccountLocker/Controller"
-    type: "annotation"
-    prefix: "/admin"

@@ -3,12 +3,8 @@
 namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use App\Entity\User;
-use App\Sonata\Admin\UserAdmin;
-use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
-use Draw\Bundle\UserBundle\AccountLocker\Sonata\Controller\UserLockController;
 use Draw\Bundle\UserBundle\DependencyInjection\Configuration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class ConfigurationTest extends ConfigurationTestCase
@@ -27,32 +23,25 @@ class ConfigurationTest extends ConfigurationTestCase
                 'entity' => [
                     'enabled' => false,
                 ],
-                'sonata' => [
-                    'enabled' => false,
-                    'model_class' => UserLock::class,
-                    'controller' => UserLockController::class,
-                    'group' => 'User',
-                    'show_in_dashboard' => true,
-                    'icon' => 'fas fa-ban',
-                    'label' => 'User lock',
-                    'pager_type' => 'simple',
-                ],
             ],
             'email_writers' => [
                 'enabled' => false,
-            ],
-            'password_recovery' => [
-                'enabled' => false,
-                'email' => [
-                    'enabled' => false,
+                'forgot_password' => [
+                    'enabled' => true,
+                ],
+                'onboarding' => [
+                    'enabled' => true,
+                    'expiration_delay' => '+ 7 days',
+                ],
+                'password_change_requested' => [
+                    'enabled' => true,
+                ],
+                'to_user' => [
+                    'enabled' => true,
                 ],
             ],
             'onboarding' => [
                 'enabled' => false,
-                'email' => [
-                    'enabled' => false,
-                    'expiration_delay' => '+ 7 days',
-                ],
             ],
             'enforce_2fa' => [
                 'enabled' => false,
@@ -62,22 +51,6 @@ class ConfigurationTest extends ConfigurationTestCase
             'password_change_enforcer' => [
                 'enabled' => false,
                 'change_password_route' => 'admin_change_password',
-                'email' => [
-                    'enabled' => false,
-                ],
-            ],
-            'sonata' => [
-                'enabled' => true,
-                'user_admin_code' => UserAdmin::class,
-                '2fa' => [
-                    'enabled' => false,
-                    'field_positions' => [
-                        '2fa_enabled' => [
-                            'list' => defined(ListMapper::class.'NAME_ACTIONS') ? ListMapper::NAME_ACTIONS : '_action',
-                            'form' => true,
-                        ],
-                    ],
-                ],
             ],
             'encrypt_password_listener' => [
                 'enabled' => true,
@@ -91,11 +64,6 @@ class ConfigurationTest extends ConfigurationTestCase
 
     public function provideTestInvalidConfiguration(): iterable
     {
-        yield [
-            ['sonata' => ['user_admin_code' => []]],
-            'Invalid type for path "draw_user.sonata.user_admin_code". Expected scalar, but got array.',
-        ];
-
         yield [
             ['encrypt_password_listener' => 'string-not-supported'],
             'Invalid type for path "draw_user.encrypt_password_listener". Expected array, but got string',

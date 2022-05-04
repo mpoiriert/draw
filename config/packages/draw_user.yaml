@@ -1,28 +1,8 @@
-sonata_admin:
-    templates:
-        user_block: '@DrawUser/Sonata/Block/user_block.html.twig'
-
-sonata_block:
-    blocks:
-        Draw\Bundle\UserBundle\Sonata\Block\UserCountBlock: ~
-
 draw_user:
     account_locker:
         entity: ~
-        sonata: ~
     email_writers: ~
-    password_recovery:
-        email: ~
-    onboarding:
-        email: ~
-    password_change_enforcer:
-        email: ~
+    onboarding: ~
+    password_change_enforcer: ~
     enforce_2fa:
         enforcing_roles: ['ROLE_2FA_ADMIN']
-    sonata:
-        enabled: true
-        user_admin_code: App\Sonata\Admin\UserAdmin
-        2fa:
-            field_positions:
-                2fa_enabled:
-                    list: 'email'
