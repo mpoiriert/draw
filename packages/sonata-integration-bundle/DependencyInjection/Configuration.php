@@ -3,11 +3,17 @@
 namespace Draw\Bundle\SonataIntegrationBundle\DependencyInjection;
 
 use App\Entity\MessengerMessage;
+use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
+use Draw\Bundle\SonataIntegrationBundle\User\Controller\UserLockUnlockController;
+use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
+use Draw\Bundle\UserBundle\DrawUserBundle;
+use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Messenger\Broker;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -22,6 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createConfigurationNode())
                 ->append($this->createConsoleNode())
                 ->append($this->createMessengerNode())
+                ->append($this->createUserNode())
             ->end();
 
         return $treeBuilder;
@@ -88,6 +95,50 @@ class Configuration implements ConfigurationInterface
                         ->pagerTypeDefaultValue('simple')
                         ->iconDefaultValue('fas fa-rss')
                         ->labelDefaultValue('Message')
+                )
+            ->end();
+    }
+
+    private function createUserNode(): ArrayNodeDefinition
+    {
+        return $this->canBe(DrawUserBundle::class, new ArrayNodeDefinition('user'))
+            ->children()
+                ->scalarNode('user_admin_code')->defaultValue(UserAdmin::class)->end()
+                ->append($this->createUserLockNode())
+                ->arrayNode('2fa')
+                    ->canBeEnabled()
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('field_positions')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->arrayNode(TwoFactorAuthenticationExtension::FIELD_2FA_ENABLED)
+                                ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('list')
+                                            ->defaultValue(ListMapper::NAME_ACTIONS)
+                                        ->end()
+                                        ->variableNode('form')->defaultValue(true)->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function createUserLockNode(): ArrayNodeDefinition
+    {
+        return $this->canBe(DrawUserBundle::class, new ArrayNodeDefinition('user_lock'))
+             ->children()
+                ->append(
+                    (new SonataAdminNodeConfiguration(UserLock::class, 'User', 'admin'))
+                        ->addDefaultsIfNotSet()
+                        ->controllerClassDefaultValue(UserLockUnlockController::class)
+                        ->pagerTypeDefaultValue('simple')
+                        ->iconDefaultValue('fas fa-ba')
+                        ->labelDefaultValue('User lock')
                 )
             ->end();
     }

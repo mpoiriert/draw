@@ -3,12 +3,6 @@
 namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use App\Entity\User;
-use App\Sonata\Admin\UserAdmin;
-use Draw\Bundle\UserBundle\AccountLocker\Entity\UserLock;
-use Draw\Bundle\UserBundle\AccountLocker\Sonata\Controller\UserLockController;
-use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\SonataAdminBundle;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -23,7 +17,6 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->append($this->createAccountLockerNode())
-                ->append($this->createSonataNode())
                 ->append($this->createOnboardingNode())
                 ->arrayNode('encrypt_password_listener')
                     ->canBeDisabled()
@@ -41,11 +34,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->append($this->createNeedPasswordChangeEnforcerNode())
-                ->append($this->createPasswordRecoveryNode())
-                ->arrayNode('email_writers')
-                    ->canBeEnabled()
-                ->end()
-
+                ->append($this->createEmailWritersNodes())
                 ->scalarNode('user_entity_class')
                     ->validate()
                         ->ifTrue(function ($value) { return !class_exists($value); })
@@ -65,6 +54,29 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
+    private function createEmailWritersNodes(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('email_writers'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('forgot_password')
+                    ->canBeDisabled()
+                ->end()
+                ->arrayNode('onboarding')
+                    ->canBeDisabled()
+                    ->children()
+                        ->scalarNode('expiration_delay')->defaultValue('+ 7 days')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('password_change_requested')
+                    ->canBeDisabled()
+                ->end()
+                ->arrayNode('to_user')
+                    ->canBeDisabled()
+                ->end()
+            ->end();
+    }
+
     private function createAccountLockerNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('account_locker'))
@@ -73,18 +85,6 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('account_locked_route')->defaultValue('draw_user_account_locker_account_locked')->end()
                 ->arrayNode('entity')
                     ->canBeEnabled()
-                ->end()
-                ->arrayNode('sonata')
-                    ->canBeEnabled()
-                    ->children()
-                        ->scalarNode('model_class')->defaultValue(UserLock::class)->end()
-                        ->scalarNode('controller')->defaultValue(UserLockController::class)->end()
-                        ->scalarNode('group')->defaultValue('User')->end()
-                        ->booleanNode('show_in_dashboard')->defaultTrue()->end()
-                        ->scalarNode('icon')->defaultValue('fas fa-ban')->end()
-                        ->scalarNode('label')->defaultValue('User lock')->end()
-                        ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('simple')->end()
-                    ->end()
                 ->end()
             ->end();
     }
@@ -95,67 +95,12 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->children()
                 ->scalarNode('change_password_route')->defaultValue('admin_change_password')->end()
-                ->arrayNode('email')
-                    ->canBeEnabled()
-                ->end()
             ->end();
     }
 
     private function createOnboardingNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('onboarding'))
-            ->canBeEnabled()
-            ->children()
-                ->arrayNode('email')
-                    ->canBeEnabled()
-                    ->children()
-                        ->scalarNode('expiration_delay')->defaultValue('+ 7 days')->end()
-                    ->end()
-                ->end()
-            ->end();
-    }
-
-    private function createPasswordRecoveryNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('password_recovery'))
-            ->canBeEnabled()
-            ->children()
-                ->arrayNode('email')
-                    ->canBeEnabled()
-                ->end()
-            ->end();
-    }
-
-    private function createSonataNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('sonata'))
-            ->{class_exists(SonataAdminBundle::class) ? 'canBeDisabled' : 'canBeEnabled'}()
-            ->children()
-                ->scalarNode('user_admin_code')->defaultValue(UserAdmin::class)->end()
-                ->arrayNode('2fa')
-                    ->canBeEnabled()
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('field_positions')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->arrayNode(TwoFactorAuthenticationExtension::FIELD_2FA_ENABLED)
-                                ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->variableNode('list')
-                                            ->defaultValue(
-                                                defined(ListMapper::class.'NAME_ACTIONS')
-                                                    ? ListMapper::NAME_ACTIONS
-                                                    : '_action'
-                                            )
-                                        ->end()
-                                        ->variableNode('form')->defaultValue(true)->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
+            ->canBeEnabled();
     }
 }

@@ -24,6 +24,7 @@ class SonataAdminNodeConfiguration extends ArrayNodeDefinition
                 ->scalarNode('controller_class')->defaultValue(CRUDController::class)->end()
                 ->scalarNode('icon')->defaultNull()->end()
                 ->scalarNode('label')->defaultNull()->end()
+                ->scalarNode('show_in_dashboard')->defaultTrue()->end()
                 ->enumNode('pager_type')->values(['default', 'simple'])->defaultValue('default')->end()
             ->end();
     }
@@ -65,7 +66,7 @@ class SonataAdminNodeConfiguration extends ArrayNodeDefinition
                 array_filter(
                     array_intersect_key(
                         $config,
-                        array_flip(['group', 'icon', 'label', 'pager_type'])
+                        array_flip(['group', 'icon', 'label', 'pager_type', 'show_in_dashboard'])
                     ) + ['manager_type' => 'orm'],
                     function ($value) {
                         return null !== $value;

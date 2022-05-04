@@ -525,7 +525,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $loader->load('versioning.php');
     }
 
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $configs = $container->getExtensionConfig('draw_framework_extra');
 

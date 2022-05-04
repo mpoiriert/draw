@@ -18,7 +18,12 @@
         "draw/console": "^1.0",
         "draw/messenger": "^1.0",
         "draw/tester": "^1.0",
-        "phpunit/phpunit": "^8.0 || ^9.0"
+        "draw/user-bundle": "^1.0",
+        "firebase/php-jwt": "^v6.1",
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "scheb/2fa-bundle": "^5.12",
+        "scheb/2fa-qr-code": "^5.12",
+        "scheb/2fa-totp": "^5.12"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

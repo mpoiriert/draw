@@ -82,40 +82,40 @@ abstract class ExtensionTestCase extends TestCase
 
     public function testDefinitionsMatchChecks()
     {
-        $expectedIds = array_values(
+        $actualIds = array_values(
             array_diff(
                 array_keys(self::$containerBuilder->getDefinitions()),
                 array_keys((new ContainerBuilder())->getDefinitions())
             )
         );
-        asort($expectedIds);
+        asort($actualIds);
 
-        $currentIds = self::$definitions;
-        asort($currentIds);
+        $expectedIds = self::$definitions;
+        asort($expectedIds);
 
         $this->assertSame(
             array_values($expectedIds),
-            array_values($currentIds),
+            array_values($actualIds),
             'Services available do not match.'
         );
     }
 
     public function testAliasesMatchChecks()
     {
-        $expectedIds = array_values(
+        $actualIds = array_values(
             array_diff(
                 array_keys(self::$containerBuilder->getAliases()),
                 array_keys((new ContainerBuilder())->getAliases())
             )
         );
-        asort($expectedIds);
+        asort($actualIds);
 
-        $currentIds = self::$aliases;
-        asort($currentIds);
+        $expectedIds = self::$aliases;
+        asort($expectedIds);
 
         $this->assertSame(
             array_values($expectedIds),
-            array_values($currentIds),
+            array_values($actualIds),
             'Alias available do not match.'
         );
     }

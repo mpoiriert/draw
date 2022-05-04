@@ -3,39 +3,59 @@
 namespace Draw\Bundle\UserBundle\DependencyInjection;
 
 use Doctrine\ORM\EntityRepository;
-use Draw\Bundle\UserBundle\AccountLocker\Listener\AccountLockerSubscriber;
-use Draw\Bundle\UserBundle\AccountLocker\Sonata\Admin\UserLockAdmin;
-use Draw\Bundle\UserBundle\AccountLocker\Sonata\Extension\UserAdminExtension;
+use Draw\Bundle\UserBundle\AccountLocker;
+use Draw\Bundle\UserBundle\Command\RefreshUserLocksCommand;
+use Draw\Bundle\UserBundle\EmailWriter\ForgotPasswordEmailWriter;
+use Draw\Bundle\UserBundle\EmailWriter\PasswordChangeRequestedEmailWriter;
+use Draw\Bundle\UserBundle\EmailWriter\ToUserEmailWriter;
+use Draw\Bundle\UserBundle\EmailWriter\UserOnboardingEmailWriter;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
-use Draw\Bundle\UserBundle\Listener\EncryptPasswordUserEntityListener;
-use Draw\Bundle\UserBundle\Onboarding\EmailWriter\UserOnboardingEmailWriter;
-use Draw\Bundle\UserBundle\Onboarding\MessageHandler\NewUserSendEmailMessageHandler;
-use Draw\Bundle\UserBundle\PasswordChangeEnforcer\EmailWriter\PasswordChangeRequestedEmailWriter;
-use Draw\Bundle\UserBundle\PasswordChangeEnforcer\Listener\PasswordChangeEnforcerSubscriber;
-use Draw\Bundle\UserBundle\PasswordChangeEnforcer\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
+use Draw\Bundle\UserBundle\Entity\UserLock;
+use Draw\Bundle\UserBundle\EventListener\AccountLockerListener;
+use Draw\Bundle\UserBundle\EventListener\EncryptPasswordUserEntityListener;
+use Draw\Bundle\UserBundle\EventListener\PasswordChangeEnforcerListener;
+use Draw\Bundle\UserBundle\EventListener\TwoFactorAuthenticationEntityListener;
+use Draw\Bundle\UserBundle\EventListener\TwoFactorAuthenticationListener;
+use Draw\Bundle\UserBundle\EventListener\UserRequestInterceptorListener;
+use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
+use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
+use Draw\Bundle\UserBundle\MessageHandler\NewUserSendEmailMessageHandler;
+use Draw\Bundle\UserBundle\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
+use Draw\Bundle\UserBundle\MessageHandler\RefreshUserLockMessageHandler;
+use Draw\Bundle\UserBundle\MessageHandler\UserLockLifeCycleMessageHandler;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\RolesTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\TwoFactorAuthenticationEnforcerInterface;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Listener\TwoFactorAuthenticationEntityListener;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Listener\TwoFactorAuthenticationSubscriber;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
-use Draw\Bundle\UserBundle\Sonata\Controller\TwoFactorAuthenticationController;
-use Draw\Bundle\UserBundle\Sonata\Extension\TwoFactorAuthenticationExtension;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Parameter;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class DrawUserExtension extends Extension implements PrependExtensionInterface
 {
+    private array $excludeEntitiesPath = [];
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
+        $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
+
+        $container
+            ->setDefinition(
+                'draw_user.user_repository',
+                new Definition(EntityRepository::class)
+            )
+            ->setFactory([new Reference('doctrine'), 'getRepository'])
+            ->setArgument(0, new Parameter('draw_user.user_entity_class'));
 
         $container->registerAliasForArgument(
             'draw_user.user_repository',
@@ -43,16 +63,56 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             'drawUserEntityRepository'
         );
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $definition = (new Definition())
+            ->setAutowired(true)
+            ->setAutoconfigured(true);
+
+        $bundleDirectory = realpath(__DIR__.'/..');
+
+        $exclude = [
+            $bundleDirectory.'/vendor/',
+            $bundleDirectory.'/DrawUserBundle.php',
+            $bundleDirectory.'/Controller/',
+            $bundleDirectory.'/DependencyInjection/',
+            $bundleDirectory.'/DTO/',
+            $bundleDirectory.'/Email/',
+            $bundleDirectory.'/EmailWriter/',
+            $bundleDirectory.'/Entity/',
+            $bundleDirectory.'/Event/',
+            $bundleDirectory.'/Exception/',
+            $bundleDirectory.'/Message/',
+            $bundleDirectory.'/Resources/',
+            $bundleDirectory.'/Tests/',
+        ];
+
+        $loader->registerClasses(
+            $definition,
+            'Draw\\Bundle\\UserBundle\\',
+            $bundleDirectory,
+            $exclude
+        );
+
+        $loader->registerClasses(
+            $definition->addTag('controller.service_arguments'),
+            'Draw\\Bundle\\UserBundle\\Controller\\',
+            $bundleDirectory.'/Controller/'
+        );
+
+        $container
+            ->setAlias(UserFeedInterface::class, SessionUserFeed::class);
+
+        $container
+            ->getDefinition(UserRequestInterceptorListener::class)
+            ->setArgument(
+                '$firewallMap',
+                new Reference('security.firewall.map', ContainerInterface::NULL_ON_INVALID_REFERENCE)
+            );
 
         $this->assignParameters($config, $container);
 
-        $this->configureAccountLocker($config['account_locker'], $loader, $container);
-        $this->configureSonata($config['sonata'], $loader, $container);
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
+        $this->configureAccountLocker($config['account_locker'], $loader, $container);
         $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
-        $this->configurePasswordRecovery($config['password_recovery'], $loader, $container);
         $this->configureOnboarding($config['onboarding'], $loader, $container);
         $this->configureNeedPasswordChangeEnforcer($config['password_change_enforcer'], $loader, $container);
 
@@ -62,7 +122,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         }
 
         if ($config['encrypt_password_listener']['enabled']) {
-            $container->getDefinition(EncryptPasswordUserEntityListener::class)
+            $container
+                ->getDefinition(EncryptPasswordUserEntityListener::class)
                 ->setArgument('$autoGeneratePassword', $config['encrypt_password_listener']['auto_generate_password'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'preUpdate'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist'])
@@ -71,6 +132,11 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         } else {
             $container->removeDefinition(EncryptPasswordUserEntityListener::class);
         }
+
+        $container->setParameter(
+            'draw.user.orm.default_annotation_metadata_driver.exclude_paths',
+            $this->excludeEntitiesPath
+        );
     }
 
     private function assignParameters($config, ContainerBuilder $container)
@@ -84,123 +150,133 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         foreach ($parameterNames as $parameterName) {
             $container->setParameter('draw_user.'.$parameterName, $config[$parameterName]);
         }
+    }
 
-        if ($config['sonata']['enabled']) {
-            $container->setParameter('draw_user.sonata.user_admin_code', $config['sonata']['user_admin_code']);
+    private function configureEmailWriters(
+        array $config,
+        PhpFileLoader $loader,
+        ContainerBuilder $container
+    ) {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        if (!interface_exists(EmailWriterInterface::class)) {
+            throw new RuntimeException('The packages [draw/mailer] is needs to have email writers');
+        }
+
+        $definition = new Definition();
+        $definition
+            ->setAutowired(true)
+            ->setAutoconfigured(true);
+
+        $loader->registerClasses(
+            $definition,
+            'Draw\\Bundle\\UserBundle\\EmailWriter\\',
+            realpath(__DIR__.'/../EmailWriter'),
+        );
+
+        if (!$config['forgot_password']['enabled']) {
+            $container->removeDefinition(ForgotPasswordEmailWriter::class);
+        } else {
+            $container->getDefinition(ForgotPasswordEmailWriter::class)
+                ->setArgument('$resetPasswordRoute', new Parameter('draw_user.reset_password_route'))
+                ->setArgument('$inviteCreateAccountRoute', new Parameter('draw_user.invite_create_account_route'));
+        }
+
+        if (!$config['onboarding']['enabled']) {
+            $container->removeDefinition(UserOnboardingEmailWriter::class);
+        } else {
+            $container
+                ->getDefinition(UserOnboardingEmailWriter::class)
+                ->setArgument('$messageExpirationDelay', $config['onboarding']['expiration_delay']);
+        }
+
+        if (!$config['password_change_requested']['enabled']) {
+            $container->removeDefinition(PasswordChangeRequestedEmailWriter::class);
+        }
+
+        if (!$config['to_user']['enabled']) {
+            $container->removeDefinition(ToUserEmailWriter::class);
         }
     }
 
     private function configureAccountLocker(
         array $config,
-        LoaderInterface $loader,
+        PhpFileLoader $loader,
         ContainerBuilder $containerBuilder
     ): void {
         if (!$config['enabled']) {
+            $containerBuilder->removeDefinition(RefreshUserLocksCommand::class);
+            $containerBuilder->removeDefinition(AccountLockerListener::class);
+            $containerBuilder->removeDefinition(RefreshUserLockMessageHandler::class);
+            $containerBuilder->removeDefinition(UserLockLifeCycleMessageHandler::class);
+            $containerBuilder->removeDefinition(AccountLocker::class);
+            $this->excludeEntitiesPath[] = (new ReflectionClass(UserLock::class))->getFileName();
+
             return;
         }
-
-        $loader->load('account-locker.xml');
 
         $containerBuilder
-            ->getDefinition(AccountLockerSubscriber::class)
+            ->getDefinition(AccountLockerListener::class)
             ->setArgument('$accountLockedRoute', $config['account_locked_route']);
-
-        if (!$config['sonata']['enabled']) {
-            return;
-        }
-
-        if (!$containerBuilder->hasParameter('draw_user.sonata.user_admin_code')) {
-            throw new RuntimeException('To use [draw_user.account_locker.sonata] you must enabled [draw_user.sonata].');
-        }
-
-        $loader->load('account-locker-sonata.xml');
-
-        $containerBuilder->getDefinition(UserLockAdmin::class)
-            ->setArgument(1, $config['sonata']['model_class'])
-            ->setArgument(2, $config['sonata']['controller'])
-            ->addTag(
-                'sonata.admin',
-                array_filter(
-                    array_merge(
-                        $config['sonata'],
-                        ['manager_type' => 'orm']
-                    ),
-                    function ($value) {
-                        return null !== $value;
-                    }
-                )
-            );
-
-        $containerBuilder->getDefinition(UserAdminExtension::class)
-            ->addTag(
-                'sonata.admin.extension',
-                ['target' => $containerBuilder->getParameter('draw_user.sonata.user_admin_code')]
-            );
     }
 
     private function configureNeedPasswordChangeEnforcer(
         array $config,
-        LoaderInterface $loader,
+        PhpFileLoader $loader,
         ContainerBuilder $containerBuilder
     ): void {
         if (!$config['enabled']) {
+            $containerBuilder->removeDefinition(PasswordChangeEnforcerListener::class);
+            $containerBuilder->removeDefinition(PasswordChangeRequestedSendEmailMessageHandler::class);
+
             return;
         }
 
-        $loader->load('password-change-enforcer.xml');
-
-        $containerBuilder->getDefinition(PasswordChangeEnforcerSubscriber::class)
+        $containerBuilder
+            ->getDefinition(PasswordChangeEnforcerListener::class)
             ->setArgument('$changePasswordRoute', $config['change_password_route']);
-
-        if (!$config['email']['enabled']) {
-            $containerBuilder->removeDefinition(PasswordChangeRequestedSendEmailMessageHandler::class);
-        } else {
-            $this->checkEmailWriter($containerBuilder, 'password_change_enforcer');
-        }
     }
 
     private function configureOnBoarding(
         array $config,
-        LoaderInterface $loader,
+        PhpFileLoader $loader,
         ContainerBuilder $containerBuilder
     ): void {
         if (!$config['enabled']) {
-            return;
-        }
-
-        $loader->load('onboarding.xml');
-
-        if (!$config['email']['enabled']) {
             $containerBuilder->removeDefinition(NewUserSendEmailMessageHandler::class);
-        } else {
-            $this->checkEmailWriter($containerBuilder, 'onboarding');
-            $containerBuilder->getDefinition(UserOnboardingEmailWriter::class)
-                ->setArgument('$messageExpirationDelay', $config['email']['expiration_delay']);
         }
     }
 
     private function configureEnforce2fa(
         array $config,
-        LoaderInterface $loader,
+        PhpFileLoader $loader,
         ContainerBuilder $containerBuilder
     ): void {
         if (!$config['enabled']) {
+            $containerBuilder->removeDefinition(IndecisiveTwoFactorAuthenticationEnforcer::class);
+            $containerBuilder->removeDefinition(RolesTwoFactorAuthenticationEnforcer::class);
+            $containerBuilder->removeDefinition(TwoFactorAuthenticationEntityListener::class);
+            $containerBuilder->removeDefinition(TwoFactorAuthenticationListener::class);
+
             return;
         }
 
-        $loader->load('enforce-2fa.xml');
-
         $userClass = $containerBuilder->getParameter('draw_user.user_entity_class');
 
-        $containerBuilder->getDefinition(TwoFactorAuthenticationEntityListener::class)
+        $containerBuilder
+            ->getDefinition(TwoFactorAuthenticationEntityListener::class)
             ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'preUpdate'])
             ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist']);
 
-        $containerBuilder->getDefinition(TwoFactorAuthenticationSubscriber::class)
+        $containerBuilder
+            ->getDefinition(TwoFactorAuthenticationListener::class)
             ->setArgument('$enableRoute', $config['enable_route']);
 
         if ($config['enforcing_roles']) {
-            $containerBuilder->getDefinition(RolesTwoFactorAuthenticationEnforcer::class)
+            $containerBuilder
+                ->getDefinition(RolesTwoFactorAuthenticationEnforcer::class)
                 ->setArgument('$enforcingRoles', $config['enforcing_roles']);
 
             $containerBuilder
@@ -208,84 +284,13 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
                     TwoFactorAuthenticationEnforcerInterface::class,
                     RolesTwoFactorAuthenticationEnforcer::class
                 );
-
-            return;
-        }
-
-        $containerBuilder
-            ->setAlias(
-                TwoFactorAuthenticationEnforcerInterface::class,
-                IndecisiveTwoFactorAuthenticationEnforcer::class
-            );
-    }
-
-    private function configurePasswordRecovery(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $containerBuilder
-    ): void {
-        if (!$config['enabled']) {
-            return;
-        }
-
-        $loader->load('password-recovery.xml');
-
-        if (!$config['email']['enabled']) {
-            $containerBuilder->removeDefinition(PasswordChangeRequestedEmailWriter::class);
         } else {
-            $this->checkEmailWriter($containerBuilder, 'password_recovery');
-        }
-    }
-
-    private function configureEmailWriters(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $containerBuilder
-    ): void {
-        if (!$config['enabled']) {
-            return;
-        }
-
-        $this->checkEmailWriter($containerBuilder, 'email_writers');
-
-        $loader->load('email-writers.xml');
-    }
-
-    private function configureSonata(array $config, LoaderInterface $loader, ContainerBuilder $container): void
-    {
-        if (!$config['enabled']) {
-            return;
-        }
-
-        $container->setParameter('draw_user.sonata.user_admin_code', $config['user_admin_code']);
-        $loader->load('sonata.xml');
-
-        if (!$config['2fa']['enabled'] ?? false) {
-            $container->removeDefinition(TwoFactorAuthenticationExtension::class);
-            $container->removeDefinition(TwoFactorAuthenticationController::class);
-
-            return;
-        }
-
-        if (!isset($container->getParameter('kernel.bundles')['SchebTwoFactorBundle'])) {
-            throw new RuntimeException('The bundle SchebTwoFactorBundle needs to be registered to have 2FA enabled.');
-        }
-
-        $reflectionClass = new ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
-        if (!$reflectionClass->implementsInterface(TwoFactorAuthenticationUserInterface::class)) {
-            throw new RuntimeException(sprintf('The class [%s] must implements [%s] to have 2FA enabled.', $userEntityClass, TwoFactorAuthenticationUserInterface::class));
-        }
-
-        $container->getDefinition(TwoFactorAuthenticationExtension::class)
-            ->setArgument(0, $config['2fa']['field_positions'])
-            ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
-    }
-
-    private function checkEmailWriter(ContainerBuilder $containerBuilder, string $for): void
-    {
-        // todo check base on something else
-        if (!interface_exists(EmailWriterInterface::class)) {
-            throw new RuntimeException(sprintf('The bundle [%s] needs to be registered to have email enabled for [%s].', 'DrawPostOfficeBundle', $for));
+            $containerBuilder->removeDefinition(RolesTwoFactorAuthenticationEnforcer::class);
+            $containerBuilder
+                ->setAlias(
+                    TwoFactorAuthenticationEnforcerInterface::class,
+                    IndecisiveTwoFactorAuthenticationEnforcer::class
+                );
         }
     }
 
@@ -298,22 +303,27 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             $container->getParameterBag()->resolveValue($configs)
         );
 
-        if ($this->isConfigEnabled($container, $config['account_locker']['entity'])) {
+        if ($container->hasExtension('doctrine')) {
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
-                    'mappings' => [
-                        'DrawUserAccountLocker' => [
-                            'type' => 'annotation',
-                            'dir' => realpath(__DIR__.'/../AccountLocker/Entity'),
-                            'is_bundle' => false,
-                            'prefix' => 'Draw\Bundle\UserBundle\AccountLocker\Entity',
-                        ],
-                    ],
                     'resolve_target_entities' => [
                         SecurityUserInterface::class => $config['user_entity_class'],
                     ],
                 ],
             ]);
+        }
+
+        if (!$config['account_locker']['enabled'] && $container->hasExtension('draw_sonata_integration')) {
+            $container->prependExtensionConfig(
+                'draw_sonata_integration',
+                [
+                    'user' => [
+                        'user_lock' => [
+                            'enabled' => false,
+                        ],
+                    ],
+                ]
+            );
         }
     }
 }

@@ -2,12 +2,11 @@
 
 namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
-use Draw\Bundle\UserBundle\AccountLocker\AccountLocker;
-use Draw\Bundle\UserBundle\AccountLocker\Command\RefreshUserLocksCommand;
-use Draw\Bundle\UserBundle\AccountLocker\Controller\AccountLockedController;
-use Draw\Bundle\UserBundle\AccountLocker\Listener\AccountLockerSubscriber;
-use Draw\Bundle\UserBundle\AccountLocker\MessageHandler\RefreshUserLockMessageHandler;
-use Draw\Bundle\UserBundle\AccountLocker\MessageHandler\UserLockLifeCycleMessageHandler;
+use Draw\Bundle\UserBundle\AccountLocker;
+use Draw\Bundle\UserBundle\Command\RefreshUserLocksCommand;
+use Draw\Bundle\UserBundle\EventListener\AccountLockerListener;
+use Draw\Bundle\UserBundle\MessageHandler\RefreshUserLockMessageHandler;
+use Draw\Bundle\UserBundle\MessageHandler\UserLockLifeCycleMessageHandler;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 
 class DrawUserExtensionWithAccountLockerEnabledTest extends DrawUserExtensionTest
@@ -26,10 +25,19 @@ class DrawUserExtensionWithAccountLockerEnabledTest extends DrawUserExtensionTes
     {
         yield from parent::provideTestHasServiceDefinition();
         yield [AccountLocker::class];
-        yield [AccountLockedController::class];
-        yield [AccountLockerSubscriber::class];
+        yield [AccountLockerListener::class];
         yield [RefreshUserLocksCommand::class];
         yield [RefreshUserLockMessageHandler::class];
         yield [UserLockLifeCycleMessageHandler::class];
+    }
+
+    public function testExcludePathsParameter(): void
+    {
+        $this->assertSame(
+            [],
+            $this
+                ->getContainerBuilder()
+                ->getParameter('draw.user.orm.default_annotation_metadata_driver.exclude_paths')
+        );
     }
 }

@@ -9,3 +9,11 @@ draw_sonata_integration:
 
   messenger:
     queue_names: ['default', 'failed']
+
+  user:
+    enabled: true
+    user_admin_code: App\Sonata\Admin\UserAdmin
+    2fa:
+      field_positions:
+        2fa_enabled:
+          list: 'email'

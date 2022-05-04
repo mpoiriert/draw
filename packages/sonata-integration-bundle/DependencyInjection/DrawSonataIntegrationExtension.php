@@ -8,14 +8,29 @@ use Draw\Bundle\SonataIntegrationBundle\Console\Admin\ExecutionAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Command;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
+use Draw\Bundle\SonataIntegrationBundle\User\Block\UserCountBlock;
+use Draw\Bundle\SonataIntegrationBundle\User\Controller\LoginController;
+use Draw\Bundle\SonataIntegrationBundle\User\Controller\RefreshUserLockController;
+use Draw\Bundle\SonataIntegrationBundle\User\Controller\TwoFactorAuthenticationController;
+use Draw\Bundle\SonataIntegrationBundle\User\Controller\UserLockUnlockController;
+use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
+use Draw\Bundle\SonataIntegrationBundle\User\Extension\UserLockExtension;
+use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminExtension;
+use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminRuntime;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
+use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 
-class DrawSonataIntegrationExtension extends Extension
+class DrawSonataIntegrationExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -25,11 +40,12 @@ class DrawSonataIntegrationExtension extends Extension
         $this->configureConfiguration($config['configuration'], $loader, $container);
         $this->configureConsole($config['console'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
+        $this->configureUser($config['user'], $loader, $container);
     }
 
     private function configureConfiguration(
         array $config,
-        Loader\FileLoader $fileLoader,
+        Loader\FileLoader $loader,
         ContainerBuilder $container
     ): void {
         if (!$config['enabled']) {
@@ -50,7 +66,7 @@ class DrawSonataIntegrationExtension extends Extension
             );
     }
 
-    private function configureConsole(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
+    private function configureConsole(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -96,7 +112,7 @@ class DrawSonataIntegrationExtension extends Extension
         }
     }
 
-    private function configureMessenger(array $config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
+    private function configureMessenger(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -123,6 +139,131 @@ class DrawSonataIntegrationExtension extends Extension
             );
     }
 
+    private function configureUser(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $container->setParameter('draw_user.sonata.user_admin_code', $config['user_admin_code']);
+
+        $container
+            ->setDefinition(
+                LoginController::class,
+                new Definition(LoginController::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->addTag('controller.service_arguments');
+
+        $container
+            ->setDefinition(
+                UserCountBlock::class,
+                new Definition(UserCountBlock::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->setArgument('$userAdminCode', new Parameter('draw_user.sonata.user_admin_code'))
+            ->addTag('sonata.block');
+
+        $container
+            ->setDefinition(
+                UserAdminExtension::class,
+                new Definition(UserAdminExtension::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true);
+
+        $container
+            ->setDefinition(
+                UserAdminRuntime::class,
+                new Definition(UserAdminRuntime::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->setArgument('$userAdminCode', new Parameter('draw_user.sonata.user_admin_code'));
+
+        $this->configureUserLock($config['user_lock'], $loader, $container);
+
+        if (!$config['2fa']['enabled']) {
+            return;
+        }
+
+        if (!isset($container->getParameter('kernel.bundles')['SchebTwoFactorBundle'])) {
+            throw new RuntimeException('The bundle SchebTwoFactorBundle needs to be registered to have 2FA enabled.');
+        }
+
+        $reflectionClass = new ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
+        if (!$reflectionClass->implementsInterface(TwoFactorAuthenticationUserInterface::class)) {
+            throw new RuntimeException(sprintf('The class [%s] must implements [%s] to have 2FA enabled.', $userEntityClass, TwoFactorAuthenticationUserInterface::class));
+        }
+
+        $container
+            ->setDefinition(
+                TwoFactorAuthenticationExtension::class,
+                new Definition(TwoFactorAuthenticationExtension::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->setArgument(0, $config['2fa']['field_positions'])
+            ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
+
+        $container
+            ->setDefinition(
+                TwoFactorAuthenticationController::class,
+                new Definition(TwoFactorAuthenticationController::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->addTag('controller.service_arguments');
+    }
+
+    private function configureUserLock(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $container
+            ->setDefinition(
+                UserLockAdmin::class,
+                SonataAdminNodeConfiguration::configureFromConfiguration(
+                    new Definition(UserLockAdmin::class),
+                    $config['admin']
+                )
+            );
+
+        $container
+            ->setDefinition(
+                UserLockExtension::class,
+                new Definition(UserLockExtension::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->addTag(
+                'sonata.admin.extension',
+                ['target' => $container->getParameter('draw_user.sonata.user_admin_code')]
+            );
+
+        $container
+            ->setDefinition(
+                UserLockUnlockController::class,
+                new Definition(UserLockUnlockController::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->addTag('controller.service_arguments');
+
+        $container
+            ->setDefinition(
+                RefreshUserLockController::class,
+                new Definition(RefreshUserLockController::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->addTag('controller.service_arguments');
+    }
+
     private function arrayToArgumentsArray(array $arguments): array
     {
         $result = [];
@@ -131,5 +272,46 @@ class DrawSonataIntegrationExtension extends Extension
         }
 
         return $result;
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $configs = $container->getExtensionConfig('draw_sonata_integration');
+
+        $config = $this->processConfiguration(
+            $this->getConfiguration($configs, $container),
+            $container->getParameterBag()->resolveValue($configs)
+        );
+
+        $this->prependUser($config['user'], $container);
+    }
+
+    private function prependUser(array $config, ContainerBuilder $container): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        if ($container->hasExtension('sonata_admin')) {
+            $container->prependExtensionConfig(
+                'sonata_admin',
+                [
+                    'templates' => [
+                        'user_block' => '@DrawSonataIntegration/User/Block/user_block.html.twig',
+                    ],
+                ]
+            );
+        }
+
+        if ($container->hasExtension('sonata_block')) {
+            $container->prependExtensionConfig(
+                'sonata_block',
+                [
+                    'blocks' => [
+                        UserCountBlock::class => null,
+                    ],
+                ]
+            );
+        }
     }
 }
