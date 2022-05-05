@@ -14,10 +14,10 @@
         "php": ">=7.4"
     },
     "require-dev": {
-        "draw/core": "^1.0",
-        "draw/framework-extra-bundle": "^1.0",
-        "draw/messenger": "^1.0",
-        "draw/tester": "^1.0",
+        "draw/core": "^0.8",
+        "draw/framework-extra-bundle": "^0.8",
+        "draw/messenger": "^0.8",
+        "draw/tester": "^0.8",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "symfony/messenger": "^5.4.3",
