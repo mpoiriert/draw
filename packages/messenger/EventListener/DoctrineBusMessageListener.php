@@ -115,6 +115,6 @@ class DoctrineBusMessageListener implements EventSubscriber
             return [];
         }
 
-        return call_user_func_array('array_merge', $this->messageHolders);
+        return call_user_func_array('array_merge', array_values($this->messageHolders));
     }
 }

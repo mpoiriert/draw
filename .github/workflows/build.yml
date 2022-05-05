@@ -27,6 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: 'mysql://root@127.0.0.1:3306/draw'
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ['7.4', '8.1']
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -34,10 +38,9 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.php-versions }}
           tools: composer
           coverage: none
-          extensions: mongodb-1.7.4
           ini-values: memory_limit=4G
       - name: Setup MySQL
         uses: shogo82148/actions-setup-mysql@v1

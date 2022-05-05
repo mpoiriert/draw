@@ -24,7 +24,7 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
     /**
      * @var mixed
      *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Mixed")
+     * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
     public $default;
 
@@ -88,7 +88,7 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
     public ?array $required = null;
 
     /**
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\Mixed>")
+     * @JMS\Type("array<Draw\Component\OpenApi\Schema\MixedData>")
      */
     public ?array $enum = null;
 
@@ -166,7 +166,7 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      *
      * @Assert\Valid()
      *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Mixed")
+     * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
     public $example;
 
@@ -180,9 +180,9 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      */
     public function preSerialize(): void
     {
-        $this->default = Mixed::convert($this->default);
-        $this->example = Mixed::convert($this->example);
-        $this->enum = Mixed::convert($this->enum, true);
+        $this->default = MixedData::convert($this->default);
+        $this->example = MixedData::convert($this->example);
+        $this->enum = MixedData::convert($this->enum, true);
     }
 
     public function getGroupSequence(): array

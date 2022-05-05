@@ -5,7 +5,7 @@
     "type": "symfony-bundle",
     "keywords": ["symfony", "sonata"],
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "draw/framework-extra-bundle": "^1.0",
         "draw/sonata-extra-bundle":  "^1.0",
         "symfony/framework-bundle": "^5.4.3",
@@ -19,7 +19,7 @@
         "draw/messenger": "^1.0",
         "draw/tester": "^1.0",
         "draw/user-bundle": "^1.0",
-        "firebase/php-jwt": "^v6.1",
+        "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "scheb/2fa-bundle": "^5.12",
         "scheb/2fa-qr-code": "^5.12",

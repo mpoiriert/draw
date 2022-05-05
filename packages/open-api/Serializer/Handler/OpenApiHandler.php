@@ -2,7 +2,7 @@
 
 namespace Draw\Component\OpenApi\Serializer\Handler;
 
-use Draw\Component\OpenApi\Schema\Mixed;
+use Draw\Component\OpenApi\Schema\MixedData;
 use Draw\Component\OpenApi\Schema\SecurityRequirement;
 use Draw\Component\OpenApi\Schema\Vendor;
 use JMS\Serializer\Context;
@@ -31,13 +31,13 @@ class OpenApiHandler implements SubscribingHandlerInterface
             [
                 'direction' => GraphNavigatorInterface::DIRECTION_SERIALIZATION,
                 'format' => 'json',
-                'type' => Mixed::class,
+                'type' => MixedData::class,
                 'method' => 'serializeMixedToJson',
             ],
             [
                 'direction' => GraphNavigatorInterface::DIRECTION_DESERIALIZATION,
                 'format' => 'json',
-                'type' => Mixed::class,
+                'type' => MixedData::class,
                 'method' => 'deserializeMixedToJson',
             ],
             [
@@ -72,7 +72,7 @@ class OpenApiHandler implements SubscribingHandlerInterface
 
     public function serializeMixedToJson(
         JsonSerializationVisitor $visitor,
-        Mixed $mixed,
+        MixedData $mixed,
         array $type,
         Context $context
     ) {

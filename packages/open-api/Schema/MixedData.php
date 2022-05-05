@@ -2,10 +2,10 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-class Mixed
+class MixedData
 {
     /**
-     * @var mixed
+     * @var MixedData
      */
     public $data;
 
@@ -28,7 +28,7 @@ class Mixed
             return $value;
         }
 
-        if ($value instanceof Mixed) {
+        if ($value instanceof MixedData) {
             return $value;
         }
 
