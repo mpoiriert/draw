@@ -6,6 +6,7 @@
 composer-normalize
 /vendor-bin/**/vendor
 /public/version.txt
+/public/open-api
 
 ###> symfony/framework-bundle ###
 /.env.local

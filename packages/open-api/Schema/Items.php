@@ -51,7 +51,7 @@ class Items
      *
      * @var mixed
      *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\Mixed")
+     * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
     public $default;
 
@@ -122,7 +122,7 @@ class Items
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor76
      *
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\Mixed>")
+     * @JMS\Type("array<Draw\Component\OpenApi\Schema\MixedData>")
      */
     public ?array $enum = null;
 
@@ -140,7 +140,7 @@ class Items
      */
     public function preSerialize(): void
     {
-        $this->default = Mixed::convert($this->default);
-        $this->enum = Mixed::convert($this->enum, true);
+        $this->default = MixedData::convert($this->default);
+        $this->enum = MixedData::convert($this->enum, true);
     }
 }

@@ -5,7 +5,7 @@
     "type": "library",
     "keywords": ["draw", "mailer", "symfony"],
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "draw/core": "^1.0",
         "symfony/dom-crawler": "^5.4.3",
         "symfony/css-selector": "^5.4.3",

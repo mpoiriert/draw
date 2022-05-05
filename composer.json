@@ -3,7 +3,7 @@
     "description": "Monolitic repository for draw components",
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -27,6 +27,8 @@
         "psr/log": "@stable",
         "ramsey/uuid": "^4.2",
         "sensiolabs/ansi-to-html": "^1.2",
+        "sonata-project/admin-bundle": "^4.8",
+        "sonata-project/doctrine-orm-admin-bundle": "^4.2",
         "sonata-project/form-extensions": "^1.13",
         "symfony/browser-kit": "^5.4.3",
         "symfony/config": "^5.4.3",
@@ -36,7 +38,9 @@
         "symfony/doctrine-bridge": "^5.4.3",
         "symfony/doctrine-messenger": "^5.4.3",
         "symfony/dom-crawler": "^5.4.3",
+        "symfony/event-dispatcher": "^5.4.3",
         "symfony/expression-language": "^5.4.3",
+        "symfony/filesystem": "^5.4.3",
         "symfony/framework-bundle": "^5.4.3",
         "symfony/http-foundation": "^5.4.3",
         "symfony/http-kernel": "^5.4.3",
@@ -49,11 +53,14 @@
         "symfony/security-guard": "^5.4.3",
         "symfony/security-http": "^5.4.3",
         "symfony/translation": "^5.4.3",
+        "symfony/twig-bridge": "^5.4.3",
         "symfony/validator": "^5.4.3",
-        "symfony/yaml": "^5.4.3"
+        "symfony/yaml": "^5.4.3",
+        "twig/twig": "^3.3"
     },
     "require-dev": {
         "ext-pcntl": "*",
+        "ext-zip": "*",
         "aws/aws-sdk-php-symfony": "^2.3",
         "bamarni/composer-bin-plugin": "^1.4",
         "composer/semver": "^3.2",
@@ -71,6 +78,7 @@
         "sensio/framework-extra-bundle": "^5.6 || ^6.2",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
+        "symfony/cache": "^5.4.3",
         "symfony/debug-bundle": "^5.4.3",
         "symfony/dependency-injection": "^5.4.3",
         "symfony/dotenv": "^5.4.3",
@@ -82,8 +90,10 @@
         "symfony/http-client-contracts": "^2.5",
         "symfony/monolog-bundle": "^3.7",
         "symfony/phpunit-bridge": "^5.4.3",
+        "symfony/security-bundle": "^5.4.3",
         "symfony/stopwatch": "^5.4.3",
         "symfony/translation-contracts": "^2.5",
+        "symfony/twig-bundle": "^5.4.3",
         "symfony/web-profiler-bundle": "^5.4.3",
         "symplify/monorepo-builder": "^8.3.48",
         "terminal42/service-annotation-bundle": "^1.1"
@@ -91,8 +101,8 @@
     "replace": {
         "draw/application": "self.version",
         "draw/aws-tool-kit": "self.version",
-        "draw/contracts": "self.version",
         "draw/console": "self.version",
+        "draw/contracts": "self.version",
         "draw/core": "self.version",
         "draw/doctrine-extra": "self.version",
         "draw/framework-extra-bundle": "self.version",
@@ -120,13 +130,12 @@
     "autoload": {
         "psr-4": {
             "Draw\\Bundle\\FrameworkExtraBundle\\": "packages/framework-extra-bundle/",
-            "Draw\\Bundle\\OpenApiBundle\\": "packages/open-api-bundle/",
             "Draw\\Bundle\\SonataExtraBundle\\": "packages/sonata-extra-bundle/",
             "Draw\\Bundle\\SonataIntegrationBundle\\": "packages/sonata-integration-bundle/",
             "Draw\\Bundle\\TesterBundle\\": "packages/tester-bundle/",
             "Draw\\Bundle\\UserBundle\\": "packages/user-bundle/",
-            "Draw\\Component\\AwsToolKit\\": "packages/aws-tool-kit/",
             "Draw\\Component\\Application\\": "packages/application/",
+            "Draw\\Component\\AwsToolKit\\": "packages/aws-tool-kit/",
             "Draw\\Component\\Console\\": "packages/console/",
             "Draw\\Component\\Core\\": "packages/core/",
             "Draw\\Component\\Log\\": "packages/log/",
@@ -172,7 +181,7 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "draw:open-api:install-sandbox %PUBLIC_DIR%/sandbox": "symfony-cmd",
+            "draw:open-api:install-sandbox %PUBLIC_DIR%/open-api/sandbox": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
         }
     }

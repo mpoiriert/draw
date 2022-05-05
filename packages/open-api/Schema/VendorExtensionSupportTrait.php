@@ -5,7 +5,7 @@ namespace Draw\Component\OpenApi\Schema;
 trait VendorExtensionSupportTrait
 {
     /**
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Mixed>")
+     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\MixedData>")
      * @JMS\Accessor(getter="getFakeVendor")
      */
     public ?array $vendor = [];

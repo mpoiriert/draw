@@ -53,7 +53,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @ORM\Id()
      * @ORM\Column(name="id", type="guid")
      *
-     * @Serializer\ReadOnly()
+     * @Serializer\ReadOnlyProperty()
      */
     private $id;
 
