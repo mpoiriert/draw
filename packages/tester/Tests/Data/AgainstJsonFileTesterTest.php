@@ -71,7 +71,7 @@ Failed asserting that two strings are equal.');
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
                         'url' => function (DataTester $dataTester) use (&$called) {
-                            //Make sure the DataTester have the value of the path
+                            // Make sure the DataTester have the value of the path
                             $dataTester->assertEquals('http://google.com');
 
                             $called = true;
@@ -92,7 +92,7 @@ Failed asserting that two strings are equal.');
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
                         'url' => function (DataTester $dataTester) {
-                            //Make sure the DataTester have the value of the path
+                            // Make sure the DataTester have the value of the path
                             $dataTester->assertEquals('wrong-value');
                         },
                     ]

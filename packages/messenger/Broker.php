@@ -80,7 +80,7 @@ class Broker
         foreach ($processes as $process) {
             if ($process->isRunning()) {
                 // given SIGTERM may not be defined and that "proc_terminate" uses the constant value and not the constant itself, we use the same here
-                $process->signal(15); //15 is SIGTERM
+                $process->signal(15); // 15 is SIGTERM
             }
         }
 

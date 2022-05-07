@@ -51,7 +51,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
         }
 
-        //If the object is not found we relay on the fallback constructor
+        // If the object is not found we relay on the fallback constructor
         if (null === ($object = $this->loadObject($metadata->name, $data, $context, $context->getCurrentPath()))) {
             $constructionFallbackStrategy = null;
             if ($context->hasAttribute('constructionFallbackStrategy')) {
@@ -86,11 +86,11 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         $serializationMetadata = $this->metadataFactory->getMetadataForClass($class);
 
         $doctrineFindByFields = null;
-        $findByIdentifier = false; //This will allow an optimization on the find method
+        $findByIdentifier = false; // This will allow an optimization on the find method
         if ($context->hasAttribute('doctrineFindByFieldsMap')) {
             $doctrineFindByFieldsMap = $context->getAttribute('doctrineFindByFieldsMap');
             if (isset($doctrineFindByFieldsMap[0])) {
-                //This is to create a alias since the path will not be 0 but rather ""
+                // This is to create a alias since the path will not be 0 but rather ""
                 $doctrineFindByFieldsMap[''] = $doctrineFindByFieldsMap[0];
             }
             $pathAsString = implode('.', $path);

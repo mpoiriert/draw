@@ -46,7 +46,7 @@ class DeserializeBodyParamConverter implements ParamConverterInterface
         $contentType = $request->headers->get('Content-Type');
         switch (true) {
             case 0 === strpos($contentType, 'application/json'):
-                //This allow a empty body to be consider as '{}'
+                // This allow a empty body to be consider as '{}'
                 if (null === ($requestData = json_decode($request->getContent(), true))) {
                     $requestData = [];
                 }

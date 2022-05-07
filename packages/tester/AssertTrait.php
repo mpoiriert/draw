@@ -21,7 +21,7 @@ trait AssertTrait
      */
     abstract public function getData();
 
-    //example-start: assertArraySubset
+    // example-start: assertArraySubset
 
     /**
      * Asserts that an array has a specified subset.
@@ -41,9 +41,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertArraySubset
+    // example-end: assertArraySubset
 
-    //example-start: assertContains
+    // example-start: assertContains
 
     /**
      * Asserts that a haystack contains a needle.
@@ -57,9 +57,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertContains
+    // example-end: assertContains
 
-    //example-start: assertNotContains
+    // example-start: assertNotContains
 
     /**
      * Asserts that a haystack does not contain a needle.
@@ -73,9 +73,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotContains
+    // example-end: assertNotContains
 
-    //example-start: assertContainsOnly
+    // example-start: assertContainsOnly
 
     /**
      * Asserts that a haystack contains only values of a given type.
@@ -89,9 +89,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertContainsOnly
+    // example-end: assertContainsOnly
 
-    //example-start: assertContainsOnlyInstancesOf
+    // example-start: assertContainsOnlyInstancesOf
 
     /**
      * Asserts that a haystack contains only instances of a given class name.
@@ -105,9 +105,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertContainsOnlyInstancesOf
+    // example-end: assertContainsOnlyInstancesOf
 
-    //example-start: assertNotContainsOnly
+    // example-start: assertNotContainsOnly
 
     /**
      * Asserts that a haystack does not contain only values of a given type.
@@ -121,9 +121,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotContainsOnly
+    // example-end: assertNotContainsOnly
 
-    //example-start: assertCount
+    // example-start: assertCount
 
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
@@ -137,9 +137,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertCount
+    // example-end: assertCount
 
-    //example-start: assertNotCount
+    // example-start: assertNotCount
 
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
@@ -153,9 +153,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotCount
+    // example-end: assertNotCount
 
-    //example-start: assertEquals
+    // example-start: assertEquals
 
     /**
      * Asserts that two variables are equal.
@@ -169,9 +169,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertEquals
+    // example-end: assertEquals
 
-    //example-start: assertNotEquals
+    // example-start: assertNotEquals
 
     /**
      * Asserts that two variables are not equal.
@@ -190,9 +190,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotEquals
+    // example-end: assertNotEquals
 
-    //example-start: assertEmpty
+    // example-start: assertEmpty
 
     /**
      * Asserts that a variable is empty.
@@ -208,9 +208,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertEmpty
+    // example-end: assertEmpty
 
-    //example-start: assertNotEmpty
+    // example-start: assertNotEmpty
 
     /**
      * Asserts that a variable is not empty.
@@ -226,9 +226,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotEmpty
+    // example-end: assertNotEmpty
 
-    //example-start: assertGreaterThan
+    // example-start: assertGreaterThan
 
     /**
      * Asserts that a value is greater than another value.
@@ -242,9 +242,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertGreaterThan
+    // example-end: assertGreaterThan
 
-    //example-start: assertGreaterThanOrEqual
+    // example-start: assertGreaterThanOrEqual
 
     /**
      * Asserts that a value is greater than or equal to another value.
@@ -258,9 +258,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertGreaterThanOrEqual
+    // example-end: assertGreaterThanOrEqual
 
-    //example-start: assertLessThan
+    // example-start: assertLessThan
 
     /**
      * Asserts that a value is smaller than another value.
@@ -274,9 +274,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertLessThan
+    // example-end: assertLessThan
 
-    //example-start: assertLessThanOrEqual
+    // example-start: assertLessThanOrEqual
 
     /**
      * Asserts that a value is smaller than or equal to another value.
@@ -290,9 +290,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertLessThanOrEqual
+    // example-end: assertLessThanOrEqual
 
-    //example-start: assertTrue
+    // example-start: assertTrue
 
     /**
      * Asserts that a condition is true.
@@ -308,9 +308,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertTrue
+    // example-end: assertTrue
 
-    //example-start: assertNotTrue
+    // example-start: assertNotTrue
 
     /**
      * Asserts that a condition is not true.
@@ -326,9 +326,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotTrue
+    // example-end: assertNotTrue
 
-    //example-start: assertFalse
+    // example-start: assertFalse
 
     /**
      * Asserts that a condition is false.
@@ -344,9 +344,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertFalse
+    // example-end: assertFalse
 
-    //example-start: assertNotFalse
+    // example-start: assertNotFalse
 
     /**
      * Asserts that a condition is not false.
@@ -362,9 +362,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotFalse
+    // example-end: assertNotFalse
 
-    //example-start: assertNull
+    // example-start: assertNull
 
     /**
      * Asserts that a variable is null.
@@ -380,9 +380,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNull
+    // example-end: assertNull
 
-    //example-start: assertNotNull
+    // example-start: assertNotNull
 
     /**
      * Asserts that a variable is not null.
@@ -398,9 +398,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotNull
+    // example-end: assertNotNull
 
-    //example-start: assertFinite
+    // example-start: assertFinite
 
     /**
      * Asserts that a variable is finite.
@@ -414,9 +414,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertFinite
+    // example-end: assertFinite
 
-    //example-start: assertInfinite
+    // example-start: assertInfinite
 
     /**
      * Asserts that a variable is infinite.
@@ -430,9 +430,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertInfinite
+    // example-end: assertInfinite
 
-    //example-start: assertNan
+    // example-start: assertNan
 
     /**
      * Asserts that a variable is nan.
@@ -446,9 +446,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNan
+    // example-end: assertNan
 
-    //example-start: assertSame
+    // example-start: assertSame
 
     /**
      * Asserts that two variables have the same type and value.
@@ -468,9 +468,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertSame
+    // example-end: assertSame
 
-    //example-start: assertNotSame
+    // example-start: assertNotSame
 
     /**
      * Asserts that two variables do not have the same type and value.
@@ -486,9 +486,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotSame
+    // example-end: assertNotSame
 
-    //example-start: assertInstanceOf
+    // example-start: assertInstanceOf
 
     /**
      * Asserts that a variable is of a given type.
@@ -506,9 +506,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertInstanceOf
+    // example-end: assertInstanceOf
 
-    //example-start: assertNotInstanceOf
+    // example-start: assertNotInstanceOf
 
     /**
      * Asserts that a variable is not of a given type.
@@ -526,9 +526,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotInstanceOf
+    // example-end: assertNotInstanceOf
 
-    //example-start: assertInternalType
+    // example-start: assertInternalType
 
     /**
      * Asserts that a variable is of a given type.
@@ -545,9 +545,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertInternalType
+    // example-end: assertInternalType
 
-    //example-start: assertNotInternalType
+    // example-start: assertNotInternalType
 
     /**
      * Asserts that a variable is not of a given type.
@@ -564,9 +564,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotInternalType
+    // example-end: assertNotInternalType
 
-    //example-start: assertRegExp
+    // example-start: assertRegExp
 
     /**
      * Asserts that a string matches a given regular expression.
@@ -580,9 +580,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertRegExp
+    // example-end: assertRegExp
 
-    //example-start: assertNotRegExp
+    // example-start: assertNotRegExp
 
     /**
      * Asserts that a string does not match a given regular expression.
@@ -596,9 +596,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotRegExp
+    // example-end: assertNotRegExp
 
-    //example-start: assertSameSize
+    // example-start: assertSameSize
 
     /**
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
@@ -615,9 +615,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertSameSize
+    // example-end: assertSameSize
 
-    //example-start: assertNotSameSize
+    // example-start: assertNotSameSize
 
     /**
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
@@ -634,9 +634,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotSameSize
+    // example-end: assertNotSameSize
 
-    //example-start: assertStringMatchesFormat
+    // example-start: assertStringMatchesFormat
 
     /**
      * Asserts that a string matches a given format string.
@@ -650,9 +650,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringMatchesFormat
+    // example-end: assertStringMatchesFormat
 
-    //example-start: assertStringNotMatchesFormat
+    // example-start: assertStringNotMatchesFormat
 
     /**
      * Asserts that a string does not match a given format string.
@@ -666,9 +666,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringNotMatchesFormat
+    // example-end: assertStringNotMatchesFormat
 
-    //example-start: assertStringStartsWith
+    // example-start: assertStringStartsWith
 
     /**
      * Asserts that a string starts with a given prefix.
@@ -682,9 +682,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringStartsWith
+    // example-end: assertStringStartsWith
 
-    //example-start: assertStringStartsNotWith
+    // example-start: assertStringStartsNotWith
 
     /**
      * Asserts that a string starts not with a given prefix.
@@ -700,9 +700,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringStartsNotWith
+    // example-end: assertStringStartsNotWith
 
-    //example-start: assertStringEndsWith
+    // example-start: assertStringEndsWith
 
     /**
      * Asserts that a string ends with a given suffix.
@@ -716,9 +716,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringEndsWith
+    // example-end: assertStringEndsWith
 
-    //example-start: assertStringEndsNotWith
+    // example-start: assertStringEndsNotWith
 
     /**
      * Asserts that a string ends not with a given suffix.
@@ -732,9 +732,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringEndsNotWith
+    // example-end: assertStringEndsNotWith
 
-    //example-start: assertJson
+    // example-start: assertJson
 
     /**
      * Asserts that a string is a valid JSON string.
@@ -748,9 +748,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertJson
+    // example-end: assertJson
 
-    //example-start: assertJsonStringEqualsJsonString
+    // example-start: assertJsonStringEqualsJsonString
 
     /**
      * Asserts that two given JSON encoded objects or arrays are equal.
@@ -764,9 +764,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertJsonStringEqualsJsonString
+    // example-end: assertJsonStringEqualsJsonString
 
-    //example-start: assertJsonStringNotEqualsJsonString
+    // example-start: assertJsonStringNotEqualsJsonString
 
     /**
      * Asserts that two given JSON encoded objects or arrays are not equal.
@@ -782,9 +782,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertJsonStringNotEqualsJsonString
+    // example-end: assertJsonStringNotEqualsJsonString
 
-    //example-start: assertContainsEquals
+    // example-start: assertContainsEquals
 
     /**
      * @return $this
@@ -796,9 +796,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertContainsEquals
+    // example-end: assertContainsEquals
 
-    //example-start: assertNotContainsEquals
+    // example-start: assertNotContainsEquals
 
     /**
      * @return $this
@@ -810,9 +810,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotContainsEquals
+    // example-end: assertNotContainsEquals
 
-    //example-start: assertEqualsCanonicalizing
+    // example-start: assertEqualsCanonicalizing
 
     /**
      * Asserts that two variables are equal (canonicalizing).
@@ -826,9 +826,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertEqualsCanonicalizing
+    // example-end: assertEqualsCanonicalizing
 
-    //example-start: assertEqualsIgnoringCase
+    // example-start: assertEqualsIgnoringCase
 
     /**
      * Asserts that two variables are equal (ignoring case).
@@ -842,9 +842,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertEqualsIgnoringCase
+    // example-end: assertEqualsIgnoringCase
 
-    //example-start: assertEqualsWithDelta
+    // example-start: assertEqualsWithDelta
 
     /**
      * Asserts that two variables are equal (with delta).
@@ -858,9 +858,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertEqualsWithDelta
+    // example-end: assertEqualsWithDelta
 
-    //example-start: assertNotEqualsCanonicalizing
+    // example-start: assertNotEqualsCanonicalizing
 
     /**
      * Asserts that two variables are not equal (canonicalizing).
@@ -874,9 +874,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotEqualsCanonicalizing
+    // example-end: assertNotEqualsCanonicalizing
 
-    //example-start: assertNotEqualsIgnoringCase
+    // example-start: assertNotEqualsIgnoringCase
 
     /**
      * Asserts that two variables are not equal (ignoring case).
@@ -890,9 +890,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotEqualsIgnoringCase
+    // example-end: assertNotEqualsIgnoringCase
 
-    //example-start: assertNotEqualsWithDelta
+    // example-start: assertNotEqualsWithDelta
 
     /**
      * Asserts that two variables are not equal (with delta).
@@ -906,9 +906,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertNotEqualsWithDelta
+    // example-end: assertNotEqualsWithDelta
 
-    //example-start: assertIsArray
+    // example-start: assertIsArray
 
     /**
      * Asserts that a variable is of type array.
@@ -924,9 +924,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsArray
+    // example-end: assertIsArray
 
-    //example-start: assertIsBool
+    // example-start: assertIsBool
 
     /**
      * Asserts that a variable is of type bool.
@@ -942,9 +942,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsBool
+    // example-end: assertIsBool
 
-    //example-start: assertIsFloat
+    // example-start: assertIsFloat
 
     /**
      * Asserts that a variable is of type float.
@@ -960,9 +960,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsFloat
+    // example-end: assertIsFloat
 
-    //example-start: assertIsInt
+    // example-start: assertIsInt
 
     /**
      * Asserts that a variable is of type int.
@@ -978,9 +978,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsInt
+    // example-end: assertIsInt
 
-    //example-start: assertIsNumeric
+    // example-start: assertIsNumeric
 
     /**
      * Asserts that a variable is of type numeric.
@@ -996,9 +996,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNumeric
+    // example-end: assertIsNumeric
 
-    //example-start: assertIsObject
+    // example-start: assertIsObject
 
     /**
      * Asserts that a variable is of type object.
@@ -1014,9 +1014,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsObject
+    // example-end: assertIsObject
 
-    //example-start: assertIsResource
+    // example-start: assertIsResource
 
     /**
      * Asserts that a variable is of type resource.
@@ -1032,9 +1032,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsResource
+    // example-end: assertIsResource
 
-    //example-start: assertIsString
+    // example-start: assertIsString
 
     /**
      * Asserts that a variable is of type string.
@@ -1050,9 +1050,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsString
+    // example-end: assertIsString
 
-    //example-start: assertIsScalar
+    // example-start: assertIsScalar
 
     /**
      * Asserts that a variable is of type scalar.
@@ -1068,9 +1068,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsScalar
+    // example-end: assertIsScalar
 
-    //example-start: assertIsCallable
+    // example-start: assertIsCallable
 
     /**
      * Asserts that a variable is of type callable.
@@ -1086,9 +1086,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsCallable
+    // example-end: assertIsCallable
 
-    //example-start: assertIsIterable
+    // example-start: assertIsIterable
 
     /**
      * Asserts that a variable is of type iterable.
@@ -1104,9 +1104,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsIterable
+    // example-end: assertIsIterable
 
-    //example-start: assertIsNotArray
+    // example-start: assertIsNotArray
 
     /**
      * Asserts that a variable is not of type array.
@@ -1122,9 +1122,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotArray
+    // example-end: assertIsNotArray
 
-    //example-start: assertIsNotBool
+    // example-start: assertIsNotBool
 
     /**
      * Asserts that a variable is not of type bool.
@@ -1140,9 +1140,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotBool
+    // example-end: assertIsNotBool
 
-    //example-start: assertIsNotFloat
+    // example-start: assertIsNotFloat
 
     /**
      * Asserts that a variable is not of type float.
@@ -1158,9 +1158,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotFloat
+    // example-end: assertIsNotFloat
 
-    //example-start: assertIsNotInt
+    // example-start: assertIsNotInt
 
     /**
      * Asserts that a variable is not of type int.
@@ -1176,9 +1176,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotInt
+    // example-end: assertIsNotInt
 
-    //example-start: assertIsNotNumeric
+    // example-start: assertIsNotNumeric
 
     /**
      * Asserts that a variable is not of type numeric.
@@ -1194,9 +1194,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotNumeric
+    // example-end: assertIsNotNumeric
 
-    //example-start: assertIsNotObject
+    // example-start: assertIsNotObject
 
     /**
      * Asserts that a variable is not of type object.
@@ -1212,9 +1212,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotObject
+    // example-end: assertIsNotObject
 
-    //example-start: assertIsNotResource
+    // example-start: assertIsNotResource
 
     /**
      * Asserts that a variable is not of type resource.
@@ -1230,9 +1230,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotResource
+    // example-end: assertIsNotResource
 
-    //example-start: assertIsNotString
+    // example-start: assertIsNotString
 
     /**
      * Asserts that a variable is not of type string.
@@ -1248,9 +1248,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotString
+    // example-end: assertIsNotString
 
-    //example-start: assertIsNotScalar
+    // example-start: assertIsNotScalar
 
     /**
      * Asserts that a variable is not of type scalar.
@@ -1266,9 +1266,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotScalar
+    // example-end: assertIsNotScalar
 
-    //example-start: assertIsNotCallable
+    // example-start: assertIsNotCallable
 
     /**
      * Asserts that a variable is not of type callable.
@@ -1284,9 +1284,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotCallable
+    // example-end: assertIsNotCallable
 
-    //example-start: assertIsNotIterable
+    // example-start: assertIsNotIterable
 
     /**
      * Asserts that a variable is not of type iterable.
@@ -1302,9 +1302,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertIsNotIterable
+    // example-end: assertIsNotIterable
 
-    //example-start: assertStringContainsString
+    // example-start: assertStringContainsString
 
     /**
      * @return $this
@@ -1316,9 +1316,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringContainsString
+    // example-end: assertStringContainsString
 
-    //example-start: assertStringContainsStringIgnoringCase
+    // example-start: assertStringContainsStringIgnoringCase
 
     /**
      * @return $this
@@ -1330,9 +1330,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringContainsStringIgnoringCase
+    // example-end: assertStringContainsStringIgnoringCase
 
-    //example-start: assertStringNotContainsString
+    // example-start: assertStringNotContainsString
 
     /**
      * @return $this
@@ -1344,9 +1344,9 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringNotContainsString
+    // example-end: assertStringNotContainsString
 
-    //example-start: assertStringNotContainsStringIgnoringCase
+    // example-start: assertStringNotContainsStringIgnoringCase
 
     /**
      * @return $this
@@ -1358,5 +1358,5 @@ trait AssertTrait
         return $this;
     }
 
-    //example-end: assertStringNotContainsStringIgnoringCase
+    // example-end: assertStringNotContainsStringIgnoringCase
 }
