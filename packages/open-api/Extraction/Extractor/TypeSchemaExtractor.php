@@ -144,7 +144,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             $this->definitionHashes[$modelName] = [];
         }
 
-        if (false === !in_array($hash, $this->definitionHashes[$modelName])) {
+        if (!in_array($hash, $this->definitionHashes[$modelName])) {
             $this->definitionHashes[$modelName][] = $hash;
         }
 
