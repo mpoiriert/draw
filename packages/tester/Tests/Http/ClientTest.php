@@ -287,7 +287,7 @@ class ClientTest extends TestCase
 
         $this->assertInstanceOf(ResponseInterface::class, $response);
 
-        //We seek at the beginning of the body to be sure that nobody change the position before
+        // We seek at the beginning of the body to be sure that nobody change the position before
         $response->getBody()->seek(0);
 
         $this->assertJsonStringEqualsJsonString(
@@ -313,7 +313,7 @@ class ClientTest extends TestCase
         array $headers = [],
         $version = '1.1'
     ) {
-        //We seek at the beginning of the body to be sure that nobody change the position before
+        // We seek at the beginning of the body to be sure that nobody change the position before
         $request->getBody()->seek(0);
 
         $this->assertSame($method, $request->getMethod());

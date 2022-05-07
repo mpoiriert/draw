@@ -86,7 +86,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
         /* @var ClassMetadataInterface $classMetadata */
         $classMetadata = $this->validator->getMetadataFor($class);
         foreach ($classMetadata->getConstrainedProperties() as $propertyName) {
-            //This is to prevent hading properties just because they have validation
+            // This is to prevent hading properties just because they have validation
             if (!isset($schema->properties[$propertyName])) {
                 continue;
             }

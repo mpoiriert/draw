@@ -47,7 +47,7 @@ class ReflectionAccessor
 
         $reflectionClass = new \ReflectionClass($class);
 
-        do {
+        while (true) {
             if ($reflectionClass->hasMethod($methodName)) {
                 $reflectionMethod = $reflectionClass->getMethod($methodName);
                 $reflectionMethod->setAccessible(true);
@@ -59,7 +59,7 @@ class ReflectionAccessor
                 // This will throw an exception
                 new ReflectionMethod($class, $methodName);
             }
-        } while (true);
+        }
     }
 
     private static function createAccessiblePropertyReflection($objectOrClass, string $propertyName): ReflectionProperty
@@ -68,7 +68,7 @@ class ReflectionAccessor
 
         $reflectionClass = new \ReflectionClass($class);
 
-        do {
+        while (true) {
             if ($reflectionClass->hasProperty($propertyName)) {
                 $reflectionProperty = $reflectionClass->getProperty($propertyName);
                 $reflectionProperty->setAccessible(true);
@@ -80,6 +80,6 @@ class ReflectionAccessor
                 // This will throw an exception
                 new ReflectionProperty($class, $propertyName);
             }
-        } while (true);
+        }
     }
 }

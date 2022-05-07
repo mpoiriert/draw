@@ -80,7 +80,7 @@ class PropertiesExtractorTest extends TestCase
     {
         $reflectionClass = new ReflectionClass(__NAMESPACE__.'\JmsExtractorStubModel');
 
-        //Need to be there to validate that JMS extract it's type properly
+        // Need to be there to validate that JMS extract it's type properly
         $context = $this->getExtractionContext([
             new TypeSchemaExtractor(),
             $this->jmsExtractor,

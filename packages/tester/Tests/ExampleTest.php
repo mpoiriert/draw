@@ -1,6 +1,6 @@
 <?php
 
-//example-start: TestClass
+// example-start: TestClass
 
 namespace Your\Project\Name;
 
@@ -18,77 +18,77 @@ class ExampleTest extends TestCase
             ->assertSame('A string value');
     }
 
-    //example-end: TestClass
+    // example-end: TestClass
 
     public function testConciseNew()
     {
-        //example-start: ConciseNew
+        // example-start: ConciseNew
         (new DataTester('A string value'))
             ->assertSame('A string value');
-        //example-end: ConciseNew
+        // example-end: ConciseNew
     }
 
     public function testPath()
     {
-        //example-start: TestPath
+        // example-start: TestPath
         (new DataTester((object) ['key' => 'value']))
             ->path('key')
             ->assertSame('value');
-        //example-end: TestPath
+        // example-end: TestPath
     }
 
     public function testChainPath()
     {
-        //example-start: ChainTestPath
+        // example-start: ChainTestPath
         $tester = new DataTester((object) ['key1' => 'value1', 'key2' => 'value2']);
         $tester->path('key1')->assertSame('value1');
         $tester->path('key2')->assertSame('value2');
-        //example-end: ChainTestPath
+        // example-end: ChainTestPath
     }
 
     public function testDeeperPath()
     {
-        //example-start: DeeperPathTest
+        // example-start: DeeperPathTest
         (new DataTester((object) ['level1' => (object) ['level2' => 'value']]))
             ->path('level1')
             ->path('level2')->assertSame('value');
-        //example-end: DeeperPathTest
+        // example-end: DeeperPathTest
     }
 
     public function testEach()
     {
-        //example-start: EachTest
+        // example-start: EachTest
         (new DataTester(['value1', 'value2']))
             ->each(
                 function (DataTester $tester) {
                     $tester->assertIsString();
                 }
             );
-        //example-end: EachTest
+        // example-end: EachTest
     }
 
     public function testTransform()
     {
-        //example-start: Transform
+        // example-start: Transform
         (new DataTester('{"key":"value"}'))
             ->transform('json_decode')
             ->path('key')->assertSame('value');
-        //example-end: Transform
+        // example-end: Transform
     }
 
     public function testTransformAssert()
     {
-        //example-start: AssertTransform
+        // example-start: AssertTransform
         (new DataTester('{"key":"value"}'))
             ->assertJson()
             ->transform('json_decode')
             ->path('key')->assertSame('value');
-        //example-end: AssertTransform
+        // example-end: AssertTransform
     }
 
     public function testTransformAssertCustom()
     {
-        //example-start: AssertTransformCustom
+        // example-start: AssertTransformCustom
         (new DataTester('{"key":"value"}'))
             ->assertJson()
             ->transform(
@@ -96,26 +96,26 @@ class ExampleTest extends TestCase
                     return json_decode($data, true);
                 }
             )->path('[key]')->assertSame('value');
-        //example-end: AssertTransformCustom
+        // example-end: AssertTransformCustom
     }
 
     public function testIfPathIsReadable()
     {
-        //example-start: IfPathIsReadable
+        // example-start: IfPathIsReadable
         (new DataTester(null))
             ->ifPathIsReadable(
                 'notExistingPath',
                 function (DataTester $tester) {
-                    //Will not be call with current data to test
+                    // Will not be call with current data to test
                 }
             );
-        //example-end: IfPathIsReadable
-        $this->assertTrue(true); //This is to prevent PHPUnit to flag test as risky
+        // example-end: IfPathIsReadable
+        $this->assertTrue(true); // This is to prevent PHPUnit to flag test as risky
     }
 
     public function testIfPathIsReadableAndEach()
     {
-        //example-start: IfPathIsReadableAndEach
+        // example-start: IfPathIsReadableAndEach
         $users = [
             (object) [
                 'firstName' => 'Martin',
@@ -140,12 +140,12 @@ class ExampleTest extends TestCase
                     );
                 }
             );
-        //example-end: IfPathIsReadableAndEach
+        // example-end: IfPathIsReadableAndEach
     }
 
     public function testUser()
     {
-        //example-start: TestWithClassCallable
+        // example-start: TestWithClassCallable
         $user = (object) [
             'firstName' => 'Martin',
             'active' => true,
@@ -154,12 +154,12 @@ class ExampleTest extends TestCase
 
         (new DataTester($user))
             ->test(new UserDataTester());
-        //example-end: TestWithClassCallable
+        // example-end: TestWithClassCallable
     }
 
     public function testUsers()
     {
-        //example-start: EachWithClassCallableEach
+        // example-start: EachWithClassCallableEach
         $users = [
             (object) [
                 'firstName' => 'Martin',
@@ -174,11 +174,11 @@ class ExampleTest extends TestCase
 
         (new DataTester($users))
             ->each(new UserDataTester());
-        //example-end: EachWithClassCallableEach
+        // example-end: EachWithClassCallableEach
     }
 }
 
-//example-start: UserDataTester
+// example-start: UserDataTester
 class UserDataTester
 {
     public function __invoke(DataTester $tester)
@@ -193,4 +193,4 @@ class UserDataTester
         );
     }
 }
-//example-end: UserDataTester
+// example-end: UserDataTester
