@@ -40,9 +40,12 @@ class AutoHelpSubscriber implements EventSubscriberInterface
         do {
             if ($reflectionClass->hasProperty($propertyName)) {
                 $property = $reflectionClass->getProperty($propertyName);
-                $docBlock = DocBlockFactory::createInstance()->create($property->getDocComment());
-
-                return $docBlock->getSummary();
+                if (false !== $docComment = $property->getDocComment()) {
+                    $docBlock = DocBlockFactory::createInstance()->create($docComment);
+                    if ($result = $docBlock->getSummary()) {
+                        return $result;
+                    }
+                }
             }
         } while ($reflectionClass = $reflectionClass->getParentClass());
 
