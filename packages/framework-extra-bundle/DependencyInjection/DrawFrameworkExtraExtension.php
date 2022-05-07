@@ -474,7 +474,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 ->setDefinition(
                     'draw.security.system_authentication',
                     (new Definition(SystemAuthenticator::class))
-                        ->setArgument('$role', $config['system_authentication']['roles'])
+                        ->setArgument('$roles', $config['system_authentication']['roles'])
                         ->setAutoconfigured(true)
                         ->setAutowired(true)
                 );
