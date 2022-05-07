@@ -42,4 +42,8 @@ draw_framework_extra:
           type: 'string'
           default: 'en'
 
+  security:
+    console_authentication: true
+    system_authentication: true
+
   versioning: ~
