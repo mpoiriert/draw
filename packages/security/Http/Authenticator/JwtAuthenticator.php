@@ -50,6 +50,11 @@ class JwtAuthenticator extends AbstractAuthenticator
         return null !== $this->getToken($request);
     }
 
+    public function getEncoder(): JwtEncoder
+    {
+        return $this->encoder;
+    }
+
     public function generaToken(UserInterface $user, ?string $expiration = '+ 7 days', array $extraPayload = []): string
     {
         return $this->encoder->encode(
