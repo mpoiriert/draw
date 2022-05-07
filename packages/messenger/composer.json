@@ -15,7 +15,7 @@
         "ext-json": "*",
         "doctrine/dbal": "^3.3",
         "doctrine/persistence": "^2.2",
-        "draw/contracts": "^0.9",
+        "draw/contracts": "^0.8.1",
         "symfony/doctrine-bridge": "^5.4.3",
         "symfony/doctrine-messenger": "^5.4.3",
         "symfony/event-dispatcher": "^5.4.3",
@@ -28,7 +28,7 @@
     "require-dev": {
         "ext-pcntl": "*",
         "doctrine/orm": "^2.11",
-        "draw/tester-bundle": "^0.9",
+        "draw/tester-bundle": "^0.8.1",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "psr/log": "@stable",
         "sonata-project/admin-bundle": "^4.8",
