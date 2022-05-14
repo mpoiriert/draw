@@ -2,9 +2,9 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\FrameworkExtraBundle\Controller\Messenger\MessageController;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Command\PurgeExpiredMessageCommand;
-use Draw\Component\Messenger\Controller\MessageController;
 use Draw\Component\Messenger\EnvelopeFinder;
 use Draw\Component\Messenger\EventListener\AutoStampEnvelopeListener;
 use Draw\Component\Messenger\ManuallyTriggeredMessageUrlGenerator;
@@ -41,8 +41,7 @@ class DrawFrameworkExtraExtensionMessengerTest extends DrawFrameworkExtraExtensi
         yield [PurgeExpiredMessageCommand::class, 'draw.messenger.command.purge_expired_command'];
         yield ['draw.messenger.auto_stamp_envelope_listener'];
         yield [AutoStampEnvelopeListener::class, 'draw.messenger.auto_stamp_envelope_listener'];
-        yield ['draw.messenger.message_controller'];
-        yield [MessageController::class, 'draw.messenger.message_controller'];
+        yield [MessageController::class];
         yield ['draw.messenger.manually_triggered_message_url_generator'];
         yield [ManuallyTriggeredMessageUrlGenerator::class, 'draw.messenger.manually_triggered_message_url_generator'];
         yield ['draw.messenger.envelope_finder'];
