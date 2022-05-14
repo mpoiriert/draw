@@ -38,6 +38,9 @@ class StoreInCacheExtractor implements ExtractorInterface
         return true;
     }
 
+    /**
+     * @param Root $target
+     */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
         if (!$this->canExtract($source, $target, $extractionContext)) {
@@ -60,6 +63,8 @@ class StoreInCacheExtractor implements ExtractorInterface
         foreach ($files as $file) {
             $metadata[] = new FileResource($file);
         }
+
+        $target->setVendorDataKey('X-DrawOpenApi-CachedAt', gmdate('Y-m-d H:i:'));
 
         $configCache->write(
             '<?php return unserialize('.var_export(serialize($target), true).');',

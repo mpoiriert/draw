@@ -60,7 +60,7 @@ class LoadFromCacheExtractor implements ExtractorInterface
             $target->{$key} = $value;
         }
 
-        $target->vendor['X-DrawOpenApi-FromCache'] = true;
+        $target->setVendorDataKey('X-DrawOpenApi-FromCache', true);
 
         throw new ExtractionCompletedException();
     }
