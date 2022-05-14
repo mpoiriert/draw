@@ -101,6 +101,15 @@ class ConfigurationTest extends ConfigurationTestCase
                 ],
                 'doctrine_message_bus_hook' => [
                     'enabled' => false,
+                    'envelope_factory' => [
+                        'dispatch_after_current_bus' => [
+                            'enabled' => true,
+                        ],
+                        'delay' => [
+                            'enabled' => false,
+                            'delay_in_milliseconds' => 2500,
+                        ],
+                    ],
                 ],
             ],
             'open_api' => [

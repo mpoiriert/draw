@@ -24,6 +24,8 @@ use Draw\Component\Mailer\Twig\TranslationExtension;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Entity\DrawMessageTagInterface;
+use Draw\Component\Messenger\EventListener\EnvelopeFactoryDelayStampListener;
+use Draw\Component\Messenger\EventListener\EnvelopeFactoryDispatchAfterCurrentBusStampListener;
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
@@ -462,6 +464,39 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
         if ($this->isConfigEnabled($container, $config['doctrine_message_bus_hook'])) {
             $loader->load('messenger-doctrine-message-bus-hook.php');
+            $envelopeFactoryConfig = $config['doctrine_message_bus_hook']['envelope_factory'];
+            if ($this->isConfigEnabled($container, $envelopeFactoryConfig['dispatch_after_current_bus'])) {
+                $container
+                    ->setDefinition(
+                        'draw.messenger.event_listener.envelope_factory_dispatch_after_current_bus_stamp_listener',
+                        new Definition(EnvelopeFactoryDispatchAfterCurrentBusStampListener::class)
+                    )
+                    ->setAutoconfigured(true)
+                    ->setAutowired(true);
+
+                $container
+                    ->setAlias(
+                        EnvelopeFactoryDispatchAfterCurrentBusStampListener::class,
+                        'draw.messenger.event_listener.envelope_factory_dispatch_after_current_bus_stamp_listener'
+                    );
+            }
+
+            if ($this->isConfigEnabled($container, $envelopeFactoryConfig['delay'])) {
+                $container
+                    ->setDefinition(
+                        'draw.messenger.event_listener.envelope_factory_delay_stamp_listener',
+                        new Definition(EnvelopeFactoryDelayStampListener::class)
+                    )
+                    ->setAutoconfigured(true)
+                    ->setAutowired(true)
+                    ->setArgument('$delay', $envelopeFactoryConfig['delay']['delay_in_milliseconds']);
+
+                $container
+                    ->setAlias(
+                        EnvelopeFactoryDelayStampListener::class,
+                        'draw.messenger.event_listener.envelope_factory_delay_stamp_listener'
+                    );
+            }
         }
     }
 

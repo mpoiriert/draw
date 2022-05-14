@@ -272,6 +272,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->defaultValue(MessengerMessageTag::class)
                 ->end()
+
                 ->append($this->createMessengerApplicationVersionMonitoring())
                 ->append($this->createMessengerBrokerNode())
                 ->append($this->createMessengerDoctrineMessageBusHookNode())
@@ -327,7 +328,23 @@ class Configuration implements ConfigurationInterface
     private function createMessengerDoctrineMessageBusHookNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('doctrine_message_bus_hook'))
-            ->canBeEnabled();
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('envelope_factory')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('delay')
+                            ->canBeEnabled()
+                            ->children()
+                                ->integerNode('delay_in_milliseconds')->defaultValue(2500)->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('dispatch_after_current_bus')
+                            ->canBeDisabled()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     private function createProcessNode(): ArrayNodeDefinition

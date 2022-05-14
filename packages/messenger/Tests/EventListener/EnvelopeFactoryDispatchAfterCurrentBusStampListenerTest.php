@@ -4,22 +4,22 @@ namespace Draw\Component\Messenger\Tests\EventListener;
 
 use Draw\Component\Messenger\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\Event\EnvelopeCreatedEvent;
-use Draw\Component\Messenger\EventListener\AfterCurrentBusEnvelopeFactoryStampListener;
+use Draw\Component\Messenger\EventListener\EnvelopeFactoryDispatchAfterCurrentBusStampListener;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 /**
- * @covers \Draw\Component\Messenger\EventListener\AfterCurrentBusEnvelopeFactoryStampListener
+ * @covers \Draw\Component\Messenger\EventListener\EnvelopeFactoryDispatchAfterCurrentBusStampListener
  */
-class AfterCurrentBusEnvelopeFactoryStampListenerTest extends TestCase
+class EnvelopeFactoryDispatchAfterCurrentBusStampListenerTest extends TestCase
 {
-    private AfterCurrentBusEnvelopeFactoryStampListener $object;
+    private EnvelopeFactoryDispatchAfterCurrentBusStampListener $object;
 
     public function setUp(): void
     {
-        $this->object = new AfterCurrentBusEnvelopeFactoryStampListener();
+        $this->object = new EnvelopeFactoryDispatchAfterCurrentBusStampListener();
     }
 
     public function testConstruct(): void
