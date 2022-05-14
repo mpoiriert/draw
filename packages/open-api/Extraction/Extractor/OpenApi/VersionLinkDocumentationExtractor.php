@@ -10,6 +10,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class VersionLinkDocumentationExtractor implements ExtractorInterface
 {
+    private const VENDOR_DATA_FLAG = 'X-DrawOpenApi-VersionLinkDocumentation';
+
     private array $versions;
 
     private UrlGeneratorInterface $urlGenerator;
@@ -26,6 +28,14 @@ class VersionLinkDocumentationExtractor implements ExtractorInterface
             return false;
         }
 
+        if ($target->getVendorData()[static::VENDOR_DATA_FLAG] ?? false) {
+            return false;
+        }
+
+        if (null === $extractionContext->getParameter('api.version')) {
+            return false;
+        }
+
         return true;
     }
 
@@ -38,6 +48,8 @@ class VersionLinkDocumentationExtractor implements ExtractorInterface
         if (!$this->canExtract($source, $target, $extractionContext)) {
             throw new ExtractionImpossibleException();
         }
+
+        $target->setVendorDataKey(static::VENDOR_DATA_FLAG, true);
 
         $version = $extractionContext->getParameter('api.version');
 

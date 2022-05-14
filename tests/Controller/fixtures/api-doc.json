@@ -2,7 +2,6 @@
     "swagger": "2.0",
     "info": {
         "title": "test",
-        "description": "Go to <a href=\"http://localhost/api-doc/1\">Version 1</a><br/>Go to <a href=\"http://localhost/api-doc/2\">Version 2</a><br/>Go to <a href=\"http://localhost/api-doc/1\">Version 1</a><br/>Go to <a href=\"http://localhost/api-doc/2\">Version 2</a><br/>",
         "version": "1.0"
     },
     "paths": {
