@@ -2,8 +2,8 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Draw\Bundle\FrameworkExtraBundle\Controller\Messenger\MessageController;
 use Draw\Component\Messenger\Command\PurgeExpiredMessageCommand;
-use Draw\Component\Messenger\Controller\MessageController;
 use Draw\Component\Messenger\EnvelopeFinder;
 use Draw\Component\Messenger\EventListener\AutoStampEnvelopeListener;
 use Draw\Component\Messenger\ManuallyTriggeredMessageUrlGenerator;
@@ -37,9 +37,8 @@ return static function (ContainerConfigurator $container) {
         ->set('draw.messenger.manually_triggered_message_url_generator', ManuallyTriggeredMessageUrlGenerator::class)
         ->alias(ManuallyTriggeredMessageUrlGenerator::class, 'draw.messenger.manually_triggered_message_url_generator')
 
-        ->set('draw.messenger.message_controller', MessageController::class)
+        ->set(MessageController::class, MessageController::class)
         ->tag('controller.service_arguments')
-        ->alias(MessageController::class, 'draw.messenger.message_controller')
 
         ->set('draw.messenger.envelope_finder', EnvelopeFinder::class)
         ->alias(EnvelopeFinder::class, 'draw.messenger.envelope_finder');
