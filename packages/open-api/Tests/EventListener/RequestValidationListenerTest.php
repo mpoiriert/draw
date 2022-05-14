@@ -145,7 +145,7 @@ class RequestValidationListenerTest extends TestCase
 
         $request->attributes->set('_draw_body_validation', $paramConverter = new Deserialization([]));
         $paramConverter->setName($name = uniqid('name-'));
-        $paramConverter->setOptions(['validator' => ['Groups' => $groups = [uniqid('group-')]]]);
+        $paramConverter->setOptions(['validator' => ['groups' => $groups = [uniqid('group-')]]]);
         $request->attributes->set($name, $bodyObject = (object) []);
 
         $request->attributes->set('_draw_query_parameters_validation', [$queryParameter = new QueryParameter()]);

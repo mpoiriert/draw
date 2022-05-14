@@ -107,7 +107,7 @@ class RequestValidationListener implements EventSubscriberInterface
     {
         $options = $paramConverter->getOptions();
         if ($options['validate'] ?? true) {
-            $groups = $paramConverter->getOptions()['validator']['Groups'] ?? ['Default'];
+            $groups = $paramConverter->getOptions()['validator']['groups'] ?? ['Default'];
 
             return $this->validator->validate($object, null, $groups);
         }
