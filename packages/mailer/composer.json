@@ -9,6 +9,7 @@
         "draw/core": "^0.9",
         "symfony/dom-crawler": "^5.4.3",
         "symfony/css-selector": "^5.4.3",
+        "symfony/console": "^5.4.3",
         "symfony/mailer": "^5.4.3",
         "symfony/translation": "^5.4.3",
         "symfony/twig-bridge": "^5.4.3",
