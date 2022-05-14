@@ -5,12 +5,15 @@ namespace Draw\Bundle\SonataExtraBundle\Extension;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\FieldDescription\TypeGuesserInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class GridExtension extends AbstractAdminExtension
 {
+    public const VIRTUAL_FIELD_TYPES = [ListMapper::TYPE_ACTIONS, ListMapper::TYPE_BATCH, ListMapper::TYPE_SELECT];
+
     private TypeGuesserInterface $guesser;
 
     public function __construct(TypeGuesserInterface $guesser)
@@ -54,13 +57,17 @@ class GridExtension extends AbstractAdminExtension
                     $options['type'],
                     $options['options']
                 );
-                continue;
+            } else {
+                $fields[$key] = $this->newEmbeddedFieldDescriptionInstance(
+                    $fieldAdmin,
+                    $fieldName,
+                    $options
+                );
             }
-            $fields[$key] = $this->newEmbeddedFieldDescriptionInstance(
-                $fieldAdmin,
-                $fieldName,
-                $options
-            );
+
+            if (in_array($fields[$key]->getType(), static::VIRTUAL_FIELD_TYPES)) {
+                $fields[$key]->setOption('virtual_field', true);
+            }
         }
 
         $field->setOption('fields', $fields);
