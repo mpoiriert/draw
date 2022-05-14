@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection;
 
+use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailWriterListener;
 use Draw\Component\Mailer\Twig\TranslationExtension;
@@ -31,6 +32,8 @@ class DrawFrameworkExtraExtensionMailerTest extends DrawFrameworkExtraExtensionT
         yield [TranslationExtension::class, 'draw.mailer.twig.translation_extension'];
         yield ['draw.mailer.email_writer_listener'];
         yield [EmailWriterListener::class, 'draw.mailer.email_writer_listener'];
+        yield ['draw.mailer.command.send_test_email_command'];
+        yield [SendTestEmailCommand::class, 'draw.mailer.command.send_test_email_command'];
     }
 
     public function testPrepend(): void

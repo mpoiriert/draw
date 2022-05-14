@@ -14,6 +14,7 @@ use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
+use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
@@ -332,11 +333,22 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
 
         $container
+            ->setDefinition(
+                'draw.mailer.command.send_test_email_command',
+                new Definition(SendTestEmailCommand::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true);
+
+        $container
+            ->setAlias(
+                SendTestEmailCommand::class,
+                'draw.mailer.command.send_test_email_command'
+            );
+
+        $container
             ->registerForAutoconfiguration(EmailWriterInterface::class)
             ->addTag(EmailWriterInterface::class);
-
-        // This is to remove singly implemented aliases
-        $container->removeAlias(EmailWriterInterface::class);
 
         $container
             ->setDefinition(
