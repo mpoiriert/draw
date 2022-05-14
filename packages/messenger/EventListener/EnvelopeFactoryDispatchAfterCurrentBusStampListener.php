@@ -6,7 +6,7 @@ use Draw\Component\Messenger\Event\EnvelopeCreatedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
-class AfterCurrentBusEnvelopeFactoryStampListener implements EventSubscriberInterface
+class EnvelopeFactoryDispatchAfterCurrentBusStampListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
