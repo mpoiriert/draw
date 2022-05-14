@@ -85,12 +85,12 @@ class Execution
     private string $output = '';
 
     /**
-     * @ORM\Column(name="created_at", type="date_immutable", nullable=false)
+     * @ORM\Column(name="created_at", type="datetime_immutable", nullable=false)
      */
     private ?DateTimeImmutable $createdAt = null;
 
     /**
-     * @ORM\Column(name="updated_at", type="date_immutable", nullable=false)
+     * @ORM\Column(name="updated_at", type="datetime_immutable", nullable=false)
      */
     private ?DateTimeImmutable $updatedAt = null;
 
@@ -188,6 +188,9 @@ class Execution
         return $this;
     }
 
+    /**
+     * @ORM\PrePersist()
+     */
     public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt ?: $this->updatedAt = $this->getCreatedAt();
