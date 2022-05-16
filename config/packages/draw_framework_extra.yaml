@@ -2,6 +2,8 @@ draw_framework_extra:
   configuration: ~
 
   console: ~
+  log:
+    enable_all_processors: true
 
   logger:
     slow_request:

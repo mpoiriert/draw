@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\ChangeKeyProcessorDecorator;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
@@ -42,7 +41,6 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 use Symfony\Component\Mime\Address;
 
@@ -224,7 +222,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $services = [
             'console_command' => [
                 'class' => ConsoleCommandProcessor::class,
-                'keyDecorator' => true,
             ],
             'delay' => [
                 'class' => DelayProcessor::class,
@@ -243,37 +240,22 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             }
 
             $class = $serviceConfiguration['class'];
-            $keyDecorator = $serviceConfiguration['keyDecorator'] ?? false;
 
             $definition = $container->setDefinition(
                 $serviceName = 'draw.log.'.$service.'_processor',
                 new Definition($class)
-            );
+            )
+                ->setAutowired(true)
+                ->setAutoconfigured(true);
 
             $definition->addTag('monolog.processor');
-
-            if (!$keyDecorator) {
-                $container->setAlias($class, $serviceName);
-            }
+            $container->setAlias($class, $serviceName);
 
             $arguments = $processorConfig[$service];
 
             unset($arguments['enabled']);
-            if ($keyDecorator) {
-                unset($arguments['key']);
-            }
 
             $definition->setArguments($this->arrayToArgumentsArray($arguments));
-
-            if ($keyDecorator) {
-                $container->setDefinition(
-                    $serviceName.'.key_decorator',
-                    new Definition(ChangeKeyProcessorDecorator::class)
-                )
-                    ->setDecoratedService($serviceName, $serviceName.'.key_decorator..inner')
-                    ->setArgument('$decoratedProcessor', new Reference($serviceName.'.key_decorator,inner'))
-                    ->setArgument('$key', $processorConfig[$service]['key']);
-            }
         }
     }
 

@@ -44,7 +44,6 @@ class ConfigurationTest extends ConfigurationTestCase
                 'processor' => [
                     'console_command' => [
                         'enabled' => false,
-                        'key' => 'command',
                         'includeArguments' => true,
                         'includeOptions' => false,
                     ],

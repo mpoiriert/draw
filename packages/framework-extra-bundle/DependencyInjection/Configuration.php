@@ -164,7 +164,6 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('console_command')
                             ->canBeEnabled()
                             ->children()
-                                ->scalarNode('key')->defaultValue('command')->end()
                                 ->booleanNode('includeArguments')->defaultTrue()->end()
                                 ->booleanNode('includeOptions')->defaultFalse()->end()
                             ->end()

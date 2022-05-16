@@ -5,6 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
+use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
 
 class DrawFrameworkExtraExtensionLogTest extends DrawFrameworkExtraExtensionTest
 {
@@ -23,7 +24,7 @@ class DrawFrameworkExtraExtensionLogTest extends DrawFrameworkExtraExtensionTest
     {
         yield from parent::provideTestHasServiceDefinition();
         yield ['draw.log.console_command_processor'];
-        yield ['draw.log.console_command_processor.key_decorator'];
+        yield [ConsoleCommandProcessor::class, 'draw.log.console_command_processor'];
         yield ['draw.log.delay_processor'];
         yield [DelayProcessor::class, 'draw.log.delay_processor'];
         yield ['draw.log.request_headers_processor'];
