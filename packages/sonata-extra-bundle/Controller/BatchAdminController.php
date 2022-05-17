@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Throwable;
 
-class BatchAdminController extends AbstractSonataAdminController
+class BatchAdminController extends AbstractAdminController
 {
     /**
      * @throws NotFoundHttpException If the HTTP method is not POST
@@ -22,7 +22,7 @@ class BatchAdminController extends AbstractSonataAdminController
     public function batchAction(Request $request): Response
     {
         if (Request::METHOD_POST !== $restMethod = $request->getMethod()) {
-            throw $this->createNotFoundException(sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
+            throw new NotFoundHttpException(sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
         }
 
         $this->validateCsrfToken($request, 'sonata.batch');
@@ -153,9 +153,12 @@ class BatchAdminController extends AbstractSonataAdminController
             throw new RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
-        $controller = $this->container
+        $controller = $batchActions[$action]['controller'];
+
+        // This is to trigger an exception if the controller is not found
+        $this->container
             ->get('controller_resolver')
-            ->getController(new Request([], [], ['_controller' => $batchActions[$action]['controller']]));
+            ->getController(new Request([], [], ['_controller' => $controller]));
 
         return function (ProxyQueryInterface $query, Request $request) use ($controller) {
             $request->attributes->set('_controller', $controller);
