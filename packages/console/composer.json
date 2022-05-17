@@ -6,7 +6,7 @@
     "keywords": ["draw", "console"],
     "require": {
         "doctrine/dbal": "^3.3",
-        "draw/core": "^0.9",
+        "draw/core": "^0.8.4",
         "psr/log": "@stable",
         "sensiolabs/ansi-to-html": "^1.2",
         "symfony/event-dispatcher": "^5.4.3",
@@ -15,7 +15,7 @@
     "require-dev": {
         "doctrine/annotations": "^1.11",
         "doctrine/orm": "^2.11",
-        "draw/tester": "^0.9",
+        "draw/tester": "^0.8.4",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "symfony/cache": "^5.4.3"
     },
