@@ -4,10 +4,8 @@ namespace Draw\Bundle\SonataExtraBundle\Controller;
 
 use JsonException;
 use RuntimeException;
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -15,21 +13,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Throwable;
 
-class BatchController extends AbstractController
+class BatchAdminController extends AbstractSonataAdminController
 {
-    use ControllerTrait;
-
     /**
      * @throws NotFoundHttpException If the HTTP method is not POST
      * @throws RuntimeException      If the batch action is not defined
      */
-    public function batchAction(AdminInterface $admin, Request $request): Response
+    public function batchAction(Request $request): Response
     {
         if (Request::METHOD_POST !== $restMethod = $request->getMethod()) {
             throw $this->createNotFoundException(sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
         }
-
-        $this->initializeAdmin($admin);
 
         $this->validateCsrfToken($request, 'sonata.batch');
 

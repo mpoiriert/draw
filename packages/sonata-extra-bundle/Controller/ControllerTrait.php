@@ -32,7 +32,7 @@ use Twig\Environment;
 
 trait ControllerTrait
 {
-    private AdminInterface $admin;
+    protected AdminInterface $admin;
 
     public static function getSubscribedServices(): array
     {
@@ -61,7 +61,7 @@ trait ControllerTrait
         ];
     }
 
-    protected function initializeAdmin(AdminInterface $admin): void
+    public function configureAdmin(AdminInterface $admin): void
     {
         $this->admin = $admin;
     }
