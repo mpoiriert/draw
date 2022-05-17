@@ -18,6 +18,10 @@
             <tag name="sonata.admin.filter.type"/>
         </service>
 
+        <service id="Draw\Bundle\SonataExtraBundle\Request\ParamConverter\AdminParamConverter">
+            <tag name="request.param_converter" converter="draw.sonata.admin" />
+        </service>
+
         <service id="Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService">
             <tag name="sonata.block"/>
         </service>
