@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 
+use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Draw\Bundle\SonataExtraBundle\Listener\AutoHelpSubscriber;
 use Draw\Bundle\SonataExtraBundle\Listener\FixDepthMenuBuilderSubscriber;
 use Symfony\Component\Config\FileLocator;
@@ -25,6 +26,8 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         if (!($config['auto_help']['enabled'] ?? false)) {
             $container->removeDefinition(AutoHelpSubscriber::class);
         }
+
+        $container->removeAlias(AdminControllerInterface::class);
     }
 
     public function prepend(ContainerBuilder $container)

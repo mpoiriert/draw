@@ -3,13 +3,14 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
-use Draw\Bundle\SonataExtraBundle\Controller\BatchController;
+use Draw\Bundle\SonataExtraBundle\Controller\BatchAdminController;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
 use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Bundle\SonataExtraBundle\Extension\BatchActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\GridExtension;
+use Draw\Bundle\SonataExtraBundle\Listener\ConfigureAdminControllerListener;
 use Draw\Bundle\SonataExtraBundle\Request\ParamConverter\AdminParamConverter;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
@@ -35,11 +36,12 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [AdminMonitoringBlockService::class];
-        yield [BatchController::class];
+        yield [BatchAdminController::class];
         yield [BatchActionExtension::class];
         yield [ExpressionLanguage::class];
         yield [GridExtension::class];
         yield [InFilter::class];
+        yield [ConfigureAdminControllerListener::class];
         yield [RelativeDateTimeFilter::class];
         yield [AdminParamConverter::class];
     }

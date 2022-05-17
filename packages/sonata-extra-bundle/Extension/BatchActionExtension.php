@@ -3,7 +3,7 @@
 namespace Draw\Bundle\SonataExtraBundle\Extension;
 
 use Doctrine\Inflector\InflectorFactory;
-use Draw\Bundle\SonataExtraBundle\Controller\BatchController;
+use Draw\Bundle\SonataExtraBundle\Controller\BatchAdminController;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
@@ -18,7 +18,7 @@ class BatchActionExtension extends AbstractAdminExtension
 
         $collection
             ->get('batch')
-            ->setDefault('_controller', BatchController::class.'::batchAction');
+            ->setDefault('_controller', BatchAdminController::class.'::batchAction');
     }
 
     public function configureBatchActions(AdminInterface $admin, array $actions): array
