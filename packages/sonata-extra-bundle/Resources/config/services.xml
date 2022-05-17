@@ -22,9 +22,14 @@
             <tag name="sonata.block"/>
         </service>
 
+        <service id="Draw\Bundle\SonataExtraBundle\Extension\BatchActionExtension">
+            <tag name="sonata.admin.extension" global="true"/>
+        </service>
+
         <service id="Draw\Bundle\SonataExtraBundle\Extension\GridExtension">
             <tag name="sonata.admin.extension" global="true"/>
             <argument key="$guesser" type="service" id="sonata.admin.guesser.orm_show_chain"/>
         </service>
+
     </services>
 </container>
