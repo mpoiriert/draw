@@ -3,26 +3,26 @@
 namespace Draw\Bundle\SonataExtraBundle\Doctrine\Filter;
 
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
 use Sonata\AdminBundle\Form\Type\Operator\NumberOperatorType;
 use Sonata\DoctrineORMAdminBundle\Filter\Filter;
 
 class RelativeDateTimeFilter extends Filter
 {
-    public function filter(ProxyQueryInterface $query, $alias, $field, $data): void
+    public function filter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): void
     {
-        if (!$data || !\is_array($data) || !\array_key_exists('value', $data)) {
+        if (!$data->hasValue()) {
             return;
         }
 
-        $data['value'] = trim($data['value']);
+        $value = trim($data->getValue());
 
-        if (0 === mb_strlen($data['value'])) {
+        if (0 === mb_strlen($value)) {
             return;
         }
 
-        $operator = '<=';
-        switch ($data['type'] ?? $this->getOption('default_operator')) {
+        switch ($data->getType() ?? $this->getOption('default_operator')) {
             case NumberOperatorType::TYPE_EQUAL:
                 $operator = '=';
                 break;
@@ -32,15 +32,16 @@ class RelativeDateTimeFilter extends Filter
             case NumberOperatorType::TYPE_GREATER_THAN:
                 $operator = '>';
                 break;
-            case NumberOperatorType::TYPE_LESS_EQUAL:
-                $operator = '<=';
-                break;
             case NumberOperatorType::TYPE_LESS_THAN:
                 $operator = '<';
                 break;
+            case NumberOperatorType::TYPE_LESS_EQUAL:
+            default:
+                $operator = '<=';
+                break;
         }
 
-        $inputValue = date('Y-m-d H:i:s', strtotime($data['value']));
+        $inputValue = date('Y-m-d H:i:s', strtotime($value));
         $parameterName = $this->getNewParameterName($query);
         $completeField = sprintf('%s.%s', $alias, $field);
         $this->applyWhere(
