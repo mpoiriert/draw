@@ -12,7 +12,6 @@ use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Bundle\SonataExtraBundle\Extension\BatchActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\GridExtension;
 use Draw\Bundle\SonataExtraBundle\Listener\ConfigureAdminControllerListener;
-use Draw\Bundle\SonataExtraBundle\Request\ParamConverter\AdminParamConverter;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\DoctrineORMAdminBundle\DependencyInjection\SonataDoctrineORMAdminExtension;
@@ -45,7 +44,6 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         yield [ConfigureAdminControllerListener::class];
         yield [KeepAliveController::class];
         yield [RelativeDateTimeFilter::class];
-        yield [AdminParamConverter::class];
     }
 
     public function testPrepend(): void
