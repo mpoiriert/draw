@@ -1,3 +1,5 @@
 draw_sonata_extra:
   auto_help: true
   fix_menu_depth: true
+  session_timeout:
+    delay: 900

@@ -5,6 +5,7 @@ namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Draw\Bundle\SonataExtraBundle\Listener\AutoHelpSubscriber;
 use Draw\Bundle\SonataExtraBundle\Listener\FixDepthMenuBuilderSubscriber;
+use Draw\Bundle\SonataExtraBundle\Listener\SessionTimeoutRequestListener;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -13,7 +14,7 @@ use Symfony\Component\DependencyInjection\Loader;
 
 class DrawSonataExtraExtension extends Extension implements PrependExtensionInterface
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -27,11 +28,26 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             $container->removeDefinition(AutoHelpSubscriber::class);
         }
 
+        if (!($config['session_timeout']['enabled'] ?? false)) {
+            $container->removeDefinition(SessionTimeoutRequestListener::class);
+        } else {
+            $container
+                ->getDefinition(SessionTimeoutRequestListener::class)
+                ->setArgument('$delay', $config['session_timeout']['delay']);
+        }
+
         $container->removeAlias(AdminControllerInterface::class);
     }
 
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
+        $configs = $container->getExtensionConfig('draw_sonata_extra');
+
+        $config = $this->processConfiguration(
+            $this->getConfiguration($configs, $container),
+            $container->getParameterBag()->resolveValue($configs)
+        );
+
         if ($container->hasExtension('twig')) {
             $container->prependExtensionConfig(
                 'twig',
@@ -78,6 +94,19 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                     ],
                 ]
             );
+
+            if ($this->isConfigEnabled($container, $config['session_timeout'])) {
+                $container->prependExtensionConfig(
+                    'sonata_admin',
+                    [
+                        'assets' => [
+                            'extra_javascripts' => [
+                                'bundles/drawsonataextra/js/session_timeout.js',
+                            ],
+                        ],
+                    ]
+                );
+            }
         }
     }
 }

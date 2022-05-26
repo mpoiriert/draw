@@ -6,17 +6,9 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-/**
- * This is the class that validates and merges configuration from your app/config files.
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
- */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('draw_sonata_extra');
         $node = $treeBuilder->getRootNode();
@@ -24,7 +16,8 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->append($this->createAutoHelpNode())
-                ->append($this->fixMenuDepthNode())
+                ->append($this->createFixMenuDepthNode())
+                ->append($this->createSessionTimeoutNode())
             ->end();
 
         return $treeBuilder;
@@ -36,9 +29,18 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled();
     }
 
-    private function fixMenuDepthNode(): ArrayNodeDefinition
+    private function createFixMenuDepthNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('fix_menu_depth'))
             ->canBeEnabled();
+    }
+
+    private function createSessionTimeoutNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('session_timeout'))
+            ->canBeEnabled()
+            ->children()
+                ->integerNode('delay')->defaultValue(3600)->end()
+            ->end();
     }
 }
