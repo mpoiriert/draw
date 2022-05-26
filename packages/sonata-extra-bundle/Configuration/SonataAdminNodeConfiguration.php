@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Configuration;
 
-use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeParentInterface;
 use Symfony\Component\DependencyInjection\Definition;
@@ -21,7 +20,7 @@ class SonataAdminNodeConfiguration extends ArrayNodeDefinition
             ->children()
                 ->scalarNode('entity_class')->defaultValue($entityClass)->end()
                 ->scalarNode('group')->defaultValue($group)->end()
-                ->scalarNode('controller_class')->defaultValue(CRUDController::class)->end()
+                ->scalarNode('controller_class')->defaultValue('sonata.admin.controller.crud')->end()
                 ->scalarNode('icon')->defaultNull()->end()
                 ->scalarNode('label')->defaultNull()->end()
                 ->scalarNode('show_in_dashboard')->defaultTrue()->end()

@@ -12,7 +12,6 @@ use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
-use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -31,7 +30,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'admin' => [
                     'entity_class' => Config::class,
                     'group' => 'draw.sonata.group.application',
-                    'controller_class' => CRUDController::class,
+                    'controller_class' => 'sonata.admin.controller.crud',
                     'icon' => 'fa fa-server',
                     'label' => 'config',
                     'pager_type' => 'default',
@@ -57,7 +56,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'admin' => [
                     'group' => 'Messenger',
                     'entity_class' => MessengerMessage::class,
-                    'controller_class' => CRUDController::class,
+                    'controller_class' => 'sonata.admin.controller.crud',
                     'icon' => 'fas fa-rss',
                     'label' => 'Message',
                     'pager_type' => 'simple',
