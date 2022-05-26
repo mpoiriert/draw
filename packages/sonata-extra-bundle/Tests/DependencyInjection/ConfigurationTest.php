@@ -22,6 +22,10 @@ class ConfigurationTest extends ConfigurationTestCase
             'fix_menu_depth' => [
                 'enabled' => false,
             ],
+            'timeout' => [
+                'enabled' => false,
+                'duration' => 3600
+            ],
         ];
     }
 
@@ -35,6 +39,11 @@ class ConfigurationTest extends ConfigurationTestCase
         yield [
             ['fix_menu_depth' => ['enabled' => 'test']],
             'Invalid type for path "draw_sonata_extra.fix_menu_depth.enabled". Expected bool, but got string.',
+        ];
+
+        yield [
+            ['timeout' => ['duration' => 'test']],
+            'Invalid type for path "draw_sonata_extra.timeout.duration". Expected int, but got string.',
         ];
     }
 }
