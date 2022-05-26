@@ -37,10 +37,10 @@ class Configuration implements ConfigurationInterface
 
     private function createSessionTimeoutNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('timeout'))
+        return (new ArrayNodeDefinition('session_timeout'))
             ->canBeEnabled()
             ->children()
-                ->integerNode('duration')->defaultValue(3600)->end()
+                ->integerNode('delay')->defaultValue(3600)->end()
             ->end();
     }
 }

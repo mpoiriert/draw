@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Controller\BatchAdminController;
+use Draw\Bundle\SonataExtraBundle\Controller\KeepAliveController;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
@@ -42,6 +43,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         yield [GridExtension::class];
         yield [InFilter::class];
         yield [ConfigureAdminControllerListener::class];
+        yield [KeepAliveController::class];
         yield [RelativeDateTimeFilter::class];
         yield [AdminParamConverter::class];
     }

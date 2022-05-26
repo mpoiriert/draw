@@ -22,9 +22,9 @@ class ConfigurationTest extends ConfigurationTestCase
             'fix_menu_depth' => [
                 'enabled' => false,
             ],
-            'timeout' => [
+            'session_timeout' => [
                 'enabled' => false,
-                'duration' => 3600
+                'delay' => 3600,
             ],
         ];
     }
@@ -42,8 +42,8 @@ class ConfigurationTest extends ConfigurationTestCase
         ];
 
         yield [
-            ['timeout' => ['duration' => 'test']],
-            'Invalid type for path "draw_sonata_extra.timeout.duration". Expected int, but got string.',
+            ['session_timeout' => ['delay' => 'test']],
+            'Invalid type for path "draw_sonata_extra.session_timeout.delay". Expected int, but got string.',
         ];
     }
 }
