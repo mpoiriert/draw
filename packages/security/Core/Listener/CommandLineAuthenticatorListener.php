@@ -55,7 +55,7 @@ class CommandLineAuthenticatorListener implements EventSubscriberInterface
     {
         $consoleCommandEvent->getInput()->bind($consoleCommandEvent->getCommand()->getDefinition());
 
-        if (!$consoleCommandEvent->getInput()->getOption(self::OPTION_AS_SYSTEM)) {
+        if (!$consoleCommandEvent->getInput()->hasOption(self::OPTION_AS_SYSTEM)) {
             return;
         }
 

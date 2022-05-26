@@ -49,6 +49,11 @@ class SystemToken extends AbstractToken
         });
     }
 
+    public function isAuthenticated(): bool
+    {
+        return true;
+    }
+
     public function getCredentials()
     {
         return null;
