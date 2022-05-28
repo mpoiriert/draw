@@ -12,7 +12,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 trait CommandTestTrait
 {
-    private static $argumentsCount;
+    private static int $argumentsCount;
 
     protected CommandTester $commandTester;
 
@@ -101,18 +101,34 @@ trait CommandTestTrait
     public function testOptions(): void
     {
         $count = 0;
-        foreach ($this->provideTestOption() as $option) {
-            ++$count;
-            array_unshift($option, $this->command);
-            call_user_func_array([$this, 'assertOption'], $option);
+        $definition = $this->command->getDefinition();
+        $realCommandOptions = [];
+        foreach ($definition->getOptions() as $option) {
+            $realCommandOptions[$option->getName()] = $option;
         }
 
-        $definition = $this->command->getDefinition();
+        foreach ($this->provideTestOption() as $optionConfiguration) {
+            unset($realCommandOptions[$optionConfiguration[0]]);
+            ++$count;
+            array_unshift($optionConfiguration, $this->command);
+            call_user_func_array([$this, 'assertOption'], $optionConfiguration);
+        }
+
         TestCase::assertSame(
-            count($definition->getOptions()),
-            $count,
-            'Options count does not match'
+            [],
+            array_keys($this->filterDefinitionOptions($realCommandOptions)),
+            'Those options are not accounted for.'
         );
+    }
+
+    /**
+     * @param InputOption[] $options
+     *
+     * @return InputOption[]
+     */
+    protected function filterDefinitionOptions(array $options): array
+    {
+        return $options;
     }
 
     public function assertOption(

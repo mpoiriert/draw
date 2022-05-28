@@ -3,25 +3,29 @@
 namespace Draw\Component\Tester\Application;
 
 use Draw\Component\Tester\DataTester;
+use Symfony\Component\Console\Command\Command;
 
 class CommandDataTester
 {
-    private ?string $display = null;
+    private ?string $expectedDisplay = null;
 
     private array $expectedDisplayStrings = [];
 
-    private int $statusCode = 0;
+    private int $expectedStatusCode = 0;
 
     private ?string $errorOutput = '';
 
-    public static function create(int $statusCode = 0, $display = ''): CommandDataTester
+    /**
+     * @param string|array|null $expectedDisplay String for exact match, array to find line, null will not test the display
+     */
+    public static function create(int $expectedStatusCode = Command::SUCCESS, $expectedDisplay = ''): CommandDataTester
     {
-        $self = (new static())->setStatusCode($statusCode);
+        $self = (new static())->setExpectedStatusCode($expectedStatusCode);
 
-        if (is_array($display)) {
-            $self->setExpectedDisplayStrings($display);
+        if (is_array($expectedDisplay)) {
+            $self->setExpectedDisplayStrings($expectedDisplay);
         } else {
-            $self->setDisplay($display);
+            $self->setExpectedDisplay($expectedDisplay);
         }
 
         return $self;
@@ -39,26 +43,26 @@ class CommandDataTester
         return $this;
     }
 
-    public function getDisplay(): ?string
+    public function getExpectedDisplay(): ?string
     {
-        return $this->display;
+        return $this->expectedDisplay;
     }
 
-    public function setDisplay(?string $display): self
+    public function setExpectedDisplay(?string $expectedDisplay): self
     {
-        $this->display = $display;
+        $this->expectedDisplay = $expectedDisplay;
 
         return $this;
     }
 
-    public function getStatusCode(): int
+    public function getExpectedStatusCode(): int
     {
-        return $this->statusCode;
+        return $this->expectedStatusCode;
     }
 
-    public function setStatusCode(int $statusCode): self
+    public function setExpectedStatusCode(int $expectedStatusCode): self
     {
-        $this->statusCode = $statusCode;
+        $this->expectedStatusCode = $expectedStatusCode;
 
         return $this;
     }
@@ -77,14 +81,14 @@ class CommandDataTester
 
     public function __invoke(DataTester $dataTester)
     {
-        $dataTester->path('statusCode')->assertEquals($this->statusCode);
+        $dataTester->path('statusCode')->assertEquals($this->expectedStatusCode);
 
         if (null !== $this->errorOutput) {
             $dataTester->path('errorOutput')->assertEquals($this->errorOutput);
         }
 
-        if (null !== $this->display) {
-            $dataTester->path('display')->assertEquals($this->display);
+        if (null !== $this->expectedDisplay) {
+            $dataTester->path('display')->assertEquals($this->expectedDisplay);
         }
 
         foreach ($this->expectedDisplayStrings as $expectedDisplayString) {
