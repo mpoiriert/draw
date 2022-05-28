@@ -10,13 +10,15 @@ class NullCommand extends Command
 {
     protected function configure(): void
     {
-        $this->setName('app:null');
+        $this
+            ->setName('app:null')
+            ->setDescription('This command does nothing.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('This does nothing.');
+        $output->write('This does nothing.');
 
-        return 0;
+        return static::SUCCESS;
     }
 }
