@@ -25,11 +25,6 @@ class NullCommandTest extends TestCase
         return 'app:null';
     }
 
-    public function getCommandDescription(): string
-    {
-        return 'This command does nothing.';
-    }
-
     public function provideTestArgument(): iterable
     {
         return [];

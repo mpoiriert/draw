@@ -44,27 +44,21 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         return 'draw:aws:cloud-watch-logs:download';
     }
 
-    public function getCommandDescription(): string
-    {
-        return 'Download logs from cloud watch locally base on it\'s log group name, log stream name and a start time/end time';
-    }
-
     public function provideTestArgument(): iterable
     {
-        yield ['logGroupName', InputArgument::REQUIRED, 'The log group name', null];
-        yield ['logStreamName', InputArgument::REQUIRED, 'The log stream name', null];
-        yield ['output', InputArgument::REQUIRED, 'The output file name', null];
+        yield ['logGroupName', InputArgument::REQUIRED, null];
+        yield ['logStreamName', InputArgument::REQUIRED, null];
+        yield ['output', InputArgument::REQUIRED, null];
     }
 
     public function provideTestOption(): iterable
     {
-        yield ['startTime', null, InputOption::VALUE_REQUIRED, 'Since when the log need to be downloaded.', '- 1 days'];
-        yield ['endTime', null, InputOption::VALUE_REQUIRED, 'End time of the download.', 'now'];
+        yield ['startTime', null, InputOption::VALUE_REQUIRED, '- 1 days'];
+        yield ['endTime', null, InputOption::VALUE_REQUIRED, 'now'];
         yield [
             'fileMode',
             null,
             InputOption::VALUE_REQUIRED,
-            'Mode in which the output file will be open to write to.',
             'w+',
         ];
     }

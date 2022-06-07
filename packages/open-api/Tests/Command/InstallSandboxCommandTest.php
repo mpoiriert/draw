@@ -30,17 +30,11 @@ class InstallSandboxCommandTest extends TestCase
         return 'draw:open-api:install-sandbox';
     }
 
-    public function getCommandDescription(): string
-    {
-        return 'Install Open Api Sandbox from downloaded zip base on tag version.';
-    }
-
     public function provideTestArgument(): iterable
     {
         yield [
             'path',
             InputArgument::REQUIRED,
-            'Path were to extract the zip',
         ];
     }
 
@@ -50,7 +44,6 @@ class InstallSandboxCommandTest extends TestCase
             'tag',
             null,
             InputOption::VALUE_REQUIRED,
-            'Swagger UI tag to install (eg. "v3.52.5")',
             'master',
         ];
     }

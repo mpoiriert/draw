@@ -43,18 +43,11 @@ class PurgeExpiredMessageCommandTest extends TestCase
         return 'draw:messenger:purge-obsolete-messages';
     }
 
-    public function getCommandDescription(): string
-    {
-        return 'Purge obsolete message from transports.';
-    }
-
     public function provideTestArgument(): iterable
     {
         yield [
             'transport',
             InputArgument::OPTIONAL,
-            'Name of the transport to setup',
-            null,
         ];
     }
 
@@ -64,7 +57,6 @@ class PurgeExpiredMessageCommandTest extends TestCase
             'delay',
             null,
             InputOption::VALUE_OPTIONAL,
-            'Records older than this date (compatible with strtotime) will be deleted.',
             '-1 month',
         ];
     }

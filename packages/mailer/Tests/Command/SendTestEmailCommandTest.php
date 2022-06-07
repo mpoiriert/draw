@@ -36,18 +36,11 @@ class SendTestEmailCommandTest extends TestCase
         return 'draw:mailer:send-test-email';
     }
 
-    public function getCommandDescription(): string
-    {
-        return 'Send a test email.';
-    }
-
     public function provideTestArgument(): iterable
     {
         yield [
             'to',
             InputArgument::REQUIRED,
-            'Email to send to',
-            null,
         ];
     }
 

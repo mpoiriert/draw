@@ -34,23 +34,16 @@ class TestsCoverageCheckCommandTest extends TestCase
         return 'draw:tester:coverage-check';
     }
 
-    public function getCommandDescription(): string
-    {
-        return 'Check the code coverage by the tests';
-    }
-
     public function provideTestArgument(): iterable
     {
         yield [
             'clover-xlm-file-path',
             InputArgument::REQUIRED,
-            'Clover report file path',
         ];
 
         yield [
             'coverage',
             InputArgument::REQUIRED,
-            'Required coverage in percentage',
         ];
     }
 

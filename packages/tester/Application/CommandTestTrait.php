@@ -22,8 +22,6 @@ trait CommandTestTrait
 
     abstract public function getCommandName(): string;
 
-    abstract public function getCommandDescription(): string;
-
     abstract public function provideTestArgument(): iterable;
 
     abstract public function provideTestOption(): iterable;
@@ -41,9 +39,23 @@ trait CommandTestTrait
         $this->commandTester = new CommandTester($this->command);
     }
 
-    public function testGetDescription()
+    protected function getMinimumCommandDescriptionStringLength(): int
     {
-        TestCase::assertSame($this->getCommandDescription(), $this->command->getDescription());
+        return 10;
+    }
+
+    protected function getMinimumInputDescriptionStringLength(): int
+    {
+        return 10;
+    }
+
+    public function testGetDescription(): void
+    {
+        TestCase::assertGreaterThanOrEqual(
+            $this->getMinimumCommandDescriptionStringLength(),
+            mb_strlen($this->command->getDescription()),
+            'Command description is too short'
+        );
     }
 
     public function testArguments(): void
@@ -69,7 +81,6 @@ trait CommandTestTrait
         int $position,
         string $name,
         ?int $mode,
-        string $description = null,
         $default = null
     ): void {
         $definition = $command->getDefinition();
@@ -83,7 +94,12 @@ trait CommandTestTrait
             'Argument at position ['.$position.'] does not match the name.'
         );
         TestCase::assertSame($default, $argument->getDefault());
-        TestCase::assertSame($description, $argument->getDescription());
+
+        TestCase::assertGreaterThanOrEqual(
+            $this->getMinimumInputDescriptionStringLength(),
+            mb_strlen($argument->getDescription()),
+            'Argument description is too short'
+        );
 
         if (InputArgument::IS_ARRAY & $mode) {
             TestCase::assertTrue($argument->isArray());
@@ -136,7 +152,6 @@ trait CommandTestTrait
         string $name,
         ?string $shortcut,
         ?int $mode,
-        string $description,
         $default = null
     ): void {
         $definition = $command->getDefinition();
@@ -150,7 +165,12 @@ trait CommandTestTrait
         }
 
         TestCase::assertSame($default, $option->getDefault());
-        TestCase::assertSame($description, $option->getDescription());
+
+        TestCase::assertGreaterThanOrEqual(
+            $this->getMinimumInputDescriptionStringLength(),
+            mb_strlen($option->getDescription()),
+            'Option description is too short'
+        );
 
         if (InputOption::VALUE_IS_ARRAY & $mode) {
             TestCase::assertTrue($option->isArray());

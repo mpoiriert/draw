@@ -43,11 +43,6 @@ class PurgeExecutionCommandTest extends TestCase
         return 'draw:console:purge-execution';
     }
 
-    public function getCommandDescription(): string
-    {
-        return 'Purge the execution table of all records before a specified date interval.';
-    }
-
     public function provideTestArgument(): iterable
     {
         return [];
@@ -59,7 +54,6 @@ class PurgeExecutionCommandTest extends TestCase
             'delay',
             null,
             InputOption::VALUE_OPTIONAL,
-            'Records older than this date interval will be deleted.',
             '-1 month',
         ];
 
@@ -67,7 +61,6 @@ class PurgeExecutionCommandTest extends TestCase
             'batch-size',
             null,
             InputOption::VALUE_OPTIONAL,
-            'Delete this many rows as a batch in a loop.',
             1000,
         ];
 
@@ -75,7 +68,6 @@ class PurgeExecutionCommandTest extends TestCase
             'sleep',
             null,
             InputOption::VALUE_OPTIONAL,
-            'The delete loop will sleep this long in seconds between iteration.',
             10,
         ];
     }

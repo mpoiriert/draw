@@ -41,11 +41,6 @@ class StartMessengerBrokerCommandTest extends TestCase
         return 'draw:messenger:start-broker';
     }
 
-    public function getCommandDescription(): string
-    {
-        return 'Start multiple messenger:consume base on concurrent option. Automatically restart them if stopped.';
-    }
-
     public function provideTestArgument(): iterable
     {
         return [];
@@ -57,7 +52,6 @@ class StartMessengerBrokerCommandTest extends TestCase
             'concurrent',
             null,
             InputOption::VALUE_REQUIRED,
-            'The number of concurrent consumer you want to run',
             1,
         ];
 
@@ -65,7 +59,6 @@ class StartMessengerBrokerCommandTest extends TestCase
             'timeout',
             null,
             InputOption::VALUE_REQUIRED,
-            'The timeout in seconds before sending a sig kill when stopping. Default to 10.',
             10,
         ];
     }
