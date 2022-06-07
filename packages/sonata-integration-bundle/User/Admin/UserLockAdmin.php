@@ -79,6 +79,7 @@ class UserLockAdmin extends AbstractAdmin
                 'explanation',
                 null,
                 [
+                    'virtual_field' => true,
                     'template' => '@DrawSonataIntegration/UserLock/CRUD/show_reason_details.html.twig',
                 ]
             );
