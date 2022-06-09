@@ -33,6 +33,7 @@ use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use Metadata\MetadataFactoryInterface;
 use ReflectionClass;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -48,6 +49,17 @@ class OpenApiIntegration implements IntegrationInterface
     public function getConfigSectionName(): string
     {
         return 'open_api';
+    }
+
+    public function addConfiguration(ArrayNodeDefinition $node): void
+    {
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->append($this->createOpenApiNode())
+                ->append($this->createRequestNode())
+                ->append($this->createResponseNode())
+            ->end();
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -364,5 +376,134 @@ class OpenApiIntegration implements IntegrationInterface
             $container->getDefinition(DeserializeBodyParamConverter::class)
                 ->addTag('request.param_converter', ['converter' => 'draw_open_api.request_body']);
         }
+    }
+
+    private function createOpenApiNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('openApi'))
+            ->canBeDisabled()
+            ->children()
+                ->scalarNode('sandbox_url')->defaultValue('/open-api/sandbox')->end()
+                ->booleanNode('caching_enabled')->defaultTrue()->end()
+                ->booleanNode('cleanOnDump')->defaultTrue()->end()
+                ->append($this->createVersioningNode())
+                ->append($this->createSchemaNode())
+                ->append($this->createHeadersNode())
+                ->append($this->createDefinitionAliasesNode())
+                ->append($this->createNamingFiltersNode())
+            ->end();
+    }
+
+    private function createVersioningNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('versioning'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('versions')
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
+                ->end()
+            ->end();
+    }
+
+    private function createRequestNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('request'))
+            ->canBeDisabled()
+            ->children()
+                ->arrayNode('validation')
+                    ->children()
+                        ->arrayNode('pathPrefixes')
+                            ->children()
+                                ->scalarNode('query')->defaultValue('$.query')->end()
+                                ->scalarNode('body')->defaultValue('$.body')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('queryParameter')
+                    ->canBeDisabled()
+                ->end()
+                ->arrayNode('bodyDeserialization')
+                    ->canBeDisabled()
+                ->end()
+                ->arrayNode('userRequestInterceptedException')
+                    ->canBeEnabled()
+                ->end()
+            ->end();
+    }
+
+    private function createResponseNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('response'))
+            ->canBeDisabled()
+            ->children()
+                ->booleanNode('serializeNull')->defaultTrue()->end()
+                ->arrayNode('exceptionHandler')
+                    ->canBeDisabled()
+                    ->children()
+                        ->booleanNode('useDefaultExceptionsStatusCodes')->defaultTrue()->end()
+                        ->booleanNode('omitConstraintInvalidValue')->defaultFalse()->end()
+                        ->arrayNode('exceptionsStatusCodes')
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('class')->isRequired()->end()
+                                    ->integerNode('code')->isRequired()->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->scalarNode('violationKey')->defaultValue('errors')->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    private function createDefinitionAliasesNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('definitionAliases'))
+            ->defaultValue([])
+            ->arrayPrototype()
+                ->children()
+                    ->scalarNode('class')->isRequired()->end()
+                    ->scalarNode('alias')->isRequired()->end()
+                ->end()
+            ->end();
+    }
+
+    private function createNamingFiltersNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('classNamingFilters'))
+                ->defaultValue([AliasesClassNamingFilter::class])
+                ->scalarPrototype()
+            ->end();
+    }
+
+    private function createSchemaNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('schema'))
+            ->normalizeKeys(false)
+            ->ignoreExtraKeys(false)
+            ->children()
+                ->arrayNode('info')
+                    ->children()
+                        ->scalarNode('version')->defaultValue('1.0')->end()
+                        ->scalarNode('contact')->end()
+                        ->scalarNode('termsOfService')->end()
+                        ->scalarNode('description')->end()
+                        ->scalarNode('title')->end()
+                    ->end()
+                ->end()
+                ->scalarNode('basePath')->end()
+                ->scalarNode('swagger')->defaultValue('2.0')->end()
+            ->end();
+    }
+
+    private function createHeadersNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('headers'))
+            ->arrayPrototype()
+                ->normalizeKeys(false)
+                ->ignoreExtraKeys(false)
+            ->end();
     }
 }

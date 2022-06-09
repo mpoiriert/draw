@@ -4,10 +4,11 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
-use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Application\Cron\Job;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
@@ -34,6 +35,7 @@ use Draw\Component\Security\Core\Listener\CommandLineAuthenticatorListener;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use ReflectionClass;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -62,7 +64,13 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
     private function registerDefaultIntegrations(): void
     {
+        $this->integrations[] = new ConfigurationIntegration();
         $this->integrations[] = new OpenApiIntegration();
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
+    {
+        return new Configuration($this->integrations);
     }
 
     public function load(array $configs, ContainerBuilder $container)
@@ -79,7 +87,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
 
         $this->configureAwsToolKit($config['aws_tool_kit'], $loader, $container);
-        $this->configureConfiguration($config['configuration'], $loader, $container);
         $this->configureConsole($config['console'], $loader, $container);
         $this->configureCron($config['cron'], $loader, $container);
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
@@ -563,6 +570,18 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             $container->getParameterBag()->resolveValue($configs)
         );
 
+        foreach ($this->integrations as $integration) {
+            if (!$integration instanceof PrependIntegrationInterface) {
+                continue;
+            }
+
+            $integrationConfiguration = $config[$integration->getConfigSectionName()];
+
+            if ($this->isConfigEnabled($container, $integrationConfiguration)) {
+                $integration->prepend($container, $integrationConfiguration);
+            }
+        }
+
         $this->prependConsole($config['console'], $container);
         $this->prependMailer($config['mailer'], $container);
 
@@ -625,33 +644,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 ]
             );
         }
-
-        $this->prependConfiguration($config['configuration'], $container);
-    }
-
-    private function prependConfiguration(array $config, ContainerBuilder $container): void
-    {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $reflection = new ReflectionClass(Config::class);
-
-        $container->prependExtensionConfig(
-            'doctrine',
-            [
-                'orm' => [
-                    'mappings' => [
-                        'DrawConfiguration' => [
-                            'is_bundle' => false,
-                            'type' => 'annotation',
-                            'dir' => dirname($reflection->getFileName()),
-                            'prefix' => $reflection->getNamespaceName(),
-                        ],
-                    ],
-                ],
-            ]
-        );
     }
 
     private function prependConsole(array $config, ContainerBuilder $container): void

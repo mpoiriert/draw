@@ -4,7 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Configuration\OpenApiNodeDefinition;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Application\CronManager;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Process\ProcessFactory;
@@ -18,6 +18,16 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
+     * @var IntegrationInterface[]
+     */
+    private array $integrations;
+
+    public function __construct(array $integrations = [])
+    {
+        $this->integrations = $integrations;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigTreeBuilder(): TreeBuilder
@@ -30,7 +40,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('symfony_console_path')->defaultNull()->end()
                 ->append($this->createAwsToolKitNode())
-                ->append($this->createConfigurationNode())
                 ->append($this->createConsoleNode())
                 ->append($this->createCronNode())
                 ->append($this->createJwtEncoder())
@@ -39,11 +48,17 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createMailerNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createProcessNode())
-                ->append(new OpenApiNodeDefinition())
                 ->append($this->createSecurityNode())
                 ->append($this->createTesterNode())
-                ->append($this->createVersioningNode())
-            ->end();
+                ->append($this->createVersioningNode());
+
+        foreach ($this->integrations as $integration) {
+            $integrationNode = (new ArrayNodeDefinition($integration->getConfigSectionName()))
+                ->canBeEnabled();
+
+            $integration->addConfiguration($integrationNode);
+            $node->append($integrationNode);
+        }
 
         return $treeBuilder;
     }
@@ -70,12 +85,6 @@ class Configuration implements ConfigurationInterface
                     ->canBeEnabled()
                 ->end()
             ->end();
-    }
-
-    private function createConfigurationNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('configuration'))
-            ->canBeEnabled();
     }
 
     private function createConsoleNode(): ArrayNodeDefinition

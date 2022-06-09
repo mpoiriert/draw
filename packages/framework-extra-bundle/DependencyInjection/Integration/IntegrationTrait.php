@@ -2,12 +2,27 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Exception;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 trait IntegrationTrait
 {
+    abstract public function getConfigSectionName(): string;
+
+    protected function assertHasExtension(
+        ContainerBuilder $container,
+        string $extensionName,
+        string $exceptionMessage = null
+    ): void {
+        if ($container->hasExtension($extensionName)) {
+            return;
+        }
+
+        throw new Exception($exceptionMessage ?: sprintf('You must have the extension [%s] available to configuration [draw_framework_extra.%s]', $extensionName, $this->getConfigSectionName()));
+    }
+
     protected function isConfigEnabled(ContainerBuilder $container, array $config): bool
     {
         if (!\array_key_exists('enabled', $config)) {
