@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\DrawFrameworkExtraExtension;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;
@@ -55,45 +54,71 @@ use Draw\Component\OpenApi\Serializer\Subscriber\OpenApiSubscriber;
 use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use Metadata\MetadataFactoryInterface;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class OpenApiIntegrationTest extends TestCase
+class OpenApiIntegrationTest extends IntegrationTestCase
 {
-    private OpenApiIntegration $object;
-
-    public function setUp(): void
+    public function createIntegration(): IntegrationInterface
     {
-        $this->object = new OpenApiIntegration();
+        return new OpenApiIntegration();
     }
 
-    public function testConstruct(): void
+    public function getConfigurationSectionName(): string
     {
-        $this->assertInstanceOf(
-            IntegrationInterface::class,
-            $this->object
-        );
+        return 'open_api';
     }
 
-    public function testGetConfigSectionName(): void
+    public function getDefaultConfiguration(): array
     {
-        $this->assertSame(
-            'open_api',
-            $this->object->getConfigSectionName()
-        );
+        return [
+            'openApi' => [
+                'enabled' => true,
+                'caching_enabled' => true,
+                'sandbox_url' => '/open-api/sandbox',
+                'cleanOnDump' => true,
+                'versioning' => [
+                    'enabled' => false,
+                    'versions' => [
+                    ],
+                ],
+                'definitionAliases' => [
+                ],
+                'classNamingFilters' => [
+                    0 => 'Draw\\Component\\OpenApi\\Naming\\AliasesClassNamingFilter',
+                ],
+                'headers' => [],
+            ],
+            'request' => [
+                'enabled' => true,
+                'queryParameter' => [
+                    'enabled' => true,
+                ],
+                'bodyDeserialization' => [
+                    'enabled' => true,
+                ],
+                'userRequestInterceptedException' => [
+                    'enabled' => false,
+                ],
+            ],
+            'response' => [
+                'enabled' => true,
+                'serializeNull' => true,
+                'exceptionHandler' => [
+                    'enabled' => true,
+                    'useDefaultExceptionsStatusCodes' => true,
+                    'omitConstraintInvalidValue' => false,
+                    'exceptionsStatusCodes' => [
+                    ],
+                    'violationKey' => 'errors',
+                ],
+            ],
+        ];
     }
 
-    public function testLoad(): void
+    public function provideTestLoad(): iterable
     {
-        $dirname = \dirname((new \ReflectionClass(DrawFrameworkExtraExtension::class))->getFileName(), 2);
-        $container = new ContainerBuilder();
-        $loader = new PhpFileLoader($container, new FileLocator($dirname.'/Resources/config'));
-
-        $this->object->load(
+        yield [
             [
                 'openApi' => [
                     'enabled' => true,
@@ -143,11 +168,6 @@ class OpenApiIntegrationTest extends TestCase
                     ],
                 ],
             ],
-            $loader,
-            $container
-        );
-
-        $this->assertContainerBuilder(
             [
                 new ServiceConfiguration(
                     'draw.open_api',
@@ -196,14 +216,14 @@ class OpenApiIntegrationTest extends TestCase
                     'draw.open_api.extractor.caching.file_tracking_extractor',
                     [FileTrackingExtractor::class]
                 ),
-                 new ServiceConfiguration(
-                     'draw.open_api.extractor.caching.load_from_cache_extractor',
-                     [LoadFromCacheExtractor::class]
-                 ),
-                 new ServiceConfiguration(
-                     'draw.open_api.extractor.caching.store_in_cache_extractor',
-                     [StoreInCacheExtractor::class]
-                 ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.caching.load_from_cache_extractor',
+                    [LoadFromCacheExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.caching.store_in_cache_extractor',
+                    [StoreInCacheExtractor::class]
+                ),
                 new ServiceConfiguration(
                     'draw.open_api.extractor.jms_serializer.properties_extractor',
                     [PropertiesExtractor::class]
@@ -366,6 +386,14 @@ class OpenApiIntegrationTest extends TestCase
                 ),
             ],
             [
+                'jms_serializer.naming_strategy' => [
+                    PropertyNamingStrategyInterface::class,
+                ],
+                'jms_serializer.metadata_factory' => [
+                    MetadataFactoryInterface::class,
+                ],
+            ],
+            [
                 'draw_open_api.root_schema' => [
                     'info' => [
                         'title' => 'test',
@@ -377,128 +405,6 @@ class OpenApiIntegrationTest extends TestCase
                     AccessDeniedException::class => 403,
                 ],
             ],
-            $container,
-            [
-                'jms_serializer.naming_strategy' => [
-                    PropertyNamingStrategyInterface::class,
-                ],
-                'jms_serializer.metadata_factory' => [
-                    MetadataFactoryInterface::class,
-                ],
-            ]
-        );
-    }
-
-    /**
-     * @param array|ServiceConfiguration[] $services
-     */
-    public function assertContainerBuilder(
-        array $services,
-        array $parameters,
-        ContainerBuilder $container,
-        array $extraAliases = []
-    ): void {
-        $definedServiceIds = array_values(
-            array_diff(
-                array_keys($container->getDefinitions()),
-                array_keys((new ContainerBuilder())->getDefinitions())
-            )
-        );
-
-        $definedAliasIds = array_values(
-            array_diff(
-                array_keys($container->getAliases()),
-                array_keys((new ContainerBuilder())->getAliases())
-            )
-        );
-
-        $definedParameters = array_diff_key(
-            $container->getParameterBag()->all(),
-            (new ContainerBuilder())->getParameterBag()->all()
-        );
-
-        $serviceAliases = [];
-
-        foreach ($definedAliasIds as $aliasId) {
-            $serviceAliases[(string) $container->getAlias($aliasId)][] = $aliasId;
-        }
-
-        foreach ($services as $service) {
-            $this->assertContains(
-                $service->getId(),
-                $definedServiceIds
-            );
-
-            unset($definedServiceIds[array_search($service->getId(), $definedServiceIds)]);
-
-            $this->assertSame(
-                $serviceAliases[$service->getId()],
-                $service->getAliases(),
-                'Service ['.$service->getId().'] aliases do not match.'
-            );
-
-            unset($serviceAliases[$service->getId()]);
-
-            if ($callback = $service->getDefinitionCheckCallback()) {
-                $callback($container->getDefinition($service->getId()));
-            }
-        }
-
-        $this->assertSame(
-            [],
-            $definedServiceIds,
-            'All service should be tested'
-        );
-
-        foreach ($extraAliases as $serviceId => $aliases) {
-            $this->assertSame(
-                $serviceAliases[$serviceId],
-                $aliases
-            );
-            unset($serviceAliases[$serviceId]);
-        }
-
-        $this->assertSame(
-            [],
-            $serviceAliases,
-            'All aliases need to be accounted for'
-        );
-
-        $this->assertSame(
-            $parameters,
-            $definedParameters,
-            'Defined parameters do not match'
-        );
-    }
-}
-
-class ServiceConfiguration
-{
-    private string $id;
-
-    private array $aliases;
-
-    private $definitionCheckCallback;
-
-    public function __construct(string $id, array $aliases, callable $definitionCheckCallback = null)
-    {
-        $this->id = $id;
-        $this->aliases = $aliases;
-        $this->definitionCheckCallback = $definitionCheckCallback;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getAliases(): array
-    {
-        return $this->aliases;
-    }
-
-    public function getDefinitionCheckCallback(): ?callable
-    {
-        return $this->definitionCheckCallback;
+        ];
     }
 }
