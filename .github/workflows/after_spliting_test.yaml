@@ -1,19 +1,15 @@
 name: After Split Testing
 
 on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
+  pull_request: null
+
+env:
+  COMPOSER_ROOT_VERSION: 'dev-master'
+  DATABASE_URL: 'mysql://root@127.0.0.1:3306/draw'
 
 jobs:
   after_split_testing:
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: 'mysql://root@127.0.0.1:3306/draw'
-      COMPOSER_ROOT_VERSION: 'dev-master'
     strategy:
       fail-fast: false
       matrix:

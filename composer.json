@@ -95,7 +95,6 @@
         "symfony/translation-contracts": "^2.5",
         "symfony/twig-bundle": "^5.4.3",
         "symfony/web-profiler-bundle": "^5.4.3",
-        "symplify/monorepo-builder": "^8.3.48",
         "terminal42/service-annotation-bundle": "^1.1"
     },
     "replace": {
@@ -169,6 +168,9 @@
         }
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "0.9-dev"
+        },
         "src-dir": "app/src"
     },
     "scripts": {
