@@ -131,4 +131,14 @@ trait IntegrationTrait
 
         return mb_strtolower($input);
     }
+
+    protected function arrayToArgumentsArray(array $arguments): array
+    {
+        $result = [];
+        foreach ($arguments as $key => $value) {
+            $result['$'.$key] = $value;
+        }
+
+        return $result;
+    }
 }

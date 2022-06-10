@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Logger;
+namespace Draw\Bundle\FrameworkExtraBundle\Logger\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -8,7 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
-class SlowRequestLogger implements EventSubscriberInterface
+class SlowRequestLoggerListener implements EventSubscriberInterface
 {
     private LoggerInterface $logger;
 

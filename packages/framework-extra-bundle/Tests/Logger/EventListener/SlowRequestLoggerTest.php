@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\Logger;
+namespace Draw\Bundle\FrameworkExtraBundle\Tests\Logger\EventListener;
 
-use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
+use Draw\Bundle\FrameworkExtraBundle\Logger\EventListener\SlowRequestLoggerListener;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class SlowRequestLoggerTest extends TestCase
 {
-    private SlowRequestLogger $service;
+    private SlowRequestLoggerListener $service;
 
     private LoggerInterface $logger;
 
@@ -27,7 +27,7 @@ class SlowRequestLoggerTest extends TestCase
     {
         $this->requestMatcher = $this->createMock(RequestMatcherInterface::class);
 
-        $this->service = new SlowRequestLogger(
+        $this->service = new SlowRequestLoggerListener(
             $this->logger = $this->createMock(LoggerInterface::class),
             [
                 ($this->durations[] = 5000) => [$this->requestMatcher],
