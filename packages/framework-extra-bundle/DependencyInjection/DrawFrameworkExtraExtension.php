@@ -9,6 +9,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Configurati
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
@@ -16,7 +17,6 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
-use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Entity\DrawMessageInterface;
@@ -35,7 +35,6 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\HttpFoundation\RequestMatcher;
 
 class DrawFrameworkExtraExtension extends Extension implements PrependExtensionInterface
 {
@@ -59,6 +58,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new ConfigurationIntegration();
         $this->integrations[] = new ConsoleIntegration();
         $this->integrations[] = new CronIntegration();
+        $this->integrations[] = new LoggerIntegration();
         $this->integrations[] = new OpenApiIntegration();
         $this->integrations[] = new MailerIntegration();
         $this->integrations[] = new ProcessIntegration();
@@ -86,7 +86,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
 
         $this->configureLog($config['log'], $loader, $container);
-        $this->configureLogger($config['logger'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
     }
 
@@ -138,57 +137,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
             $definition->setArguments($this->arrayToArgumentsArray($arguments));
         }
-    }
-
-    private function configureLogger(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
-    {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $this->configureSlowRequestLogger($config['slow_request'], $loader, $container);
-    }
-
-    private function configureSlowRequestLogger(
-        array $config,
-        PhpFileLoader $loader,
-        ContainerBuilder $container
-    ): void {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $defaultDuration = $config['default_duration'];
-        $requestMatchers = $config['request_matchers'] ?? [];
-
-        if (null !== $defaultDuration && !$requestMatchers) {
-            $requestMatchers[] = ['duration' => $defaultDuration];
-        }
-
-        $requestMatcherReferences = [];
-        foreach ($requestMatchers as $requestMatcher) {
-            $requestMatcherDefinition = new Definition(
-                RequestMatcher::class
-            );
-
-            $duration = $requestMatcher['duration'] ?? $defaultDuration ?: 10000;
-
-            $requestMatcherReferences[(int) $duration][] = $requestMatcherDefinition;
-
-            unset($requestMatcher['duration']);
-
-            $requestMatcherDefinition->setArguments(
-                $this->arrayToArgumentsArray($requestMatcher)
-            );
-        }
-
-        $container->setDefinition(
-            'draw.logger.slow_request_logger',
-            new Definition(SlowRequestLogger::class)
-        )
-            ->setAutowired(true)
-            ->setAutoconfigured(true)
-            ->setArgument('$requestMatchers', $requestMatcherReferences);
     }
 
     private function configureMessenger(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

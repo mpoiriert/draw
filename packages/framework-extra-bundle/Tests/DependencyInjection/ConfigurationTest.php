@@ -42,14 +42,6 @@ class ConfigurationTest extends ConfigurationTestCase
                     ],
                 ],
             ],
-            'logger' => [
-                'enabled' => false,
-                'slow_request' => [
-                    'enabled' => false,
-                    'default_duration' => 10000,
-                    'request_matchers' => [],
-                ],
-            ],
             'messenger' => [
                 'enabled' => true,
                 'entity_class' => 'App\Entity\MessengerMessage',
@@ -85,7 +77,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are log, logger, messenger, symfony_console_path.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are log, messenger, symfony_console_path.',
         ];
     }
 }
