@@ -4,14 +4,13 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
-use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
-use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
@@ -64,6 +63,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
     private function registerDefaultIntegrations(): void
     {
+        $this->integrations[] = new AwsToolKitIntegration();
         $this->integrations[] = new ConfigurationIntegration();
         $this->integrations[] = new CronIntegration();
         $this->integrations[] = new OpenApiIntegration();
@@ -87,7 +87,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             }
         }
 
-        $this->configureAwsToolKit($config['aws_tool_kit'], $loader, $container);
         $this->configureConsole($config['console'], $loader, $container);
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
@@ -98,50 +97,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureSecurity($config['security'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
         $this->configureVersioning($config['versioning'], $loader, $container);
-    }
-
-    private function configureAwsToolKit(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $container
-    ): void {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $loader->load('aws-tool-kit.php');
-
-        if ($config['imds_version']) {
-            $container
-                ->setDefinition(
-                    $serviceId = 'draw.aws_tool_kit.imds_client_v'.$config['imds_version'],
-                    new Definition(
-                        'Draw\Component\AwsToolKit\Imds\ImdsClientV'.$config['imds_version']
-                    )
-                )
-                ->setAutoconfigured(true)
-                ->setAutowired(true);
-
-            $container->setAlias(
-                ImdsClientInterface::class,
-                $serviceId
-            );
-        }
-
-        if ($this->isConfigEnabled($container, $config['newest_instance_role_check'])) {
-            $container
-                ->setDefinition(
-                    'draw.aws_tool_kit.newest_instance_role_check_listener',
-                    new Definition(NewestInstanceRoleCheckListener::class)
-                )
-                ->setAutowired(true)
-                ->setAutoconfigured(true);
-
-            $container->setAlias(
-                NewestInstanceRoleCheckListener::class,
-                'draw.aws_tool_kit.newest_instance_role_check_listener'
-            );
-        }
     }
 
     private function configureConsole(
