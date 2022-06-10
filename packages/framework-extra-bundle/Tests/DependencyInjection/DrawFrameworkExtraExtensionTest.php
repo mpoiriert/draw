@@ -22,9 +22,6 @@ class DrawFrameworkExtraExtensionTest extends ExtensionTestCase
             'messenger' => [
                 'enabled' => false,
             ],
-            'security' => [
-                'enabled' => false,
-            ],
         ];
     }
 

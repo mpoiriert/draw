@@ -48,7 +48,8 @@ draw_framework_extra:
   process: ~
 
   security:
-    console_authentication: true
-    system_authentication: true
+    console_authentication:
+      system_auto_login: true
+    system_authentication: ~
 
   versioning: ~

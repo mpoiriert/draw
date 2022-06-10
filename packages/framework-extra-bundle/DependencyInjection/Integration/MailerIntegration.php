@@ -28,13 +28,10 @@ class MailerIntegration implements IntegrationInterface, PrependIntegrationInter
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Mailer\\',
-            $directory = dirname(
+            dirname(
                 (new ReflectionClass(EmailWriterInterface::class))->getFileName(),
                 2
             ),
-            [
-                $directory.'/Email/',
-            ]
         );
 
         $container

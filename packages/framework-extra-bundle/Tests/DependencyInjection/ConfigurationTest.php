@@ -82,17 +82,6 @@ class ConfigurationTest extends ConfigurationTestCase
                     ],
                 ],
             ],
-            'security' => [
-                'enabled' => true,
-                'system_authentication' => [
-                    'enabled' => false,
-                    'roles' => ['ROLE_SYSTEM'],
-                ],
-                'console_authentication' => [
-                    'enabled' => false,
-                    'system_auto_login' => false,
-                ],
-            ],
         ];
     }
 
@@ -100,7 +89,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are jwt_encoder, log, logger, messenger, security, symfony_console_path.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are jwt_encoder, log, logger, messenger, symfony_console_path.',
         ];
     }
 }

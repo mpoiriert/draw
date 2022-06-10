@@ -6,7 +6,6 @@ use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Messenger\Transport\DrawTransport;
-use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -38,8 +37,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createJwtEncoder())
                 ->append($this->createLogNode())
                 ->append($this->createLoggerNode())
-                ->append($this->createMessengerNode())
-                ->append($this->createSecurityNode());
+                ->append($this->createMessengerNode());
 
         foreach ($this->integrations as $integration) {
             $integrationNode = (new ArrayNodeDefinition($integration->getConfigSectionName()))
@@ -225,28 +223,6 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('dispatch_after_current_bus')
                             ->canBeDisabled()
                         ->end()
-                    ->end()
-                ->end()
-            ->end();
-    }
-
-    private function createSecurityNode(): ArrayNodeDefinition
-    {
-        return $this->canBe(RoleRestrictedAuthenticatorListener::class, new ArrayNodeDefinition('security'))
-            ->children()
-                ->arrayNode('system_authentication')
-                    ->canBeEnabled()
-                    ->children()
-                        ->arrayNode('roles')
-                            ->addDefaultChildrenIfNoneSet()
-                            ->scalarPrototype()->defaultValue('ROLE_SYSTEM')->end()
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('console_authentication')
-                    ->canBeEnabled()
-                    ->children()
-                        ->booleanNode('system_auto_login')->defaultValue(false)->end()
                     ->end()
                 ->end()
             ->end();
