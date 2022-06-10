@@ -27,10 +27,6 @@ class ConfigurationTest extends ConfigurationTestCase
             'console' => [
                 'enabled' => false,
             ],
-            'cron' => [
-                'enabled' => true,
-                'jobs' => [],
-            ],
             'jwt_encoder' => [
                 'enabled' => false,
                 'algorithm' => 'HS256',
@@ -136,7 +132,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, console, cron, jwt_encoder, log, logger, mailer, messenger, process, security, symfony_console_path, tester, versioning.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are aws_tool_kit, console, jwt_encoder, log, logger, mailer, messenger, process, security, symfony_console_path, tester, versioning.',
         ];
 
         yield [

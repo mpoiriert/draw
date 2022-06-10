@@ -5,11 +5,11 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
-use Draw\Component\Application\Cron\Job;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use Draw\Component\Console\Entity\Execution;
@@ -65,6 +65,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
     private function registerDefaultIntegrations(): void
     {
         $this->integrations[] = new ConfigurationIntegration();
+        $this->integrations[] = new CronIntegration();
         $this->integrations[] = new OpenApiIntegration();
     }
 
@@ -88,7 +89,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
         $this->configureAwsToolKit($config['aws_tool_kit'], $loader, $container);
         $this->configureConsole($config['console'], $loader, $container);
-        $this->configureCron($config['cron'], $loader, $container);
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
@@ -166,34 +166,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
 
         $loader->load('console.php');
-    }
-
-    private function configureCron(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $container
-    ): void {
-        if (!$config['enabled']) {
-            return;
-        }
-
-        $loader->load('cron.php');
-
-        $cronManagerDefinition = $container->getDefinition('draw.cron.manager');
-        foreach ($config['jobs'] as $jobData) {
-            $jobDefinition = new Definition(Job::class);
-            $jobDefinition->setArguments([
-                $jobData['name'],
-                $jobData['command'],
-                $jobData['expression'],
-                $jobData['enabled'],
-                $jobData['description'],
-            ]);
-
-            $jobDefinition->addMethodCall('setOutput', [$jobData['output']]);
-
-            $cronManagerDefinition->addMethodCall('addJob', [$jobDefinition]);
-        }
     }
 
     private function configureJwtEncoder(

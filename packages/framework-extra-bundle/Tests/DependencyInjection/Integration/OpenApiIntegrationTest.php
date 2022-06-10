@@ -120,51 +120,55 @@ class OpenApiIntegrationTest extends IntegrationTestCase
     {
         yield [
             [
-                'openApi' => [
-                    'enabled' => true,
-                    'caching_enabled' => true,
-                    'sandbox_url' => '/test/sandbox',
-                    'schema' => [
-                        'info' => [
-                            'title' => 'test',
+                [
+                    'openApi' => [
+                        'enabled' => true,
+                        'caching_enabled' => true,
+                        'sandbox_url' => '/test/sandbox',
+                        'schema' => [
+                            'info' => [
+                                'title' => 'test',
+                            ],
+                        ],
+                        'versioning' => [
+                            'enabled' => true,
+                            'versions' => ['1', '2'],
+                        ],
+                        'headers' => [
+                            [
+                                'name' => 'X-Draw-Language',
+                                'type' => 'string',
+                                'default' => 'en',
+                            ],
+                        ],
+                        'cleanOnDump' => true,
+                        'definitionAliases' => [
+                            ['class' => 'App\\Entity\\', 'alias' => ''],
+                            ['class' => 'App\\DTO\\', 'alias' => ''],
+                        ],
+                        'classNamingFilters' => [
+                            AliasesClassNamingFilter::class,
                         ],
                     ],
-                    'versioning' => [
+                    'response' => [
                         'enabled' => true,
-                        'versions' => ['1', '2'],
+                        'serializeNull' => true,
+                        'exceptionHandler' => [
+                            'enabled' => true,
+                            'exceptionsStatusCodes' => [],
+                            'useDefaultExceptionsStatusCodes' => true,
+                            'violationKey' => 'errors',
+                            'omitConstraintInvalidValue' => false,
+                        ],
                     ],
-                    'headers' => [
-                        'name' => 'X-Draw-Language',
-                        'type' => 'string',
-                        'default' => 'en',
-                    ],
-                    'cleanOnDump' => true,
-                    'definitionAliases' => [
-                        ['class' => 'App\\Entity\\', 'alias' => ''],
-                        ['class' => 'App\\DTO\\', 'alias' => ''],
-                    ],
-                    'classNamingFilters' => [
-                        AliasesClassNamingFilter::class,
-                    ],
-                ],
-                'response' => [
-                    'enabled' => true,
-                    'serializeNull' => true,
-                    'exceptionHandler' => [
+                    'request' => [
                         'enabled' => true,
-                        'exceptionsStatusCodes' => [],
-                        'useDefaultExceptionsStatusCodes' => true,
-                        'violationKey' => 'errors',
-                        'omitConstraintInvalidValue' => false,
-                    ],
-                ],
-                'request' => [
-                    'enabled' => true,
-                    'queryParameter' => [
-                        'enabled' => true,
-                    ],
-                    'bodyDeserialization' => [
-                        'enabled' => true,
+                        'queryParameter' => [
+                            'enabled' => true,
+                        ],
+                        'bodyDeserialization' => [
+                            'enabled' => true,
+                        ],
                     ],
                 ],
             ],
@@ -397,7 +401,9 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 'draw_open_api.root_schema' => [
                     'info' => [
                         'title' => 'test',
+                        'version' => '1.0',
                     ],
+                    'swagger' => '2.0',
                 ],
                 'draw_open_api.response.serialize_null' => true,
                 'draw_open_api.response.exception_status_codes' => [

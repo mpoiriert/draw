@@ -484,6 +484,7 @@ class OpenApiIntegration implements IntegrationInterface
             ->normalizeKeys(false)
             ->ignoreExtraKeys(false)
             ->children()
+                ->scalarNode('swagger')->defaultValue('2.0')->end()
                 ->arrayNode('info')
                     ->children()
                         ->scalarNode('version')->defaultValue('1.0')->end()
@@ -494,7 +495,6 @@ class OpenApiIntegration implements IntegrationInterface
                     ->end()
                 ->end()
                 ->scalarNode('basePath')->end()
-                ->scalarNode('swagger')->defaultValue('2.0')->end()
             ->end();
     }
 

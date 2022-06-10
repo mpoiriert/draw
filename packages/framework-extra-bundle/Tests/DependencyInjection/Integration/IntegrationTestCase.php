@@ -64,6 +64,8 @@ abstract class IntegrationTestCase extends TestCase
         $container = new ContainerBuilder();
         $loader = new PhpFileLoader($container, new FileLocator($dirname.'/Resources/config'));
 
+        $configuration = $this->processConfiguration($configuration);
+
         $this->integration->load(
             $configuration,
             $loader,
