@@ -17,10 +17,6 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         return [
             'symfony_console_path' => null,
-            'jwt_encoder' => [
-                'enabled' => false,
-                'algorithm' => 'HS256',
-            ],
             'log' => [
                 'enabled' => false,
                 'enable_all_processors' => false,
@@ -89,7 +85,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are jwt_encoder, log, logger, messenger, symfony_console_path.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are log, logger, messenger, symfony_console_path.',
         ];
     }
 }

@@ -26,12 +26,10 @@ use Draw\Component\Messenger\EventListener\EnvelopeFactoryDispatchAfterCurrentBu
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
-use Draw\Component\Security\Jwt\JwtEncoder;
 use ReflectionClass;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -87,30 +85,9 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             }
         }
 
-        $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
-    }
-
-    private function configureJwtEncoder(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $container
-    ): void {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $container
-            ->setDefinition(
-                'draw.jwt_encoder',
-                new Definition(JwtEncoder::class)
-            )
-            ->setArgument('$key', $config['key'])
-            ->setArgument('$algorithm', $config['algorithm']);
-
-        $container->setAlias(JwtEncoder::class, 'draw.jwt_encoder');
     }
 
     private function configureLog(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

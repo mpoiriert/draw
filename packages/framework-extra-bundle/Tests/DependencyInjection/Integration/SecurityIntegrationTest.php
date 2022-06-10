@@ -8,6 +8,7 @@ use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\Listener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
+use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -30,13 +31,19 @@ class SecurityIntegrationTest extends IntegrationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
-            'system_authentication' => [
-                'enabled' => false,
-                'roles' => ['ROLE_SYSTEM'],
-            ],
             'console_authentication' => [
                 'enabled' => false,
                 'system_auto_login' => false,
+            ],
+            'jwt' => [
+                'encoder' => [
+                    'enabled' => false,
+                    'algorithm' => 'HS256',
+                ],
+            ],
+            'system_authentication' => [
+                'enabled' => false,
+                'roles' => ['ROLE_SYSTEM'],
             ],
         ];
     }
@@ -55,6 +62,40 @@ class SecurityIntegrationTest extends IntegrationTestCase
         yield 'default' => [
             [],
             $defaultServices,
+        ];
+
+        yield 'jwt' => [
+            [
+                [
+                    'jwt' => [
+                        'encoder' => [
+                            'key' => $key = uniqid('key-'),
+                        ],
+                    ],
+                ],
+            ],
+            array_merge(
+                $defaultServices,
+                [
+                    new ServiceConfiguration(
+                        'draw.security.jwt.jwt_encoder',
+                        [
+                            JwtEncoder::class,
+                        ],
+                        function (Definition $definition) use ($key) {
+                            static::assertSame(
+                                $key,
+                                $definition->getArgument('$key')
+                            );
+
+                            static::assertSame(
+                                'HS256',
+                                $definition->getArgument('$algorithm')
+                            );
+                        }
+                    ),
+                ],
+            ),
         ];
 
         yield 'system_authentication' => [
