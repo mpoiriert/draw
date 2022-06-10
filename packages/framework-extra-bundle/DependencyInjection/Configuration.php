@@ -5,7 +5,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
-use Draw\Component\Application\CronManager;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Process\ProcessFactory;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
@@ -41,7 +40,6 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('symfony_console_path')->defaultNull()->end()
                 ->append($this->createAwsToolKitNode())
                 ->append($this->createConsoleNode())
-                ->append($this->createCronNode())
                 ->append($this->createJwtEncoder())
                 ->append($this->createLogNode())
                 ->append($this->createLoggerNode())
@@ -91,57 +89,6 @@ class Configuration implements ConfigurationInterface
     {
         return (new ArrayNodeDefinition('console'))
             ->canBeEnabled();
-    }
-
-    private function createCronNode(): ArrayNodeDefinition
-    {
-        return $this->canBe(CronManager::class, new ArrayNodeDefinition('cron'))
-            ->children()
-                ->arrayNode('jobs')
-                    ->defaultValue([])
-                    ->beforeNormalization()
-                        ->always(function ($config) {
-                            foreach ($config as $name => $configuration) {
-                                if (!isset($configuration['name'])) {
-                                    $config[$name]['name'] = $name;
-                                }
-                            }
-
-                            return $config;
-                        })
-                    ->end()
-                    ->useAttributeAsKey('name', false)
-                    ->arrayPrototype()
-                        ->children()
-                            ->scalarNode('name')
-                                ->validate()
-                                    ->ifTrue(function ($value) {
-                                        return is_int($value);
-                                    })
-                                    ->thenInvalid('You must specify a name for the job. Can be via the attribute or the key.')
-                                ->end()
-                                ->isRequired()
-                            ->end()
-                            ->scalarNode('description')
-                                ->defaultNull()
-                            ->end()
-                            ->scalarNode('expression')
-                                ->isRequired()
-                            ->end()
-                            ->scalarNode('output')
-                                ->defaultValue('>/dev/null 2>&1')
-                            ->end()
-                            ->scalarNode('command')
-                                ->isRequired()
-                            ->end()
-                            ->booleanNode('enabled')
-                                ->defaultValue(true)
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-        ;
     }
 
     private function createVersioningNode(): ArrayNodeDefinition

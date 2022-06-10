@@ -18,9 +18,6 @@ class DrawFrameworkExtraExtensionTest extends ExtensionTestCase
     public function getConfiguration(): array
     {
         return [
-            'cron' => [
-                'enabled' => false,
-            ],
             'console' => [
                 'enabled' => false,
             ],
