@@ -6,12 +6,12 @@ use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProc
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
-use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
@@ -65,6 +65,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
     {
         $this->integrations[] = new AwsToolKitIntegration();
         $this->integrations[] = new ConfigurationIntegration();
+        $this->integrations[] = new ConsoleIntegration();
         $this->integrations[] = new CronIntegration();
         $this->integrations[] = new OpenApiIntegration();
     }
@@ -87,7 +88,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             }
         }
 
-        $this->configureConsole($config['console'], $loader, $container);
         $this->configureJwtEncoder($config['jwt_encoder'], $loader, $container);
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
@@ -97,18 +97,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureSecurity($config['security'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
         $this->configureVersioning($config['versioning'], $loader, $container);
-    }
-
-    private function configureConsole(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $container
-    ): void {
-        if (!$config['enabled']) {
-            return;
-        }
-
-        $loader->load('console.php');
     }
 
     private function configureJwtEncoder(
@@ -497,7 +485,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             }
         }
 
-        $this->prependConsole($config['console'], $container);
         $this->prependMailer($config['mailer'], $container);
 
         if ($this->isConfigEnabled($container, $config['messenger'])
@@ -559,31 +546,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 ]
             );
         }
-    }
-
-    private function prependConsole(array $config, ContainerBuilder $container): void
-    {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $reflection = new ReflectionClass(Execution::class);
-
-        $container->prependExtensionConfig(
-            'doctrine',
-            [
-                'orm' => [
-                    'mappings' => [
-                        'DrawConsole' => [
-                            'is_bundle' => false,
-                            'type' => 'annotation',
-                            'dir' => dirname($reflection->getFileName()),
-                            'prefix' => $reflection->getNamespaceName(),
-                        ],
-                    ],
-                ],
-            ]
-        );
     }
 
     private function prependMailer(array $config, ContainerBuilder $container): void

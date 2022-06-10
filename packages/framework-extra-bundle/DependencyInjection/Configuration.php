@@ -38,7 +38,6 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->scalarNode('symfony_console_path')->defaultNull()->end()
-                ->append($this->createConsoleNode())
                 ->append($this->createJwtEncoder())
                 ->append($this->createLogNode())
                 ->append($this->createLoggerNode())
@@ -58,12 +57,6 @@ class Configuration implements ConfigurationInterface
         }
 
         return $treeBuilder;
-    }
-
-    private function createConsoleNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('console'))
-            ->canBeEnabled();
     }
 
     private function createVersioningNode(): ArrayNodeDefinition
