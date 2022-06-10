@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
 use function Draw\Component\Core\use_trait;
-use Draw\Component\Messenger\Entity\MessageHolderTrait;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
 use RuntimeException;
 
 trait LockableUserTrait

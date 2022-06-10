@@ -17,34 +17,6 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         return [
             'symfony_console_path' => null,
-            'messenger' => [
-                'enabled' => true,
-                'entity_class' => 'App\Entity\MessengerMessage',
-                'tag_entity_class' => 'App\Entity\MessengerMessageTag',
-                'async_routing_configuration' => [
-                    'enabled' => false,
-                ],
-                'broker' => [
-                    'enabled' => false,
-                    'receivers' => [],
-                    'default_options' => [],
-                ],
-                'application_version_monitoring' => [
-                    'enabled' => false,
-                ],
-                'doctrine_message_bus_hook' => [
-                    'enabled' => false,
-                    'envelope_factory' => [
-                        'dispatch_after_current_bus' => [
-                            'enabled' => true,
-                        ],
-                        'delay' => [
-                            'enabled' => false,
-                            'delay_in_milliseconds' => 2500,
-                        ],
-                    ],
-                ],
-            ],
         ];
     }
 
@@ -52,7 +24,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are messenger, symfony_console_path.',
+            'Unrecognized option invalid under draw_framework_extra. Available option is symfony_console_path.',
         ];
     }
 }

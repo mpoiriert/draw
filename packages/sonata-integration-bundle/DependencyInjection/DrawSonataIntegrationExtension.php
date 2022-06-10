@@ -28,7 +28,6 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Reference;
 
 class DrawSonataIntegrationExtension extends Extension implements PrependExtensionInterface
 {
@@ -126,17 +125,15 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                     $config['admin']
                 )
             )
+            ->setAutowired(true)
+            ->setAutoconfigured(true)
             ->addMethodCall(
                 'setTemplate',
                 ['show', '@DrawSonataIntegration/Messenger/Message/show.html.twig']
             )
-            ->addMethodCall(
-                'inject',
-                [
-                    '$queueNames' => $config['queue_names'],
-                    '$envelopeFinder' => new Reference('draw.messenger.envelope_finder'),
-                ]
-            );
+            ->setBindings([
+                '$queueNames' => $config['queue_names'],
+            ]);
     }
 
     private function configureUser(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void

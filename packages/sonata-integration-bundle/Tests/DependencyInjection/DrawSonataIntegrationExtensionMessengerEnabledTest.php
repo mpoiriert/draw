@@ -32,26 +32,16 @@ class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataInteg
     {
         $definition = $this->getContainerBuilder()->getDefinition(MessengerMessageAdmin::class);
 
-        $this->assertSame(
+        static::assertSame(
             ['setTemplate', ['show', '@DrawSonataIntegration/Messenger/Message/show.html.twig']],
             $definition->getMethodCalls()[0]
         );
 
-        $methodCall = $definition->getMethodCalls()[1];
+        $bindings = $definition->getBindings();
 
-        $this->assertSame(
-            'inject',
-            $methodCall[0]
-        );
-
-        $this->assertSame(
+        static::assertSame(
             $this->queueNames,
-            $methodCall[1]['$queueNames']
-        );
-
-        $this->assertSame(
-            'draw.messenger.envelope_finder',
-            (string) $methodCall[1]['$envelopeFinder']
+            $bindings['$queueNames']->getValues()[0]
         );
     }
 }

@@ -5,7 +5,7 @@ namespace Draw\Bundle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Message\PasswordChangeRequestedMessage;
 use function Draw\Component\Core\use_trait;
-use Draw\Component\Messenger\Entity\MessageHolderTrait;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
 
 trait PasswordChangeEnforcerUserTrait
 {

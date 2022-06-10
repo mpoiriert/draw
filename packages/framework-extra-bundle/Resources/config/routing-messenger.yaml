@@ -1,0 +1,4 @@
+draw_messenger.message_click:
+  path: '/message-link/{dMUuid}'
+  methods: ['GET']
+  controller: 'draw.messenger.manual_trigger.action.click_message_action'

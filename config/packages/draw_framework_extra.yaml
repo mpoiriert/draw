@@ -21,8 +21,8 @@ draw_framework_extra:
   messenger:
     broker:
       receivers: [ 'async' ]
-    doctrine_message_bus_hook:
-      enabled: true
+    doctrine_message_bus_hook: ~
+    versioning: ~
 
   open_api:
 

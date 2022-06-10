@@ -5,13 +5,13 @@ namespace Draw\Component\Messenger\Tests\Transport;
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
-use Draw\Component\Messenger\Stamp\ExpirationStamp;
-use Draw\Component\Messenger\Stamp\SearchableTagStamp;
+use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
+use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
+use Draw\Component\Messenger\Searchable\SearchableTransportInterface;
+use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
-use Draw\Component\Messenger\Transport\ObsoleteMessageAwareInterface;
-use Draw\Component\Messenger\Transport\SearchableInterface;
 use Exception;
 use stdClass;
 use Symfony\Component\Messenger\Envelope;
@@ -63,12 +63,12 @@ class DrawTransportTest extends TestCase
         );
 
         $this->assertInstanceOf(
-            ObsoleteMessageAwareInterface::class,
+            PurgeableTransportInterface::class,
             $this->service
         );
 
         $this->assertInstanceOf(
-            SearchableInterface::class,
+            SearchableTransportInterface::class,
             $this->service
         );
 

@@ -3,8 +3,8 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Messenger\Admin;
 
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
-use Draw\Component\Messenger\Entity\DrawMessageInterface;
-use Draw\Component\Messenger\EnvelopeFinder;
+use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
+use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -17,11 +17,14 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 class MessengerMessageAdmin extends AbstractAdmin
 {
-    private EnvelopeFinder $envelopeFinder;
+    private EnvelopeFinderInterface $envelopeFinder;
 
     private array $queueNames = [];
 
-    public function inject(EnvelopeFinder $envelopeFinder, array $queueNames): void
+    /**
+     * @required
+     */
+    public function inject(EnvelopeFinderInterface $envelopeFinder, array $queueNames): void
     {
         $this->envelopeFinder = $envelopeFinder;
         $this->queueNames = $queueNames;

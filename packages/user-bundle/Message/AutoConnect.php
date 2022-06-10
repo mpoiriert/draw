@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Message;
 
-use Draw\Component\Messenger\Message\ManuallyTriggeredInterface;
+use Draw\Component\Messenger\ManualTrigger\Message\ManuallyTriggeredInterface;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
 
 class AutoConnect implements AutoConnectInterface, ManuallyTriggeredInterface

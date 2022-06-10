@@ -2,10 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
-use App\Entity\MessengerMessage;
-use App\Entity\MessengerMessageTag;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
-use Draw\Component\Messenger\Transport\DrawTransport;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -33,8 +30,7 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
-                ->scalarNode('symfony_console_path')->defaultNull()->end()
-                ->append($this->createMessengerNode());
+                ->scalarNode('symfony_console_path')->defaultNull()->end();
 
         foreach ($this->integrations as $integration) {
             $integrationNode = (new ArrayNodeDefinition($integration->getConfigSectionName()))
@@ -45,108 +41,5 @@ class Configuration implements ConfigurationInterface
         }
 
         return $treeBuilder;
-    }
-
-    private function createMessengerNode(): ArrayNodeDefinition
-    {
-        return $this->canBe(DrawTransport::class, new ArrayNodeDefinition('messenger'))
-            ->children()
-                ->arrayNode('async_routing_configuration')->canBeEnabled()->end()
-                ->scalarNode('entity_class')
-                    ->validate()
-                        ->ifTrue(function ($value) {
-                            return !class_exists($value) && MessengerMessage::class !== $value;
-                        })
-                        ->thenInvalid('The class [%s] must exists.')
-                    ->end()
-                    ->defaultValue(MessengerMessage::class)
-                ->end()
-                ->scalarNode('tag_entity_class')
-                    ->validate()
-                        ->ifTrue(function ($value) {
-                            return !class_exists($value) && MessengerMessageTag::class !== $value;
-                        })
-                        ->thenInvalid('The class [%s] must exists.')
-                    ->end()
-                    ->defaultValue(MessengerMessageTag::class)
-                ->end()
-
-                ->append($this->createMessengerApplicationVersionMonitoring())
-                ->append($this->createMessengerBrokerNode())
-                ->append($this->createMessengerDoctrineMessageBusHookNode())
-            ->end();
-    }
-
-    private function createMessengerApplicationVersionMonitoring(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('application_version_monitoring'))
-            ->canBeEnabled();
-    }
-
-    private function createMessengerBrokerNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('broker'))
-            ->canBeEnabled()
-            ->children()
-                ->arrayNode('receivers')
-                    ->isRequired()
-                    ->requiresAtLeastOneElement()
-                    ->scalarPrototype()->end()
-                ->end()
-                ->arrayNode('default_options')
-                    ->normalizeKeys(false)
-                    ->beforeNormalization()
-                    ->always(function ($options) {
-                        foreach ($options as $name => $configuration) {
-                            if (!is_array($configuration)) {
-                                $options[$name] = $configuration = ['name' => $name, 'value' => $configuration];
-                            }
-                            if (is_int($name)) {
-                                continue;
-                            }
-                            if (!isset($configuration['name'])) {
-                                $options[$name]['name'] = $name;
-                            }
-                        }
-
-                        return $options;
-                    })
-                    ->end()
-                    ->useAttributeAsKey('name', false)
-                    ->arrayPrototype()
-                        ->children()
-                            ->scalarNode('name')->isRequired()->end()
-                            ->scalarNode('value')->defaultNull()->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
-    }
-
-    private function createMessengerDoctrineMessageBusHookNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('doctrine_message_bus_hook'))
-            ->canBeEnabled()
-            ->children()
-                ->arrayNode('envelope_factory')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('delay')
-                            ->canBeEnabled()
-                            ->children()
-                                ->integerNode('delay_in_milliseconds')->defaultValue(2500)->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('dispatch_after_current_bus')
-                            ->canBeDisabled()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
-    }
-
-    private function canBe(string $class, ArrayNodeDefinition $arrayNodeDefinition): ArrayNodeDefinition
-    {
-        return class_exists($class) ? $arrayNodeDefinition->canBeDisabled() : $arrayNodeDefinition->canBeEnabled();
     }
 }

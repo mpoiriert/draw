@@ -3,7 +3,7 @@
 namespace Draw\Bundle\UserBundle\Message;
 
 use Draw\Bundle\UserBundle\Entity\PasswordChangeUserInterface;
-use Draw\Component\Messenger\Message\LifeCycleAwareMessageInterface;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 
 class PasswordChangeRequestedMessage implements LifeCycleAwareMessageInterface
 {

@@ -34,9 +34,11 @@ trait IntegrationTrait
                     $directory.'/Email/',
                     $directory.'/Entity/',
                     $directory.'/Event/',
+                    $directory.'/Exception/',
                     $directory.'/Message/',
-                    $directory.'/Tests/',
                     $directory.'/Resources/',
+                    $directory.'/Stamp/',
+                    $directory.'/Tests/',
                 ]
             )
         );

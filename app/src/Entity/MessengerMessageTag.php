@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Component\Messenger\Entity\DrawMessageTagInterface;
-use Draw\Component\Messenger\Entity\DrawMessageTagTrait;
+use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
+use Draw\Component\Messenger\Transport\Entity\DrawMessageTagTrait;
 
 /**
  * @ORM\Entity()

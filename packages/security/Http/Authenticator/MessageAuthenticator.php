@@ -2,8 +2,9 @@
 
 namespace Draw\Component\Security\Http\Authenticator;
 
-use Draw\Component\Messenger\EnvelopeFinder;
+use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
+use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -79,12 +80,15 @@ class MessageAuthenticator extends AbstractAuthenticator
 
     private function getMessageUser(?string $messageId): ?UserInterface
     {
-        switch (true) {
-            case null === $messageId:
-            case null === $envelope = $this->envelopeFinder->findById($messageId):
-            case null === $message = $envelope->getMessage():
-            case !$message instanceof AutoConnectInterface:
-                return null;
+        try {
+            switch (true) {
+                case null === $messageId:
+                case null === $message = $this->envelopeFinder->findById($messageId)->getMessage():
+                case !$message instanceof AutoConnectInterface:
+                    return null;
+            }
+        } catch (MessageNotFoundException $exception) {
+            return null;
         }
 
         return $this->userProvider->loadUserByIdentifier($message->getUserIdentifier());

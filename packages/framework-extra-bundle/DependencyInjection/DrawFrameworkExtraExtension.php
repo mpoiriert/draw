@@ -10,25 +10,16 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MessengerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
-use Draw\Component\Messenger\Broker;
-use Draw\Component\Messenger\Entity\DrawMessageInterface;
-use Draw\Component\Messenger\Entity\DrawMessageTagInterface;
-use Draw\Component\Messenger\EventListener\EnvelopeFactoryDelayStampListener;
-use Draw\Component\Messenger\EventListener\EnvelopeFactoryDispatchAfterCurrentBusStampListener;
-use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
-use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
-use Draw\Component\Messenger\Message\AsyncMessageInterface;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -59,6 +50,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new LogIntegration();
         $this->integrations[] = new OpenApiIntegration();
         $this->integrations[] = new MailerIntegration();
+        $this->integrations[] = new MessengerIntegration();
         $this->integrations[] = new ProcessIntegration();
         $this->integrations[] = new SecurityIntegration();
         $this->integrations[] = new TesterIntegration();
@@ -72,6 +64,10 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
     public function load(array $configs, ContainerBuilder $container)
     {
+        foreach ($this->integrations as $integration) {
+            $container->addObjectResource($integration);
+        }
+
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
 
@@ -80,74 +76,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         foreach ($this->integrations as $integration) {
             if ($this->isConfigEnabled($container, $config[$integration->getConfigSectionName()])) {
                 $integration->load($config[$integration->getConfigSectionName()], $loader, $container);
-            }
-        }
-
-        $this->configureMessenger($config['messenger'], $loader, $container);
-    }
-
-    private function configureMessenger(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
-    {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $loader->load('messenger.php');
-
-        if ($this->isConfigEnabled($container, $config['application_version_monitoring'])) {
-            $loader->load('messenger-application-version-monitoring.php');
-        }
-
-        if ($this->isConfigEnabled($container, $config['broker'])) {
-            $brokerConfig = $config['broker'];
-            $loader->load('messenger-broker.php');
-
-            $defaultOptions = [];
-            foreach ($brokerConfig['default_options'] as $options) {
-                $defaultOptions[$options['name']] = $options['value'];
-            }
-
-            $container->getDefinition('draw.messenger.command.start_messenger_broker');
-
-            $container->getDefinition('draw.messenger.broker_default_values_listener')
-                ->setArgument('$receivers', $brokerConfig['receivers'])
-                ->setArgument('$defaultOptions', $defaultOptions);
-        }
-
-        if ($this->isConfigEnabled($container, $config['doctrine_message_bus_hook'])) {
-            $loader->load('messenger-doctrine-message-bus-hook.php');
-            $envelopeFactoryConfig = $config['doctrine_message_bus_hook']['envelope_factory'];
-            if ($this->isConfigEnabled($container, $envelopeFactoryConfig['dispatch_after_current_bus'])) {
-                $container
-                    ->setDefinition(
-                        'draw.messenger.event_listener.envelope_factory_dispatch_after_current_bus_stamp_listener',
-                        new Definition(EnvelopeFactoryDispatchAfterCurrentBusStampListener::class)
-                    )
-                    ->setAutoconfigured(true)
-                    ->setAutowired(true);
-
-                $container
-                    ->setAlias(
-                        EnvelopeFactoryDispatchAfterCurrentBusStampListener::class,
-                        'draw.messenger.event_listener.envelope_factory_dispatch_after_current_bus_stamp_listener'
-                    );
-            }
-
-            if ($this->isConfigEnabled($container, $envelopeFactoryConfig['delay'])) {
-                $container
-                    ->setDefinition(
-                        'draw.messenger.event_listener.envelope_factory_delay_stamp_listener',
-                        new Definition(EnvelopeFactoryDelayStampListener::class)
-                    )
-                    ->setAutoconfigured(true)
-                    ->setAutowired(true)
-                    ->setArgument('$delay', $envelopeFactoryConfig['delay']['delay_in_milliseconds']);
-
-                $container
-                    ->setAlias(
-                        EnvelopeFactoryDelayStampListener::class,
-                        'draw.messenger.event_listener.envelope_factory_delay_stamp_listener'
-                    );
             }
         }
     }
@@ -171,66 +99,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             if ($this->isConfigEnabled($container, $integrationConfiguration)) {
                 $integration->prepend($container, $integrationConfiguration);
             }
-        }
-
-        if ($this->isConfigEnabled($container, $config['messenger'])
-            && class_exists(Broker::class)
-        ) {
-            $installationPath = dirname((new ReflectionClass(Broker::class))->getFileName());
-            $container->prependExtensionConfig(
-                'framework',
-                [
-                    'translator' => [
-                        'paths' => [
-                            'draw-messenger' => $installationPath.'/Resources/translations',
-                        ],
-                    ],
-                ]
-            );
-
-            if (class_exists($config['messenger']['entity_class'])) {
-                if ($container->hasExtension('doctrine')) {
-                    $container->prependExtensionConfig(
-                        'doctrine',
-                        [
-                            'orm' => [
-                                'resolve_target_entities' => [
-                                    DrawMessageInterface::class => $config['messenger']['entity_class'],
-                                    DrawMessageTagInterface::class => $config['messenger']['tag_entity_class'],
-                                ],
-                            ],
-                        ]
-                    );
-                }
-
-                if ($container->hasExtension('draw_sonata_integration')) {
-                    $container->prependExtensionConfig(
-                        'draw_sonata_integration',
-                        [
-                            'messenger' => [
-                                'admin' => [
-                                    'entity_class' => $config['messenger']['entity_class'],
-                                ],
-                            ],
-                        ]
-                    );
-                }
-            }
-        }
-
-        if ($this->isConfigEnabled($container, $config['messenger']['async_routing_configuration'])) {
-            $container->prependExtensionConfig(
-                'framework',
-                [
-                    'messenger' => [
-                        'routing' => [
-                            AsyncMessageInterface::class => 'async',
-                            AsyncHighPriorityMessageInterface::class => 'async_high_priority',
-                            AsyncLowPriorityMessageInterface::class => 'async_low_priority',
-                        ],
-                    ],
-                ]
-            );
         }
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Draw\Component\Security\Tests\Http\Authenticator;
 
-use Draw\Component\Messenger\EnvelopeFinder;
+use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
 use Draw\Component\Tester\MockBuilderTrait;
+use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Envelope;
@@ -135,7 +136,7 @@ class MessageAuthenticatorTest extends TestCase
             ->expects($this->once())
             ->method('findById')
             ->with($messageId)
-            ->willReturn(null);
+            ->willThrowException(new MessageNotFoundException($messageId));
 
         $this->expectException(CustomUserMessageAuthenticationException::class);
         $this->expectExceptionMessage('Invalid message id.');

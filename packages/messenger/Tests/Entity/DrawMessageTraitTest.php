@@ -3,12 +3,12 @@
 namespace Draw\Component\Messenger\Tests\Entity;
 
 use DateTimeImmutable;
-use Draw\Component\Messenger\Entity\DrawMessageTagInterface;
-use Draw\Component\Messenger\Entity\DrawMessageTrait;
+use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
+use Draw\Component\Messenger\Transport\Entity\DrawMessageTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Draw\Component\Messenger\Entity\DrawMessageTrait
+ * @covers \Draw\Component\Messenger\Transport\Entity\DrawMessageTrait
  */
 class DrawMessageTraitTest extends TestCase
 {
