@@ -4,7 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
-use Draw\Component\Application\Command\CronDumpToFileCommand;
+use Draw\Component\Application\Cron\Command\CronDumpToFileCommand;
 use Draw\Component\Application\Cron\CronManager;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -49,13 +49,13 @@ class CronIntegrationTest extends IntegrationTestCase
             ],
             [
                 new ServiceConfiguration(
-                    'draw.cron.command.dump_to_file',
+                    'draw.cron.command.cron_dump_to_file_command',
                     [
                         CronDumpToFileCommand::class,
                     ]
                 ),
                 new ServiceConfiguration(
-                    'draw.cron.manager',
+                    'draw.cron.cron_manager',
                     [
                         CronManager::class,
                     ],

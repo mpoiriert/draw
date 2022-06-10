@@ -8,7 +8,6 @@ use Draw\Contracts\Application\ConfigurationRegistryInterface;
 use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 class ConfigurationIntegration implements IntegrationInterface, PrependIntegrationInterface
@@ -22,25 +21,10 @@ class ConfigurationIntegration implements IntegrationInterface, PrependIntegrati
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        $directory = dirname(
-            (new ReflectionClass(DoctrineConfigurationRegistry::class))->getFileName()
-        );
-
-        $definition = (new Definition())
-            ->setAutowired(true)
-            ->setAutoconfigured(true);
-
-        $exclude = [
-            $directory.'/Entity',
-        ];
-
-        $namespace = 'Draw\\Component\\Application\\Configuration\\';
-
-        $loader->registerClasses(
-            $definition,
-            $namespace,
-            $directory,
-            $exclude
+        $this->registerClasses(
+            $loader,
+            $namespace = 'Draw\\Component\\Application\\Configuration\\',
+            dirname((new ReflectionClass(DoctrineConfigurationRegistry::class))->getFileName())
         );
 
         $this->renameDefinitions(
