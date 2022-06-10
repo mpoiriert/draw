@@ -144,18 +144,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
     }
 
-    private function configureConfiguration(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $container
-    ): void {
-        if (!$config['enabled']) {
-            return;
-        }
-
-        $loader->load('configuration.php');
-    }
-
     private function configureConsole(
         array $config,
         LoaderInterface $loader,
