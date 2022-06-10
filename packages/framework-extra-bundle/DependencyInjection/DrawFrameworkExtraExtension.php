@@ -2,14 +2,13 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
-use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
@@ -17,7 +16,6 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
-use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Messenger\Broker;
 use Draw\Component\Messenger\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Entity\DrawMessageTagInterface;
@@ -27,7 +25,6 @@ use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
 use ReflectionClass;
-use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -59,6 +56,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new ConsoleIntegration();
         $this->integrations[] = new CronIntegration();
         $this->integrations[] = new LoggerIntegration();
+        $this->integrations[] = new LogIntegration();
         $this->integrations[] = new OpenApiIntegration();
         $this->integrations[] = new MailerIntegration();
         $this->integrations[] = new ProcessIntegration();
@@ -85,58 +83,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             }
         }
 
-        $this->configureLog($config['log'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
-    }
-
-    private function configureLog(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
-    {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $enableAllProcessors = $config['enable_all_processors'];
-
-        $processorConfig = $config['processor'];
-
-        $services = [
-            'console_command' => [
-                'class' => ConsoleCommandProcessor::class,
-            ],
-            'delay' => [
-                'class' => DelayProcessor::class,
-            ],
-            'request_headers' => [
-                'class' => RequestHeadersProcessor::class,
-            ],
-            'token' => [
-                'class' => TokenProcessor::class,
-            ],
-        ];
-
-        foreach ($services as $service => $serviceConfiguration) {
-            if (!$enableAllProcessors && !$this->isConfigEnabled($container, $processorConfig[$service])) {
-                continue;
-            }
-
-            $class = $serviceConfiguration['class'];
-
-            $definition = $container->setDefinition(
-                $serviceName = 'draw.log.'.$service.'_processor',
-                new Definition($class)
-            )
-                ->setAutowired(true)
-                ->setAutoconfigured(true);
-
-            $definition->addTag('monolog.processor');
-            $container->setAlias($class, $serviceName);
-
-            $arguments = $processorConfig[$service];
-
-            unset($arguments['enabled']);
-
-            $definition->setArguments($this->arrayToArgumentsArray($arguments));
-        }
     }
 
     private function configureMessenger(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -285,15 +232,5 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                 ]
             );
         }
-    }
-
-    private function arrayToArgumentsArray(array $arguments): array
-    {
-        $result = [];
-        foreach ($arguments as $key => $value) {
-            $result['$'.$key] = $value;
-        }
-
-        return $result;
     }
 }

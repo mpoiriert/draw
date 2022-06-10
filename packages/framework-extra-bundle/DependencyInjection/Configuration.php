@@ -34,7 +34,6 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->scalarNode('symfony_console_path')->defaultNull()->end()
-                ->append($this->createLogNode())
                 ->append($this->createMessengerNode());
 
         foreach ($this->integrations as $integration) {
@@ -46,51 +45,6 @@ class Configuration implements ConfigurationInterface
         }
 
         return $treeBuilder;
-    }
-
-    private function createLogNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('log'))
-            ->canBeEnabled()
-            ->children()
-                ->booleanNode('enable_all_processors')->defaultFalse()->end()
-                ->arrayNode('processor')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->arrayNode('console_command')
-                            ->canBeEnabled()
-                            ->children()
-                                ->booleanNode('includeArguments')->defaultTrue()->end()
-                                ->booleanNode('includeOptions')->defaultFalse()->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('delay')
-                            ->canBeEnabled()
-                            ->children()
-                                ->scalarNode('key')->defaultValue('delay')->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('request_headers')
-                            ->canBeEnabled()
-                            ->children()
-                                ->scalarNode('key')->defaultValue('request_headers')->end()
-                                ->arrayNode('onlyHeaders')
-                                    ->scalarPrototype()->end()
-                                ->end()
-                                ->arrayNode('ignoreHeaders')
-                                    ->scalarPrototype()->end()
-                                ->end()
-                            ->end()
-                        ->end()
-                        ->arrayNode('token')
-                            ->canBeEnabled()
-                            ->children()
-                                ->scalarNode('key')->defaultValue('token')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end();
     }
 
     private function createMessengerNode(): ArrayNodeDefinition
