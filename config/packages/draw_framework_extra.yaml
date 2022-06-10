@@ -50,6 +50,9 @@ draw_framework_extra:
   security:
     console_authentication:
       system_auto_login: true
+    jwt:
+      encoder:
+        key: 'unique-key'
     system_authentication: ~
 
   versioning: ~

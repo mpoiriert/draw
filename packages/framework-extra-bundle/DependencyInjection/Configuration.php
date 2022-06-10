@@ -34,7 +34,6 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->scalarNode('symfony_console_path')->defaultNull()->end()
-                ->append($this->createJwtEncoder())
                 ->append($this->createLogNode())
                 ->append($this->createLoggerNode())
                 ->append($this->createMessengerNode());
@@ -48,17 +47,6 @@ class Configuration implements ConfigurationInterface
         }
 
         return $treeBuilder;
-    }
-
-    private function createJwtEncoder(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('jwt_encoder'))
-            ->canBeEnabled()
-            ->addDefaultsIfNotSet()
-            ->children()
-                ->scalarNode('key')->isRequired()->end()
-                ->enumNode('algorithm')->values(['HS256'])->defaultValue('HS256')->end()
-            ->end();
     }
 
     private function createLogNode(): ArrayNodeDefinition

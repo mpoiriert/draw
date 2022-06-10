@@ -6,6 +6,7 @@ use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\Listener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
+use Draw\Component\Security\Jwt\JwtEncoder;
 use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,6 +24,7 @@ class SecurityIntegration implements IntegrationInterface
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         $this->loadCore($config, $loader, $container);
+        $this->loadJwt($config, $loader, $container);
         $this->loadHttp($config, $loader, $container);
     }
 
@@ -68,6 +70,30 @@ class SecurityIntegration implements IntegrationInterface
         );
     }
 
+    private function loadJwt(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        $this->registerClasses(
+            $loader,
+            $namespace = 'Draw\\Component\\Security\\Jwt\\',
+             dirname((new ReflectionClass(JwtEncoder::class))->getFileName())
+        );
+
+        if (!$this->isConfigEnabled($container, $config['jwt']['encoder'])) {
+            $container->removeDefinition(JwtEncoder::class);
+        } else {
+            $container
+                ->getDefinition(JwtEncoder::class)
+                ->setArgument('$key', $config['jwt']['encoder']['key'])
+                ->setArgument('$algorithm', $config['jwt']['encoder']['algorithm']);
+        }
+
+        $this->renameDefinitions(
+            $container,
+            $namespace,
+            'draw.security.jwt.'
+        );
+    }
+
     private function loadHttp(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         $this->registerClasses(
@@ -107,6 +133,19 @@ class SecurityIntegration implements IntegrationInterface
                     ->canBeEnabled()
                     ->children()
                         ->booleanNode('system_auto_login')->defaultValue(false)->end()
+                    ->end()
+                ->end()
+                ->arrayNode('jwt')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('encoder')
+                            ->canBeEnabled()
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('key')->isRequired()->end()
+                                ->enumNode('algorithm')->values(['HS256'])->defaultValue('HS256')->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();
