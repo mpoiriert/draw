@@ -6,7 +6,6 @@ use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Messenger\Transport\DrawTransport;
-use Draw\Component\Process\ProcessFactory;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use Draw\Component\Tester\DataTester;
 use Pelago\Emogrifier\CssInliner;
@@ -43,7 +42,6 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createLoggerNode())
                 ->append($this->createMailerNode())
                 ->append($this->createMessengerNode())
-                ->append($this->createProcessNode())
                 ->append($this->createSecurityNode())
                 ->append($this->createTesterNode())
                 ->append($this->createVersioningNode());
@@ -268,11 +266,6 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
-    }
-
-    private function createProcessNode(): ArrayNodeDefinition
-    {
-        return $this->canBe(ProcessFactory::class, new ArrayNodeDefinition('process'));
     }
 
     private function createSecurityNode(): ArrayNodeDefinition
