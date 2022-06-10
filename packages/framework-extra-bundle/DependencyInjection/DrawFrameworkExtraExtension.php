@@ -13,6 +13,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerInteg
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
@@ -25,9 +26,6 @@ use Draw\Component\Messenger\EventListener\EnvelopeFactoryDispatchAfterCurrentBu
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
-use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
-use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
-use Draw\Component\Security\Core\Listener\CommandLineAuthenticatorListener;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use ReflectionClass;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
@@ -66,6 +64,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new OpenApiIntegration();
         $this->integrations[] = new MailerIntegration();
         $this->integrations[] = new ProcessIntegration();
+        $this->integrations[] = new SecurityIntegration();
         $this->integrations[] = new TesterIntegration();
         $this->integrations[] = new VersioningIntegration();
     }
@@ -92,7 +91,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureLog($config['log'], $loader, $container);
         $this->configureLogger($config['logger'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
-        $this->configureSecurity($config['security'], $loader, $container);
     }
 
     private function configureJwtEncoder(
@@ -279,48 +277,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                         'draw.messenger.event_listener.envelope_factory_delay_stamp_listener'
                     );
             }
-        }
-    }
-
-    private function configureSecurity(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
-    {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $loader->load('security.php');
-        if ($this->isConfigEnabled($container, $config['system_authentication'])) {
-            $container
-                ->setDefinition(
-                    'draw.security.system_authentication',
-                    (new Definition(SystemAuthenticator::class))
-                        ->setArgument('$roles', $config['system_authentication']['roles'])
-                        ->setAutoconfigured(true)
-                        ->setAutowired(true)
-                );
-
-            $container
-                ->setAlias(
-                    SystemAuthenticatorInterface::class,
-                    'draw.security.system_authentication'
-                );
-        }
-
-        if ($this->isConfigEnabled($container, $config['console_authentication'])) {
-            $container
-                ->setDefinition(
-                    'draw.security.command_line_authenticator_listener',
-                    (new Definition(CommandLineAuthenticatorListener::class))
-                        ->setAutoconfigured(true)
-                        ->setAutowired(true)
-                        ->setArgument('$systemAutoLogin', $config['console_authentication']['system_auto_login'])
-                );
-
-            $container
-                ->setAlias(
-                    CommandLineAuthenticatorListener::class,
-                    'draw.security.command_line_authenticator_listener'
-                );
         }
     }
 

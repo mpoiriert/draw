@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class CommandLineAuthenticatorListener implements EventSubscriberInterface
+class SystemConsoleAuthenticatorListener implements EventSubscriberInterface
 {
     public const OPTION_AS_SYSTEM = 'as-system';
 

@@ -14,13 +14,13 @@ class UserCheckerDecoratorPass implements CompilerPassInterface
     {
         if ($container->hasDefinition('security.user_checker')) {
             $container->setDefinition(
-                'draw.security.event_driver_user_checker',
+                'draw.security.core.user.event_driven_user_checker',
                 new Definition(EventDrivenUserChecker::class)
             )
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
-                ->setDecoratedService('security.user_checker', 'draw.security.event_driver_user_checker.inner')
-                ->setArgument('$decoratedUserChecker', new Reference('draw.security.event_driver_user_checker.inner'));
+                ->setDecoratedService('security.user_checker', 'draw.security.core.user.event_driven_user_checker.inner')
+                ->setArgument('$decoratedUserChecker', new Reference('draw.security.core.user.event_driven_user_checker.inner'));
         }
     }
 }

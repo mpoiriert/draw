@@ -177,6 +177,12 @@ abstract class IntegrationTestCase extends TestCase
         );
 
         foreach ($extraAliases as $serviceId => $aliases) {
+            static::assertArrayHasKey(
+                $serviceId,
+                $serviceAliases,
+                'Available aliases ids: '.implode(', ', array_keys($serviceAliases))
+            );
+
             static::assertSame(
                 $serviceAliases[$serviceId],
                 $aliases
