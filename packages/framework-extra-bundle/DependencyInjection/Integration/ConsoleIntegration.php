@@ -7,7 +7,6 @@ use Draw\Component\Console\Entity\Execution;
 use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInterface
@@ -21,29 +20,16 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        $directory = dirname(
-            (new ReflectionClass(PurgeExecutionCommand::class))->getFileName(),
-            2
-        );
-
-        $definition = (new Definition())
-            ->setAutowired(true)
-            ->setAutoconfigured(true);
-
-        $exclude = [
-            $directory.'/Entity',
-            $directory.'/Event',
-            $directory.'/Output',
-            $directory.'/Tests',
-        ];
-
-        $namespace = 'Draw\\Component\\Console\\';
-
-        $loader->registerClasses(
-            $definition,
-            $namespace,
-            $directory,
-            $exclude
+        $this->registerClasses(
+            $loader,
+            $namespace = 'Draw\\Component\\Console\\',
+            $directory = dirname(
+                (new ReflectionClass(PurgeExecutionCommand::class))->getFileName(),
+                2
+            ),
+            [
+                $directory.'/Output/',
+            ]
         );
 
         $this->renameDefinitions(

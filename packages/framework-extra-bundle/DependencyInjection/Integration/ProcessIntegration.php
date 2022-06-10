@@ -7,7 +7,6 @@ use Draw\Contracts\Process\ProcessFactoryInterface;
 use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 class ProcessIntegration implements IntegrationInterface
@@ -21,25 +20,10 @@ class ProcessIntegration implements IntegrationInterface
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        $directory = dirname(
-            (new ReflectionClass(ProcessFactory::class))->getFileName(),
-        );
-
-        $definition = (new Definition())
-            ->setAutowired(true)
-            ->setAutoconfigured(true);
-
-        $exclude = [
-            $directory.'/Tests',
-        ];
-
-        $namespace = 'Draw\\Component\\Process\\';
-
-        $loader->registerClasses(
-            $definition,
-            $namespace,
-            $directory,
-            $exclude
+        $this->registerClasses(
+            $loader,
+            $namespace = 'Draw\\Component\\Process\\',
+            dirname((new ReflectionClass(ProcessFactory::class))->getFileName()),
         );
 
         $container->setAlias(ProcessFactoryInterface::class, ProcessFactory::class);

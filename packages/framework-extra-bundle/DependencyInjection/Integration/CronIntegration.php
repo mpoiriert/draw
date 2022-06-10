@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
-use Draw\Component\Application\Command\CronDumpToFileCommand;
 use Draw\Component\Application\Cron\CronManager;
 use Draw\Component\Application\Cron\Job;
 use ReflectionClass;
@@ -22,34 +21,14 @@ class CronIntegration implements IntegrationInterface
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        $directory = dirname(
-            (new ReflectionClass(CronManager::class))->getFileName()
+        $this->registerClasses(
+            $loader,
+            $namespace = 'Draw\\Component\\Application\\Cron\\',
+            $directory = dirname((new ReflectionClass(CronManager::class))->getFileName()),
+            [
+                $directory.'/Job.php',
+            ]
         );
-
-        $definition = (new Definition())
-            ->setAutowired(true)
-            ->setAutoconfigured(true);
-
-        $exclude = [
-            $directory.'/Job.php',
-        ];
-
-        $namespace = 'Draw\\Component\\Application\\Cron\\';
-
-        $loader->registerClasses(
-            $definition,
-            $namespace,
-            $directory,
-            $exclude
-        );
-
-        $container->setDefinition(
-            'draw.cron.command.dump_to_file',
-            (clone $definition)
-                ->setClass(CronDumpToFileCommand::class)
-        );
-
-        $container->setAlias(CronDumpToFileCommand::class, 'draw.cron.command.dump_to_file');
 
         $cronManagerDefinition = $container->getDefinition(CronManager::class);
         foreach ($config['jobs'] as $jobData) {
@@ -71,8 +50,8 @@ class CronIntegration implements IntegrationInterface
 
         $this->renameDefinitions(
             $container,
-            CronManager::class,
-            'draw.cron.manager'
+            $namespace,
+            'draw.cron.'
         );
     }
 
