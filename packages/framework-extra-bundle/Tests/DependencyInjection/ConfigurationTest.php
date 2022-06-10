@@ -17,31 +17,6 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         return [
             'symfony_console_path' => null,
-            'log' => [
-                'enabled' => false,
-                'enable_all_processors' => false,
-                'processor' => [
-                    'console_command' => [
-                        'enabled' => false,
-                        'includeArguments' => true,
-                        'includeOptions' => false,
-                    ],
-                    'delay' => [
-                        'enabled' => false,
-                        'key' => 'delay',
-                    ],
-                    'request_headers' => [
-                        'enabled' => false,
-                        'key' => 'request_headers',
-                        'onlyHeaders' => [],
-                        'ignoreHeaders' => [],
-                    ],
-                    'token' => [
-                        'enabled' => false,
-                        'key' => 'token',
-                    ],
-                ],
-            ],
             'messenger' => [
                 'enabled' => true,
                 'entity_class' => 'App\Entity\MessengerMessage',
@@ -77,7 +52,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are log, messenger, symfony_console_path.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are messenger, symfony_console_path.',
         ];
     }
 }
