@@ -11,6 +11,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegra
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
@@ -68,6 +69,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new ConsoleIntegration();
         $this->integrations[] = new CronIntegration();
         $this->integrations[] = new OpenApiIntegration();
+        $this->integrations[] = new ProcessIntegration();
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
@@ -93,7 +95,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureLogger($config['logger'], $loader, $container);
         $this->configureMailer($config['mailer'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
-        $this->configureProcess($config['process'], $loader, $container);
         $this->configureSecurity($config['security'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
         $this->configureVersioning($config['versioning'], $loader, $container);
@@ -390,15 +391,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                     );
             }
         }
-    }
-
-    private function configureProcess(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
-    {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $loader->load('process.php');
     }
 
     private function configureSecurity(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
