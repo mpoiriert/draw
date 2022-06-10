@@ -5,11 +5,39 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 use Exception;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 trait IntegrationTrait
 {
     abstract public function getConfigSectionName(): string;
+
+    protected function registerClasses(
+        PhpFileLoader $loader,
+        string $namespace,
+        string $directory,
+        array $exclude = [],
+        Definition $prototype = null
+    ): void {
+        $prototype = $prototype ?: (new Definition())
+            ->setAutowired(true)
+            ->setAutoconfigured(true);
+
+        $loader->registerClasses(
+            $prototype,
+            $namespace,
+            $directory,
+            array_merge(
+                $exclude,
+                [
+                    $directory.'/Entity/',
+                    $directory.'/Event/',
+                    $directory.'/Tests/',
+                ]
+            )
+        );
+    }
 
     protected function assertHasExtension(
         ContainerBuilder $container,

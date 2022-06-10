@@ -1,0 +1,48 @@
+<?php
+
+namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+
+use Draw\Component\Application\Versioning\Listener\FetchRunningVersionListener;
+use Draw\Component\Application\Versioning\VersionManager;
+use Draw\Contracts\Application\VersionVerificationInterface;
+use ReflectionClass;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Parameter;
+
+class VersioningIntegration implements IntegrationInterface
+{
+    use IntegrationTrait;
+
+    public function getConfigSectionName(): string
+    {
+        return 'versioning';
+    }
+
+    public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        $this->registerClasses(
+            $loader,
+            $namespace = 'Draw\\Component\\Application\\Versioning\\',
+            dirname((new ReflectionClass(VersionManager::class))->getFileName())
+        );
+
+        $container
+            ->getDefinition(FetchRunningVersionListener::class)
+            ->setArgument('$projectDirectory', new Parameter('kernel.project_dir'));
+
+        $container->setAlias(VersionVerificationInterface::class, VersionManager::class);
+
+        $this->renameDefinitions(
+            $container,
+            $namespace,
+            'draw.versioning.'
+        );
+    }
+
+    public function addConfiguration(ArrayNodeDefinition $node): void
+    {
+        // nothing to do
+    }
+}

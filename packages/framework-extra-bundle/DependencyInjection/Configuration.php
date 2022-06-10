@@ -43,8 +43,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createMailerNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createSecurityNode())
-                ->append($this->createTesterNode())
-                ->append($this->createVersioningNode());
+                ->append($this->createTesterNode());
 
         foreach ($this->integrations as $integration) {
             $integrationNode = (new ArrayNodeDefinition($integration->getConfigSectionName()))
@@ -55,12 +54,6 @@ class Configuration implements ConfigurationInterface
         }
 
         return $treeBuilder;
-    }
-
-    private function createVersioningNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('versioning'))
-            ->canBeEnabled();
     }
 
     private function createJwtEncoder(): ArrayNodeDefinition

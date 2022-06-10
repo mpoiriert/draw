@@ -12,6 +12,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
@@ -70,6 +71,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new CronIntegration();
         $this->integrations[] = new OpenApiIntegration();
         $this->integrations[] = new ProcessIntegration();
+        $this->integrations[] = new VersioningIntegration();
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
@@ -97,7 +99,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureMessenger($config['messenger'], $loader, $container);
         $this->configureSecurity($config['security'], $loader, $container);
         $this->configureTester($config['tester'], $loader, $container);
-        $this->configureVersioning($config['versioning'], $loader, $container);
     }
 
     private function configureJwtEncoder(
@@ -442,18 +443,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
 
         $loader->load('tester.php');
-    }
-
-    private function configureVersioning(
-        array $config,
-        LoaderInterface $loader,
-        ContainerBuilder $containerBuilder
-    ): void {
-        if (!$config['enabled']) {
-            return;
-        }
-
-        $loader->load('versioning.php');
     }
 
     public function prepend(ContainerBuilder $container): void
