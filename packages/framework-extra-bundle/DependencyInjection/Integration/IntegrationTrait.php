@@ -34,6 +34,7 @@ trait IntegrationTrait
                     $directory.'/Entity/',
                     $directory.'/Event/',
                     $directory.'/Tests/',
+                    $directory.'/Resources/',
                 ]
             )
         );

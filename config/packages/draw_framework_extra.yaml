@@ -16,6 +16,7 @@ draw_framework_extra:
     default_from:
       email: 'support@example.com'
       name: 'Example - Support'
+    subject_from_html_title: ~
 
   messenger:
     broker:

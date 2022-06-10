@@ -19,9 +19,6 @@ class DrawFrameworkExtraExtensionTest extends ExtensionTestCase
             'console' => [
                 'enabled' => false,
             ],
-            'mailer' => [
-                'enabled' => false,
-            ],
             'messenger' => [
                 'enabled' => false,
             ],

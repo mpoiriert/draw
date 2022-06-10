@@ -7,7 +7,6 @@ use App\Entity\MessengerMessageTag;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
-use Pelago\Emogrifier\CssInliner;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -39,7 +38,6 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createJwtEncoder())
                 ->append($this->createLogNode())
                 ->append($this->createLoggerNode())
-                ->append($this->createMailerNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createSecurityNode());
 
@@ -129,33 +127,6 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                         )
-                    ->end()
-                ->end()
-            ->end();
-    }
-
-    private function createMailerNode(): ArrayNodeDefinition
-    {
-        return (new ArrayNodeDefinition('mailer'))
-            ->canBeEnabled()
-            ->children()
-                ->arrayNode('subject_from_html_title')
-                    ->canBeDisabled()
-                ->end()
-                ->arrayNode('css_inliner')
-                    ->canBeEnabled()
-                    ->validate()
-                        ->ifTrue(function ($value) {
-                            return $value['enabled'] && !class_exists(CssInliner::class);
-                        })
-                        ->thenInvalid('The css inliner is base on the [pelago/emogrifier] package. Install it if you want to enable this feature.')
-                    ->end()
-                ->end()
-                ->arrayNode('default_from')
-                    ->canBeEnabled()
-                    ->children()
-                        ->scalarNode('email')->isRequired()->end()
-                        ->scalarNode('name')->end()
                     ->end()
                 ->end()
             ->end();
