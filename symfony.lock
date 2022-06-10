@@ -29,9 +29,6 @@
     "brick/math": {
         "version": "0.9.3"
     },
-    "composer/package-versions-deprecated": {
-        "version": "1.11.99.5"
-    },
     "composer/semver": {
         "version": "3.2.5"
     },
@@ -152,9 +149,6 @@
     "guzzlehttp/psr7": {
         "version": "1.8.3"
     },
-    "jean85/pretty-package-versions": {
-        "version": "1.6.0"
-    },
     "jms/metadata": {
         "version": "2.5.1"
     },
@@ -208,12 +202,6 @@
         "files": [
             "config/packages/nelmio_cors.yaml"
         ]
-    },
-    "nette/finder": {
-        "version": "v2.5.3"
-    },
-    "nette/utils": {
-        "version": "v3.2.7"
     },
     "nikic/php-parser": {
         "version": "v4.13.0"
@@ -795,27 +783,6 @@
     },
     "symfony/yaml": {
         "version": "v5.3.6"
-    },
-    "symplify/autowire-array-parameter": {
-        "version": "8.3.48"
-    },
-    "symplify/composer-json-manipulator": {
-        "version": "8.3.48"
-    },
-    "symplify/monorepo-builder": {
-        "version": "8.3.48"
-    },
-    "symplify/package-builder": {
-        "version": "8.3.48"
-    },
-    "symplify/set-config-resolver": {
-        "version": "8.3.48"
-    },
-    "symplify/smart-file-system": {
-        "version": "8.3.48"
-    },
-    "symplify/symplify-kernel": {
-        "version": "8.3.48"
     },
     "terminal42/service-annotation-bundle": {
         "version": "1.1.0"
