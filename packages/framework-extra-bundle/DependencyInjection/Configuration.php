@@ -7,7 +7,6 @@ use App\Entity\MessengerMessageTag;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
-use Draw\Component\Tester\DataTester;
 use Pelago\Emogrifier\CssInliner;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -42,8 +41,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createLoggerNode())
                 ->append($this->createMailerNode())
                 ->append($this->createMessengerNode())
-                ->append($this->createSecurityNode())
-                ->append($this->createTesterNode());
+                ->append($this->createSecurityNode());
 
         foreach ($this->integrations as $integration) {
             $integrationNode = (new ArrayNodeDefinition($integration->getConfigSectionName()))
@@ -281,11 +279,6 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
-    }
-
-    private function createTesterNode(): ArrayNodeDefinition
-    {
-        return $this->canBe(DataTester::class, new ArrayNodeDefinition('tester'));
     }
 
     private function canBe(string $class, ArrayNodeDefinition $arrayNodeDefinition): ArrayNodeDefinition

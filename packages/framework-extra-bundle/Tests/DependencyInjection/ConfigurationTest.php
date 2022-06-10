@@ -105,9 +105,6 @@ class ConfigurationTest extends ConfigurationTestCase
                     'system_auto_login' => false,
                 ],
             ],
-            'tester' => [
-                'enabled' => true,
-            ],
         ];
     }
 
@@ -115,7 +112,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         yield [
             ['invalid' => true],
-            'Unrecognized option invalid under draw_framework_extra. Available options are jwt_encoder, log, logger, mailer, messenger, security, symfony_console_path, tester.',
+            'Unrecognized option invalid under draw_framework_extra. Available options are jwt_encoder, log, logger, mailer, messenger, security, symfony_console_path.',
         ];
 
         yield [

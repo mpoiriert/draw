@@ -12,6 +12,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
 use Draw\Bundle\FrameworkExtraBundle\Logger\SlowRequestLogger;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
@@ -71,6 +72,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new CronIntegration();
         $this->integrations[] = new OpenApiIntegration();
         $this->integrations[] = new ProcessIntegration();
+        $this->integrations[] = new TesterIntegration();
         $this->integrations[] = new VersioningIntegration();
     }
 
@@ -98,7 +100,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->configureMailer($config['mailer'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
         $this->configureSecurity($config['security'], $loader, $container);
-        $this->configureTester($config['tester'], $loader, $container);
     }
 
     private function configureJwtEncoder(
@@ -434,15 +435,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
                     'draw.security.command_line_authenticator_listener'
                 );
         }
-    }
-
-    private function configureTester(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
-    {
-        if (!$this->isConfigEnabled($container, $config)) {
-            return;
-        }
-
-        $loader->load('tester.php');
     }
 
     public function prepend(ContainerBuilder $container): void
