@@ -6,7 +6,7 @@ use DateTimeImmutable;
 use Draw\Bundle\UserBundle\Email\UserOnboardingEmail;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
-use Draw\Component\Messenger\ManuallyTriggeredMessageUrlGenerator;
+use Draw\Component\Messenger\ManualTrigger\ManuallyTriggeredMessageUrlGenerator;
 
 class UserOnboardingEmailWriter implements EmailWriterInterface
 {

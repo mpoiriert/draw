@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
 use Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage;
-use Draw\Component\Messenger\Stamp\SearchableTagStamp;
+use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 

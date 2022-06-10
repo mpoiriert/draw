@@ -2,9 +2,9 @@
 
 namespace Draw\Component\Messenger\Tests\EventListener;
 
-use Draw\Component\Messenger\Broker;
-use Draw\Component\Messenger\Event\BrokerRunningEvent;
-use Draw\Component\Messenger\EventListener\StopOnNewVersionListener;
+use Draw\Component\Messenger\Broker\Broker;
+use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
+use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\Test\TestLogger;
@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 use Symfony\Component\Messenger\Worker;
 
 /**
- * @covers \Draw\Component\Messenger\EventListener\StopOnNewVersionListener
+ * @covers \Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener
  */
 class StopOnNewVersionListenerTest extends TestCase implements VersionVerificationInterface
 {

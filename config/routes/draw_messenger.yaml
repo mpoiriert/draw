@@ -1,4 +1,3 @@
 site:
-    resource: "@DrawFrameworkExtraBundle/Controller/Messenger"
-    type: "annotation"
+    resource: '@DrawFrameworkExtraBundle/Resources/config/routing-messenger.yaml'
     prefix: "/admin"

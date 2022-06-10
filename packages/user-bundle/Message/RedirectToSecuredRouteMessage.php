@@ -2,8 +2,8 @@
 
 namespace Draw\Bundle\UserBundle\Message;
 
-use Draw\Component\Messenger\Message\RedirectToRouteMessageInterface;
-use Draw\Component\Messenger\Message\RedirectToRouteMessageTrait;
+use Draw\Component\Messenger\ManualTrigger\Message\RedirectToRouteMessageInterface;
+use Draw\Component\Messenger\ManualTrigger\Message\RedirectToRouteMessageTrait;
 
 class RedirectToSecuredRouteMessage extends AutoConnect implements RedirectToRouteMessageInterface
 {

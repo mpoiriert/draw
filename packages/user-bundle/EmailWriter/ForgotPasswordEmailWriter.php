@@ -8,7 +8,7 @@ use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
-use Draw\Component\Messenger\ManuallyTriggeredMessageUrlGenerator;
+use Draw\Component\Messenger\ManualTrigger\ManuallyTriggeredMessageUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ForgotPasswordEmailWriter implements EmailWriterInterface

@@ -28,6 +28,7 @@
         "draw/messenger": "^0.9",
         "draw/open-api": "^0.9",
         "draw/process": "^0.9",
+        "draw/sonata-integration-bundle": "^0.9",
         "draw/security": "^0.9",
         "draw/tester": "^0.9",
         "draw/tester-bundle": "^0.9",

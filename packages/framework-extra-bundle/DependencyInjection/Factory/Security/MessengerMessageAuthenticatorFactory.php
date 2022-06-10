@@ -2,8 +2,9 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security;
 
-use Draw\Component\Messenger\Controller\MessageController;
+use Draw\Component\Messenger\ManualTrigger\Action\ClickMessageAction;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
+use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AuthenticatorFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -27,7 +28,7 @@ class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterf
             ->setAutoconfigured(true)
             ->setAutowired(true)
             ->setArgument('$userProvider', new Reference($userProviderId))
-            ->setArgument('$envelopeFinder', new Reference('draw.messenger.envelope_finder'))
+            ->setArgument('$envelopeFinder', new Reference(EnvelopeFinderInterface::class))
             ->setArgument('$requestParameterKey', $config['request_parameter_key']);
 
         if ($serviceAlias = $config['service_alias'] ?? null) {
@@ -50,7 +51,7 @@ class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterf
         $builder
             ->children()
                 ->scalarNode('provider')->end()
-                ->scalarNode('request_parameter_key')->defaultValue(MessageController::MESSAGE_ID_PARAMETER_NAME)->end()
+                ->scalarNode('request_parameter_key')->defaultValue(ClickMessageAction::MESSAGE_ID_PARAMETER_NAME)->end()
             ->end();
     }
 }

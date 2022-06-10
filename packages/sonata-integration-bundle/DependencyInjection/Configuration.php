@@ -12,7 +12,7 @@ use Draw\Bundle\UserBundle\DrawUserBundle;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
-use Draw\Component\Messenger\Broker;
+use Draw\Component\Messenger\Broker\Broker;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;

@@ -9,7 +9,7 @@ use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
 use Draw\Bundle\UserBundle\Message\UserLockActivatedMessage;
 use Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage;
 use Draw\Component\Core\DateTimeUtils;
-use Draw\Component\Messenger\Stamp\SearchableTagStamp;
+use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;

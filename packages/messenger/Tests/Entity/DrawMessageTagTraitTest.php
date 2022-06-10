@@ -2,12 +2,12 @@
 
 namespace Draw\Component\Messenger\Tests\Entity;
 
-use Draw\Component\Messenger\Entity\DrawMessageInterface;
-use Draw\Component\Messenger\Entity\DrawMessageTagTrait;
+use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
+use Draw\Component\Messenger\Transport\Entity\DrawMessageTagTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Draw\Component\Messenger\Entity\DrawMessageTagTrait
+ * @covers \Draw\Component\Messenger\Transport\Entity\DrawMessageTagTrait
  */
 class DrawMessageTagTraitTest extends TestCase
 {

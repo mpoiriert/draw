@@ -159,7 +159,7 @@ abstract class IntegrationTestCase extends TestCase
 
             static::assertSame(
                 $service->getAliases(),
-                $serviceAliases[$service->getId()],
+                $serviceAliases[$service->getId()] ?? [],
                 'Service ['.$service->getId().'] aliases do not match.'
             );
 

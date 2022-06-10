@@ -2,15 +2,19 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
 
+use Draw\Component\Messenger\Broker\Command\StartMessengerBrokerCommand;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class MessengerBrokerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('draw.messenger.command.start_messenger_broker')) {
+        try {
+            $definition = $container->findDefinition(StartMessengerBrokerCommand::class);
+        } catch (ServiceNotFoundException $exception) {
             return;
         }
 
@@ -22,8 +26,6 @@ class MessengerBrokerCompilerPass implements CompilerPassInterface
             throw new RuntimeException('The draw_framework_extra.symfony_console_path value ['.$symfonyConsolePath.'] is invalid');
         }
 
-        $container
-            ->getDefinition('draw.messenger.command.start_messenger_broker')
-            ->setArgument('$consolePath', realpath($symfonyConsolePath));
+        $definition->setArgument('$consolePath', realpath($symfonyConsolePath));
     }
 }

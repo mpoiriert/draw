@@ -13,8 +13,8 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\JwtAut
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\MessengerMessageAuthenticatorFactory;
 use Draw\Component\Console\Listener\CommandFlowListener;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
-use Draw\Component\Messenger\Broker;
-use Draw\Component\Messenger\Command\PurgeExpiredMessageCommand;
+use Draw\Component\Messenger\Broker\Broker;
+use Draw\Component\Messenger\Expirable\Command\PurgeExpiredMessageCommand;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;

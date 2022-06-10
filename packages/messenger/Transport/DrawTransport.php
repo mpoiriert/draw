@@ -9,9 +9,11 @@ use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Draw\Component\Core\DateTimeUtils;
-use Draw\Component\Messenger\Stamp\ExpirationStamp;
-use Draw\Component\Messenger\Stamp\ManualTriggerStamp;
-use Draw\Component\Messenger\Stamp\SearchableTagStamp;
+use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
+use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
+use Draw\Component\Messenger\ManualTrigger\Stamp\ManualTriggerStamp;
+use Draw\Component\Messenger\Searchable\SearchableTransportInterface;
+use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection;
@@ -24,7 +26,7 @@ use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
-class DrawTransport extends DoctrineTransport implements ObsoleteMessageAwareInterface, SearchableInterface
+class DrawTransport extends DoctrineTransport implements PurgeableTransportInterface, SearchableTransportInterface
 {
     private DBALConnection $driverConnection;
 

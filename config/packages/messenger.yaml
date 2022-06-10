@@ -8,6 +8,6 @@ framework:
             sync: 'sync://'
 
         routing:
-            Draw\Component\Messenger\Message\ManuallyTriggeredInterface: 'async'
+            Draw\Component\Messenger\ManualTrigger\Message\ManuallyTriggeredInterface: 'async'
             Draw\Bundle\UserBundle\Message\NewUserLockMessage: 'sync'
             Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage: 'sync'
