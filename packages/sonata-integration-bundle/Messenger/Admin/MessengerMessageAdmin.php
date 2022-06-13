@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\Messenger\Admin;
 
+use DateTimeImmutable;
+use Doctrine\ORM\QueryBuilder;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
@@ -9,6 +11,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -105,5 +108,23 @@ class MessengerMessageAdmin extends AbstractAdmin
     {
         $collection->remove('create');
         $collection->remove('edit');
+    }
+
+    /**
+     * @param ProxyQueryInterface|QueryBuilder $query
+     */
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query
+            ->andWhere(
+                $query->expr()
+                    ->orX(
+                        sprintf('%s.expiresAt <= :now', $query->getRootAliases()[0]),
+                        sprintf('%s.expiresAt IS NULL', $query->getRootAliases()[0]),
+                    )
+            )
+            ->setParameter('now', new DateTimeImmutable());
+
+        return $query;
     }
 }
