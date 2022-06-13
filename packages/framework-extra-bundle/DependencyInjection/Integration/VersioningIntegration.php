@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
-use Draw\Component\Application\Versioning\Listener\FetchRunningVersionListener;
+use Draw\Component\Application\Versioning\EventListener\FetchRunningVersionListener;
 use Draw\Component\Application\Versioning\VersionManager;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use ReflectionClass;

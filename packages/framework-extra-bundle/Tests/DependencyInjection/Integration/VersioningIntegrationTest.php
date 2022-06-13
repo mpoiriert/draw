@@ -5,7 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
 use Draw\Component\Application\Versioning\Command\UpdateDeployedVersionCommand;
-use Draw\Component\Application\Versioning\Listener\FetchRunningVersionListener;
+use Draw\Component\Application\Versioning\EventListener\FetchRunningVersionListener;
 use Draw\Component\Application\Versioning\VersionManager;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use Symfony\Component\DependencyInjection\Definition;
@@ -51,7 +51,7 @@ class VersioningIntegrationTest extends IntegrationTestCase
                     ]
                 ),
                 new ServiceConfiguration(
-                    'draw.versioning.listener.fetch_running_version_listener',
+                    'draw.versioning.event_listener.fetch_running_version_listener',
                     [
                         FetchRunningVersionListener::class,
                     ],

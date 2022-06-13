@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\Listener;
+namespace Draw\Bundle\SonataExtraBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;

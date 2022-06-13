@@ -3,7 +3,7 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
-use Draw\Component\Console\Listener\CommandFlowListener;
+use Draw\Component\Console\EventListener\CommandFlowListener;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Console\Input\InputOption;

@@ -1,17 +1,19 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\Listener;
+namespace Draw\Bundle\SonataExtraBundle\EventListener;
 
 use Draw\Bundle\SonataExtraBundle\Event\FormContractorDefaultOptionsEvent;
 use phpDocumentor\Reflection\DocBlockFactory;
 use ReflectionClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class AutoHelpSubscriber implements EventSubscriberInterface
+class AutoHelpListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        yield FormContractorDefaultOptionsEvent::class => 'configureHelp';
+        return [
+            FormContractorDefaultOptionsEvent::class => 'configureHelp',
+        ];
     }
 
     public function configureHelp(FormContractorDefaultOptionsEvent $event): void

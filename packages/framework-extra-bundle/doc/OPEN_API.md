@@ -156,7 +156,7 @@ version base on something else. Here is a example of a listener that will take f
 **/api/v{number}/....**:
 
 ```PHP
-<?php namespace App\Listener;
+<?php namespace App\EventListener;
 
 use Draw\Bundle\OpenApiBundle\Response\Serialization;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

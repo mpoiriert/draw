@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Draw\Bundle\SonataExtraBundle\Listener;
+namespace Draw\Bundle\SonataExtraBundle\EventListener;
 
 use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;

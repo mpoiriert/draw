@@ -11,7 +11,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTrans
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\JwtAuthenticatorFactory;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\MessengerMessageAuthenticatorFactory;
-use Draw\Component\Console\Listener\CommandFlowListener;
+use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Expirable\Command\PurgeExpiredMessageCommand;

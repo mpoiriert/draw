@@ -6,7 +6,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
 use Draw\Component\Console\Entity\Execution;
-use Draw\Component\Console\Listener\CommandFlowListener;
+use Draw\Component\Console\EventListener\CommandFlowListener;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

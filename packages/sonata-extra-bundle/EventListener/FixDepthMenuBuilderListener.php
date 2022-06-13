@@ -1,13 +1,13 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\Listener;
+namespace Draw\Bundle\SonataExtraBundle\EventListener;
 
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class FixDepthMenuBuilderSubscriber implements EventSubscriberInterface
+class FixDepthMenuBuilderListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ConfigureMenuEvent::SIDEBAR => [

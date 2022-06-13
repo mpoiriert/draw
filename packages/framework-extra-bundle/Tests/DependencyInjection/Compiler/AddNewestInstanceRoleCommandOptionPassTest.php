@@ -3,7 +3,7 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
-use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
+use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Symfony\Component\Console\Input\InputOption;

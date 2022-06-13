@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
 
-use Draw\Component\Console\Listener\CommandFlowListener;
+use Draw\Component\Console\EventListener\CommandFlowListener;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

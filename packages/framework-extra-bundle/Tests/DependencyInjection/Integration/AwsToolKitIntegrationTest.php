@@ -5,10 +5,10 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
+use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV1;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
-use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 
 /**
  * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration
@@ -56,7 +56,7 @@ class AwsToolKitIntegrationTest extends IntegrationTestCase
                     ]
                 ),
                 new ServiceConfiguration(
-                    'draw.aws_tool_kit.listener.newest_instance_role_check_listener',
+                    'draw.aws_tool_kit.event_listener.newest_instance_role_check_listener',
                     [
                         NewestInstanceRoleCheckListener::class,
                     ],

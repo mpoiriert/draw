@@ -2,10 +2,10 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV1;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
-use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

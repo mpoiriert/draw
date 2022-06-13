@@ -1,11 +1,11 @@
 <?php
 
-namespace Draw\Component\AwsToolKit\Tests\Listener;
+namespace Draw\Component\AwsToolKit\Tests\EventListener;
 
 use Aws\Ec2\Ec2Client;
 use DateTimeImmutable;
+use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
-use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @covers \Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener
+ * @covers \Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener
  */
 class NewestInstanceRoleListenerCheckTest extends TestCase
 {
