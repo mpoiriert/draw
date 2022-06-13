@@ -4,7 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
-use Draw\Component\Security\Core\Listener\SystemConsoleAuthenticatorListener;
+use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use ReflectionClass;

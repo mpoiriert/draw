@@ -3,7 +3,7 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
-use Draw\Bundle\SonataExtraBundle\Listener\SessionTimeoutRequestListener;
+use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawSonataExtraExtensionSessionTimeoutEnabledTest extends DrawSonataExtraExtensionTest

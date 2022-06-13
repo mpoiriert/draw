@@ -3,9 +3,9 @@
 namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
-use Draw\Bundle\SonataExtraBundle\Listener\AutoHelpSubscriber;
-use Draw\Bundle\SonataExtraBundle\Listener\FixDepthMenuBuilderSubscriber;
-use Draw\Bundle\SonataExtraBundle\Listener\SessionTimeoutRequestListener;
+use Draw\Bundle\SonataExtraBundle\EventListener\AutoHelpListener;
+use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
+use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -21,11 +21,11 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         $loader->load('services.xml');
 
         if (!($config['fix_menu_depth']['enabled'] ?? false)) {
-            $container->removeDefinition(FixDepthMenuBuilderSubscriber::class);
+            $container->removeDefinition(FixDepthMenuBuilderListener::class);
         }
 
         if (!($config['auto_help']['enabled'] ?? false)) {
-            $container->removeDefinition(AutoHelpSubscriber::class);
+            $container->removeDefinition(AutoHelpListener::class);
         }
 
         if (!($config['session_timeout']['enabled'] ?? false)) {

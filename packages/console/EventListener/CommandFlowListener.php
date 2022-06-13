@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\Console\Listener;
+namespace Draw\Component\Console\EventListener;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;

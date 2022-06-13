@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\Console\Tests\Listener;
+namespace Draw\Component\Console\Tests\EventListener;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
@@ -12,7 +12,7 @@ use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\Event\CommandErrorEvent;
 use Draw\Component\Console\Event\LoadExecutionIdEvent;
-use Draw\Component\Console\Listener\CommandFlowListener;
+use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;

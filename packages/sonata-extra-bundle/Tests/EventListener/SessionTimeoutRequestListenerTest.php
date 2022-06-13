@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\Tests\Listener;
+namespace Draw\Bundle\SonataExtraBundle\Tests\EventListener;
 
-use Draw\Bundle\SonataExtraBundle\Listener\SessionTimeoutRequestListener;
+use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @covers \Draw\Bundle\SonataExtraBundle\Listener\SessionTimeoutRequestListener
+ * @covers \Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener
  */
 class SessionTimeoutRequestListenerTest extends TestCase
 {

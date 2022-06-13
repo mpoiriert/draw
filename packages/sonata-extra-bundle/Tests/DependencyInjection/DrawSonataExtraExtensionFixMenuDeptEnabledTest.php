@@ -3,7 +3,7 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
-use Draw\Bundle\SonataExtraBundle\Listener\FixDepthMenuBuilderSubscriber;
+use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawSonataExtraExtensionFixMenuDeptEnabledTest extends DrawSonataExtraExtensionTest
@@ -25,6 +25,6 @@ class DrawSonataExtraExtensionFixMenuDeptEnabledTest extends DrawSonataExtraExte
     public function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
-        yield [FixDepthMenuBuilderSubscriber::class];
+        yield [FixDepthMenuBuilderListener::class];
     }
 }

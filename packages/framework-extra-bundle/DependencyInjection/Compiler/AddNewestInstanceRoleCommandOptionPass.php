@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
 
-use Draw\Component\AwsToolKit\Listener\NewestInstanceRoleCheckListener;
+use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\AwsToolKit\Listener;
+namespace Draw\Component\AwsToolKit\EventListener;
 
 use Aws\Ec2\Ec2Client;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;

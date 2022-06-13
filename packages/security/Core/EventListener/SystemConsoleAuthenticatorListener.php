@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\Security\Core\Listener;
+namespace Draw\Component\Security\Core\EventListener;
 
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;

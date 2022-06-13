@@ -6,7 +6,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
-use Draw\Component\Security\Core\Listener\SystemConsoleAuthenticatorListener;
+use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -142,7 +142,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                 $defaultServices,
                 [
                     new ServiceConfiguration(
-                        'draw.security.core.listener.system_console_authenticator_listener',
+                        'draw.security.core.event_listener.system_console_authenticator_listener',
                         [
                             SystemConsoleAuthenticatorListener::class,
                         ],

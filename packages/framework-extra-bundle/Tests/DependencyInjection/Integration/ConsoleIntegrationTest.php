@@ -7,7 +7,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
-use Draw\Component\Console\Listener\CommandFlowListener;
+use Draw\Component\Console\EventListener\CommandFlowListener;
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -90,7 +90,7 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                     ]
                 ),
                 new ServiceConfiguration(
-                    'draw.console.listener.command_flow_listener',
+                    'draw.console.event_listener.command_flow_listener',
                     [
                         CommandFlowListener::class,
                     ]
