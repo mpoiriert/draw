@@ -6,12 +6,15 @@ use Draw\Component\Console\EventListener\CommandFlowListener;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class AddCommandExecutionOptionsCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('draw.console.command_flow_listener')) {
+        try {
+            $container->findDefinition(CommandFlowListener::class);
+        } catch (ServiceNotFoundException $exception) {
             return;
         }
 

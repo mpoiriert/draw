@@ -1,4 +1,8 @@
 draw_framework_extra:
+  aws_tool_kit:
+    imds_version: 2
+    newest_instance_role_check: true
+
   configuration: ~
 
   console: ~

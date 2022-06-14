@@ -43,7 +43,7 @@ class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
     {
         $definition = new Definition(stdClass::class);
 
-        $this->containerBuilder->setDefinition('draw.aws_tool_kit.newest_instance_role_check_listener', clone $definition);
+        $this->containerBuilder->setDefinition(NewestInstanceRoleCheckListener::class, clone $definition);
         $this->containerBuilder->setDefinition('service-id', $definition)->addTag('console.command');
 
         $this->compilerPass->process($this->containerBuilder);
