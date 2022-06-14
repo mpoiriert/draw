@@ -7,6 +7,7 @@ use App\Tests\TestCase;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * @covers \App\Command\NullCommand
@@ -32,20 +33,28 @@ class NullCommandTest extends TestCase
 
     public function provideTestOption(): iterable
     {
-        return [];
+        yield [
+            'draw-execution-id',
+            null,
+            InputOption::VALUE_REQUIRED,
+        ];
+
+        yield [
+            'draw-execution-ignore',
+            null,
+            InputOption::VALUE_OPTIONAL,
+        ];
+
+        yield [
+            'aws-newest-instance-role',
+            null,
+            InputOption::VALUE_REQUIRED,
+        ];
     }
 
     public function testExecute(): void
     {
         $this->execute([])
             ->test(CommandDataTester::create()->setExpectedDisplay('This does nothing.'));
-    }
-
-    protected function filterDefinitionOptions(array $options): array
-    {
-        unset($options['draw-execution-id']);
-        unset($options['draw-execution-ignore']);
-
-        return $options;
     }
 }

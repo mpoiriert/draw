@@ -6,12 +6,15 @@ use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 class AddNewestInstanceRoleCommandOptionPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('draw.aws_tool_kit.newest_instance_role_check_listener')) {
+        try {
+            $container->findDefinition(NewestInstanceRoleCheckListener::class);
+        } catch (ServiceNotFoundException $exception) {
             return;
         }
 

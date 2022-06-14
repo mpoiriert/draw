@@ -41,7 +41,7 @@ class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 
     public function testProcess(): void
     {
-        $this->containerBuilder->setDefinition('draw.console.command_flow_listener', new Definition(stdClass::class));
+        $this->containerBuilder->setDefinition(CommandFlowListener::class, new Definition(stdClass::class));
 
         $definition = new Definition(stdClass::class);
 
