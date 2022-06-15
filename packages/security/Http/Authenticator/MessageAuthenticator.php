@@ -43,8 +43,8 @@ class MessageAuthenticator extends AbstractAuthenticator
     public function supports(Request $request): ?bool
     {
         switch (true) {
-            case !$messageId = $request->get($this->requestParameterKey):
-            case !$this->isDifferentUser($messageId):
+            case null === $user = $this->getMessageUser($request->get($this->requestParameterKey)):
+            case !$this->isDifferentUser($user):
                 return false;
             default:
                 return true;
@@ -67,15 +67,9 @@ class MessageAuthenticator extends AbstractAuthenticator
         );
     }
 
-    private function isDifferentUser(string $messageId): bool
+    private function isDifferentUser(UserInterface $connectedUser): bool
     {
-        switch (true) {
-            default:
-            case null === $user = $this->security->getUser():
-                return true;
-            case $user === $this->getMessageUser($messageId):
-                return false;
-        }
+        return $this->security->getUser() !== $connectedUser;
     }
 
     private function getMessageUser(?string $messageId): ?UserInterface
