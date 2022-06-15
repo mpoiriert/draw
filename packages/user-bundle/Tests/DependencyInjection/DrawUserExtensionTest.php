@@ -8,7 +8,7 @@ use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\EventListener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\EventListener\UserRequestInterceptedListener;
 use Draw\Bundle\UserBundle\EventListener\UserRequestInterceptorListener;
-use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
+use Draw\Bundle\UserBundle\Feed\FlashUserFeed;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
@@ -46,11 +46,11 @@ class DrawUserExtensionTest extends ExtensionTestCase
     {
         yield [ConnectionTokensController::class];
         yield [UserRequestInterceptedListener::class];
-        yield [SessionUserFeed::class];
+        yield [FlashUserFeed::class];
         yield [EncryptPasswordUserEntityListener::class];
         yield [UserRequestInterceptorListener::class];
         yield ['draw_user.user_repository'];
-        yield [UserFeedInterface::class, SessionUserFeed::class];
+        yield [UserFeedInterface::class, FlashUserFeed::class];
         yield ['Doctrine\ORM\EntityRepository $drawUserEntityRepository', 'draw_user.user_repository'];
         yield [PreventNotHandleMessageHandler::class];
     }

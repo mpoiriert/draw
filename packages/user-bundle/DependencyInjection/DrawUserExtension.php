@@ -17,7 +17,7 @@ use Draw\Bundle\UserBundle\EventListener\PasswordChangeEnforcerListener;
 use Draw\Bundle\UserBundle\EventListener\TwoFactorAuthenticationEntityListener;
 use Draw\Bundle\UserBundle\EventListener\TwoFactorAuthenticationListener;
 use Draw\Bundle\UserBundle\EventListener\UserRequestInterceptorListener;
-use Draw\Bundle\UserBundle\Feed\SessionUserFeed;
+use Draw\Bundle\UserBundle\Feed\FlashUserFeed;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\MessageHandler\NewUserSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
@@ -99,7 +99,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         );
 
         $container
-            ->setAlias(UserFeedInterface::class, SessionUserFeed::class);
+            ->setAlias(UserFeedInterface::class, FlashUserFeed::class);
 
         $container
             ->getDefinition(UserRequestInterceptorListener::class)
