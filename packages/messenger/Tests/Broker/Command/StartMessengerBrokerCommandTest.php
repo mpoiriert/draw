@@ -49,6 +49,13 @@ class StartMessengerBrokerCommandTest extends TestCase
     public function provideTestOption(): iterable
     {
         yield [
+            'context',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'default',
+        ];
+
+        yield [
             'concurrent',
             null,
             InputOption::VALUE_REQUIRED,
@@ -85,10 +92,16 @@ class StartMessengerBrokerCommandTest extends TestCase
     {
         $concurrent = rand(1, 10);
         $timeout = rand(1, 10);
+        $context = uniqid('context-');
 
         $this->eventDispatcher->addListener(
             BrokerStartedEvent::class,
-            function (BrokerStartedEvent $event) use ($concurrent, $timeout) {
+            function (BrokerStartedEvent $event) use ($concurrent, $timeout, $context) {
+                $this->assertSame(
+                    $context,
+                    $event->getBroker()->getContext()
+                );
+
                 $this->assertSame(
                     $concurrent,
                     $event->getConcurrent()
@@ -120,17 +133,20 @@ class StartMessengerBrokerCommandTest extends TestCase
             }
         );
 
-        $this->execute(['--concurrent' => $concurrent, '--timeout' => $timeout])
-            ->test(
-                CommandDataTester::create(
-                    0,
-                    [
-                        '[OK] Broker starting.',
-                        '! [NOTE] Concurrency '.$concurrent,
-                        '! [NOTE] Timeout '.$timeout,
-                        '[OK] Broker stopped. ',
-                    ]
-                )
-            );
+        $this->execute([
+            '--context' => $context,
+            '--concurrent' => $concurrent,
+            '--timeout' => $timeout,
+        ])->test(
+            CommandDataTester::create(
+                0,
+                [
+                    '[OK] Broker starting.',
+                    '! [NOTE] Concurrency '.$concurrent,
+                    '! [NOTE] Timeout '.$timeout,
+                    '[OK] Broker stopped. ',
+                ]
+            )
+        );
     }
 }

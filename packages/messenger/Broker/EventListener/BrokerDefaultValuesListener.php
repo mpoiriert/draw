@@ -7,8 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BrokerDefaultValuesListener implements EventSubscriberInterface
 {
-    private array $defaultOptions;
-    private array $receivers;
+    private array $contexts;
 
     public static function getSubscribedEvents(): array
     {
@@ -17,18 +16,17 @@ class BrokerDefaultValuesListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(array $receivers, array $defaultOptions = [])
+    public function __construct(array $contexts)
     {
-        $this->defaultOptions = $defaultOptions;
-        $this->receivers = $receivers;
+        $this->contexts = $contexts;
     }
 
     public function initializeDefaultValues(NewConsumerProcessEvent $event): void
     {
-        $event->setReceivers($this->receivers);
+        $event->setReceivers($this->contexts[$event->getContext()]['receivers']);
         $event->setOptions(
             array_merge(
-                $this->defaultOptions,
+                $this->contexts[$event->getContext()]['defaultOptions'] ?? [],
                 $event->getOptions()
             )
         );

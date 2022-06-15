@@ -34,6 +34,13 @@ class StartMessengerBrokerCommand extends Command
             ->setName('draw:messenger:start-broker')
             ->setDescription('Start multiple messenger:consume base on concurrent option. Automatically restart them if stopped.')
             ->addOption(
+                'context',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The context you want this broker to run. Default to "default"',
+                'default'
+            )
+            ->addOption(
                 'concurrent',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -67,15 +74,15 @@ class StartMessengerBrokerCommand extends Command
         $io->note('Concurrency '.$concurrent);
         $io->note('Timeout '.$timeout);
 
-        $this->createBroker()->start($concurrent, $timeout);
+        $this->createBroker($input->getOption('context'))->start($concurrent, $timeout);
 
         $io->success('Broker stopped.');
 
         return 0;
     }
 
-    protected function createBroker(): Broker
+    protected function createBroker(string $context): Broker
     {
-        return new Broker($this->consolePath, $this->processFactory, $this->eventDispatcher);
+        return new Broker($context, $this->consolePath, $this->processFactory, $this->eventDispatcher);
     }
 }

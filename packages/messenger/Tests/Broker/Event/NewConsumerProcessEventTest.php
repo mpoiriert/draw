@@ -13,6 +13,8 @@ class NewConsumerProcessEventTest extends TestCase
 {
     private NewConsumerProcessEvent $event;
 
+    private string $context;
+
     private array $receivers;
 
     private array $options;
@@ -20,6 +22,7 @@ class NewConsumerProcessEventTest extends TestCase
     public function setUp(): void
     {
         $this->event = new NewConsumerProcessEvent(
+            $this->context = uniqid('context-'),
             $this->receivers = [uniqid('receiver-1-'), uniqid('receiver-2-')],
             $this->options = [uniqid('option-1-'), uniqid('option-2-')]
         );
@@ -27,25 +30,33 @@ class NewConsumerProcessEventTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Event::class,
             $this->event
         );
     }
 
+    public function testGetContext(): void
+    {
+        static::assertSame(
+            $this->context,
+            $this->event->getContext()
+        );
+    }
+
     public function testReceiversMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->receivers,
             $this->event->getReceivers()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $this->event,
             $this->event->setReceivers($value = [uniqid('receiver-1-'), uniqid('receiver-2-')])
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->event->getReceivers()
         );
@@ -53,17 +64,17 @@ class NewConsumerProcessEventTest extends TestCase
 
     public function testOptionsMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->options,
             $this->event->getOptions()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $this->event,
             $this->event->setOptions($value = [uniqid('option-1-'), uniqid('option-2-')])
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->event->getOptions()
         );

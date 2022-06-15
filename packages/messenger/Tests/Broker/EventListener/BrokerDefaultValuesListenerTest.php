@@ -14,17 +14,25 @@ class BrokerDefaultValuesListenerTest extends TestCase
 {
     private BrokerDefaultValuesListener $service;
 
-    private array $receivers;
-
-    private array $defaultOptions;
+    private array $contexts;
 
     public function setUp(): void
     {
         $this->service = new BrokerDefaultValuesListener(
-            $this->receivers = [uniqid('receiver-1-'), uniqid('receiver-2-')],
-            $this->defaultOptions = [
-                uniqid('option-1-') => uniqid('value-1-'),
-                uniqid('option-2-') => uniqid('value-2-'),
+            $this->contexts = [
+                uniqid('context-1') => [
+                    'receivers' => [uniqid('receiver-1-'), uniqid('receiver-2-')],
+                    'defaultOptions' => [
+                        uniqid('option-1-') => uniqid('value-1-'),
+                        uniqid('option-2-') => uniqid('value-2-'),
+                    ],
+                ],
+                uniqid('context-2') => [
+                    'receivers' => [uniqid('receiver-3-'), uniqid('receiver-4-')],
+                    'defaultOptions' => [
+                        uniqid('option-3-') => uniqid('value-3-'),
+                    ],
+                ],
             ]
         );
     }
@@ -49,22 +57,27 @@ class BrokerDefaultValuesListenerTest extends TestCase
 
     public function testInitializeDefaultValues(): void
     {
+        $contextName = array_key_first($this->contexts);
+        $options = [
+            array_keys($this->contexts[$contextName]['defaultOptions'])[0] => uniqid('kept-value-1'),
+        ];
         $event = new NewConsumerProcessEvent(
+            $contextName,
             [],
-            $options = [array_keys($this->defaultOptions)[0] => uniqid('kept-value-1')]
+            $options
         );
 
         $this->service->initializeDefaultValues($event);
 
         $this->assertSame(
-            $this->receivers,
+            $this->contexts[$contextName]['receivers'],
             $event->getReceivers()
         );
 
         $this->assertSame(
             $event->getOptions(),
             array_merge(
-                $this->defaultOptions,
+                $this->contexts[$contextName]['defaultOptions'],
                 $options
             )
         );

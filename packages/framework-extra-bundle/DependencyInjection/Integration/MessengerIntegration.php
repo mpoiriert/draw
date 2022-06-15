@@ -120,15 +120,24 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
             ]
         );
 
-        $defaultOptions = [];
-        foreach ($config['default_options'] as $options) {
-            $defaultOptions[$options['name']] = $options['value'];
+        $contexts = [];
+
+        foreach ($config['contexts'] as $name => $contextConfiguration) {
+            $defaultOptions = [];
+
+            foreach ($contextConfiguration['default_options'] as $option) {
+                $defaultOptions[$option['name']] = $option['value'];
+            }
+
+            $contexts[$name] = [
+                'receivers' => $contextConfiguration['receivers'],
+                'defaultOptions' => $defaultOptions,
+            ];
         }
 
         $container
             ->getDefinition(BrokerDefaultValuesListener::class)
-            ->setArgument('$receivers', $config['receivers'])
-            ->setArgument('$defaultOptions', $defaultOptions);
+            ->setArgument('$contexts', $contexts);
     }
 
     private function loadDoctrineMessageBusHook(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -214,35 +223,61 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         return (new ArrayNodeDefinition('broker'))
             ->canBeEnabled()
             ->children()
-                ->arrayNode('receivers')
-                    ->isRequired()
-                    ->requiresAtLeastOneElement()
-                    ->scalarPrototype()->end()
-                ->end()
-                ->arrayNode('default_options')
-                    ->normalizeKeys(false)
+                ->arrayNode('contexts')
                     ->beforeNormalization()
-                    ->always(function ($options) {
-                        foreach ($options as $name => $configuration) {
-                            if (!is_array($configuration)) {
-                                $options[$name] = $configuration = ['name' => $name, 'value' => $configuration];
+                        ->always(function ($config) {
+                            foreach ($config as $name => $configuration) {
+                                if (!isset($configuration['name'])) {
+                                    $config[$name]['name'] = $name;
+                                }
                             }
-                            if (is_int($name)) {
-                                continue;
-                            }
-                            if (!isset($configuration['name'])) {
-                                $options[$name]['name'] = $name;
-                            }
-                        }
 
-                        return $options;
-                    })
+                            return $config;
+                        })
                     ->end()
+                    ->validate()
+                        ->ifTrue(static function (array $value): bool {
+                            return !array_key_exists('default', $value);
+                        })
+                        ->thenInvalid('You must define a default context.')
+                    ->end()
+                    ->requiresAtLeastOneElement()
                     ->useAttributeAsKey('name', false)
                     ->arrayPrototype()
                         ->children()
                             ->scalarNode('name')->isRequired()->end()
-                            ->scalarNode('value')->defaultNull()->end()
+                            ->arrayNode('receivers')
+                                ->isRequired()
+                                ->requiresAtLeastOneElement()
+                                ->scalarPrototype()->end()
+                            ->end()
+                            ->arrayNode('default_options')
+                                ->normalizeKeys(false)
+                                ->beforeNormalization()
+                                ->always(function ($options) {
+                                    foreach ($options as $name => $configuration) {
+                                        if (!is_array($configuration)) {
+                                            $options[$name] = $configuration = ['name' => $name, 'value' => $configuration];
+                                        }
+                                        if (is_int($name)) {
+                                            continue;
+                                        }
+                                        if (!isset($configuration['name'])) {
+                                            $options[$name]['name'] = $name;
+                                        }
+                                    }
+
+                                    return $options;
+                                })
+                                ->end()
+                                ->useAttributeAsKey('name', false)
+                                ->arrayPrototype()
+                                    ->children()
+                                        ->scalarNode('name')->isRequired()->end()
+                                        ->scalarNode('value')->defaultNull()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

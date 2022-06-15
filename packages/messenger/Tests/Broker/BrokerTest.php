@@ -7,13 +7,19 @@ use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
 use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class BrokerTest extends \PHPUnit\Framework\TestCase
+/**
+ * @covers \Draw\Component\Messenger\Broker\Broker
+ */
+class BrokerTest extends TestCase
 {
     private Broker $service;
+
+    private string $context;
 
     private string $consolePath;
 
@@ -24,9 +30,18 @@ class BrokerTest extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $this->service = new Broker(
+            $this->context = uniqid('context-'),
             $this->consolePath = uniqid('console/bin-'),
             $this->processFactory = $this->createMock(ProcessFactoryInterface::class),
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
+        );
+    }
+
+    public function testGetContext(): void
+    {
+        static::assertSame(
+            $this->context,
+            $this->service->getContext()
         );
     }
 
@@ -72,6 +87,11 @@ class BrokerTest extends \PHPUnit\Framework\TestCase
                 ],
                 [
                     $this->callback(function (NewConsumerProcessEvent $event) use ($receiver) {
+                        static::assertSame(
+                            $this->context,
+                            $event->getContext()
+                        );
+
                         $event->setReceivers([$receiver]);
 
                         return true;
