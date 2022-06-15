@@ -8,6 +8,8 @@ use Draw\Bundle\SonataIntegrationBundle\Console\Admin\ExecutionAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Command;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
+use Draw\Bundle\SonataIntegrationBundle\User\Action\RequestPasswordChangeAction;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\PasswordChangeEnforcerExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Block\UserCountBlock;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\LoginController;
@@ -179,6 +181,24 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             ->setAutoconfigured(true)
             ->setAutowired(true)
             ->setArgument('$userAdminCode', new Parameter('draw_user.sonata.user_admin_code'));
+
+        $container
+            ->setDefinition(
+                PasswordChangeEnforcerExtension::class,
+                new Definition(PasswordChangeEnforcerExtension::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
+
+        $container
+            ->setDefinition(
+                'draw.sonata.user.action.request_password_change_action',
+                new Definition(RequestPasswordChangeAction::class)
+            )
+            ->setAutoconfigured(true)
+            ->setAutowired(true)
+            ->addTag('controller.service_arguments');
 
         $this->configureUserLock($config['user_lock'], $loader, $container);
 

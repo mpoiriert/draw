@@ -12,3 +12,10 @@ draw_user:
         unknown-explanation: 'No specific explanation has been defined'
         password-expired:
           explanation: 'Password is expired, it was updated too long ago.'
+
+  button:
+    request_password_change: 'Request password change'
+
+  flash:
+    password_change_requested:
+      success: 'Password change requested successfully for user %user%.'

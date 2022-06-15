@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\PasswordChangeEnforcerExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Block\UserCountBlock;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\LoginController;
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminExtension;
@@ -32,5 +33,7 @@ class DrawSonataIntegrationExtensionUserEnabledTest extends DrawSonataIntegratio
         yield [UserCountBlock::class];
         yield [UserAdminExtension::class];
         yield [UserAdminRuntime::class];
+        yield [PasswordChangeEnforcerExtension::class];
+        yield ['draw.sonata.user.action.request_password_change_action'];
     }
 }
