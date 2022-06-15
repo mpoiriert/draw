@@ -188,6 +188,19 @@ class DrawTransportTest extends TestCase
         $this->assertCount(0, $this->service->findByTags(['tag3']));
     }
 
+    /**
+     * @depends testSend
+     */
+    public function testFindAfterAcknowledge(Envelope $referencedEnvelope): void
+    {
+        $foundEnvelope = $this->service->find($referencedEnvelope->last(TransportMessageIdStamp::class)->getId());
+        static::assertNotNull($foundEnvelope);
+
+        $this->service->ack($foundEnvelope);
+
+        static::assertNull($this->service->find($foundEnvelope->last(TransportMessageIdStamp::class)->getId()));
+    }
+
     public function provideTestSendSearchableMessage(): iterable
     {
         yield 'uniqueness' => [
@@ -278,7 +291,7 @@ class DrawTransportTest extends TestCase
     }
 
     /**
-     * @depends      testSetup
+     * @depends testSetup
      */
     public function testPurgeObsoleteMessages(): void
     {

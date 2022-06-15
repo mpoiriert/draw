@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Transport;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection as DBALConnection;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
@@ -77,6 +78,19 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         }
 
         return $envelope->with(new TransportMessageIdStamp($id));
+    }
+
+    /**
+     * Override because doctrine transport do not filter by delivered_at date.
+     */
+    public function find($id): ?Envelope
+    {
+        if ($this->driverConnection->getDatabasePlatform() instanceof MySQLPlatform) {
+            $tableName = $this->connection->getConfiguration()['table_name'];
+            $this->driverConnection->delete($tableName, ['delivered_at' => '9999-12-31', 'id' => $id]);
+        }
+
+        return parent::find($id);
     }
 
     private function cleanQueue(Envelope $envelope): void
