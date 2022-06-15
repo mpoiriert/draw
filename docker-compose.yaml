@@ -41,17 +41,6 @@ services:
         environment:
             IN_CONTAINER: 1
 
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: draw_phpmyadmin
-        environment:
-            PMA_HOST: mysql
-            PMA_PORT: 3306
-        ports:
-            - 8080:80
-        links:
-            - mysql
-
     maildev:
         image: djfarrelly/maildev:latest
         container_name: draw_maildev

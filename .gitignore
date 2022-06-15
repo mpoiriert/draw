@@ -1,7 +1,7 @@
 /tmp
 /.idea
 /.subsplit
-/docker-compose.yml
+/docker-compose.override.yaml
 /draw.iml
 composer-normalize
 /vendor-bin/**/vendor

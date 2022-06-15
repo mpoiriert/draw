@@ -19,7 +19,7 @@ help:
 
 .ONESHELL:
 down:
-	[ -f ./docker-compose.yml ] && docker-compose down --remove-orphans || echo docker-compose.yml does not exists
+	docker-compose down --remove-orphans
 
 up:
 	docker-compose up -d
@@ -27,7 +27,7 @@ up:
 build:
 	docker-compose build --pull
 
-install: clear copy-docker-compose-dist build provision
+install: clear build provision
 
 php:
 	docker exec -it draw_php bash
@@ -43,9 +43,6 @@ test-coverage:
 
 provision: up
 	docker-compose exec php composer install
-
-copy-docker-compose-dist:
-	cp ./docker-compose.yml.dist ./docker-compose.yml
 
 migrations-diff:
 	docker-compose exec php php bin/console doctrine:migrations:diff --formatted
