@@ -8,6 +8,7 @@ use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\Event\GetUserLocksEvent;
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptionEvent;
 use Draw\Bundle\UserBundle\Exception\AccountLockedException;
+use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Component\Security\Core\Event\CheckPreAuthEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,6 +24,8 @@ class AccountLockerListener implements EventSubscriberInterface
 
     private string $accountLockedRoute;
 
+    private UserFeedInterface $userFeed;
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -35,11 +38,13 @@ class AccountLockerListener implements EventSubscriberInterface
     public function __construct(
         AccountLocker $accountLocker,
         UrlGeneratorInterface $urlGenerator,
+        UserFeedInterface $userFeed,
         string $accountLockedRoute = 'draw_user_account_locker_account_locked'
     ) {
         $this->accountLocker = $accountLocker;
         $this->urlGenerator = $urlGenerator;
         $this->accountLockedRoute = $accountLockedRoute;
+        $this->userFeed = $userFeed;
     }
 
     public function handleUserRequestInterceptionEvent(UserRequestInterceptionEvent $event): void
@@ -54,6 +59,7 @@ class AccountLockerListener implements EventSubscriberInterface
 
                 return;
             default:
+                $this->userFeed->addToFeed($user, 'error', 'account_locked');
                 $event->setResponse(
                     new RedirectResponse(
                         $this->urlGenerator->generate($this->accountLockedRoute)
@@ -78,6 +84,8 @@ class AccountLockerListener implements EventSubscriberInterface
             case !($reasons = array_keys($this->accountLocker->getActiveLocks($user))):
                 return;
         }
+
+        $this->userFeed->addToFeed($user, 'error', 'account_locked');
 
         throw new AccountLockedException('draw_user.account_locker.account_locked_exception', $reasons);
     }
