@@ -62,12 +62,24 @@ class MessageAuthenticatorTest extends TestCase
     public function testSupportsNoConnectedUser(): void
     {
         $request = new Request();
-        $request->query->set('dMUuid', uniqid('message-id'));
+        $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $this->security
             ->expects($this->once())
             ->method('getUser')
             ->willReturn(null);
+
+        $this->envelopeFinder
+            ->expects($this->once())
+            ->method('findById')
+            ->with($messageId)
+            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
+
+        $this->userProvider
+            ->expects($this->once())
+            ->method('loadUserByIdentifier')
+            ->with($userIdentifier)
+            ->willReturn($this->createMock(UserInterface::class));
 
         $this->assertTrue($this->service->supports($request));
     }
@@ -123,6 +135,20 @@ class MessageAuthenticatorTest extends TestCase
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
             ->willReturn($user);
+
+        $this->assertFalse($this->service->supports($request));
+    }
+
+    public function testSupportsNoMessage(): void
+    {
+        $request = new Request();
+        $request->query->set('dMUuid', $messageId = uniqid('message-id'));
+
+        $this->envelopeFinder
+            ->expects($this->once())
+            ->method('findById')
+            ->with($messageId)
+            ->willThrowException(new MessageNotFoundException($messageId));
 
         $this->assertFalse($this->service->supports($request));
     }
