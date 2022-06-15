@@ -103,6 +103,10 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
             $namespace,
             'draw.messenger.'
         );
+
+        $container
+            ->getDefinition('draw.messenger.manual_trigger.action.click_message_action')
+            ->addTag('controller.service_arguments');
     }
 
     private function loadBroker(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

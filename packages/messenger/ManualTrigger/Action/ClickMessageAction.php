@@ -6,7 +6,7 @@ use Draw\Component\Messenger\ManualTrigger\Event\MessageLinkErrorEvent;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Filter\MustNotBeStampedEnvelopeFilter;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
-use Psr\Container\ContainerInterface;
+use Draw\Component\Messenger\Searchable\TransportRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,20 +32,20 @@ class ClickMessageAction
 
     private TranslatorInterface $translator;
 
-    private ContainerInterface $transportLocator;
+    private TransportRepository $transportRepository;
 
     public function __construct(
         MessageBusInterface $messageBus,
         EnvelopeFinder $enveloperFinder,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator,
-        ContainerInterface $transportLocator
+        TransportRepository $transportRepository
     ) {
         $this->messageBus = $messageBus;
         $this->enveloperFinder = $enveloperFinder;
         $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
-        $this->transportLocator = $transportLocator;
+        $this->transportRepository = $transportRepository;
     }
 
     public function __invoke(
@@ -120,7 +120,7 @@ class ClickMessageAction
             throw new LogicException(sprintf('Message of type "%s" was handled %d time(s). Only one handler is expected, got: %s.', get_debug_type($envelope->getMessage()), \count($handledStamps), $handlers));
         }
 
-        $this->transportLocator
+        $this->transportRepository
             ->get($transportName)
             ->ack($envelope);
 

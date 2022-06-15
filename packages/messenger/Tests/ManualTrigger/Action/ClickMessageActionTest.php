@@ -8,10 +8,10 @@ use Draw\Component\Messenger\ManualTrigger\Action\ClickMessageAction;
 use Draw\Component\Messenger\ManualTrigger\Event\MessageLinkErrorEvent;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
+use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use LogicException;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +43,7 @@ class ClickMessageActionTest extends TestCase
 
     private TranslatorInterface $translator;
 
-    private ContainerInterface $transportLocator;
+    private TransportRepository $transportRepository;
 
     private Request $request;
 
@@ -61,7 +61,7 @@ class ClickMessageActionTest extends TestCase
             $this->envelopeFinder = $this->createMock(EnvelopeFinder::class),
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
             $this->translator = $this->createMock(TranslatorInterface::class),
-            $this->transportLocator = $this->createMock(ContainerInterface::class)
+            $this->transportRepository = $this->createMock(TransportRepository::class)
         );
     }
 
@@ -211,7 +211,7 @@ class ClickMessageActionTest extends TestCase
             ->with('link.processed', [], 'DrawMessenger')
             ->willReturn($message = uniqid('translation-'));
 
-        $this->transportLocator
+        $this->transportRepository
             ->expects($this->once())
             ->method('get')
             ->with($transportName)
@@ -269,7 +269,7 @@ class ClickMessageActionTest extends TestCase
             ->expects($this->never())
             ->method('trans');
 
-        $this->transportLocator
+        $this->transportRepository
             ->expects($this->once())
             ->method('get')
             ->with($transportName)
