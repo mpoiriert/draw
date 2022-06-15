@@ -12,6 +12,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Broker
 {
+    private string $context;
+
     private EventDispatcherInterface $eventDispatcher;
 
     private bool $stopped = false;
@@ -23,13 +25,20 @@ class Broker
     private string $consolePath;
 
     public function __construct(
+        string $context,
         string $consolePath,
         ProcessFactoryInterface $processFactory,
         EventDispatcherInterface $eventDispatcher
     ) {
+        $this->context = $context;
         $this->consolePath = $consolePath;
         $this->processFactory = $processFactory;
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    public function getContext(): string
+    {
+        return $this->context;
     }
 
     public function start(int $concurrent, int $timeout = 10): void
@@ -107,7 +116,7 @@ class Broker
     {
         $processes = [];
         for ($i = 0; $i < $amount; ++$i) {
-            $this->eventDispatcher->dispatch($event = new NewConsumerProcessEvent());
+            $this->eventDispatcher->dispatch($event = new NewConsumerProcessEvent($this->context));
 
             if (!$receivers = $event->getReceivers()) {
                 throw new RuntimeException(sprintf('You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.', NewConsumerProcessEvent::class.'::preventStart'));

@@ -6,14 +6,22 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class NewConsumerProcessEvent extends Event
 {
+    private string $context;
+
     private array $receivers;
 
     private array $options;
 
-    public function __construct(array $receivers = [], array $options = [])
+    public function __construct(string $context, array $receivers = [], array $options = [])
     {
+        $this->context = $context;
         $this->receivers = $receivers;
         $this->options = $options;
+    }
+
+    public function getContext(): string
+    {
+        return $this->context;
     }
 
     public function getReceivers(): array

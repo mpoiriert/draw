@@ -63,8 +63,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
             ],
             'broker' => [
                 'enabled' => false,
-                'receivers' => [],
-                'default_options' => [],
+                'contexts' => [],
             ],
             'doctrine_message_bus_hook' => [
                 'enabled' => false,
@@ -193,7 +192,11 @@ class MessengerIntegrationTest extends IntegrationTestCase
             [
                 [
                     'broker' => [
-                        'receivers' => ['async'],
+                        'contexts' => [
+                            'default' => [
+                                'receivers' => ['async'],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -210,7 +213,18 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         'draw.messenger.broker.event_listener.broker_default_values_listener',
                         [
                             BrokerDefaultValuesListener::class,
-                        ]
+                        ],
+                        function (Definition $definition) {
+                            static::assertSame(
+                                [
+                                    'default' => [
+                                        'receivers' => ['async'],
+                                        'defaultOptions' => [],
+                                    ],
+                                ],
+                                $definition->getArgument('$contexts')
+                            );
+                        }
                     ),
                     new ServiceConfiguration(
                         'draw.messenger.broker.event_listener.stop_broker_on_sigterm_signal_listener',
@@ -309,7 +323,9 @@ class MessengerIntegrationTest extends IntegrationTestCase
                     'entity_class' => MessengerMessageStub::class,
                     'tag_entity_class' => MessengerMessageTagStub::class,
                     'broker' => [
-                        'receivers' => ['async'],
+                        'contexts' => [
+                           'default' => ['receivers' => ['async']],
+                        ],
                     ],
                     'async_routing_configuration' => true,
                 ],
