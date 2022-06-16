@@ -13,7 +13,8 @@ return (new \PhpCsFixer\Config())
         'php_unit_test_case_static_method_calls' => true,
         'phpdoc_order' => true,
         'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
-        'logical_operators' => true
+        'logical_operators' => true,
+        'no_useless_return' => true
     ])
     ->setFinder($finder)
 ;
