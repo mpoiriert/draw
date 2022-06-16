@@ -16,4 +16,6 @@ interface LockableUserInterface
      * @return array<string,UserLock>|UserLock[]
      */
     public function getLocks(): array;
+
+    public function isLocked(): bool;
 }

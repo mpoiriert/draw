@@ -131,6 +131,12 @@ class Configuration implements ConfigurationInterface
     {
         return $this->canBe(DrawUserBundle::class, new ArrayNodeDefinition('user_lock'))
              ->children()
+                ->arrayNode('unlock_user_lock_extension')
+                    ->canBeDisabled()
+                ->end()
+                ->arrayNode('refresh_user_lock_extension')
+                    ->canBeDisabled()
+                ->end()
                 ->append(
                     (new SonataAdminNodeConfiguration(UserLock::class, 'User', 'admin'))
                         ->addDefaultsIfNotSet()

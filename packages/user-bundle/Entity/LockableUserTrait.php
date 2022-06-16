@@ -34,10 +34,10 @@ trait LockableUserTrait
         return $this->manualLock;
     }
 
-    public function setManualLock(bool $manualLock): void
+    public function setManualLock(bool $manualLock): self
     {
         if ($this->manualLock === $manualLock) {
-            return;
+            return $this;
         }
 
         $this->manualLock = $manualLock;
@@ -47,6 +47,8 @@ trait LockableUserTrait
         } else {
             $this->unlock(UserLock::REASON_MANUAL_LOCK);
         }
+
+        return $this;
     }
 
     public function lock(UserLock $userLock): UserLock
@@ -56,16 +58,16 @@ trait LockableUserTrait
         }
 
         $currentLock = $this->getLocks()[$reason] ?? null;
-        switch (true) {
-            case $userLock === $currentLock:
-            case null !== $currentLock && $currentLock->isSame($userLock):
-                return $currentLock;
+
+        if ($currentLock && $currentLock->isSame($userLock)) {
+            return $currentLock;
         }
 
         if ($currentLock) {
             $userLock->setUnlockUntil($currentLock->getUnlockUntil());
             $this->getUserLocks()->removeElement($currentLock);
         }
+
         $this->addUserLock($userLock);
 
         return $userLock;
@@ -101,12 +103,29 @@ trait LockableUserTrait
         return $locks;
     }
 
+    public function isLocked(): bool
+    {
+        foreach ($this->getUserLocks() as $userLock) {
+            if ($userLock->isActive()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Collection|UserLock[]
+     */
     public function getUserLocks(): Collection
     {
         return $this->userLocks ?? $this->userLocks = new ArrayCollection();
     }
 
-    private function addUserLock(UserLock $userLock): void
+    /**
+     * @internal This is directly use in sonata admin. Use lock method instead.
+     */
+    public function addUserLock(UserLock $userLock): self
     {
         $userLocks = $this->getUserLocks();
 
@@ -118,5 +137,14 @@ trait LockableUserTrait
             $userLocks->add($userLock);
             $userLock->setUser($this);
         }
+
+        return $this;
+    }
+
+    public function removeUserLock(UserLock $userLock): self
+    {
+        $this->getUserLocks()->removeElement($userLock);
+
+        return $this;
     }
 }

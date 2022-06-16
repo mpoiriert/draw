@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\User\Admin;
 
+use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -10,7 +11,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Sonata\Form\Type\BooleanType;
 
 class UserLockAdmin extends AbstractAdmin
 {
@@ -53,15 +54,32 @@ class UserLockAdmin extends AbstractAdmin
 
     public function configureFormFields(FormMapper $form): void
     {
-        $form->add(
-            'unlockUntil',
-            DateTimeType::class,
-            [
-                'required' => false,
-                'widget' => 'single_text',
-                'format' => DateTimeType::HTML5_FORMAT,
-            ]
-        );
+        $form
+            ->add('reason', null, ['disabled' => true])
+            ->add(
+                'createdAt',
+                SingleLineDateTimeType::class,
+                [
+                    'disabled' => true,
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'expiresAt',
+                SingleLineDateTimeType::class,
+                [
+                    'disabled' => true,
+                    'required' => false,
+                ]
+            )
+            ->add('active', BooleanType::class, ['disabled' => true, 'mapped' => false])
+            ->add(
+                'unlockUntil',
+                SingleLineDateTimeType::class,
+                [
+                    'required' => false,
+                ]
+            );
     }
 
     public function configureShowFields(ShowMapper $show): void
@@ -82,6 +100,43 @@ class UserLockAdmin extends AbstractAdmin
                     'template' => '@DrawSonataIntegration/UserLock/CRUD/show_reason_details.html.twig',
                 ]
             );
+    }
+
+    public function configureGridFields(array $fields): array
+    {
+        return array_merge(
+            $fields,
+            [
+                'reason' => [],
+                'createdAt' => [],
+                'lockOn' => [],
+                'unlockUntil' => [],
+                'active' => [
+                    'type' => 'boolean',
+                    'options' => [
+                        'inverse' => true,
+                        'virtual_field' => true,
+                    ],
+                ],
+                'actions' => [
+                    'type' => ListMapper::TYPE_ACTIONS,
+                    'options' => [
+                        'virtual_field' => true,
+                        'admin' => $this,
+                        'actions' => [
+                            'show' => [
+                                'label' => 'Show',
+                                'icon' => 'fa-eye',
+                                'route_object' => 'show',
+                                'check_callback' => function (object $object) {
+                                    return $this->hasAccess('show', $object);
+                                },
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

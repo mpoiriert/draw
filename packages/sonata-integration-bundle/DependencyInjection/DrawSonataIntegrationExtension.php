@@ -11,7 +11,8 @@ use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\RequestPasswordChangeAction;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\UnlockUserAction;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\PasswordChangeEnforcerExtension;
-use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\UserLockExtension;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\RefreshUserLockExtension;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\UnlockUserLockExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Block\UserCountBlock;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\LoginController;
@@ -250,35 +251,51 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 )
             );
 
-        $container
-            ->setDefinition(
-                UserLockExtension::class,
-                new Definition(UserLockExtension::class)
-            )
-            ->setAutoconfigured(true)
-            ->setAutowired(true)
-            ->addTag(
-                'sonata.admin.extension',
-                ['target' => $container->getParameter('draw_user.sonata.user_admin_code')]
-            );
+        if ($config['unlock_user_lock_extension']['enabled']) {
+            $container
+                ->setDefinition(
+                    UnlockUserLockExtension::class,
+                    new Definition(UnlockUserLockExtension::class)
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->addTag(
+                    'sonata.admin.extension',
+                    ['target' => $container->getParameter('draw_user.sonata.user_admin_code')]
+                );
 
-        $container
-            ->setDefinition(
-                'draw.sonata.user.action.unlock_user_action',
-                new Definition(UnlockUserAction::class)
-            )
-            ->setAutoconfigured(true)
-            ->setAutowired(true)
-            ->addTag('controller.service_arguments');
+            $container
+                ->setDefinition(
+                    'draw.sonata.user.action.unlock_user_action',
+                    new Definition(UnlockUserAction::class)
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->addTag('controller.service_arguments');
+        }
 
-        $container
-            ->setDefinition(
-                RefreshUserLockController::class,
-                new Definition(RefreshUserLockController::class)
-            )
-            ->setAutoconfigured(true)
-            ->setAutowired(true)
-            ->addTag('controller.service_arguments');
+        if ($config['refresh_user_lock_extension']['enabled']) {
+            $container
+                ->setDefinition(
+                    RefreshUserLockExtension::class,
+                    new Definition(RefreshUserLockExtension::class)
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->addTag(
+                    'sonata.admin.extension',
+                    ['target' => $container->getParameter('draw_user.sonata.user_admin_code')]
+                );
+
+            $container
+                ->setDefinition(
+                    RefreshUserLockController::class,
+                    new Definition(RefreshUserLockController::class)
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->addTag('controller.service_arguments');
+        }
     }
 
     private function arrayToArgumentsArray(array $arguments): array
