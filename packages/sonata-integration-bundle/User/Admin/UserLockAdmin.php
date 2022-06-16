@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\User\Admin;
 
-use Draw\Bundle\SonataIntegrationBundle\User\Controller\UserLockUnlockController;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -88,26 +87,5 @@ class UserLockAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['list', 'edit', 'show']);
-        $collection->add(
-            'unlock',
-            $this->getRouterIdParameter().'/unlock',
-            ['_controller' => UserLockUnlockController::class.':unlockAction']
-        );
-    }
-
-    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
-    {
-        switch ($action) {
-            case 'show':
-            case 'edit':
-                if ($this->isGranted('EDIT', $object)) {
-                    $buttonList['unlock'] = [
-                        'template' => '@DrawSonataIntegration/UserLock/Buttons/unlock_button.html.twig',
-                    ];
-                }
-                break;
-        }
-
-        return $buttonList;
     }
 }

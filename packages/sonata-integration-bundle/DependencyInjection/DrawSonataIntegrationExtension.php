@@ -9,15 +9,15 @@ use Draw\Bundle\SonataIntegrationBundle\Console\Command;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\RequestPasswordChangeAction;
+use Draw\Bundle\SonataIntegrationBundle\User\Action\UnlockUserAction;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\PasswordChangeEnforcerExtension;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\UserLockExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Block\UserCountBlock;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\LoginController;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\RefreshUserLockController;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\TwoFactorAuthenticationController;
-use Draw\Bundle\SonataIntegrationBundle\User\Controller\UserLockUnlockController;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
-use Draw\Bundle\SonataIntegrationBundle\User\Extension\UserLockExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminRuntime;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
@@ -264,8 +264,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
 
         $container
             ->setDefinition(
-                UserLockUnlockController::class,
-                new Definition(UserLockUnlockController::class)
+                'draw.sonata.user.action.unlock_user_action',
+                new Definition(UnlockUserAction::class)
             )
             ->setAutoconfigured(true)
             ->setAutowired(true)

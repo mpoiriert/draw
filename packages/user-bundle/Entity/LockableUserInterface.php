@@ -13,7 +13,7 @@ interface LockableUserInterface
     public function unlock(string $reason, DateTimeInterface $until = null): ?UserLock;
 
     /**
-     * @return array<string,UserLock>
+     * @return array<string,UserLock>|UserLock[]
      */
     public function getLocks(): array;
 }

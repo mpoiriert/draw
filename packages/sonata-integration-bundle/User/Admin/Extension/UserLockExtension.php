@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\SonataIntegrationBundle\User\Extension;
+namespace Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension;
 
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\RefreshUserLockController;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
@@ -13,6 +13,7 @@ class UserLockExtension extends AbstractAdminExtension
     {
         return [
             'refresh-user-locks' => 'MASTER',
+            'unlock' => 'UNLOCK',
         ];
     }
 
@@ -22,6 +23,12 @@ class UserLockExtension extends AbstractAdminExtension
             'refresh-user-locks',
             $admin->getRouterIdParameter().'/refresh-user-locks',
             ['_controller' => RefreshUserLockController::class.':refreshUserLocksAction']
+        );
+
+        $collection->add(
+            'unlock',
+            $admin->getRouterIdParameter().'/unlock',
+            ['_controller' => 'draw.sonata.user.action.unlock_user_action']
         );
     }
 
@@ -38,6 +45,16 @@ class UserLockExtension extends AbstractAdminExtension
             default:
                 $list['refresh-user-lock'] = [
                     'template' => '@DrawSonataIntegration/UserLock/Buttons/refresh_user_locks_button.html.twig',
+                ];
+        }
+
+        switch (true) {
+            case !$admin->isGranted('unlock', $object):
+            case !in_array($action, ['edit', 'show']):
+                break;
+            default:
+                $list['unlock'] = [
+                    'template' => '@DrawSonataIntegration/User/Buttons/unlock_button.html.twig',
                 ];
         }
 

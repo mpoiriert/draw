@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
         $user->setEmail('admin@example.com');
         $user->setPlainPassword('admin');
         $user->setLevel(User::LEVEL_ADMIN);
-        $user->setRoles(['ROLE_ADMIN']);
+        $user->setRoles(['ROLE_SUPER_ADMIN']);
         $user->setTags([$adminTag]);
 
         $user->getAddress()->setStreet('200 Acme');
