@@ -13,6 +13,7 @@ use Draw\Bundle\SonataExtraBundle\EventListener\ConfigureAdminControllerListener
 use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Bundle\SonataExtraBundle\Extension\BatchActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\GridExtension;
+use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\DoctrineORMAdminBundle\DependencyInjection\SonataDoctrineORMAdminExtension;
@@ -46,6 +47,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         yield [ConfigureAdminControllerListener::class];
         yield [KeepAliveController::class];
         yield [RelativeDateTimeFilter::class];
+        yield [SingleLineDateTimeType::class];
     }
 
     public function testPrepend(): void
