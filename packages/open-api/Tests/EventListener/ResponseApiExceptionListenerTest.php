@@ -169,8 +169,10 @@ class ResponseApiExceptionListenerTest extends TestCase
             $throwable
         );
 
-        $responseData = json_decode($this->onKernelException(new ResponseApiExceptionListener(true))->getContent(),
-            true);
+        $responseData = json_decode(
+            $this->onKernelException(new ResponseApiExceptionListener(true))->getContent(),
+            true
+        );
 
         static::assertArrayHasKey(
             'detail',

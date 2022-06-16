@@ -96,7 +96,8 @@ class VendorExtractor implements ExtractorInterface
      */
     private function mergeWithClassAnnotations(array $currentAnnotations, array $classAnnotations): array
     {
-        $classAnnotations = array_filter($classAnnotations,
+        $classAnnotations = array_filter(
+            $classAnnotations,
             function (VendorInterface $classAnnotation) use ($currentAnnotations) {
                 switch (true) {
                     case !$classAnnotation->allowClassLevelConfiguration():
@@ -105,7 +106,8 @@ class VendorExtractor implements ExtractorInterface
                 }
 
                 return true;
-            });
+            }
+        );
 
         $classAnnotations = array_map(
             function (VendorInterface $annotation) {

@@ -50,7 +50,8 @@ class UserCountBlock extends AbstractBlockService
                     'admin' => $admin,
                     'pager' => $datagrid->getPager(),
                     'datagrid' => $datagrid,
-                ], $response
+                ],
+                $response
             )
             ->setTtl(0)
             ->setPrivate();

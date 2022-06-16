@@ -148,14 +148,15 @@ class BrokerTest extends TestCase
         $this->eventDispatcher
             ->expects(static::any())
             ->method('dispatch')
-            ->with(static::callback(function ($event) use ($receiver) {
-                if ($event instanceof NewConsumerProcessEvent) {
-                    $event->setReceivers([$receiver]);
-                    $this->service->stop(false);
-                }
+            ->with(
+                static::callback(function ($event) use ($receiver) {
+                    if ($event instanceof NewConsumerProcessEvent) {
+                        $event->setReceivers([$receiver]);
+                        $this->service->stop(false);
+                    }
 
-                return true;
-            })
+                    return true;
+                })
             )
             ->willReturnArgument(0);
 

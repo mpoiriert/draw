@@ -40,7 +40,8 @@ class AdminMonitoringBlockService implements BlockServiceInterface
     public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver
-            ->setDefaults([
+            ->setDefaults(
+                [
                     'icon' => 'fas fa-line-chart',
                     'text' => 'Monitoring',
                     'translation_domain' => null,

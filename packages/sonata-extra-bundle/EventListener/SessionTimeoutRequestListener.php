@@ -84,7 +84,8 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
 
         $content = str_replace(
             '<title>',
-            sprintf('
+            sprintf(
+                '
   <script type="text/javascript">
     const sessionHandler = new SessionExpirationHandler(%s,"%s","%s");
   </script>
