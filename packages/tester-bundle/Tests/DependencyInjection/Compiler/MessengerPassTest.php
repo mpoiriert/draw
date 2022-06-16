@@ -44,7 +44,7 @@ class MessengerPassTest extends TestCase
 
         $this->compilerPass->process($containerBuilder);
 
-        $this->assertSame(
+        static::assertSame(
             $argument,
             $definition->getArgument(0)
         );

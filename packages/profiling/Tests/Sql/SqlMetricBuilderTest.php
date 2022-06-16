@@ -19,7 +19,7 @@ class SqlMetricBuilderTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(MetricBuilderInterface::class, $this->metricBuilder);
+        static::assertInstanceOf(MetricBuilderInterface::class, $this->metricBuilder);
     }
 
     public function testBuild(): void
@@ -27,9 +27,9 @@ class SqlMetricBuilderTest extends TestCase
         $this->metricBuilder->addLog(new SqlLog('query'));
         $metric = $this->metricBuilder->build();
 
-        $this->assertInstanceOf(SqlMetric::class, $metric);
-        $this->assertEquals(1, $metric->count);
-        $this->assertEquals(
+        static::assertInstanceOf(SqlMetric::class, $metric);
+        static::assertEquals(1, $metric->count);
+        static::assertEquals(
             ['query'],
             $metric->queries
         );

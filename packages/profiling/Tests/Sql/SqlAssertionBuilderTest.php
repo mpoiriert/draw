@@ -106,7 +106,7 @@ Failed asserting that 2 matches expected 0.');
         } catch (ExpectationFailedException $exception) {
         } finally {
             if ($shouldFail) {
-                $this->assertInstanceOf(ExpectationFailedException::class, $exception);
+                static::assertInstanceOf(ExpectationFailedException::class, $exception);
             }
         }
     }

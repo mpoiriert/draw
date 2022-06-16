@@ -34,7 +34,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -42,7 +42,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public function testSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 KernelEvents::CONTROLLER => ['onKernelController', 5],
             ],
@@ -53,7 +53,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerUnParsableController(): void
     {
         $this->reader
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('getMethodAnnotation');
 
         $event = new ControllerEvent(
@@ -77,10 +77,10 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         );
 
         $this->reader
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getMethodAnnotations')
             ->with(
-                $this->callback(function (ReflectionMethod $method) {
+                static::callback(function (ReflectionMethod $method) {
                     $this->assertSame(get_class($this), $method->getDeclaringClass()->name);
                     $this->assertSame('__invoke', $method->name);
 
@@ -97,8 +97,8 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $this->object->onKernelController($event);
 
-        $this->assertSame($value, $request->attributes->get($annotation->name));
-        $this->assertSame(
+        static::assertSame($value, $request->attributes->get($annotation->name));
+        static::assertSame(
             [$annotation],
             $request->attributes->get('_draw_query_parameters_validation')
         );
@@ -124,10 +124,10 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         );
 
         $this->reader
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getMethodAnnotations')
             ->with(
-                $this->callback(function (ReflectionMethod $method) {
+                static::callback(function (ReflectionMethod $method) {
                     $this->assertSame(get_class($this), $method->getDeclaringClass()->name);
                     $this->assertSame('__invoke', $method->name);
 
@@ -184,7 +184,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         }
 
         $this->reader
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getMethodAnnotations')
             ->willReturn([$queryParameter]);
 
@@ -199,7 +199,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $this->object->onKernelController($controllerEvent);
 
-        $this->assertSame(
+        static::assertSame(
             $expectedValue,
             $request->attributes->get('test')
         );
@@ -213,7 +213,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         $queryParameter->collectionFormat = 'multi';
 
         $this->reader
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getMethodAnnotations')
             ->willReturn([$queryParameter]);
 

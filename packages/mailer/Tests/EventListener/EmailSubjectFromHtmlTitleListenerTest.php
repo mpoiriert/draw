@@ -25,7 +25,7 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -33,7 +33,7 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 MessageEvent::class => ['assignSubjectFromHtmlTitle', -2],
             ],
@@ -57,12 +57,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message = $this->createMock(Email::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getSubject')
             ->willReturn('Subject');
 
         $message
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('subject');
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
@@ -73,12 +73,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message = $this->createMock(Email::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHtmlBody')
             ->willReturn('');
 
         $message
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('subject');
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
@@ -89,12 +89,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message = $this->createMock(Email::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHtmlBody')
             ->willReturn('<div></div>');
 
         $message
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('subject');
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
@@ -105,12 +105,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message = $this->createMock(Email::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHtmlBody')
             ->willReturn('<html lang="en"><head><title></title></head></html>');
 
         $message
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('subject');
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
@@ -121,12 +121,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message = $this->createMock(Email::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHtmlBody')
             ->willReturn('<html lang="en"><head><title>Title</title></head></html>');
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('subject')
             ->with('Title');
 

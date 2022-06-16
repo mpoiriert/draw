@@ -44,7 +44,7 @@ class NotBlankConstraintExtractorTest extends TestCase
      */
     public function testSupport(Constraint $constraint, bool $expected)
     {
-        $this->assertSame($expected, $this->extractor->supportConstraint($constraint));
+        static::assertSame($expected, $this->extractor->supportConstraint($constraint));
     }
 
     public function testExtractConstraintBaseParameter(): void
@@ -55,8 +55,8 @@ class NotBlankConstraintExtractorTest extends TestCase
 
         $this->extractor->extractConstraint($constraint, $context);
 
-        $this->assertSame('not empty', $context->validationConfiguration->format);
-        $this->assertTrue($context->validationConfiguration->required);
+        static::assertSame('not empty', $context->validationConfiguration->format);
+        static::assertTrue($context->validationConfiguration->required);
     }
 
     public function testExtractConstraintSchema(): void
@@ -68,8 +68,8 @@ class NotBlankConstraintExtractorTest extends TestCase
 
         $this->extractor->extractConstraint($constraint, $context);
 
-        $this->assertSame('not empty', $context->validationConfiguration->format);
-        $this->assertContains('test', $context->classSchema->required);
+        static::assertSame('not empty', $context->validationConfiguration->format);
+        static::assertContains('test', $context->classSchema->required);
     }
 
     public function testExtractConstraintBaseParameterAllowNull(): void
@@ -81,7 +81,7 @@ class NotBlankConstraintExtractorTest extends TestCase
 
         $this->extractor->extractConstraint($constraint, $context);
 
-        $this->assertSame('not empty', $context->validationConfiguration->format);
-        $this->assertNull($context->validationConfiguration->required);
+        static::assertSame('not empty', $context->validationConfiguration->format);
+        static::assertNull($context->validationConfiguration->required);
     }
 }

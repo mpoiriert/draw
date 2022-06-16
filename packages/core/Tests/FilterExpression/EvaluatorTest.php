@@ -74,7 +74,7 @@ class EvaluatorTest extends TestCase
      */
     public function testExecute(Query $query, int $expectedCount)
     {
-        $this->assertCount(
+        static::assertCount(
             $expectedCount,
             $this->evaluator->execute(
                 $query,

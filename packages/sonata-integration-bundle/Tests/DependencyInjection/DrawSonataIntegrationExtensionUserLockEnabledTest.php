@@ -36,14 +36,14 @@ class DrawSonataIntegrationExtensionUserLockEnabledTest extends DrawSonataIntegr
 
     public function testUserAdminExtensionConfiguration(): void
     {
-        $this->assertSame(
+        static::assertSame(
             UserAdmin::class,
             $this->getContainerBuilder()
                 ->getDefinition(UnlockUserLockExtension::class)
                 ->getTag('sonata.admin.extension')[0]['target']
         );
 
-        $this->assertSame(
+        static::assertSame(
             UserAdmin::class,
             $this->getContainerBuilder()
                 ->getDefinition(RefreshUserLockExtension::class)

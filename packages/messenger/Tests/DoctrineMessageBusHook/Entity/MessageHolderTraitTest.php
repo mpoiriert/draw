@@ -19,16 +19,16 @@ class MessageHolderTraitTest extends TestCase
 
         $messages = [$object1, $object2];
 
-        $this->assertSame(
+        static::assertSame(
             $messages,
             $this->getOnHoldMessages(false)
         );
 
-        $this->assertSame(
+        static::assertSame(
             $messages,
             $this->getOnHoldMessages(true)
         );
 
-        $this->assertEmpty($this->getOnHoldMessages(false));
+        static::assertEmpty($this->getOnHoldMessages(false));
     }
 }

@@ -46,7 +46,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -54,7 +54,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 RequestEvent::class => [
                     ['onKernelRequestInvalidate', 9],
@@ -180,7 +180,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $this->object->onKernelResponseSetLastUsed($event);
 
-        $this->assertEqualsWithDelta(
+        static::assertEqualsWithDelta(
             time(),
             $session->get('draw_sonata_integration_last_used'),
             1
@@ -268,7 +268,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $this->object->onKernelResponseAddDialog($event);
 
-        $this->assertSame(
+        static::assertSame(
             '<meta data-sonata-admin/>
   <script type="text/javascript">
     const sessionHandler = new SessionExpirationHandler(3600,"/admin/keep-alive","/admin/login");
@@ -352,7 +352,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             )
         );
 
-        $this->assertSame(
+        static::assertSame(
             $previousContent,
             $response->getContent()
         );

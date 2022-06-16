@@ -51,12 +51,12 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(EventSubscriberInterface::class, $this->service);
+        static::assertInstanceOf(EventSubscriberInterface::class, $this->service);
     }
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 WorkerStartedEvent::class => 'onWorkerStarted',
                 WorkerRunningEvent::class => 'onWorkerRunning',
@@ -72,7 +72,7 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $this->isUpToDate = false;
 
         $worker = $this->createMock(Worker::class);
-        $worker->expects($this->once())->method('stop');
+        $worker->expects(static::once())->method('stop');
 
         $this->service->onWorkerStarted(new WorkerStartedEvent($worker));
     }
@@ -83,7 +83,7 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $this->isUpToDate = true;
 
         $worker = $this->createMock(Worker::class);
-        $worker->expects($this->never())->method('stop');
+        $worker->expects(static::never())->method('stop');
 
         $this->service->onWorkerStarted(new WorkerStartedEvent($worker));
     }
@@ -94,7 +94,7 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $this->isUpToDate = false;
 
         $worker = $this->createMock(Worker::class);
-        $worker->expects($this->once())->method('stop');
+        $worker->expects(static::once())->method('stop');
 
         $this->service->onWorkerRunning(new WorkerRunningEvent($worker, false));
 
@@ -113,7 +113,7 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $this->isUpToDate = true;
 
         $worker = $this->createMock(Worker::class);
-        $worker->expects($this->never())->method('stop');
+        $worker->expects(static::never())->method('stop');
 
         $this->service->onWorkerRunning(new WorkerRunningEvent($worker, false));
     }
@@ -123,7 +123,7 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $this->runningVersion = null;
 
         $worker = $this->createMock(Worker::class);
-        $worker->expects($this->never())->method('stop');
+        $worker->expects(static::never())->method('stop');
 
         $this->service->onWorkerRunning(new WorkerRunningEvent($worker, false));
     }
@@ -134,7 +134,7 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $this->isUpToDate = false;
 
         $broker = $this->createMock(Broker::class);
-        $broker->expects($this->once())->method('stop');
+        $broker->expects(static::once())->method('stop');
 
         $this->service->onBrokerRunningEvent(new BrokerRunningEvent($broker));
 
@@ -153,7 +153,7 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $this->isUpToDate = true;
 
         $broker = $this->createMock(Broker::class);
-        $broker->expects($this->never())->method('stop');
+        $broker->expects(static::never())->method('stop');
 
         $this->service->onBrokerRunningEvent(new BrokerRunningEvent($broker));
     }

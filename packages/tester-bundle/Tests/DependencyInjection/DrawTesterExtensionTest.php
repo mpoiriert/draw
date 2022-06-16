@@ -39,6 +39,6 @@ class DrawTesterExtensionTest extends ExtensionTestCase
     {
         $container = $this->load([]);
         $childDefinition = $container->getAutoconfiguredInstanceof()[ProfilerInterface::class];
-        $this->assertTrue($childDefinition->hasTag(ProfilerInterface::class));
+        static::assertTrue($childDefinition->hasTag(ProfilerInterface::class));
     }
 }

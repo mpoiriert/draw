@@ -34,7 +34,7 @@ class JwtPayloadBadgeTest extends TestCase
             ]
         );
 
-        $this->assertSame(
+        static::assertSame(
             (array) $value,
             $this->entity->getPayloadKeyValue($key)
         );
@@ -47,7 +47,7 @@ class JwtPayloadBadgeTest extends TestCase
             $resultPayload[$key] = $this->entity->getPayloadKeyValue($key);
         }
 
-        $this->assertSame(
+        static::assertSame(
             $this->payload,
             $resultPayload
         );
@@ -55,14 +55,14 @@ class JwtPayloadBadgeTest extends TestCase
 
     public function testIsResolved(): void
     {
-        $this->assertFalse($this->entity->isResolved());
+        static::assertFalse($this->entity->isResolved());
     }
 
     public function testMarkPayloadKeyResolvedNotEmpty(): void
     {
         $this->entity->markPayloadKeyResolved(array_keys($this->payload)[0]);
 
-        $this->assertFalse($this->entity->isResolved());
+        static::assertFalse($this->entity->isResolved());
     }
 
     public function testMarkPayloadKeyResolved(): void
@@ -71,14 +71,14 @@ class JwtPayloadBadgeTest extends TestCase
             $this->entity->markPayloadKeyResolved($key);
         }
 
-        $this->assertTrue($this->entity->isResolved());
+        static::assertTrue($this->entity->isResolved());
     }
 
     public function testCreateIfNeeded(): void
     {
-        $this->assertNull(JwtPayloadBadge::createIfNeeded([]));
+        static::assertNull(JwtPayloadBadge::createIfNeeded([]));
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             JwtPayloadBadge::class,
             $badge = JwtPayloadBadge::createIfNeeded(
                 $payload = [
@@ -95,10 +95,10 @@ class JwtPayloadBadgeTest extends TestCase
         foreach ($payload as $key => $value) {
             switch ($key) {
                 case $extraKey:
-                    $this->assertSame($value, $badge->getPayloadKeyValue($key));
+                    static::assertSame($value, $badge->getPayloadKeyValue($key));
                     break;
                 default:
-                    $this->assertNull($badge->getPayloadKeyValue($key));
+                    static::assertNull($badge->getPayloadKeyValue($key));
                     break;
             }
         }

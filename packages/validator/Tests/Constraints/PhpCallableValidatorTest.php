@@ -27,7 +27,7 @@ class PhpCallableValidatorTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ConstraintValidatorInterface::class,
             $this->object
         );
@@ -81,6 +81,6 @@ class PhpCallableValidatorTest extends TestCase
             ]
         );
 
-        $this->assertEquals($violationsCount, $violations->count());
+        static::assertEquals($violationsCount, $violations->count());
     }
 }

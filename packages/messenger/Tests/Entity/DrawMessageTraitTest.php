@@ -26,14 +26,14 @@ class DrawMessageTraitTest extends TestCase
 
     public function testIdMutator(): void
     {
-        $this->assertNotNull($this->entity->getId());
+        static::assertNotNull($this->entity->getId());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setId($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getId()
         );
@@ -41,7 +41,7 @@ class DrawMessageTraitTest extends TestCase
 
     public function testGetMessageId(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->entity->getId(),
             $this->entity->getMessageId()
         );
@@ -49,14 +49,14 @@ class DrawMessageTraitTest extends TestCase
 
     public function testBodyMutator(): void
     {
-        $this->assertNull($this->entity->getBody());
+        static::assertNull($this->entity->getBody());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setBody($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getBody()
         );
@@ -64,14 +64,14 @@ class DrawMessageTraitTest extends TestCase
 
     public function testHeadersMutator(): void
     {
-        $this->assertNull($this->entity->getHeaders());
+        static::assertNull($this->entity->getHeaders());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setHeaders($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getHeaders()
         );
@@ -79,14 +79,14 @@ class DrawMessageTraitTest extends TestCase
 
     public function testQueueNameMutator(): void
     {
-        $this->assertNull($this->entity->getQueueName());
+        static::assertNull($this->entity->getQueueName());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setQueueName($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getQueueName()
         );
@@ -94,14 +94,14 @@ class DrawMessageTraitTest extends TestCase
 
     public function testCreatedAtMutator(): void
     {
-        $this->assertNull($this->entity->getCreatedAt());
+        static::assertNull($this->entity->getCreatedAt());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setCreatedAt($value = new DateTimeImmutable())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getCreatedAt()
         );
@@ -109,14 +109,14 @@ class DrawMessageTraitTest extends TestCase
 
     public function testAvailableAtMutator(): void
     {
-        $this->assertNull($this->entity->getAvailableAt());
+        static::assertNull($this->entity->getAvailableAt());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setAvailableAt($value = new DateTimeImmutable())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getAvailableAt()
         );
@@ -124,14 +124,14 @@ class DrawMessageTraitTest extends TestCase
 
     public function testDeliveredAtMutator(): void
     {
-        $this->assertNull($this->entity->getDeliveredAt());
+        static::assertNull($this->entity->getDeliveredAt());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setDeliveredAt($value = new DateTimeImmutable())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getDeliveredAt()
         );
@@ -139,37 +139,37 @@ class DrawMessageTraitTest extends TestCase
 
     public function testTagMutator(): void
     {
-        $this->assertCount(0, $this->entity->getTags());
+        static::assertCount(0, $this->entity->getTags());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->addTag($value = $this->createMock(DrawMessageTagInterface::class))
         );
 
-        $this->assertCount(1, $this->entity->getTags());
-        $this->assertSame(
+        static::assertCount(1, $this->entity->getTags());
+        static::assertSame(
             $value,
             $this->entity->getTags()[0]
         );
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->removeTag($value)
         );
 
-        $this->assertCount(0, $this->entity->getTags());
+        static::assertCount(0, $this->entity->getTags());
     }
 
     public function testExpiresAtMutator(): void
     {
-        $this->assertNull($this->entity->getExpiresAt());
+        static::assertNull($this->entity->getExpiresAt());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setExpiresAt($value = new DateTimeImmutable())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getExpiresAt()
         );
@@ -177,7 +177,7 @@ class DrawMessageTraitTest extends TestCase
 
     public function testToString(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->entity->getId(),
             (string) $this->entity
         );

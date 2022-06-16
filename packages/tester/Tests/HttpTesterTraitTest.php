@@ -24,11 +24,11 @@ class HttpTesterTraitTest extends TestCase
     public function testHttpTester()
     {
         $client = $this->httpTester();
-        $this->assertInstanceOf(ClientInterface::class, $client);
-        $this->assertSame(static::$httpTesterClient, $client);
-        $this->assertTrue($this->createClientHasBeenCalled);
+        static::assertInstanceOf(ClientInterface::class, $client);
+        static::assertSame(static::$httpTesterClient, $client);
+        static::assertTrue($this->createClientHasBeenCalled);
 
-        $this->assertSame($client, $this->httpTester());
+        static::assertSame($client, $this->httpTester());
     }
 
     /**
@@ -37,6 +37,6 @@ class HttpTesterTraitTest extends TestCase
     public function testClearHttpTesterClient()
     {
         $this->clearHttpTesterClient();
-        $this->assertNull(static::$httpTesterClient);
+        static::assertNull(static::$httpTesterClient);
     }
 }

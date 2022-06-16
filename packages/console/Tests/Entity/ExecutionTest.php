@@ -22,37 +22,37 @@ class ExecutionTest extends TestCase
 
     public function testConstants(): void
     {
-        $this->assertSame(
+        static::assertSame(
             'initialized',
             $this->entity::STATE_INITIALIZED
         );
 
-        $this->assertSame(
+        static::assertSame(
             'started',
             $this->entity::STATE_STARTED
         );
 
-        $this->assertSame(
+        static::assertSame(
             'error',
             $this->entity::STATE_ERROR
         );
 
-        $this->assertSame(
+        static::assertSame(
             'terminated',
             $this->entity::STATE_TERMINATED
         );
 
-        $this->assertSame(
+        static::assertSame(
             'acknowledge',
             $this->entity::STATE_ACKNOWLEDGE
         );
 
-        $this->assertSame(
+        static::assertSame(
             'auto_acknowledge',
             $this->entity::STATE_AUTO_ACKNOWLEDGE
         );
 
-        $this->assertSame(
+        static::assertSame(
             [
                 $this->entity::STATE_INITIALIZED,
                 $this->entity::STATE_STARTED,
@@ -67,14 +67,14 @@ class ExecutionTest extends TestCase
 
     public function testIdMutator(): void
     {
-        $this->assertNull($this->entity->getId());
+        static::assertNull($this->entity->getId());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setId($value = rand(PHP_INT_MIN, PHP_INT_MAX))
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getId()
         );
@@ -82,14 +82,14 @@ class ExecutionTest extends TestCase
 
     public function testCommandMutator(): void
     {
-        $this->assertNull($this->entity->getCommand());
+        static::assertNull($this->entity->getCommand());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setCommand($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getCommand()
         );
@@ -97,14 +97,14 @@ class ExecutionTest extends TestCase
 
     public function testCommandNameMutator(): void
     {
-        $this->assertNull($this->entity->getCommandName());
+        static::assertNull($this->entity->getCommandName());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setCommandName($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getCommandName()
         );
@@ -112,14 +112,14 @@ class ExecutionTest extends TestCase
 
     public function testStateMutator(): void
     {
-        $this->assertNull($this->entity->getState());
+        static::assertNull($this->entity->getState());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setState($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getState()
         );
@@ -127,14 +127,14 @@ class ExecutionTest extends TestCase
 
     public function testInputMutator(): void
     {
-        $this->assertSame([], $this->entity->getInput());
+        static::assertSame([], $this->entity->getInput());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setInput($value = [uniqid('value-')])
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getInput()
         );
@@ -142,14 +142,14 @@ class ExecutionTest extends TestCase
 
     public function testOutputMutator(): void
     {
-        $this->assertSame('', $this->entity->getOutput());
+        static::assertSame('', $this->entity->getOutput());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setOutput($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getOutput()
         );
@@ -157,18 +157,18 @@ class ExecutionTest extends TestCase
 
     public function testCreatedAtMutator(): void
     {
-        $this->assertEqualsWithDelta(
+        static::assertEqualsWithDelta(
             new DateTimeImmutable(),
             $this->entity->getCreatedAt(),
             2
         );
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setCreatedAt($value = new DateTimeImmutable('- 1 days'))
         );
 
-        $this->assertEqualsWithDelta(
+        static::assertEqualsWithDelta(
             $value,
             $this->entity->getCreatedAt(),
             2
@@ -177,19 +177,19 @@ class ExecutionTest extends TestCase
 
     public function testUpdatedAtMutator(): void
     {
-        $this->assertTrue(
+        static::assertTrue(
             DateTimeUtils::isSameTimestamp(
                 $this->entity->getCreatedAt(),
                 $this->entity->getUpdatedAt()
             )
         );
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setUpdatedAt($value = new DateTimeImmutable('- 1 days'))
         );
 
-        $this->assertEqualsWithDelta(
+        static::assertEqualsWithDelta(
             $value,
             $this->entity->getUpdatedAt(),
             2
@@ -198,14 +198,14 @@ class ExecutionTest extends TestCase
 
     public function testAutoAcknowledgeReasonMutator(): void
     {
-        $this->assertNull($this->entity->getAutoAcknowledgeReason());
+        static::assertNull($this->entity->getAutoAcknowledgeReason());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setAutoAcknowledgeReason($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getAutoAcknowledgeReason()
         );
@@ -215,7 +215,7 @@ class ExecutionTest extends TestCase
     {
         $this->entity->setOutput("test\n");
 
-        $this->assertSame(
+        static::assertSame(
             '<span style="background-color: black; color: white">test<br />
 </span>',
             $this->entity->getOutputHtml()
@@ -226,7 +226,7 @@ class ExecutionTest extends TestCase
     {
         $this->entity->setInput([$value = uniqid('value-')]);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getCommandLine()
         );
@@ -236,7 +236,7 @@ class ExecutionTest extends TestCase
     {
         $this->entity->updateTimestamp($this->createMock(PreUpdateEventArgs::class));
 
-        $this->assertEqualsWithDelta(
+        static::assertEqualsWithDelta(
             $this->entity->getCreatedAt(),
             $this->entity->getUpdatedAt(),
             2
@@ -249,7 +249,7 @@ class ExecutionTest extends TestCase
 
         $this->entity->updateTimestamp($this->createMock(PreUpdateEventArgs::class));
 
-        $this->assertNotEqualsWithDelta(
+        static::assertNotEqualsWithDelta(
             $value,
             $this->entity->getUpdatedAt(),
             2
@@ -262,14 +262,14 @@ class ExecutionTest extends TestCase
 
         $event = $this->createMock(PreUpdateEventArgs::class);
 
-        $event->expects($this->once())
+        $event->expects(static::once())
             ->method('hasChangedField')
             ->with('updatedAt')
             ->willReturn(true);
 
         $this->entity->updateTimestamp($event);
 
-        $this->assertEqualsWithDelta(
+        static::assertEqualsWithDelta(
             $value,
             $this->entity->getUpdatedAt(),
             2
@@ -278,11 +278,11 @@ class ExecutionTest extends TestCase
 
     public function testToString(): void
     {
-        $this->assertSame('', (string) $this->entity);
+        static::assertSame('', (string) $this->entity);
 
         $this->entity->setCommandName($value = uniqid());
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             (string) $this->entity
         );

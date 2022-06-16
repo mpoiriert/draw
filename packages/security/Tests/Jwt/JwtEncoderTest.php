@@ -27,7 +27,7 @@ class JwtEncoderTest extends TestCase
     {
         $token = $this->service->encode(['value' => $value = uniqid('value-')]);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->service->decode($token)->value
         );

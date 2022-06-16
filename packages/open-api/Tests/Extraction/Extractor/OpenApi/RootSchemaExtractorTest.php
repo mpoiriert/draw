@@ -38,17 +38,17 @@ class RootSchemaExtractorTest extends TestCase
         /** @var ExtractionContextInterface $context */
         $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
 
-        $this->assertSame($expected, $extractor->canExtract($source, $type, $context));
+        static::assertSame($expected, $extractor->canExtract($source, $type, $context));
 
         if ($expected) {
             $extractor->extract($source, $type, $context);
-            $this->assertTrue(true);
+            static::assertTrue(true);
         } else {
             try {
                 $extractor->extract($source, $type, $context);
-                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
+                static::fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
             } catch (ExtractionImpossibleException $e) {
-                $this->assertTrue(true);
+                static::assertTrue(true);
             }
         }
     }

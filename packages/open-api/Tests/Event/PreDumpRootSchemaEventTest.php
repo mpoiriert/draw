@@ -25,7 +25,7 @@ class PreDumpRootSchemaEventTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Event::class,
             $this->object
         );
@@ -33,7 +33,7 @@ class PreDumpRootSchemaEventTest extends TestCase
 
     public function testGetSchema(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->schema,
             $this->object->getSchema()
         );

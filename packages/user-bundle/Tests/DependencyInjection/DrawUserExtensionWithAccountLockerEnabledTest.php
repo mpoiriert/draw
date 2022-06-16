@@ -33,7 +33,7 @@ class DrawUserExtensionWithAccountLockerEnabledTest extends DrawUserExtensionTes
 
     public function testExcludePathsParameter(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [],
             $this
                 ->getContainerBuilder()

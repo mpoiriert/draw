@@ -14,7 +14,7 @@ class ApiParameterVersionMatcherTest extends TestCase
 
         $route = new Route('/test');
         $route->setDefault('_api_version', 'v1');
-        $this->assertTrue($matcher->matchVersion('v1', $route));
+        static::assertTrue($matcher->matchVersion('v1', $route));
     }
 
     public function testMatchVersionFalse(): void
@@ -22,6 +22,6 @@ class ApiParameterVersionMatcherTest extends TestCase
         $matcher = new RouteDefaultApiRouteVersionMatcher();
 
         $route = new Route('/test');
-        $this->assertFalse($matcher->matchVersion('v1', $route));
+        static::assertFalse($matcher->matchVersion('v1', $route));
     }
 }

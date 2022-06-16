@@ -31,7 +31,7 @@ class BrokerStartedEventTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Event::class,
             $this->event
         );
@@ -39,7 +39,7 @@ class BrokerStartedEventTest extends TestCase
 
     public function testGetBroker(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->broker,
             $this->event->getBroker()
         );
@@ -47,7 +47,7 @@ class BrokerStartedEventTest extends TestCase
 
     public function testGetConcurrent(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->concurrent,
             $this->event->getConcurrent()
         );
@@ -55,7 +55,7 @@ class BrokerStartedEventTest extends TestCase
 
     public function testGetTimeout(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->timeout,
             $this->event->getTimeout()
         );

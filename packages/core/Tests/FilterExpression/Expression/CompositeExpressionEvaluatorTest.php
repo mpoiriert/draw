@@ -28,7 +28,7 @@ class CompositeExpressionEvaluatorTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ExpressionEvaluator::class,
             $this->object
         );
@@ -45,10 +45,10 @@ class CompositeExpressionEvaluatorTest extends TestCase
     public function testEvaluateNoExpression(): void
     {
         $this->evaluator
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('evaluate');
 
-        $this->assertTrue(
+        static::assertTrue(
            $this->object->evaluate(null, new CompositeExpression(CompositeExpression::TYPE_AND, []))
        );
     }
@@ -61,10 +61,10 @@ class CompositeExpressionEvaluatorTest extends TestCase
         $this->expectExceptionMessage('Unsupported CompositeExpression type ['.$type.']');
 
         $this->evaluator
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('evaluate');
 
-        $this->assertTrue(
+        static::assertTrue(
             $this->object->evaluate(null, new CompositeExpression($type, []))
         );
     }

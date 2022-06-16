@@ -31,53 +31,53 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder
-            ->expects($this->exactly(7))
+            ->expects(static::exactly(7))
             ->method('addCompilerPass')
             ->withConsecutive(
                 [
-                    $this->isInstanceOf(UserCheckerDecoratorPass::class),
+                    static::isInstanceOf(UserCheckerDecoratorPass::class),
                 ],
                 [
-                    $this->isInstanceOf(MessengerBrokerCompilerPass::class),
+                    static::isInstanceOf(MessengerBrokerCompilerPass::class),
                 ],
                 [
-                    $this->isInstanceOf(AddNewestInstanceRoleCommandOptionPass::class),
+                    static::isInstanceOf(AddNewestInstanceRoleCommandOptionPass::class),
                 ],
                 [
-                    $this->isInstanceOf(AddCommandExecutionOptionsCompilerPass::class),
+                    static::isInstanceOf(AddCommandExecutionOptionsCompilerPass::class),
                 ],
                 [
-                    $this->isInstanceOf(EmailWriterCompilerPass::class),
+                    static::isInstanceOf(EmailWriterCompilerPass::class),
                 ],
                 [
-                    $this->isInstanceOf(MessengerTransportNamesCompilerPass::class),
+                    static::isInstanceOf(MessengerTransportNamesCompilerPass::class),
                     PassConfig::TYPE_BEFORE_OPTIMIZATION,
                     -1,
                 ],
                 [
-                    $this->isInstanceOf(JmsDoctrineObjectConstructionCompilerPass::class),
+                    static::isInstanceOf(JmsDoctrineObjectConstructionCompilerPass::class),
                 ],
             )
             ->willReturnSelf();
 
         $containerBuilder
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('hasExtension')
             ->with('security')
             ->willReturn(true);
 
         $containerBuilder
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getExtension')
             ->with('security')
             ->willReturn($extension = $this->createMock(SecurityExtension::class));
 
         $extension
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('addAuthenticatorFactory')
             ->withConsecutive(
-                [$this->isInstanceOf(JwtAuthenticatorFactory::class)],
-                [$this->isInstanceOf(MessengerMessageAuthenticatorFactory::class)],
+                [static::isInstanceOf(JwtAuthenticatorFactory::class)],
+                [static::isInstanceOf(MessengerMessageAuthenticatorFactory::class)],
             );
 
         $this->bundle->build($containerBuilder);

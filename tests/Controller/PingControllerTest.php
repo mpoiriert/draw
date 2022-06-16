@@ -14,7 +14,7 @@ class PingControllerTest extends TestCase
             ->assertStatus(200)
             ->getResponseBodyContents();
 
-        $this->assertSame('pong', $response);
+        static::assertSame('pong', $response);
 
         $this->assertMetrics(SqlAssertionBuilder::create(1));
     }

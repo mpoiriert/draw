@@ -25,7 +25,7 @@ class EmailCssInlinerListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -33,7 +33,7 @@ class EmailCssInlinerListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 MessageEvent::class => ['inlineEmailCss', -1],
             ],
@@ -63,12 +63,12 @@ class EmailCssInlinerListenerTest extends TestCase
         );
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHtmlBody')
             ->willReturn('');
 
         $message
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('html');
 
         $this->object->inlineEmailCss($event);
@@ -83,12 +83,12 @@ class EmailCssInlinerListenerTest extends TestCase
         );
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHtmlBody')
             ->willReturn('<html lang="en"><head><title></title><style>.body {background: maroon}</style></head><div class="body"></div></html>');
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('html')
             ->with('<!DOCTYPE html>
 <html lang="en">

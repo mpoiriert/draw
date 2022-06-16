@@ -25,15 +25,15 @@ class DecorateCompilerPassTest extends TestCase
 
         $definition = $this->containerBuilder->getDefinition('draw.sonata.builder.orm_form');
 
-        $this->assertSame(
+        static::assertSame(
             EventDispatcherFormContractor::class,
             $definition->getClass()
         );
 
-        $this->assertTrue($definition->isAutoconfigured());
-        $this->assertTrue($definition->isAutowired());
+        static::assertTrue($definition->isAutoconfigured());
+        static::assertTrue($definition->isAutowired());
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'sonata.admin.builder.orm_form',
                 'sonata.admin.builder.orm_form.inner',
@@ -42,7 +42,7 @@ class DecorateCompilerPassTest extends TestCase
             $definition->getDecoratedService()
         );
 
-        $this->assertSame(
+        static::assertSame(
             'sonata.admin.builder.orm_form.inner',
             (string) $definition->getArgument('$decoratedFormContractor')
         );

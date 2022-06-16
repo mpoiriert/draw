@@ -25,7 +25,7 @@ class BrokerRunningEventTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Event::class,
             $this->event
         );
@@ -33,7 +33,7 @@ class BrokerRunningEventTest extends TestCase
 
     public function testGetBroker(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->broker,
             $this->event->getBroker()
         );

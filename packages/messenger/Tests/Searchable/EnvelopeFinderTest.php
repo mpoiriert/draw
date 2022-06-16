@@ -37,7 +37,7 @@ class EnvelopeFinderTest extends TestCase
     public function testFindByIdNotFound(): void
     {
         $this->transportRepository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('findAll')
             ->willReturn(
                 $transports = [
@@ -47,7 +47,7 @@ class EnvelopeFinderTest extends TestCase
             );
 
         $transport
-            ->expects($this->exactly(count($transports)))
+            ->expects(static::exactly(count($transports)))
             ->method('find')
             ->with($messageId = uniqid('message-id'))
             ->willReturn(null);
@@ -60,7 +60,7 @@ class EnvelopeFinderTest extends TestCase
     public function testFindByIdNotListableReceiver(): void
     {
         $this->transportRepository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('findAll')
             ->willReturn(
                 [
@@ -70,7 +70,7 @@ class EnvelopeFinderTest extends TestCase
             );
 
         $transport
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('find');
 
         static::expectException(MessageNotFoundException::class);
@@ -81,7 +81,7 @@ class EnvelopeFinderTest extends TestCase
     public function testFindById(): void
     {
         $this->transportRepository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('findAll')
             ->willReturn(
                 [
@@ -90,18 +90,18 @@ class EnvelopeFinderTest extends TestCase
             );
 
         $transport
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('find')
             ->with($messageId = uniqid('message-id-'))
             ->willReturn(new Envelope((object) []));
 
-        $this->assertNotNull($envelope = $this->service->findById($messageId));
+        static::assertNotNull($envelope = $this->service->findById($messageId));
 
-        $this->assertNotNull(
+        static::assertNotNull(
             $stamp = $envelope->last(FoundFromTransportStamp::class)
         );
 
-        $this->assertSame(
+        static::assertSame(
             $transportName,
             $stamp->getTransportName()
         );

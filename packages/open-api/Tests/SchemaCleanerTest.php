@@ -33,11 +33,11 @@ class SchemaCleanerTest extends TestCase
     {
         $openApi = new OpenApi();
         $schema = $openApi->extract(file_get_contents($dirty));
-        $this->assertInstanceOf(Root::class, $schema);
+        static::assertInstanceOf(Root::class, $schema);
 
         $cleanedSchema = $this->object->clean($schema);
 
-        $this->assertEquals(
+        static::assertEquals(
             json_decode(file_get_contents($clean), true),
             json_decode($openApi->dump($cleanedSchema, false), true)
         );

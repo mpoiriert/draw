@@ -30,7 +30,7 @@ value
 ------------{$this->boundary}
 BODY;
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'post' => [
                     'field' => 'value',
@@ -56,7 +56,7 @@ value2
 ------------{$this->boundary}
 BODY;
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'post' => [
                     'field' => 'value',
@@ -79,7 +79,7 @@ value
 ------------{$this->boundary}
 BODY;
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'post' => [
                     'field' => ['value'],
@@ -101,7 +101,7 @@ value&
 ------------{$this->boundary}
 BODY;
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'post' => [
                     'field' => 'value&',
@@ -123,7 +123,7 @@ value=
 ------------{$this->boundary}
 BODY;
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'post' => [
                     'field' => 'value=',
@@ -148,18 +148,18 @@ BODY;
 
         $result = $this->bodyParser->parse($body, $contentType);
 
-        $this->assertTrue(isset($result['files']['file']['tmp_name']));
+        static::assertTrue(isset($result['files']['file']['tmp_name']));
 
         $tmp_name = $result['files']['file']['tmp_name'];
 
-        $this->assertFileIsReadable($tmp_name);
+        static::assertFileIsReadable($tmp_name);
 
-        $this->assertSame(
+        static::assertSame(
             'content of file',
             file_get_contents($tmp_name)
         );
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'post' => [],
                 'files' => [
@@ -210,9 +210,9 @@ BODY;
 
         $result = $this->bodyParser->parse($body, $contentType);
 
-        $this->assertTrue(isset($result['files']['nested']['name']));
+        static::assertTrue(isset($result['files']['nested']['name']));
 
-        $this->assertSame(
+        static::assertSame(
             $result['files']['nested']['name'],
             [
                 'nested_one.txt',

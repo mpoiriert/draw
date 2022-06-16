@@ -27,7 +27,7 @@ class RedirectToRouteMessageHandlerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             MessageHandlerInterface::class,
             $this->service
         );
@@ -38,12 +38,12 @@ class RedirectToRouteMessageHandlerTest extends TestCase
         $message = $this->createMock(RedirectToRouteMessageInterface::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getRedirectResponse')
             ->with($this->urlGenerator)
             ->willReturn($response = new RedirectResponse('/'));
 
-        $this->assertSame(
+        static::assertSame(
             $response,
             $this->service->__invoke($message)
         );

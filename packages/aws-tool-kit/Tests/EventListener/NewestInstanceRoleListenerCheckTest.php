@@ -35,7 +35,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->service
         );
@@ -43,7 +43,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 ConsoleCommandEvent::class => [
                     ['checkNewestInstance', 50],
@@ -56,7 +56,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     public function testCheckNewestInstanceNoOption(): void
     {
         $this->imdsClient
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('getCurrentInstanceId');
 
         $this->service->checkNewestInstance(
@@ -67,13 +67,13 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             )
         );
 
-        $this->assertTrue($event->commandShouldRun());
+        static::assertTrue($event->commandShouldRun());
     }
 
     public function testCheckNewestInstanceOptionNull(): void
     {
         $this->imdsClient
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('getCurrentInstanceId');
 
         $this->service->checkNewestInstance(
@@ -84,13 +84,13 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             )
         );
 
-        $this->assertTrue($event->commandShouldRun());
+        static::assertTrue($event->commandShouldRun());
     }
 
     public function testCheckNewestInstanceCurrentInstanceIdError(): void
     {
         $this->imdsClient
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willThrowException(new Exception());
@@ -103,13 +103,13 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             )
         );
 
-        $this->assertFalse($event->commandShouldRun());
+        static::assertFalse($event->commandShouldRun());
     }
 
     public function testCheckNewestInstanceCurrentInstanceIdEmpty(): void
     {
         $this->imdsClient
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(null);
@@ -122,14 +122,14 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             )
         );
 
-        $this->assertFalse($event->commandShouldRun());
+        static::assertFalse($event->commandShouldRun());
     }
 
     public function testCheckNewestInstanceNoInstance(): void
     {
         $role = uniqid('role-');
         $this->imdsClient
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(uniqid('instance-id-'));
@@ -147,14 +147,14 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             )
         );
 
-        $this->assertFalse($event->commandShouldRun());
+        static::assertFalse($event->commandShouldRun());
     }
 
     public function testCheckNewestInstanceNotNewestInstance(): void
     {
         $role = uniqid('role-');
         $this->imdsClient
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'));
@@ -181,14 +181,14 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             )
         );
 
-        $this->assertFalse($event->commandShouldRun());
+        static::assertFalse($event->commandShouldRun());
     }
 
     public function testCheckNewestInstanceError(): void
     {
         $role = uniqid('role-');
         $this->imdsClient
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(uniqid('instance-id-'));
@@ -207,14 +207,14 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             )
         );
 
-        $this->assertFalse($event->commandShouldRun());
+        static::assertFalse($event->commandShouldRun());
     }
 
     public function testCheckNewestInstanceNewestInstance(): void
     {
         $role = uniqid('role-');
         $this->imdsClient
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'));
@@ -241,7 +241,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             )
         );
 
-        $this->assertTrue($event->commandShouldRun());
+        static::assertTrue($event->commandShouldRun());
     }
 
     private function mockEc2ClientDescribeInstances(
@@ -261,7 +261,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         );
 
         $invocationMocker = $this->ec2Client
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('describeInstances')
             ->with(
                 [
@@ -297,18 +297,18 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     {
         $input = $this->createMock(InputInterface::class);
 
-        $input->expects($this->once())
+        $input->expects(static::once())
             ->method('hasOption')
             ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
             ->willReturn($hasOption);
 
         if ($hasOption) {
-            $input->expects($this->once())
+            $input->expects(static::once())
                 ->method('getOption')
                 ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
                 ->willReturn($optionValue);
         } else {
-            $input->expects($this->never())
+            $input->expects(static::never())
                 ->method('getOption')
                 ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE);
         }

@@ -36,7 +36,7 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->service
         );
@@ -44,7 +44,7 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [CheckPassportEvent::class => ['checkPassport', -1]],
             $this->service::getSubscribedEvents()
         );
@@ -53,11 +53,11 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
     public function testCheckPassportNoRoleRestrictedBadge(): void
     {
         $this->roleHierarchy
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('getReachableRoleNames');
 
         $this->user
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('getRoles');
 
         $this->service
@@ -67,12 +67,12 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
     public function testCheckPassportRoleDoNotMatch(): void
     {
         $this->user
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getRoles')
             ->willReturn($roles = ['ROLE_USER']);
 
         $this->roleHierarchy
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getReachableRoleNames')
             ->with($roles)
             ->willReturn($roles);
@@ -87,12 +87,12 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
     public function testCheckPassportRoleMatch(): void
     {
         $this->user
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getRoles')
             ->willReturn($roles = ['ROLE_USER']);
 
         $this->roleHierarchy
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getReachableRoleNames')
             ->with($roles)
             ->willReturn(array_merge($roles, [$role = uniqid('ROLE_')]));
@@ -102,7 +102,7 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
         $this->service
             ->checkPassport($this->createCheckPassportEvent([$badge]));
 
-        $this->assertTrue($badge->isResolved());
+        static::assertTrue($badge->isResolved());
     }
 
     private function createCheckPassportEvent(array $badges = []): CheckPassportEvent

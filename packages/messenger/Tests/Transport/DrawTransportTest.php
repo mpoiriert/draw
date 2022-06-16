@@ -57,32 +57,32 @@ class DrawTransportTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             TransportInterface::class,
             $this->service
         );
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             PurgeableTransportInterface::class,
             $this->service
         );
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             SearchableTransportInterface::class,
             $this->service
         );
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             SetupableTransportInterface::class,
             $this->service
         );
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             MessageCountAwareInterface::class,
             $this->service
         );
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ListableReceiverInterface::class,
             $this->service
         );
@@ -94,7 +94,7 @@ class DrawTransportTest extends TestCase
             ->executeStatement('DROP TABLE IF EXISTS draw_messenger__message_tag, draw_messenger__message');
 
         $this->service->setup();
-        $this->assertTrue(true);
+        static::assertTrue(true);
     }
 
     /**
@@ -108,7 +108,7 @@ class DrawTransportTest extends TestCase
             $driverConnection = $this->createMock(Connection::class)
         );
 
-        $driverConnection->expects($this->once())
+        $driverConnection->expects(static::once())
             ->method('createQueryBuilder')
             ->willThrowException(new Exception($exceptionMessage = uniqid('exception-message-')));
 
@@ -126,7 +126,7 @@ class DrawTransportTest extends TestCase
         $envelope = $this->service->send(new Envelope(new stdClass(),
             [new SearchableTagStamp(['tag1', 'tag2'])]));
 
-        $this->assertNotNull($envelope->last(TransportMessageIdStamp::class)->getId());
+        static::assertNotNull($envelope->last(TransportMessageIdStamp::class)->getId());
 
         return $envelope;
     }
@@ -138,10 +138,10 @@ class DrawTransportTest extends TestCase
     {
         $envelopes = $this->service->findByTag('tag1');
 
-        $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf(Envelope::class, $envelopes[0]);
+        static::assertCount(1, $envelopes);
+        static::assertInstanceOf(Envelope::class, $envelopes[0]);
 
-        $this->assertSame(
+        static::assertSame(
             $referencedEnvelope->last(TransportMessageIdStamp::class)->getId(),
             $envelopes[0]->last(TransportMessageIdStamp::class)->getId()
         );
@@ -154,10 +154,10 @@ class DrawTransportTest extends TestCase
     {
         $envelopes = $this->service->findByTags(['tag1', 'tag2']);
 
-        $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf(Envelope::class, $envelopes[0]);
+        static::assertCount(1, $envelopes);
+        static::assertInstanceOf(Envelope::class, $envelopes[0]);
 
-        $this->assertSame(
+        static::assertSame(
             $referencedEnvelope->last(TransportMessageIdStamp::class)->getId(),
             $envelopes[0]->last(TransportMessageIdStamp::class)->getId()
         );
@@ -174,10 +174,10 @@ class DrawTransportTest extends TestCase
             $driverConnection = $this->createMock(Connection::class)
         );
 
-        $driverConnection->expects($this->never())
+        $driverConnection->expects(static::never())
             ->method('createQueryBuilder');
 
-        $this->assertEmpty($this->service->findByTags([]));
+        static::assertEmpty($this->service->findByTags([]));
     }
 
     /**
@@ -185,7 +185,7 @@ class DrawTransportTest extends TestCase
      */
     public function testFindByTagsNotMatch(): void
     {
-        $this->assertCount(0, $this->service->findByTags(['tag3']));
+        static::assertCount(0, $this->service->findByTags(['tag3']));
     }
 
     /**
@@ -287,7 +287,7 @@ class DrawTransportTest extends TestCase
             $this->service->send($envelope);
         }
 
-        $this->assertCount($resultCount, $this->service->findByTags($searchTags));
+        static::assertCount($resultCount, $this->service->findByTags($searchTags));
     }
 
     /**
@@ -307,10 +307,10 @@ class DrawTransportTest extends TestCase
             )
         );
 
-        $this->assertCount(1, $this->service->findByTags($tags));
+        static::assertCount(1, $this->service->findByTags($tags));
 
         $this->service->purgeObsoleteMessages(new DateTimeImmutable());
 
-        $this->assertCount(0, $this->service->findByTags($tags));
+        static::assertCount(0, $this->service->findByTags($tags));
     }
 }

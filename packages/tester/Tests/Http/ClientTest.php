@@ -42,7 +42,7 @@ class ClientTest extends TestCase
 
         $client = new Client($requestExecutioner);
 
-        $this->assertInstanceOf(ClientInterface::class, $client);
+        static::assertInstanceOf(ClientInterface::class, $client);
 
         return $client;
     }
@@ -255,14 +255,14 @@ class ClientTest extends TestCase
             ->getMockForAbstractClass();
 
         $mockClientObserver
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('preSendRequest')
             ->willReturnCallback(function (RequestInterface $request) {
                 return $request;
             });
 
         $mockClientObserver
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('postSendRequest')
             ->willReturnCallback(function (RequestInterface $request, ResponseInterface $response) {
                 return $response;
@@ -285,12 +285,12 @@ class ClientTest extends TestCase
         $body = $body ?: '';
         $response = $testResponse->getResponse();
 
-        $this->assertInstanceOf(ResponseInterface::class, $response);
+        static::assertInstanceOf(ResponseInterface::class, $response);
 
         // We seek at the beginning of the body to be sure that nobody change the position before
         $response->getBody()->seek(0);
 
-        $this->assertJsonStringEqualsJsonString(
+        static::assertJsonStringEqualsJsonString(
             json_encode(compact('method', 'uri', 'body', 'headers', 'version')),
             $response->getBody()->getContents()
         );
@@ -316,14 +316,14 @@ class ClientTest extends TestCase
         // We seek at the beginning of the body to be sure that nobody change the position before
         $request->getBody()->seek(0);
 
-        $this->assertSame($method, $request->getMethod());
-        $this->assertSame($uri, $request->getUri()->__toString());
-        $this->assertSame($body ?: '', $request->getBody()->getContents());
+        static::assertSame($method, $request->getMethod());
+        static::assertSame($uri, $request->getUri()->__toString());
+        static::assertSame($body ?: '', $request->getBody()->getContents());
 
         foreach ($headers as $key => $values) {
-            $this->assertSame($values, $request->getHeader($key));
+            static::assertSame($values, $request->getHeader($key));
         }
 
-        $this->assertSame($version, $request->getProtocolVersion());
+        static::assertSame($version, $request->getProtocolVersion());
     }
 }

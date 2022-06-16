@@ -35,11 +35,11 @@ class BasicEnvelopeFactoryTest extends TestCase
         $newEnvelope = new Envelope($messages[0]);
 
         $this->eventDispatcher
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('dispatch')
             ->withConsecutive(
                 [
-                    $this->callback(
+                    static::callback(
                         function (EnvelopeCreatedEvent $event) use ($messages, $messageHolder, $newEnvelope) {
                             $this->assertSame($messageHolder, $event->getMessageHolder());
                             $this->assertSame($messages[0], $event->getEnvelope()->getMessage());
@@ -50,7 +50,7 @@ class BasicEnvelopeFactoryTest extends TestCase
                     ),
                 ],
                 [
-                    $this->callback(
+                    static::callback(
                         function (EnvelopeCreatedEvent $event) use ($messages, $messageHolder) {
                             $this->assertSame($messageHolder, $event->getMessageHolder());
                             $this->assertSame($messages[1], $event->getEnvelope()->getMessage());
@@ -64,12 +64,12 @@ class BasicEnvelopeFactoryTest extends TestCase
 
         $envelopes = $this->object->createEnvelopes($messageHolder, $messages);
 
-        $this->assertCount(
+        static::assertCount(
             2,
             $envelopes
         );
 
-        $this->assertSame(
+        static::assertSame(
             $newEnvelope,
             $envelopes[0]
         );

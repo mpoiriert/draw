@@ -110,7 +110,7 @@ class ExampleTest extends TestCase
                 }
             );
         // example-end: IfPathIsReadable
-        $this->assertTrue(true); // This is to prevent PHPUnit to flag test as risky
+        static::assertTrue(true); // This is to prevent PHPUnit to flag test as risky
     }
 
     public function testIfPathIsReadableAndEach()

@@ -79,7 +79,7 @@ Failed asserting that two strings are equal.');
                     ]
                 )
             );
-        $this->assertTrue($called);
+        static::assertTrue($called);
     }
 
     public function testInvokePropertyPathChecksCallableFail()

@@ -32,7 +32,7 @@ class TokenProcessorTest extends TestCase
     public function testInvokeNoToken(): void
     {
         $records = [uniqid() => uniqid()];
-        $this->assertSame(
+        static::assertSame(
             $records +
             [
                 'extra' => [
@@ -45,13 +45,13 @@ class TokenProcessorTest extends TestCase
 
     public function testInvokeNotIdentifiedToken(): void
     {
-        $this->tokenStorage->expects($this->once())
+        $this->tokenStorage->expects(static::once())
             ->method('getToken')
             ->willReturn(
                 new NullToken()
             );
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'extra' => [
                     $this->key => [
@@ -98,7 +98,7 @@ class TokenProcessorTest extends TestCase
             }
         };
 
-        $this->tokenStorage->expects($this->once())
+        $this->tokenStorage->expects(static::once())
             ->method('getToken')
             ->willReturn(
                 new UsernamePasswordToken(
@@ -110,7 +110,7 @@ class TokenProcessorTest extends TestCase
                 )
             );
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'extra' => [
                     $this->key => [
