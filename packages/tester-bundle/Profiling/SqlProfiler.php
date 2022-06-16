@@ -113,7 +113,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
                 }
             }
 
-            list($query['params'][$j], $explainable) = $this->sanitizeParam($param);
+            [$query['params'][$j], $explainable] = $this->sanitizeParam($param);
             if (!$explainable) {
                 $query['explainable'] = false;
             }
@@ -145,7 +145,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
             $a = [];
             $original = true;
             foreach ($var as $k => $v) {
-                list($value, $orig) = $this->sanitizeParam($v);
+                [$value, $orig] = $this->sanitizeParam($v);
                 $original = $original && $orig;
                 $a[$k] = $value;
             }

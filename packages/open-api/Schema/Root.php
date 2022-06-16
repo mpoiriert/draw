@@ -194,7 +194,7 @@ class Root implements VendorExtensionSupportInterface
         }
 
         // E.g.: '#' 'definitions' 'ClassName'
-        list(, $section, $name) = explode('/', $schema->ref, 3);
+        [, $section, $name] = explode('/', $schema->ref, 3);
 
         return $this->{$section}[$name];
     }

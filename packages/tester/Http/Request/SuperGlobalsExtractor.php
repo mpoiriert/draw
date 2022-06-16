@@ -71,7 +71,7 @@ class SuperGlobalsExtractor
                     continue;
                 }
 
-                list($name, $value) = explode('=', $oneCookie);
+                [$name, $value] = explode('=', $oneCookie);
                 $cookie[$name] = $value;
             }
         }

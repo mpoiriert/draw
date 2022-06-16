@@ -98,7 +98,7 @@ class BodyParser
         $data = [];
         if ($parts) {
             foreach ($parts as $keyValue) {
-                list($key, $value) = explode('=', $keyValue);
+                [$key, $value] = explode('=', $keyValue);
                 $data[$key] = trim($value, '"');
             }
         }

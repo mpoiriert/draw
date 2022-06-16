@@ -52,7 +52,7 @@ class SqlAssertionBuilder
 
         $message = "Queries:\n".implode("\n", $tester->path('queries')->getData());
 
-        list($method, $count) = $this->countAssertion;
+        [$method, $count] = $this->countAssertion;
 
         $countTester = $tester->path('count');
 

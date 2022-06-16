@@ -136,7 +136,7 @@ class OperationExtractor implements ExtractorInterface
             $exceptionClass = new \ReflectionClass($type);
             /** @var \Exception $exception */
             $exception = $exceptionClass->newInstanceWithoutConstructor();
-            list($code, $message) = $this->getExceptionInformation($exception);
+            [$code, $message] = $this->getExceptionInformation($exception);
             $target->responses[$code] = $exceptionResponse = new Response();
 
             if ((string) $throwTag->getDescription()) {
