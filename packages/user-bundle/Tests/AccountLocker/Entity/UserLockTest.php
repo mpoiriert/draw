@@ -2,8 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\Tests\AccountLocker\Entity;
 
-use DateTime;
-use DateTimeInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +23,7 @@ class UserLockTest extends TestCase
         static::assertNull($this->entity->getUser(), 'User must be null');
         static::assertNull($this->entity->getReason(), 'Reason must be null');
         static::assertInstanceOf(
-            DateTimeInterface::class,
+            \DateTimeInterface::class,
             $this->entity->getCreatedAt(),
             'Created at must be a datetime interface'
         );
@@ -42,27 +40,27 @@ class UserLockTest extends TestCase
                 true,
             ],
             'unlock-until-in-the-future' => [
-                (new UserLock())->setUnlockUntil(new DateTime('+ 1 day')),
+                (new UserLock())->setUnlockUntil(new \DateTime('+ 1 day')),
                 false,
             ],
             'unlock-until-in-the-past' => [
-                (new UserLock())->setUnlockUntil(new DateTime('- 1 day')),
+                (new UserLock())->setUnlockUntil(new \DateTime('- 1 day')),
                 true,
             ],
             'lock-on-in-the-future' => [
-                (new UserLock())->setLockOn(new DateTime('+ 1 day')),
+                (new UserLock())->setLockOn(new \DateTime('+ 1 day')),
                 false,
             ],
             'lock-on-in-the-past' => [
-                (new UserLock())->setLockOn(new DateTime('- 1 day')),
+                (new UserLock())->setLockOn(new \DateTime('- 1 day')),
                 true,
             ],
             'expires-at-in-the-future' => [
-                (new UserLock())->setExpiresAt(new DateTime('+ 1 day')),
+                (new UserLock())->setExpiresAt(new \DateTime('+ 1 day')),
                 true,
             ],
             'expires-at-in-the-past' => [
-                (new UserLock())->setExpiresAt(new DateTime('- 1 day')),
+                (new UserLock())->setExpiresAt(new \DateTime('- 1 day')),
                 false,
             ],
         ];

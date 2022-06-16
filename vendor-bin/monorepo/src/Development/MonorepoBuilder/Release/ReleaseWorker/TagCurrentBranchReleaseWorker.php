@@ -5,7 +5,6 @@ namespace Draw\Development\MonorepoBuilder\Release\ReleaseWorker;
 use PharIo\Version\Version;
 use Symplify\MonorepoBuilder\Release\Contract\ReleaseWorker\ReleaseWorkerInterface;
 use Symplify\MonorepoBuilder\Release\Process\ProcessRunner;
-use Throwable;
 
 class TagCurrentBranchReleaseWorker implements ReleaseWorkerInterface
 {
@@ -26,7 +25,7 @@ class TagCurrentBranchReleaseWorker implements ReleaseWorkerInterface
                 'git add . && git commit -m "prepare release %s" && git push origin master',
                 $version->getVersionString()
             ));
-        } catch (Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             // nothing to commit
         }
 

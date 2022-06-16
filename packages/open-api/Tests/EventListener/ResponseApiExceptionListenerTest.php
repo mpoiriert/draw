@@ -9,11 +9,7 @@ use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Response as OpenResponse;
 use Draw\Component\OpenApi\Schema\Root;
-use Exception;
-use JsonSerializable;
-use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +19,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Throwable;
 
 /**
  * @covers \Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener
@@ -32,7 +27,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 {
     private ResponseApiExceptionListener $object;
     private HttpKernelInterface $httpKernel;
-    private Exception $exception;
+    private \Exception $exception;
     private ExceptionEvent $exceptionEvent;
     private Request $request;
 
@@ -44,7 +39,7 @@ class ResponseApiExceptionListenerTest extends TestCase
             $this->httpKernel = $this->createMock(HttpKernelInterface::class),
             $this->request = $this->createMock(Request::class),
             HttpKernelInterface::MAIN_REQUEST,
-            $this->exception = $this->createMock(Exception::class)
+            $this->exception = $this->createMock(\Exception::class)
         );
 
         $this->request
@@ -156,10 +151,10 @@ class ResponseApiExceptionListenerTest extends TestCase
 
     public function testOnKernelExceptionDebugTrue(): void
     {
-        $throwable = new Exception(
+        $throwable = new \Exception(
             uniqid('message-'),
             rand(\PHP_INT_MIN, \PHP_INT_MAX),
-            $previous = new Exception()
+            $previous = new \Exception()
         );
 
         $this->exceptionEvent = new ExceptionEvent(
@@ -211,30 +206,30 @@ class ResponseApiExceptionListenerTest extends TestCase
     public function provideOnKernelExceptionStatusCode(): iterable
     {
         yield 'ChangeDefault' => [
-            new Exception(),
-            [Exception::class => 400],
+            new \Exception(),
+            [\Exception::class => 400],
             400,
         ];
 
         yield 'FallbackOnDefault' => [
-            new Exception(),
-            [RuntimeException::class => 400],
+            new \Exception(),
+            [\RuntimeException::class => 400],
             500,
         ];
 
         yield 'MultipleConfiguration' => [
-            new Exception(),
-            [RuntimeException::class => 400, Exception::class => 300],
+            new \Exception(),
+            [\RuntimeException::class => 400, \Exception::class => 300],
             300,
         ];
 
         yield 'Extend' => [
-            new OutOfBoundsException(),
-            [RuntimeException::class => 400, Exception::class => 300],
+            new \OutOfBoundsException(),
+            [\RuntimeException::class => 400, \Exception::class => 300],
             400,
         ];
 
-        $exception = new class() extends Exception implements JsonSerializable {
+        $exception = new class() extends \Exception implements \JsonSerializable {
             public function jsonSerialize()
             {
             }
@@ -242,7 +237,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 
         yield 'Implements' => [
             $exception,
-            [RuntimeException::class => 400, JsonSerializable::class => 300],
+            [\RuntimeException::class => 400, \JsonSerializable::class => 300],
             300,
         ];
     }
@@ -252,7 +247,7 @@ class ResponseApiExceptionListenerTest extends TestCase
      *
      * @param array<string,int> $errorCodes
      */
-    public function testOnKernelExceptionErrorCode(Throwable $throwable, array $errorCodes, int $errorCode): void
+    public function testOnKernelExceptionErrorCode(\Throwable $throwable, array $errorCodes, int $errorCode): void
     {
         $this->exceptionEvent = new ExceptionEvent(
             $this->httpKernel,

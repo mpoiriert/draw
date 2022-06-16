@@ -8,7 +8,6 @@ use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
 use Draw\Component\OpenApi\Schema\Root;
 use JMS\Serializer\SerializerBuilder;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 class RootSchemaExtractorTest extends TestCase
 {
@@ -20,7 +19,7 @@ class RootSchemaExtractorTest extends TestCase
             ['{}', new Root(), false],
             ['{"swagger":"1.0"}', new Root(), false],
             ['{"swagger":"2.0"}', '', false],
-            ['{"swagger":"2.0"}', new stdClass(), false],
+            ['{"swagger":"2.0"}', new \stdClass(), false],
         ];
     }
 

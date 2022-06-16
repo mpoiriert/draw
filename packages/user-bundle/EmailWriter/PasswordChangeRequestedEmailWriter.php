@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\EmailWriter;
 
-use DateTimeImmutable;
 use Draw\Bundle\UserBundle\Email\PasswordChangeRequestedEmail;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
@@ -50,7 +49,7 @@ class PasswordChangeRequestedEmailWriter implements EmailWriterInterface
                         'admin_change_password',
                         $parameters
                     ),
-                    new DateTimeImmutable('+ 1 day'),
+                    new \DateTimeImmutable('+ 1 day'),
                     'change_password'
                 )
             );

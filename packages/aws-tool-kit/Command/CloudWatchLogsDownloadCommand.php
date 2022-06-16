@@ -3,7 +3,6 @@
 namespace Draw\Component\AwsToolKit\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,7 +35,7 @@ class CloudWatchLogsDownloadCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (null === $this->cloudWatchClient) {
-            throw new RuntimeException(sprintf('Service [%s] is required for command [%s] to run.', CloudWatchLogsClient::class, static::class));
+            throw new \RuntimeException(sprintf('Service [%s] is required for command [%s] to run.', CloudWatchLogsClient::class, static::class));
         }
 
         $startTime = strtotime($input->getOption('startTime')) * 1000;

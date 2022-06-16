@@ -8,7 +8,6 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
-use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -55,7 +54,7 @@ class ConsoleIntegrationTest extends IntegrationTestCase
             []
         );
 
-        $reflection = new ReflectionClass(Execution::class);
+        $reflection = new \ReflectionClass(Execution::class);
 
         static::assertContainerExtensionConfiguration(
             $containerBuilder,

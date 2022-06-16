@@ -10,7 +10,6 @@ use JMS\Serializer\EventDispatcher\PreDeserializeEvent;
 use JMS\Serializer\EventDispatcher\PreSerializeEvent;
 use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\Metadata\StaticPropertyMetadata;
-use ReflectionClass;
 
 class OpenApiSubscriber implements EventSubscriberInterface
 {
@@ -48,7 +47,7 @@ class OpenApiSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $reflectionClass = new ReflectionClass($type['name']);
+        $reflectionClass = new \ReflectionClass($type['name']);
         if (!$reflectionClass->implementsInterface(VendorExtensionSupportInterface::class)) {
             return;
         }

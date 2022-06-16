@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Messenger\ManualTrigger;
 
-use DateTimeInterface;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\ManualTrigger\Action\ClickMessageAction;
 use Draw\Component\Messenger\ManualTrigger\Message\ManuallyTriggeredInterface;
@@ -35,7 +34,7 @@ class ManuallyTriggeredMessageUrlGenerator
      */
     public function generateLink(
         ManuallyTriggeredInterface $message,
-        DateTimeInterface $expiration,
+        \DateTimeInterface $expiration,
         string $type = null
     ): string {
         $parameters = [

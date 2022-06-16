@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Security\Tests\Http\Authenticator;
 
-use DateTimeImmutable;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
@@ -125,7 +124,7 @@ class JwtAuthenticatorTest extends TestCase
             ->method('encode')
             ->with(
                 [$this->userIdentifierPayloadKey => $userId],
-                static::equalToWithDelta(new DateTimeImmutable('+ 7 days'), 1)
+                static::equalToWithDelta(new \DateTimeImmutable('+ 7 days'), 1)
             )
             ->willReturn($token = uniqid('token-'));
 

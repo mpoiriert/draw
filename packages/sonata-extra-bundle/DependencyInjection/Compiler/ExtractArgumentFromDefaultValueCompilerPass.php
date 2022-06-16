@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataExtraBundle\DependencyInjection\Compiler;
 
-use ReflectionClass;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -15,7 +14,7 @@ class ExtractArgumentFromDefaultValueCompilerPass implements CompilerPassInterfa
             $definition = $container->getDefinition($id);
 
             $class = $container->getParameterBag()->resolveValue($definition->getClass());
-            $reflectionClass = new ReflectionClass($class);
+            $reflectionClass = new \ReflectionClass($class);
 
             if (!$reflectionClass->hasMethod('__construct')) {
                 continue;

@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Security\Jwt;
 
-use DateTimeInterface;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -18,7 +17,7 @@ class JwtEncoder
         $this->key = $key;
     }
 
-    public function encode(array $payload, ?DateTimeInterface $expiration = null): string
+    public function encode(array $payload, ?\DateTimeInterface $expiration = null): string
     {
         if ($expiration) {
             $payload['exp'] = $expiration->getTimestamp();

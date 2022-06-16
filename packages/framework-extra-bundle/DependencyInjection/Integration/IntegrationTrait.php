@@ -2,8 +2,6 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
-use Exception;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -53,7 +51,7 @@ trait IntegrationTrait
             return;
         }
 
-        throw new Exception($exceptionMessage ?: sprintf('You must have the extension [%s] available to configuration [draw_framework_extra.%s]', $extensionName, $this->getConfigSectionName()));
+        throw new \Exception($exceptionMessage ?: sprintf('You must have the extension [%s] available to configuration [draw_framework_extra.%s]', $extensionName, $this->getConfigSectionName()));
     }
 
     protected function isConfigEnabled(ContainerBuilder $container, array $config): bool
@@ -128,7 +126,7 @@ trait IntegrationTrait
         $input = preg_replace('~(?<=\\w)([A-Z])~u', '_$1', $input);
 
         if (null === $input) {
-            throw new RuntimeException(sprintf('preg_replace returned null for value "%s"', $originalInput));
+            throw new \RuntimeException(sprintf('preg_replace returned null for value "%s"', $originalInput));
         }
 
         return mb_strtolower($input);

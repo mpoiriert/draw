@@ -2,8 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\Entity;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,7 +30,7 @@ trait SecurityUserTrait
     /**
      * @ORM\Column(name="last_password_updated_at", type="datetime_immutable", nullable=true)
      */
-    private ?DateTimeImmutable $passwordUpdatedAt = null;
+    private ?\DateTimeImmutable $passwordUpdatedAt = null;
 
     public function getEmail(): ?string
     {
@@ -98,23 +96,23 @@ trait SecurityUserTrait
             // This is needed to flag a property modified to trigger what's is needed for the flush
             // We want to make sure the date change in case the previous value is on the same second
             $this->passwordUpdatedAt = null;
-            $this->setPasswordUpdatedAt(new DateTimeImmutable());
+            $this->setPasswordUpdatedAt(new \DateTimeImmutable());
         }
 
         return $this;
     }
 
-    public function getPasswordUpdatedAt(): ?DateTimeInterface
+    public function getPasswordUpdatedAt(): ?\DateTimeInterface
     {
         return $this->passwordUpdatedAt;
     }
 
-    public function setPasswordUpdatedAt(DateTimeInterface $passwordUpdatedAt): self
+    public function setPasswordUpdatedAt(\DateTimeInterface $passwordUpdatedAt): self
     {
         switch (true) {
             case null === $this->passwordUpdatedAt:
             case $this->passwordUpdatedAt->getTimestamp() !== $passwordUpdatedAt->getTimestamp():
-                $this->passwordUpdatedAt = DateTimeImmutable::createFromFormat('U', $passwordUpdatedAt->getTimestamp());
+                $this->passwordUpdatedAt = \DateTimeImmutable::createFromFormat('U', $passwordUpdatedAt->getTimestamp());
                 if ($this instanceof LockableUserInterface) {
                     $this->unlock(UserLock::REASON_PASSWORD_EXPIRED);
                 }

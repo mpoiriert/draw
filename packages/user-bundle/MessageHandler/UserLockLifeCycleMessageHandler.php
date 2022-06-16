@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\MessageHandler;
 
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
@@ -52,7 +51,7 @@ class UserLockLifeCycleMessageHandler implements MessageSubscriberInterface
             case null === $userLock:
                 return;
             case null === $lockOn = $userLock->getLockOn():
-            case $lockOn <= new DateTimeImmutable():
+            case $lockOn <= new \DateTimeImmutable():
                 $this->messageBus->dispatch(new Envelope(
                     new UserLockActivatedMessage($userLockId),
                     [

@@ -3,11 +3,9 @@
 namespace Draw\Component\AwsToolKit\Tests\EventListener;
 
 use Aws\Ec2\Ec2Client;
-use DateTimeImmutable;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputInterface;
@@ -93,7 +91,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
-            ->willThrowException(new Exception());
+            ->willThrowException(new \Exception());
 
         $this->service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
@@ -163,11 +161,11 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             $role,
             [
                 [
-                    'LaunchTime' => new DateTimeImmutable('- 1 day'),
+                    'LaunchTime' => new \DateTimeImmutable('- 1 day'),
                     'InstanceId' => $instanceId,
                 ],
                 [
-                    'LaunchTime' => new DateTimeImmutable(),
+                    'LaunchTime' => new \DateTimeImmutable(),
                     'InstanceId' => uniqid('isntance-id-'),
                 ],
             ]
@@ -196,7 +194,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         $this->mockEc2ClientDescribeInstances(
             $role,
             [],
-            new Exception()
+            new \Exception()
         );
 
         $this->service->checkNewestInstance(
@@ -223,11 +221,11 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             $role,
             [
                 [
-                    'LaunchTime' => new DateTimeImmutable(),
+                    'LaunchTime' => new \DateTimeImmutable(),
                     'InstanceId' => $instanceId,
                 ],
                 [
-                    'LaunchTime' => new DateTimeImmutable('- 1 day'),
+                    'LaunchTime' => new \DateTimeImmutable('- 1 day'),
                     'InstanceId' => uniqid('instance-id-'),
                 ],
             ]
@@ -247,7 +245,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     private function mockEc2ClientDescribeInstances(
         string $role,
         array $instances,
-        ?Exception $error = null
+        ?\Exception $error = null
     ): void {
         $ec2Client = $this->getMockBuilder(Ec2Client::class)
             ->disableOriginalConstructor()

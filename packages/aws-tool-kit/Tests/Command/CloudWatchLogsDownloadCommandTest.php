@@ -3,14 +3,12 @@
 namespace Draw\Component\AwsToolKit\Tests\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
-use DateTimeImmutable;
 use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -71,7 +69,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
             null
         );
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Service [Aws\CloudWatchLogs\CloudWatchLogsClient] is required for command [Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand] to run.');
 
         $this->execute([
@@ -85,8 +83,8 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
     {
         $logGroupName = 'group-name';
         $logStreamName = 'stream-name';
-        $startTime = new DateTimeImmutable('2001-01-01 00:00:00');
-        $endTime = new DateTimeImmutable('2001-01-02 00:00:01');
+        $startTime = new \DateTimeImmutable('2001-01-01 00:00:00');
+        $endTime = new \DateTimeImmutable('2001-01-02 00:00:01');
         $output = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);
@@ -140,8 +138,8 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
     {
         $logGroupName = 'group-name';
         $logStreamName = 'stream-name';
-        $startTime = new DateTimeImmutable('2001-01-01 00:00:00');
-        $endTime = new DateTimeImmutable('2001-01-02 00:00:01');
+        $startTime = new \DateTimeImmutable('2001-01-01 00:00:00');
+        $endTime = new \DateTimeImmutable('2001-01-02 00:00:01');
         $output = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);

@@ -6,7 +6,6 @@ use Draw\Bundle\TesterBundle\Messenger\TransportTester;
 use Draw\Bundle\TesterBundle\Tests\TestCase;
 use Draw\Component\Core\FilterExpression\Expression\Expression;
 use PHPUnit\Framework\ExpectationFailedException;
-use stdClass;
 use Symfony\Component\Messenger\Envelope;
 
 class TransportTesterTest extends TestCase
@@ -32,11 +31,11 @@ class TransportTesterTest extends TestCase
     public function testAssertMatch(): void
     {
         $transport = $this->transportTester->getTransport();
-        $transport->send(new Envelope($object = new stdClass()));
+        $transport->send(new Envelope($object = new \stdClass()));
         $object->property = 'value';
 
         $this->transportTester->assertMessageMatch(
-            stdClass::class,
+            \stdClass::class,
             Expression::andWhereEqual(['property' => 'value'])
         );
     }
@@ -44,7 +43,7 @@ class TransportTesterTest extends TestCase
     public function testAssertMatchFailed(): void
     {
         $transport = $this->transportTester->getTransport();
-        $transport->send(new Envelope($object = new stdClass()));
+        $transport->send(new Envelope($object = new \stdClass()));
         $object->property = 'value';
 
         $this->expectException(ExpectationFailedException::class);

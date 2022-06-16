@@ -11,11 +11,7 @@ use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use Exception;
-use LengthException;
 use PHPUnit\Framework\TestCase;
-use ReflectionMethod;
-use RuntimeException;
 
 class OperationExtractorTest extends TestCase
 {
@@ -28,7 +24,7 @@ class OperationExtractorTest extends TestCase
 
     public function provideTestCanExtract(): iterable
     {
-        $reflectionMethod = new ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', 'operation');
+        $reflectionMethod = new \ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', 'operation');
 
         return [
             [null, null, false],
@@ -118,7 +114,7 @@ class OperationExtractorTest extends TestCase
 
     public function testExtractInvalidTypeParameter()
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No type found for parameter named [param] for operation id [operation_id]');
 
         $operation = new Operation();
@@ -131,7 +127,7 @@ class OperationExtractorTest extends TestCase
 
     private function extractStubServiceMethod(string $method, Operation $operation = null): ExtractionContextInterface
     {
-        $reflectionMethod = new ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', $method);
+        $reflectionMethod = new \ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', $method);
 
         $context = $this->getExtractionContext([new TypeSchemaExtractor()]);
         $schema = $context->getRootSchema();
@@ -165,8 +161,8 @@ class PhpDocOperationExtractorStubService
     /**
      * @param $string
      *
-     * @throws Exception                     When problem occur
-     * @throws LengthException
+     * @throws \Exception                    When problem occur
+     * @throws \LengthException
      * @throws ExtractionImpossibleException
      *
      * @return PhpDocOperationExtractorStubService

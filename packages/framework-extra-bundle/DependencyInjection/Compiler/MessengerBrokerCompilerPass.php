@@ -3,7 +3,6 @@
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
 
 use Draw\Component\Messenger\Broker\Command\StartMessengerBrokerCommand;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -23,7 +22,7 @@ class MessengerBrokerCompilerPass implements CompilerPassInterface
         }
 
         if (false === realpath($symfonyConsolePath)) {
-            throw new RuntimeException('The draw_framework_extra.symfony_console_path value ['.$symfonyConsolePath.'] is invalid');
+            throw new \RuntimeException('The draw_framework_extra.symfony_console_path value ['.$symfonyConsolePath.'] is invalid');
         }
 
         $definition->setArgument('$consolePath', realpath($symfonyConsolePath));

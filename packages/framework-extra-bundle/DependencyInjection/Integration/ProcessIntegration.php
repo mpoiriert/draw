@@ -4,7 +4,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Component\Process\ProcessFactory;
 use Draw\Contracts\Process\ProcessFactoryInterface;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -23,7 +22,7 @@ class ProcessIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Process\\',
-            \dirname((new ReflectionClass(ProcessFactory::class))->getFileName()),
+            \dirname((new \ReflectionClass(ProcessFactory::class))->getFileName()),
         );
 
         $container->setAlias(ProcessFactoryInterface::class, ProcessFactory::class);

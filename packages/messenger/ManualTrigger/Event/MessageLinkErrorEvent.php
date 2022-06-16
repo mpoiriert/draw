@@ -5,7 +5,6 @@ namespace Draw\Component\Messenger\ManualTrigger\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
-use Throwable;
 
 class MessageLinkErrorEvent extends Event
 {
@@ -13,11 +12,11 @@ class MessageLinkErrorEvent extends Event
 
     private string $messageId;
 
-    private Throwable $error;
+    private \Throwable $error;
 
     private ?Response $response = null;
 
-    public function __construct(Request $request, string $messageId, Throwable $exception)
+    public function __construct(Request $request, string $messageId, \Throwable $exception)
     {
         $this->request = $request;
         $this->messageId = $messageId;
@@ -34,7 +33,7 @@ class MessageLinkErrorEvent extends Event
         return $this->messageId;
     }
 
-    public function getError(): Throwable
+    public function getError(): \Throwable
     {
         return $this->error;
     }

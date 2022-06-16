@@ -32,7 +32,6 @@ use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
 use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use Metadata\MetadataFactoryInterface;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -141,7 +140,7 @@ class OpenApiIntegration implements IntegrationInterface
             ->setAutowired(true)
             ->setAutoconfigured(true);
 
-        $openApiComponentDir = \dirname((new ReflectionClass(OpenApi::class))->getFileName());
+        $openApiComponentDir = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
 
         $exclude = [
             $openApiComponentDir.'/Event/',
@@ -274,7 +273,7 @@ class OpenApiIntegration implements IntegrationInterface
             return;
         }
 
-        $openApiComponentDir = \dirname((new ReflectionClass(OpenApi::class))->getFileName());
+        $openApiComponentDir = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
 
         $definition = (new Definition())
             ->setAutoconfigured(true)
@@ -340,7 +339,7 @@ class OpenApiIntegration implements IntegrationInterface
             return;
         }
 
-        $openApiComponentDir = \dirname((new ReflectionClass(OpenApi::class))->getFileName());
+        $openApiComponentDir = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
 
         $definition = (new Definition())
             ->setAutoconfigured(true)

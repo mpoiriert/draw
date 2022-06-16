@@ -5,7 +5,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 use Draw\Component\Application\Configuration\DoctrineConfigurationRegistry;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -24,7 +23,7 @@ class ConfigurationIntegration implements IntegrationInterface, PrependIntegrati
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Application\\Configuration\\',
-            \dirname((new ReflectionClass(DoctrineConfigurationRegistry::class))->getFileName())
+            \dirname((new \ReflectionClass(DoctrineConfigurationRegistry::class))->getFileName())
         );
 
         $this->renameDefinitions(
@@ -48,7 +47,7 @@ class ConfigurationIntegration implements IntegrationInterface, PrependIntegrati
     {
         $this->assertHasExtension($container, 'doctrine');
 
-        $reflection = new ReflectionClass(Config::class);
+        $reflection = new \ReflectionClass(Config::class);
 
         $container->prependExtensionConfig(
             'doctrine',

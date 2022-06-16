@@ -4,7 +4,6 @@ namespace Draw\Component\Tester\Http;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Throwable;
 
 abstract class ClientObserver
 {
@@ -31,7 +30,7 @@ abstract class ClientObserver
 
     public function postExecutionError(
         RequestInterface $request,
-        Throwable $throwable,
+        \Throwable $throwable,
         RequestExecutionerInterface $requestExecutioner
     ): void {
     }

@@ -2,14 +2,12 @@
 
 namespace Draw\Component\OpenApi\Command;
 
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use ZipArchive;
 
 class InstallSandboxCommand extends Command
 {
@@ -59,9 +57,9 @@ class InstallSandboxCommand extends Command
     {
         $output->write('Extracting zip file...');
 
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         if (true !== $error = $zip->open($zipPath)) {
-            throw new RuntimeException(sprintf('Cannot open zip file [%s]. Error code [%s].', $zipPath, $error ?? 'File does not exists'));
+            throw new \RuntimeException(sprintf('Cannot open zip file [%s]. Error code [%s].', $zipPath, $error ?? 'File does not exists'));
         }
 
         $this->filesystem->remove($outputPath);

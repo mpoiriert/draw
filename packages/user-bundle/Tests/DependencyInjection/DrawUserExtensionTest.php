@@ -13,7 +13,6 @@ use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
-use ReflectionClass;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawUserExtensionTest extends ExtensionTestCase
@@ -59,7 +58,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
     {
         static::assertSame(
             [
-                (new ReflectionClass(UserLock::class))->getFileName(),
+                (new \ReflectionClass(UserLock::class))->getFileName(),
             ],
             $this
                 ->getContainerBuilder()

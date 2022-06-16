@@ -15,7 +15,6 @@ use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
@@ -58,7 +57,7 @@ class PropertiesExtractorTest extends TestCase
     public function testCanExtract($source, $type, $canBeExtract)
     {
         if (null !== $source) {
-            $source = new ReflectionClass($source);
+            $source = new \ReflectionClass($source);
         }
 
         /** @var ExtractionContextInterface $context */
@@ -78,7 +77,7 @@ class PropertiesExtractorTest extends TestCase
 
     public function testExtract()
     {
-        $reflectionClass = new ReflectionClass(__NAMESPACE__.'\JmsExtractorStubModel');
+        $reflectionClass = new \ReflectionClass(__NAMESPACE__.'\JmsExtractorStubModel');
 
         // Need to be there to validate that JMS extract it's type properly
         $context = $this->getExtractionContext([

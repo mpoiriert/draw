@@ -3,7 +3,6 @@
 namespace Draw\Component\Messenger\Tests\ManualTrigger\Event;
 
 use Draw\Component\Messenger\ManualTrigger\Event\MessageLinkErrorEvent;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,14 +19,14 @@ class MessageLinkErrorEventTest extends TestCase
 
     private string $messageId;
 
-    private Exception $error;
+    private \Exception $error;
 
     protected function setUp(): void
     {
         $this->event = new MessageLinkErrorEvent(
             $this->request = new Request(),
             $this->messageId = uniqid('message-id-'),
-            $this->error = new Exception()
+            $this->error = new \Exception()
         );
     }
 

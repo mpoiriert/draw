@@ -9,7 +9,6 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\Profiling\Sql\SqlLog;
-use TypeError;
 
 /**
  * SqlProfiler for Symfony use by Draw\Component\Profiling\Sql namespace to do metric calculation of SQL in integration tests.
@@ -105,7 +104,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
                     $query['types'][$j] = $type->getBindingType();
                     try {
                         $param = $type->convertToDatabaseValue($param, $this->entityManager->getConnection()->getDatabasePlatform());
-                    } catch (TypeError $e) {
+                    } catch (\TypeError $e) {
                         // Error thrown while processing params, query is not explainable.
                         $query['explainable'] = false;
                     } catch (ConversionException $e) {

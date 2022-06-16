@@ -3,7 +3,6 @@
 namespace Draw\Component\OpenApi\Tests\Exception;
 
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
-use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,7 +20,7 @@ class ExtractionImpossibleExceptionTest extends TestCase
     public function testConstruct(): void
     {
         static::assertInstanceOf(
-            Exception::class,
+            \Exception::class,
             $this->object
         );
     }

@@ -5,7 +5,6 @@ namespace Draw\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Throwable;
 
 /**
  * Validate a php callable constraint.
@@ -32,7 +31,7 @@ class PhpCallableValidator extends ConstraintValidator
                 case !\count($this->context->getValidator()->validate($result, $constraint->returnValueConstraint)):
                     return;
             }
-        } catch (Throwable $throwable) {
+        } catch (\Throwable $throwable) {
         }
 
         $this->context->buildViolation($constraint->message)

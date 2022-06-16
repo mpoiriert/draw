@@ -6,7 +6,6 @@ use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
 use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
 use Draw\Contracts\Process\ProcessFactoryInterface;
-use RuntimeException;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -119,7 +118,7 @@ class Broker
             $this->eventDispatcher->dispatch($event = new NewConsumerProcessEvent($this->context));
 
             if (!$receivers = $event->getReceivers()) {
-                throw new RuntimeException(sprintf('You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.', NewConsumerProcessEvent::class.'::preventStart'));
+                throw new \RuntimeException(sprintf('You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.', NewConsumerProcessEvent::class.'::preventStart'));
             }
 
             $process = $this->processFactory->create(

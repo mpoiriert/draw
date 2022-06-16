@@ -2,22 +2,20 @@
 
 namespace Draw\Component\Messenger\Expirable\Stamp;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Draw\Contracts\Messenger\EnvelopeFilterInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\StampInterface;
 
 class ExpirationStamp implements StampInterface
 {
-    private DateTimeImmutable $dateTime;
+    private \DateTimeImmutable $dateTime;
 
-    public function __construct(DateTimeInterface $expiration)
+    public function __construct(\DateTimeInterface $expiration)
     {
-        $this->dateTime = DateTimeImmutable::createFromFormat('U', $expiration->getTimestamp());
+        $this->dateTime = \DateTimeImmutable::createFromFormat('U', $expiration->getTimestamp());
     }
 
-    public function getDateTime(): DateTimeInterface
+    public function getDateTime(): \DateTimeInterface
     {
         return $this->dateTime;
     }

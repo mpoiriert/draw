@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Messenger\Tests\Entity;
 
-use DateTimeImmutable;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTrait;
 use PHPUnit\Framework\TestCase;
@@ -98,7 +97,7 @@ class DrawMessageTraitTest extends TestCase
 
         static::assertSame(
             $this->entity,
-            $this->entity->setCreatedAt($value = new DateTimeImmutable())
+            $this->entity->setCreatedAt($value = new \DateTimeImmutable())
         );
 
         static::assertSame(
@@ -113,7 +112,7 @@ class DrawMessageTraitTest extends TestCase
 
         static::assertSame(
             $this->entity,
-            $this->entity->setAvailableAt($value = new DateTimeImmutable())
+            $this->entity->setAvailableAt($value = new \DateTimeImmutable())
         );
 
         static::assertSame(
@@ -128,7 +127,7 @@ class DrawMessageTraitTest extends TestCase
 
         static::assertSame(
             $this->entity,
-            $this->entity->setDeliveredAt($value = new DateTimeImmutable())
+            $this->entity->setDeliveredAt($value = new \DateTimeImmutable())
         );
 
         static::assertSame(
@@ -166,7 +165,7 @@ class DrawMessageTraitTest extends TestCase
 
         static::assertSame(
             $this->entity,
-            $this->entity->setExpiresAt($value = new DateTimeImmutable())
+            $this->entity->setExpiresAt($value = new \DateTimeImmutable())
         );
 
         static::assertSame(

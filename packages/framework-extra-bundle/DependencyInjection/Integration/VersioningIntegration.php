@@ -5,7 +5,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 use Draw\Component\Application\Versioning\EventListener\FetchRunningVersionListener;
 use Draw\Component\Application\Versioning\VersionManager;
 use Draw\Contracts\Application\VersionVerificationInterface;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -25,7 +24,7 @@ class VersioningIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Application\\Versioning\\',
-            \dirname((new ReflectionClass(VersionManager::class))->getFileName())
+            \dirname((new \ReflectionClass(VersionManager::class))->getFileName())
         );
 
         $container

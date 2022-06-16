@@ -8,7 +8,6 @@ use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -215,7 +214,7 @@ class BrokerTest extends TestCase
             ->expects(static::never())
             ->method('create');
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf(
             'You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.',
             NewConsumerProcessEvent::class.'::preventStart'

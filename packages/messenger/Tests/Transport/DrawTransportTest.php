@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Messenger\Tests\Transport;
 
-use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
@@ -12,8 +11,6 @@ use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
-use Exception;
-use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -23,7 +20,6 @@ use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
-use Throwable;
 
 /**
  * @covers \Draw\Component\Messenger\Transport\DrawTransport
@@ -41,7 +37,7 @@ class DrawTransportTest extends TestCase
         try {
             static::loadDefaultConnection()
                 ->executeStatement('DELETE FROM draw_messenger__message');
-        } catch (Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             // Table may not exists we ignore it
         }
     }
@@ -110,12 +106,12 @@ class DrawTransportTest extends TestCase
 
         $driverConnection->expects(static::once())
             ->method('createQueryBuilder')
-            ->willThrowException(new Exception($exceptionMessage = uniqid('exception-message-')));
+            ->willThrowException(new \Exception($exceptionMessage = uniqid('exception-message-')));
 
         $this->expectException(TransportException::class);
         $this->expectExceptionMessage($exceptionMessage);
 
-        $this->service->send(new Envelope(new stdClass()));
+        $this->service->send(new Envelope(new \stdClass()));
     }
 
     /**
@@ -124,7 +120,7 @@ class DrawTransportTest extends TestCase
     public function testSend(): Envelope
     {
         $envelope = $this->service->send(new Envelope(
-            new stdClass(),
+            new \stdClass(),
             [new SearchableTagStamp(['tag1', 'tag2'])]
         ));
 
@@ -207,9 +203,9 @@ class DrawTransportTest extends TestCase
     {
         yield 'uniqueness' => [
             [
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1'], true)]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1'], true)]),
             ],
             ['tag1'],
             1,
@@ -217,9 +213,9 @@ class DrawTransportTest extends TestCase
 
         yield 'uniqueness-one-tag-against-multiple' => [
             [
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1'], true)]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1'], true)]),
             ],
             ['tag1'],
             1,
@@ -227,9 +223,9 @@ class DrawTransportTest extends TestCase
 
         yield 'uniqueness-other-not-affected' => [
             [
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag2'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag2'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1'], true)]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag2'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag2'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1'], true)]),
             ],
             ['tag2'],
             2,
@@ -237,9 +233,9 @@ class DrawTransportTest extends TestCase
 
         yield 'uniqueness-multiple-tags' => [
             [
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'], true)]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'], true)]),
             ],
             ['tag2'],
             1,
@@ -247,9 +243,9 @@ class DrawTransportTest extends TestCase
 
         yield 'uniqueness-multiple-tags-no-match' => [
             [
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag2', 'tag3'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'], true)]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag2', 'tag3'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'], true)]),
             ],
             ['tag2'],
             2,
@@ -257,8 +253,8 @@ class DrawTransportTest extends TestCase
 
         yield 'reinsertion-does-not-clean' => [
             [
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
-                new Envelope(new stdClass(), [new RedeliveryStamp(1), new SearchableTagStamp(['tag1', 'tag2'], true)]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new \stdClass(), [new RedeliveryStamp(1), new SearchableTagStamp(['tag1', 'tag2'], true)]),
             ],
             ['tag2'],
             2,
@@ -266,8 +262,8 @@ class DrawTransportTest extends TestCase
 
         yield 'no-tag' => [
             [
-                new Envelope(new stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
-                new Envelope(new stdClass(), [new SearchableTagStamp([], true)]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp(['tag1', 'tag2'])]),
+                new Envelope(new \stdClass(), [new SearchableTagStamp([], true)]),
             ],
             ['tag2'],
             1,
@@ -301,9 +297,9 @@ class DrawTransportTest extends TestCase
 
         $this->service->send(
             new Envelope(
-                new stdClass(),
+                new \stdClass(),
                 [
-                    new ExpirationStamp(new DateTimeImmutable('- 5 minutes')),
+                    new ExpirationStamp(new \DateTimeImmutable('- 5 minutes')),
                     new SearchableTagStamp($tags = ['tag1']),
                 ]
             )
@@ -311,7 +307,7 @@ class DrawTransportTest extends TestCase
 
         static::assertCount(1, $this->service->findByTags($tags));
 
-        $this->service->purgeObsoleteMessages(new DateTimeImmutable());
+        $this->service->purgeObsoleteMessages(new \DateTimeImmutable());
 
         static::assertCount(0, $this->service->findByTags($tags));
     }

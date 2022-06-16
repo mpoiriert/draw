@@ -2,8 +2,6 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Controller;
 
-use JsonException;
-use RuntimeException;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,13 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Throwable;
 
 class BatchAdminController extends AbstractAdminController
 {
     /**
      * @throws NotFoundHttpException If the HTTP method is not POST
-     * @throws RuntimeException      If the batch action is not defined
+     * @throws \RuntimeException     If the batch action is not defined
      */
     public function batchAction(Request $request): Response
     {
@@ -32,17 +29,17 @@ class BatchAdminController extends AbstractAdminController
         $action = $forwardedRequest->request->get('action');
 
         if (!\is_string($action)) {
-            throw new RuntimeException('The action is not defined');
+            throw new \RuntimeException('The action is not defined');
         }
 
         try {
             $actionExecutable = $this->getBatchActionExecutable($action);
-        } catch (Throwable $error) {
+        } catch (\Throwable $error) {
             $message = sprintf(
                 'You must define a valid `controller` configuration for your batch action `%s`.',
                 $action,
             );
-            throw new RuntimeException($message, 0, $error);
+            throw new \RuntimeException($message, 0, $error);
         }
 
         $idx = $forwardedRequest->request->all('idx');
@@ -107,7 +104,7 @@ class BatchAdminController extends AbstractAdminController
 
         try {
             $forwardedRequest->request->add(json_decode($encodedData, true, 512, \JSON_THROW_ON_ERROR));
-        } catch (JsonException $exception) {
+        } catch (\JsonException $exception) {
             throw new BadRequestHttpException('Unable to decode batch data');
         }
 
@@ -150,7 +147,7 @@ class BatchAdminController extends AbstractAdminController
     {
         $batchActions = $this->admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
-            throw new RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
         }
 
         $controller = $batchActions[$action]['controller'];

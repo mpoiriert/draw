@@ -2,8 +2,6 @@
 
 namespace Draw\Component\Messenger\Tests\Expirable\Stamp;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Stamp\StampInterface;
@@ -15,12 +13,12 @@ class ExpirationStampTest extends TestCase
 {
     private ExpirationStamp $entity;
 
-    private DateTimeInterface $expiration;
+    private \DateTimeInterface $expiration;
 
     protected function setUp(): void
     {
         $this->entity = new ExpirationStamp(
-            $this->expiration = new DateTimeImmutable()
+            $this->expiration = new \DateTimeImmutable()
         );
     }
 

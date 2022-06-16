@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\EmailWriter;
 
-use DateTimeImmutable;
 use Draw\Bundle\UserBundle\Email\UserOnboardingEmail;
 use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
@@ -40,7 +39,7 @@ class UserOnboardingEmailWriter implements EmailWriterInterface
                         $email->getUserIdentifier(),
                         'draw_user_account_confirmation'
                     ),
-                    new DateTimeImmutable($this->messageExpirationDelay),
+                    new \DateTimeImmutable($this->messageExpirationDelay),
                     'account_confirmation'
                 )
             );

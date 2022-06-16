@@ -2,8 +2,6 @@
 
 namespace Draw\Component\Console\Entity;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\Core\DateTimeUtils;
@@ -87,12 +85,12 @@ class Execution
     /**
      * @ORM\Column(name="created_at", type="datetime_immutable", nullable=false)
      */
-    private ?DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * @ORM\Column(name="updated_at", type="datetime_immutable", nullable=false)
      */
-    private ?DateTimeImmutable $updatedAt = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * @ORM\Column(name="auto_acknowledge_reason", type="string", nullable=true)
@@ -174,12 +172,12 @@ class Execution
     /**
      * @ORM\PrePersist()
      */
-    public function getCreatedAt(): ?DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->createdAt ?: $this->createdAt = new DateTimeImmutable();
+        return $this->createdAt ?: $this->createdAt = new \DateTimeImmutable();
     }
 
-    public function setCreatedAt(?DateTimeInterface $createdAt): self
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         if (!DateTimeUtils::isSameTimestamp($this->createdAt, $createdAt)) {
             $this->createdAt = DateTimeUtils::toDateTimeImmutable($createdAt);
@@ -191,12 +189,12 @@ class Execution
     /**
      * @ORM\PrePersist()
      */
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt ?: $this->updatedAt = $this->getCreatedAt();
     }
 
-    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         if (!DateTimeUtils::isSameTimestamp($this->updatedAt, $updatedAt)) {
             $this->updatedAt = DateTimeUtils::toDateTimeImmutable($updatedAt);
@@ -240,7 +238,7 @@ class Execution
 
                 return;
             }
-            $this->updatedAt = new DateTimeImmutable();
+            $this->updatedAt = new \DateTimeImmutable();
         }
     }
 

@@ -9,7 +9,6 @@ use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Schema;
-use ReflectionMethod;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ParamConverterExtractor implements ExtractorInterface
@@ -23,7 +22,7 @@ class ParamConverterExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!$source instanceof ReflectionMethod) {
+        if (!$source instanceof \ReflectionMethod) {
             return false;
         }
 
@@ -44,8 +43,8 @@ class ParamConverterExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param ReflectionMethod $source
-     * @param Operation        $target
+     * @param \ReflectionMethod $source
+     * @param Operation         $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
@@ -108,7 +107,7 @@ class ParamConverterExtractor implements ExtractorInterface
         return null;
     }
 
-    private function getParamConverter(ReflectionMethod $reflectionMethod): ?ParamConverter
+    private function getParamConverter(\ReflectionMethod $reflectionMethod): ?ParamConverter
     {
         $converters = array_filter(
             $this->reader->getMethodAnnotations($reflectionMethod),

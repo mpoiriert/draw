@@ -9,7 +9,6 @@ use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -242,7 +241,7 @@ class ResponseSerializerListenerTest extends TestCase
 
         $request->attributes->set('_responseHeaderBag', (object) []);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The current attribute value of [_responseHeaderBag] is invalid');
 
         $this->object::setResponseHeader($request, uniqid('key-'), ['values']);

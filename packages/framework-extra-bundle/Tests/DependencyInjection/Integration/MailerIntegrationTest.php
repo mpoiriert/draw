@@ -11,7 +11,6 @@ use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
 use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
 use Draw\Component\Mailer\EventListener\EmailWriterListener;
 use Draw\Component\Mailer\Twig\TranslationExtension;
-use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -73,7 +72,7 @@ class MailerIntegrationTest extends IntegrationTestCase
         );
 
         $installationPath = \dirname(
-            (new ReflectionClass(EmailWriterInterface::class))->getFileName(),
+            (new \ReflectionClass(EmailWriterInterface::class))->getFileName(),
             2
         );
 

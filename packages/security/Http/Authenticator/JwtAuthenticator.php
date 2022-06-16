@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Security\Http\Authenticator;
 
-use DateTimeImmutable;
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +61,7 @@ class JwtAuthenticator extends AbstractAuthenticator
                 [$this->userIdentifierPayloadKey => \call_user_func([$user, $this->userIdentifierGetter])],
                 $extraPayload
             ),
-            $expiration ? new DateTimeImmutable($expiration) : null
+            $expiration ? new \DateTimeImmutable($expiration) : null
         );
     }
 

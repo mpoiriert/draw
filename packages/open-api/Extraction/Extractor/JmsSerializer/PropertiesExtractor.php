@@ -20,9 +20,6 @@ use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
 use phpDocumentor\Reflection\DocBlockFactory;
-use ReflectionClass;
-use ReflectionException;
-use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class PropertiesExtractor implements ExtractorInterface
@@ -69,7 +66,7 @@ class PropertiesExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!$source instanceof ReflectionClass) {
+        if (!$source instanceof \ReflectionClass) {
             return false;
         }
 
@@ -86,8 +83,8 @@ class PropertiesExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param ReflectionClass $source
-     * @param Schema          $target
+     * @param \ReflectionClass $source
+     * @param Schema           $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
@@ -110,7 +107,7 @@ class PropertiesExtractor implements ExtractorInterface
         if ($extractionContext->getParameter(self::CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY)) {
             $info = $extractionContext->getRootSchema()->info;
             if (!isset($info->version)) {
-                throw new RuntimeException('You must specify the [swagger.info.version] if you activate jms version exclusion strategy.');
+                throw new \RuntimeException('You must specify the [swagger.info.version] if you activate jms version exclusion strategy.');
             }
             $exclusionStrategies[] = new VersionExclusionStrategy($extractionContext->getRootSchema()->info->version);
         }
@@ -138,7 +135,7 @@ class PropertiesExtractor implements ExtractorInterface
 
             if (!$propertySchema) {
                 if (!isset($propertyMetadata->type['name'])) {
-                    throw new RuntimeException(sprintf('Type of property [%s::%s] is not set', $propertyMetadata->class, $propertyMetadata->name));
+                    throw new \RuntimeException(sprintf('Type of property [%s::%s] is not set', $propertyMetadata->class, $propertyMetadata->name));
                 }
                 $propertySchema = $this->extractTypeSchema(
                     $propertyMetadata->type['name'],
@@ -177,7 +174,7 @@ class PropertiesExtractor implements ExtractorInterface
     {
         $factory = DocBlockFactory::createInstance();
 
-        $ref = new ReflectionClass($item->class);
+        $ref = new \ReflectionClass($item->class);
         try {
             if ($item instanceof VirtualPropertyMetadata) {
                 $docComment = $ref->getMethod($item->getter)->getDocComment();
@@ -190,7 +187,7 @@ class PropertiesExtractor implements ExtractorInterface
             }
 
             return $factory->create($docComment)->getSummary();
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             return '';
         }
     }

@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Console\Tests\EventListener;
 
-use DateTimeImmutable;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\DBAL\Exception as DBALException;
@@ -16,7 +15,6 @@ use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
@@ -369,14 +367,14 @@ class CommandFlowListenerTest extends TestCase
                     );
 
                     $this->assertEqualsWithDelta(
-                        new DateTimeImmutable(),
-                        new DateTimeImmutable($arguments['created_at']),
+                        new \DateTimeImmutable(),
+                        new \DateTimeImmutable($arguments['created_at']),
                         2
                     );
 
                     $this->assertEqualsWithDelta(
-                        new DateTimeImmutable(),
-                        new DateTimeImmutable($arguments['updated_at']),
+                        new \DateTimeImmutable(),
+                        new \DateTimeImmutable($arguments['updated_at']),
                         2
                     );
 
@@ -619,7 +617,7 @@ class CommandFlowListenerTest extends TestCase
         $event = new Event\ConsoleErrorEvent(
             $this->createMock(InputInterface::class),
             $this->createMock(BufferedConsoleOutput::class),
-            new Exception()
+            new \Exception()
         );
 
         $this->eventDispatcher
@@ -637,7 +635,7 @@ class CommandFlowListenerTest extends TestCase
         $event = new Event\ConsoleErrorEvent(
             $this->createOptionExecutionIdInput($execution->getId()),
             $this->createMock(BufferedConsoleOutput::class),
-            $error = new Exception(),
+            $error = new \Exception(),
             $command = $this->createMock(Command::class)
         );
 
@@ -690,7 +688,7 @@ class CommandFlowListenerTest extends TestCase
         $event = new Event\ConsoleErrorEvent(
             $this->createOptionExecutionIdInput($execution->getId()),
             $this->createMock(BufferedConsoleOutput::class),
-            new Exception()
+            new \Exception()
         );
 
         $reason = uniqid('reason-');

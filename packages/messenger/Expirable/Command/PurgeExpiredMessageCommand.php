@@ -2,10 +2,8 @@
 
 namespace Draw\Component\Messenger\Expirable\Command;
 
-use DateTime;
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Searchable\TransportRepository;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,13 +41,13 @@ class PurgeExpiredMessageCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $delay = new DateTime($input->getOption('delay'));
+        $delay = new \DateTime($input->getOption('delay'));
         $io = new SymfonyStyle($input, $output);
 
         // do we want to setup only one transport?
         if ($transportName = $input->getArgument('transport')) {
             if (!$this->transportRepository->has($transportName)) {
-                throw new RuntimeException(sprintf('The "%s" transport does not exist.', $transportName));
+                throw new \RuntimeException(sprintf('The "%s" transport does not exist.', $transportName));
             }
             $transportNames = [$transportName];
         } else {

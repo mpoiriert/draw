@@ -2,9 +2,7 @@
 
 namespace Draw\Component\Core;
 
-use ArrayObject;
-
-class DynamicArrayObject extends ArrayObject
+class DynamicArrayObject extends \ArrayObject
 {
     public function __construct($input, $flags = 0, $iterator_class = 'ArrayIterator')
     {

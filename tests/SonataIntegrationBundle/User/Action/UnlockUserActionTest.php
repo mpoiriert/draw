@@ -3,7 +3,6 @@
 namespace App\Tests\SonataIntegrationBundle\User\Action;
 
 use App\Entity\User;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -54,7 +53,7 @@ class UnlockUserActionTest extends WebTestCase
             ->get(EntityManagerInterface::class)
             ->find(UserLock::class, $userLock->getId());
 
-        static::assertEqualsWithDelta(new DateTimeImmutable('+ 24 hours'), $userLock->getUnlockUntil(), 2);
+        static::assertEqualsWithDelta(new \DateTimeImmutable('+ 24 hours'), $userLock->getUnlockUntil(), 2);
     }
 
     public function testNoAccess(): void

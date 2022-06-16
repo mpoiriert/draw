@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Security\Tests\Jwt;
 
-use DateTimeImmutable;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
@@ -37,7 +36,7 @@ class JwtEncoderTest extends TestCase
     {
         $token = $this->service->encode(
             ['value' => uniqid('value-')],
-            new DateTimeImmutable('- 10 minutes')
+            new \DateTimeImmutable('- 10 minutes')
         );
 
         $this->expectException(ExpiredException::class);
@@ -51,7 +50,7 @@ class JwtEncoderTest extends TestCase
 
         $token = $this->service->encode(
             ['value' => uniqid('value-')],
-            new DateTimeImmutable('- 10 minutes')
+            new \DateTimeImmutable('- 10 minutes')
         );
 
         $this->expectException(SignatureInvalidException::class);

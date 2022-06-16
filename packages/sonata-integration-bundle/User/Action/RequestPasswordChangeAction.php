@@ -7,7 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Throwable;
 
 class RequestPasswordChangeAction extends AbstractController
 {
@@ -30,7 +29,7 @@ class RequestPasswordChangeAction extends AbstractController
                     'SonataAdminBundle'
                 )
             );
-        } catch (Throwable $error) {
+        } catch (\Throwable $error) {
             $this->addFlash(
                 'sonata_flash_error',
                 $error->getMessage()

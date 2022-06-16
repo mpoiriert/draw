@@ -5,7 +5,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailWriterListener;
-use ReflectionMethod;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,7 +32,7 @@ class EmailWriterCompilerPass implements CompilerPassInterface
                     $priority = 0;
                 }
 
-                $emailType = (new ReflectionMethod($class, $methodName))->getParameters()[0]->getClass()->name;
+                $emailType = (new \ReflectionMethod($class, $methodName))->getParameters()[0]->getClass()->name;
                 $emailWriterListenerDefinition
                     ->addMethodCall('addWriter', [$emailType, $id, $methodName, $priority]);
             }

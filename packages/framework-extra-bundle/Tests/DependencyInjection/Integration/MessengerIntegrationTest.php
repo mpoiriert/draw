@@ -31,7 +31,6 @@ use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
 use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
-use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -332,7 +331,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
             ]),
         );
 
-        $installationPath = \dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
+        $installationPath = \dirname((new \ReflectionClass(Broker::class))->getFileName(), 2);
 
         static::assertContainerExtensionConfiguration(
             $containerBuilder,

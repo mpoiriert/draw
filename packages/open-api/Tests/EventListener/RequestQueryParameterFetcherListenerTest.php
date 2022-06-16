@@ -5,10 +5,7 @@ namespace Draw\Component\OpenApi\Tests\EventListener;
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ReflectionMethod;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -80,7 +77,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
             ->expects(static::once())
             ->method('getMethodAnnotations')
             ->with(
-                static::callback(function (ReflectionMethod $method) {
+                static::callback(function (\ReflectionMethod $method) {
                     $this->assertSame(static::class, $method->getDeclaringClass()->name);
                     $this->assertSame('__invoke', $method->name);
 
@@ -127,7 +124,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
             ->expects(static::once())
             ->method('getMethodAnnotations')
             ->with(
-                static::callback(function (ReflectionMethod $method) {
+                static::callback(function (\ReflectionMethod $method) {
                     $this->assertSame(static::class, $method->getDeclaringClass()->name);
                     $this->assertSame('__invoke', $method->name);
 
@@ -141,7 +138,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $annotation->name = $name;
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
             sprintf(
                 'QueryParameterFetcherSubscriber parameter conflicts with a path parameter [%s] for route [%s]',
@@ -226,7 +223,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $request->query->set('test', uniqid());
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
             sprintf('Unsupported collection format [%s]', $queryParameter->collectionFormat)
         );

@@ -2,13 +2,11 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\User\Action;
 
-use DateTimeImmutable;
 use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Throwable;
 
 class UnlockUserAction
 {
@@ -27,7 +25,7 @@ class UnlockUserAction
         $admin->checkAccess('unlock', $user);
 
         foreach ($user->getLocks() as $lock) {
-            $lock->setUnlockUntil(new DateTimeImmutable('+ 24 hours'));
+            $lock->setUnlockUntil(new \DateTimeImmutable('+ 24 hours'));
         }
 
         try {
@@ -41,7 +39,7 @@ class UnlockUserAction
                     [],
                     'SonataAdminBundle'
                 );
-        } catch (Throwable $error) {
+        } catch (\Throwable $error) {
             $this->userFeed
                 ->addToFeed(
                     $currentUser,

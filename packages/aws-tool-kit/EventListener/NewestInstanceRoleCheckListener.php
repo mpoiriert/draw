@@ -8,7 +8,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Throwable;
 
 /**
  * This command listener is use to check if a command can be executed or not base on the fact it's the newest
@@ -60,7 +59,7 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
 
         try {
             $currentInstanceId = $this->imdsClient->getCurrentInstanceId();
-        } catch (Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             $this->disableCommand($consoleCommandEvent, 'Cannot reach 169.254.169.254');
 
             return;
@@ -78,7 +77,7 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
 
                 return;
             }
-        } catch (Throwable $throwable) {
+        } catch (\Throwable $throwable) {
             $this->disableCommand($consoleCommandEvent, $throwable->getMessage());
 
             return;

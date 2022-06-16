@@ -6,8 +6,6 @@ use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Schema\QueryParameter;
 use Draw\Component\OpenApi\Schema\Schema;
-use InvalidArgumentException;
-use ReflectionClass;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -31,7 +29,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     protected function assertSupportConstraint(Constraint $constraint): void
     {
         if (!$this->supportConstraint($constraint)) {
-            throw new InvalidArgumentException(sprintf('The constraint of type [%s] is not supported by [%s]', \get_class($constraint), static::class));
+            throw new \InvalidArgumentException(sprintf('The constraint of type [%s] is not supported by [%s]', \get_class($constraint), static::class));
         }
     }
 
@@ -39,7 +37,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     {
         $constraints = [];
         switch (true) {
-            case $target instanceof Schema && $source instanceof ReflectionClass:
+            case $target instanceof Schema && $source instanceof \ReflectionClass:
                 $constraints = $this->getPropertiesConstraints(
                     $source,
                     $target,
@@ -68,7 +66,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
      * @return array|Constraint[]
      */
     private function getPropertiesConstraints(
-        ReflectionClass $reflectionClass,
+        \ReflectionClass $reflectionClass,
         Schema $schema,
         array $groups = null
     ): array {
@@ -129,8 +127,8 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param ReflectionClass $source
-     * @param Schema          $target
+     * @param \ReflectionClass $source
+     * @param Schema           $target
      *
      * @throws ExtractionImpossibleException
      */

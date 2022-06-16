@@ -9,7 +9,6 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
-use ReflectionMethod;
 
 class SerializationConfigurationExtractor implements ExtractorInterface
 {
@@ -48,8 +47,8 @@ class SerializationConfigurationExtractor implements ExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param ReflectionMethod $source
-     * @param Schema           $target
+     * @param \ReflectionMethod $source
+     * @param Schema            $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
@@ -80,7 +79,7 @@ class SerializationConfigurationExtractor implements ExtractorInterface
         }
     }
 
-    private function getSerialization(ReflectionMethod $reflectionMethod): ?Serialization
+    private function getSerialization(\ReflectionMethod $reflectionMethod): ?Serialization
     {
         return $this->annotationReader->getMethodAnnotation($reflectionMethod, Serialization::class);
     }

@@ -7,6 +7,6 @@ use Exception;
 /**
  * Throws this exception from an extractor to stop extraction. This is useful for caching extraction.
  */
-class ExtractionCompletedException extends Exception
+class ExtractionCompletedException extends \Exception
 {
 }

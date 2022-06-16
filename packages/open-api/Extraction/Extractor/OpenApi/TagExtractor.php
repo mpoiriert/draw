@@ -7,7 +7,6 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Tag;
-use ReflectionMethod;
 
 class TagExtractor implements ExtractorInterface
 {
@@ -25,7 +24,7 @@ class TagExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!$source instanceof ReflectionMethod) {
+        if (!$source instanceof \ReflectionMethod) {
             return false;
         }
 
@@ -37,8 +36,8 @@ class TagExtractor implements ExtractorInterface
     }
 
     /**
-     * @param ReflectionMethod $source
-     * @param Operation        $target
+     * @param \ReflectionMethod $source
+     * @param Operation         $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
