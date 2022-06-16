@@ -14,12 +14,12 @@ class ReflectionAccessorTest extends TestCase
 
     private ?string $privateProperty = null;
 
-    private static function privateStaticFunction(string $argument = null): string
+    private static function privateStaticFunction(?string $argument = null): string
     {
         return $argument ?: 'private-static-function-value';
     }
 
-    private function privateFunction(string $argument = null): string
+    private function privateFunction(?string $argument = null): string
     {
         return $argument ?: 'private-function-value';
     }

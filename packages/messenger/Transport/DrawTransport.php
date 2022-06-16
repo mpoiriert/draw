@@ -131,8 +131,8 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
     private function insert(
         string $body,
         array $headers,
-        int $delay = null,
-        \DateTimeInterface $expiresAt = null,
+        ?int $delay = null,
+        ?\DateTimeInterface $expiresAt = null,
         array $tags = []
     ): string {
         $id = Uuid::uuid6()->toString();

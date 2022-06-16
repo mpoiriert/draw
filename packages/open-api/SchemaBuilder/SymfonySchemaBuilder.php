@@ -29,7 +29,7 @@ class SymfonySchemaBuilder implements SchemaBuilderInterface
         $this->router = $router;
     }
 
-    public function build(string $version = null): Root
+    public function build(?string $version = null): Root
     {
         $versionKey = $version ?: '~';
         if (!isset($this->openApiSchemas[$versionKey])) {
@@ -39,7 +39,7 @@ class SymfonySchemaBuilder implements SchemaBuilderInterface
         return $this->openApiSchemas[$versionKey];
     }
 
-    private function doBuild(string $version = null): Root
+    private function doBuild(?string $version = null): Root
     {
         $extractionContext = new ExtractionContext($this->openApi, $schema = new Root());
         $extractionContext->setParameter('api.cacheable', false);

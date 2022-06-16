@@ -8,7 +8,7 @@ interface LockableUserInterface
 
     public function lock(UserLock $userLock): UserLock;
 
-    public function unlock(string $reason, \DateTimeInterface $until = null): ?UserLock;
+    public function unlock(string $reason, ?\DateTimeInterface $until = null): ?UserLock;
 
     /**
      * @return array<string,UserLock>|UserLock[]

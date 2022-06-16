@@ -22,7 +22,7 @@ class UserCountBlock extends AbstractBlockService
         parent::__construct($twig);
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null): Response
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 

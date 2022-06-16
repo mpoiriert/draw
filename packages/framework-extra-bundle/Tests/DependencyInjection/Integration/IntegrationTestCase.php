@@ -220,7 +220,7 @@ class ServiceConfiguration
 
     private $definitionCheckCallback;
 
-    public function __construct(string $id, array $aliases, callable $definitionCheckCallback = null)
+    public function __construct(string $id, array $aliases, ?callable $definitionCheckCallback = null)
     {
         $this->id = $id;
         $this->aliases = $aliases;

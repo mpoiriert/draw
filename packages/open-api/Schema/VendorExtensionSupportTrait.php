@@ -20,7 +20,7 @@ trait VendorExtensionSupportTrait
         return $this->vendor;
     }
 
-    public function setVendorData(array $data = null): void
+    public function setVendorData(?array $data = null): void
     {
         $this->vendor = $data;
     }

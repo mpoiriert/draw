@@ -6,5 +6,5 @@ use Draw\Component\OpenApi\Schema\Root;
 
 interface SchemaBuilderInterface
 {
-    public function build(string $version = null): Root;
+    public function build(?string $version = null): Root;
 }

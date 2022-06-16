@@ -46,7 +46,7 @@ class PropertiesExtractor implements ExtractorInterface
         MetadataFactoryInterface $factory,
         PropertyNamingStrategyInterface $namingStrategy,
         EventDispatcherInterface $eventDispatcher,
-        iterable $typeToSchemaHandlers = null
+        ?iterable $typeToSchemaHandlers = null
     ) {
         $this->factory = $factory;
         $this->namingStrategy = $namingStrategy;

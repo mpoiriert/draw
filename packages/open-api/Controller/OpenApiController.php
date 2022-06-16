@@ -29,7 +29,7 @@ class OpenApiController
         $this->sandboxUrl = $sandboxUrl;
     }
 
-    public function apiDocAction(Request $request, string $version = null): Response
+    public function apiDocAction(Request $request, ?string $version = null): Response
     {
         if ('json' != $request->getRequestFormat()) {
             $parameters = ['_format' => 'json'];

@@ -171,7 +171,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     /**
      * @dataProvider provideOnKernelController
      */
-    public function testOnKernelController(string $type, string $value, $expectedValue, string $arraySeparator = null): void
+    public function testOnKernelController(string $type, string $value, $expectedValue, ?string $arraySeparator = null): void
     {
         $queryParameter = new QueryParameter();
         $queryParameter->name = 'test';

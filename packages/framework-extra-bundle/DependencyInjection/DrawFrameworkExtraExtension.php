@@ -31,7 +31,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
      */
     private array $integrations = [];
 
-    public function __construct(array $integrations = null)
+    public function __construct(?array $integrations = null)
     {
         if (null === $integrations) {
             $this->registerDefaultIntegrations();

@@ -21,6 +21,7 @@ return (new \PhpCsFixer\Config())
         'no_extra_blank_lines' => true,
         'no_superfluous_phpdoc_tags' => ['allow_unused_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true],
         'no_useless_else' => true,
+        'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true]
     ])
     ->setFinder($finder)
 ;

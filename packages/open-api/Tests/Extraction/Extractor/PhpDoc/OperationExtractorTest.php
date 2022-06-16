@@ -125,7 +125,7 @@ class OperationExtractorTest extends TestCase
         $this->extractStubServiceMethod('invalidTypeParameter', $operation);
     }
 
-    private function extractStubServiceMethod(string $method, Operation $operation = null): ExtractionContextInterface
+    private function extractStubServiceMethod(string $method, ?Operation $operation = null): ExtractionContextInterface
     {
         $reflectionMethod = new \ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', $method);
 

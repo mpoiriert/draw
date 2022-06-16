@@ -71,7 +71,7 @@ trait LockableUserTrait
         return $userLock;
     }
 
-    public function unlock(string $reason, \DateTimeInterface $until = null): ?UserLock
+    public function unlock(string $reason, ?\DateTimeInterface $until = null): ?UserLock
     {
         switch (true) {
             case null === $lock = $this->getLocks()[$reason] ?? null:

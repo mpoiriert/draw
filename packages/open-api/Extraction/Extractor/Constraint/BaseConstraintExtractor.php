@@ -68,7 +68,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     private function getPropertiesConstraints(
         \ReflectionClass $reflectionClass,
         Schema $schema,
-        array $groups = null
+        ?array $groups = null
     ): array {
         $class = $reflectionClass->getName();
         if (!$this->validator->hasMetadataFor($class)) {

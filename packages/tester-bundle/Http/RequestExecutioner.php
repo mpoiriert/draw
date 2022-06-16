@@ -27,7 +27,7 @@ class RequestExecutioner implements RequestExecutionerInterface
      */
     private $lastBrowser;
 
-    public function __construct(BrowserFactoryInterface $httpKernelBrowserFactory, BodyParser $bodyParser = null)
+    public function __construct(BrowserFactoryInterface $httpKernelBrowserFactory, ?BodyParser $bodyParser = null)
     {
         $this->browserFactory = $httpKernelBrowserFactory;
         $this->bodyParser = $bodyParser ?: new BodyParser();
@@ -65,7 +65,7 @@ class RequestExecutioner implements RequestExecutionerInterface
         array $parameters = [],
         array $files = [],
         array $server = [],
-        string $content = null,
+        ?string $content = null,
         bool $changeHistory = true
     ): \Symfony\Component\HttpFoundation\Response {
         $this->lastBrowser = $browser = $this->browserFactory->createBrowser();

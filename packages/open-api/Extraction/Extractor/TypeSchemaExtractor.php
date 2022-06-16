@@ -133,7 +133,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         return $newName;
     }
 
-    private function getHash($modelName, array $context = null): string
+    private function getHash($modelName, ?array $context = null): string
     {
         $context = $context ?: [];
 
@@ -150,7 +150,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         return array_search($hash, $this->definitionHashes[$modelName]);
     }
 
-    public static function getPrimitiveType($type, ExtractionContextInterface $extractionContext = null): ?array
+    public static function getPrimitiveType($type, ?ExtractionContextInterface $extractionContext = null): ?array
     {
         if (!\is_string($type)) {
             return null;

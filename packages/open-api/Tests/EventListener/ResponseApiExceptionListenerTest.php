@@ -324,7 +324,7 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
     }
 
-    private function onKernelException(ResponseApiExceptionListener $apiExceptionSubscriber = null): ?Response
+    private function onKernelException(?ResponseApiExceptionListener $apiExceptionSubscriber = null): ?Response
     {
         ($apiExceptionSubscriber ?: $this->object)->onKernelException($this->exceptionEvent);
 

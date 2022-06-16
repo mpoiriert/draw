@@ -35,7 +35,7 @@ class ManuallyTriggeredMessageUrlGenerator
     public function generateLink(
         ManuallyTriggeredInterface $message,
         \DateTimeInterface $expiration,
-        string $type = null
+        ?string $type = null
     ): string {
         $parameters = [
             ClickMessageAction::MESSAGE_ID_PARAMETER_NAME => $this->messageBus

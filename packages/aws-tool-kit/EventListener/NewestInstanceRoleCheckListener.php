@@ -36,7 +36,7 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(Ec2Client $ec2Client, ImdsClientInterface $imdsClient, LoggerInterface $logger = null)
+    public function __construct(Ec2Client $ec2Client, ImdsClientInterface $imdsClient, ?LoggerInterface $logger = null)
     {
         $this->ec2Client = $ec2Client;
         $this->imdsClient = $imdsClient;
