@@ -13,7 +13,7 @@ class SuperGlobalsExtractor
 
     private $requestOrder;
 
-    public function __construct(BodyParser $bodyParser = null, $requestOrder = null)
+    public function __construct(?BodyParser $bodyParser = null, $requestOrder = null)
     {
         $this->bodyParser = $bodyParser ?: new BodyParser();
         $this->requestOrder = $requestOrder ?: \ini_get('variables_order');

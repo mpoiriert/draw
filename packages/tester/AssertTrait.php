@@ -79,7 +79,7 @@ trait AssertTrait
      *
      * @return $this
      */
-    public function assertContainsOnly(string $type, bool $isNativeType = null, string $message = '')
+    public function assertContainsOnly(string $type, ?bool $isNativeType = null, string $message = '')
     {
         Assert::assertContainsOnly($type, $this->getData(), $isNativeType, $message);
 
@@ -111,7 +111,7 @@ trait AssertTrait
      *
      * @return $this
      */
-    public function assertNotContainsOnly(string $type, bool $isNativeType = null, string $message = '')
+    public function assertNotContainsOnly(string $type, ?bool $isNativeType = null, string $message = '')
     {
         Assert::assertNotContainsOnly($type, $this->getData(), $isNativeType, $message);
 

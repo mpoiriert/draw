@@ -14,7 +14,7 @@ class AliasesClassNamingFilter implements ClassNamingFilterInterface
         $this->definitionAliases = $definitionAliases;
     }
 
-    public function filterClassName(string $originalClassName, array $context = [], string $newName = null): string
+    public function filterClassName(string $originalClassName, array $context = [], ?string $newName = null): string
     {
         $className = $newName ?: $originalClassName;
         foreach ($this->definitionAliases as $configuration) {

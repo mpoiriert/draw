@@ -59,7 +59,7 @@ abstract class ExtensionTestCase extends TestCase
      *
      * @param string $aliasOf If the id is a alias it's a alias of which service ?
      */
-    public function testHasServiceDefinition(string $id, string $aliasOf = null)
+    public function testHasServiceDefinition(string $id, ?string $aliasOf = null)
     {
         if ($aliasOf) {
             self::$aliases[] = $id;

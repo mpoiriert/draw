@@ -16,7 +16,7 @@ class ExtractSuperGlobalObserver extends ClientObserver
 
     private $previousSuperGlobal;
 
-    public function __construct(SuperGlobalsExtractor $superGlobalsExtractor = null)
+    public function __construct(?SuperGlobalsExtractor $superGlobalsExtractor = null)
     {
         $this->superGlobalExtractors = $superGlobalsExtractor ?: new SuperGlobalsExtractor();
     }

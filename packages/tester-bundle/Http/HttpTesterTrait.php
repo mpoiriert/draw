@@ -16,7 +16,7 @@ trait HttpTesterTrait
         return new Client(new RequestExecutioner($this));
     }
 
-    public function getClientContainer(ClientInterface $client = null): ContainerInterface
+    public function getClientContainer(?ClientInterface $client = null): ContainerInterface
     {
         if (null === $client) {
             $client = self::$httpTesterClient;

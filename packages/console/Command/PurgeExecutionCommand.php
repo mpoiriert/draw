@@ -22,7 +22,7 @@ class PurgeExecutionCommand extends Command
 
     private ?LoggerInterface $logger;
 
-    public function __construct(Connection $executionConnection, LoggerInterface $logger = null)
+    public function __construct(Connection $executionConnection, ?LoggerInterface $logger = null)
     {
         parent::__construct();
         $this->connection = $executionConnection;

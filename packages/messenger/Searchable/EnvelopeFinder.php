@@ -23,7 +23,7 @@ class EnvelopeFinder implements EnvelopeFinderInterface
         $this->defaultFilter = new AggregatedEnvelopeFilter([ExpirationStamp::createEnvelopeFilter()]);
     }
 
-    public function findById(string $messageId, EnvelopeFilterInterface $filter = null): Envelope
+    public function findById(string $messageId, ?EnvelopeFilterInterface $filter = null): Envelope
     {
         if ($filter) {
             $filter = (clone $this->defaultFilter)->addFilter($filter);

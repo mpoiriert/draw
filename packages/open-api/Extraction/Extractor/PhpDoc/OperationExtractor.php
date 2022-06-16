@@ -31,7 +31,7 @@ class OperationExtractor implements ExtractorInterface
     }
 
     public function __construct(
-        DocBlockFactoryInterface $docBlockFactory = null
+        ?DocBlockFactoryInterface $docBlockFactory = null
     ) {
         $this->contextFactory = new ContextFactory();
         $this->docBlockFactory = $docBlockFactory ?: DocBlockFactory::createInstance();

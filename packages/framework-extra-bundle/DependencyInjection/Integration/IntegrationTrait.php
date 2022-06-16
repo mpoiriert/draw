@@ -16,7 +16,7 @@ trait IntegrationTrait
         string $namespace,
         string $directory,
         array $exclude = [],
-        Definition $prototype = null
+        ?Definition $prototype = null
     ): void {
         $prototype = $prototype ?: (new Definition())
             ->setAutowired(true)
@@ -45,7 +45,7 @@ trait IntegrationTrait
     protected function assertHasExtension(
         ContainerBuilder $container,
         string $extensionName,
-        string $exceptionMessage = null
+        ?string $exceptionMessage = null
     ): void {
         if ($container->hasExtension($extensionName)) {
             return;

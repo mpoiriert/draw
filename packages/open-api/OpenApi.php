@@ -37,10 +37,10 @@ class OpenApi
     private SchemaCleaner $schemaCleaner;
 
     public function __construct(
-        iterable $extractors = null,
-        SerializerInterface $serializer = null,
-        SchemaCleaner $schemaCleaner = null,
-        EventDispatcherInterface $eventDispatcher = null
+        ?iterable $extractors = null,
+        ?SerializerInterface $serializer = null,
+        ?SchemaCleaner $schemaCleaner = null,
+        ?EventDispatcherInterface $eventDispatcher = null
     ) {
         if (null === $serializer) {
             $serializer = SerializerBuilder::create()
@@ -104,7 +104,7 @@ class OpenApi
         }
     }
 
-    public function extract($source, $type = null, ExtractionContextInterface $extractionContext = null)
+    public function extract($source, $type = null, ?ExtractionContextInterface $extractionContext = null)
     {
         if (null === $type) {
             $type = new Schema();

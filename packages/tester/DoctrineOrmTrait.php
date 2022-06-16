@@ -17,7 +17,7 @@ trait DoctrineOrmTrait
      */
     protected static function setUpMySqlWithAnnotationDriver(
         array $entityDirectories,
-        string $dsn = null
+        ?string $dsn = null
     ): ?EntityManagerInterface {
         $config = Setup::createAnnotationMetadataConfiguration(
             $entityDirectories,

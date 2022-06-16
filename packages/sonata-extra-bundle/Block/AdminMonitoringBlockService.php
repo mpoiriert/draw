@@ -68,7 +68,7 @@ class AdminMonitoringBlockService implements BlockServiceInterface
             );
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null): Response
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 

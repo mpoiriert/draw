@@ -18,8 +18,8 @@ class Client implements ClientInterface
     private $observers = [];
 
     public function __construct(
-        RequestExecutionerInterface $requestExecutioner = null,
-        RequestFactoryInterface $requestFactory = null
+        ?RequestExecutionerInterface $requestExecutioner = null,
+        ?RequestFactoryInterface $requestFactory = null
     ) {
         $this->requestExecutioner = $requestExecutioner ?: new CurlRequestExecutioner();
         $this->requestFactory = $requestFactory ?: new RequestFactory();

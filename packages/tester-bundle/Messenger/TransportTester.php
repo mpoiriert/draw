@@ -39,7 +39,7 @@ class TransportTester
 
     public function assertMessageMatch(
         string $messageClass,
-        Expression $expression = null,
+        ?Expression $expression = null,
         $count = 1,
         $message = ''
     ): array {
