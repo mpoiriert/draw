@@ -6,6 +6,8 @@ interface ConfigurationRegistryInterface
 {
     /**
      * Return the configuration value or default if it doesn't exists.
+     *
+     * @param mixed|null $default
      */
     public function get(string $name, $default = null);
 
@@ -13,6 +15,8 @@ interface ConfigurationRegistryInterface
      * Set the configuration value.
      *
      * The value is expected to be json_encoded
+     *
+     * @param mixed $value
      */
     public function set(string $name, $value): void;
 

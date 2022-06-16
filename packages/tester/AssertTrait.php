@@ -45,6 +45,8 @@ trait AssertTrait
     /**
      * Asserts that a haystack contains a needle.
      *
+     * @param mixed $needle
+     *
      * @return $this
      */
     public function assertContains($needle, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)
@@ -60,6 +62,8 @@ trait AssertTrait
 
     /**
      * Asserts that a haystack does not contain a needle.
+     *
+     * @param mixed $needle
      *
      * @return $this
      */
@@ -157,6 +161,8 @@ trait AssertTrait
     /**
      * Asserts that two variables are equal.
      *
+     * @param mixed $expected
+     *
      * @return $this
      */
     public function assertEquals($expected, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false)
@@ -177,6 +183,7 @@ trait AssertTrait
      * @param int   $maxDepth
      * @param bool  $canonicalize
      * @param bool  $ignoreCase
+     * @param mixed $expected
      *
      * @return $this
      */
@@ -230,6 +237,8 @@ trait AssertTrait
     /**
      * Asserts that a value is greater than another value.
      *
+     * @param mixed $expected
+     *
      * @return $this
      */
     public function assertGreaterThan($expected, string $message = '')
@@ -245,6 +254,8 @@ trait AssertTrait
 
     /**
      * Asserts that a value is greater than or equal to another value.
+     *
+     * @param mixed $expected
      *
      * @return $this
      */
@@ -262,6 +273,8 @@ trait AssertTrait
     /**
      * Asserts that a value is smaller than another value.
      *
+     * @param mixed $expected
+     *
      * @return $this
      */
     public function assertLessThan($expected, string $message = '')
@@ -277,6 +290,8 @@ trait AssertTrait
 
     /**
      * Asserts that a value is smaller than or equal to another value.
+     *
+     * @param mixed $expected
      *
      * @return $this
      */
@@ -456,6 +471,8 @@ trait AssertTrait
      * @psalm-param ExpectedType $expected
      * @psalm-assert =ExpectedType $actual
      *
+     * @param mixed $expected
+     *
      * @return $this
      */
     public function assertSame($expected, string $message = '')
@@ -473,6 +490,8 @@ trait AssertTrait
      * Asserts that two variables do not have the same type and value.
      * Used on objects, it asserts that two variables do not reference
      * the same object.
+     *
+     * @param mixed $expected
      *
      * @return $this
      */
@@ -784,6 +803,8 @@ trait AssertTrait
     // example-start: assertContainsEquals
 
     /**
+     * @param mixed $needle
+     *
      * @return $this
      */
     public function assertContainsEquals($needle, string $message = '')
@@ -798,6 +819,8 @@ trait AssertTrait
     // example-start: assertNotContainsEquals
 
     /**
+     * @param mixed $needle
+     *
      * @return $this
      */
     public function assertNotContainsEquals($needle, string $message = '')
@@ -813,6 +836,8 @@ trait AssertTrait
 
     /**
      * Asserts that two variables are equal (canonicalizing).
+     *
+     * @param mixed $expected
      *
      * @return $this
      */
@@ -830,6 +855,8 @@ trait AssertTrait
     /**
      * Asserts that two variables are equal (ignoring case).
      *
+     * @param mixed $expected
+     *
      * @return $this
      */
     public function assertEqualsIgnoringCase($expected, string $message = '')
@@ -845,6 +872,8 @@ trait AssertTrait
 
     /**
      * Asserts that two variables are equal (with delta).
+     *
+     * @param mixed $expected
      *
      * @return $this
      */
@@ -862,6 +891,8 @@ trait AssertTrait
     /**
      * Asserts that two variables are not equal (canonicalizing).
      *
+     * @param mixed $expected
+     *
      * @return $this
      */
     public function assertNotEqualsCanonicalizing($expected, string $message = '')
@@ -878,6 +909,8 @@ trait AssertTrait
     /**
      * Asserts that two variables are not equal (ignoring case).
      *
+     * @param mixed $expected
+     *
      * @return $this
      */
     public function assertNotEqualsIgnoringCase($expected, string $message = '')
@@ -893,6 +926,8 @@ trait AssertTrait
 
     /**
      * Asserts that two variables are not equal (with delta).
+     *
+     * @param mixed $expected
      *
      * @return $this
      */

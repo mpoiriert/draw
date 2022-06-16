@@ -113,6 +113,8 @@ class ResponseSerializerListener implements EventSubscriberInterface
 
     /**
      * @see ResponseHeaderBag::set
+     *
+     * @param mixed $values
      */
     public static function setResponseHeader(Request $request, string $key, $values, bool $replace = true): void
     {

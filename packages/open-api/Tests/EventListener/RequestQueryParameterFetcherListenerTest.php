@@ -170,6 +170,8 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     /**
      * @dataProvider provideOnKernelController
+     *
+     * @param mixed $expectedValue
      */
     public function testOnKernelController(string $type, string $value, $expectedValue, ?string $arraySeparator = null): void
     {

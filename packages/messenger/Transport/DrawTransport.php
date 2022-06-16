@@ -76,6 +76,8 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
 
     /**
      * Override because doctrine transport do not filter by delivered_at date.
+     *
+     * @param mixed $id
      */
     public function find($id): ?Envelope
     {

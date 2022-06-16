@@ -53,7 +53,7 @@ class VendorExtractor implements ExtractorInterface
     }
 
     /**
-     * @param \ReflectionMethod|\ReflectionClass|\ReflectionProperty
+     * @param \ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector
      *
      * @return array|VendorInterface[]
      */
