@@ -24,7 +24,7 @@ class FlashUserFeed implements UserFeedInterface
         $this->translator = $translator;
     }
 
-    public function addToFeed(UserInterface $user, string $type, string $message, array $parameters = []): void
+    public function addToFeed(UserInterface $user, string $type, string $message, array $parameters = [], string $domain = 'DrawUserFeed'): void
     {
         $currentUser = $this->security->getUser();
 
@@ -37,7 +37,7 @@ class FlashUserFeed implements UserFeedInterface
             if ($session instanceof Session) {
                 $session->getFlashBag()->add(
                     $type,
-                    $this->translator->trans($message, $parameters, 'DrawUserFeed')
+                    $this->translator->trans($message, $parameters, $domain)
                 );
             }
         } catch (SessionNotFoundException $error) {

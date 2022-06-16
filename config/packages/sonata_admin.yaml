@@ -54,6 +54,11 @@ sonata_admin:
         extra_stylesheets:
             - https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css
 
+    security:
+        handler: 'sonata.admin.security.handler.role'
+        role_admin: 'ROLE_SONATA_ADMIN'
+        role_super_admin: 'ROLE_SUPER_ADMIN'
+
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:

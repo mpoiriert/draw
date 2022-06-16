@@ -6,7 +6,6 @@ use App\Entity\MessengerMessage;
 use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\Configuration;
-use Draw\Bundle\SonataIntegrationBundle\User\Controller\UserLockUnlockController;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
@@ -80,7 +79,7 @@ class ConfigurationTest extends ConfigurationTestCase
                     'admin' => [
                         'group' => 'User',
                         'entity_class' => UserLock::class,
-                        'controller_class' => UserLockUnlockController::class,
+                        'controller_class' => 'sonata.admin.controller.crud',
                         'icon' => 'fas fa-ba',
                         'label' => 'User lock',
                         'pager_type' => 'simple',

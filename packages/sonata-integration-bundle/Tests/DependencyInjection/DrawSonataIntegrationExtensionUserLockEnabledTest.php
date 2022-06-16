@@ -3,10 +3,9 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use App\Sonata\Admin\UserAdmin;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\UserLockExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\RefreshUserLockController;
-use Draw\Bundle\SonataIntegrationBundle\User\Controller\UserLockUnlockController;
-use Draw\Bundle\SonataIntegrationBundle\User\Extension\UserLockExtension;
 
 /**
  * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
@@ -29,7 +28,7 @@ class DrawSonataIntegrationExtensionUserLockEnabledTest extends DrawSonataIntegr
         yield from parent::provideTestHasServiceDefinition();
         yield [UserLockAdmin::class];
         yield [RefreshUserLockController::class];
-        yield [UserLockUnlockController::class];
+        yield ['draw.sonata.user.action.unlock_user_action'];
         yield [UserLockExtension::class];
     }
 

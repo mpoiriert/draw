@@ -6,7 +6,6 @@ use App\Entity\MessengerMessage;
 use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
-use Draw\Bundle\SonataIntegrationBundle\User\Controller\UserLockUnlockController;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\DrawUserBundle;
 use Draw\Bundle\UserBundle\Entity\UserLock;
@@ -135,7 +134,6 @@ class Configuration implements ConfigurationInterface
                 ->append(
                     (new SonataAdminNodeConfiguration(UserLock::class, 'User', 'admin'))
                         ->addDefaultsIfNotSet()
-                        ->controllerClassDefaultValue(UserLockUnlockController::class)
                         ->pagerTypeDefaultValue('simple')
                         ->iconDefaultValue('fas fa-ba')
                         ->labelDefaultValue('User lock')
