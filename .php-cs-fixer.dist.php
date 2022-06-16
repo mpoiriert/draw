@@ -17,6 +17,7 @@ return (new \PhpCsFixer\Config())
         'no_useless_return' => true,
         'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
         'list_syntax' => ['syntax' => 'short'],
+        'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
     ])
     ->setFinder($finder)
 ;

@@ -101,7 +101,6 @@ class CronIntegration implements IntegrationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 }
