@@ -36,7 +36,8 @@ class LoadFromCacheExtractor implements ExtractorInterface
     }
 
     /**
-     * @param Root $target
+     * @param Root  $target
+     * @param mixed $source
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {

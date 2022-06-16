@@ -51,7 +51,7 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
             return;
         }
 
-        $role = $input->getOption(static::OPTION_AWS_NEWEST_INSTANCE_ROLE);
+        $role = (string) $input->getOption(static::OPTION_AWS_NEWEST_INSTANCE_ROLE);
 
         if (!$role) {
             return;
@@ -93,7 +93,7 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
     /**
      * @internal
      */
-    public function getNewestInstanceIdForRole($role): ?string
+    public function getNewestInstanceIdForRole(string $role): ?string
     {
         $result = $this->ec2Client->describeInstances([
             'DryRun' => false,
