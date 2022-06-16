@@ -102,11 +102,10 @@ class CookieJar implements CookieJarInterface
         if (true !== $result) {
             if ($this->strictMode) {
                 throw new \RuntimeException('Invalid cookie: '.$result);
-            } else {
-                $this->removeCookieIfEmpty($cookie);
-
-                return false;
             }
+            $this->removeCookieIfEmpty($cookie);
+
+            return false;
         }
 
         // Resolve conflicts with previously set cookies

@@ -20,6 +20,7 @@ return (new \PhpCsFixer\Config())
         'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
         'no_extra_blank_lines' => true,
         'no_superfluous_phpdoc_tags' => ['allow_unused_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true],
+        'no_useless_else' => true,
     ])
     ->setFinder($finder)
 ;
