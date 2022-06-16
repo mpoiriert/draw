@@ -11,9 +11,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class PhpCallableValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof PhpCallable) {

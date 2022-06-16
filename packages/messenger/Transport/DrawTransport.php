@@ -43,9 +43,6 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         parent::__construct($connection, $serializer);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function send(Envelope $envelope): Envelope
     {
         $envelope = $envelope
