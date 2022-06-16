@@ -3,7 +3,8 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use App\Sonata\Admin\UserAdmin;
-use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\UserLockExtension;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\RefreshUserLockExtension;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\UnlockUserLockExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\RefreshUserLockController;
 
@@ -29,7 +30,8 @@ class DrawSonataIntegrationExtensionUserLockEnabledTest extends DrawSonataIntegr
         yield [UserLockAdmin::class];
         yield [RefreshUserLockController::class];
         yield ['draw.sonata.user.action.unlock_user_action'];
-        yield [UserLockExtension::class];
+        yield [UnlockUserLockExtension::class];
+        yield [RefreshUserLockExtension::class];
     }
 
     public function testUserAdminExtensionConfiguration(): void
@@ -37,7 +39,14 @@ class DrawSonataIntegrationExtensionUserLockEnabledTest extends DrawSonataIntegr
         $this->assertSame(
             UserAdmin::class,
             $this->getContainerBuilder()
-                ->getDefinition(UserLockExtension::class)
+                ->getDefinition(UnlockUserLockExtension::class)
+                ->getTag('sonata.admin.extension')[0]['target']
+        );
+
+        $this->assertSame(
+            UserAdmin::class,
+            $this->getContainerBuilder()
+                ->getDefinition(RefreshUserLockExtension::class)
                 ->getTag('sonata.admin.extension')[0]['target']
         );
     }

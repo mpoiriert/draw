@@ -6,12 +6,14 @@ use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
+use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
+use Draw\Bundle\UserBundle\Entity\UserLock;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -44,6 +46,7 @@ class UserAdmin extends AbstractAdmin
             ->addIdentifier('id')
             ->add('email')
             ->add('tags', 'list')
+            ->add('isLocked', 'boolean', ['virtual_field' => true, 'inverse' => true])
             ->add(
                 constant(ListMapper::class.'::NAME_ACTIONS') ?: '_action',
                 null,
@@ -63,6 +66,9 @@ class UserAdmin extends AbstractAdmin
         $tagAdmin = $this->getConfigurationPool()
             ->getAdminByClass(Tag::class);
 
+        $userLockAdmin = $this->getConfigurationPool()
+            ->getAdminByClass(UserLock::class);
+
         $show
             ->add('id')
             ->add('email')
@@ -78,6 +84,16 @@ class UserAdmin extends AbstractAdmin
                     'colspan' => true,
                     'fields' => $tagAdmin->configureGridFields([]),
                 ]
+            )
+            ->add('isLocked', 'boolean', ['virtual_field' => true, 'inverse' => true])
+            ->add(
+                'userLocks',
+                'grid',
+                [
+                    'fieldValueOnly' => false,
+                    'colspan' => true,
+                    'fields' => $userLockAdmin->configureGridFields([]),
+                ]
             );
     }
 
@@ -89,15 +105,27 @@ class UserAdmin extends AbstractAdmin
                 ->add('plainPassword', TextType::class, ['required' => false])
                 ->add(
                     'dateOfBirth',
-                    DateTimeType::class,
+                    SingleLineDateTimeType::class,
                     [
-                        'widget' => 'single_text',
                         'required' => false,
-                        'input' => 'datetime_immutable',
                     ]
                 )
                 ->add('needChangePassword')
                 ->add('manualLock')
+                ->add(
+                    'userLocks',
+                    CollectionType::class,
+                    [
+                        'by_reference' => false,
+                        'type_options' => [
+                            'delete' => false,
+                        ],
+                    ],
+                    [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    ]
+                )
             ->end();
     }
 }

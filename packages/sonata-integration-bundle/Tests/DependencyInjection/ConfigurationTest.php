@@ -76,6 +76,12 @@ class ConfigurationTest extends ConfigurationTestCase
                 ],
                 'user_lock' => [
                     'enabled' => true,
+                    'refresh_user_lock_extension' => [
+                        'enabled' => true,
+                    ],
+                    'unlock_user_lock_extension' => [
+                        'enabled' => true,
+                    ],
                     'admin' => [
                         'group' => 'User',
                         'entity_class' => UserLock::class,
