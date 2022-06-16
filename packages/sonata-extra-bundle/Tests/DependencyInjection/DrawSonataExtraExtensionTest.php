@@ -62,7 +62,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         $result = $containerBuilder
             ->getExtensionConfig('twig');
 
-        $this->assertSame(
+        static::assertSame(
             [
                 [
                     'paths' => [
@@ -76,7 +76,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         $result = $containerBuilder
             ->getExtensionConfig('sonata_doctrine_orm_admin');
 
-        $this->assertSame(
+        static::assertSame(
             [
                 [
                     'templates' => [
@@ -100,7 +100,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         $result = $containerBuilder
             ->getExtensionConfig('sonata_admin');
 
-        $this->assertSame(
+        static::assertSame(
             [
                 [
                     'assets' => [

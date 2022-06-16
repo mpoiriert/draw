@@ -38,7 +38,7 @@ class EmailWriterListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -46,7 +46,7 @@ class EmailWriterListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 MessageEvent::class => ['composeMessage', 200],
             ],
@@ -56,16 +56,16 @@ class EmailWriterListenerTest extends TestCase
 
     public function testWriterMutator(): void
     {
-        $this->assertSame([], $this->object->getWriters(stdClass::class));
+        static::assertSame([], $this->object->getWriters(stdClass::class));
 
         $this->object->addWriter(stdClass::class, $writer1 = uniqid('writer-'), $method1 = uniqid('method-'));
 
-        $this->assertSame(
+        static::assertSame(
             [],
             $this->object->getWriters(uniqid('other-class-'))
         );
 
-        $this->assertSame(
+        static::assertSame(
             [
                 [$writer1, $method1],
             ],
@@ -74,7 +74,7 @@ class EmailWriterListenerTest extends TestCase
 
         $this->object->addWriter(stdClass::class, $writer2 = uniqid('writer-'), $method2 = uniqid('method-'), 1);
 
-        $this->assertSame(
+        static::assertSame(
             [
                 [$writer2, $method2],
                 [$writer1, $method1],
@@ -86,7 +86,7 @@ class EmailWriterListenerTest extends TestCase
     public function testComposeMessageNotMessage(): void
     {
         $this->serviceLocator
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('get');
 
         $this->object->composeMessage(
@@ -99,13 +99,13 @@ class EmailWriterListenerTest extends TestCase
     public function testComposeMessageComposed(): void
     {
         $this->serviceLocator
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('get');
 
         $message = $this->createMock(Message::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHeaders')
             ->willReturn($headers = new Headers());
 
@@ -119,7 +119,7 @@ class EmailWriterListenerTest extends TestCase
         $message = $this->createMock(Email::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHeaders')
             ->willReturn($headers = new Headers());
 
@@ -130,7 +130,7 @@ class EmailWriterListenerTest extends TestCase
         $this->object->addWriter(uniqid('other-class-'), uniqid('writer-'), uniqid('method-'));
 
         $this->serviceLocator
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('get')
             ->withConsecutive(
                 [$writer2],
@@ -141,7 +141,7 @@ class EmailWriterListenerTest extends TestCase
             );
 
         $emailWriter
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('method1')
             ->with(
                 $message,
@@ -149,7 +149,7 @@ class EmailWriterListenerTest extends TestCase
             );
 
         $emailWriter
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('method2')
             ->with(
                 $message,
@@ -158,7 +158,7 @@ class EmailWriterListenerTest extends TestCase
 
         $this->object->composeMessage($event);
 
-        $this->assertTrue($headers->has('X-DrawEmail'));
+        static::assertTrue($headers->has('X-DrawEmail'));
     }
 
     public function testRegisterEmailWriter(): void
@@ -166,7 +166,7 @@ class EmailWriterListenerTest extends TestCase
         $message = $this->createMock(Email::class);
 
         $message
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getHeaders')
             ->willReturn(new Headers());
 
@@ -198,14 +198,14 @@ class EmailWriterListenerTest extends TestCase
 
         $this->object->registerEmailWriter($emailWriter);
 
-        $this->assertSame(
+        static::assertSame(
             [
                 [$emailWriter, 'compose1'],
             ],
             $this->object->getWriters(Email::class)
         );
 
-        $this->assertSame(
+        static::assertSame(
             [
                 [$emailWriter, 'compose2'],
             ],
@@ -213,13 +213,13 @@ class EmailWriterListenerTest extends TestCase
         );
 
         $this->serviceLocator
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('get');
 
         $this->object->composeMessage($event);
 
-        $this->assertSame(1, $emailWriter->compose1CallCounter);
-        $this->assertSame(1, $emailWriter->compose2CallCounter);
+        static::assertSame(1, $emailWriter->compose1CallCounter);
+        static::assertSame(1, $emailWriter->compose2CallCounter);
     }
 
     private function createMessageEvent(RawMessage $message): MessageEvent

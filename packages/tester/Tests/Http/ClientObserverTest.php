@@ -16,7 +16,7 @@ class ClientObserverTest extends TestCase
         $request = new Request('GET', '/test');
 
         /* @var ClientObserver $clientObserver */
-        $this->assertSame(
+        static::assertSame(
             $request,
             $clientObserver->preSendRequest($request)
         );
@@ -29,7 +29,7 @@ class ClientObserverTest extends TestCase
         $response = new Response(200);
 
         /* @var ClientObserver $clientObserver */
-        $this->assertSame(
+        static::assertSame(
             $response,
             $clientObserver->postSendRequest(new Request('GET', '/test'), $response)
         );

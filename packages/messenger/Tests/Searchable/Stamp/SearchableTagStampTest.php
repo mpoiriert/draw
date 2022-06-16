@@ -27,7 +27,7 @@ class SearchableTagStampTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             StampInterface::class,
             $this->entity
         );
@@ -35,7 +35,7 @@ class SearchableTagStampTest extends TestCase
 
     public function testGetTags(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->tags,
             $this->entity->getTags()
         );
@@ -43,7 +43,7 @@ class SearchableTagStampTest extends TestCase
 
     public function testGetEnforceUniqueness(): void
     {
-        $this->assertFalse($this->entity->getEnforceUniqueness());
+        static::assertFalse($this->entity->getEnforceUniqueness());
     }
 
     public function testGetEnforceUniquenessTrue(): void
@@ -53,6 +53,6 @@ class SearchableTagStampTest extends TestCase
             true
         );
 
-        $this->assertTrue($this->entity->getEnforceUniqueness());
+        static::assertTrue($this->entity->getEnforceUniqueness());
     }
 }

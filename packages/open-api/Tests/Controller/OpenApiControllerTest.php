@@ -37,13 +37,13 @@ class OpenApiControllerTest extends TestCase
     public function testApiDocAction(): void
     {
         $this->openApi
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('dump');
 
         $route = uniqid('route-');
 
         $this->urlGenerator
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('generate')
             ->with(
                 $route,
@@ -59,9 +59,9 @@ class OpenApiControllerTest extends TestCase
 
         $response = $this->object->apiDocAction($request);
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
+        static::assertInstanceOf(RedirectResponse::class, $response);
 
-        $this->assertSame(
+        static::assertSame(
             $this->sandboxUrl.'/index.html?url='.$url,
             $response->getTargetUrl()
         );
@@ -73,7 +73,7 @@ class OpenApiControllerTest extends TestCase
         $version = uniqid('version-');
 
         $this->urlGenerator
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('generate')
             ->with(
                 $route,
@@ -96,19 +96,19 @@ class OpenApiControllerTest extends TestCase
         $version = uniqid('version-');
 
         $this->schemaBuilder
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('build')
             ->with($version)
             ->willReturn($rootSchema = new Root());
 
         $this->openApi
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('dump')
             ->with($rootSchema)
             ->willReturn($rootSchemaJson = json_encode(['version' => $version]));
 
         $this->urlGenerator
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('generate');
 
         $request = new Request();
@@ -116,8 +116,8 @@ class OpenApiControllerTest extends TestCase
 
         $response = $this->object->apiDocAction($request, $version);
 
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertSame(200, $response->getStatusCode());
-        $this->assertSame($rootSchemaJson, $response->getContent());
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame($rootSchemaJson, $response->getContent());
     }
 }

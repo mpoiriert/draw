@@ -50,7 +50,7 @@ class OperationExtractorTest extends TestCase
         /** @var ExtractionContextInterface $context */
         $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
 
-        $this->assertSame($canBeExtract, $this->phpDocOperationExtractor->canExtract($source, $type, $context));
+        static::assertSame($canBeExtract, $this->phpDocOperationExtractor->canExtract($source, $type, $context));
 
         if ($canBeExtract) {
             return;
@@ -70,7 +70,7 @@ class OperationExtractorTest extends TestCase
 
         $context = $this->extractStubServiceMethod('operation');
 
-        $this->assertJsonStringEqualsJsonString(
+        static::assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
@@ -80,7 +80,7 @@ class OperationExtractorTest extends TestCase
     {
         $context = $this->extractStubServiceMethod('void');
 
-        $this->assertJsonStringEqualsJsonString(
+        static::assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtract_void.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
@@ -90,7 +90,7 @@ class OperationExtractorTest extends TestCase
     {
         $context = $this->extractStubServiceMethod('defaultVoid');
 
-        $this->assertJsonStringEqualsJsonString(
+        static::assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtract_defaultVoid.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
@@ -100,7 +100,7 @@ class OperationExtractorTest extends TestCase
     {
         $context = $this->extractStubServiceMethod('arrayOfPrimitive');
 
-        $this->assertJsonStringEqualsJsonString(
+        static::assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtract_arrayOfPrimitive.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );
@@ -110,7 +110,7 @@ class OperationExtractorTest extends TestCase
     {
         $context = $this->extractStubServiceMethod('genericCollection');
 
-        $this->assertJsonStringEqualsJsonString(
+        static::assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtract_genericCollection.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );

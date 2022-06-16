@@ -16,7 +16,7 @@ class CookieClientObserverTest extends TestCase
     {
         $cookieClientObserver = new CookieClientObserver();
 
-        $this->assertInstanceOf(ClientObserver::class, $cookieClientObserver);
+        static::assertInstanceOf(ClientObserver::class, $cookieClientObserver);
 
         return $cookieClientObserver;
     }
@@ -30,9 +30,9 @@ class CookieClientObserverTest extends TestCase
     {
         $request = $clientObserver->preSendRequest(new Request('GET', 'http://locahhost/test'));
 
-        $this->assertInstanceOf(RequestInterface::class, $request);
+        static::assertInstanceOf(RequestInterface::class, $request);
 
-        $this->assertFalse($request->hasHeader('Cookie'));
+        static::assertFalse($request->hasHeader('Cookie'));
 
         return $clientObserver;
     }
@@ -49,7 +49,7 @@ class CookieClientObserverTest extends TestCase
             new Response(200, ['Set-Cookie' => 'name=value'])
         );
 
-        $this->assertInstanceOf(ResponseInterface::class, $response);
+        static::assertInstanceOf(ResponseInterface::class, $response);
 
         return $clientObserver;
     }
@@ -63,10 +63,10 @@ class CookieClientObserverTest extends TestCase
     {
         $request = $clientObserver->preSendRequest(new Request('GET', 'http://locahhost/test'));
 
-        $this->assertInstanceOf(RequestInterface::class, $request);
+        static::assertInstanceOf(RequestInterface::class, $request);
 
-        $this->assertTrue($request->hasHeader('Cookie'));
-        $this->assertContains('name=value', $request->getHeader('Cookie'));
+        static::assertTrue($request->hasHeader('Cookie'));
+        static::assertContains('name=value', $request->getHeader('Cookie'));
 
         return $clientObserver;
     }
@@ -83,7 +83,7 @@ class CookieClientObserverTest extends TestCase
             new Response(200, ['Set-Cookie' => 'name='])
         );
 
-        $this->assertInstanceOf(ResponseInterface::class, $response);
+        static::assertInstanceOf(ResponseInterface::class, $response);
 
         return $clientObserver;
     }

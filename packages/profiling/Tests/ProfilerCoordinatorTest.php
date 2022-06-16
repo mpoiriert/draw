@@ -28,42 +28,42 @@ class ProfilerCoordinatorTest extends TestCase
 
     public function testIsStartedDefault(): void
     {
-        $this->assertFalse($this->profilerCoordinator->isStarted());
+        static::assertFalse($this->profilerCoordinator->isStarted());
     }
 
     public function testIsStartedAfterStart(): void
     {
         $this->profilerCoordinator->startAll();
-        $this->assertTrue($this->profilerCoordinator->isStarted());
+        static::assertTrue($this->profilerCoordinator->isStarted());
     }
 
     public function testIsStartedAfterStop(): void
     {
         $this->profilerCoordinator->startAll();
         $this->profilerCoordinator->stopAll();
-        $this->assertFalse($this->profilerCoordinator->isStarted());
+        static::assertFalse($this->profilerCoordinator->isStarted());
     }
 
     public function testRegisterProfile()
     {
-        $this->profiler->expects($this->once())->method('getType')->willReturn(self::PROFILER_TYPE);
+        $this->profiler->expects(static::once())->method('getType')->willReturn(self::PROFILER_TYPE);
         $this->profilerCoordinator->registerProfiler($this->profiler);
     }
 
     public function testStarAll()
     {
         $this->testRegisterProfile();
-        $this->profiler->expects($this->once())->method('start');
+        $this->profiler->expects(static::once())->method('start');
         $this->profilerCoordinator->startAll();
     }
 
     public function testStopAll()
     {
         $this->testStarAll();
-        $this->profiler->expects($this->once())->method('stop')->willReturn($result = 'result');
+        $this->profiler->expects(static::once())->method('stop')->willReturn($result = 'result');
         $metrics = $this->profilerCoordinator->stopAll();
 
-        $this->assertObjectHasAttribute(self::PROFILER_TYPE, $metrics);
-        $this->assertSame($result, $metrics->{self::PROFILER_TYPE});
+        static::assertObjectHasAttribute(self::PROFILER_TYPE, $metrics);
+        static::assertSame($result, $metrics->{self::PROFILER_TYPE});
     }
 }

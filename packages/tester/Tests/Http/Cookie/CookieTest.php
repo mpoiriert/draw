@@ -10,20 +10,20 @@ class CookieTest extends TestCase
     public function testInitializesDefaultValues()
     {
         $cookie = new Cookie();
-        $this->assertEquals('/', $cookie->getPath());
+        static::assertEquals('/', $cookie->getPath());
     }
 
     public function testConvertsDateTimeMaxAgeToUnixTimestamp()
     {
         $cookie = new Cookie(['Expires' => 'November 20, 1984']);
-        $this->assertIsInt($cookie->getExpires());
+        static::assertIsInt($cookie->getExpires());
     }
 
     public function testAddsExpiresBasedOnMaxAge()
     {
         $t = time();
         $cookie = new Cookie(['Max-Age' => 100]);
-        $this->assertEquals($t + 100, $cookie->getExpires());
+        static::assertEquals($t + 100, $cookie->getExpires());
     }
 
     public function testHoldsValues()
@@ -44,19 +44,19 @@ class CookieTest extends TestCase
         ];
 
         $cookie = new Cookie($data);
-        $this->assertEquals($data, $cookie->toArray());
+        static::assertEquals($data, $cookie->toArray());
 
-        $this->assertEquals('foo', $cookie->getName());
-        $this->assertEquals('baz', $cookie->getValue());
-        $this->assertEquals('baz.com', $cookie->getDomain());
-        $this->assertEquals('/bar', $cookie->getPath());
-        $this->assertEquals($t, $cookie->getExpires());
-        $this->assertEquals(100, $cookie->getMaxAge());
-        $this->assertTrue($cookie->getSecure());
-        $this->assertTrue($cookie->getDiscard());
-        $this->assertTrue($cookie->getHttpOnly());
-        $this->assertEquals('baz', $cookie->toArray()['foo']);
-        $this->assertEquals('bam', $cookie->toArray()['bar']);
+        static::assertEquals('foo', $cookie->getName());
+        static::assertEquals('baz', $cookie->getValue());
+        static::assertEquals('baz.com', $cookie->getDomain());
+        static::assertEquals('/bar', $cookie->getPath());
+        static::assertEquals($t, $cookie->getExpires());
+        static::assertEquals(100, $cookie->getMaxAge());
+        static::assertTrue($cookie->getSecure());
+        static::assertTrue($cookie->getDiscard());
+        static::assertTrue($cookie->getHttpOnly());
+        static::assertEquals('baz', $cookie->toArray()['foo']);
+        static::assertEquals('bam', $cookie->toArray()['bar']);
 
         $cookie->setName('a');
         $cookie->setValue('b');
@@ -68,52 +68,52 @@ class CookieTest extends TestCase
         $cookie->setHttpOnly(false);
         $cookie->setDiscard(false);
 
-        $this->assertEquals('a', $cookie->getName());
-        $this->assertEquals('b', $cookie->getValue());
-        $this->assertEquals('c', $cookie->getPath());
-        $this->assertEquals('bar.com', $cookie->getDomain());
-        $this->assertEquals(10, $cookie->getExpires());
-        $this->assertEquals(200, $cookie->getMaxAge());
-        $this->assertFalse($cookie->getSecure());
-        $this->assertFalse($cookie->getDiscard());
-        $this->assertFalse($cookie->getHttpOnly());
+        static::assertEquals('a', $cookie->getName());
+        static::assertEquals('b', $cookie->getValue());
+        static::assertEquals('c', $cookie->getPath());
+        static::assertEquals('bar.com', $cookie->getDomain());
+        static::assertEquals(10, $cookie->getExpires());
+        static::assertEquals(200, $cookie->getMaxAge());
+        static::assertFalse($cookie->getSecure());
+        static::assertFalse($cookie->getDiscard());
+        static::assertFalse($cookie->getHttpOnly());
     }
 
     public function testDeterminesIfExpired()
     {
         $c = new Cookie();
         $c->setExpires(10);
-        $this->assertTrue($c->isExpired());
+        static::assertTrue($c->isExpired());
         $c->setExpires(time() + 10000);
-        $this->assertFalse($c->isExpired());
+        static::assertFalse($c->isExpired());
     }
 
     public function testMatchesDomain()
     {
         $cookie = new Cookie();
-        $this->assertTrue($cookie->matchesDomain('baz.com'));
+        static::assertTrue($cookie->matchesDomain('baz.com'));
 
         $cookie->setDomain('baz.com');
-        $this->assertTrue($cookie->matchesDomain('baz.com'));
-        $this->assertFalse($cookie->matchesDomain('bar.com'));
+        static::assertTrue($cookie->matchesDomain('baz.com'));
+        static::assertFalse($cookie->matchesDomain('bar.com'));
 
         $cookie->setDomain('.baz.com');
-        $this->assertTrue($cookie->matchesDomain('.baz.com'));
-        $this->assertTrue($cookie->matchesDomain('foo.baz.com'));
-        $this->assertFalse($cookie->matchesDomain('baz.bar.com'));
-        $this->assertTrue($cookie->matchesDomain('baz.com'));
+        static::assertTrue($cookie->matchesDomain('.baz.com'));
+        static::assertTrue($cookie->matchesDomain('foo.baz.com'));
+        static::assertFalse($cookie->matchesDomain('baz.bar.com'));
+        static::assertTrue($cookie->matchesDomain('baz.com'));
 
         $cookie->setDomain('.127.0.0.1');
-        $this->assertTrue($cookie->matchesDomain('127.0.0.1'));
+        static::assertTrue($cookie->matchesDomain('127.0.0.1'));
 
         $cookie->setDomain('127.0.0.1');
-        $this->assertTrue($cookie->matchesDomain('127.0.0.1'));
+        static::assertTrue($cookie->matchesDomain('127.0.0.1'));
 
         $cookie->setDomain('.com.');
-        $this->assertFalse($cookie->matchesDomain('baz.com'));
+        static::assertFalse($cookie->matchesDomain('baz.com'));
 
         $cookie->setDomain('.local');
-        $this->assertTrue($cookie->matchesDomain('example.local'));
+        static::assertTrue($cookie->matchesDomain('example.local'));
     }
 
     public function pathMatchProvider()
@@ -148,7 +148,7 @@ class CookieTest extends TestCase
     {
         $cookie = new Cookie();
         $cookie->setPath($cookiePath);
-        $this->assertEquals($isMatch, $cookie->matchesPath($requestPath));
+        static::assertEquals($isMatch, $cookie->matchesPath($requestPath));
     }
 
     public function cookieValidateProvider()
@@ -179,13 +179,13 @@ class CookieTest extends TestCase
             'Value' => $value,
             'Domain' => $domain,
         ]);
-        $this->assertSame($result, $cookie->validate());
+        static::assertSame($result, $cookie->validate());
     }
 
     public function testDoesNotMatchIp()
     {
         $cookie = new Cookie(['Domain' => '192.168.16.']);
-        $this->assertFalse($cookie->matchesDomain('192.168.16.121'));
+        static::assertFalse($cookie->matchesDomain('192.168.16.121'));
     }
 
     public function testConvertsToString()
@@ -200,7 +200,7 @@ class CookieTest extends TestCase
             'HttpOnly' => true,
             'Secure' => true,
         ]);
-        $this->assertEquals(
+        static::assertEquals(
             'test=123; Domain=foo.com; Path=/abc; Expires=Sun, 27 Oct 2013 23:20:08 GMT; Secure; HttpOnly',
             (string) $cookie
         );
@@ -386,13 +386,13 @@ class CookieTest extends TestCase
 
             if (!empty($parsed)) {
                 foreach ($parsed as $key => $value) {
-                    $this->assertEquals($parsed[$key], $p[$key], 'Comparing '.$key.' '.var_export($value, true).' : '.var_export($parsed, true).' | '.var_export($p, true));
+                    static::assertEquals($parsed[$key], $p[$key], 'Comparing '.$key.' '.var_export($value, true).' : '.var_export($parsed, true).' | '.var_export($p, true));
                 }
                 foreach ($p as $key => $value) {
-                    $this->assertEquals($p[$key], $parsed[$key], 'Comparing '.$key.' '.var_export($value, true).' : '.var_export($parsed, true).' | '.var_export($p, true));
+                    static::assertEquals($p[$key], $parsed[$key], 'Comparing '.$key.' '.var_export($value, true).' : '.var_export($parsed, true).' | '.var_export($p, true));
                 }
             } else {
-                $this->assertEquals([
+                static::assertEquals([
                     'Name' => null,
                     'Value' => null,
                     'Domain' => null,

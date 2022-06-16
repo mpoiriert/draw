@@ -41,7 +41,7 @@ abstract class ConfigurationTestCase extends TestCase
                 '"' => '',
                 'boolean' => 'bool',
             ];
-            $this->assertSame(
+            static::assertSame(
                 str_replace(array_keys($replaces), array_values($replaces), $expectedMessage),
                 str_replace(array_keys($replaces), array_values($replaces), $error->getMessage()),
             );
@@ -53,7 +53,7 @@ abstract class ConfigurationTestCase extends TestCase
     {
         $config = $this->processConfiguration([[]]);
 
-        $this->assertEquals(
+        static::assertEquals(
             $this->getDefaultConfiguration(),
             $config
         );

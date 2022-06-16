@@ -34,9 +34,9 @@ class OpenApiTest extends TestCase
     public function testExtractSwaggerSchema(string $file): void
     {
         $schema = $this->object->extract(file_get_contents($file));
-        $this->assertInstanceOf(Root::class, $schema);
+        static::assertInstanceOf(Root::class, $schema);
 
-        $this->assertJsonStringEqualsJsonString(file_get_contents($file), $this->object->dump($schema, false));
+        static::assertJsonStringEqualsJsonString(file_get_contents($file), $this->object->dump($schema, false));
     }
 
     public function testValidateError(): void
@@ -56,9 +56,9 @@ class OpenApiTest extends TestCase
             $extractor2 = $this->createMock(ExtractorInterface::class),
         ]);
 
-        $extractor1->expects($this->once())->method('canExtract')->willReturn(true);
-        $extractor1->expects($this->once())->method('extract')->willThrowException(new ExtractionCompletedException());
-        $extractor2->expects($this->never())->method('canExtract');
+        $extractor1->expects(static::once())->method('canExtract')->willReturn(true);
+        $extractor1->expects(static::once())->method('extract')->willThrowException(new ExtractionCompletedException());
+        $extractor2->expects(static::never())->method('canExtract');
 
         $this->object->extract('');
     }

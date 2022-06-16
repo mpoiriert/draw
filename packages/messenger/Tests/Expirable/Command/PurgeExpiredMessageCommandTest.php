@@ -61,7 +61,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
     public function testExecuteInvalidTransport(): void
     {
         $this->transportRepository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('has')
             ->with($transport = uniqid('transport-invalid-'))
             ->willReturn(false);
@@ -75,12 +75,12 @@ class PurgeExpiredMessageCommandTest extends TestCase
     public function testExecute(): void
     {
         $this->transportRepository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getTransportNames')
             ->willReturn($transportNames = [uniqid('transport1-'), uniqid('transport2-')]);
 
         $this->transportRepository
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('get')
             ->withConsecutive(
                 [$transportNames[0]],
@@ -95,15 +95,15 @@ class PurgeExpiredMessageCommandTest extends TestCase
             );
 
         $transport1
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('purgeObsoleteMessages')
             ->with(
-                $this->equalToWithDelta(new DateTime('- 1 month'), 1)
+                static::equalToWithDelta(new DateTime('- 1 month'), 1)
             )
             ->willReturn($count = rand(1, 10));
 
         $transport2
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('purgeObsoleteMessages');
 
         $this->execute([], [])
@@ -128,13 +128,13 @@ class PurgeExpiredMessageCommandTest extends TestCase
     public function testExecuteWithInputs(): void
     {
         $this->transportRepository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('has')
             ->with($transportName = uniqid('transport-'))
             ->willReturn(true);
 
         $this->transportRepository
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('get')
             ->with($transportName)
             ->willReturn(
@@ -144,10 +144,10 @@ class PurgeExpiredMessageCommandTest extends TestCase
         $delay = '- 4 months';
 
         $transport
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('purgeObsoleteMessages')
             ->with(
-                $this->equalToWithDelta(new DateTime($delay), 1)
+                static::equalToWithDelta(new DateTime($delay), 1)
             )
             ->willReturn($count = rand(1, 10));
 

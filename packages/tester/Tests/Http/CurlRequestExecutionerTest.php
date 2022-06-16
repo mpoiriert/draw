@@ -14,7 +14,7 @@ class CurlRequestExecutionerTest extends TestCase
     {
         $curlRequestExecutioner = new CurlRequestExecutioner();
 
-        $this->assertInstanceOf(RequestExecutionerInterface::class, $curlRequestExecutioner);
+        static::assertInstanceOf(RequestExecutionerInterface::class, $curlRequestExecutioner);
 
         return $curlRequestExecutioner;
     }
@@ -31,11 +31,11 @@ class CurlRequestExecutionerTest extends TestCase
 
         $response = $curlRequestExecutioner->executeRequest($request);
 
-        $this->assertInstanceOf(ResponseInterface::class, $response);
+        static::assertInstanceOf(ResponseInterface::class, $response);
 
         $content = $response->getBody()->getContents();
 
-        $this->assertJsonStringEqualsJsonString(
+        static::assertJsonStringEqualsJsonString(
             '{
   "userId": 1,
   "id": 1,

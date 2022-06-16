@@ -25,7 +25,7 @@ class ConstraintViolationListExceptionTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ValidatorException::class,
             $this->object
         );
@@ -33,7 +33,7 @@ class ConstraintViolationListExceptionTest extends TestCase
 
     public function testGetViolationList(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->constraintViolationList,
             $this->object->getViolationList()
         );

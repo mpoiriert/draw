@@ -26,7 +26,7 @@ class TranslationExtensionTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             AbstractExtension::class,
             $this->object
         );
@@ -36,18 +36,18 @@ class TranslationExtensionTest extends TestCase
     {
         $filters = $this->object->getFilters();
 
-        $this->assertCount(1, $filters);
+        static::assertCount(1, $filters);
 
         $filter = $filters[0];
 
-        $this->assertInstanceOf(TwigFilter::class, $filter);
+        static::assertInstanceOf(TwigFilter::class, $filter);
 
-        $this->assertSame(
+        static::assertSame(
             'trans',
             $filter->getName(),
         );
 
-        $this->assertSame(
+        static::assertSame(
             [$this->object, 'trans'],
             $filter->getCallable()
         );
@@ -62,7 +62,7 @@ class TranslationExtensionTest extends TestCase
         $count = rand(0, PHP_INT_MAX);
 
         $this->translator
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('trans')
             ->with(
                 $message,
@@ -72,7 +72,7 @@ class TranslationExtensionTest extends TestCase
             )
             ->willReturnArgument(0);
 
-        $this->assertSame(
+        static::assertSame(
             $message,
             $this->object->trans(
                 $message,
@@ -90,7 +90,7 @@ class TranslationExtensionTest extends TestCase
         $message2 = uniqid('message-');
 
         $this->translator
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('trans')
             ->withConsecutive(
                 [$message1],
@@ -101,7 +101,7 @@ class TranslationExtensionTest extends TestCase
                 $result = uniqid('result-')
             );
 
-        $this->assertSame(
+        static::assertSame(
             $result,
             $this->object->trans(
                 [$message1, $message2, uniqid('message-not-use-')],

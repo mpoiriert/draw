@@ -23,7 +23,7 @@ class TransportTesterTest extends TestCase
 
     public function testGetTransport(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->getService('messenger.transport.memory'),
             $this->transportTester->getTransport()
         );

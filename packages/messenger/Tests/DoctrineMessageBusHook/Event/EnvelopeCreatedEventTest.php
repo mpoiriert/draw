@@ -33,7 +33,7 @@ class EnvelopeCreatedEventTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Event::class,
             $this->object
         );
@@ -41,7 +41,7 @@ class EnvelopeCreatedEventTest extends TestCase
 
     public function testGetMessageHolder(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->messageHolder,
             $this->object->getMessageHolder()
         );
@@ -49,14 +49,14 @@ class EnvelopeCreatedEventTest extends TestCase
 
     public function testEnvelopeMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->envelope,
             $this->object->getEnvelope()
         );
 
         $this->object->setEnvelope($value = new Envelope((object) []));
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getEnvelope()
         );

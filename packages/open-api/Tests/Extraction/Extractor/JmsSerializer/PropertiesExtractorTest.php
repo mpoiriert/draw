@@ -64,14 +64,14 @@ class PropertiesExtractorTest extends TestCase
         /** @var ExtractionContextInterface $context */
         $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
 
-        $this->assertSame($canBeExtract, $this->jmsExtractor->canExtract($source, $type, $context));
+        static::assertSame($canBeExtract, $this->jmsExtractor->canExtract($source, $type, $context));
 
         if (!$canBeExtract) {
             try {
                 $this->jmsExtractor->extract($source, $type, $context);
-                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
+                static::fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
             } catch (ExtractionImpossibleException $e) {
-                $this->assertTrue(true);
+                static::assertTrue(true);
             }
         }
     }
@@ -95,7 +95,7 @@ class PropertiesExtractorTest extends TestCase
 
         $jsonSchema = $context->getOpenApi()->dump($context->getRootSchema(), false);
 
-        $this->assertJsonStringEqualsJsonString(
+        static::assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/jmsExtractorTestExtract.json'),
             $jsonSchema
         );

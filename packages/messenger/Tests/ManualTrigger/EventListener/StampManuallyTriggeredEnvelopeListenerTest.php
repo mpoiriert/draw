@@ -26,7 +26,7 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->service
         );
@@ -34,7 +34,7 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 SendMessageToTransportsEvent::class => [
                     ['handleManuallyTriggeredMessage'],
@@ -69,7 +69,7 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
     {
         $this->service->handleManuallyTriggeredMessage($event = new SendMessageToTransportsEvent($envelope));
 
-        $this->assertCount(
+        static::assertCount(
             $expectedCount,
             $event->getEnvelope()->all(ManualTriggerStamp::class)
         );

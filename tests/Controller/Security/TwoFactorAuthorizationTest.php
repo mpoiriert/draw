@@ -53,14 +53,14 @@ class TwoFactorAuthorizationTest extends TestCase
 
     public function testLoginRedirectEnable2fa(): KernelBrowser
     {
-        $this->assertTrue(self::$user->isForceEnablingTwoFactorAuthentication());
+        static::assertTrue(self::$user->isForceEnablingTwoFactorAuthentication());
         /** @var KernelBrowser $client */
         $client = $this->getService('test.client');
         $client->followRedirects(true);
 
         $crawler = $this->loginToAdmin($client, static::$user->getUsername(), 'test');
 
-        $this->assertStringContainsString(
+        static::assertStringContainsString(
             '/admin/app/user/'.self::$user->getId().'/enable-2fa',
             $crawler->getUri(),
             'User must be redirect to enable 2fa url'
@@ -80,8 +80,8 @@ class TwoFactorAuthorizationTest extends TestCase
                 ->form(['enable2fa_form[code]' => '111111'], 'POST')
         );
 
-        $this->assertStringContainsString('/enable-2fa', $crawler->getUri());
-        $this->assertStringContainsString('Invalid code provided', $client->getResponse()->getContent());
+        static::assertStringContainsString('/enable-2fa', $crawler->getUri());
+        static::assertStringContainsString('Invalid code provided', $client->getResponse()->getContent());
 
         return $client;
     }
@@ -97,11 +97,11 @@ class TwoFactorAuthorizationTest extends TestCase
                 ->form(['enable2fa_form[code]' => '123456'], 'POST')
         );
 
-        $this->assertStringContainsString('/admin/dashboard', $crawler->getUri());
-        $this->assertStringContainsString('2FA successfully enabled.', $client->getResponse()->getContent());
+        static::assertStringContainsString('/admin/dashboard', $crawler->getUri());
+        static::assertStringContainsString('2FA successfully enabled.', $client->getResponse()->getContent());
 
         $user = self::$entityManager->find(User::class, self::$user->getId());
-        $this->assertTrue($user->isTotpAuthenticationEnabled());
+        static::assertTrue($user->isTotpAuthenticationEnabled());
 
         return $client;
     }
@@ -117,8 +117,8 @@ class TwoFactorAuthorizationTest extends TestCase
                 ->form(['_auth_code' => '11111'], 'POST')
         );
 
-        $this->assertStringContainsString('The verification code is not valid.', $client->getResponse()->getContent());
-        $this->assertStringContainsString('/2fa', $crawler->getUri());
+        static::assertStringContainsString('The verification code is not valid.', $client->getResponse()->getContent());
+        static::assertStringContainsString('/2fa', $crawler->getUri());
 
         return $client;
     }
@@ -134,7 +134,7 @@ class TwoFactorAuthorizationTest extends TestCase
                 ->form(['_auth_code' => '123456'], 'POST')
         );
 
-        $this->assertStringContainsString('/admin/dashboard', $crawler->getUri());
+        static::assertStringContainsString('/admin/dashboard', $crawler->getUri());
 
         return $client;
     }
@@ -162,10 +162,10 @@ class TwoFactorAuthorizationTest extends TestCase
             sprintf(self::ADMIN_URL.'/app/user/%s/disable-2fa', self::$user->getId())
         );
 
-        $this->assertStringContainsString('/edit', $crawler->getUri());
-        $this->assertStringContainsString('2FA successfully disabled.', $client->getResponse()->getContent());
+        static::assertStringContainsString('/edit', $crawler->getUri());
+        static::assertStringContainsString('2FA successfully disabled.', $client->getResponse()->getContent());
 
-        $this->assertFalse($this->reloadUser()->isTotpAuthenticationEnabled());
+        static::assertFalse($this->reloadUser()->isTotpAuthenticationEnabled());
 
         return $client;
     }

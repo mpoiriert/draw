@@ -17,7 +17,7 @@ class ToolTest extends TestCase
         $namespaces = [$namespace = uniqid('namespaces-')];
         Tool::ignoreNamespacesBaseOnClassExistence(__CLASS__, $namespaces);
 
-        $this->assertArrayNotHasKey(
+        static::assertArrayNotHasKey(
             $namespace,
             ReflectionAccessor::getPropertyValue(AnnotationReader::class, 'globalIgnoredNamespaces')
         );
@@ -29,12 +29,12 @@ class ToolTest extends TestCase
         Tool::ignoreNamespacesBaseOnClassExistence(uniqid('Class'), $namespaces);
 
         $ignoredNamespaces = ReflectionAccessor::getPropertyValue(AnnotationReader::class, 'globalIgnoredNamespaces');
-        $this->assertArrayHasKey(
+        static::assertArrayHasKey(
             $namespace1,
             $ignoredNamespaces
         );
 
-        $this->assertArrayHasKey(
+        static::assertArrayHasKey(
             $namespace2,
             $ignoredNamespaces
         );

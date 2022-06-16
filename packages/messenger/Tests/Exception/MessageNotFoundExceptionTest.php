@@ -24,7 +24,7 @@ class MessageNotFoundExceptionTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Exception::class,
             $this->exception
         );
@@ -32,7 +32,7 @@ class MessageNotFoundExceptionTest extends TestCase
 
     public function testGetMessage(): void
     {
-        $this->assertSame(
+        static::assertSame(
             sprintf('Message id [%s] not found', $this->messageId),
             $this->exception->getMessage()
         );

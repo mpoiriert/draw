@@ -10,6 +10,6 @@ class SqlLogTest extends TestCase
     public function test(): void
     {
         $log = new SqlLog('query');
-        $this->assertEquals('query', $log->query);
+        static::assertEquals('query', $log->query);
     }
 }

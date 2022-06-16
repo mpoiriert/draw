@@ -90,7 +90,7 @@ composer-update:
 	sudo chown martin:martin -Rf .
 
 cs-fix:
-	docker-compose exec php php vendor/bin/php-cs-fixer fix -v
+	docker-compose exec php php vendor/bin/php-cs-fixer fix --allow-risky=yes -v
 
 composer-normalize:
 	[ -f ./composer-normalize] && echo 'composer-normalizer available' || wget https://github.com/ergebnis/composer-normalize/releases/download/2.24.1/composer-normalize.phar -O composer-normalize

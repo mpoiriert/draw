@@ -33,7 +33,7 @@ class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
 
         $this->compilerPass->process($this->containerBuilder);
 
-        $this->assertSame(
+        static::assertSame(
             [],
             $definition->getMethodCalls()
         );
@@ -48,7 +48,7 @@ class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
 
         $this->compilerPass->process($this->containerBuilder);
 
-        $this->assertSame(
+        static::assertSame(
             [
                 [
                     'addOption',

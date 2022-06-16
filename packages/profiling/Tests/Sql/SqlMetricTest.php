@@ -10,8 +10,8 @@ class SqlMetricTest extends TestCase
     public function test(): void
     {
         $metric = new SqlMetric(['query']);
-        $this->assertEquals(1, $metric->count);
-        $this->assertEquals(
+        static::assertEquals(1, $metric->count);
+        static::assertEquals(
             ['query'],
             $metric->queries
         );

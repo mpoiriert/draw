@@ -21,17 +21,17 @@ class UserLockTest extends TestCase
 
     public function testConstructorDefault(): void
     {
-        $this->assertNotNull($this->entity->getId(), 'Id will always have a value');
-        $this->assertNull($this->entity->getUser(), 'User must be null');
-        $this->assertNull($this->entity->getReason(), 'Reason must be null');
-        $this->assertInstanceOf(
+        static::assertNotNull($this->entity->getId(), 'Id will always have a value');
+        static::assertNull($this->entity->getUser(), 'User must be null');
+        static::assertNull($this->entity->getReason(), 'Reason must be null');
+        static::assertInstanceOf(
             DateTimeInterface::class,
             $this->entity->getCreatedAt(),
             'Created at must be a datetime interface'
         );
-        $this->assertNull($this->entity->getLockOn(), 'Lock on must be null');
-        $this->assertNull($this->entity->getExpiresAt(), 'Expires at must be null');
-        $this->assertNull($this->entity->getUnlockUntil(), 'Unlock until must be null');
+        static::assertNull($this->entity->getLockOn(), 'Lock on must be null');
+        static::assertNull($this->entity->getExpiresAt(), 'Expires at must be null');
+        static::assertNull($this->entity->getUnlockUntil(), 'Unlock until must be null');
     }
 
     public function provideTestIsActive(): array
@@ -73,6 +73,6 @@ class UserLockTest extends TestCase
      */
     public function testIsActive(UserLock $userLock, bool $expected): void
     {
-        $this->assertSame($expected, $userLock->isActive());
+        static::assertSame($expected, $userLock->isActive());
     }
 }

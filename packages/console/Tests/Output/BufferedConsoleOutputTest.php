@@ -23,7 +23,7 @@ class BufferedConsoleOutputTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ConsoleOutput::class,
             $this->object
         );
@@ -38,12 +38,12 @@ class BufferedConsoleOutputTest extends TestCase
         );
 
         $formatter
-            ->expects($this->exactly(3))
+            ->expects(static::exactly(3))
             ->method('isDecorated')
             ->willReturnOnConsecutiveCalls(false, true, true);
 
         $formatter
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('setDecorated')
             ->with(true);
 
@@ -71,17 +71,17 @@ class BufferedConsoleOutputTest extends TestCase
 
     public function testFetch(): void
     {
-        $this->assertSame('', $this->object->fetch());
+        static::assertSame('', $this->object->fetch());
 
         $message = uniqid('message-');
 
         $this->object->write($message, true);
 
-        $this->assertSame(
+        static::assertSame(
             $message.PHP_EOL,
             $this->object->fetch()
         );
 
-        $this->assertSame('', $this->object->fetch());
+        static::assertSame('', $this->object->fetch());
     }
 }

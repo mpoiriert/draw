@@ -85,7 +85,7 @@ class TestResponseTest extends TestCase
         }
 
         // We check fluent interface
-        $this->assertSame(
+        static::assertSame(
             $testResponse,
             $testResponse->assertSuccessful()
         );
@@ -96,7 +96,7 @@ class TestResponseTest extends TestCase
         $testResponse = $this->createTestResponse(new Response(100));
 
         // We check fluent interface
-        $this->assertSame(
+        static::assertSame(
             $testResponse,
             $testResponse->assertStatus(100)
         );
@@ -187,7 +187,7 @@ class TestResponseTest extends TestCase
         );
 
         // We check fluent interface
-        $this->assertSame(
+        static::assertSame(
             $testResponse,
             $testResponse->assertRedirect('/redirect-to')
         );
@@ -250,7 +250,7 @@ class TestResponseTest extends TestCase
         }
 
         // We check fluent interface
-        $this->assertSame(
+        static::assertSame(
             $testResponse,
             $testResponse->assertHeader($headerName, $value)
         );
@@ -260,13 +260,13 @@ class TestResponseTest extends TestCase
     {
         $testResponse = $this->createTestResponse(new Response(200, [], 'body'));
 
-        $this->assertSame(
+        static::assertSame(
             'body',
             $testResponse->getResponseBodyContents()
         );
 
         // Multiple call should return the same content
-        $this->assertSame(
+        static::assertSame(
             'body',
             $testResponse->getResponseBodyContents()
         );
@@ -279,7 +279,7 @@ class TestResponseTest extends TestCase
         );
 
         // We check fluent interface
-        $this->assertSame(
+        static::assertSame(
             $testResponse,
             $testResponse->assertCookie('name')
         );
@@ -292,7 +292,7 @@ class TestResponseTest extends TestCase
         );
 
         // We check fluent interface
-        $this->assertSame(
+        static::assertSame(
             $testResponse,
             $testResponse->assertCookie('name', 'value')
         );
@@ -341,7 +341,7 @@ class TestResponseTest extends TestCase
             new Response(200, [], '{}')
         );
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             DataTester::class,
             $testResponse->toJsonDataTester()
         );

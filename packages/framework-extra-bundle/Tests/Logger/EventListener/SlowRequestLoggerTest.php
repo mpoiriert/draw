@@ -38,7 +38,7 @@ class SlowRequestLoggerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->service
         );
@@ -46,7 +46,7 @@ class SlowRequestLoggerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 TerminateEvent::class => ['onKernelTerminate', 2048],
             ],
@@ -57,7 +57,7 @@ class SlowRequestLoggerTest extends TestCase
     public function testOnKernelTerminateMatch(): void
     {
         $this->requestMatcher
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('matches')
             ->with($request = new Request())
             ->willReturn(true);
@@ -69,12 +69,12 @@ class SlowRequestLoggerTest extends TestCase
         );
 
         $this->logger
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('log')
             ->with(
                 LogLevel::WARNING,
                 'Response time too slow ({duration} milliseconds) for {url}',
-                $this->callback(function (array $parameter) use ($request) {
+                static::callback(function (array $parameter) use ($request) {
                     $this->assertSame(
                         $parameter['url'],
                         $request->getRequestUri()
@@ -103,7 +103,7 @@ class SlowRequestLoggerTest extends TestCase
     public function testOnKernelTerminateNoMatch(): void
     {
         $this->requestMatcher
-            ->expects($this->exactly(2))
+            ->expects(static::exactly(2))
             ->method('matches')
             ->with($request = new Request())
             ->willReturn(false);
@@ -115,7 +115,7 @@ class SlowRequestLoggerTest extends TestCase
         );
 
         $this->logger
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('log');
 
         $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($this->durations) / 1000) - 1);

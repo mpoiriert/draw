@@ -20,7 +20,7 @@ class ExtractionImpossibleExceptionTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Exception::class,
             $this->object
         );

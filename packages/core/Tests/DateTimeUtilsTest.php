@@ -59,7 +59,7 @@ class DateTimeUtilsTest extends TestCase
         ?DateTimeInterface $dateTime2,
         bool $expected
     ): void {
-        $this->assertSame(
+        static::assertSame(
             $expected,
             DateTimeUtils::isSameTimestamp($dateTime1, $dateTime2)
         );
@@ -81,14 +81,14 @@ class DateTimeUtilsTest extends TestCase
     {
         $dateTimeImmutable = DateTimeUtils::toDateTimeImmutable($dateTimeInterface);
         if (null === $dateTimeInterface) {
-            $this->assertNull($dateTimeImmutable);
+            static::assertNull($dateTimeImmutable);
 
             return;
         }
 
-        $this->assertInstanceOf(DateTimeImmutable::class, $dateTimeImmutable);
-        $this->assertTrue(DateTimeUtils::isSameTimestamp($dateTimeInterface, $dateTimeImmutable));
-        $this->assertNotSame($dateTimeInterface, $dateTimeImmutable);
+        static::assertInstanceOf(DateTimeImmutable::class, $dateTimeImmutable);
+        static::assertTrue(DateTimeUtils::isSameTimestamp($dateTimeInterface, $dateTimeImmutable));
+        static::assertNotSame($dateTimeInterface, $dateTimeImmutable);
     }
 
     /**
@@ -98,14 +98,14 @@ class DateTimeUtilsTest extends TestCase
     {
         $dateTime = DateTimeUtils::toDateTime($dateTimeInterface);
         if (null === $dateTimeInterface) {
-            $this->assertNull($dateTime);
+            static::assertNull($dateTime);
 
             return;
         }
 
-        $this->assertInstanceOf(DateTime::class, $dateTime);
-        $this->assertTrue(DateTimeUtils::isSameTimestamp($dateTimeInterface, $dateTime));
-        $this->assertNotSame($dateTimeInterface, $dateTime);
+        static::assertInstanceOf(DateTime::class, $dateTime);
+        static::assertTrue(DateTimeUtils::isSameTimestamp($dateTimeInterface, $dateTime));
+        static::assertNotSame($dateTimeInterface, $dateTime);
     }
 
     public function provideTestMillisecondDiff(): array
@@ -123,7 +123,7 @@ class DateTimeUtilsTest extends TestCase
      */
     public function testMillisecondDiff(string $delay, ?string $compareToDelay, int $expected): void
     {
-        $this->assertSame(
+        static::assertSame(
             $expected,
             DateTimeUtils::millisecondDiff(
                 new DateTimeImmutable($delay),

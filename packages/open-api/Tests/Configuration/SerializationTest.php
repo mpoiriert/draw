@@ -40,7 +40,7 @@ class SerializationTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ConfigurationAnnotation::class,
             $this->object
         );
@@ -48,14 +48,14 @@ class SerializationTest extends TestCase
 
     public function testStatusCodeMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->statusCode,
             $this->object->getStatusCode()
         );
 
         $this->object->setStatusCode($value = rand(PHP_INT_MIN, PHP_INT_MAX));
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getStatusCode()
         );
@@ -63,14 +63,14 @@ class SerializationTest extends TestCase
 
     public function testSerializerGroupsMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->serializerGroups,
             $this->object->getSerializerGroups()
         );
 
         $this->object->setSerializerGroups($value = [uniqid('group-')]);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getSerializerGroups()
         );
@@ -78,14 +78,14 @@ class SerializationTest extends TestCase
 
     public function testSerializerEnableMaxDepthChecksMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->serializerEnableMaxDepthChecks,
             $this->object->getSerializerEnableMaxDepthChecks()
         );
 
         $this->object->setSerializerEnableMaxDepthChecks(false);
 
-        $this->assertSame(
+        static::assertSame(
             false,
             $this->object->getSerializerEnableMaxDepthChecks()
         );
@@ -93,14 +93,14 @@ class SerializationTest extends TestCase
 
     public function testSerializerVersionMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->serializerVersion,
             $this->object->getSerializerVersion()
         );
 
         $this->object->setSerializerVersion($value = uniqid());
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getSerializerVersion()
         );
@@ -108,14 +108,14 @@ class SerializationTest extends TestCase
 
     public function testHeadersMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->headers,
             $this->object->getHeaders()
         );
 
         $this->object->setHeaders($value = [new Header()]);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getHeaders()
         );
@@ -123,14 +123,14 @@ class SerializationTest extends TestCase
 
     public function testContextAttributesMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->contextAttributes,
             $this->object->getContextAttributes()
         );
 
         $this->object->setContextAttributes($value = [uniqid('key-') => uniqid('value-')]);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getContextAttributes()
         );
@@ -138,7 +138,7 @@ class SerializationTest extends TestCase
 
     public function testGetAliasName(): void
     {
-        $this->assertSame(
+        static::assertSame(
             'draw_open_api_serialization',
             $this->object->getAliasName()
         );
@@ -146,6 +146,6 @@ class SerializationTest extends TestCase
 
     public function testAllowArray(): void
     {
-        $this->assertFalse($this->object->allowArray());
+        static::assertFalse($this->object->allowArray());
     }
 }

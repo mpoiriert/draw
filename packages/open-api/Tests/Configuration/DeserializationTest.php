@@ -34,7 +34,7 @@ class DeserializationTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ParamConverter::class,
             $this->object
         );
@@ -42,14 +42,14 @@ class DeserializationTest extends TestCase
 
     public function testPropertiesMapMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->propertiesMap,
             $this->object->getPropertiesMap()
         );
 
         $this->object->setPropertiesMap($value = [uniqid('key-') => uniqid('value-')]);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getPropertiesMap()
         );
@@ -57,14 +57,14 @@ class DeserializationTest extends TestCase
 
     public function testValidateMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             true,
             $this->object->getValidate()
         );
 
         $this->object->setValidate(false);
 
-        $this->assertSame(
+        static::assertSame(
             false,
             $this->object->getValidate()
         );
@@ -72,14 +72,14 @@ class DeserializationTest extends TestCase
 
     public function testValidationGroupsMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->validationGroups,
             $this->object->getValidationGroups()
         );
 
         $this->object->setValidationGroups($value = [uniqid('group-')]);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getValidationGroups()
         );
@@ -87,14 +87,14 @@ class DeserializationTest extends TestCase
 
     public function testDeserializationGroupsMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             $this->deserializationGroups,
             $this->object->getDeserializationGroups()
         );
 
         $this->object->setDeserializationGroups($value = [uniqid('group-')]);
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->object->getDeserializationGroups()
         );
@@ -102,14 +102,14 @@ class DeserializationTest extends TestCase
 
     public function testDeserializationEnableMaxDepthMutator(): void
     {
-        $this->assertSame(
+        static::assertSame(
             true,
             $this->object->getDeserializationEnableMaxDepth()
         );
 
         $this->object->setDeserializationEnableMaxDepth(false);
 
-        $this->assertSame(
+        static::assertSame(
             false,
             $this->object->getDeserializationEnableMaxDepth()
         );

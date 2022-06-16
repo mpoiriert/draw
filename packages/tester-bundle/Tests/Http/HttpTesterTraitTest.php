@@ -14,7 +14,7 @@ class HttpTesterTraitTest extends TestCase
             ->get('/test')
             ->assertStatus(200);
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             UrlGeneratorInterface::class,
             $this->getClientService(UrlGeneratorInterface::class)
         );

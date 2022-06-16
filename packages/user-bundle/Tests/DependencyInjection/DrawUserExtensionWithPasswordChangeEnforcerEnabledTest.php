@@ -27,7 +27,7 @@ class DrawUserExtensionWithPasswordChangeEnforcerEnabledTest extends DrawUserExt
 
     public function testTwoFactorAuthenticationSubscriber(): void
     {
-        $this->assertSame(
+        static::assertSame(
             'test-route',
             $this->getContainerBuilder()
                 ->getDefinition(PasswordChangeEnforcerListener::class)

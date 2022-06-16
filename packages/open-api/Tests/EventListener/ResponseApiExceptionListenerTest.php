@@ -48,14 +48,14 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
 
         $this->request
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getRequestFormat')
             ->willReturn('json');
     }
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -63,7 +63,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 
     public function testSubscribedEvents(): void
     {
-        $this->assertSame(
+        static::assertSame(
             [
                 ExceptionEvent::class => ['onKernelException', 255],
                 PreDumpRootSchemaEvent::class => ['addErrorDefinition'],
@@ -90,17 +90,17 @@ class ResponseApiExceptionListenerTest extends TestCase
             $event = new PreDumpRootSchemaEvent($root)
         );
 
-        $this->assertArrayHasKey(
+        static::assertArrayHasKey(
             'Draw.OpenApi.Error.Validation',
             $event->getSchema()->definitions
         );
 
-        $this->assertSame(
+        static::assertSame(
             $exitingSchema,
             $alreadySetPathItem->get->responses['500']
         );
 
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             OpenResponse::class,
             $notSetPathItem->get->responses['500']
         );
@@ -116,31 +116,31 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
 
         $this->request
-            ->expects($this->any())
+            ->expects(static::any())
             ->method('getRequestFormat')
             ->willReturn('html');
 
-        $this->assertNull($this->onKernelException());
+        static::assertNull($this->onKernelException());
     }
 
     public function testOnKernelExceptionJsonResponse(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             Response::class,
             $response = $this->onKernelException()
         );
 
-        $this->assertSame(
+        static::assertSame(
             'application/json',
             $response->headers->get('Content-Type')
         );
 
-        $this->assertJson($response->getContent());
+        static::assertJson($response->getContent());
     }
 
     public function testOnKernelExceptionDefaultDebugFalse(): void
     {
-        $this->assertArrayNotHasKey(
+        static::assertArrayNotHasKey(
             'detail',
             json_decode($this->onKernelException()->getContent(), true)
         );
@@ -148,7 +148,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 
     public function testOnKernelExceptionDebugFalse(): void
     {
-        $this->assertArrayNotHasKey(
+        static::assertArrayNotHasKey(
             'detail',
             json_decode($this->onKernelException(new ResponseApiExceptionListener(false))->getContent(), true)
         );
@@ -172,12 +172,12 @@ class ResponseApiExceptionListenerTest extends TestCase
         $responseData = json_decode($this->onKernelException(new ResponseApiExceptionListener(true))->getContent(),
             true);
 
-        $this->assertArrayHasKey(
+        static::assertArrayHasKey(
             'detail',
             $responseData
         );
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'class' => get_class($throwable),
                 'message' => $throwable->getMessage(),
@@ -200,7 +200,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 
     public function testOnKernelExceptionDefaultStatusCode500(): void
     {
-        $this->assertSame(
+        static::assertSame(
             500,
             $this->onKernelException()->getStatusCode()
         );
@@ -259,7 +259,7 @@ class ResponseApiExceptionListenerTest extends TestCase
             $throwable
         );
 
-        $this->assertSame(
+        static::assertSame(
             $errorCode,
             $this->onKernelException(new ResponseApiExceptionListener(false, $errorCodes))->getStatusCode()
         );
@@ -299,7 +299,7 @@ class ResponseApiExceptionListenerTest extends TestCase
             $this->onKernelException(new ResponseApiExceptionListener())->getContent()
         );
 
-        $this->assertSame('invalid-value', $value->errors[0]->invalidValue);
+        static::assertSame('invalid-value', $value->errors[0]->invalidValue);
     }
 
     public function testOnKernelExceptionIgnoreConstraintInvalidValue(): void
@@ -310,7 +310,7 @@ class ResponseApiExceptionListenerTest extends TestCase
             $this->onKernelException(new ResponseApiExceptionListener(false, [], 'errors', true))->getContent()
         );
 
-        $this->assertFalse(isset($value->errors[0]->invalidValue));
+        static::assertFalse(isset($value->errors[0]->invalidValue));
     }
 
     public function testOnKernelExceptionPayload(): void
@@ -321,7 +321,7 @@ class ResponseApiExceptionListenerTest extends TestCase
             $this->onKernelException(new ResponseApiExceptionListener(false, [], 'errors', true))->getContent()
         );
 
-        $this->assertSame(
+        static::assertSame(
             $constraint->payload,
             $value->errors[0]->payload
         );

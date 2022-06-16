@@ -33,7 +33,7 @@ class DeserializeBodyParamConverterTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ParamConverterInterface::class,
             $this->object
         );
@@ -44,7 +44,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         $paramConverter = new ParamConverter();
         $paramConverter->setConverter('draw_open_api.request_body');
 
-        $this->assertFalse($this->object->supports($paramConverter));
+        static::assertFalse($this->object->supports($paramConverter));
     }
 
     public function testSupportsWrongConverter(): void
@@ -52,7 +52,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         $paramConverter = new ParamConverter();
         $paramConverter->setClass(uniqid('class-'));
 
-        $this->assertFalse($this->object->supports($paramConverter));
+        static::assertFalse($this->object->supports($paramConverter));
     }
 
     public function testSupports(): void
@@ -61,7 +61,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         $paramConverter->setConverter('draw_open_api.request_body');
         $paramConverter->setClass(uniqid('class-'));
 
-        $this->assertTrue($this->object->supports($paramConverter));
+        static::assertTrue($this->object->supports($paramConverter));
     }
 
     public function testApplyRequestUnsupportedFormat(): void
@@ -71,7 +71,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         $request = $this->createRequest('', 'application/xml');
 
         $this->serializer
-            ->expects($this->never())
+            ->expects(static::never())
             ->method('deserialize');
 
         $this->expectException(UnsupportedMediaTypeHttpException::class);
@@ -87,13 +87,13 @@ class DeserializeBodyParamConverterTest extends TestCase
         $request = $this->createRequest('{}');
 
         $this->serializer
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('deserialize')
             ->with(
                 '{}',
                 $paramConverter->getClass(),
                 'json',
-                $this->isInstanceOf(DeserializationContext::class)
+                static::isInstanceOf(DeserializationContext::class)
             )
             ->willThrowException($exception = new UnsupportedFormatException(uniqid('message-')));
 
@@ -111,13 +111,13 @@ class DeserializeBodyParamConverterTest extends TestCase
         $request->request->set('key', 'value');
 
         $this->serializer
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('deserialize')
             ->with(
                 '{"key":"value"}',
                 $paramConverter->getClass(),
                 'json',
-                $this->isInstanceOf(DeserializationContext::class)
+                static::isInstanceOf(DeserializationContext::class)
             )
             ->willReturn((object) []);
 
@@ -131,7 +131,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         $request = $this->createRequest('{}');
 
         $this->serializer
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('deserialize')
             ->willThrowException($exception = new LogicException(uniqid('message-')));
 
@@ -148,18 +148,18 @@ class DeserializeBodyParamConverterTest extends TestCase
         $request = $this->createRequest('{}');
 
         $this->serializer
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('deserialize')
             ->willReturn($object = (object) []);
 
         $this->object->apply($request, $paramConverter);
 
-        $this->assertSame(
+        static::assertSame(
             $object,
             $request->attributes->get($paramConverter->getName())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $paramConverter,
             $request->attributes->get('_draw_body_validation')
         );
@@ -216,7 +216,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         $request->attributes->add($requestAttributes);
 
         $this->serializer
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('deserialize')
             ->with(json_encode($expectedData))
             ->willReturn((object) []);
@@ -239,13 +239,13 @@ class DeserializeBodyParamConverterTest extends TestCase
         $request = $this->createRequest('{}');
 
         $this->serializer
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('deserialize')
             ->with(
-                $this->isType('string'),
-                $this->isType('string'),
+                static::isType('string'),
+                static::isType('string'),
                 'json',
-                $this->callback(function (DeserializationContext $context) use ($options) {
+                static::callback(function (DeserializationContext $context) use ($options) {
                     $this->assertSame(
                         $options['groups'],
                         $context->getAttribute('groups')

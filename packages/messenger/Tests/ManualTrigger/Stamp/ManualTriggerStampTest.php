@@ -20,7 +20,7 @@ class ManualTriggerStampTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             StampInterface::class,
             $this->entity
         );

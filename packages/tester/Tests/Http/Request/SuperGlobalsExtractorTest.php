@@ -45,10 +45,10 @@ content of file
 
         $result = $this->superGlobalsExtractor->extractSuperGlobals($request);
 
-        $this->assertTrue(isset($result['_FILES']['file']['tmp_name']));
+        static::assertTrue(isset($result['_FILES']['file']['tmp_name']));
         $tmp_name = $result['_FILES']['file']['tmp_name'];
 
-        $this->assertSame(
+        static::assertSame(
             [
                 '_SERVER' => [
                     'HTTP_HOST' => 'localhost',

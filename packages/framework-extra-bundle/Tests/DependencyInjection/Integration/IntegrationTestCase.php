@@ -45,7 +45,7 @@ abstract class IntegrationTestCase extends TestCase
     {
         $config = $this->processConfiguration([[]]);
 
-        $this->assertEquals(
+        static::assertEquals(
             $this->getDefaultConfiguration(),
             $config
         );

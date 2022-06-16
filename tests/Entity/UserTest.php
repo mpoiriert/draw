@@ -71,7 +71,7 @@ class UserTest extends TestCase
 
         $envelope = $this->transportTester->getTransport()->get()[0];
 
-        $this->assertInstanceOf(NewUserLockMessage::class, $envelope->getMessage());
+        static::assertInstanceOf(NewUserLockMessage::class, $envelope->getMessage());
 
         $this->transportTester->reset();
         static::getService(MessageBusInterface::class)
@@ -81,8 +81,8 @@ class UserTest extends TestCase
 
         $stamp = $this->transportTester->getTransport()->get()[0]->last(SearchableTagStamp::class);
 
-        $this->assertTrue($stamp->getEnforceUniqueness());
-        $this->assertSame(
+        static::assertTrue($stamp->getEnforceUniqueness());
+        static::assertSame(
             [
                 'activateUserLock:'.$userLock->getReason(),
                 'userId:'.$userLock->getUser()->getId(),

@@ -25,14 +25,14 @@ class DrawMessageTagTraitTest extends TestCase
 
     public function testNameMutator(): void
     {
-        $this->assertNull($this->entity->getName());
+        static::assertNull($this->entity->getName());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setName($value = uniqid())
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getName()
         );
@@ -40,14 +40,14 @@ class DrawMessageTagTraitTest extends TestCase
 
     public function testMessageMutator(): void
     {
-        $this->assertNull($this->entity->getMessage());
+        static::assertNull($this->entity->getMessage());
 
-        $this->assertSame(
+        static::assertSame(
             $this->entity,
             $this->entity->setMessage($value = $this->createMock(DrawMessageInterface::class))
         );
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             $this->entity->getMessage()
         );
@@ -55,11 +55,11 @@ class DrawMessageTagTraitTest extends TestCase
 
     public function testToString(): void
     {
-        $this->assertSame('', (string) $this->entity);
+        static::assertSame('', (string) $this->entity);
 
         $this->entity->setName($value = uniqid());
 
-        $this->assertSame(
+        static::assertSame(
             $value,
             (string) $this->entity
         );

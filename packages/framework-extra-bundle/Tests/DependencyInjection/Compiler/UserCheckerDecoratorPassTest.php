@@ -33,12 +33,12 @@ class UserCheckerDecoratorPassTest extends TestCase
 
         $definition = $container->findDefinition('draw.security.core.user.event_driven_user_checker');
 
-        $this->assertSame(
+        static::assertSame(
             EventDrivenUserChecker::class,
             $definition->getClass()
         );
 
-        $this->assertSame(
+        static::assertSame(
             [
                 'security.user_checker',
                 'draw.security.core.user.event_driven_user_checker.inner',
@@ -49,7 +49,7 @@ class UserCheckerDecoratorPassTest extends TestCase
 
         $argument = $definition->getArgument('$decoratedUserChecker');
 
-        $this->assertInstanceOf(Reference::class, $argument);
-        $this->assertSame('draw.security.core.user.event_driven_user_checker.inner', (string) $argument);
+        static::assertInstanceOf(Reference::class, $argument);
+        static::assertSame('draw.security.core.user.event_driven_user_checker.inner', (string) $argument);
     }
 }

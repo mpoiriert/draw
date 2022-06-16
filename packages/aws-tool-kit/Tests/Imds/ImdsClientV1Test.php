@@ -26,7 +26,7 @@ class ImdsClientV1Test extends TestCase
     public function testGetCurrentInstanceId(): void
     {
         $this->httpClient
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('request')
             ->with(
                 'GET',
@@ -35,12 +35,12 @@ class ImdsClientV1Test extends TestCase
             ->willReturn($response = $this->createMock(ResponseInterface::class));
 
         $response
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('getContent')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'));
 
-        $this->assertSame(
+        static::assertSame(
             $instanceId,
             $this->imdsClientV1->getCurrentInstanceId()
         );

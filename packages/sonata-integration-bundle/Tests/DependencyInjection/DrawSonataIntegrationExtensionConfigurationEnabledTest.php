@@ -31,7 +31,7 @@ class DrawSonataIntegrationExtensionConfigurationEnabledTest extends DrawSonataI
 
         $methodCalls = $definition->getMethodCalls();
 
-        $this->assertSame(
+        static::assertSame(
             [
                 ['setTranslationDomain', ['DrawConfigurationSonata']],
             ],
