@@ -48,8 +48,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('invite_create_account_route')
                     ->defaultValue('home')
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $treeBuilder;
     }
