@@ -165,11 +165,11 @@ class PhpDocOperationExtractorStubService
     /**
      * @param $string
      *
-     * @return PhpDocOperationExtractorStubService
-     *
      * @throws Exception                     When problem occur
      * @throws LengthException
      * @throws ExtractionImpossibleException
+     *
+     * @return PhpDocOperationExtractorStubService
      */
     public function operation(self $service, $string, array $array)
     {
