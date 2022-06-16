@@ -19,9 +19,6 @@ class Configuration implements ConfigurationInterface
         $this->integrations = $integrations;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('draw_framework_extra');
