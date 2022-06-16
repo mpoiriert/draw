@@ -4,7 +4,6 @@ namespace Draw\Component\Validator\Tests\Constraints;
 
 use Draw\Component\Validator\Constraints\PhpCallable;
 use Draw\Component\Validator\Constraints\PhpCallableValidator;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -52,7 +51,7 @@ class PhpCallableValidatorTest extends TestCase
         return [
             'execution-only' => [null, null, 0],
             'null' => [null, new IsTrue(), 0],
-            'exception' => [new Exception(), new IsTrue(), 1],
+            'exception' => [new \Exception(), new IsTrue(), 1],
             'match-return-value-constraint' => [true, new IsTrue(), 0],
             'does-not-match-return-value-constraint' => [false, new IsTrue(), 1],
         ];
@@ -70,7 +69,7 @@ class PhpCallableValidatorTest extends TestCase
             [
                 new PhpCallable([
                     'callable' => function ($value) {
-                        if ($value instanceof Exception) {
+                        if ($value instanceof \Exception) {
                             throw $value;
                         }
 

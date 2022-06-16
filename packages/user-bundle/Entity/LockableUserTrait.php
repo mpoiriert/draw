@@ -2,14 +2,12 @@
 
 namespace Draw\Bundle\UserBundle\Entity;
 
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
 use function Draw\Component\Core\use_trait;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
-use RuntimeException;
 
 trait LockableUserTrait
 {
@@ -54,7 +52,7 @@ trait LockableUserTrait
     public function lock(UserLock $userLock): UserLock
     {
         if (!$reason = $userLock->getReason()) {
-            throw new RuntimeException('User Lock must have a reason at this point.');
+            throw new \RuntimeException('User Lock must have a reason at this point.');
         }
 
         $currentLock = $this->getLocks()[$reason] ?? null;
@@ -73,7 +71,7 @@ trait LockableUserTrait
         return $userLock;
     }
 
-    public function unlock(string $reason, DateTimeInterface $until = null): ?UserLock
+    public function unlock(string $reason, \DateTimeInterface $until = null): ?UserLock
     {
         switch (true) {
             case null === $lock = $this->getLocks()[$reason] ?? null:

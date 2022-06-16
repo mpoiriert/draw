@@ -5,7 +5,6 @@ namespace Draw\Component\Tester\Http;
 use Draw\Component\Tester\Http\Cookie\CookieClientObserver;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
-use Throwable;
 
 class Client implements ClientInterface
 {
@@ -123,7 +122,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * @throws Throwable
+     * @throws \Throwable
      */
     public function send(RequestInterface $request): TestResponse
     {
@@ -144,7 +143,7 @@ class Client implements ClientInterface
         $e = null;
         try {
             $response = $this->requestExecutioner->executeRequest($request);
-        } catch (Throwable $exception) {
+        } catch (\Throwable $exception) {
             foreach ($observers as $observer) {
                 $observer->postExecutionError($request, $exception, $this->requestExecutioner);
             }

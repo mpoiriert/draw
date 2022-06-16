@@ -3,7 +3,6 @@
 namespace Draw\Component\Messenger\Tests\Exception;
 
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
-use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +24,7 @@ class MessageNotFoundExceptionTest extends TestCase
     public function testConstruct(): void
     {
         static::assertInstanceOf(
-            Exception::class,
+            \Exception::class,
             $this->exception
         );
     }

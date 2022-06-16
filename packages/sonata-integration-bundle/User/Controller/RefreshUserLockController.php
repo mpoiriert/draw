@@ -5,7 +5,6 @@ namespace Draw\Bundle\SonataIntegrationBundle\User\Controller;
 use Draw\Bundle\UserBundle\AccountLocker;
 use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
-use RuntimeException;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +27,7 @@ class RefreshUserLockController extends CRUDController
         $this->admin->checkAccess('refresh-user-locks', $existingObject);
 
         if (!$existingObject instanceof LockableUserInterface) {
-            throw new RuntimeException('Invalid object of class ['.\get_class($existingObject).']. It must implements ['.LockableUserInterface::class.']');
+            throw new \RuntimeException('Invalid object of class ['.\get_class($existingObject).']. It must implements ['.LockableUserInterface::class.']');
         }
 
         $this->accountLocker->refreshUserLocks($existingObject);

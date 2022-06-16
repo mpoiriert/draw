@@ -6,14 +6,12 @@ use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
-use ReflectionClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Throwable;
 
 final class ResponseApiExceptionListener implements EventSubscriberInterface
 {
@@ -163,7 +161,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         return $errors;
     }
 
-    private function getExceptionDetail(Throwable $e): array
+    private function getExceptionDetail(\Throwable $e): array
     {
         $result = [
             'class' => \get_class($e),
@@ -186,14 +184,14 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         return $result;
     }
 
-    private function getStatusCode(Throwable $exception): int
+    private function getStatusCode(\Throwable $exception): int
     {
         if ($exception instanceof HttpException) {
             return $exception->getStatusCode();
         }
 
         $exceptionClass = \get_class($exception);
-        $reflectionExceptionClass = new ReflectionClass($exceptionClass);
+        $reflectionExceptionClass = new \ReflectionClass($exceptionClass);
 
         foreach ($this->errorCodes as $exceptionMapClass => $value) {
             switch (true) {

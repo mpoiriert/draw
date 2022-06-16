@@ -5,7 +5,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -27,7 +26,7 @@ class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
 
     public function testProcessNoNewestInstanceRoleCheckListener(): void
     {
-        $definition = new Definition(stdClass::class);
+        $definition = new Definition(\stdClass::class);
 
         $this->containerBuilder->setDefinition('service-id', $definition)->addTag('console.command');
 
@@ -41,7 +40,7 @@ class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
 
     public function testProcess(): void
     {
-        $definition = new Definition(stdClass::class);
+        $definition = new Definition(\stdClass::class);
 
         $this->containerBuilder->setDefinition(NewestInstanceRoleCheckListener::class, clone $definition);
         $this->containerBuilder->setDefinition('service-id', $definition)->addTag('console.command');

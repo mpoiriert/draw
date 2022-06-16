@@ -3,7 +3,6 @@
 namespace Draw\Component\Tester\Command;
 
 use PHPUnit\Framework\Assert;
-use ReflectionClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,7 +26,7 @@ class GenerateTraitCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('assertMethodsFilePath');
-        $reflectionClass = new ReflectionClass(Assert::class);
+        $reflectionClass = new \ReflectionClass(Assert::class);
         $methods = json_decode(file_get_contents($filePath), true);
 
         $class = '<?php

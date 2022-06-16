@@ -16,7 +16,6 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMes
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 use Draw\Component\Tester\MockBuilderTrait;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -171,7 +170,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             $this->createMock(MessageHolderInterface::class)
         );
 
-        $this->service->onClear(new OnClearEventArgs($this->entityManager, stdClass::class));
+        $this->service->onClear(new OnClearEventArgs($this->entityManager, \stdClass::class));
 
         static::assertCount(
             1,

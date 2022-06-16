@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Messenger\Transport\Entity;
 
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -35,22 +34,22 @@ trait DrawMessageTrait
     /**
      * @ORM\Column(name="created_at", type="datetime_immutable")
      */
-    private ?DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * @ORM\Column(name="available_at", type="datetime_immutable")
      */
-    private ?DateTimeImmutable $availableAt = null;
+    private ?\DateTimeImmutable $availableAt = null;
 
     /**
      * @ORM\Column(name="delivered_at", type="datetime_immutable")
      */
-    private ?DateTimeImmutable $deliveredAt = null;
+    private ?\DateTimeImmutable $deliveredAt = null;
 
     /**
      * @ORM\Column(name="expires_at", type="datetime_immutable")
      */
-    private ?DateTimeImmutable $expiresAt = null;
+    private ?\DateTimeImmutable $expiresAt = null;
 
     /**
      * @var Collection|DrawMessageTagInterface[]|null
@@ -119,36 +118,36 @@ trait DrawMessageTrait
         return $this;
     }
 
-    public function getCreatedAt(): ?DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?DateTimeImmutable $createdAt): self
+    public function setCreatedAt(?\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getAvailableAt(): ?DateTimeImmutable
+    public function getAvailableAt(): ?\DateTimeImmutable
     {
         return $this->availableAt;
     }
 
-    public function setAvailableAt(?DateTimeImmutable $availableAt): self
+    public function setAvailableAt(?\DateTimeImmutable $availableAt): self
     {
         $this->availableAt = $availableAt;
 
         return $this;
     }
 
-    public function getDeliveredAt(): ?DateTimeImmutable
+    public function getDeliveredAt(): ?\DateTimeImmutable
     {
         return $this->deliveredAt;
     }
 
-    public function setDeliveredAt(?DateTimeImmutable $deliveredAt): self
+    public function setDeliveredAt(?\DateTimeImmutable $deliveredAt): self
     {
         $this->deliveredAt = $deliveredAt;
 
@@ -178,12 +177,12 @@ trait DrawMessageTrait
         return $this;
     }
 
-    public function getExpiresAt(): ?DateTimeImmutable
+    public function getExpiresAt(): ?\DateTimeImmutable
     {
         return $this->expiresAt;
     }
 
-    public function setExpiresAt(?DateTimeImmutable $expiresAt): self
+    public function setExpiresAt(?\DateTimeImmutable $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
 

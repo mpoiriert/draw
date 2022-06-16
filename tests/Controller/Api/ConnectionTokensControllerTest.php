@@ -3,7 +3,6 @@
 namespace App\Tests\Controller\Api;
 
 use App\Tests\TestCase;
-use DateTime;
 use Firebase\JWT\JWT;
 
 class ConnectionTokensControllerTest extends TestCase
@@ -13,7 +12,7 @@ class ConnectionTokensControllerTest extends TestCase
         $token = JWT::encode(
             [
                 'userId' => 'invalid',
-                'exp' => (new DateTime('+ 7 days'))->getTimestamp(),
+                'exp' => (new \DateTime('+ 7 days'))->getTimestamp(),
             ],
             'acme',
             'HS256'

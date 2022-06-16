@@ -4,7 +4,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -24,7 +23,7 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
             $loader,
             $namespace = 'Draw\\Component\\Console\\',
             $directory = \dirname(
-                (new ReflectionClass(PurgeExecutionCommand::class))->getFileName(),
+                (new \ReflectionClass(PurgeExecutionCommand::class))->getFileName(),
                 2
             ),
             [
@@ -48,7 +47,7 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
     {
         $this->assertHasExtension($container, 'doctrine');
 
-        $reflection = new ReflectionClass(Execution::class);
+        $reflection = new \ReflectionClass(Execution::class);
 
         $container->prependExtensionConfig(
             'doctrine',

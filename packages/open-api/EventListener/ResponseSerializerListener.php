@@ -6,7 +6,6 @@ use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Event\PreSerializerResponseEvent;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializerInterface;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,7 +118,7 @@ class ResponseSerializerListener implements EventSubscriberInterface
     {
         $responseHeaderBag = $request->attributes->get('_responseHeaderBag', new ResponseHeaderBag());
         if (!$responseHeaderBag instanceof ResponseHeaderBag) {
-            throw new RuntimeException('The current attribute value of [_responseHeaderBag] is invalid');
+            throw new \RuntimeException('The current attribute value of [_responseHeaderBag] is invalid');
         }
 
         $responseHeaderBag->set($key, $values, $replace);

@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Console\Tests\Entity;
 
-use DateTimeImmutable;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Core\DateTimeUtils;
@@ -158,14 +157,14 @@ class ExecutionTest extends TestCase
     public function testCreatedAtMutator(): void
     {
         static::assertEqualsWithDelta(
-            new DateTimeImmutable(),
+            new \DateTimeImmutable(),
             $this->entity->getCreatedAt(),
             2
         );
 
         static::assertSame(
             $this->entity,
-            $this->entity->setCreatedAt($value = new DateTimeImmutable('- 1 days'))
+            $this->entity->setCreatedAt($value = new \DateTimeImmutable('- 1 days'))
         );
 
         static::assertEqualsWithDelta(
@@ -186,7 +185,7 @@ class ExecutionTest extends TestCase
 
         static::assertSame(
             $this->entity,
-            $this->entity->setUpdatedAt($value = new DateTimeImmutable('- 1 days'))
+            $this->entity->setUpdatedAt($value = new \DateTimeImmutable('- 1 days'))
         );
 
         static::assertEqualsWithDelta(
@@ -245,7 +244,7 @@ class ExecutionTest extends TestCase
 
     public function testUpdateTimestampAlreadySet(): void
     {
-        $this->entity->setUpdatedAt($value = new DateTimeImmutable('- 1 days'));
+        $this->entity->setUpdatedAt($value = new \DateTimeImmutable('- 1 days'));
 
         $this->entity->updateTimestamp($this->createMock(PreUpdateEventArgs::class));
 
@@ -258,7 +257,7 @@ class ExecutionTest extends TestCase
 
     public function testUpdateTimestampAlreadyChanged(): void
     {
-        $this->entity->setUpdatedAt($value = new DateTimeImmutable('- 1 days'));
+        $this->entity->setUpdatedAt($value = new \DateTimeImmutable('- 1 days'));
 
         $event = $this->createMock(PreUpdateEventArgs::class);
 

@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\EmailWriter;
 
-use DateTimeImmutable;
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
@@ -74,7 +73,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
                         $this->resetPasswordRoute,
                         ['t' => time()]
                     ),
-                    new DateTimeImmutable('+ 1 day'),
+                    new \DateTimeImmutable('+ 1 day'),
                     'reset_password',
                 )
             );

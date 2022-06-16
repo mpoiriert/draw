@@ -12,8 +12,6 @@ use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Tag;
 use Draw\Component\OpenApi\Versioning\RouteVersionMatcherInterface;
-use ReflectionException;
-use ReflectionMethod;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -79,8 +77,8 @@ class RouterRootSchemaExtractor implements ExtractorInterface
             list($class, $method) = $controller;
 
             try {
-                $reflectionMethod = new ReflectionMethod($class, $method);
-            } catch (ReflectionException $exception) {
+                $reflectionMethod = new \ReflectionMethod($class, $method);
+            } catch (\ReflectionException $exception) {
                 continue;
             }
 
@@ -114,7 +112,7 @@ class RouterRootSchemaExtractor implements ExtractorInterface
     /**
      * Return the operation for the route if the route is a Api route.
      */
-    private function getOperation(Route $route, ReflectionMethod $method): ?Operation
+    private function getOperation(Route $route, \ReflectionMethod $method): ?Operation
     {
         $operation = $this->annotationReader->getMethodAnnotation($method, Operation::class);
 

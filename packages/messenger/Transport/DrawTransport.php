@@ -2,8 +2,6 @@
 
 namespace Draw\Component\Messenger\Transport;
 
-use DateTime;
-use DateTimeInterface;
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\Comparator;
@@ -15,7 +13,6 @@ use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\ManualTrigger\Stamp\ManualTriggerStamp;
 use Draw\Component\Messenger\Searchable\SearchableTransportInterface;
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
-use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineReceivedStamp;
@@ -73,7 +70,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
                 $expiresAt,
                 $this->getTags($envelope)
             );
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             throw new TransportException($exception->getMessage(), 0, $exception);
         }
 
@@ -138,11 +135,11 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         string $body,
         array $headers,
         int $delay = null,
-        DateTimeInterface $expiresAt = null,
+        \DateTimeInterface $expiresAt = null,
         array $tags = []
     ): string {
         $id = Uuid::uuid6()->toString();
-        $now = new DateTime();
+        $now = new \DateTime();
         $availableAt = null;
         if (null !== $delay) {
             $availableAt = (clone $now)->modify(sprintf('+%d seconds', $delay / 1000));
@@ -185,7 +182,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         return $id;
     }
 
-    private static function formatDateTime(DateTimeInterface $dateTime): string
+    private static function formatDateTime(\DateTimeInterface $dateTime): string
     {
         return $dateTime->format('Y-m-d\TH:i:s');
     }
@@ -281,7 +278,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         return array_values(array_unique($ids));
     }
 
-    public function purgeObsoleteMessages(DateTimeInterface $since): int
+    public function purgeObsoleteMessages(\DateTimeInterface $since): int
     {
         $tableName = $this->connection->getConfiguration()['table_name'];
 

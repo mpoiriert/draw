@@ -3,7 +3,6 @@
 namespace Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension;
 
 use Draw\Bundle\UserBundle\Entity\PasswordChangeUserInterface;
-use ReflectionClass;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
@@ -34,7 +33,7 @@ class PasswordChangeEnforcerExtension extends AbstractAdminExtension
 
     public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void
     {
-        if (!(new ReflectionClass($admin->getClass()))->implementsInterface(PasswordChangeUserInterface::class)) {
+        if (!(new \ReflectionClass($admin->getClass()))->implementsInterface(PasswordChangeUserInterface::class)) {
             return;
         }
 

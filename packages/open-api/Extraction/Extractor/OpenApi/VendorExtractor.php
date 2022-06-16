@@ -8,9 +8,6 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\VendorExtensionSupportInterface;
 use Draw\Component\OpenApi\Schema\VendorInterface;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionProperty;
 
 class VendorExtractor implements ExtractorInterface
 {
@@ -31,9 +28,9 @@ class VendorExtractor implements ExtractorInterface
         switch (true) {
             case !$target instanceof VendorExtensionSupportInterface:
                 return false;
-            case $source instanceof ReflectionMethod:
-            case $source instanceof ReflectionClass:
-            case $source instanceof ReflectionProperty:
+            case $source instanceof \ReflectionMethod:
+            case $source instanceof \ReflectionClass:
+            case $source instanceof \ReflectionProperty:
                 return true;
         }
 
@@ -41,8 +38,8 @@ class VendorExtractor implements ExtractorInterface
     }
 
     /**
-     * @param ReflectionMethod|ReflectionClass|ReflectionProperty $source
-     * @param VendorExtensionSupportInterface                     $target
+     * @param \ReflectionMethod|\ReflectionClass|\ReflectionProperty $source
+     * @param VendorExtensionSupportInterface                        $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
@@ -56,7 +53,7 @@ class VendorExtractor implements ExtractorInterface
     }
 
     /**
-     * @param ReflectionMethod|ReflectionClass|ReflectionProperty
+     * @param \ReflectionMethod|\ReflectionClass|\ReflectionProperty
      *
      * @return array|VendorInterface[]
      */
@@ -65,15 +62,15 @@ class VendorExtractor implements ExtractorInterface
         $classLevelAnnotations = [];
         $annotations = [];
         switch (true) {
-            case $reflector instanceof ReflectionMethod:
+            case $reflector instanceof \ReflectionMethod:
                 $annotations = $this->annotationReader->getMethodAnnotations($reflector);
                 $classLevelAnnotations = $this->annotationReader->getClassAnnotations($reflector->getDeclaringClass());
                 break;
-            case $reflector instanceof ReflectionProperty:
+            case $reflector instanceof \ReflectionProperty:
                 $annotations = $this->annotationReader->getPropertyAnnotations($reflector);
                 $classLevelAnnotations = $this->annotationReader->getClassAnnotations($reflector->getDeclaringClass());
                 break;
-            case $reflector instanceof ReflectionClass:
+            case $reflector instanceof \ReflectionClass:
                 $annotations = $this->annotationReader->getClassAnnotations($reflector);
                 break;
         }

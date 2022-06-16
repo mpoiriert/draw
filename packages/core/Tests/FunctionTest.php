@@ -4,18 +4,17 @@ namespace Draw\Component\Core\Tests;
 
 use function Draw\Component\Core\use_trait;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 class FunctionTest extends TestCase
 {
     public function testUseTraitNotExistsTrait(): void
     {
-        static::assertFalse(use_trait(stdClass::class, 'Trait'));
+        static::assertFalse(use_trait(\stdClass::class, 'Trait'));
     }
 
     public function testUseTraitDoesNotUseTrait(): void
     {
-        static::assertFalse(use_trait(stdClass::class, StubTrait::class));
+        static::assertFalse(use_trait(\stdClass::class, StubTrait::class));
     }
 
     public function testUseTrait(): void

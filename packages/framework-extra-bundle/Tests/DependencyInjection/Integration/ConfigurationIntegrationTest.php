@@ -8,7 +8,6 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Component\Application\Configuration\DoctrineConfigurationRegistry;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
-use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -55,7 +54,7 @@ class ConfigurationIntegrationTest extends IntegrationTestCase
             []
         );
 
-        $reflection = new ReflectionClass(Config::class);
+        $reflection = new \ReflectionClass(Config::class);
 
         static::assertContainerExtensionConfiguration(
             $containerBuilder,

@@ -4,7 +4,6 @@ namespace Draw\Bundle\SonataExtraBundle\EventListener;
 
 use Draw\Bundle\SonataExtraBundle\Event\FormContractorDefaultOptionsEvent;
 use phpDocumentor\Reflection\DocBlockFactory;
-use ReflectionClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class AutoHelpListener implements EventSubscriberInterface
@@ -37,7 +36,7 @@ class AutoHelpListener implements EventSubscriberInterface
 
     private function extractHelp(string $class, string $propertyName): string
     {
-        $mainReflectionClass = $reflectionClass = new ReflectionClass($class);
+        $mainReflectionClass = $reflectionClass = new \ReflectionClass($class);
 
         do {
             if ($reflectionClass->hasProperty($propertyName)) {

@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Messenger\Tests\ManualTrigger\Action;
 
-use DateTimeImmutable;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\ManualTrigger\Action\ClickMessageAction;
 use Draw\Component\Messenger\ManualTrigger\Event\MessageLinkErrorEvent;
@@ -10,7 +9,6 @@ use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,7 +86,7 @@ class ClickMessageActionTest extends TestCase
         ];
 
         yield 'expired' => [
-            new Envelope((object) [], [new ExpirationStamp(new DateTimeImmutable('- 1 second'))]),
+            new Envelope((object) [], [new ExpirationStamp(new \DateTimeImmutable('- 1 second'))]),
             MessageNotFoundException::class,
             'link.invalid',
         ];
@@ -328,7 +326,7 @@ class ClickMessageActionTest extends TestCase
                 static::callback(
                     function (MessageLinkErrorEvent $event) use ($response, $handler1, $handler2) {
                         $this->assertInstanceOf(
-                            LogicException::class,
+                            \LogicException::class,
                             $error = $event->getError()
                         );
 

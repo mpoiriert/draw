@@ -7,7 +7,6 @@ use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Jwt\JwtEncoder;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -34,7 +33,7 @@ class SecurityIntegration implements IntegrationInterface
             $loader,
             $namespace = 'Draw\\Component\\Security\\Core\\',
             $directory = \dirname(
-                (new ReflectionClass(SystemAuthenticatorInterface::class))->getFileName(),
+                (new \ReflectionClass(SystemAuthenticatorInterface::class))->getFileName(),
                 2
             ),
             [
@@ -75,7 +74,7 @@ class SecurityIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Security\\Jwt\\',
-            \dirname((new ReflectionClass(JwtEncoder::class))->getFileName())
+            \dirname((new \ReflectionClass(JwtEncoder::class))->getFileName())
         );
 
         if (!$this->isConfigEnabled($container, $config['jwt']['encoder'])) {
@@ -100,7 +99,7 @@ class SecurityIntegration implements IntegrationInterface
             $loader,
             $namespace = 'Draw\\Component\\Security\\Http\\',
             $directory = \dirname(
-                (new ReflectionClass(JwtAuthenticator::class))->getFileName(),
+                (new \ReflectionClass(JwtAuthenticator::class))->getFileName(),
                 2
             ),
             [

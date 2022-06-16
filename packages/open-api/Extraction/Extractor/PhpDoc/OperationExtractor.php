@@ -11,8 +11,6 @@ use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Parameter;
 use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
-use Exception;
-use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
@@ -20,10 +18,6 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\ContextFactory;
 use phpDocumentor\Reflection\Types\Void_;
-use ReflectionClass;
-use ReflectionMethod;
-use Reflector;
-use RuntimeException;
 
 class OperationExtractor implements ExtractorInterface
 {
@@ -45,7 +39,7 @@ class OperationExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!$source instanceof ReflectionMethod) {
+        if (!$source instanceof \ReflectionMethod) {
             return false;
         }
 
@@ -57,8 +51,8 @@ class OperationExtractor implements ExtractorInterface
     }
 
     /**
-     * @param ReflectionMethod $source
-     * @param Operation        $target
+     * @param \ReflectionMethod $source
+     * @param Operation         $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
@@ -68,7 +62,7 @@ class OperationExtractor implements ExtractorInterface
 
         try {
             $docBlock = $this->createDocBlock($source);
-        } catch (InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException $exception) {
             return;
         }
 
@@ -89,7 +83,7 @@ class OperationExtractor implements ExtractorInterface
         $this->extractParameters($docBlock, $target, $extractionContext);
     }
 
-    private function createDocBlock(Reflector $reflector): DocBlock
+    private function createDocBlock(\Reflector $reflector): DocBlock
     {
         return $this->docBlockFactory
             ->create(
@@ -98,7 +92,7 @@ class OperationExtractor implements ExtractorInterface
             );
     }
 
-    private function getExceptionInformation(Exception $exception): array
+    private function getExceptionInformation(\Exception $exception): array
     {
         foreach ($this->exceptionResponseCodes as $class => $information) {
             if ($exception instanceof $class) {
@@ -118,7 +112,7 @@ class OperationExtractor implements ExtractorInterface
         $type,
         Response $response,
         ExtractionContextInterface $extractionContext,
-        ReflectionMethod $source
+        \ReflectionMethod $source
     ): int {
         if (\in_array($type, ['void', 'null'])) {
             return 204;
@@ -139,8 +133,8 @@ class OperationExtractor implements ExtractorInterface
             /* @var $throwTag DocBlock\Tags\Throws */
 
             $type = (string) $throwTag->getType();
-            $exceptionClass = new ReflectionClass($type);
-            /** @var Exception $exception */
+            $exceptionClass = new \ReflectionClass($type);
+            /** @var \Exception $exception */
             $exception = $exceptionClass->newInstanceWithoutConstructor();
             list($code, $message) = $this->getExceptionInformation($exception);
             $target->responses[$code] = $exceptionResponse = new Response();
@@ -213,7 +207,7 @@ class OperationExtractor implements ExtractorInterface
                     );
 
                     if (!isset($primitiveType['type'])) {
-                        throw new RuntimeException(sprintf('No type found for parameter named [%s] for operation id [%s]', $paramTag->getVariableName(), $target->operationId));
+                        throw new \RuntimeException(sprintf('No type found for parameter named [%s] for operation id [%s]', $paramTag->getVariableName(), $target->operationId));
                     }
 
                     $parameter->type = $primitiveType['type'];
@@ -251,7 +245,7 @@ class OperationExtractor implements ExtractorInterface
     private function extractResponse(
         DocBlock $docBlock,
         ExtractionContextInterface $extractionContext,
-        ReflectionMethod $source,
+        \ReflectionMethod $source,
         Operation $target
     ): void {
         /** @var Type[] $types */
@@ -270,7 +264,7 @@ class OperationExtractor implements ExtractorInterface
         }
 
         if ($hasVoid && \count($types) > 1) {
-            throw new RuntimeException('Operation returning [void] cannot return anything else.');
+            throw new \RuntimeException('Operation returning [void] cannot return anything else.');
         }
 
         if (!$returnTag) {

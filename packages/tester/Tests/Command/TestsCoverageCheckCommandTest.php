@@ -4,7 +4,6 @@ namespace Draw\Component\Tester\Tests\Command;
 
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\Command\TestsCoverageCheckCommand;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -54,7 +53,7 @@ class TestsCoverageCheckCommandTest extends TestCase
 
     public function testFileNotFound(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid input file provided');
 
         $this->executeCommand(__DIR__.'/test.xml', 50);
@@ -62,7 +61,7 @@ class TestsCoverageCheckCommandTest extends TestCase
 
     public function testInvalidPercentage(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid coverage percentage value');
 
         $this->executeCommand(static::FIXTURES_FILE, '');

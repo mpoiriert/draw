@@ -22,7 +22,6 @@ use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
 use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use Psr\Container\ContainerInterface;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -41,7 +40,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         $namespace = 'Draw\\Component\\Messenger\\';
-        $rootDirectory = \dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
+        $rootDirectory = \dirname((new \ReflectionClass(Broker::class))->getFileName(), 2);
 
         $directories = glob($rootDirectory.'/*', \GLOB_ONLYDIR);
 
@@ -118,7 +117,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         $this->registerClasses(
             $loader,
             'Draw\\Component\\Messenger\\Broker\\',
-            $directory = \dirname((new ReflectionClass(Broker::class))->getFileName()),
+            $directory = \dirname((new \ReflectionClass(Broker::class))->getFileName()),
             [
                 $directory.'/Broker.php',
             ]
@@ -153,7 +152,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         $this->registerClasses(
             $loader,
             'Draw\\Component\\Messenger\\DoctrineMessageBusHook\\',
-            \dirname((new ReflectionClass(EnvelopeFactoryInterface::class))->getFileName(), 2),
+            \dirname((new \ReflectionClass(EnvelopeFactoryInterface::class))->getFileName(), 2),
         );
 
         $container->getDefinition(DoctrineBusMessageListener::class)
@@ -184,7 +183,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         $this->registerClasses(
             $loader,
             'Draw\\Component\\Messenger\\Versioning\\',
-            \dirname((new ReflectionClass(StopOnNewVersionListener::class))->getFileName(), 2),
+            \dirname((new \ReflectionClass(StopOnNewVersionListener::class))->getFileName(), 2),
         );
 
         if (!$this->isConfigEnabled($container, $config['stop_on_new_version'])) {
@@ -322,7 +321,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
     public function prepend(ContainerBuilder $container, array $config): void
     {
         if (class_exists(Broker::class)) {
-            $installationPath = \dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
+            $installationPath = \dirname((new \ReflectionClass(Broker::class))->getFileName(), 2);
             $container->prependExtensionConfig(
                 'framework',
                 [

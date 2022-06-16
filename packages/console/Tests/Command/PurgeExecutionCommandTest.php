@@ -6,7 +6,6 @@ use Doctrine\DBAL\Connection;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -74,7 +73,7 @@ class PurgeExecutionCommandTest extends TestCase
 
     public function testExecuteInvalidBatchSize(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Batch size must be a integer >= 1');
 
         $this->execute(['--batch-size' => -1]);
@@ -82,7 +81,7 @@ class PurgeExecutionCommandTest extends TestCase
 
     public function testExecuteInvalidSleep(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Sleep must be integer >= 0');
 
         $this->execute(['--sleep' => -1]);

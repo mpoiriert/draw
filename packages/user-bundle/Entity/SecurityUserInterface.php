@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\Entity;
 
-use DateTimeInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -12,7 +11,7 @@ interface SecurityUserInterface extends PasswordAuthenticatedUserInterface, User
 
     public function getUserIdentifier(): ?string;
 
-    public function getPasswordUpdatedAt(): ?DateTimeInterface;
+    public function getPasswordUpdatedAt(): ?\DateTimeInterface;
 
     public function getPlainPassword(): ?string;
 

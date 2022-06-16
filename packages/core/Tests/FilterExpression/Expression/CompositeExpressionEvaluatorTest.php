@@ -7,7 +7,6 @@ use Draw\Component\Core\FilterExpression\Expression\CompositeExpression;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator;
 use Draw\Component\Core\FilterExpression\Expression\ConstraintExpression;
 use Draw\Component\Core\FilterExpression\Expression\ExpressionEvaluator;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,7 +35,7 @@ class CompositeExpressionEvaluatorTest extends TestCase
 
     public function testEvaluateInvalidExpression(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expression of class ['.ConstraintExpression::class.'] is not supported');
 
         $this->object->evaluate(null, new ConstraintExpression(null));
@@ -57,7 +56,7 @@ class CompositeExpressionEvaluatorTest extends TestCase
     {
         $type = uniqid('type');
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsupported CompositeExpression type ['.$type.']');
 
         $this->evaluator

@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Messenger\Expirable;
 
-use DateTimeInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 interface PurgeableTransportInterface extends TransportInterface
@@ -12,5 +11,5 @@ interface PurgeableTransportInterface extends TransportInterface
      *
      * Return the amount of message that have been purged.
      */
-    public function purgeObsoleteMessages(DateTimeInterface $since): int;
+    public function purgeObsoleteMessages(\DateTimeInterface $since): int;
 }

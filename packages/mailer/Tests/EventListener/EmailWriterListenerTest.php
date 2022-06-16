@@ -7,7 +7,6 @@ use Draw\Component\Mailer\EventListener\EmailWriterListener;
 use Draw\Component\Tester\MockBuilderTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use stdClass;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
@@ -56,9 +55,9 @@ class EmailWriterListenerTest extends TestCase
 
     public function testWriterMutator(): void
     {
-        static::assertSame([], $this->object->getWriters(stdClass::class));
+        static::assertSame([], $this->object->getWriters(\stdClass::class));
 
-        $this->object->addWriter(stdClass::class, $writer1 = uniqid('writer-'), $method1 = uniqid('method-'));
+        $this->object->addWriter(\stdClass::class, $writer1 = uniqid('writer-'), $method1 = uniqid('method-'));
 
         static::assertSame(
             [],
@@ -69,17 +68,17 @@ class EmailWriterListenerTest extends TestCase
             [
                 [$writer1, $method1],
             ],
-            $this->object->getWriters(stdClass::class)
+            $this->object->getWriters(\stdClass::class)
         );
 
-        $this->object->addWriter(stdClass::class, $writer2 = uniqid('writer-'), $method2 = uniqid('method-'), 1);
+        $this->object->addWriter(\stdClass::class, $writer2 = uniqid('writer-'), $method2 = uniqid('method-'), 1);
 
         static::assertSame(
             [
                 [$writer2, $method2],
                 [$writer1, $method1],
             ],
-            $this->object->getWriters(stdClass::class)
+            $this->object->getWriters(\stdClass::class)
         );
     }
 

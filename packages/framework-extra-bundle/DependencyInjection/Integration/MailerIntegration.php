@@ -7,7 +7,6 @@ use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
 use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
 use Pelago\Emogrifier\CssInliner;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -29,7 +28,7 @@ class MailerIntegration implements IntegrationInterface, PrependIntegrationInter
             $loader,
             $namespace = 'Draw\\Component\\Mailer\\',
             \dirname(
-                (new ReflectionClass(EmailWriterInterface::class))->getFileName(),
+                (new \ReflectionClass(EmailWriterInterface::class))->getFileName(),
                 2
             ),
         );
@@ -93,7 +92,7 @@ class MailerIntegration implements IntegrationInterface, PrependIntegrationInter
 
     public function prepend(ContainerBuilder $container, array $config): void
     {
-        $installationPath = \dirname((new ReflectionClass(EmailWriterInterface::class))->getFileName(), 2);
+        $installationPath = \dirname((new \ReflectionClass(EmailWriterInterface::class))->getFileName(), 2);
 
         $this->assertHasExtension($container, 'framework');
 

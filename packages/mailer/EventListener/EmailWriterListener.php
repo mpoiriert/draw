@@ -5,7 +5,6 @@ namespace Draw\Component\Mailer\EventListener;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Psr\Container\ContainerInterface;
-use ReflectionMethod;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Header\UnstructuredHeader;
@@ -42,7 +41,7 @@ class EmailWriterListener implements EventSubscriberInterface
                 $priority = 0;
             }
 
-            $emailType = (new ReflectionMethod($class, $methodName))->getParameters()[0]->getClass()->name;
+            $emailType = (new \ReflectionMethod($class, $methodName))->getParameters()[0]->getClass()->name;
             $this->addWriter($emailType, $emailWriter, $methodName, $priority);
         }
     }

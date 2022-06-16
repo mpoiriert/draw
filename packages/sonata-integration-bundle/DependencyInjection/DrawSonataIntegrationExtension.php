@@ -22,7 +22,6 @@ use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationEx
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminRuntime;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
-use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -211,7 +210,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             throw new RuntimeException('The bundle SchebTwoFactorBundle needs to be registered to have 2FA enabled.');
         }
 
-        $reflectionClass = new ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
+        $reflectionClass = new \ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
         if (!$reflectionClass->implementsInterface(TwoFactorAuthenticationUserInterface::class)) {
             throw new RuntimeException(sprintf('The class [%s] must implements [%s] to have 2FA enabled.', $userEntityClass, TwoFactorAuthenticationUserInterface::class));
         }

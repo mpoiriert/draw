@@ -4,7 +4,6 @@ namespace Draw\Component\Core\Tests\Reflection;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use PHPUnit\Framework\TestCase;
-use ReflectionException;
 
 /**
  * @covers \Draw\Component\Core\Reflection\ReflectionAccessor
@@ -86,7 +85,7 @@ class ReflectionAccessorTest extends TestCase
 
     public function testPropertyValueException(): void
     {
-        $this->expectException(ReflectionException::class);
+        $this->expectException(\ReflectionException::class);
         $this->expectExceptionMessage('Property Draw\Component\Core\Tests\Reflection\ReflectionAccessorTest::$invalidProperty does not exist');
         ReflectionAccessor::getPropertyValue($this, 'invalidProperty');
     }
@@ -125,7 +124,7 @@ class ReflectionAccessorTest extends TestCase
 
     public function testCallMethodException(): void
     {
-        $this->expectException(ReflectionException::class);
+        $this->expectException(\ReflectionException::class);
         $this->expectExceptionMessage('Method Draw\Component\Core\Tests\Reflection\ReflectionAccessorTest::invalidMethod() does not exist');
         ReflectionAccessor::callMethod($this, 'invalidMethod');
     }

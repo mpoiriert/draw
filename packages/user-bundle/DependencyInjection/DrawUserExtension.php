@@ -27,7 +27,6 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveT
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\RolesTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\TwoFactorAuthenticationEnforcerInterface;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
-use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -212,7 +211,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             $containerBuilder->removeDefinition(RefreshUserLockMessageHandler::class);
             $containerBuilder->removeDefinition(UserLockLifeCycleMessageHandler::class);
             $containerBuilder->removeDefinition(AccountLocker::class);
-            $this->excludeEntitiesPath[] = (new ReflectionClass(UserLock::class))->getFileName();
+            $this->excludeEntitiesPath[] = (new \ReflectionClass(UserLock::class))->getFileName();
 
             return;
         }

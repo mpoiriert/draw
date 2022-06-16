@@ -5,7 +5,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Component\Console\EventListener\CommandFlowListener;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -27,7 +26,7 @@ class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 
     public function testProcessNoDefinition(): void
     {
-        $definition = new Definition(stdClass::class);
+        $definition = new Definition(\stdClass::class);
 
         $this->containerBuilder->setDefinition('service-id', $definition)->addTag('console.command');
 
@@ -41,9 +40,9 @@ class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 
     public function testProcess(): void
     {
-        $this->containerBuilder->setDefinition(CommandFlowListener::class, new Definition(stdClass::class));
+        $this->containerBuilder->setDefinition(CommandFlowListener::class, new Definition(\stdClass::class));
 
-        $definition = new Definition(stdClass::class);
+        $definition = new Definition(\stdClass::class);
 
         $this->containerBuilder->setDefinition('service-id', $definition)->addTag('console.command');
 

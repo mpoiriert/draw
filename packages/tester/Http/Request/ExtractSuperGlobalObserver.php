@@ -6,7 +6,6 @@ use Draw\Component\Tester\Http\ClientObserver;
 use Draw\Component\Tester\Http\RequestExecutionerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Throwable;
 
 class ExtractSuperGlobalObserver extends ClientObserver
 {
@@ -39,7 +38,7 @@ class ExtractSuperGlobalObserver extends ClientObserver
 
     public function postExecutionError(
         RequestInterface $request,
-        Throwable $throwable,
+        \Throwable $throwable,
         RequestExecutionerInterface $requestExecutioner
     ): void {
         $this->superGlobalExtractors->assignSuperGlobals($this->previousSuperGlobal);

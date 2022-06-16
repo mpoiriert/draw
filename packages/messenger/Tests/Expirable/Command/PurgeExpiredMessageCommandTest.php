@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Messenger\Tests\Expirable\Command;
 
-use DateTime;
 use Draw\Component\Messenger\Expirable\Command\PurgeExpiredMessageCommand;
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Searchable\TransportRepository;
@@ -11,7 +10,6 @@ use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\MockBuilderTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -66,7 +64,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->with($transport = uniqid('transport-invalid-'))
             ->willReturn(false);
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(sprintf('The "%s" transport does not exist.', $transport));
 
         $this->execute(['transport' => $transport], []);
@@ -98,7 +96,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->expects(static::once())
             ->method('purgeObsoleteMessages')
             ->with(
-                static::equalToWithDelta(new DateTime('- 1 month'), 1)
+                static::equalToWithDelta(new \DateTime('- 1 month'), 1)
             )
             ->willReturn($count = rand(1, 10));
 
@@ -147,7 +145,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->expects(static::once())
             ->method('purgeObsoleteMessages')
             ->with(
-                static::equalToWithDelta(new DateTime($delay), 1)
+                static::equalToWithDelta(new \DateTime($delay), 1)
             )
             ->willReturn($count = rand(1, 10));
 

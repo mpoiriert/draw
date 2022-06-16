@@ -6,10 +6,7 @@
 
 namespace Draw\Component\Tester;
 
-use ArrayAccess;
-use Countable;
 use PHPUnit\Framework\Assert;
-use Traversable;
 
 /**
  * @internal
@@ -26,7 +23,7 @@ trait AssertTrait
     /**
      * Asserts that an array has a specified subset.
      *
-     * @param array|ArrayAccess $subset
+     * @param array|\ArrayAccess $subset
      *
      * @codeCoverageIgnore
      *
@@ -604,7 +601,7 @@ trait AssertTrait
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *
-     * @param Countable|iterable $expected
+     * @param \Countable|iterable $expected
      *
      * @return $this
      */
@@ -623,7 +620,7 @@ trait AssertTrait
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
      *
-     * @param Countable|iterable $expected
+     * @param \Countable|iterable $expected
      *
      * @return $this
      */

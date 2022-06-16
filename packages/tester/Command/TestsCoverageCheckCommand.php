@@ -2,8 +2,6 @@
 
 namespace Draw\Component\Tester\Command;
 
-use InvalidArgumentException;
-use SimpleXMLElement;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,10 +25,10 @@ class TestsCoverageCheckCommand extends Command
         $inputFile = realpath($input->getArgument('clover-xlm-file-path'));
         $percentage = (float) $input->getArgument('coverage');
         if (!is_file($inputFile)) {
-            throw new InvalidArgumentException(sprintf('Invalid input file provided "%s"', $inputFile));
+            throw new \InvalidArgumentException(sprintf('Invalid input file provided "%s"', $inputFile));
         }
         if (!$percentage) {
-            throw new InvalidArgumentException(sprintf('Invalid coverage percentage value "%s"', $input->getArgument('coverage')));
+            throw new \InvalidArgumentException(sprintf('Invalid coverage percentage value "%s"', $input->getArgument('coverage')));
         }
 
         $io->title('Automation test coverage check');
@@ -38,7 +36,7 @@ class TestsCoverageCheckCommand extends Command
         $io->note('Coverage threshold: '.$percentage);
         $io->note('Against file: '.$inputFile);
 
-        $xml = new SimpleXMLElement(file_get_contents($inputFile));
+        $xml = new \SimpleXMLElement(file_get_contents($inputFile));
         $metrics = $xml->xpath('//file/metrics');
         $totalElements = 0;
         $checkedElements = 0;

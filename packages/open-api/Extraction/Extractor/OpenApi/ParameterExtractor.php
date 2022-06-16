@@ -8,7 +8,6 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\BaseParameter;
 use Draw\Component\OpenApi\Schema\Operation;
-use ReflectionMethod;
 
 class ParameterExtractor implements ExtractorInterface
 {
@@ -21,7 +20,7 @@ class ParameterExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!$source instanceof ReflectionMethod) {
+        if (!$source instanceof \ReflectionMethod) {
             return false;
         }
 
@@ -33,8 +32,8 @@ class ParameterExtractor implements ExtractorInterface
     }
 
     /**
-     * @param ReflectionMethod $source
-     * @param Operation        $target
+     * @param \ReflectionMethod $source
+     * @param Operation         $target
      *
      * @throws ExtractionImpossibleException
      */

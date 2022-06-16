@@ -2,10 +2,9 @@
 
 namespace Draw\Contracts\Messenger\Exception;
 
-use Exception;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 
-class MessageNotFoundException extends Exception implements ExceptionInterface
+class MessageNotFoundException extends \Exception implements ExceptionInterface
 {
     public function __construct(string $messageId)
     {

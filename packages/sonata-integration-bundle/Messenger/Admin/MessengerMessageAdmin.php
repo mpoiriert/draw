@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\Messenger\Admin;
 
-use DateTimeImmutable;
 use Doctrine\ORM\QueryBuilder;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
@@ -123,7 +122,7 @@ class MessengerMessageAdmin extends AbstractAdmin
                         sprintf('%s.expiresAt IS NULL', $query->getRootAliases()[0]),
                     )
             )
-            ->setParameter('now', new DateTimeImmutable());
+            ->setParameter('now', new \DateTimeImmutable());
 
         return $query;
     }

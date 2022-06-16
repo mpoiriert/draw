@@ -5,8 +5,6 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Caching;
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
-use ReflectionClass;
-use ReflectionMethod;
 
 class FileTrackingExtractor implements ExtractorInterface
 {
@@ -17,11 +15,11 @@ class FileTrackingExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        return ($source instanceof ReflectionMethod || $source instanceof ReflectionClass) && $source->getFileName();
+        return ($source instanceof \ReflectionMethod || $source instanceof \ReflectionClass) && $source->getFileName();
     }
 
     /**
-     * @param ReflectionMethod|ReflectionClass $source
+     * @param \ReflectionMethod|\ReflectionClass $source
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {

@@ -9,7 +9,6 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Schema;
 use Draw\Component\OpenApi\SchemaCleaner;
-use ReflectionClass;
 
 class InheritanceExtractor implements ExtractorInterface
 {
@@ -22,7 +21,7 @@ class InheritanceExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!$source instanceof ReflectionClass) {
+        if (!$source instanceof \ReflectionClass) {
             return false;
         }
 
@@ -38,8 +37,8 @@ class InheritanceExtractor implements ExtractorInterface
     }
 
     /**
-     * @param ReflectionClass $source
-     * @param Schema          $target
+     * @param \ReflectionClass $source
+     * @param Schema           $target
      *
      * @throws ExtractionImpossibleException
      */

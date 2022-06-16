@@ -4,7 +4,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Component\Application\Cron\CronManager;
 use Draw\Component\Application\Cron\Job;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -24,7 +23,7 @@ class CronIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Application\\Cron\\',
-            $directory = \dirname((new ReflectionClass(CronManager::class))->getFileName()),
+            $directory = \dirname((new \ReflectionClass(CronManager::class))->getFileName()),
             [
                 $directory.'/Job.php',
             ]

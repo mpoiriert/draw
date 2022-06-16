@@ -2,8 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\Entity;
 
-use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\Core\DateTimeUtils;
 use Ramsey\Uuid\Uuid;
@@ -39,22 +37,22 @@ class UserLock
     /**
      * @ORM\Column(name="created_at", type="datetime_immutable", nullable=false)
      */
-    private ?DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * @ORM\Column(name="lock_on", type="datetime_immutable", nullable=true)
      */
-    private ?DateTimeImmutable $lockOn = null;
+    private ?\DateTimeImmutable $lockOn = null;
 
     /**
      * @ORM\Column(name="expires_at", type="datetime_immutable", nullable=true)
      */
-    private ?DateTimeImmutable $expiresAt = null;
+    private ?\DateTimeImmutable $expiresAt = null;
 
     /**
      * @ORM\Column(name="unlock_until", type="datetime_immutable", nullable=true)
      */
-    private ?DateTimeImmutable $unlockUntil = null;
+    private ?\DateTimeImmutable $unlockUntil = null;
 
     public function __construct(?string $reason = null)
     {
@@ -117,12 +115,12 @@ class UserLock
     /**
      * @ORM\PrePersist()
      */
-    public function getCreatedAt(): DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
-        return $this->createdAt ?: $this->createdAt = new DateTimeImmutable();
+        return $this->createdAt ?: $this->createdAt = new \DateTimeImmutable();
     }
 
-    public function setCreatedAt(?DateTimeInterface $createdAt): self
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         if (!DateTimeUtils::isSameTimestamp($this->createdAt, $createdAt)) {
             $this->createdAt = DateTimeUtils::toDatetimeImmutable($createdAt);
@@ -131,12 +129,12 @@ class UserLock
         return $this;
     }
 
-    public function getLockOn(): ?DateTimeInterface
+    public function getLockOn(): ?\DateTimeInterface
     {
         return $this->lockOn;
     }
 
-    public function setLockOn(?DateTimeInterface $lockOn): self
+    public function setLockOn(?\DateTimeInterface $lockOn): self
     {
         if (!DateTimeUtils::isSameTimestamp($this->lockOn, $lockOn)) {
             $this->lockOn = DateTimeUtils::toDatetimeImmutable($lockOn);
@@ -145,12 +143,12 @@ class UserLock
         return $this;
     }
 
-    public function getExpiresAt(): ?DateTimeInterface
+    public function getExpiresAt(): ?\DateTimeInterface
     {
         return $this->expiresAt;
     }
 
-    public function setExpiresAt(?DateTimeInterface $expiresAt): self
+    public function setExpiresAt(?\DateTimeInterface $expiresAt): self
     {
         if (!DateTimeUtils::isSameTimestamp($this->expiresAt, $expiresAt)) {
             $this->expiresAt = DateTimeUtils::toDatetimeImmutable($expiresAt);
@@ -159,12 +157,12 @@ class UserLock
         return $this;
     }
 
-    public function getUnlockUntil(): ?DateTimeInterface
+    public function getUnlockUntil(): ?\DateTimeInterface
     {
         return $this->unlockUntil;
     }
 
-    public function setUnlockUntil(?DateTimeInterface $unlockUntil): self
+    public function setUnlockUntil(?\DateTimeInterface $unlockUntil): self
     {
         if (!DateTimeUtils::isSameTimestamp($this->unlockUntil, $unlockUntil)) {
             $this->unlockUntil = DateTimeUtils::toDatetimeImmutable($unlockUntil);

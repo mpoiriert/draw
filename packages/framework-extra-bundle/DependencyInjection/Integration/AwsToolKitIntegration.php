@@ -6,7 +6,6 @@ use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV1;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
-use ReflectionClass;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -26,7 +25,7 @@ class AwsToolKitIntegration implements IntegrationInterface
             $loader,
             $namespace = 'Draw\\Component\\AwsToolKit\\',
             \dirname(
-                (new ReflectionClass(ImdsClientInterface::class))->getFileName(),
+                (new \ReflectionClass(ImdsClientInterface::class))->getFileName(),
                 2
             )
         );

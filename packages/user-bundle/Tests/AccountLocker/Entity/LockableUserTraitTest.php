@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\UserBundle\Tests\AccountLocker\Entity;
 
-use DateTimeImmutable;
 use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\Entity\LockableUserTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
@@ -79,9 +78,9 @@ class LockableUserTraitTest extends TestCase
             'Must return the current lock since they are the same'
         );
 
-        $lock->setUnlockUntil(new DateTimeImmutable());
+        $lock->setUnlockUntil(new \DateTimeImmutable());
 
-        $newLock = (clone $lock)->setLockOn(new DateTimeImmutable());
+        $newLock = (clone $lock)->setLockOn(new \DateTimeImmutable());
         static::assertSame(
             $newLock,
             $this->object->lock($newLock),
@@ -109,7 +108,7 @@ class LockableUserTraitTest extends TestCase
 
         static::assertSame(
             $lock,
-            $this->object->unlock($lock->getReason(), $until = new DateTimeImmutable())
+            $this->object->unlock($lock->getReason(), $until = new \DateTimeImmutable())
         );
 
         static::assertTrue(
@@ -164,7 +163,7 @@ class LockableUserTraitTest extends TestCase
         /** @var UserLock $lock */
         $lock = current($this->object->getLocks());
 
-        $lock->setUnlockUntil(new DateTimeImmutable('+ 1 days'));
+        $lock->setUnlockUntil(new \DateTimeImmutable('+ 1 days'));
 
         static::assertFalse($this->object->isLocked());
     }

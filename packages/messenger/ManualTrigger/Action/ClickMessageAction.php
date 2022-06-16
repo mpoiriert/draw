@@ -18,7 +18,6 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Throwable;
 
 class ClickMessageAction
 {
@@ -66,7 +65,7 @@ class ClickMessageAction
             }
 
             $this->addFlash($request, 'success', 'link.processed');
-        } catch (Throwable $error) {
+        } catch (\Throwable $error) {
             $response = $this->eventDispatcher
                 ->dispatch(new MessageLinkErrorEvent($request, $dMUuid, $error))
                 ->getResponse();

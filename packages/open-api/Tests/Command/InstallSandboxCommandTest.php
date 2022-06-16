@@ -7,7 +7,6 @@ use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -96,7 +95,7 @@ class InstallSandboxCommandTest extends TestCase
             ->expects(static::once())
             ->method('dumpFile');
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot open zip file [/tmp/swagger-ui-v3.52.5.zip]. Error code [9].');
 
         $this

@@ -4,9 +4,6 @@ namespace Draw\Component\OpenApi\EventListener;
 
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use InvalidArgumentException;
-use ReflectionMethod;
-use RuntimeException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -41,7 +38,7 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
         }
 
         $annotations = $this->reader->getMethodAnnotations(
-            new ReflectionMethod(\get_class($controller[0]), $controller[1])
+            new \ReflectionMethod(\get_class($controller[0]), $controller[1])
         );
 
         $parameters = [];
@@ -54,7 +51,7 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
             $name = $annotation->name;
 
             if ($request->attributes->has($name) && null !== $request->attributes->get($name)) {
-                throw new InvalidArgumentException(sprintf('QueryParameterFetcherSubscriber parameter conflicts with a path parameter [%s] for route [%s]', $name, $request->attributes->get('_route')));
+                throw new \InvalidArgumentException(sprintf('QueryParameterFetcherSubscriber parameter conflicts with a path parameter [%s] for route [%s]', $name, $request->attributes->get('_route')));
             }
 
             if ($request->query->has($name)) {
@@ -87,7 +84,7 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
                                 break;
                             case 'multi':
                             default:
-                                throw new RuntimeException(sprintf('Unsupported collection format [%s]', $annotation->collectionFormat));
+                                throw new \RuntimeException(sprintf('Unsupported collection format [%s]', $annotation->collectionFormat));
                         }
                         $value = explode($separator, (string) $request->query->get($name));
                         break;

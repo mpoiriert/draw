@@ -4,7 +4,6 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use App\Tests\TestCase;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
@@ -63,7 +62,7 @@ class UserTest extends TestCase
 
         $user->lock(
             $userLock = (new UserLock(UserLock::REASON_MANUAL_LOCK))
-                ->setLockOn(new DateTimeImmutable('+ 5 minutes'))
+                ->setLockOn(new \DateTimeImmutable('+ 5 minutes'))
         );
 
         $this->entityManager->persist($user);

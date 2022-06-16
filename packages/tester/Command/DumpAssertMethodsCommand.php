@@ -3,7 +3,6 @@
 namespace Draw\Component\Tester\Command;
 
 use PHPUnit\Framework\Assert;
-use ReflectionClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,7 +28,7 @@ class DumpAssertMethodsCommand extends Command
             $methods = [];
         }
 
-        $reflectionClass = new ReflectionClass(Assert::class);
+        $reflectionClass = new \ReflectionClass(Assert::class);
 
         foreach ($reflectionClass->getMethods() as $method) {
             if (0 !== strpos($method->name, 'assert')) {

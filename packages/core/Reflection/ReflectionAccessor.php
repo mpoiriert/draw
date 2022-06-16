@@ -2,9 +2,6 @@
 
 namespace Draw\Component\Core\Reflection;
 
-use ReflectionMethod;
-use ReflectionProperty;
-
 class ReflectionAccessor
 {
     public static function callMethod($objectOrClass, string $methodName, ...$arguments)
@@ -41,7 +38,7 @@ class ReflectionAccessor
         }
     }
 
-    private static function createAccessibleMethodReflection($objectOrClass, string $methodName): ReflectionMethod
+    private static function createAccessibleMethodReflection($objectOrClass, string $methodName): \ReflectionMethod
     {
         $class = \is_object($objectOrClass) ? \get_class($objectOrClass) : $objectOrClass;
 
@@ -57,12 +54,12 @@ class ReflectionAccessor
 
             if (!$reflectionClass = $reflectionClass->getParentClass()) {
                 // This will throw an exception
-                new ReflectionMethod($class, $methodName);
+                new \ReflectionMethod($class, $methodName);
             }
         }
     }
 
-    private static function createAccessiblePropertyReflection($objectOrClass, string $propertyName): ReflectionProperty
+    private static function createAccessiblePropertyReflection($objectOrClass, string $propertyName): \ReflectionProperty
     {
         $class = \is_object($objectOrClass) ? \get_class($objectOrClass) : $objectOrClass;
 
@@ -78,7 +75,7 @@ class ReflectionAccessor
 
             if (!$reflectionClass = $reflectionClass->getParentClass()) {
                 // This will throw an exception
-                new ReflectionProperty($class, $propertyName);
+                new \ReflectionProperty($class, $propertyName);
             }
         }
     }
