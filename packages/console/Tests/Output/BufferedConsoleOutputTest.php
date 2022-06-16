@@ -16,7 +16,7 @@ class BufferedConsoleOutputTest extends TestCase
 {
     private BufferedConsoleOutput $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new BufferedConsoleOutput(OutputInterface::VERBOSITY_NORMAL);
     }
@@ -78,7 +78,7 @@ class BufferedConsoleOutputTest extends TestCase
         $this->object->write($message, true);
 
         static::assertSame(
-            $message.PHP_EOL,
+            $message.\PHP_EOL,
             $this->object->fetch()
         );
 

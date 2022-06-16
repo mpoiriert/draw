@@ -19,7 +19,7 @@ class CompositeExpressionEvaluatorTest extends TestCase
 
     private Evaluator $evaluator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new CompositeExpressionEvaluator(
             $this->evaluator = $this->createMock(Evaluator::class)

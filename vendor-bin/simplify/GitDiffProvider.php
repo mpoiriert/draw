@@ -12,12 +12,12 @@ final class GitDiffProvider
     public function provide(): array
     {
         $statusOutput = shell_exec('git status --porcelain') ?: '';
-        $gitFiles = explode(PHP_EOL, trim($statusOutput));
+        $gitFiles = explode(\PHP_EOL, trim($statusOutput));
         $files = [];
         foreach ($gitFiles as $gitFile) {
             $gitFile = preg_replace('/\s{2,}/', ' ', $gitFile);
             [$status, $path] = explode(' ', $gitFile);
-            if (!in_array($status, ['??', 'D'])) {
+            if (!\in_array($status, ['??', 'D'])) {
                 $files[] = $path;
             }
         }

@@ -34,10 +34,10 @@ class EmailWriterListener implements EventSubscriberInterface
 
     public function registerEmailWriter(EmailWriterInterface $emailWriter): void
     {
-        $class = get_class($emailWriter);
+        $class = \get_class($emailWriter);
         $forEmails = ReflectionAccessor::callMethod($emailWriter, 'getForEmails');
         foreach ($forEmails as $methodName => $priority) {
-            if (is_int($methodName)) {
+            if (\is_int($methodName)) {
                 $methodName = $priority;
                 $priority = 0;
             }
@@ -99,14 +99,14 @@ class EmailWriterListener implements EventSubscriberInterface
             foreach ($this->getWriters($type) as $writerConfiguration) {
                 list($writer, $writerMethod) = $writerConfiguration;
                 $writer = $writer instanceof EmailWriterInterface ? $writer : $this->serviceLocator->get($writer);
-                call_user_func([$writer, $writerMethod], $message, $envelope);
+                \call_user_func([$writer, $writerMethod], $message, $envelope);
             }
         }
     }
 
     private function getTypes(RawMessage $message): array
     {
-        return [get_class($message)]
+        return [\get_class($message)]
             + class_parents($message)
             + class_implements($message);
     }

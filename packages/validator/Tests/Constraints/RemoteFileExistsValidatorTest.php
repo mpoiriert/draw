@@ -17,7 +17,7 @@ class RemoteFileExistsValidatorTest extends TestCase
 {
     private RemoteFileExistsValidator $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new RemoteFileExistsValidator();
     }

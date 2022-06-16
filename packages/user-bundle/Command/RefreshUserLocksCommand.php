@@ -30,8 +30,8 @@ class RefreshUserLocksCommand extends Command
         $this
             ->setName('draw:user:refresh-user-locks')
             ->setDescription(
-                'Send a [RefreshUserLockMessage] for all user. 
-                Configure you messenger routing properly otherwise it will be sync'
+                'Send a [RefreshUserLockMessage] for all user.'.\PHP_EOL.
+                'Configure you messenger routing properly otherwise it will be sync'
             );
     }
 

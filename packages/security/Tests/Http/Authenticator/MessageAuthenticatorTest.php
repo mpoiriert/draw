@@ -37,7 +37,7 @@ class MessageAuthenticatorTest extends TestCase
 
     private Security $security;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->userProvider = $this->createMockWithExtraMethods(
             UserProviderInterface::class,

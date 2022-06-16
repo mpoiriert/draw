@@ -32,16 +32,16 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $controller = $event->getController();
 
-        if (!is_array($controller) && method_exists($controller, '__invoke')) {
+        if (!\is_array($controller) && method_exists($controller, '__invoke')) {
             $controller = [$controller, '__invoke'];
         }
 
-        if (!is_array($controller)) {
+        if (!\is_array($controller)) {
             return;
         }
 
         $annotations = $this->reader->getMethodAnnotations(
-            new ReflectionMethod(get_class($controller[0]), $controller[1])
+            new ReflectionMethod(\get_class($controller[0]), $controller[1])
         );
 
         $parameters = [];

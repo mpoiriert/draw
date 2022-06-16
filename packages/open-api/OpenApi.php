@@ -99,7 +99,7 @@ class OpenApi
             ->getValidator()
             ->validate($schema, null, [Constraint::DEFAULT_GROUP]);
 
-        if (count($result)) {
+        if (\count($result)) {
             throw new ConstraintViolationListException($result);
         }
     }

@@ -16,7 +16,7 @@ class BrokerDefaultValuesListenerTest extends TestCase
 
     private array $contexts;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new BrokerDefaultValuesListener(
             $this->contexts = [

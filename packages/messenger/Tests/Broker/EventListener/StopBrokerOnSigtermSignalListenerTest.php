@@ -14,7 +14,7 @@ class StopBrokerOnSigtermSignalListenerTest extends TestCase
 {
     private StopBrokerOnSigtermSignalListener $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new StopBrokerOnSigtermSignalListener();
     }

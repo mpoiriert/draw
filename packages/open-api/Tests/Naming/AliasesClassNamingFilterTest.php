@@ -15,7 +15,7 @@ class AliasesClassNamingFilterTest extends TestCase
 
     private array $aliases;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new AliasesClassNamingFilter(
             $this->aliases = [

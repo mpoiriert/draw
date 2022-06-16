@@ -32,7 +32,7 @@ class UnlockUserLockExtension extends AbstractAdminExtension
     ): array {
         switch (true) {
             case !$admin->isGranted('unlock', $object):
-            case !in_array($action, ['edit', 'show']):
+            case !\in_array($action, ['edit', 'show']):
                 break;
             default:
                 $list['unlock'] = [

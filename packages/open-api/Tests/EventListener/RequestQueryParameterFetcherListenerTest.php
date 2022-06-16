@@ -25,7 +25,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     private Reader $reader;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new RequestQueryParameterFetcherListener(
             $this->reader = $this->createMock(Reader::class)
@@ -81,7 +81,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
             ->method('getMethodAnnotations')
             ->with(
                 static::callback(function (ReflectionMethod $method) {
-                    $this->assertSame(get_class($this), $method->getDeclaringClass()->name);
+                    $this->assertSame(static::class, $method->getDeclaringClass()->name);
                     $this->assertSame('__invoke', $method->name);
 
                     return true;
@@ -128,7 +128,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
             ->method('getMethodAnnotations')
             ->with(
                 static::callback(function (ReflectionMethod $method) {
-                    $this->assertSame(get_class($this), $method->getDeclaringClass()->name);
+                    $this->assertSame(static::class, $method->getDeclaringClass()->name);
                     $this->assertSame('__invoke', $method->name);
 
                     return true;
@@ -159,7 +159,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         yield 'default' => ['', $value = uniqid('value'), $value];
         yield 'string' => ['string', $value = uniqid('value'), $value];
-        yield 'integer' => ['integer', (string) $value = rand(PHP_INT_MIN, PHP_INT_MAX), $value];
+        yield 'integer' => ['integer', (string) $value = rand(\PHP_INT_MIN, \PHP_INT_MAX), $value];
         yield 'number' => ['number', (string) ($value = rand(-50, 50) + 0.12), $value];
         yield 'array-csv' => ['array', implode(',', $arrayValues), $arrayValues, 'csv'];
         yield 'array-ssv' => ['array', implode(' ', $arrayValues), $arrayValues, 'ssv'];

@@ -27,7 +27,7 @@ class TransportTester
     public function __construct(TransportInterface $transport, Evaluator $evaluator)
     {
         if (!$transport instanceof InMemoryTransport) {
-            throw new RuntimeException(sprintf('TransportTester only support [%s]. Object of class [%s]', InMemoryTransport::class, get_class($transport)));
+            throw new RuntimeException(sprintf('TransportTester only support [%s]. Object of class [%s]', InMemoryTransport::class, \get_class($transport)));
         }
         $this->evaluator = $evaluator;
         $this->transport = $transport;

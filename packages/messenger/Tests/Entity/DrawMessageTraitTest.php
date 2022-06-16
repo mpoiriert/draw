@@ -17,7 +17,7 @@ class DrawMessageTraitTest extends TestCase
      */
     private object $entity;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entity = new class() {
             use DrawMessageTrait;

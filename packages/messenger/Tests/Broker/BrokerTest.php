@@ -27,7 +27,7 @@ class BrokerTest extends TestCase
 
     private EventDispatcherInterface $eventDispatcher;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new Broker(
             $this->context = uniqid('context-'),

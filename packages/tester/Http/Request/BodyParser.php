@@ -40,7 +40,7 @@ class BodyParser
 
         preg_match('/boundary=(.*)$/', $contentType, $matches);
 
-        if (!count($matches) || !strlen($matches[1])) {
+        if (!\count($matches) || !\strlen($matches[1])) {
             return $results;
         }
 
@@ -111,7 +111,7 @@ class BodyParser
         $result = [];
         $tmp_name = tempnam($this->tempDirectory, 'draw_');
         $size = file_put_contents($tmp_name, $content);
-        $error = false === $size ? UPLOAD_ERR_CANT_WRITE : UPLOAD_ERR_OK;
+        $error = false === $size ? \UPLOAD_ERR_CANT_WRITE : \UPLOAD_ERR_OK;
 
         if (!$error && $this->autoRemoveFileOnShutdown) {
             register_shutdown_function('unlink', $tmp_name);

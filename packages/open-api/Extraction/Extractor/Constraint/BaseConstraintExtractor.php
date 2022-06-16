@@ -31,7 +31,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     protected function assertSupportConstraint(Constraint $constraint): void
     {
         if (!$this->supportConstraint($constraint)) {
-            throw new InvalidArgumentException(sprintf('The constraint of type [%s] is not supported by [%s]', get_class($constraint), get_class($this)));
+            throw new InvalidArgumentException(sprintf('The constraint of type [%s] is not supported by [%s]', \get_class($constraint), static::class));
         }
     }
 
@@ -54,14 +54,14 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
                 break;
         }
 
-        return count($constraints);
+        return \count($constraints);
     }
 
     private function getValidationGroups(ExtractionContextInterface $extractionContext): ?array
     {
         $context = $extractionContext->getParameter('model-context', []);
 
-        return array_key_exists('validation-groups', $context) ? $context['validation-groups'] : null;
+        return \array_key_exists('validation-groups', $context) ? $context['validation-groups'] : null;
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
                 $finalPropertyConstraints = [];
 
                 foreach ($propertyConstraints as $current) {
-                    if (!in_array($current, $finalPropertyConstraints)) {
+                    if (!\in_array($current, $finalPropertyConstraints)) {
                         $finalPropertyConstraints[] = $current;
                     }
                 }

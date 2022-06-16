@@ -19,7 +19,7 @@ class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 
     private ContainerBuilder $containerBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->compilerPass = new AddCommandExecutionOptionsCompilerPass();
         $this->containerBuilder = new ContainerBuilder();

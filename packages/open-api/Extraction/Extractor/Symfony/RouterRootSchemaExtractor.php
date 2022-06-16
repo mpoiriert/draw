@@ -72,7 +72,7 @@ class RouterRootSchemaExtractor implements ExtractorInterface
 
             $controller = explode('::', $route->getDefault('_controller'));
 
-            if (2 != count($controller)) {
+            if (2 != \count($controller)) {
                 continue;
             }
 

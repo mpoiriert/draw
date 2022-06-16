@@ -13,7 +13,7 @@ class SuperGlobalsExtractorTest extends TestCase
      */
     private $superGlobalsExtractor;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->superGlobalsExtractor = new SuperGlobalsExtractor(null, 'gp');
     }
@@ -66,7 +66,7 @@ content of file
                         'name' => 'filename.txt',
                         'type' => 'text/plain',
                         'tmp_name' => $tmp_name,
-                        'error' => UPLOAD_ERR_OK,
+                        'error' => \UPLOAD_ERR_OK,
                         'size' => 15,
                     ],
                 ],

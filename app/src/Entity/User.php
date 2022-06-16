@@ -43,8 +43,8 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public const LEVEL_ADMIN = 'admin';
 
     public const LEVELS = [
-        User::LEVEL_USER,
-        User::LEVEL_ADMIN,
+        self::LEVEL_USER,
+        self::LEVEL_ADMIN,
     ];
 
     /**

@@ -35,7 +35,7 @@ class PropertiesExtractorTest extends TestCase
         ];
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $serializer = SerializerBuilder::create()->build();
 

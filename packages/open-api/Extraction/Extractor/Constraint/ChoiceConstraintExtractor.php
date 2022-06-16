@@ -21,10 +21,10 @@ class ChoiceConstraintExtractor extends BaseConstraintExtractor
         $this->assertSupportConstraint($constraint);
 
         if ($constraint->callback) {
-            if (!is_callable($constraint->callback)) {
+            if (!\is_callable($constraint->callback)) {
                 throw new ConstraintDefinitionException('The Choice constraint expects a valid callback');
             }
-            $choices = call_user_func($constraint->callback);
+            $choices = \call_user_func($constraint->callback);
         } else {
             $choices = $constraint->choices;
         }

@@ -28,7 +28,7 @@ class EmailWriterCompilerPass implements CompilerPassInterface
             $definition = $container->getDefinition($id);
             $forEmails = ReflectionAccessor::callMethod($class = $definition->getClass(), 'getForEmails');
             foreach ($forEmails as $methodName => $priority) {
-                if (is_int($methodName)) {
+                if (\is_int($methodName)) {
                     $methodName = $priority;
                     $priority = 0;
                 }

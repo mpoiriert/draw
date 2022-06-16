@@ -17,7 +17,7 @@ class DefaultFromEmailWriterTest extends TestCase
 
     private Address $address;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new DefaultFromEmailWriter(
             $this->address = new Address(uniqid('test@').'.com')

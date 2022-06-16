@@ -20,7 +20,7 @@ class PhpCallableValidatorTest extends TestCase
 {
     private PhpCallableValidator $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new PhpCallableValidator();
     }

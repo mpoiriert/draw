@@ -26,7 +26,7 @@ class NotNullConstraintExtractor extends BaseConstraintExtractor
             return;
         }
 
-        if (!$context->classSchema->required || !in_array($context->propertyName, $context->classSchema->required)) {
+        if (!$context->classSchema->required || !\in_array($context->propertyName, $context->classSchema->required)) {
             $context->classSchema->required[] = $context->propertyName;
         }
     }

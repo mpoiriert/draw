@@ -332,7 +332,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
             ]),
         );
 
-        $installationPath = dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
+        $installationPath = \dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
 
         static::assertContainerExtensionConfiguration(
             $containerBuilder,

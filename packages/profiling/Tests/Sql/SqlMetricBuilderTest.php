@@ -12,7 +12,7 @@ class SqlMetricBuilderTest extends TestCase
 {
     private $metricBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->metricBuilder = new SqlMetricBuilder();
     }

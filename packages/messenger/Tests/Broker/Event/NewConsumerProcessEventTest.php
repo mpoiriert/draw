@@ -19,7 +19,7 @@ class NewConsumerProcessEventTest extends TestCase
 
     private array $options;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->event = new NewConsumerProcessEvent(
             $this->context = uniqid('context-'),

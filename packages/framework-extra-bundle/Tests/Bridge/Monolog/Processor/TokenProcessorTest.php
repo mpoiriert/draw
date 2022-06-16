@@ -21,7 +21,7 @@ class TokenProcessorTest extends TestCase
 
     private string $key;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new TokenProcessor(
             $this->tokenStorage = $this->createMock(TokenStorageInterface::class),
@@ -103,7 +103,7 @@ class TokenProcessorTest extends TestCase
             ->willReturn(
                 new UsernamePasswordToken(
                     $user
-                        ->setId(rand(PHP_INT_MIN, PHP_INT_MAX))
+                        ->setId(rand(\PHP_INT_MIN, \PHP_INT_MAX))
                         ->setUserIdentifier(uniqid()),
                     uniqid(),
                     $roles = [uniqid()]

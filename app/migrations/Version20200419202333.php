@@ -23,18 +23,18 @@ final class Version20200419202333 extends AbstractMigration
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE acme__user_address (
-          id INT AUTO_INCREMENT NOT NULL, 
-          user_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', 
-          address_street VARCHAR(255) DEFAULT \'\' NOT NULL, 
-          address_postal_code VARCHAR(255) DEFAULT \'\' NOT NULL, 
-          address_city VARCHAR(255) DEFAULT \'\' NOT NULL, 
-          address_country VARCHAR(255) DEFAULT \'\' NOT NULL, 
-          INDEX IDX_7FBCA30BA76ED395 (user_id), 
+          id INT AUTO_INCREMENT NOT NULL,
+          user_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
+          address_street VARCHAR(255) DEFAULT \'\' NOT NULL,
+          address_postal_code VARCHAR(255) DEFAULT \'\' NOT NULL,
+          address_city VARCHAR(255) DEFAULT \'\' NOT NULL,
+          address_country VARCHAR(255) DEFAULT \'\' NOT NULL,
+          INDEX IDX_7FBCA30BA76ED395 (user_id),
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE 
-          acme__user_address 
-        ADD 
+        $this->addSql('ALTER TABLE
+          acme__user_address
+        ADD
           CONSTRAINT FK_7FBCA30BA76ED395 FOREIGN KEY (user_id) REFERENCES draw_acme__user (id) ON DELETE CASCADE');
     }
 

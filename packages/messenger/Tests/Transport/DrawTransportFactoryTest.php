@@ -16,7 +16,7 @@ class DrawTransportFactoryTest extends TestCase
 {
     private DrawTransportFactory $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new DrawTransportFactory($this);
     }
@@ -153,7 +153,7 @@ class DrawTransportFactoryTest extends TestCase
         ];
 
         yield 'query-redeliver_timeout' => [
-            'draw://default?redeliver_timeout='.($value = rand(1, PHP_INT_MAX)),
+            'draw://default?redeliver_timeout='.($value = rand(1, \PHP_INT_MAX)),
             [],
             [
                 'connection' => 'default',
@@ -228,7 +228,7 @@ class DrawTransportFactoryTest extends TestCase
         yield 'options-redeliver_timeout' => [
             'draw://default',
             [
-                'redeliver_timeout' => ($value = rand(1, PHP_INT_MAX)),
+                'redeliver_timeout' => ($value = rand(1, \PHP_INT_MAX)),
             ],
             [
                 'connection' => 'default',

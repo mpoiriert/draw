@@ -15,7 +15,7 @@ class SchemaAddDefaultHeadersListenerTest extends TestCase
 {
     private SchemaAddDefaultHeadersListener $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new SchemaAddDefaultHeadersListener(
             [],

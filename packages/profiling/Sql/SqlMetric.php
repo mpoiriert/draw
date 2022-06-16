@@ -16,7 +16,7 @@ class SqlMetric
 
     public function __construct(array $queries)
     {
-        $this->count = count($queries);
+        $this->count = \count($queries);
         $this->queries = $queries;
     }
 }

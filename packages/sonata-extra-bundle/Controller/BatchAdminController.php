@@ -84,7 +84,7 @@ class BatchAdminController extends AbstractAdminController
             return $this->redirectToList();
         }
 
-        if (count($idx) > 0) {
+        if (\count($idx) > 0) {
             $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
         }
 

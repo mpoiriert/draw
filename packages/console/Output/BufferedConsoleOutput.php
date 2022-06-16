@@ -68,7 +68,7 @@ class BufferedConsoleOutput extends ConsoleOutput
         $this->buffer .= $message;
 
         if ($newline) {
-            $this->buffer .= PHP_EOL;
+            $this->buffer .= \PHP_EOL;
         }
 
         parent::doWrite($message, $newline);

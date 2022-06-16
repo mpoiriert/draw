@@ -23,7 +23,7 @@ class EnvelopeCreatedEventTest extends TestCase
 
     private Envelope $envelope;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new EnvelopeCreatedEvent(
             $this->messageHolder = $this->createMock(MessageHolderInterface::class),

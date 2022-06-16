@@ -16,7 +16,7 @@ class ImdsClientV1Test extends TestCase
 
     private HttpClientInterface $httpClient;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->imdsClientV1 = new ImdsClientV1(
             $this->httpClient = $this->createMock(HttpClientInterface::class)

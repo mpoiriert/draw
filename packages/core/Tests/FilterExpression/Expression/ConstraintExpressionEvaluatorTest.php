@@ -15,7 +15,7 @@ class ConstraintExpressionEvaluatorTest extends TestCase
 {
     private ConstraintExpressionEvaluator $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new ConstraintExpressionEvaluator();
     }

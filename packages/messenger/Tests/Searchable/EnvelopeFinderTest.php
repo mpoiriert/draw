@@ -27,7 +27,7 @@ class EnvelopeFinderTest extends TestCase
      */
     private TransportRepository $transportRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new EnvelopeFinder(
             $this->transportRepository = $this->createMock(TransportRepository::class),
@@ -47,7 +47,7 @@ class EnvelopeFinderTest extends TestCase
             );
 
         $transport
-            ->expects(static::exactly(count($transports)))
+            ->expects(static::exactly(\count($transports)))
             ->method('find')
             ->with($messageId = uniqid('message-id'))
             ->willReturn(null);

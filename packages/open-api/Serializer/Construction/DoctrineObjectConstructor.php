@@ -104,10 +104,10 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             $findByIdentifier = true;
         }
 
-        if ($findByIdentifier && !is_array($data) && 1 == count($doctrineFindByFields)) {
+        if ($findByIdentifier && !\is_array($data) && 1 == \count($doctrineFindByFields)) {
             $object = $objectManager->find($class, $data);
         } else {
-            if (!is_array($data)) {
+            if (!\is_array($data)) {
                 return null;
             }
             $criteria = [];

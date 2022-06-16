@@ -35,7 +35,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
     private EntityManagerInterface $entityManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
 
@@ -73,10 +73,10 @@ class DoctrineBusMessageListenerTest extends TestCase
         $this->entityManager
             ->expects(static::once())
             ->method('getClassMetadata')
-            ->with(get_class($messageHolder))
+            ->with(\get_class($messageHolder))
             ->willReturn($classMetadata = new ClassMetadata(uniqid()));
 
-        $classMetadata->rootEntityName = get_class($messageHolder);
+        $classMetadata->rootEntityName = \get_class($messageHolder);
 
         $this->service->postPersist(
             new LifecycleEventArgs(
@@ -119,10 +119,10 @@ class DoctrineBusMessageListenerTest extends TestCase
         $this->entityManager
             ->expects(static::once())
             ->method('getClassMetadata')
-            ->with(get_class($messageHolder))
+            ->with(\get_class($messageHolder))
             ->willReturn($classMetadata = new ClassMetadata(uniqid()));
 
-        $classMetadata->rootEntityName = get_class($messageHolder);
+        $classMetadata->rootEntityName = \get_class($messageHolder);
 
         $this->service->postLoad(
             new LifecycleEventArgs(
@@ -157,7 +157,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             $messageHolder = $this->createMock(MessageHolderInterface::class)
         );
 
-        $this->service->onClear(new OnClearEventArgs($this->entityManager, get_class($messageHolder)));
+        $this->service->onClear(new OnClearEventArgs($this->entityManager, \get_class($messageHolder)));
 
         static::assertCount(
             0,
@@ -294,7 +294,7 @@ class DoctrineBusMessageListenerTest extends TestCase
     private function addMessageHolder($messageHolder): void
     {
         $messageHolders = ReflectionAccessor::getPropertyValue($this->service, 'messageHolders');
-        $messageHolders[get_class($messageHolder)][spl_object_id($messageHolder)] = $messageHolder;
+        $messageHolders[\get_class($messageHolder)][spl_object_id($messageHolder)] = $messageHolder;
 
         ReflectionAccessor::setPropertyValue(
            $this->service,

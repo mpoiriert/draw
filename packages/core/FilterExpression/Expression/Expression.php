@@ -8,12 +8,12 @@ abstract class Expression
 {
     public static function orX(): CompositeExpression
     {
-        return new CompositeExpression(CompositeExpression::TYPE_OR, func_get_args());
+        return new CompositeExpression(CompositeExpression::TYPE_OR, \func_get_args());
     }
 
     public static function andX(): CompositeExpression
     {
-        return new CompositeExpression(CompositeExpression::TYPE_AND, func_get_args());
+        return new CompositeExpression(CompositeExpression::TYPE_AND, \func_get_args());
     }
 
     public static function validate($path, $constraints = null, $groups = null): ConstraintExpression
@@ -31,7 +31,7 @@ abstract class Expression
             $expressions[] = static::validate($path, new EqualTo($value));
         }
 
-        return call_user_func_array([Expression::class, 'andX'], $expressions);
+        return \call_user_func_array([self::class, 'andX'], $expressions);
     }
 
     public function evaluateBy(): string

@@ -33,7 +33,7 @@ class SecurityIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Security\\Core\\',
-            $directory = dirname(
+            $directory = \dirname(
                 (new ReflectionClass(SystemAuthenticatorInterface::class))->getFileName(),
                 2
             ),
@@ -75,7 +75,7 @@ class SecurityIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Security\\Jwt\\',
-             dirname((new ReflectionClass(JwtEncoder::class))->getFileName())
+             \dirname((new ReflectionClass(JwtEncoder::class))->getFileName())
         );
 
         if (!$this->isConfigEnabled($container, $config['jwt']['encoder'])) {
@@ -99,7 +99,7 @@ class SecurityIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Security\\Http\\',
-            $directory = dirname(
+            $directory = \dirname(
                 (new ReflectionClass(JwtAuthenticator::class))->getFileName(),
                 2
             ),

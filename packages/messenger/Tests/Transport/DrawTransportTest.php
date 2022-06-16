@@ -46,7 +46,7 @@ class DrawTransportTest extends TestCase
         }
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = (new DrawTransportFactory($this))->createTransport(
             'draw://default',

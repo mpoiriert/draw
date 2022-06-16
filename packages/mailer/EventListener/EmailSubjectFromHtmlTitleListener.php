@@ -26,7 +26,7 @@ class EmailSubjectFromHtmlTitleListener implements EventSubscriberInterface
         switch (true) {
             case $message->getSubject():
             case !($body = $message->getHtmlBody()):
-            case !count($crawler = (new Crawler($body))->filter('html > head > title')->first()):
+            case !\count($crawler = (new Crawler($body))->filter('html > head > title')->first()):
             case !($subject = $crawler->text()):
                 return;
         }

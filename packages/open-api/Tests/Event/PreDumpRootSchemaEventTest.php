@@ -16,7 +16,7 @@ class PreDumpRootSchemaEventTest extends TestCase
 
     private Root $schema;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new PreDumpRootSchemaEvent(
             $this->schema = new Root()

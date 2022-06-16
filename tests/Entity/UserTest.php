@@ -19,7 +19,7 @@ class UserTest extends TestCase
 
     private $transportTester;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entityManager = static::getService(EntityManagerInterface::class);
         $this->transportTester = static::getTransportTester('sync');

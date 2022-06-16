@@ -15,7 +15,7 @@ class ObjectReferenceTraitTest extends TestCase
 
     private ReferenceRepository $referenceRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->referenceRepository = $this->createMock(ReferenceRepository::class);
 

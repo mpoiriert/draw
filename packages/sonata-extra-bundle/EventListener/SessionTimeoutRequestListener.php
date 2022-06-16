@@ -76,7 +76,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
             case null === $this->security->getUser():
             case !$event->isMainRequest():
             case 0 !== strpos($response->headers->get('Content-type', ''), 'text/html'):
-            case !is_string($content = $response->getContent()):
+            case !\is_string($content = $response->getContent()):
             case false === strpos($content, '<meta data-sonata-admin'):
             case false === strpos($content, '<title>'):
                 return;
@@ -88,7 +88,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
   <script type="text/javascript">
     const sessionHandler = new SessionExpirationHandler(%s,"%s","%s");
   </script>
-  
+
   <title>',
                 $this->delay,
                 $this->urlGenerator->generate('keep_alive'),

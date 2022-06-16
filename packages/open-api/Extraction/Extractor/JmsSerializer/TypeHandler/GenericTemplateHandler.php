@@ -47,7 +47,7 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
     {
         switch (true) {
             case !isset($item->type['name']):
-            case in_array($item->type['name'], ['array', 'ArrayCollection']):
+            case \in_array($item->type['name'], ['array', 'ArrayCollection']):
             case !class_exists($item->type['name']):
             case !isset($item->type['params'][0]['name']):
             case isset($item->type['params'][1]['name']):

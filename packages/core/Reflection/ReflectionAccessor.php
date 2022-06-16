@@ -43,7 +43,7 @@ class ReflectionAccessor
 
     private static function createAccessibleMethodReflection($objectOrClass, string $methodName): ReflectionMethod
     {
-        $class = is_object($objectOrClass) ? get_class($objectOrClass) : $objectOrClass;
+        $class = \is_object($objectOrClass) ? \get_class($objectOrClass) : $objectOrClass;
 
         $reflectionClass = new \ReflectionClass($class);
 
@@ -64,7 +64,7 @@ class ReflectionAccessor
 
     private static function createAccessiblePropertyReflection($objectOrClass, string $propertyName): ReflectionProperty
     {
-        $class = is_object($objectOrClass) ? get_class($objectOrClass) : $objectOrClass;
+        $class = \is_object($objectOrClass) ? \get_class($objectOrClass) : $objectOrClass;
 
         $reflectionClass = new \ReflectionClass($class);
 

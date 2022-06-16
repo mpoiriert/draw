@@ -49,7 +49,7 @@ that is normally pass trough the **PHPUnit Assert** methods.
 
             $file .= "
 $methodName
-".str_pad('', strlen($methodName), '^').'
+".str_pad('', \strlen($methodName), '^').'
 
 .. literalinclude:: ../AssertTrait.php
    :name: assert-'.str_replace('assert', '', $methodName).'

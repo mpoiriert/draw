@@ -316,7 +316,7 @@ class Cookie
             return true;
         }
         // Match if the first character not included in cookie path is "/"
-        return '/' === substr($requestPath, strlen($cookiePath), 1);
+        return '/' === substr($requestPath, \strlen($cookiePath), 1);
     }
 
     /**
@@ -337,7 +337,7 @@ class Cookie
         }
         // Matching the subdomain according to RFC 6265.
         // http://tools.ietf.org/html/rfc6265#section-5.1.3
-        if (filter_var($domain, FILTER_VALIDATE_IP)) {
+        if (filter_var($domain, \FILTER_VALIDATE_IP)) {
             return false;
         }
 

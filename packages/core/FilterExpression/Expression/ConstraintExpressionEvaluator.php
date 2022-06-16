@@ -27,7 +27,7 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
     public function evaluate($data, Expression $expression): bool
     {
         if (!$expression instanceof ConstraintExpression) {
-            throw new InvalidArgumentException('Expression of class ['.get_class($expression).'] is not supported');
+            throw new InvalidArgumentException('Expression of class ['.\get_class($expression).'] is not supported');
         }
 
         $value = $data;
@@ -45,6 +45,6 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
             $expression->getGroups()
         );
 
-        return !count($constraintViolationList);
+        return !\count($constraintViolationList);
     }
 }

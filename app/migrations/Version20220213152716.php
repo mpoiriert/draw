@@ -29,7 +29,7 @@ final class Version20220213152716 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE draw_acme__user 
+        $this->addSql('ALTER TABLE draw_acme__user
             DROP need_change_password,
             CHANGE password password VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`
             ');

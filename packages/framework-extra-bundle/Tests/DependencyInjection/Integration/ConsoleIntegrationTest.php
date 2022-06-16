@@ -67,7 +67,7 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                                 'DrawConsole' => [
                                     'is_bundle' => false,
                                     'type' => 'annotation',
-                                    'dir' => dirname($reflection->getFileName()),
+                                    'dir' => \dirname($reflection->getFileName()),
                                     'prefix' => $reflection->getNamespaceName(),
                                 ],
                             ],

@@ -18,7 +18,7 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
 {
     private EmailSubjectFromHtmlTitleListener $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new EmailSubjectFromHtmlTitleListener();
     }

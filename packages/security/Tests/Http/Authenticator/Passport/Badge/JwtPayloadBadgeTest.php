@@ -14,7 +14,7 @@ class JwtPayloadBadgeTest extends TestCase
 
     private array $payload;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entity = new JwtPayloadBadge(
             $this->payload = [

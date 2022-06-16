@@ -11,7 +11,7 @@ class ProcessFactoryTest extends TestCase
 {
     private ProcessFactory $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new ProcessFactory();
     }

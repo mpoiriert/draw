@@ -18,7 +18,7 @@ class EmailCssInlinerListenerTest extends TestCase
 {
     private EmailCssInlinerListener $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new EmailCssInlinerListener();
     }

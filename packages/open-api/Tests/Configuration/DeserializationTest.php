@@ -19,7 +19,7 @@ class DeserializationTest extends TestCase
 
     private array $propertiesMap;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new Deserialization(
             [
@@ -57,15 +57,13 @@ class DeserializationTest extends TestCase
 
     public function testValidateMutator(): void
     {
-        static::assertSame(
-            true,
+        static::assertTrue(
             $this->object->getValidate()
         );
 
         $this->object->setValidate(false);
 
-        static::assertSame(
-            false,
+        static::assertFalse(
             $this->object->getValidate()
         );
     }
@@ -102,15 +100,13 @@ class DeserializationTest extends TestCase
 
     public function testDeserializationEnableMaxDepthMutator(): void
     {
-        static::assertSame(
-            true,
+        static::assertTrue(
             $this->object->getDeserializationEnableMaxDepth()
         );
 
         $this->object->setDeserializationEnableMaxDepth(false);
 
-        static::assertSame(
-            false,
+        static::assertFalse(
             $this->object->getDeserializationEnableMaxDepth()
         );
     }

@@ -23,7 +23,7 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Console\\',
-            $directory = dirname(
+            $directory = \dirname(
                 (new ReflectionClass(PurgeExecutionCommand::class))->getFileName(),
                 2
             ),
@@ -58,7 +58,7 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
                         'DrawConsole' => [
                             'is_bundle' => false,
                             'type' => 'annotation',
-                            'dir' => dirname($reflection->getFileName()),
+                            'dir' => \dirname($reflection->getFileName()),
                             'prefix' => $reflection->getNamespaceName(),
                         ],
                     ],

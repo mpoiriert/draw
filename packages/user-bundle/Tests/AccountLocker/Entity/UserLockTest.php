@@ -14,7 +14,7 @@ class UserLockTest extends TestCase
 {
     private UserLock $entity;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entity = new UserLock();
     }

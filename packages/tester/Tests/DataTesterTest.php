@@ -107,7 +107,7 @@ class DataTesterTest extends TestCase
             )
         );
 
-        static::assertSame(count($users), $callbackCount);
+        static::assertSame(\count($users), $callbackCount);
     }
 
     /**

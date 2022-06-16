@@ -24,7 +24,7 @@ class CronIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Application\\Cron\\',
-            $directory = dirname((new ReflectionClass(CronManager::class))->getFileName()),
+            $directory = \dirname((new ReflectionClass(CronManager::class))->getFileName()),
             [
                 $directory.'/Job.php',
             ]
@@ -78,7 +78,7 @@ class CronIntegration implements IntegrationInterface
                             ->scalarNode('name')
                                 ->validate()
                                     ->ifTrue(function ($value) {
-                                        return is_int($value);
+                                        return \is_int($value);
                                     })
                                     ->thenInvalid('You must specify a name for the job. Can be via the attribute or the key.')
                                 ->end()

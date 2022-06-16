@@ -48,7 +48,7 @@ class UserAdmin extends AbstractAdmin
             ->add('tags', 'list')
             ->add('isLocked', 'boolean', ['virtual_field' => true, 'inverse' => true])
             ->add(
-                constant(ListMapper::class.'::NAME_ACTIONS') ?: '_action',
+                \constant(ListMapper::class.'::NAME_ACTIONS') ?: '_action',
                 null,
                 [
                     'label' => 'Action',

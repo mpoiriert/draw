@@ -141,7 +141,7 @@ class OpenApiIntegration implements IntegrationInterface
             ->setAutowired(true)
             ->setAutoconfigured(true);
 
-        $openApiComponentDir = dirname((new ReflectionClass(OpenApi::class))->getFileName());
+        $openApiComponentDir = \dirname((new ReflectionClass(OpenApi::class))->getFileName());
 
         $exclude = [
             $openApiComponentDir.'/Event/',
@@ -274,7 +274,7 @@ class OpenApiIntegration implements IntegrationInterface
             return;
         }
 
-        $openApiComponentDir = dirname((new ReflectionClass(OpenApi::class))->getFileName());
+        $openApiComponentDir = \dirname((new ReflectionClass(OpenApi::class))->getFileName());
 
         $definition = (new Definition())
             ->setAutoconfigured(true)
@@ -340,7 +340,7 @@ class OpenApiIntegration implements IntegrationInterface
             return;
         }
 
-        $openApiComponentDir = dirname((new ReflectionClass(OpenApi::class))->getFileName());
+        $openApiComponentDir = \dirname((new ReflectionClass(OpenApi::class))->getFileName());
 
         $definition = (new Definition())
             ->setAutoconfigured(true)

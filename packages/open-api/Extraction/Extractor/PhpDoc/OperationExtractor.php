@@ -264,7 +264,7 @@ class OperationExtractor implements ExtractorInterface
             }
         }
 
-        if ($hasVoid && count($types) > 1) {
+        if ($hasVoid && \count($types) > 1) {
             throw new RuntimeException('Operation returning [void] cannot return anything else.');
         }
 

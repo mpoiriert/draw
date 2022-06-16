@@ -20,7 +20,7 @@ class MixedData
             return null;
         }
 
-        if ($valueIsArray && is_array($value)) {
+        if ($valueIsArray && \is_array($value)) {
             foreach ($value as $key => $data) {
                 $value[$key] = static::convert($data);
             }
@@ -28,7 +28,7 @@ class MixedData
             return $value;
         }
 
-        if ($value instanceof MixedData) {
+        if ($value instanceof self) {
             return $value;
         }
 

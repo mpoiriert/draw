@@ -17,7 +17,7 @@ class ExpirationStampTest extends TestCase
 
     private DateTimeInterface $expiration;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entity = new ExpirationStamp(
             $this->expiration = new DateTimeImmutable()

@@ -41,9 +41,9 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         $namespace = 'Draw\\Component\\Messenger\\';
-        $rootDirectory = dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
+        $rootDirectory = \dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
 
-        $directories = glob($rootDirectory.'/*', GLOB_ONLYDIR);
+        $directories = glob($rootDirectory.'/*', \GLOB_ONLYDIR);
 
         $ignoreFolders = [
             'Broker',
@@ -56,7 +56,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
 
         foreach ($directories as $directory) {
             $dirname = basename($directory);
-            if (in_array($dirname, $ignoreFolders)) {
+            if (\in_array($dirname, $ignoreFolders)) {
                 continue;
             }
 
@@ -118,7 +118,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         $this->registerClasses(
             $loader,
             'Draw\\Component\\Messenger\\Broker\\',
-            $directory = dirname((new ReflectionClass(Broker::class))->getFileName()),
+            $directory = \dirname((new ReflectionClass(Broker::class))->getFileName()),
             [
                 $directory.'/Broker.php',
             ]
@@ -153,7 +153,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         $this->registerClasses(
             $loader,
             'Draw\\Component\\Messenger\\DoctrineMessageBusHook\\',
-            dirname((new ReflectionClass(EnvelopeFactoryInterface::class))->getFileName(), 2),
+            \dirname((new ReflectionClass(EnvelopeFactoryInterface::class))->getFileName(), 2),
         );
 
         $container->getDefinition(DoctrineBusMessageListener::class)
@@ -184,7 +184,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         $this->registerClasses(
             $loader,
             'Draw\\Component\\Messenger\\Versioning\\',
-            dirname((new ReflectionClass(StopOnNewVersionListener::class))->getFileName(), 2),
+            \dirname((new ReflectionClass(StopOnNewVersionListener::class))->getFileName(), 2),
         );
 
         if (!$this->isConfigEnabled($container, $config['stop_on_new_version'])) {
@@ -241,7 +241,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
                     ->end()
                     ->validate()
                         ->ifTrue(static function (array $value): bool {
-                            return !array_key_exists('default', $value);
+                            return !\array_key_exists('default', $value);
                         })
                         ->thenInvalid('You must define a default context.')
                     ->end()
@@ -260,10 +260,10 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
                                 ->beforeNormalization()
                                 ->always(function ($options) {
                                     foreach ($options as $name => $configuration) {
-                                        if (!is_array($configuration)) {
+                                        if (!\is_array($configuration)) {
                                             $options[$name] = $configuration = ['name' => $name, 'value' => $configuration];
                                         }
-                                        if (is_int($name)) {
+                                        if (\is_int($name)) {
                                             continue;
                                         }
                                         if (!isset($configuration['name'])) {
@@ -322,7 +322,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
     public function prepend(ContainerBuilder $container, array $config): void
     {
         if (class_exists(Broker::class)) {
-            $installationPath = dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
+            $installationPath = \dirname((new ReflectionClass(Broker::class))->getFileName(), 2);
             $container->prependExtensionConfig(
                 'framework',
                 [

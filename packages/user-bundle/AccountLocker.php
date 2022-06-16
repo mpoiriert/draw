@@ -18,7 +18,7 @@ class AccountLocker
 
     public function isLocked(LockableUserInterface $user): bool
     {
-        return 0 !== count($this->getActiveLocks($user));
+        return 0 !== \count($this->getActiveLocks($user));
     }
 
     /**

@@ -11,8 +11,8 @@ class ViolationListTester
     public function __invoke(DataTester $tester)
     {
         $tester->assertCount(
-            count($this->violations),
-            "Current violations:\n".json_encode($tester->getData(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+            \count($this->violations),
+            "Current violations:\n".json_encode($tester->getData(), \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES)
         );
 
         foreach ($this->violations as $index => $violation) {
@@ -44,7 +44,7 @@ class ViolationListTester
      */
     public function code($code)
     {
-        $this->violations[count($this->violations) - 1]['code'] = $code;
+        $this->violations[\count($this->violations) - 1]['code'] = $code;
 
         return $this;
     }
@@ -58,7 +58,7 @@ class ViolationListTester
      */
     public function invalidValue($invalidValue)
     {
-        $this->violations[count($this->violations) - 1]['invalidValue'] = $invalidValue;
+        $this->violations[\count($this->violations) - 1]['invalidValue'] = $invalidValue;
 
         return $this;
     }

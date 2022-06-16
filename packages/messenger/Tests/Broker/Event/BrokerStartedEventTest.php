@@ -20,12 +20,12 @@ class BrokerStartedEventTest extends TestCase
 
     private int $timeout;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->event = new BrokerStartedEvent(
             $this->broker = $this->createMock(Broker::class),
-            $this->concurrent = rand(1, PHP_INT_MAX),
-            $this->timeout = rand(1, PHP_INT_MAX)
+            $this->concurrent = rand(1, \PHP_INT_MAX),
+            $this->timeout = rand(1, \PHP_INT_MAX)
         );
     }
 

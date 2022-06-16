@@ -36,7 +36,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
      */
     private $security;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new SessionTimeoutRequestListener(
             $this->security = $this->createMock(Security::class),
@@ -273,7 +273,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
   <script type="text/javascript">
     const sessionHandler = new SessionExpirationHandler(3600,"/admin/keep-alive","/admin/login");
   </script>
-  
+
   <title>value</title>',
             $response->getContent()
         );

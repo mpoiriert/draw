@@ -19,7 +19,7 @@ class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
 
     private ContainerBuilder $containerBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->compilerPass = new AddNewestInstanceRoleCommandOptionPass();
         $this->containerBuilder = new ContainerBuilder();

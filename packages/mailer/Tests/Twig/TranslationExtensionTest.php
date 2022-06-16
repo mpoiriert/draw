@@ -17,7 +17,7 @@ class TranslationExtensionTest extends TestCase
 
     private TranslatorInterface $translator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new TranslationExtension(
             $this->translator = $this->createMock(TranslatorInterface::class)
@@ -59,7 +59,7 @@ class TranslationExtensionTest extends TestCase
         $arguments = ['key' => uniqid('value-')];
         $domain = uniqid('domain-');
         $locale = uniqid('locale-');
-        $count = rand(0, PHP_INT_MAX);
+        $count = rand(0, \PHP_INT_MAX);
 
         $this->translator
             ->expects(static::once())

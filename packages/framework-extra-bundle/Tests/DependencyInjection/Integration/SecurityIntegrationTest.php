@@ -147,8 +147,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                             SystemConsoleAuthenticatorListener::class,
                         ],
                         function (Definition $definition) {
-                            static::assertSame(
-                                true,
+                            static::assertTrue(
                                 $definition->getArgument('$systemAutoLogin')
                             );
                         }

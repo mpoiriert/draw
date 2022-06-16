@@ -24,7 +24,7 @@ class LoggerIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Bundle\\FrameworkExtraBundle\\Logger\\',
-            dirname((new \ReflectionClass(DrawFrameworkExtraBundle::class))->getFileName()).'/Logger'
+            \dirname((new \ReflectionClass(DrawFrameworkExtraBundle::class))->getFileName()).'/Logger'
         );
 
         $this->loadSlowRequest($config['slow_request'], $loader, $container);

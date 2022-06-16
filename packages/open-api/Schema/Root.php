@@ -176,7 +176,7 @@ class Root implements VendorExtensionSupportInterface
     {
         $name = $this->sanitizeReferenceName($name);
 
-        return array_key_exists($name, $this->definitions);
+        return \array_key_exists($name, $this->definitions);
     }
 
     public function addDefinition(string $name, Schema $schema): string

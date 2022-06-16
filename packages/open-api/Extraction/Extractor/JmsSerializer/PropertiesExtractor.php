@@ -77,7 +77,7 @@ class PropertiesExtractor implements ExtractorInterface
             return false;
         }
 
-        return !is_null($this->factory->getMetadataForClass($source->getName()));
+        return null !== $this->factory->getMetadataForClass($source->getName());
     }
 
     /**

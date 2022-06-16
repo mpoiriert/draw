@@ -129,7 +129,7 @@ final class LoginController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $managerRegistry->getManagerForClass(get_class($user))->flush();
+            $managerRegistry->getManagerForClass(\get_class($user))->flush();
             $userFeed->addToFeed($user, 'success', 'password_changed');
 
             return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));

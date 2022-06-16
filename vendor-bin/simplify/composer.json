@@ -5,7 +5,7 @@
   },
   "autoload": {
     "files": [
-      "./override.php"
+      "./GitDiffProvider.php"
     ]
   }
 }

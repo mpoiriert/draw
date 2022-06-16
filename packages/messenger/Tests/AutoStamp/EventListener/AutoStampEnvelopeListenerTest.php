@@ -18,7 +18,7 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
 
     private static Envelope $newEnvelope;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new AutoStampEnvelopeListener();
     }

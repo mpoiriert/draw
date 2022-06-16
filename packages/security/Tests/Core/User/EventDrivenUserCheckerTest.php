@@ -21,7 +21,7 @@ class EventDrivenUserCheckerTest extends TestCase
 
     private EventDispatcherInterface $eventDispatcher;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new EventDrivenUserChecker(
             $this->decoratedUserChecker = $this->createMock(UserCheckerInterface::class),

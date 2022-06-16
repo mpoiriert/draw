@@ -23,19 +23,19 @@ final class Version20200413155805 extends AbstractMigration
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE user_tag (
-          user_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\', 
-          tag_id INT NOT NULL, 
-          INDEX IDX_E89FD608A76ED395 (user_id), 
-          INDEX IDX_E89FD608BAD26311 (tag_id), 
+          user_id CHAR(36) NOT NULL COMMENT \'(DC2Type:guid)\',
+          tag_id INT NOT NULL,
+          INDEX IDX_E89FD608A76ED395 (user_id),
+          INDEX IDX_E89FD608BAD26311 (tag_id),
           PRIMARY KEY(user_id, tag_id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE 
-          user_tag 
-        ADD 
+        $this->addSql('ALTER TABLE
+          user_tag
+        ADD
           CONSTRAINT FK_E89FD608A76ED395 FOREIGN KEY (user_id) REFERENCES draw_acme__user (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE 
-          user_tag 
-        ADD 
+        $this->addSql('ALTER TABLE
+          user_tag
+        ADD
           CONSTRAINT FK_E89FD608BAD26311 FOREIGN KEY (tag_id) REFERENCES draw_acme__tag (id) ON DELETE CASCADE');
     }
 

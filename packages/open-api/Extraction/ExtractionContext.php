@@ -31,7 +31,7 @@ class ExtractionContext implements ExtractionContextInterface
 
     public function hasParameter($name): bool
     {
-        return array_key_exists($name, $this->parameters);
+        return \array_key_exists($name, $this->parameters);
     }
 
     public function getParameter($name, $default = null)

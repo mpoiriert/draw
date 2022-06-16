@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Core;
 
-if (!function_exists(__NAMESPACE__.'\use_trait')) {
+if (!\function_exists(__NAMESPACE__.'\use_trait')) {
     function use_trait($objectOrClass, string $trait): bool
     {
         $class = $objectOrClass;

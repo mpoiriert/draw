@@ -39,7 +39,7 @@ class Deserialization extends ParamConverter
     public function __construct(array $values)
     {
         if (!isset($values['name'])) {
-            $values['name'] = Deserialization::DEFAULT_PARAMETER_NAME;
+            $values['name'] = self::DEFAULT_PARAMETER_NAME;
         }
 
         $values['converter'] = $values['converter'] ?? 'draw_open_api.request_body';

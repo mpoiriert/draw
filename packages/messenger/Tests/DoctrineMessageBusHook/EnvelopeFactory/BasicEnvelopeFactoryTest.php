@@ -19,7 +19,7 @@ class BasicEnvelopeFactoryTest extends TestCase
      */
     private EventDispatcherInterface $eventDispatcher;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new BasicEnvelopeFactory(
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)

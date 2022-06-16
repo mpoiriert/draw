@@ -99,25 +99,25 @@ trait AssertTrait
                 $docCommentLines[] = $line;
             }
 
-            if (1 == count($docCommentLines)) {
+            if (1 == \count($docCommentLines)) {
                 $docCommentLines[0] = '/**';
                 $docCommentLines[1] = '';
             }
 
-            $docCommentLines[count($docCommentLines) - 1] = '     * @return $this';
+            $docCommentLines[\count($docCommentLines) - 1] = '     * @return $this';
             $docCommentLines[] = '     */';
 
             $correctedDocComment = implode("\n", $docCommentLines);
 
             $class .= "
-    //example-start: {$methodName}    
-    {$correctedDocComment}    
+    //example-start: {$methodName}
+    {$correctedDocComment}
     public function {$methodName}({$parametersString}) {
         Assert::{$methodName}({$callParametersString});
-        
+
         return \$this;
-    }    
-    //example-end: {$methodName}  
+    }
+    //example-end: {$methodName}
 ";
         }
 

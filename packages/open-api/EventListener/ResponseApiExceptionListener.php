@@ -124,7 +124,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
 
         $event->setResponse(
             new JsonResponse(
-                json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_PRESERVE_ZERO_FRACTION),
+                json_encode($data, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_PRESERVE_ZERO_FRACTION),
                 $statusCode,
                 [],
                 true
@@ -166,7 +166,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
     private function getExceptionDetail(Throwable $e): array
     {
         $result = [
-            'class' => get_class($e),
+            'class' => \get_class($e),
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
             'file' => $e->getFile(),
@@ -192,7 +192,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
             return $exception->getStatusCode();
         }
 
-        $exceptionClass = get_class($exception);
+        $exceptionClass = \get_class($exception);
         $reflectionExceptionClass = new ReflectionClass($exceptionClass);
 
         foreach ($this->errorCodes as $exceptionMapClass => $value) {

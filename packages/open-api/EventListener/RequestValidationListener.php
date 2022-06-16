@@ -71,7 +71,7 @@ class RequestValidationListener implements EventSubscriberInterface
             );
         }
 
-        if (count($constraints)) {
+        if (\count($constraints)) {
             throw new ConstraintViolationListException(new ConstraintViolationList($constraints));
         }
     }
