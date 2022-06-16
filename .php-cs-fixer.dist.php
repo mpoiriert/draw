@@ -9,6 +9,10 @@ return (new \PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
         '@Symfony:risky' => true,
+        '@PHPUnit57Migration:risky' => true,
+        '@PHPUnit60Migration:risky' => true,
+        '@PHPUnit75Migration:risky' => true,
+        '@PHPUnit84Migration:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
         'php_unit_test_case_static_method_calls' => true,
         'phpdoc_order' => true,
@@ -22,7 +26,7 @@ return (new \PhpCsFixer\Config())
         'no_superfluous_phpdoc_tags' => ['allow_unused_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true],
         'no_useless_else' => true,
         'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
-        'phpdoc_add_missing_param_annotation' => ['only_untyped' => true]
+        'phpdoc_add_missing_param_annotation' => ['only_untyped' => true],
     ])
     ->setFinder($finder)
 ;
