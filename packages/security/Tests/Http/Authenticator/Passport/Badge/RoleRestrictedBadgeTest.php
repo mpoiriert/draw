@@ -14,7 +14,7 @@ class RoleRestrictedBadgeTest extends TestCase
 
     private string $role;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entity = new RoleRestrictedBadge($this->role = uniqid('ROLE_'));
     }

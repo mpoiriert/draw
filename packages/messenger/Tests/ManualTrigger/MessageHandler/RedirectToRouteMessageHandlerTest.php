@@ -18,7 +18,7 @@ class RedirectToRouteMessageHandlerTest extends TestCase
 
     private UrlGeneratorInterface $urlGenerator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new RedirectToRouteMessageHandler(
             $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class)

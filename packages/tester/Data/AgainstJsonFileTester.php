@@ -23,7 +23,7 @@ class AgainstJsonFileTester
         if (!file_exists($this->fullJsonFilePath)) {
             Assert::fail(
                 "Fail path does not exists to validate data.\nFile path: ".$this->fullJsonFilePath."\nData:\n".
-                json_encode($tester->getData(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+                json_encode($tester->getData(), \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES)
             );
         }
 
@@ -32,7 +32,7 @@ class AgainstJsonFileTester
         if ($this->propertyPathsCheck) {
             $accessor = PropertyAccess::createPropertyAccessor();
             foreach ($this->propertyPathsCheck as $path => $callable) {
-                if (!is_callable($callable)) {
+                if (!\is_callable($callable)) {
                     $value = $callable;
                     $callable = function (DataTester $tester) use ($value, $path) {
                         $tester->assertEquals($value, 'Path: '.$path);

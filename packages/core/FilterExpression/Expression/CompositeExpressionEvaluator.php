@@ -17,16 +17,16 @@ class CompositeExpressionEvaluator extends ExpressionEvaluator
     public function evaluate($data, Expression $expression): bool
     {
         if (!$expression instanceof CompositeExpression) {
-            throw new InvalidArgumentException('Expression of class ['.get_class($expression).'] is not supported');
+            throw new InvalidArgumentException('Expression of class ['.\get_class($expression).'] is not supported');
         }
 
         $type = $expression->getType();
 
-        if (!in_array($type, [CompositeExpression::TYPE_AND, CompositeExpression::TYPE_OR])) {
+        if (!\in_array($type, [CompositeExpression::TYPE_AND, CompositeExpression::TYPE_OR])) {
             throw new InvalidArgumentException('Unsupported CompositeExpression type ['.$type.']');
         }
 
-        if (!count($expressions = $expression->getExpressions())) {
+        if (!\count($expressions = $expression->getExpressions())) {
             return true;
         }
 

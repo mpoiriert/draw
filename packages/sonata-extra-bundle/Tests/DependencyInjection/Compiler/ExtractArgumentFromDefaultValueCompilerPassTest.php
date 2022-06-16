@@ -16,7 +16,7 @@ class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
 
     private ContainerBuilder $containerBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->compilerPass = new ExtractArgumentFromDefaultValueCompilerPass();
         $this->containerBuilder = new ContainerBuilder();
@@ -33,8 +33,7 @@ class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
 
         $this->compilerPass->process($this->containerBuilder);
 
-        static::assertSame(
-            null,
+        static::assertNull(
             $definition->getArgument(0)
         );
 
@@ -43,8 +42,7 @@ class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
             $definition->getArgument(1)
         );
 
-        static::assertSame(
-            null,
+        static::assertNull(
             $definition->getArgument(2)
         );
     }
@@ -60,8 +58,7 @@ class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
 
         $this->compilerPass->process($this->containerBuilder);
 
-        static::assertSame(
-            null,
+        static::assertNull(
             $definition->getArgument(0)
         );
 
@@ -70,8 +67,7 @@ class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
             $definition->getArgument(1)
         );
 
-        static::assertSame(
-            null,
+        static::assertNull(
             $definition->getArgument(2)
         );
     }

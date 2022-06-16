@@ -14,7 +14,7 @@ class StrtotimeTest extends TestCase
 {
     private Strtotime $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new Strtotime();
     }

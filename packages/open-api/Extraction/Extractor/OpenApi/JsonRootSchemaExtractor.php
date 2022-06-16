@@ -24,11 +24,11 @@ class JsonRootSchemaExtractor implements ExtractorInterface
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        if (!is_string($source)) {
+        if (!\is_string($source)) {
             return false;
         }
 
-        if (!is_object($target)) {
+        if (!\is_object($target)) {
             return false;
         }
 
@@ -37,11 +37,11 @@ class JsonRootSchemaExtractor implements ExtractorInterface
         }
 
         $schema = json_decode($source, true);
-        if (JSON_ERROR_NONE != json_last_error()) {
+        if (\JSON_ERROR_NONE != json_last_error()) {
             return false;
         }
 
-        if (!array_key_exists('swagger', $schema)) {
+        if (!\array_key_exists('swagger', $schema)) {
             return false;
         }
 
@@ -67,7 +67,7 @@ class JsonRootSchemaExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        $result = $this->serializer->deserialize($source, get_class($target), 'json');
+        $result = $this->serializer->deserialize($source, \get_class($target), 'json');
 
         foreach ($result as $key => $value) {
             $target->{$key} = $value;

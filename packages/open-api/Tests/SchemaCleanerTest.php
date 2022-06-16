@@ -14,7 +14,7 @@ class SchemaCleanerTest extends TestCase
 {
     private SchemaCleaner $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new SchemaCleaner();
     }

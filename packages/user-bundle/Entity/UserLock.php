@@ -186,7 +186,7 @@ class UserLock
         }
     }
 
-    public function isSame(UserLock $userLock): bool
+    public function isSame(self $userLock): bool
     {
         switch (true) {
             case $userLock->getReason() !== $this->getReason():

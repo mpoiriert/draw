@@ -13,7 +13,7 @@ class ExtractionImpossibleExceptionTest extends TestCase
 {
     private ExtractionImpossibleException $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new ExtractionImpossibleException();
     }

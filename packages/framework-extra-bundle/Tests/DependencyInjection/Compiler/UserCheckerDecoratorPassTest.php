@@ -16,7 +16,7 @@ class UserCheckerDecoratorPassTest extends TestCase
 {
     private UserCheckerDecoratorPass $compilerPass;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->compilerPass = new UserCheckerDecoratorPass();
     }

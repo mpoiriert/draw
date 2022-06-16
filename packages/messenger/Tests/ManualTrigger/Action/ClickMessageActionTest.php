@@ -47,7 +47,7 @@ class ClickMessageActionTest extends TestCase
 
     private Request $request;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->request = new Request();
         $this->request->setSession(
@@ -154,7 +154,7 @@ class ClickMessageActionTest extends TestCase
                 ->method('trans');
         }
 
-        $response = call_user_func($this->action, $messageId, $this->request);
+        $response = \call_user_func($this->action, $messageId, $this->request);
 
         if ($translatedMessage) {
             static::assertSame(
@@ -222,7 +222,7 @@ class ClickMessageActionTest extends TestCase
             ->method('ack')
             ->with($envelope);
 
-        $response = call_user_func($this->action, $messageId, $this->request);
+        $response = \call_user_func($this->action, $messageId, $this->request);
 
         static::assertSame(
             [
@@ -282,7 +282,7 @@ class ClickMessageActionTest extends TestCase
 
         static::assertSame(
             $response,
-            call_user_func($this->action, $messageId, $this->request)
+            \call_user_func($this->action, $messageId, $this->request)
         );
     }
 
@@ -347,7 +347,7 @@ class ClickMessageActionTest extends TestCase
 
         static::assertSame(
             $response,
-            call_user_func($this->action, $messageId, $this->request)
+            \call_user_func($this->action, $messageId, $this->request)
         );
     }
 }

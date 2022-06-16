@@ -59,7 +59,7 @@ class JwtAuthenticator extends AbstractAuthenticator
     {
         return $this->encoder->encode(
             array_merge(
-                [$this->userIdentifierPayloadKey => call_user_func([$user, $this->userIdentifierGetter])],
+                [$this->userIdentifierPayloadKey => \call_user_func([$user, $this->userIdentifierGetter])],
                 $extraPayload
             ),
             $expiration ? new DateTimeImmutable($expiration) : null

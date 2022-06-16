@@ -15,7 +15,7 @@ class DynamicArrayObject extends ArrayObject
         }
 
         foreach ($input as $key => $value) {
-            if (is_array($value) || is_object($value)) {
+            if (\is_array($value) || \is_object($value)) {
                 $value = new static($value, $flags, $iterator_class);
             }
             $this[$key] = $value;

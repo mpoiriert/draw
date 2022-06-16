@@ -15,7 +15,7 @@ class MessengerPassTest extends TestCase
 {
     private $compilerPass;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->compilerPass = new MessengerPass();
     }

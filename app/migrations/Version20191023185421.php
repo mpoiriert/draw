@@ -22,9 +22,9 @@ final class Version20191023185421 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE 
-          draw_acme__user 
-        ADD 
+        $this->addSql('ALTER TABLE
+          draw_acme__user
+        ADD
           last_password_updated_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\'');
     }
 

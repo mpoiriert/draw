@@ -80,7 +80,7 @@ class InstallSandboxCommand extends Command
             if ('/' === substr($filename, -1)) {
                 $this->filesystem->mkdir($outputPath.'/'.$realFilePath);
             } else {
-                copy($zipFile, $outputPath.'/'.substr($realFilePath, strlen('dist/')));
+                copy($zipFile, $outputPath.'/'.substr($realFilePath, \strlen('dist/')));
             }
         }
         $zip->close();

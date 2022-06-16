@@ -13,7 +13,7 @@ class CookieJarTest extends TestCase
     /** @var CookieJar */
     private $jar;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->jar = new CookieJar();
     }

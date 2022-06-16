@@ -24,7 +24,7 @@ class TranslationExtension extends AbstractExtension
 
     public function trans($messages, array $arguments = [], $domain = null, $locale = null, $count = null): ?string
     {
-        if (!is_array($messages)) {
+        if (!\is_array($messages)) {
             $messages = [$messages];
         }
 

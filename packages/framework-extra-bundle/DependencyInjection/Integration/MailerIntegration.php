@@ -28,7 +28,7 @@ class MailerIntegration implements IntegrationInterface, PrependIntegrationInter
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Mailer\\',
-            dirname(
+            \dirname(
                 (new ReflectionClass(EmailWriterInterface::class))->getFileName(),
                 2
             ),
@@ -93,7 +93,7 @@ class MailerIntegration implements IntegrationInterface, PrependIntegrationInter
 
     public function prepend(ContainerBuilder $container, array $config): void
     {
-        $installationPath = dirname((new ReflectionClass(EmailWriterInterface::class))->getFileName(), 2);
+        $installationPath = \dirname((new ReflectionClass(EmailWriterInterface::class))->getFileName(), 2);
 
         $this->assertHasExtension($container, 'framework');
 

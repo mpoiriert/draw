@@ -15,7 +15,7 @@ class JwtEncoderTest extends TestCase
 {
     private JwtEncoder $service;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new JwtEncoder(
             uniqid('key-'),

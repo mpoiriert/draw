@@ -99,7 +99,7 @@ class DoctrineBusMessageListener implements EventSubscriber
 
         $entityManager = $event->getEntityManager();
 
-        $classMetadata = $entityManager->getClassMetadata(get_class($entity));
+        $classMetadata = $entityManager->getClassMetadata(\get_class($entity));
         $className = $classMetadata->rootEntityName;
         $this->messageHolders[$className][spl_object_id($entity)] = $entity;
     }
@@ -115,6 +115,6 @@ class DoctrineBusMessageListener implements EventSubscriber
             return [];
         }
 
-        return call_user_func_array('array_merge', array_values($this->messageHolders));
+        return \call_user_func_array('array_merge', array_values($this->messageHolders));
     }
 }

@@ -33,7 +33,7 @@ class RefreshUserLockExtension extends AbstractAdminExtension
     ): array {
         switch (true) {
             case !$admin->isGranted('refresh-user-locks', $object):
-            case !in_array($action, ['edit', 'show']):
+            case !\in_array($action, ['edit', 'show']):
                 break;
             default:
                 $list['refresh-user-lock'] = [

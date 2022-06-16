@@ -20,7 +20,7 @@ abstract class ConfigurationTestCase extends TestCase
 
     abstract public function provideTestInvalidConfiguration(): iterable;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->configuration = $this->createConfiguration();
     }

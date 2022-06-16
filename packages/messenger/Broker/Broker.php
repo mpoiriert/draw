@@ -102,7 +102,7 @@ class Broker
                     unset($processes[$key]);
                 }
             }
-        } while (count($processes) && microtime(true) < $timeoutMicro);
+        } while (\count($processes) && microtime(true) < $timeoutMicro);
 
         foreach ($processes as $process) {
             $process->stop(0);
@@ -146,7 +146,7 @@ class Broker
     {
         $results = [];
         foreach ($options as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 foreach ($value as $oneValue) {
                     $results[] = '--'.$key;
                     $results[] = $oneValue;

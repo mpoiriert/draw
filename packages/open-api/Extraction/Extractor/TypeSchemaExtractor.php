@@ -140,11 +140,11 @@ class TypeSchemaExtractor implements ExtractorInterface
 
         $hash = md5(http_build_query($context));
 
-        if (!array_key_exists($modelName, $this->definitionHashes)) {
+        if (!\array_key_exists($modelName, $this->definitionHashes)) {
             $this->definitionHashes[$modelName] = [];
         }
 
-        if (!in_array($hash, $this->definitionHashes[$modelName])) {
+        if (!\in_array($hash, $this->definitionHashes[$modelName])) {
             $this->definitionHashes[$modelName][] = $hash;
         }
 
@@ -153,7 +153,7 @@ class TypeSchemaExtractor implements ExtractorInterface
 
     public static function getPrimitiveType($type, ExtractionContextInterface $extractionContext = null): ?array
     {
-        if (!is_string($type)) {
+        if (!\is_string($type)) {
             return null;
         }
 
@@ -213,7 +213,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             'array' => ['type' => 'array'],
         ];
 
-        if (array_key_exists($type, $types)) {
+        if (\array_key_exists($type, $types)) {
             return $types[$type];
         }
 

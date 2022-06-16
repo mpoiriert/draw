@@ -30,7 +30,7 @@ class RolesTwoFactorAuthenticationEnforcer implements TwoFactorAuthenticationEnf
         $roles = $this->roleHierarchy->getReachableRoleNames($user->getRoles());
 
         foreach ($roles as $role) {
-            if (in_array($role, $this->enforcingRoles)) {
+            if (\in_array($role, $this->enforcingRoles)) {
                 return true;
             }
         }

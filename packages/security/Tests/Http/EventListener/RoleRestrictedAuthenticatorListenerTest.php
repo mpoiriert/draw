@@ -25,7 +25,7 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
 
     private UserInterface $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->user = $this->createMock(UserInterface::class);
 

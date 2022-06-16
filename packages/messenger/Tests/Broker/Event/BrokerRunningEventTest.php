@@ -16,7 +16,7 @@ class BrokerRunningEventTest extends TestCase
 
     private Broker $broker;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->event = new BrokerRunningEvent(
             $this->broker = $this->createMock(Broker::class)

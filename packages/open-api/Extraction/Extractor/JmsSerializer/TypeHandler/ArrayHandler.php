@@ -28,13 +28,13 @@ class ArrayHandler implements TypeToSchemaHandlerInterface
     {
         switch (true) {
             case !isset($item->type['name']):
-            case !in_array($item->type['name'], ['array', 'ArrayCollection']):
+            case !\in_array($item->type['name'], ['array', 'ArrayCollection']):
             case !isset($item->type['params'][0]['name']):
                 return null;
         }
 
         if (isset($item->type['params'][1]['name'])
-            && !in_array($item->type['params'][0]['name'], ['int', 'integer'])
+            && !\in_array($item->type['params'][0]['name'], ['int', 'integer'])
         ) {
             return null;
         }

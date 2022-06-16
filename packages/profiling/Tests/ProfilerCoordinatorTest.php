@@ -20,7 +20,7 @@ class ProfilerCoordinatorTest extends TestCase
      */
     private $profiler;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->profilerCoordinator = new ProfilerCoordinator();
         $this->profiler = $this->createMock(ProfilerInterface::class);

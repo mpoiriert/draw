@@ -13,7 +13,7 @@ class DecorateCompilerPassTest extends TestCase
 
     private ContainerBuilder $containerBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->compilerPass = new DecoratesCompilerPass();
         $this->containerBuilder = new ContainerBuilder();

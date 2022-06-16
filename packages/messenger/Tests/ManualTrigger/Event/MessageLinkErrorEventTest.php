@@ -22,7 +22,7 @@ class MessageLinkErrorEventTest extends TestCase
 
     private Exception $error;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->event = new MessageLinkErrorEvent(
             $this->request = new Request(),

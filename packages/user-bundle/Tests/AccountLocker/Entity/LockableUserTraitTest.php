@@ -15,12 +15,12 @@ class LockableUserTraitTest extends TestCase
 {
     private LockableUserInterface $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new class() implements SecurityUserInterface, LockableUserInterface {
-            use SecurityUserTrait;
             use LockableUserTrait;
             use MessageHolderTrait;
+            use SecurityUserTrait;
 
             public function getId()
             {
@@ -31,8 +31,7 @@ class LockableUserTraitTest extends TestCase
 
     public function testManualLockMutator(): void
     {
-        static::assertSame(
-            false,
+        static::assertFalse(
             $this->object->hasManualLock()
         );
 
@@ -45,8 +44,7 @@ class LockableUserTraitTest extends TestCase
             $this->object->setManualLock(true)
         );
 
-        static::assertSame(
-            true,
+        static::assertTrue(
             $this->object->hasManualLock()
         );
 

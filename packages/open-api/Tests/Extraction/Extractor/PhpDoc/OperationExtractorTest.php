@@ -21,7 +21,7 @@ class OperationExtractorTest extends TestCase
 {
     private OperationExtractor $phpDocOperationExtractor;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->phpDocOperationExtractor = new OperationExtractor();
     }
@@ -171,7 +171,7 @@ class PhpDocOperationExtractorStubService
      * @throws LengthException
      * @throws ExtractionImpossibleException
      */
-    public function operation(PhpDocOperationExtractorStubService $service, $string, array $array)
+    public function operation(self $service, $string, array $array)
     {
         if ($string) {
             throw new ExtractionImpossibleException();

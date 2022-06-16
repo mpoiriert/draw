@@ -26,7 +26,7 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
     private ?string $deployedVersion = null;
     private bool $isUpToDate = true;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new StopOnNewVersionListener(
             $this,

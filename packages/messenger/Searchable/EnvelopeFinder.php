@@ -38,7 +38,7 @@ class EnvelopeFinder implements EnvelopeFinderInterface
 
             if ($envelope = $transport->find($messageId)) {
                 $envelope = $envelope->with(new FoundFromTransportStamp($transportName));
-                if (call_user_func($filter, $envelope)) {
+                if (\call_user_func($filter, $envelope)) {
                     return $envelope;
                 }
             }

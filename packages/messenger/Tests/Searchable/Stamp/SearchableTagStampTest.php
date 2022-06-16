@@ -15,7 +15,7 @@ class SearchableTagStampTest extends TestCase
 
     private array $tags;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entity = new SearchableTagStamp(
             $this->tags = [

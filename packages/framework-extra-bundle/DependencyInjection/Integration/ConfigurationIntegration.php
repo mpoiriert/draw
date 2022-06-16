@@ -24,7 +24,7 @@ class ConfigurationIntegration implements IntegrationInterface, PrependIntegrati
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Application\\Configuration\\',
-            dirname((new ReflectionClass(DoctrineConfigurationRegistry::class))->getFileName())
+            \dirname((new ReflectionClass(DoctrineConfigurationRegistry::class))->getFileName())
         );
 
         $this->renameDefinitions(
@@ -58,7 +58,7 @@ class ConfigurationIntegration implements IntegrationInterface, PrependIntegrati
                         'DrawConfiguration' => [
                             'is_bundle' => false,
                             'type' => 'annotation',
-                            'dir' => dirname($reflection->getFileName()),
+                            'dir' => \dirname($reflection->getFileName()),
                             'prefix' => $reflection->getNamespaceName(),
                         ],
                     ],

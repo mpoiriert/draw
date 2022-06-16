@@ -18,11 +18,11 @@ class CommandDataTester
     /**
      * @param string|array|null $expectedDisplay String for exact match, array to find line, null will not test the display
      */
-    public static function create(int $expectedStatusCode = Command::SUCCESS, $expectedDisplay = ''): CommandDataTester
+    public static function create(int $expectedStatusCode = Command::SUCCESS, $expectedDisplay = ''): self
     {
         $self = (new static())->setExpectedStatusCode($expectedStatusCode);
 
-        if (is_array($expectedDisplay)) {
+        if (\is_array($expectedDisplay)) {
             $self->setExpectedDisplayStrings($expectedDisplay);
         } else {
             $self->setExpectedDisplay($expectedDisplay);

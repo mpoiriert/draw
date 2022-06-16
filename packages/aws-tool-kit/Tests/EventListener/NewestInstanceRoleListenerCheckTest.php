@@ -25,7 +25,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     private ImdsClientInterface $imdsClient;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->service = new NewestInstanceRoleCheckListener(
             $this->createMock(Ec2Client::class),

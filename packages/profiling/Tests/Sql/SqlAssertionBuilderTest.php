@@ -12,7 +12,7 @@ class SqlAssertionBuilderTest extends TestCase
 {
     private $assertionBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->assertionBuilder = new SqlAssertionBuilder();
     }
@@ -80,7 +80,7 @@ class SqlAssertionBuilderTest extends TestCase
     public function testInvokeFailMessage()
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Queries: 
+        $this->expectExceptionMessage('Queries:
 SELECT * FROM test
 SELECT * FROM test2
 Failed asserting that 2 matches expected 0.');

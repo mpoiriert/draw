@@ -27,7 +27,7 @@ class RequestValidationListenerTest extends TestCase
 
     private ValidatorInterface $validator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new RequestValidationListener(
             $this->validator = $this->createMock(ValidatorInterface::class)

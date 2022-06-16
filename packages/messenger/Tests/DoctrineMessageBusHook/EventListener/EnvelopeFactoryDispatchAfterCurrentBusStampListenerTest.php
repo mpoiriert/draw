@@ -17,7 +17,7 @@ class EnvelopeFactoryDispatchAfterCurrentBusStampListenerTest extends TestCase
 {
     private EnvelopeFactoryDispatchAfterCurrentBusStampListener $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new EnvelopeFactoryDispatchAfterCurrentBusStampListener();
     }

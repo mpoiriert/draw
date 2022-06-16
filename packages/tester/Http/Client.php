@@ -171,6 +171,6 @@ class Client implements ClientInterface
      */
     public function createRequest($method, $uri, $body = null, array $headers = [], $version = '1.1'): RequestInterface
     {
-        return $this->requestFactory->createRequest(...func_get_args());
+        return $this->requestFactory->createRequest(...\func_get_args());
     }
 }

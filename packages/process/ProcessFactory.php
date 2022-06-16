@@ -12,6 +12,6 @@ class ProcessFactory implements ProcessFactoryInterface
 {
     public function create(array $command, string $cwd = null, array $env = null, $input = null, ?float $timeout = 60): Process
     {
-        return new Process(...func_get_args());
+        return new Process(...\func_get_args());
     }
 }

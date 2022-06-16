@@ -20,7 +20,7 @@ class PreSerializerResponseEventTest extends TestCase
 
     private SerializationContext $serializationContext;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new PreSerializerResponseEvent(
             $this->result = (object) [],

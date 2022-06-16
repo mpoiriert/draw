@@ -61,11 +61,11 @@ class TestResponse
      *
      * @return $this
      */
-    public function assertSuccessful(): TestResponse
+    public function assertSuccessful(): self
     {
         $statusCode = (string) $this->getStatusCode();
         PHPUnit::assertTrue(
-            3 === strlen($statusCode) && in_array(substr($statusCode, 0, 1), [2, 3]),
+            3 === \strlen($statusCode) && \in_array(substr($statusCode, 0, 1), [2, 3]),
             'Response status code ['.$this->getStatusCode().'] is not a successful status code.'
         );
 
@@ -79,7 +79,7 @@ class TestResponse
      *
      * @return $this
      */
-    public function assertStatus($status): TestResponse
+    public function assertStatus($status): self
     {
         $actual = $this->getStatusCode();
 
@@ -104,10 +104,10 @@ class TestResponse
      *
      * @return $this
      */
-    public function assertRedirect($uri = null): TestResponse
+    public function assertRedirect($uri = null): self
     {
         PHPUnit::assertTrue(
-            in_array($this->getStatusCode(), [301, 302, 303, 307, 308]),
+            \in_array($this->getStatusCode(), [301, 302, 303, 307, 308]),
             'Response status code ['.$this->getStatusCode().'] is not a redirect status code.'
         );
 
@@ -126,7 +126,7 @@ class TestResponse
      *
      * @return $this
      */
-    public function assertHeader($headerName, $value = null): TestResponse
+    public function assertHeader($headerName, $value = null): self
     {
         PHPUnit::assertTrue(
             $this->getResponse()->hasHeader($headerName), "Header [{$headerName}] not present on response."
@@ -156,10 +156,10 @@ class TestResponse
      *
      * @return $this
      */
-    public function assertCookie($cookieName, $value = null): TestResponse
+    public function assertCookie($cookieName, $value = null): self
     {
         $cookies = $this->getCookies();
-        $cookie = array_key_exists($cookieName, $cookies) ? $cookies[$cookieName] : null;
+        $cookie = \array_key_exists($cookieName, $cookies) ? $cookies[$cookieName] : null;
 
         PHPUnit::assertNotNull(
             $cookie,

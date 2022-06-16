@@ -15,7 +15,7 @@ class CheckPreAuthEventTest extends TestCase
 
     private UserInterface $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->event = new CheckPreAuthEvent(
             $this->user = $this->createMock(UserInterface::class)

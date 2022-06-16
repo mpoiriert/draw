@@ -44,7 +44,7 @@ class JwtAuthenticatorTest extends TestCase
 
     private TranslatorInterface $translator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->userProvider = $this->createMockWithExtraMethods(
             UserProviderInterface::class,

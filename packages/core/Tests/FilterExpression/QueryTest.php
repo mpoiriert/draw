@@ -14,7 +14,7 @@ class QueryTest extends TestCase
 {
     private Query $object;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new Query();
     }

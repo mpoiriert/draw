@@ -36,7 +36,7 @@ class CloudWatchLogsDownloadCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (null === $this->cloudWatchClient) {
-            throw new RuntimeException(sprintf('Service [%s] is required for command [%s] to run.', CloudWatchLogsClient::class, CloudWatchLogsDownloadCommand::class));
+            throw new RuntimeException(sprintf('Service [%s] is required for command [%s] to run.', CloudWatchLogsClient::class, static::class));
         }
 
         $startTime = strtotime($input->getOption('startTime')) * 1000;
@@ -63,7 +63,7 @@ class CloudWatchLogsDownloadCommand extends Command
                 ->getLogEvents($arguments);
 
             foreach ($events['events'] as $event) {
-                fwrite($handle, $event['message'].PHP_EOL);
+                fwrite($handle, $event['message'].\PHP_EOL);
             }
 
             $nextForwardToken = $events['nextForwardToken'];

@@ -15,7 +15,7 @@ class FindFromTransportStampTest extends TestCase
 
     private string $transportName;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entity = new FoundFromTransportStamp(
             $this->transportName = uniqid('transport-')

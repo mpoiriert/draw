@@ -23,7 +23,7 @@ class SlowRequestLoggerTest extends TestCase
 
     private array $durations = [];
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->requestMatcher = $this->createMock(RequestMatcherInterface::class);
 

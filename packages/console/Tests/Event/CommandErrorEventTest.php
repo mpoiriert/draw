@@ -17,10 +17,10 @@ class CommandErrorEventTest extends TestCase
 
     private string $outputString;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->event = new CommandErrorEvent(
-            $this->executionId = rand(PHP_INT_MIN, PHP_INT_MAX),
+            $this->executionId = rand(\PHP_INT_MIN, \PHP_INT_MAX),
             $this->outputString = uniqid('output-')
         );
     }

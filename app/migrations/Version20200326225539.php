@@ -23,8 +23,8 @@ final class Version20200326225539 extends AbstractMigration
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE draw_acme__tag (
-          id INT AUTO_INCREMENT NOT NULL, 
-          label VARCHAR(255) NOT NULL, 
+          id INT AUTO_INCREMENT NOT NULL,
+          label VARCHAR(255) NOT NULL,
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }

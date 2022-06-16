@@ -14,7 +14,7 @@ class BodyParserTest extends TestCase
 
     private $boundary = 'V2ymHFg03ehbqgZCaKO6jy';
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->bodyParser = new BodyParser();
     }
@@ -167,7 +167,7 @@ BODY;
                         'name' => 'filename.txt',
                         'type' => 'text/plain',
                         'tmp_name' => $tmp_name,
-                        'error' => UPLOAD_ERR_OK,
+                        'error' => \UPLOAD_ERR_OK,
                         'size' => 15,
                     ],
                 ],

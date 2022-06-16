@@ -57,7 +57,7 @@ class SchemaCleaner
 
                 unset($rootSchema->definitions[$toReplace]);
             }
-        } while (count($replaceSchemas));
+        } while (\count($replaceSchemas));
 
         do {
             $suppressionOccurred = false;
@@ -101,11 +101,11 @@ class SchemaCleaner
 
     private function hasSchemaReference($data, $reference)
     {
-        if (!is_object($data) && !is_array($data)) {
+        if (!\is_object($data) && !\is_array($data)) {
             return false;
         }
 
-        if (is_object($data)) {
+        if (\is_object($data)) {
             if ($data instanceof Schema || $data instanceof PathItem) {
                 if ($data->ref == $reference) {
                     return true;
@@ -124,11 +124,11 @@ class SchemaCleaner
 
     private function replaceSchemaReference($data, $definitionToReplace, $definitionToReplaceWith)
     {
-        if (!is_object($data) && !is_array($data)) {
+        if (!\is_object($data) && !\is_array($data)) {
             return;
         }
 
-        if (is_object($data)) {
+        if (\is_object($data)) {
             if ($data instanceof Schema || $data instanceof PathItem) {
                 if ($data->ref == $definitionToReplace) {
                     $data->ref = $definitionToReplaceWith;

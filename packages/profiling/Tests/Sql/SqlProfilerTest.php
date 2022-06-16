@@ -14,7 +14,7 @@ class SqlProfilerTest extends TestCase
      */
     private $profiler;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $mock = $this->getMockForAbstractClass(SqlProfiler::class);
         $this->profiler = $mock;

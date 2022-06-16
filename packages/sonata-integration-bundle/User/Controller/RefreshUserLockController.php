@@ -28,7 +28,7 @@ class RefreshUserLockController extends CRUDController
         $this->admin->checkAccess('refresh-user-locks', $existingObject);
 
         if (!$existingObject instanceof LockableUserInterface) {
-            throw new RuntimeException('Invalid object of class ['.get_class($existingObject).']. It must implements ['.LockableUserInterface::class.']');
+            throw new RuntimeException('Invalid object of class ['.\get_class($existingObject).']. It must implements ['.LockableUserInterface::class.']');
         }
 
         $this->accountLocker->refreshUserLocks($existingObject);

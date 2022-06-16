@@ -112,7 +112,7 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 
     public function configureActionButtons(AdminInterface $admin, $list, $action, ?object $object = null): array
     {
-        if (!in_array($action, ['edit', 'show'])) {
+        if (!\in_array($action, ['edit', 'show'])) {
             return $list;
         }
 

@@ -28,7 +28,7 @@ abstract class IntegrationTestCase extends TestCase
 
     abstract public function provideTestLoad(): iterable;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->integration = $this->createIntegration();
     }

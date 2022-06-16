@@ -67,7 +67,7 @@ class CommandFlowListener implements EventSubscriberInterface
         if (!$definition->hasOption(static::OPTION_IGNORE)) {
             $definition->addOption(
                 new InputOption(
-                    CommandFlowListener::OPTION_IGNORE,
+                    self::OPTION_IGNORE,
                     null,
                     InputOption::VALUE_OPTIONAL,
                     'Flag to ignore login of the execution to the databases.',
@@ -78,7 +78,7 @@ class CommandFlowListener implements EventSubscriberInterface
         if (!$definition->hasOption(static::OPTION_EXECUTION_ID)) {
             $definition->addOption(
                 new InputOption(
-                    CommandFlowListener::OPTION_EXECUTION_ID,
+                    self::OPTION_EXECUTION_ID,
                     null,
                     InputOption::VALUE_REQUIRED,
                     'The existing execution id of the command. Use internally by draw/console.',
@@ -89,7 +89,7 @@ class CommandFlowListener implements EventSubscriberInterface
 
     public function checkIgnoredCommands(LoadExecutionIdEvent $event): void
     {
-        if (in_array($event->getCommand()->getName(), $this->commandsToIgnore)) {
+        if (\in_array($event->getCommand()->getName(), $this->commandsToIgnore)) {
             $event->ignoreTracking();
         }
     }
@@ -230,11 +230,11 @@ class CommandFlowListener implements EventSubscriberInterface
     private function getExecutionId(Event\ConsoleEvent $event): ?string
     {
         $input = $event->getInput();
-        if (!$input->hasOption(CommandFlowListener::OPTION_EXECUTION_ID)) {
+        if (!$input->hasOption(self::OPTION_EXECUTION_ID)) {
             return null;
         }
 
-        return $input->getOption(CommandFlowListener::OPTION_EXECUTION_ID);
+        return $input->getOption(self::OPTION_EXECUTION_ID);
     }
 
     private function updateState(
@@ -273,9 +273,9 @@ class CommandFlowListener implements EventSubscriberInterface
         }
 
         $query = <<<SQL
-UPDATE 
-  command__execution 
-SET 
+UPDATE
+  command__execution
+SET
   updated_at = :updated_at,
   $setOutput
   $setAutoAcknowledgeReason

@@ -21,7 +21,7 @@ class FixDepthMenuBuilderListener implements EventSubscriberInterface
         $menu = $event->getMenu();
 
         foreach ($menu->getChildren() as $groupMenu) {
-            if (1 !== count($groupMenu->getChildren())) {
+            if (1 !== \count($groupMenu->getChildren())) {
                 continue;
             }
             $subMenu = current($groupMenu->getChildren());

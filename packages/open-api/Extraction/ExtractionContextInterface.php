@@ -23,5 +23,5 @@ interface ExtractionContextInterface
 
     public function setParameters(array $parameters): void;
 
-    public function createSubContext(): ExtractionContextInterface;
+    public function createSubContext(): self;
 }

@@ -15,7 +15,7 @@ class ExecutionTest extends TestCase
 {
     private Execution $entity;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->entity = new Execution();
     }
@@ -71,7 +71,7 @@ class ExecutionTest extends TestCase
 
         static::assertSame(
             $this->entity,
-            $this->entity->setId($value = rand(PHP_INT_MIN, PHP_INT_MAX))
+            $this->entity->setId($value = rand(\PHP_INT_MIN, \PHP_INT_MAX))
         );
 
         static::assertSame(

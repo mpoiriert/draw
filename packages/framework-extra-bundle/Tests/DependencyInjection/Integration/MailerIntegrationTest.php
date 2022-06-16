@@ -72,7 +72,7 @@ class MailerIntegrationTest extends IntegrationTestCase
             []
         );
 
-        $installationPath = dirname(
+        $installationPath = \dirname(
             (new ReflectionClass(EmailWriterInterface::class))->getFileName(),
             2
         );

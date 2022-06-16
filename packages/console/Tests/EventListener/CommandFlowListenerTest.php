@@ -45,11 +45,11 @@ class CommandFlowListenerTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         static::$entityManager = static::setUpMySqlWithAnnotationDriver(
-            [dirname((new \ReflectionClass(Execution::class))->getFileName())],
+            [\dirname((new \ReflectionClass(Execution::class))->getFileName())],
         );
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new CommandFlowListener(
             static::$entityManager->getConnection(),
@@ -311,7 +311,7 @@ class CommandFlowListenerTest extends TestCase
     {
         $event = new LoadExecutionIdEvent(
             $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput($id = rand(1, PHP_INT_MAX)),
+            $this->createOptionExecutionIdInput($id = rand(1, \PHP_INT_MAX)),
             $this->createMock(OutputInterface::class)
         );
 
@@ -406,7 +406,7 @@ class CommandFlowListenerTest extends TestCase
         $connection
             ->expects(static::once())
             ->method('lastInsertId')
-            ->willReturn($id = rand(1, PHP_INT_MAX));
+            ->willReturn($id = rand(1, \PHP_INT_MAX));
 
         $connection
             ->expects(static::once())

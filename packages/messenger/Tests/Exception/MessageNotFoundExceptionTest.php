@@ -15,7 +15,7 @@ class MessageNotFoundExceptionTest extends TestCase
 
     private string $messageId;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->exception = new MessageNotFoundException(
             $this->messageId = uniqid('message-id-'),

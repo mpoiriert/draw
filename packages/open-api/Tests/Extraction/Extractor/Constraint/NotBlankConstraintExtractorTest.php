@@ -21,7 +21,7 @@ class NotBlankConstraintExtractorTest extends TestCase
      */
     private $extractor;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->extractor = new NotBlankConstraintExtractor();
     }

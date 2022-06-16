@@ -11,7 +11,7 @@ class DelayProcessorTest extends TestCase
 
     private string $key;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->delayProcessor = new DelayProcessor($this->key = uniqid());
     }

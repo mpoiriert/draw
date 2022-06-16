@@ -17,12 +17,12 @@ use Symfony\Component\BrowserKit\AbstractBrowser;
 
 class TestCase extends KernelTestCase implements BrowserFactoryInterface
 {
-    use ServiceTesterTrait;
     use HttpTesterTrait {
         createHttpTesterClient as defaultCreateHttpTesterClient;
     }
     use MessengerTesterTrait;
     use MetricTesterTrait;
+    use ServiceTesterTrait;
 
     public function createBrowser(): AbstractBrowser
     {
@@ -50,7 +50,7 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
             $user = $this->getService(EntityManagerInterface::class)
                 ->getRepository(User::class)
                 ->findOneBy(['email' => $email]);
-            if (is_null($user)) {
+            if (null === $user) {
                 throw new \InvalidArgumentException('User with email ['.$email.'] not found.');
             }
 

@@ -18,7 +18,7 @@ class EvaluatorTest extends TestCase
 
     private $evaluator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->evaluator = new Evaluator();
     }

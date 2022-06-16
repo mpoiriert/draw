@@ -72,7 +72,7 @@ class StartMessengerBrokerCommandTest extends TestCase
 
     public function testExecuteInvalidConcurrent(): void
     {
-        $concurrent = rand(PHP_INT_MIN, 0);
+        $concurrent = rand(\PHP_INT_MIN, 0);
         $this->expectException(InvalidOptionException::class);
         $this->expectExceptionMessage('Concurrent value ['.$concurrent.'] is invalid. Must be 1 or greater');
 
@@ -81,7 +81,7 @@ class StartMessengerBrokerCommandTest extends TestCase
 
     public function testExecuteInvalidTimeout(): void
     {
-        $timeout = rand(PHP_INT_MIN, -1);
+        $timeout = rand(\PHP_INT_MIN, -1);
         $this->expectException(InvalidOptionException::class);
         $this->expectExceptionMessage('Timeout value ['.$timeout.'] is invalid. Must be 0 or greater');
 

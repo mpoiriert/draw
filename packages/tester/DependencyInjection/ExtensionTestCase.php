@@ -33,13 +33,13 @@ abstract class ExtensionTestCase extends TestCase
     protected function removeProvidedService(array $idsToRemove, iterable $providedServices): iterable
     {
         foreach ($providedServices as $providedService) {
-            if (!in_array($providedService[0], $idsToRemove)) {
+            if (!\in_array($providedService[0], $idsToRemove)) {
                 yield $providedService;
             }
         }
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->extension = $this->createExtension();
         if (null === self::$containerBuilder) {

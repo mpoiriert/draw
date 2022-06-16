@@ -16,7 +16,7 @@ class SuperGlobalsExtractor
     public function __construct(BodyParser $bodyParser = null, $requestOrder = null)
     {
         $this->bodyParser = $bodyParser ?: new BodyParser();
-        $this->requestOrder = $requestOrder ?: ini_get('variables_order');
+        $this->requestOrder = $requestOrder ?: \ini_get('variables_order');
     }
 
     public function extractSuperGlobals(RequestInterface $request)
@@ -105,7 +105,7 @@ class SuperGlobalsExtractor
         $server = [];
         foreach ($request->getHeaders() as $key => $value) {
             $key = strtoupper(str_replace('-', '_', $key));
-            if (in_array($key, ['CONTENT_TYPE', 'CONTENT_LENGTH'])) {
+            if (\in_array($key, ['CONTENT_TYPE', 'CONTENT_LENGTH'])) {
                 $server[$key] = implode(', ', $value);
             } else {
                 $server['HTTP_'.$key] = implode(', ', $value);

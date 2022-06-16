@@ -59,7 +59,7 @@ abstract class BaseParameter
         $striped = str_replace(
             [__NAMESPACE__.'\\', 'Parameter'],
             ['', ''],
-            get_class($this)
+            static::class
         );
 
         return lcfirst($striped);

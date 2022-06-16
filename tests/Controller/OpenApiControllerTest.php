@@ -23,7 +23,7 @@ class OpenApiControllerTest extends TestCase
         // We keep this since the file must be rewrite often
         if ($this->writeFile) {
             $content = $responseTester->getResponseBodyContents();
-            file_put_contents($file, json_encode(json_decode($content), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            file_put_contents($file, json_encode(json_decode($content), \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES));
         }
 
         $jsonTester

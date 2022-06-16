@@ -21,7 +21,7 @@ class DrawFrameworkExtraBundleTest extends TestCase
 {
     private DrawFrameworkExtraBundle $bundle;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->bundle = new DrawFrameworkExtraBundle();
     }

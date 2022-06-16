@@ -65,7 +65,7 @@ trait CommandTestTrait
         $position = 0;
         foreach ($this->provideTestArgument() as $argument) {
             array_unshift($argument, $this->command, $position);
-            call_user_func_array([$this, 'assertArgument'], $argument);
+            \call_user_func_array([$this, 'assertArgument'], $argument);
             ++$position;
         }
 
@@ -127,7 +127,7 @@ trait CommandTestTrait
             unset($realCommandOptions[$optionConfiguration[0]]);
             ++$count;
             array_unshift($optionConfiguration, $this->command);
-            call_user_func_array([$this, 'assertOption'], $optionConfiguration);
+            \call_user_func_array([$this, 'assertOption'], $optionConfiguration);
         }
 
         TestCase::assertSame(

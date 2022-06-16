@@ -29,7 +29,7 @@ class EmailWriterListenerTest extends TestCase
 
     private ContainerInterface $serviceLocator;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new EmailWriterListener(
             $this->serviceLocator = $this->createMock(ContainerInterface::class)

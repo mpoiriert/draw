@@ -16,7 +16,7 @@ class ConstraintViolationListExceptionTest extends TestCase
 
     private ConstraintViolationList $constraintViolationList;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new ConstraintViolationListException(
             $this->constraintViolationList = new ConstraintViolationList()

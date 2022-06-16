@@ -26,7 +26,7 @@ class SerializationTest extends TestCase
 
     private array $contextAttributes;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new Serialization([
             'statusCode' => $this->statusCode = rand(100, 599),
@@ -53,7 +53,7 @@ class SerializationTest extends TestCase
             $this->object->getStatusCode()
         );
 
-        $this->object->setStatusCode($value = rand(PHP_INT_MIN, PHP_INT_MAX));
+        $this->object->setStatusCode($value = rand(\PHP_INT_MIN, \PHP_INT_MAX));
 
         static::assertSame(
             $value,
@@ -85,8 +85,7 @@ class SerializationTest extends TestCase
 
         $this->object->setSerializerEnableMaxDepthChecks(false);
 
-        static::assertSame(
-            false,
+        static::assertFalse(
             $this->object->getSerializerEnableMaxDepthChecks()
         );
     }

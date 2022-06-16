@@ -44,28 +44,28 @@ class DumpAssertMethodsCommand extends Command
             $guessParameter = null;
 
             switch (true) {
-                case in_array('actual', $parameters):
+                case \in_array('actual', $parameters):
                     $guessParameter = 'actual';
                     break;
-                case in_array('array', $parameters):
+                case \in_array('array', $parameters):
                     $guessParameter = 'array';
                     break;
-                case in_array('haystack', $parameters):
+                case \in_array('haystack', $parameters):
                     $guessParameter = 'haystack';
                     break;
-                case in_array('condition', $parameters):
+                case \in_array('condition', $parameters):
                     $guessParameter = 'condition';
                     break;
-                case in_array('className', $parameters):
+                case \in_array('className', $parameters):
                     $guessParameter = 'className';
                     break;
-                case in_array('object', $parameters):
+                case \in_array('object', $parameters):
                     $guessParameter = 'object';
                     break;
-                case in_array('string', $parameters):
+                case \in_array('string', $parameters):
                     $guessParameter = 'string';
                     break;
-                case 2 == count($parameters):
+                case 2 == \count($parameters):
                     $guessParameter = $parameters[0];
                     break;
                 default:
@@ -88,7 +88,7 @@ class DumpAssertMethodsCommand extends Command
                     break;
             }
 
-            if (!array_key_exists($method->name, $methods)) {
+            if (!\array_key_exists($method->name, $methods)) {
                 $methods[$method->name] = [
                     'validated' => false,
                     'ignore' => $ignore,
@@ -100,7 +100,7 @@ class DumpAssertMethodsCommand extends Command
             }
         }
 
-        file_put_contents($filePath, json_encode($methods, JSON_PRETTY_PRINT));
+        file_put_contents($filePath, json_encode($methods, \JSON_PRETTY_PRINT));
 
         return 0;
     }

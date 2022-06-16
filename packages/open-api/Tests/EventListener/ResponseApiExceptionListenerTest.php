@@ -36,7 +36,7 @@ class ResponseApiExceptionListenerTest extends TestCase
     private ExceptionEvent $exceptionEvent;
     private Request $request;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->object = new ResponseApiExceptionListener();
 
@@ -158,7 +158,7 @@ class ResponseApiExceptionListenerTest extends TestCase
     {
         $throwable = new Exception(
             uniqid('message-'),
-            rand(PHP_INT_MIN, PHP_INT_MAX),
+            rand(\PHP_INT_MIN, \PHP_INT_MAX),
             $previous = new Exception()
         );
 
@@ -179,19 +179,19 @@ class ResponseApiExceptionListenerTest extends TestCase
 
         static::assertSame(
             [
-                'class' => get_class($throwable),
+                'class' => \get_class($throwable),
                 'message' => $throwable->getMessage(),
                 'code' => $throwable->getCode(),
                 'file' => __FILE__,
                 'line' => $throwable->getLine(),
-                'stack' => explode(PHP_EOL, $throwable->getTraceAsString()),
+                'stack' => explode(\PHP_EOL, $throwable->getTraceAsString()),
                 'previous' => [
-                    'class' => get_class($previous),
+                    'class' => \get_class($previous),
                     'message' => $previous->getMessage(),
                     'code' => $previous->getCode(),
                     'file' => $previous->getFile(),
                     'line' => $previous->getLine(),
-                    'stack' => explode(PHP_EOL, $previous->getTraceAsString()),
+                    'stack' => explode(\PHP_EOL, $previous->getTraceAsString()),
                 ],
             ],
             $responseData['detail']

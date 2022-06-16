@@ -16,7 +16,7 @@ trait MetricTesterTrait
 {
     public function assertMetrics($metricAssertions)
     {
-        if (!is_array($metricAssertions)) {
+        if (!\is_array($metricAssertions)) {
             $metricAssertions = [$metricAssertions];
         }
 

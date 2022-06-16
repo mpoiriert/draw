@@ -26,11 +26,11 @@ class OpenApiSubscriber implements EventSubscriberInterface
     public function onPreSerialize(PreSerializeEvent $event): void
     {
         $object = $event->getObject();
-        if (is_object($object) &&
+        if (\is_object($object) &&
             is_subclass_of($object, 'Draw\Component\OpenApi\Schema\BaseParameter') &&
-            get_class($object) !== $event->getType()['name']
+            \get_class($object) !== $event->getType()['name']
         ) {
-            $event->setType(get_class($event->getObject()));
+            $event->setType(\get_class($event->getObject()));
         }
     }
 
@@ -44,7 +44,7 @@ class OpenApiSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             return;
         }
 
@@ -56,7 +56,7 @@ class OpenApiSubscriber implements EventSubscriberInterface
         $vendorData = [];
 
         foreach ($data as $key => $value) {
-            if (!is_string($key)) {
+            if (!\is_string($key)) {
                 continue;
             }
 
