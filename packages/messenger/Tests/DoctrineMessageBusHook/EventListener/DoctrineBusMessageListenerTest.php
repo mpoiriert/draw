@@ -297,9 +297,9 @@ class DoctrineBusMessageListenerTest extends TestCase
         $messageHolders[\get_class($messageHolder)][spl_object_id($messageHolder)] = $messageHolder;
 
         ReflectionAccessor::setPropertyValue(
-           $this->service,
-           'messageHolders',
-           $messageHolders
-       );
+            $this->service,
+            'messageHolders',
+            $messageHolders
+        );
     }
 }

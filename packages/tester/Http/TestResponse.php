@@ -129,7 +129,8 @@ class TestResponse
     public function assertHeader($headerName, $value = null): self
     {
         PHPUnit::assertTrue(
-            $this->getResponse()->hasHeader($headerName), "Header [{$headerName}] not present on response."
+            $this->getResponse()->hasHeader($headerName),
+            "Header [{$headerName}] not present on response."
         );
 
         if (null !== $value) {

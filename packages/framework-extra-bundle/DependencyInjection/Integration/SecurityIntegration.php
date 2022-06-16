@@ -75,7 +75,7 @@ class SecurityIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\Security\\Jwt\\',
-             \dirname((new ReflectionClass(JwtEncoder::class))->getFileName())
+            \dirname((new ReflectionClass(JwtEncoder::class))->getFileName())
         );
 
         if (!$this->isConfigEnabled($container, $config['jwt']['encoder'])) {

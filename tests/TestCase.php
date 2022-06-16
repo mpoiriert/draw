@@ -64,9 +64,9 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
     {
         $this->httpTester()
             ->registerObserver(
-            new DefaultValueObserver([
-                'Authorization' => 'Bearer '.self::getConnectionToken($withEmail),
-            ])
-        );
+                new DefaultValueObserver([
+                    'Authorization' => 'Bearer '.self::getConnectionToken($withEmail),
+                ])
+            );
     }
 }

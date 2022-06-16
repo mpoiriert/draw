@@ -35,7 +35,8 @@ class SchemaCleaner
             foreach ($definitionSchemasByObject as $definitionSchemas) {
                 /** @var Schema[] $selectedSchemas */
                 $selectedSchemas = [];
-                array_walk($definitionSchemas,
+                array_walk(
+                    $definitionSchemas,
                     function (Schema $schema, $name) use (&$selectedSchemas, &$replaceSchemas) {
                         foreach ($selectedSchemas as $selectedName => $selectedSchema) {
                             if ($this->isEqual($selectedSchema, $schema)) {
@@ -45,7 +46,8 @@ class SchemaCleaner
                             }
                         }
                         $selectedSchemas[$name] = $schema;
-                    });
+                    }
+                );
             }
 
             foreach ($replaceSchemas as $toReplace => $replaceWith) {
@@ -79,7 +81,8 @@ class SchemaCleaner
         }
 
         foreach ($definitionsToRename as $objectName => $names) {
-            array_walk($names,
+            array_walk(
+                $names,
                 function ($name, $index) use ($objectName, $rootSchema) {
                     $replaceWith = $objectName.($index ? '?'.$index : '');
                     // If the replace name is the same as the current index we do not do anything
@@ -93,7 +96,8 @@ class SchemaCleaner
                         '#/definitions/'.$name,
                         '#/definitions/'.$replaceWith
                     );
-                });
+                }
+            );
         }
 
         return $rootSchema;

@@ -235,8 +235,13 @@ class OperationExtractor implements ExtractorInterface
 
                     if (!$parameter->type) {
                         $subContext = $extractionContext->createSubContext();
-                        $extractionContext->getOpenApi()->extract((string) $paramTag->getType(), $parameter,
-                            $subContext);
+                        $extractionContext
+                            ->getOpenApi()
+                            ->extract(
+                                (string) $paramTag->getType(),
+                                $parameter,
+                                $subContext
+                            );
                     }
                 }
             }

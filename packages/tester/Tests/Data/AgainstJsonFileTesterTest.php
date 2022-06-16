@@ -104,7 +104,9 @@ Failed asserting that two strings are equal.');
     {
         $filePath = __DIR__.'/does-not-exists.json';
         $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage(sprintf('Fail path does not exists to validate data.
+        $this->expectExceptionMessage(
+            sprintf(
+                'Fail path does not exists to validate data.
 File path: %s
 Data:
 {

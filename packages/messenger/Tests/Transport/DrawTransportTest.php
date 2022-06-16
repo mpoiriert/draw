@@ -123,8 +123,10 @@ class DrawTransportTest extends TestCase
      */
     public function testSend(): Envelope
     {
-        $envelope = $this->service->send(new Envelope(new stdClass(),
-            [new SearchableTagStamp(['tag1', 'tag2'])]));
+        $envelope = $this->service->send(new Envelope(
+            new stdClass(),
+            [new SearchableTagStamp(['tag1', 'tag2'])]
+        ));
 
         static::assertNotNull($envelope->last(TransportMessageIdStamp::class)->getId());
 

@@ -49,8 +49,8 @@ class CompositeExpressionEvaluatorTest extends TestCase
             ->method('evaluate');
 
         static::assertTrue(
-           $this->object->evaluate(null, new CompositeExpression(CompositeExpression::TYPE_AND, []))
-       );
+            $this->object->evaluate(null, new CompositeExpression(CompositeExpression::TYPE_AND, []))
+        );
     }
 
     public function testEvaluateInvalidType(): void

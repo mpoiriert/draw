@@ -244,11 +244,11 @@ class CommandFlowListener implements EventSubscriberInterface
         ?string $autoAcknowledgeReason = null
     ): void {
         if (mb_strlen((string) $outputString) > 50000) {
-            $outputString = mb_substr($outputString, 0,
-                    40000)."\n\n[OUTPUT WAS TOO BIG]\n\nTail of log:\n\n".mb_substr(
-                    $outputString,
-                    -10000
-                );
+            $outputString = sprintf(
+                "%s\n\n[OUTPUT WAS TOO BIG]\n\nTail of log:\n\n%s",
+                mb_substr($outputString, 0, 40000),
+                mb_substr($outputString, -10000)
+            );
         }
 
         $reconnectToSlave = $this->mustReconnectToSlave();

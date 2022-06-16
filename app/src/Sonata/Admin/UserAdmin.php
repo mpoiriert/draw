@@ -29,7 +29,8 @@ class UserAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('ids',
+            ->add(
+                'ids',
                 InFilter::class,
                 [
                     'field_name' => 'id',

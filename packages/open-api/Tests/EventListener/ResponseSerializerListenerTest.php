@@ -147,39 +147,40 @@ class ResponseSerializerListenerTest extends TestCase
             ->expects(static::once())
             ->method('dispatch')
             ->with(
-                static::callback(function (PreSerializerResponseEvent $event) use (
-                    $context,
-                    $result,
-                    $serialization,
-                    $version,
-                    $groups
-                ) {
-                    $this->assertSame($result, $event->getResult());
-
-                    $this->assertSame($serialization, $event->getSerialization());
-
-                    $this->assertSame(
+                static::callback(
+                    function (PreSerializerResponseEvent $event) use (
                         $context,
-                        $event->getContext()
-                    );
-
-                    $this->assertSame(
+                        $result,
+                        $serialization,
                         $version,
-                        $context->getAttribute('version')
-                    );
+                        $groups
+                    ) {
+                        $this->assertSame($result, $event->getResult());
 
-                    $this->assertSame(
-                        $groups,
-                        $context->getAttribute('groups')
-                    );
+                        $this->assertSame($serialization, $event->getSerialization());
 
-                    $this->assertSame(
-                        'value',
-                        $context->getAttribute('key')
-                    );
+                        $this->assertSame(
+                            $context,
+                            $event->getContext()
+                        );
 
-                    return true;
-                }
+                        $this->assertSame(
+                            $version,
+                            $context->getAttribute('version')
+                        );
+
+                        $this->assertSame(
+                            $groups,
+                            $context->getAttribute('groups')
+                        );
+
+                        $this->assertSame(
+                            'value',
+                            $context->getAttribute('key')
+                        );
+
+                        return true;
+                    }
                 )
             );
 
