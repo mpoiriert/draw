@@ -73,7 +73,7 @@ class RequestExecutioner implements RequestExecutionerInterface
         $cookies = array_filter(explode(';', $server['HTTP_COOKIE'] ?? ''));
 
         foreach ($cookies as $cookie) {
-            list($name, $value) = explode('=', $cookie);
+            [$name, $value] = explode('=', $cookie);
             $this->lastBrowser->getCookieJar()
                 ->set(new Cookie($name, $value));
         }

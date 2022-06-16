@@ -16,6 +16,7 @@ return (new \PhpCsFixer\Config())
         'logical_operators' => true,
         'no_useless_return' => true,
         'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
+        'list_syntax' => ['syntax' => 'short'],
     ])
     ->setFinder($finder)
 ;

@@ -96,7 +96,7 @@ class EmailWriterListener implements EventSubscriberInterface
 
         foreach ($types as $type) {
             foreach ($this->getWriters($type) as $writerConfiguration) {
-                list($writer, $writerMethod) = $writerConfiguration;
+                [$writer, $writerMethod] = $writerConfiguration;
                 $writer = $writer instanceof EmailWriterInterface ? $writer : $this->serviceLocator->get($writer);
                 \call_user_func([$writer, $writerMethod], $message, $envelope);
             }

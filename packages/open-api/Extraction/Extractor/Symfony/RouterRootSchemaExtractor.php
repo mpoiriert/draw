@@ -74,7 +74,7 @@ class RouterRootSchemaExtractor implements ExtractorInterface
                 continue;
             }
 
-            list($class, $method) = $controller;
+            [$class, $method] = $controller;
 
             try {
                 $reflectionMethod = new \ReflectionMethod($class, $method);
