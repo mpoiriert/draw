@@ -7,8 +7,8 @@ $finder = (new \PhpCsFixer\Finder)
 
 return (new \PhpCsFixer\Config())
     ->setRules([
-        '@PHP70Migration' => true,
-        '@PHP71Migration' => true,
+        '@PHP74Migration' => true,
+        '@PHP74Migration:risky' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         '@PHPUnit57Migration:risky' => true,
@@ -30,6 +30,9 @@ return (new \PhpCsFixer\Config())
         'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
         'phpdoc_add_missing_param_annotation' => ['only_untyped' => true],
         '@DoctrineAnnotation' => true,
+        // Disabled risky for now
+        'declare_strict_types' => false,
+        'void_return' => false,
     ])
     ->setFinder($finder)
 ;

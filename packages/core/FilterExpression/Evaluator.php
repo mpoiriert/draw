@@ -16,12 +16,8 @@ class Evaluator
     public function __construct(?ServiceProviderInterface $serviceProvider = null)
     {
         $this->serviceProvider = $serviceProvider ?: new ServiceLocator([
-            ConstraintExpressionEvaluator::class => function () {
-                return new ConstraintExpressionEvaluator();
-            },
-            CompositeExpressionEvaluator::class => function () {
-                return new CompositeExpressionEvaluator($this);
-            },
+            ConstraintExpressionEvaluator::class => fn () => new ConstraintExpressionEvaluator(),
+            CompositeExpressionEvaluator::class => fn () => new CompositeExpressionEvaluator($this),
         ]);
     }
 

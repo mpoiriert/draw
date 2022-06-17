@@ -29,7 +29,7 @@ class SerializationTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new Serialization([
-            'statusCode' => $this->statusCode = rand(100, 599),
+            'statusCode' => $this->statusCode = random_int(100, 599),
             'serializerGroups' => $this->serializerGroups = [uniqid('group-')],
             'serializerEnableMaxDepthChecks' => $this->serializerEnableMaxDepthChecks = true,
             'serializerVersion' => $this->serializerVersion = uniqid('version-'),
@@ -53,7 +53,7 @@ class SerializationTest extends TestCase
             $this->object->getStatusCode()
         );
 
-        $this->object->setStatusCode($value = rand(\PHP_INT_MIN, \PHP_INT_MAX));
+        $this->object->setStatusCode($value = random_int(\PHP_INT_MIN, \PHP_INT_MAX));
 
         static::assertSame(
             $value,

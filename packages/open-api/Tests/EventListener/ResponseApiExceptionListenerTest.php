@@ -153,7 +153,7 @@ class ResponseApiExceptionListenerTest extends TestCase
     {
         $throwable = new \Exception(
             uniqid('message-'),
-            rand(\PHP_INT_MIN, \PHP_INT_MAX),
+            random_int(\PHP_INT_MIN, \PHP_INT_MAX),
             $previous = new \Exception()
         );
 

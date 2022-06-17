@@ -98,7 +98,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->with(
                 static::equalToWithDelta(new \DateTime('- 1 month'), 1)
             )
-            ->willReturn($count = rand(1, 10));
+            ->willReturn($count = random_int(1, 10));
 
         $transport2
             ->expects(static::never())
@@ -147,7 +147,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->with(
                 static::equalToWithDelta(new \DateTime($delay), 1)
             )
-            ->willReturn($count = rand(1, 10));
+            ->willReturn($count = random_int(1, 10));
 
         $this->execute(['transport' => $transportName, '--delay' => $delay], [])
             ->test(

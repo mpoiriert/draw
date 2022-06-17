@@ -104,9 +104,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         }
 
         return new SelfValidatingPassport(
-            new UserBadge($user->getUserIdentifier().'+jwt-token', function () use ($user) {
-                return $user;
-            }),
+            new UserBadge($user->getUserIdentifier().'+jwt-token', fn () => $user),
             $badges
         );
     }

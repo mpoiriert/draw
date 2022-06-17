@@ -128,9 +128,7 @@ class UserLockAdmin extends AbstractAdmin
                                 'label' => 'Show',
                                 'icon' => 'fa-eye',
                                 'route_object' => 'show',
-                                'check_callback' => function (object $object) {
-                                    return $this->hasAccess('show', $object);
-                                },
+                                'check_callback' => fn (object $object) => $this->hasAccess('show', $object),
                             ],
                         ],
                     ],

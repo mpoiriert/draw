@@ -103,7 +103,7 @@ class TokenProcessorTest extends TestCase
             ->willReturn(
                 new UsernamePasswordToken(
                     $user
-                        ->setId(rand(\PHP_INT_MIN, \PHP_INT_MAX))
+                        ->setId(random_int(\PHP_INT_MIN, \PHP_INT_MAX))
                         ->setUserIdentifier(uniqid()),
                     uniqid(),
                     $roles = [uniqid()]

@@ -75,9 +75,7 @@ class VendorExtractor implements ExtractorInterface
                 break;
         }
 
-        $filter = function ($annotation) {
-            return $annotation instanceof VendorInterface;
-        };
+        $filter = fn ($annotation) => $annotation instanceof VendorInterface;
 
         $classLevelAnnotations = array_filter($classLevelAnnotations, $filter);
         $annotations = array_filter($annotations, $filter);
@@ -107,9 +105,7 @@ class VendorExtractor implements ExtractorInterface
         );
 
         $classAnnotations = array_map(
-            function (VendorInterface $annotation) {
-                return clone $annotation;
-            },
+            fn (VendorInterface $annotation) => clone $annotation,
             $classAnnotations
         );
 

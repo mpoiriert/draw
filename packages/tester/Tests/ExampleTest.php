@@ -91,11 +91,8 @@ class ExampleTest extends TestCase
         // example-start: AssertTransformCustom
         (new DataTester('{"key":"value"}'))
             ->assertJson()
-            ->transform(
-                function ($data) {
-                    return json_decode($data, true);
-                }
-            )->path('[key]')->assertSame('value');
+            ->transform(fn ($data) => json_decode($data, true))
+            ->path('[key]')->assertSame('value');
         // example-end: AssertTransformCustom
     }
 

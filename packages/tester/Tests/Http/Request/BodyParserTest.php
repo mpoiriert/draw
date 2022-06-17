@@ -23,12 +23,12 @@ class BodyParserTest extends TestCase
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
-------------{$this->boundary}
-Content-Disposition: form-data; name="field"
+            ------------{$this->boundary}
+            Content-Disposition: form-data; name="field"
 
-value
-------------{$this->boundary}
-BODY;
+            value
+            ------------{$this->boundary}
+            BODY;
 
         static::assertSame(
             [
@@ -45,16 +45,16 @@ BODY;
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
-------------{$this->boundary}
-Content-Disposition: form-data; name="field"
+            ------------{$this->boundary}
+            Content-Disposition: form-data; name="field"
 
-value
-------------{$this->boundary}
-Content-Disposition: form-data; name="field2"
+            value
+            ------------{$this->boundary}
+            Content-Disposition: form-data; name="field2"
 
-value2
-------------{$this->boundary}
-BODY;
+            value2
+            ------------{$this->boundary}
+            BODY;
 
         static::assertSame(
             [
@@ -72,12 +72,12 @@ BODY;
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
-------------{$this->boundary}
-Content-Disposition: form-data; name="field[]"
+            ------------{$this->boundary}
+            Content-Disposition: form-data; name="field[]"
 
-value
-------------{$this->boundary}
-BODY;
+            value
+            ------------{$this->boundary}
+            BODY;
 
         static::assertSame(
             [
@@ -94,12 +94,12 @@ BODY;
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
-------------{$this->boundary}
-Content-Disposition: form-data; name="field"
+            ------------{$this->boundary}
+            Content-Disposition: form-data; name="field"
 
-value&
-------------{$this->boundary}
-BODY;
+            value&
+            ------------{$this->boundary}
+            BODY;
 
         static::assertSame(
             [
@@ -116,12 +116,12 @@ BODY;
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
-------------{$this->boundary}
-Content-Disposition: form-data; name="field"
+            ------------{$this->boundary}
+            Content-Disposition: form-data; name="field"
 
-value=
-------------{$this->boundary}
-BODY;
+            value=
+            ------------{$this->boundary}
+            BODY;
 
         static::assertSame(
             [
@@ -138,13 +138,13 @@ BODY;
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
-------------{$this->boundary}
-Content-Disposition: form-data; name="file"; filename="filename.txt"
-Content-Type: text/plain
+            ------------{$this->boundary}
+            Content-Disposition: form-data; name="file"; filename="filename.txt"
+            Content-Type: text/plain
 
-content of file
-------------{$this->boundary}
-BODY;
+            content of file
+            ------------{$this->boundary}
+            BODY;
 
         $result = $this->bodyParser->parse($body, $contentType);
 
@@ -198,12 +198,12 @@ BODY;
 
         foreach ($names as $formName => $fileName) {
             $body .= <<<BODY
-------------{$this->boundary}
-Content-Disposition: form-data; name="{$formName}"; filename="{$fileName}"
-Content-Type: text/plain
+                ------------{$this->boundary}
+                Content-Disposition: form-data; name="{$formName}"; filename="{$fileName}"
+                Content-Type: text/plain
 
-content of file
-BODY;
+                content of file
+                BODY;
         }
 
         $body .= "------------{$this->boundary}";

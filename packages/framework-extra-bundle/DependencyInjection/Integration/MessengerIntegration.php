@@ -198,18 +198,14 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
                 ->arrayNode('async_routing_configuration')->canBeEnabled()->end()
                 ->scalarNode('entity_class')
                     ->validate()
-                        ->ifTrue(function ($value) {
-                            return !class_exists($value) && MessengerMessage::class !== $value;
-                        })
+                        ->ifTrue(fn ($value) => !class_exists($value) && MessengerMessage::class !== $value)
                         ->thenInvalid('The class [%s] must exists.')
                     ->end()
                     ->defaultValue(MessengerMessage::class)
                 ->end()
                 ->scalarNode('tag_entity_class')
                     ->validate()
-                        ->ifTrue(function ($value) {
-                            return !class_exists($value) && MessengerMessageTag::class !== $value;
-                        })
+                        ->ifTrue(fn ($value) => !class_exists($value) && MessengerMessageTag::class !== $value)
                         ->thenInvalid('The class [%s] must exists.')
                     ->end()
                     ->defaultValue(MessengerMessageTag::class)
@@ -239,9 +235,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
                         })
                     ->end()
                     ->validate()
-                        ->ifTrue(static function (array $value): bool {
-                            return !\array_key_exists('default', $value);
-                        })
+                        ->ifTrue(static fn (array $value): bool => !\array_key_exists('default', $value))
                         ->thenInvalid('You must define a default context.')
                     ->end()
                     ->requiresAtLeastOneElement()

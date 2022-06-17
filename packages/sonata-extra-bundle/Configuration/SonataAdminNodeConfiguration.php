@@ -67,9 +67,7 @@ class SonataAdminNodeConfiguration extends ArrayNodeDefinition
                         $config,
                         array_flip(['group', 'icon', 'label', 'pager_type', 'show_in_dashboard'])
                     ) + ['manager_type' => 'orm'],
-                    function ($value) {
-                        return null !== $value;
-                    }
+                    fn ($value) => null !== $value
                 )
             );
     }

@@ -61,9 +61,7 @@ class MessageAuthenticator extends AbstractAuthenticator
         }
 
         return new SelfValidatingPassport(
-            new UserBadge($user->getUserIdentifier().'+message-'.$messageId, function () use ($user) {
-                return $user;
-            })
+            new UserBadge($user->getUserIdentifier().'+message-'.$messageId, fn () => $user)
         );
     }
 

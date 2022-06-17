@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createEmailWritersNodes())
                 ->scalarNode('user_entity_class')
                     ->validate()
-                        ->ifTrue(function ($value) { return !class_exists($value); })
+                        ->ifTrue(fn ($value) => !class_exists($value))
                         ->thenInvalid('The class [%s] for the user entity must exists.')
                     ->end()
                     ->defaultValue(User::class)

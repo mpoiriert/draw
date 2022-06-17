@@ -24,8 +24,8 @@ class BrokerStartedEventTest extends TestCase
     {
         $this->event = new BrokerStartedEvent(
             $this->broker = $this->createMock(Broker::class),
-            $this->concurrent = rand(1, \PHP_INT_MAX),
-            $this->timeout = rand(1, \PHP_INT_MAX)
+            $this->concurrent = random_int(1, \PHP_INT_MAX),
+            $this->timeout = random_int(1, \PHP_INT_MAX)
         );
     }
 

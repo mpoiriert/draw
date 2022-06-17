@@ -70,7 +70,7 @@ class ExecutionTest extends TestCase
 
         static::assertSame(
             $this->entity,
-            $this->entity->setId($value = rand(\PHP_INT_MIN, \PHP_INT_MAX))
+            $this->entity->setId($value = random_int(\PHP_INT_MIN, \PHP_INT_MAX))
         );
 
         static::assertSame(

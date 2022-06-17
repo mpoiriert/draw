@@ -22,7 +22,7 @@ class EnvelopeFactoryDelayStampListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new EnvelopeFactoryDelayStampListener(
-            $this->delay = rand(\PHP_INT_MIN, \PHP_INT_MAX)
+            $this->delay = random_int(\PHP_INT_MIN, \PHP_INT_MAX)
         );
     }
 

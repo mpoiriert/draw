@@ -338,9 +338,10 @@ class CookieJarTest extends TestCase
         static::assertCount(4, $jar);
         $jar->clear('bar.com', '/boo', 'other');
         static::assertCount(3, $jar);
-        $names = array_map(function (Cookie $c) {
-            return $c->getName();
-        }, $jar->getIterator()->getArrayCopy());
+        $names = array_map(
+            fn (Cookie $c) => $c->getName(),
+            $jar->getIterator()->getArrayCopy()
+        );
         static::assertEquals(['foo', 'test', 'you'], $names);
     }
 
