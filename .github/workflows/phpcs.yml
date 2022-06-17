@@ -31,4 +31,4 @@ jobs:
         run: composer install
       - name: PHPCS
         # https://cs.symfony.com/doc/usage.html
-        run: php vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
+        run: php vendor/bin/php-cs-fixer fix --dry-run --diff --verbose --allow-risky=yes
