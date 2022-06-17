@@ -9,7 +9,7 @@ use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 use Symfony\Component\Console\Input\ArrayInput;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(
  *     name="command__execution",
  *     indexes={
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\ArrayInput;
  *     }
  * )
  *
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\HasLifecycleCallbacks
  */
 class Execution
 {
@@ -47,16 +47,16 @@ class Execution
     ];
 
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(name="id", type="integer", options={"unsigned": true})
      */
     private ?int $id = null;
 
     /**
      * This is the command name when created trough the dashboard.
      *
-     * @ORM\Column(name="command", type="string", length=40, nullable=false, options={"default":"N/A"})
+     * @ORM\Column(name="command", type="string", length=40, nullable=false, options={"default": "N/A"})
      */
     private ?string $command = null;
 
@@ -78,7 +78,7 @@ class Execution
     /**
      * The execution output of the command.
      *
-     * @ORM\Column(name="output", type="text", nullable=false, options={"default":""})
+     * @ORM\Column(name="output", type="text", nullable=false, options={"default": ""})
      */
     private string $output = '';
 
@@ -170,7 +170,7 @@ class Execution
     }
 
     /**
-     * @ORM\PrePersist()
+     * @ORM\PrePersist
      */
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -187,7 +187,7 @@ class Execution
     }
 
     /**
-     * @ORM\PrePersist()
+     * @ORM\PrePersist
      */
     public function getUpdatedAt(): ?\DateTimeInterface
     {
@@ -228,7 +228,7 @@ class Execution
     }
 
     /**
-     * @ORM\PreUpdate()
+     * @ORM\PreUpdate
      */
     public function updateTimestamp(PreUpdateEventArgs $eventArgs): void
     {

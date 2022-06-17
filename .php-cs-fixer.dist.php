@@ -27,6 +27,7 @@ return (new \PhpCsFixer\Config())
         'no_useless_else' => true,
         'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
         'phpdoc_add_missing_param_annotation' => ['only_untyped' => true],
+        '@DoctrineAnnotation' => true,
     ])
     ->setFinder($finder)
 ;

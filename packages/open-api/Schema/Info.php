@@ -15,7 +15,7 @@ class Info
     /**
      * The title of the application.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      */
     public ?string $title = null;
 
@@ -36,21 +36,21 @@ class Info
     /**
      * The contact information for the exposed API.
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      */
     public ?Contact $contact = null;
 
     /**
      * The license information for the exposed API.
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      */
     public ?License $license = null;
 
     /**
      * Provides the version of the application API (not to be confused by the specification version).
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     public ?string $version = null;
 }

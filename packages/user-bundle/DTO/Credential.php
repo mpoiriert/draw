@@ -7,12 +7,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Credential
 {
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     private ?string $username = null;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     private ?string $password = null;
 

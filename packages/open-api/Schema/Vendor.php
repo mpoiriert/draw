@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation as Serializer;
 class Vendor implements VendorInterface
 {
     /**
-     * @Serializer\Exclude()
+     * @Serializer\Exclude
      */
     public ?string $name = null;
 

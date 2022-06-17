@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="acme__user_address")
  */
 class UserAddress
@@ -15,8 +15,8 @@ class UserAddress
     /**
      * @var int|null
      *
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer")
      */
     private $id;
@@ -40,14 +40,14 @@ class UserAddress
      *
      * @Serializer\Type("App\Entity\Address")
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      */
     private $address;
 
     /**
      * @var int|null
      *
-     * @ORM\Column(name="position", type="integer", options={"default":"0"}, nullable=false)
+     * @ORM\Column(name="position", type="integer", options={"default": "0"}, nullable=false)
      */
     private $position;
 

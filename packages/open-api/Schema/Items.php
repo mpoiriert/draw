@@ -14,7 +14,7 @@ class Items
      * The internal type of the array. The value MUST be one of "string", "number", "integer", "boolean", or "array".
      * Files and models are not allowed.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Choice({"string", "number", "integer", "boolean", "array", "file"})
      */
     public ?string $type = null;
@@ -136,7 +136,7 @@ class Items
     public ?int $multipleOf = null;
 
     /**
-     * @JMS\PreSerialize()
+     * @JMS\PreSerialize
      */
     public function preSerialize(): void
     {

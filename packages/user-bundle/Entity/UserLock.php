@@ -7,9 +7,9 @@ use Draw\Component\Core\DateTimeUtils;
 use Ramsey\Uuid\Uuid;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="draw_user__user_lock")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\HasLifecycleCallbacks
  */
 class UserLock
 {
@@ -18,7 +18,7 @@ class UserLock
     public const REASON_MANUAL_LOCK = 'manual-lock';
 
     /**
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\Column(name="id", type="guid")
      */
     private ?string $id = null;
@@ -62,7 +62,7 @@ class UserLock
     }
 
     /**
-     * @ORM\PrePersist()
+     * @ORM\PrePersist
      */
     public function getId(): string
     {
@@ -113,7 +113,7 @@ class UserLock
     }
 
     /**
-     * @ORM\PrePersist()
+     * @ORM\PrePersist
      */
     public function getCreatedAt(): \DateTimeInterface
     {

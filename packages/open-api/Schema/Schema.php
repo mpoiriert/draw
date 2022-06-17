@@ -9,7 +9,7 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
 /**
  * @author Martin Poirier Theoret <mpoiriert@gmail.com>
  *
- * @Assert\GroupSequenceProvider()
+ * @Assert\GroupSequenceProvider
  */
 class Schema implements GroupSequenceProviderInterface, ValidationConfigurationInterface, VendorExtensionSupportInterface
 {
@@ -116,7 +116,7 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
     public ?array $properties = null;
 
     /**
-     * @Assert\Valid()
+     * @Assert\Valid
      *
      * @JMS\SerializedName("additionalProperties")
      */
@@ -146,14 +146,14 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      * It has no effect on root schemas.
      * Adds Additional metadata to describe the XML representation format of this property.
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      */
     public ?Xml $xml = null;
 
     /**
      * Additional external documentation.
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      *
      * @JMS\SerializedName("externalDocs")
      */
@@ -164,7 +164,7 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      *
      * @var mixed
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      *
      * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
@@ -176,7 +176,7 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
     public ?string $ref = null;
 
     /**
-     * @JMS\PreSerialize()
+     * @JMS\PreSerialize
      */
     public function preSerialize(): void
     {

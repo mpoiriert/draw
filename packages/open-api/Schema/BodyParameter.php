@@ -13,8 +13,8 @@ class BodyParameter extends BaseParameter
     /**
      * The schema defining the type used for the body parameter.
      *
-     * @Assert\NotNull()
-     * @Assert\Valid()
+     * @Assert\NotNull
+     * @Assert\Valid
      */
     public ?Schema $schema = null;
 

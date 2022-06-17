@@ -23,9 +23,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="draw_acme__user")
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\HasLifecycleCallbacks
  *
  * @UniqueEntity(fields={"email"})
  */
@@ -50,10 +50,10 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * @var string
      *
-     * @ORM\Id()
+     * @ORM\Id
      * @ORM\Column(name="id", type="guid")
      *
-     * @Serializer\ReadOnlyProperty()
+     * @Serializer\ReadOnlyProperty
      */
     private $id;
 
@@ -74,7 +74,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * @var string
      *
-     * @ORM\Column(name="level", type="string", nullable=false, options={"default":"user"})
+     * @ORM\Column(name="level", type="string", nullable=false, options={"default": "user"})
      */
     private $level = 'user';
 
@@ -83,14 +83,14 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      *
      * @ORM\Embedded(class="App\Entity\Address", columnPrefix="address_")
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      */
     private $address;
 
     /**
      * @var UserAddress[]|Collection
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\UserAddress",
@@ -98,7 +98,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      *     mappedBy="user",
      *     orphanRemoval=true
      * )
-     * @ORM\OrderBy({"position":"ASC"})
+     * @ORM\OrderBy({"position": "ASC"})
      */
     private $userAddresses;
 
@@ -129,7 +129,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * @return string
      *
-     * @ORM\PrePersist()
+     * @ORM\PrePersist
      */
     public function getId()
     {
