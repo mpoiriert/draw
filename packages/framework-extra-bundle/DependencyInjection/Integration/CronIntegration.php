@@ -76,9 +76,7 @@ class CronIntegration implements IntegrationInterface
                         ->children()
                             ->scalarNode('name')
                                 ->validate()
-                                    ->ifTrue(function ($value) {
-                                        return \is_int($value);
-                                    })
+                                    ->ifTrue(fn ($value) => \is_int($value))
                                     ->thenInvalid('You must specify a name for the job. Can be via the attribute or the key.')
                                 ->end()
                                 ->isRequired()

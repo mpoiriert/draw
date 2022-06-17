@@ -47,7 +47,7 @@ class BrokerTest extends TestCase
     public function testStart(): void
     {
         $concurrent = 1;
-        $timeout = rand(1, 10);
+        $timeout = random_int(1, 10);
         $receiver = uniqid('receiver-');
 
         $this->eventDispatcher
@@ -226,7 +226,7 @@ class BrokerTest extends TestCase
     public function testStartForBuildOptions(): void
     {
         $concurrent = 1;
-        $timeout = rand(1, 10);
+        $timeout = random_int(1, 10);
         $receiver = uniqid('receiver-');
         $options = [
             'array' => ['value1', 'value2'],

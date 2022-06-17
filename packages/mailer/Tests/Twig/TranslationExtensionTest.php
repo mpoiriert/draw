@@ -59,7 +59,7 @@ class TranslationExtensionTest extends TestCase
         $arguments = ['key' => uniqid('value-')];
         $domain = uniqid('domain-');
         $locale = uniqid('locale-');
-        $count = rand(0, \PHP_INT_MAX);
+        $count = random_int(0, \PHP_INT_MAX);
 
         $this->translator
             ->expects(static::once())

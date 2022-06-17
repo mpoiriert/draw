@@ -54,9 +54,7 @@ class CookieJar implements CookieJarInterface
         } elseif (!$path) {
             $this->cookies = array_filter(
                 $this->cookies,
-                function (Cookie $cookie) use ($domain) {
-                    return !$cookie->matchesDomain($domain);
-                }
+                fn (Cookie $cookie) => !$cookie->matchesDomain($domain)
             );
         } elseif (!$name) {
             $this->cookies = array_filter(
@@ -82,9 +80,7 @@ class CookieJar implements CookieJarInterface
     {
         $this->cookies = array_filter(
             $this->cookies,
-            function (Cookie $cookie) {
-                return !$cookie->getDiscard() && $cookie->getExpires();
-            }
+            fn (Cookie $cookie) => !$cookie->getDiscard() && $cookie->getExpires()
         );
     }
 

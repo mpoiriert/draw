@@ -42,7 +42,7 @@ class Deserialization extends ParamConverter
             $values['name'] = self::DEFAULT_PARAMETER_NAME;
         }
 
-        $values['converter'] = $values['converter'] ?? 'draw_open_api.request_body';
+        $values['converter'] ??= 'draw_open_api.request_body';
 
         // We set the properties in the options array since they would be override by
         // the set options if it's configuration after

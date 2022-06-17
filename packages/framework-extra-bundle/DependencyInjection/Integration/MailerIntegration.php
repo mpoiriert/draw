@@ -74,9 +74,7 @@ class MailerIntegration implements IntegrationInterface, PrependIntegrationInter
                 ->arrayNode('css_inliner')
                     ->canBeEnabled()
                     ->validate()
-                        ->ifTrue(function ($value) {
-                            return $value['enabled'] && !class_exists(CssInliner::class);
-                        })
+                        ->ifTrue(fn ($value) => $value['enabled'] && !class_exists(CssInliner::class))
                         ->thenInvalid('The css inliner is base on the [pelago/emogrifier] package. Install it if you want to enable this feature.')
                     ->end()
                 ->end()

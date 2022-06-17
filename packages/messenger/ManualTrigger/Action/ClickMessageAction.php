@@ -109,9 +109,7 @@ class ClickMessageAction
             $handlers = implode(
                 ', ',
                 array_map(
-                    function (HandledStamp $stamp): string {
-                        return sprintf('"%s"', $stamp->getHandlerName());
-                    },
+                    fn (HandledStamp $stamp): string => sprintf('"%s"', $stamp->getHandlerName()),
                     $handledStamps
                 )
             );

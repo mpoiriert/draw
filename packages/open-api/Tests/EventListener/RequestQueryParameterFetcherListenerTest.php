@@ -156,8 +156,8 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         yield 'default' => ['', $value = uniqid('value'), $value];
         yield 'string' => ['string', $value = uniqid('value'), $value];
-        yield 'integer' => ['integer', (string) $value = rand(\PHP_INT_MIN, \PHP_INT_MAX), $value];
-        yield 'number' => ['number', (string) ($value = rand(-50, 50) + 0.12), $value];
+        yield 'integer' => ['integer', (string) $value = random_int(\PHP_INT_MIN, \PHP_INT_MAX), $value];
+        yield 'number' => ['number', (string) ($value = random_int(-50, 50) + 0.12), $value];
         yield 'array-csv' => ['array', implode(',', $arrayValues), $arrayValues, 'csv'];
         yield 'array-ssv' => ['array', implode(' ', $arrayValues), $arrayValues, 'ssv'];
         yield 'array-tsv' => ['array', implode("\t", $arrayValues), $arrayValues, 'tsv'];

@@ -49,9 +49,7 @@ class AccountLocker
     {
         return array_filter(
             $this->refreshUserLocks($user),
-            function (UserLock $userLock) {
-                return $userLock->isActive();
-            }
+            fn (UserLock $userLock) => $userLock->isActive()
         );
     }
 }

@@ -309,7 +309,7 @@ class CommandFlowListenerTest extends TestCase
     {
         $event = new LoadExecutionIdEvent(
             $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput($id = rand(1, \PHP_INT_MAX)),
+            $this->createOptionExecutionIdInput($id = random_int(1, \PHP_INT_MAX)),
             $this->createMock(OutputInterface::class)
         );
 
@@ -404,7 +404,7 @@ class CommandFlowListenerTest extends TestCase
         $connection
             ->expects(static::once())
             ->method('lastInsertId')
-            ->willReturn($id = rand(1, \PHP_INT_MAX));
+            ->willReturn($id = random_int(1, \PHP_INT_MAX));
 
         $connection
             ->expects(static::once())

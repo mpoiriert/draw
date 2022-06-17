@@ -82,9 +82,7 @@ class TagSonataAdmin implements ServiceTagInterface
     {
         return array_filter(
             $this->data,
-            function ($value) {
-                return null !== $value;
-            }
+            fn ($value) => null !== $value
         );
     }
 }

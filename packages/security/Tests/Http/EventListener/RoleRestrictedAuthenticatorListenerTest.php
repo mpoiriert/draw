@@ -112,9 +112,7 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
             new SelfValidatingPassport(
                 new UserBadge(
                     uniqid('user-identifier-'),
-                    function () {
-                        return $this->user;
-                    }
+                    fn () => $this->user
                 ),
                 $badges
             )

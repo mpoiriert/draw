@@ -273,16 +273,16 @@ class CommandFlowListener implements EventSubscriberInterface
         }
 
         $query = <<<SQL
-UPDATE
-  command__execution
-SET
-  updated_at = :updated_at,
-  $setOutput
-  $setAutoAcknowledgeReason
-  state = IF(state != 'error', :state, state)
-WHERE
-id = :id
-SQL;
+            UPDATE
+              command__execution
+            SET
+              updated_at = :updated_at,
+              $setOutput
+              $setAutoAcknowledgeReason
+              state = IF(state != 'error', :state, state)
+            WHERE
+            id = :id
+            SQL;
 
         $this->connection->prepare($query)->executeStatement($parameters);
 

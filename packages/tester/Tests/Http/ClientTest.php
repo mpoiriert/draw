@@ -257,16 +257,12 @@ class ClientTest extends TestCase
         $mockClientObserver
             ->expects(static::once())
             ->method('preSendRequest')
-            ->willReturnCallback(function (RequestInterface $request) {
-                return $request;
-            });
+            ->willReturnCallback(fn (RequestInterface $request) => $request);
 
         $mockClientObserver
             ->expects(static::once())
             ->method('postSendRequest')
-            ->willReturnCallback(function (RequestInterface $request, ResponseInterface $response) {
-                return $response;
-            });
+            ->willReturnCallback(fn (RequestInterface $request, ResponseInterface $response) => $response);
 
         /* @var ClientObserver $mockClientObserver */
         $client->registerObserver($mockClientObserver);
