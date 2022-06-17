@@ -17,7 +17,7 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
      * If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded"
      * and the parameter MUST be in "formData".
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Choice({"string", "number", "integer", "boolean", "array", "file"})
      */
     public ?string $type = null;
@@ -141,7 +141,7 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
     public ?int $multipleOf = null;
 
     /**
-     * @JMS\PreSerialize()
+     * @JMS\PreSerialize
      */
     public function preSerialize(): void
     {

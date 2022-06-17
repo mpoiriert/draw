@@ -14,7 +14,7 @@ class Tag
     /**
      * The name of the tag.
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     public ?string $name = null;
 

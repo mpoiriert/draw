@@ -40,7 +40,7 @@ class Operation implements VendorExtensionSupportInterface
     /**
      * Additional external documentation for this operation.
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      */
     public ?ExternalDocumentation $externalDocs = null;
 

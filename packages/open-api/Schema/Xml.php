@@ -17,7 +17,7 @@ class Xml
     /**
      * The URL of the namespace definition. Value SHOULD be in the form of a URL.
      *
-     * @Assert\Url()
+     * @Assert\Url
      */
     public ?string $namespace = null;
 

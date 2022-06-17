@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
 
 /**
  * @Annotation
- * @Target({"METHOD","CLASS"})
+ * @Target({"METHOD", "CLASS"})
  */
 class Serialization extends ConfigurationAnnotation
 {

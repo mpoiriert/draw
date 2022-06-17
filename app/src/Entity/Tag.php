@@ -17,8 +17,8 @@ class Tag
     /**
      * @var int
      *
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -26,7 +26,7 @@ class Tag
     /**
      * @var bool
      *
-     * @ORM\Column(name="active", type="boolean", options={"default":"1"})
+     * @ORM\Column(name="active", type="boolean", options={"default": "1"})
      */
     private $active = true;
 
@@ -35,7 +35,7 @@ class Tag
      *
      * @ORM\Column(name="label", type="string", length=255, nullable=false)
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Length(min=3, max=255, allowEmptyString=false)
      */
     private $label;

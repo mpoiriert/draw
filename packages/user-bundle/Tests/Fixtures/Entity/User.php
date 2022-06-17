@@ -7,15 +7,15 @@ use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  */
 class User implements TwoFactorAuthenticationUserInterface
 {
     use TwoFactorAuthenticationUserTrait;
 
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer")
      */
     private ?int $id = null;

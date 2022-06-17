@@ -11,12 +11,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Response
 {
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     public ?string $description = null;
 
     /**
-     * @Assert\Valid()
+     * @Assert\Valid
      */
     public ?Schema $schema = null;
 

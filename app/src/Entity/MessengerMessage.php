@@ -7,7 +7,7 @@ use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTrait;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="draw_messenger__message")
  */
 class MessengerMessage implements DrawMessageInterface

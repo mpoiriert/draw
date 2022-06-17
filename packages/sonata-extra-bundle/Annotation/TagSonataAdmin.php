@@ -6,7 +6,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
 use Terminal42\ServiceAnnotationBundle\Annotation\ServiceTagInterface;
 
 /**
- * @Annotation()
+ * @Annotation
  * @Target("CLASS")
  */
 class TagSonataAdmin implements ServiceTagInterface

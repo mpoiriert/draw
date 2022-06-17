@@ -19,15 +19,15 @@ class Root implements VendorExtensionSupportInterface
      * It can be used by the Swagger UI and other clients to interpret the API listing.
      * The value MUST be "2.0".
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     public ?string $swagger = '2.0';
 
     /**
      * Provides metadata about the API. The metadata can be used by the clients if needed.
      *
-     * @Assert\NotNull()
-     * @Assert\Valid()
+     * @Assert\NotNull
+     * @Assert\Valid
      */
     public ?Info $info = null;
 
@@ -166,7 +166,7 @@ class Root implements VendorExtensionSupportInterface
     /**
      * Additional external documentation.
      *
-     * @Assert\Valid()
+     * @Assert\Valid
      *
      * @JMS\SerializedName("externalDocs")
      */

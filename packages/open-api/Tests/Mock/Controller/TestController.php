@@ -21,7 +21,7 @@ class TestController
      *
      * @OpenApi\QueryParameter(name="param1")
      *
-     * @OpenApi\Vendor(name="x-test", value={"key":"value", "object":{"property":"value"}})
+     * @OpenApi\Vendor(name="x-test", value={"key": "value", "object": {"property": "value"}})
      *
      * @Deserialization(
      *     name="test",
@@ -32,7 +32,7 @@ class TestController
      *     statusCode=201,
      *     serializerGroups={"Included"},
      *     headers={
-     *       "X-Draw":@OpenApi\Header(type="string", description="Description of the header")
+     *         "X-Draw": @OpenApi\Header(type="string", description="Description of the header")
      *     }
      * )
      *
@@ -60,7 +60,7 @@ class TestController
      *     type="array",
      *     collectionFormat="csv",
      *     constraints={
-     *         @Assert\NotNull()
+     *         @Assert\NotNull
      *     }
      * )
      *
@@ -74,7 +74,7 @@ class TestController
     }
 
     /**
-     * @Route(methods={"GET"}, path="/v2/void", defaults={"_api_version":2})
+     * @Route(methods={"GET"}, path="/v2/void", defaults={"_api_version": 2})
      *
      * @OpenApi\Operation(
      *     operationId="version2",

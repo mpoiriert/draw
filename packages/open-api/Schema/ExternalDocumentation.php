@@ -21,8 +21,8 @@ class ExternalDocumentation
     /**
      * The URL for the target documentation. Value MUST be in the format of a URL.
      *
-     * @Assert\NotBlank()
-     * @Assert\Url()
+     * @Assert\NotBlank
+     * @Assert\Url
      */
     public ?string $url = null;
 }

@@ -16,7 +16,7 @@ class TagsController
      *
      * @OpenApi\Operation(operationId="tagCreate")
      *
-     * @Deserialization()
+     * @Deserialization
      *
      * @Serialization(statusCode=201)
      *
@@ -36,7 +36,7 @@ class TagsController
      * @OpenApi\Operation(operationId="tagEdit")
      *
      * @Deserialization(
-     *     propertiesMap={"id":"id"}
+     *     propertiesMap={"id": "id"}
      * )
      *
      * @return Tag The update tag

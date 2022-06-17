@@ -21,7 +21,7 @@ class UsersController extends AbstractController
      *
      * @OpenApi\Operation(operationId="userCreate")
      *
-     * @Deserialization()
+     * @Deserialization
      *
      * @IsGranted("ROLE_ADMIN")
      *
@@ -55,7 +55,7 @@ class UsersController extends AbstractController
      * @OpenApi\Operation(operationId="userEdit")
      *
      * @Deserialization(
-     *     propertiesMap={"id":"id"}
+     *     propertiesMap={"id": "id"}
      * )
      *
      * @IsGranted("ROLE_ADMIN")

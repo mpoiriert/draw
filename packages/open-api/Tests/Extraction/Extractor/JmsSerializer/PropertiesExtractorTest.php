@@ -117,7 +117,7 @@ class JmsExtractorStubModel
      * @var string
      * @Serializer\Type("string")
      * @Serializer\Groups({"test"})
-     * @Serializer\ReadOnlyProperty()
+     * @Serializer\ReadOnlyProperty
      */
     public $name;
 
@@ -126,7 +126,7 @@ class JmsExtractorStubModel
      *
      * @Serializer\Type("Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubGeneric<string>")
      * @Serializer\Groups({"test"})
-     * @Serializer\ReadOnlyProperty()
+     * @Serializer\ReadOnlyProperty
      */
     public $generic;
 
@@ -159,7 +159,7 @@ class JmsExtractorStubModel
 
     /**
      * @var string
-     * @Serializer\Exclude()
+     * @Serializer\Exclude
      * @Serializer\Groups({"test"})
      */
     public $notThere;
@@ -167,7 +167,7 @@ class JmsExtractorStubModel
     /**
      * The virtual property.
      *
-     * @Serializer\VirtualProperty()
+     * @Serializer\VirtualProperty
      * @Serializer\Type(JmsExtractorStubModel::class)
      * @Serializer\Groups({"test"})
      */
@@ -184,7 +184,7 @@ class JmsExtractorStubGeneric
      * @var string
      * @Serializer\Type("generic")
      * @Serializer\Groups({"test"})
-     * @Serializer\ReadOnlyProperty()
+     * @Serializer\ReadOnlyProperty
      */
     public $name;
 }

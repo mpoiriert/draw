@@ -13,15 +13,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Annotation
  *
  * @JMS\Discriminator(
- *      field="in",
- *      map={
- *          "body":"Draw\Component\OpenApi\Schema\BodyParameter",
- *          "header":"Draw\Component\OpenApi\Schema\HeaderParameter",
- *          "path":"Draw\Component\OpenApi\Schema\PathParameter",
- *          "query":"Draw\Component\OpenApi\Schema\QueryParameter",
- *          "formData":"Draw\Component\OpenApi\Schema\FormDataParameter",
- *          "other": "Draw\Component\OpenApi\Schema\Parameter"
- *      }
+ *     field="in",
+ *     map={
+ *         "body": "Draw\Component\OpenApi\Schema\BodyParameter",
+ *         "header": "Draw\Component\OpenApi\Schema\HeaderParameter",
+ *         "path": "Draw\Component\OpenApi\Schema\PathParameter",
+ *         "query": "Draw\Component\OpenApi\Schema\QueryParameter",
+ *         "formData": "Draw\Component\OpenApi\Schema\FormDataParameter",
+ *         "other": "Draw\Component\OpenApi\Schema\Parameter"
+ *     }
  * )
  */
 abstract class BaseParameter
@@ -33,7 +33,7 @@ abstract class BaseParameter
      *
      *  - For all other cases, the name corresponds to the parameter name used based on the in property.
      *
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     public ?string $name = null;
 
@@ -51,7 +51,7 @@ abstract class BaseParameter
     public ?bool $required = null;
 
     /**
-     * @JMS\VirtualProperty()
+     * @JMS\VirtualProperty
      * @JMS\SerializedName("in")
      */
     public function getType(): string
