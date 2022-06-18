@@ -1,4 +1,5 @@
 {% if object is not null
+    and object.isLocked()
     and admin.id(object) is not null
     and admin.hasAccess('unlock', object)
     and admin.hasRoute('unlock') %}

@@ -5,6 +5,7 @@ namespace App\Tests\Entity;
 use App\Entity\User;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\TesterBundle\Messenger\TransportTester;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
 use Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage;
@@ -14,9 +15,9 @@ use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 
 class UserTest extends TestCase
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    private $transportTester;
+    private TransportTester $transportTester;
 
     protected function setUp(): void
     {
@@ -45,7 +46,7 @@ class UserTest extends TestCase
         $user = new User();
         $user->setEmail('test-lock@example.com');
 
-        $user->lock(new UserLock(UserLock::REASON_MANUAL_LOCK));
+        $user->setManualLock(true);
 
         $entityManager = $this->getService(EntityManagerInterface::class);
 
@@ -61,7 +62,7 @@ class UserTest extends TestCase
         $user->setEmail('test-lock@example.com');
 
         $user->lock(
-            $userLock = (new UserLock(UserLock::REASON_MANUAL_LOCK))
+            $userLock = (new UserLock(uniqid('reason-')))
                 ->setLockOn(new \DateTimeImmutable('+ 5 minutes'))
         );
 

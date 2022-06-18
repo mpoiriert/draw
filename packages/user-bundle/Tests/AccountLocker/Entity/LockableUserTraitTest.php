@@ -7,9 +7,13 @@ use Draw\Bundle\UserBundle\Entity\LockableUserTrait;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Bundle\UserBundle\Entity\UserLock;
+use Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait
+ */
 class LockableUserTraitTest extends TestCase
 {
     private LockableUserInterface $object;
@@ -23,7 +27,6 @@ class LockableUserTraitTest extends TestCase
 
             public function getId()
             {
-                // TODO: Implement getId() method.
             }
         };
     }
@@ -81,6 +84,11 @@ class LockableUserTraitTest extends TestCase
         $lock->setUnlockUntil(new \DateTimeImmutable());
 
         $newLock = (clone $lock)->setLockOn(new \DateTimeImmutable());
+
+        $newLock->setUnlockUntil(new \DateTimeImmutable('+ 10 days'));
+        $newLock->setExpiresAt(new \DateTimeImmutable('+ 10 days'));
+        $newLock->setLockOn(new \DateTimeImmutable('+ 10 days'));
+
         static::assertSame(
             $newLock,
             $this->object->lock($newLock),
@@ -179,7 +187,7 @@ class LockableUserTraitTest extends TestCase
 
         static::assertSame(
             $value->getId(),
-            $this->object->getOnHoldMessages(false)[0]->getUserLockId()
+            $this->object->getOnHoldMessages(true)[0]->getUserLockId()
         );
 
         static::assertCount(1, $this->object->getUserLocks());
@@ -199,5 +207,62 @@ class LockableUserTraitTest extends TestCase
         );
 
         static::assertCount(0, $this->object->getUserLocks());
+    }
+
+    public function tesTemporaryUnlockAll(): void
+    {
+        $this->object->temporaryUnlockAll($until = new \DateTimeImmutable());
+
+        $message = $this->object->getOnHoldMessages(true)[0];
+
+        static::assertInstanceOf(
+            TemporaryUnlockedMessage::class,
+            $message
+        );
+
+        static::assertSame(
+            $until->getTimestamp(),
+            $message->until()->getTimestamp()
+        );
+
+        static::assertFalse($message->wasLocked());
+
+        $this->object->setManualLock(true);
+
+        $this->object->temporaryUnlockAll($until = new \DateTimeImmutable(' + 10 hours'));
+
+        $message = $this->object->getOnHoldMessages(true)[0];
+
+        static::assertInstanceOf(
+            TemporaryUnlockedMessage::class,
+            $message
+        );
+
+        static::assertSame(
+            $until->getTimestamp(),
+            $message->until()->getTimestamp()
+        );
+
+        static::assertTrue($message->wasLocked());
+    }
+
+    public function testAddUserLockPreventManualLockIsFalse(): void
+    {
+        $this->object->setManualLock(false);
+
+        $this->object->addUserLock(new UserLock(UserLock::REASON_MANUAL_LOCK));
+
+        static::assertEmpty($this->object->getLocks(), 'Manual lock should not be added if set to false');
+    }
+
+    public function testRemoveUserLockPreventManualLockIsTrue(): void
+    {
+        $this->object->setManualLock(true);
+
+        $this->object->addUserLock($lock = new UserLock(UserLock::REASON_MANUAL_LOCK));
+
+        $this->object->removeUserLock($lock);
+
+        static::assertCount(1, $this->object->getLocks(), 'Manual lock should not be removed if set to false');
     }
 }
