@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
+use Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage;
 use function Draw\Component\Core\use_trait;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
 
@@ -77,7 +78,7 @@ trait LockableUserTrait
             case null === $lock = $this->getLocks()[$reason] ?? null:
                 break;
             case null === $until:
-                $this->getUserLocks()->removeElement($lock);
+                $this->removeUserLock($lock);
                 break;
             default:
                 $lock->setUnlockUntil($until);
@@ -85,6 +86,22 @@ trait LockableUserTrait
         }
 
         return $lock;
+    }
+
+    public function temporaryUnlockAll(\DateTimeInterface $until): void
+    {
+        $wasLocked = $this->isLocked();
+
+        foreach ($this->getLocks() as $lock) {
+            $this->unlock($lock->getReason(), $until);
+        }
+
+        if (use_trait($this, MessageHolderTrait::class)) {
+            $this->onHoldMessages[TemporaryUnlockedMessage::class] = new TemporaryUnlockedMessage(
+                $wasLocked,
+                $until
+            );
+        }
     }
 
     /**
@@ -127,6 +144,11 @@ trait LockableUserTrait
     {
         $userLocks = $this->getUserLocks();
 
+        // This is to prevent sonata admin to add the lock manually if has manual lock was set to false
+        if (UserLock::REASON_MANUAL_LOCK === $userLock->getReason() && !$this->hasManualLock()) {
+            return $this;
+        }
+
         if (!$userLocks->contains($userLock)) {
             if (use_trait($this, MessageHolderTrait::class)) {
                 $this->onHoldMessages['user-lock-'.$userLock->getReason()] = new NewUserLockMessage($userLock->getId());
@@ -141,6 +163,10 @@ trait LockableUserTrait
 
     public function removeUserLock(UserLock $userLock): self
     {
+        if (UserLock::REASON_MANUAL_LOCK === $userLock->getReason() && $this->hasManualLock()) {
+            return $this;
+        }
+
         $this->getUserLocks()->removeElement($userLock);
 
         return $this;

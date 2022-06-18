@@ -24,9 +24,7 @@ class UnlockUserAction
 
         $admin->checkAccess('unlock', $user);
 
-        foreach ($user->getLocks() as $lock) {
-            $lock->setUnlockUntil(new \DateTimeImmutable('+ 24 hours'));
-        }
+        $user->temporaryUnlockAll(new \DateTimeImmutable('+ 24 hours'));
 
         try {
             $admin->update($user);

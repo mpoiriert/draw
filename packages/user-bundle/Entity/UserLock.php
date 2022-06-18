@@ -196,6 +196,17 @@ class UserLock
         return true;
     }
 
+    public function copyInto(self $userLock): void
+    {
+        if ($userLock->getReason() !== $this->getReason()) {
+            throw new \LogicException(sprintf('User lock for reason [%s] cannot be copied into user lock for reason [%s]', $this->getReason(), $userLock->getReason()));
+        }
+
+        $userLock->setLockOn($this->getLockOn());
+        $userLock->setUnlockUntil($this->getUnlockUntil());
+        $userLock->setExpiresAt($this->getExpiresAt());
+    }
+
     public function __toString(): string
     {
         return $this->getUser().' -> '.$this->getReason().' -> '.($this->isActive() ? 'Active' : 'Inactive');
