@@ -56,6 +56,7 @@ trait AssertTrait
             if ($information['ignore']) {
                 continue;
             }
+
             $method = $reflectionClass->getMethod($methodName);
 
             $docComment = $method->getDocComment();
@@ -98,20 +99,16 @@ trait AssertTrait
                 $docCommentLines[] = $line;
             }
 
-            if (1 == \count($docCommentLines)) {
-                $docCommentLines[0] = '/**';
-                $docCommentLines[1] = '';
+            if (1 === \count($docCommentLines)) {
+                $correctedDocComment = '';
+            } else {
+                $correctedDocComment = implode("\n", $docCommentLines);
             }
-
-            $docCommentLines[\count($docCommentLines) - 1] = '     * @return $this';
-            $docCommentLines[] = '     */';
-
-            $correctedDocComment = implode("\n", $docCommentLines);
 
             $class .= "
     //example-start: {$methodName}
     {$correctedDocComment}
-    public function {$methodName}({$parametersString}) {
+    public function {$methodName}({$parametersString}): self {
         Assert::{$methodName}({$callParametersString});
 
         return \$this;

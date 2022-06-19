@@ -11,7 +11,7 @@
     },
     "assertArraySubset": {
         "validated": false,
-        "ignore": false,
+        "ignore": true,
         "dataParameter": "array",
         "parameters": [
             "subset",
@@ -37,10 +37,7 @@
         "parameters": [
             "needle",
             "haystack",
-            "message",
-            "ignoreCase",
-            "checkForObjectIdentity",
-            "checkForNonObjectIdentity"
+            "message"
         ]
     },
     "assertAttributeContains": {
@@ -64,10 +61,7 @@
         "parameters": [
             "needle",
             "haystack",
-            "message",
-            "ignoreCase",
-            "checkForObjectIdentity",
-            "checkForNonObjectIdentity"
+            "message"
         ]
     },
     "assertAttributeNotContains": {
@@ -189,11 +183,7 @@
         "parameters": [
             "expected",
             "actual",
-            "message",
-            "delta",
-            "maxDepth",
-            "canonicalize",
-            "ignoreCase"
+            "message"
         ]
     },
     "assertAttributeEquals": {
@@ -218,11 +208,7 @@
         "parameters": [
             "expected",
             "actual",
-            "message",
-            "delta",
-            "maxDepth",
-            "canonicalize",
-            "ignoreCase"
+            "message"
         ]
     },
     "assertAttributeNotEquals": {
@@ -369,9 +355,7 @@
         "parameters": [
             "expected",
             "actual",
-            "message",
-            "canonicalize",
-            "ignoreCase"
+            "message"
         ]
     },
     "assertFileNotEquals": {
@@ -381,9 +365,7 @@
         "parameters": [
             "expected",
             "actual",
-            "message",
-            "canonicalize",
-            "ignoreCase"
+            "message"
         ]
     },
     "assertStringEqualsFile": {
@@ -393,9 +375,7 @@
         "parameters": [
             "expectedFile",
             "actualString",
-            "message",
-            "canonicalize",
-            "ignoreCase"
+            "message"
         ]
     },
     "assertStringNotEqualsFile": {
@@ -405,9 +385,7 @@
         "parameters": [
             "expectedFile",
             "actualString",
-            "message",
-            "canonicalize",
-            "ignoreCase"
+            "message"
         ]
     },
     "assertIsReadable": {
@@ -781,7 +759,7 @@
     },
     "assertInternalType": {
         "validated": false,
-        "ignore": false,
+        "ignore": true,
         "dataParameter": "actual",
         "parameters": [
             "expected",
@@ -802,7 +780,7 @@
     },
     "assertNotInternalType": {
         "validated": false,
-        "ignore": false,
+        "ignore": true,
         "dataParameter": "actual",
         "parameters": [
             "expected",
@@ -823,7 +801,7 @@
     },
     "assertRegExp": {
         "validated": false,
-        "ignore": false,
+        "ignore": true,
         "dataParameter": "string",
         "parameters": [
             "pattern",
@@ -833,7 +811,7 @@
     },
     "assertNotRegExp": {
         "validated": false,
-        "ignore": false,
+        "ignore": true,
         "dataParameter": "string",
         "parameters": [
             "pattern",
@@ -1408,6 +1386,207 @@
         "parameters": [
             "needle",
             "haystack",
+            "message"
+        ]
+    },
+    "assertObjectEquals": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "method",
+            "message"
+        ]
+    },
+    "assertFileEqualsCanonicalizing": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertFileEqualsIgnoringCase": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertFileNotEqualsCanonicalizing": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertFileNotEqualsIgnoringCase": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "expected",
+            "actual",
+            "message"
+        ]
+    },
+    "assertStringEqualsFileCanonicalizing": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actualString",
+        "parameters": [
+            "expectedFile",
+            "actualString",
+            "message"
+        ]
+    },
+    "assertStringEqualsFileIgnoringCase": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actualString",
+        "parameters": [
+            "expectedFile",
+            "actualString",
+            "message"
+        ]
+    },
+    "assertStringNotEqualsFileCanonicalizing": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actualString",
+        "parameters": [
+            "expectedFile",
+            "actualString",
+            "message"
+        ]
+    },
+    "assertStringNotEqualsFileIgnoringCase": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actualString",
+        "parameters": [
+            "expectedFile",
+            "actualString",
+            "message"
+        ]
+    },
+    "assertIsNotReadable": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertIsNotWritable": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertDirectoryDoesNotExist": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertDirectoryIsNotReadable": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertDirectoryIsNotWritable": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "directory",
+        "parameters": [
+            "directory",
+            "message"
+        ]
+    },
+    "assertFileDoesNotExist": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "filename",
+        "parameters": [
+            "filename",
+            "message"
+        ]
+    },
+    "assertFileIsNotReadable": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "file",
+        "parameters": [
+            "file",
+            "message"
+        ]
+    },
+    "assertFileIsNotWritable": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "file",
+        "parameters": [
+            "file",
+            "message"
+        ]
+    },
+    "assertIsClosedResource": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertIsNotClosedResource": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "actual",
+        "parameters": [
+            "actual",
+            "message"
+        ]
+    },
+    "assertMatchesRegularExpression": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "pattern",
+            "string",
+            "message"
+        ]
+    },
+    "assertDoesNotMatchRegularExpression": {
+        "validated": false,
+        "ignore": false,
+        "dataParameter": "string",
+        "parameters": [
+            "pattern",
+            "string",
             "message"
         ]
     }
