@@ -79,10 +79,13 @@ class AccountLockerListener implements EventSubscriberInterface
     public function handlerCheckPreAuthEvent(CheckPreAuthEvent $event): void
     {
         $user = $event->getUser();
-        switch (true) {
-            case !$user instanceof LockableUserInterface:
-            case !($reasons = array_keys($this->accountLocker->getActiveLocks($user))):
-                return;
+
+        if (!$user instanceof LockableUserInterface) {
+            return;
+        }
+
+        if (empty($reasons = array_keys($this->accountLocker->getActiveLocks($user)))) {
+            return;
         }
 
         $this->userFeed->addToFeed($user, 'error', 'account_locked');

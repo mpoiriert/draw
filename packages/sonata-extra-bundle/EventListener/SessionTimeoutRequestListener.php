@@ -40,11 +40,16 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
 
     public function onKernelRequestInvalidate(RequestEvent $event): void
     {
-        switch (true) {
-            case !$event->isMainRequest():
-            case null === $request = $event->getRequest():
-            case !$request->hasSession():
-                return;
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
+        if (!$request = $event->getRequest()) {
+            return;
+        }
+
+        if (!$request->hasSession()) {
+            return;
         }
 
         $session = $request->getSession();
@@ -58,11 +63,16 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
 
     public function onKernelResponseSetLastUsed(ResponseEvent $event): void
     {
-        switch (true) {
-            case !$event->isMainRequest():
-            case null === $request = $event->getRequest():
-            case !$request->hasSession():
-                return;
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
+        if (!$request = $event->getRequest()) {
+            return;
+        }
+
+        if (!$request->hasSession()) {
+            return;
         }
 
         $request->getSession()->set(static::LAST_USED_SESSION_ATTRIBUTE, time());
@@ -72,14 +82,28 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
     {
         $response = $event->getResponse();
 
-        switch (true) {
-            case null === $this->security->getUser():
-            case !$event->isMainRequest():
-            case 0 !== strpos($response->headers->get('Content-type', ''), 'text/html'):
-            case !\is_string($content = $response->getContent()):
-            case false === strpos($content, '<meta data-sonata-admin'):
-            case false === strpos($content, '<title>'):
-                return;
+        if (!$this->security->getUser()) {
+            return;
+        }
+
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
+        if (0 !== strpos($response->headers->get('Content-type', ''), 'text/html')) {
+            return;
+        }
+
+        if (!\is_string($content = $response->getContent())) {
+            return;
+        }
+
+        if (false === strpos($content, '<meta data-sonata-admin')) {
+            return;
+        }
+
+        if (false === strpos($content, '<title>')) {
+            return;
         }
 
         $content = str_replace(

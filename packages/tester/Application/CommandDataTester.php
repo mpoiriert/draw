@@ -5,7 +5,7 @@ namespace Draw\Component\Tester\Application;
 use Draw\Component\Tester\DataTester;
 use Symfony\Component\Console\Command\Command;
 
-class CommandDataTester
+final class CommandDataTester
 {
     private ?string $expectedDisplay = null;
 
@@ -20,7 +20,7 @@ class CommandDataTester
      */
     public static function create(int $expectedStatusCode = Command::SUCCESS, $expectedDisplay = ''): self
     {
-        $self = (new static())->setExpectedStatusCode($expectedStatusCode);
+        $self = (new self())->setExpectedStatusCode($expectedStatusCode);
 
         if (\is_array($expectedDisplay)) {
             $self->setExpectedDisplayStrings($expectedDisplay);

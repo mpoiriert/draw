@@ -8,7 +8,6 @@ use Doctrine\ORM\Event\OnClearEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Proxy;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
-use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\BasicEnvelopeFactory;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -26,10 +25,10 @@ class DoctrineBusMessageListener implements EventSubscriber
 
     public function __construct(
         MessageBusInterface $messageBus,
-        ?EnvelopeFactoryInterface $envelopeFactory = null
+        EnvelopeFactoryInterface $envelopeFactory
     ) {
         $this->messageBus = $messageBus;
-        $this->envelopeFactory = $envelopeFactory ?: new BasicEnvelopeFactory();
+        $this->envelopeFactory = $envelopeFactory;
     }
 
     public function getSubscribedEvents(): array

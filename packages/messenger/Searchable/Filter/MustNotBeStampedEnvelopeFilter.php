@@ -6,7 +6,7 @@ use Draw\Contracts\Messenger\EnvelopeFilterInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\SentToFailureTransportStamp;
 
-class MustNotBeStampedEnvelopeFilter implements EnvelopeFilterInterface
+final class MustNotBeStampedEnvelopeFilter implements EnvelopeFilterInterface
 {
     /**
      * @var array|string[]
@@ -31,6 +31,6 @@ class MustNotBeStampedEnvelopeFilter implements EnvelopeFilterInterface
 
     public static function sentToFailureTransport(): self
     {
-        return new static([SentToFailureTransportStamp::class]);
+        return new self([SentToFailureTransportStamp::class]);
     }
 }

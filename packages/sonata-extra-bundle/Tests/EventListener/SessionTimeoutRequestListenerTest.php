@@ -29,12 +29,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
     /**
      * @var MockObject|UrlGeneratorInterface
      */
-    private $urlGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
     /**
      * @var MockObject|Security
      */
-    private $security;
+    private Security $security;
 
     protected function setUp(): void
     {

@@ -82,11 +82,16 @@ class ClickMessageAction
 
     private function addFlash(Request $request, string $type, string $message): void
     {
-        switch (true) {
-            case !$request->hasSession():
-            case null === $session = $request->getSession():
-            case !$session instanceof Session:
-                return;
+        if (!$request->hasSession()) {
+            return;
+        }
+
+        if (!$session = $request->getSession()) {
+            return;
+        }
+
+        if (!$session instanceof Session) {
+            return;
         }
 
         $session->getFlashBag()->add($type, $this->translator->trans($message, [], 'DrawMessenger'));

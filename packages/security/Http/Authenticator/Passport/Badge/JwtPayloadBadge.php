@@ -4,7 +4,7 @@ namespace Draw\Component\Security\Http\Authenticator\Passport\Badge;
 
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\BadgeInterface;
 
-class JwtPayloadBadge implements BadgeInterface
+final class JwtPayloadBadge implements BadgeInterface
 {
     private const KEYS_TO_IGNORE = [
         'exp',
@@ -39,9 +39,9 @@ class JwtPayloadBadge implements BadgeInterface
     {
         $resultPayload = array_diff_key(
             $payload,
-            array_flip(array_merge(static::KEYS_TO_IGNORE, $extraKeyToIgnores))
+            array_flip(array_merge(self::KEYS_TO_IGNORE, $extraKeyToIgnores))
         );
 
-        return $resultPayload ? new static($resultPayload) : null;
+        return $resultPayload ? new self($resultPayload) : null;
     }
 }

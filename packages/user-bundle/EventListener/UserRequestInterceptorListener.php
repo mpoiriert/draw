@@ -89,10 +89,12 @@ class UserRequestInterceptorListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        switch (true) {
-            case null === $session = $this->getAccessibleSession($request):
-            case !$session->has(self::REQUEST_INTERCEPTION_ORIGINAL_URL):
-                return;
+        if (!$session = $this->getAccessibleSession($request)) {
+            return;
+        }
+
+        if (!$session->has(self::REQUEST_INTERCEPTION_ORIGINAL_URL)) {
+            return;
         }
 
         $redirect = $session->get(self::REQUEST_INTERCEPTION_ORIGINAL_URL);
@@ -107,11 +109,16 @@ class UserRequestInterceptorListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        switch (true) {
-            case self::INTERCEPTION_REASON === $event->getReason():
-            case null === $session = $this->getAccessibleSession($request):
-            case $session->has(self::REQUEST_INTERCEPTION_ORIGINAL_URL):
-                return;
+        if (self::INTERCEPTION_REASON === $event->getReason()) {
+            return;
+        }
+
+        if (!$session = $this->getAccessibleSession($request)) {
+            return;
+        }
+
+        if ($session->has(self::REQUEST_INTERCEPTION_ORIGINAL_URL)) {
+            return;
         }
 
         $session->set(self::REQUEST_INTERCEPTION_ORIGINAL_URL, $request->getUri());

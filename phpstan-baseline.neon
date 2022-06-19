@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class Draw\\\\Bundle\\\\SonataIntegrationBundle\\\\User\\\\Security\\\\AdminLoginAuthenticator extends @final class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\\.$#"
+			count: 1
+			path: packages/sonata-integration-bundle/User/Security/AdminLoginAuthenticator.php

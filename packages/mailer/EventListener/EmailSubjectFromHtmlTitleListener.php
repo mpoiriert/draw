@@ -23,12 +23,22 @@ class EmailSubjectFromHtmlTitleListener implements EventSubscriberInterface
             return;
         }
 
-        switch (true) {
-            case $message->getSubject():
-            case !($body = $message->getHtmlBody()):
-            case !\count($crawler = (new Crawler($body))->filter('html > head > title')->first()):
-            case !($subject = $crawler->text()):
-                return;
+        if (null !== $message->getSubject()) {
+            return;
+        }
+
+        if (!\is_string($htmlBody = $message->getHtmlBody())) {
+            return;
+        }
+
+        $crawler = (new Crawler($htmlBody))->filter('html > head > title')->first();
+
+        if (0 === \count($crawler)) {
+            return;
+        }
+
+        if (empty($subject = $crawler->text())) {
+            return;
         }
 
         $message->subject($subject);

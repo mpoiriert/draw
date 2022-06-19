@@ -4,18 +4,21 @@ namespace Draw\Component\Profiling\Sql;
 
 use Draw\Component\Tester\DataTester;
 
-class SqlAssertionBuilder
+final class SqlAssertionBuilder
 {
-    private $countAssertion;
+    /**
+     * @var ?callable
+     */
+    private $countAssertion = null;
 
     /**
      * @param int|null $count The exact count of query expected
      *
      * @return SqlAssertionBuilder
      */
-    public static function create($count = null)
+    public static function create(?int $count = null): self
     {
-        $builder = new static();
+        $builder = new self();
         if (null !== $count) {
             $builder->assertCountEquals($count);
         }
@@ -23,17 +26,17 @@ class SqlAssertionBuilder
         return $builder;
     }
 
-    public function assertCountGreaterThanOrEqual($count)
+    public function assertCountGreaterThanOrEqual($count): void
     {
         $this->countAssertion = ['assertGreaterThanOrEqual', $count];
     }
 
-    public function assertCountLessThanOrEqual($count)
+    public function assertCountLessThanOrEqual($count): void
     {
         $this->countAssertion = ['assertLessThanOrEqual', $count];
     }
 
-    public function assertCountEquals($count)
+    public function assertCountEquals($count): void
     {
         $this->countAssertion = ['assertEquals', $count];
     }
