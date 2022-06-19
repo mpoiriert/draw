@@ -59,7 +59,7 @@ class InstallSandboxCommand extends Command
 
         $zip = new \ZipArchive();
         if (true !== $error = $zip->open($zipPath)) {
-            throw new \RuntimeException(sprintf('Cannot open zip file [%s]. Error code [%s].', $zipPath, $error ?? 'File does not exists'));
+            throw new \RuntimeException(sprintf('Cannot open zip file [%s]. Error code [%s].', $zipPath, $error));
         }
 
         $this->filesystem->remove($outputPath);
