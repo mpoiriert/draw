@@ -29,7 +29,11 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     protected function assertSupportConstraint(Constraint $constraint): void
     {
         if (!$this->supportConstraint($constraint)) {
-            throw new \InvalidArgumentException(sprintf('The constraint of type [%s] is not supported by [%s]', \get_class($constraint), static::class));
+            throw new \InvalidArgumentException(sprintf(
+                'The constraint of type [%s] is not supported by [%s]',
+                \get_class($constraint),
+                static::class
+            ));
         }
     }
 
@@ -84,7 +88,10 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
         $classMetadata = $this->validator->getMetadataFor($class);
 
         if (!$classMetadata instanceof ClassMetadataInterface) {
-            throw new \LogicException(sprintf('Validator::getMetadataFor expect class return to be of type [%s]', ClassMetadataInterface::class));
+            throw new \LogicException(sprintf(
+                'Validator::getMetadataFor expect class return to be of type [%s]',
+                ClassMetadataInterface::class
+            ));
         }
 
         foreach ($classMetadata->getConstrainedProperties() as $propertyName) {
@@ -131,8 +138,8 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
      * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
      * extraction.
      *
-     * @param \ReflectionClass $source
-     * @param Schema           $target
+     * @param \ReflectionClass      $source
+     * @param Schema|QueryParameter $target
      *
      * @throws ExtractionImpossibleException
      */

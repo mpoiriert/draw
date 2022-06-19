@@ -20,14 +20,12 @@ class AutoStampEnvelopeListener implements EventSubscriberInterface
     public function handleStampingAwareMessage(SendMessageToTransportsEvent $event): void
     {
         $envelope = $event->getEnvelope();
+        $message = $envelope->getMessage();
 
-        switch (true) {
-            case null === $message = $envelope->getMessage():
-            case !$message instanceof StampingAwareInterface:
-                return;
-            default:
-                $event->setEnvelope($message->stamp($envelope));
-                break;
+        if (!$message instanceof StampingAwareInterface) {
+            return;
         }
+
+        $event->setEnvelope($message->stamp($envelope));
     }
 }

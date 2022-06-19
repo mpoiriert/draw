@@ -86,9 +86,7 @@ class ClickMessageAction
             return;
         }
 
-        if (!$session = $request->getSession()) {
-            return;
-        }
+        $session = $request->getSession();
 
         if (!$session instanceof Session) {
             return;

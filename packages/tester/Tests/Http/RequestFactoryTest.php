@@ -34,7 +34,7 @@ class RequestFactoryTest extends TestCase
 
         static::assertSame($method, $request->getMethod());
         static::assertSame($uri, $request->getUri()->__toString());
-        static::assertSame($body ?: '', $request->getBody()->getContents());
+        static::assertSame($body, $request->getBody()->getContents());
 
         foreach ($headers as $key => $value) {
             static::assertContains($value, $request->getHeader($key));

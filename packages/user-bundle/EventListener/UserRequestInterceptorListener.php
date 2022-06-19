@@ -133,12 +133,10 @@ class UserRequestInterceptorListener implements EventSubscriberInterface
             }
         }
 
-        switch (true) {
-            case !$request->hasSession():
-            case null === $session = $request->getSession():
-                return null;
-            default:
-                return $session;
+        if (!$request->hasSession()) {
+            return null;
         }
+
+        return $request->getSession();
     }
 }

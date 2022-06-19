@@ -10,15 +10,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class TestResponse
 {
-    /**
-     * @var RequestInterface
-     */
-    private $request;
+    private RequestInterface $request;
 
-    /**
-     * @var ResponseInterface
-     */
-    private $response;
+    private ResponseInterface $response;
 
     public function __construct(RequestInterface $request, ResponseInterface $response)
     {
@@ -40,8 +34,6 @@ class TestResponse
      * Return the body contents of the response.
      *
      * Always seek the stream back to the beginning first in case of multiple call
-     *
-     * @return string
      */
     public function getResponseBodyContents(): ?string
     {
@@ -51,15 +43,13 @@ class TestResponse
         return $body->getContents();
     }
 
-    private function getStatusCode(): ?int
+    private function getStatusCode(): int
     {
         return $this->response->getStatusCode();
     }
 
     /**
      * Assert that the response has a successful status code.
-     *
-     * @return $this
      */
     public function assertSuccessful(): self
     {
@@ -74,12 +64,8 @@ class TestResponse
 
     /**
      * Assert that the response has the given status code.
-     *
-     * @param int $status
-     *
-     * @return $this
      */
-    public function assertStatus($status): self
+    public function assertStatus(int $status): self
     {
         $actual = $this->getStatusCode();
 
@@ -99,12 +85,8 @@ class TestResponse
 
     /**
      * Assert whether the response is redirecting to a given URI.
-     *
-     * @param string $uri
-     *
-     * @return $this
      */
-    public function assertRedirect($uri = null): self
+    public function assertRedirect(?string $uri = null): self
     {
         PHPUnit::assertTrue(
             \in_array($this->getStatusCode(), [301, 302, 303, 307, 308]),
@@ -121,16 +103,13 @@ class TestResponse
     /**
      * Asserts that the response contains the given header and equals the optional value.
      *
-     * @param string $headerName
-     * @param mixed  $value
-     *
-     * @return $this
+     * @param mixed $value
      */
-    public function assertHeader($headerName, $value = null): self
+    public function assertHeader(string $headerName, $value = null): self
     {
         PHPUnit::assertTrue(
             $this->getResponse()->hasHeader($headerName),
-            "Header [{$headerName}] not present on response."
+            "Header [$headerName] not present on response."
         );
 
         if (null !== $value) {
@@ -152,12 +131,9 @@ class TestResponse
     /**
      * Asserts that the response contains the given cookie and equals the optional value.
      *
-     * @param string $cookieName
-     * @param mixed  $value
-     *
-     * @return $this
+     * @param mixed $value
      */
-    public function assertCookie($cookieName, $value = null): self
+    public function assertCookie(string $cookieName, $value = null): self
     {
         $cookies = $this->getCookies();
         $cookie = \array_key_exists($cookieName, $cookies) ? $cookies[$cookieName] : null;
@@ -178,7 +154,7 @@ class TestResponse
         PHPUnit::assertEquals(
             $value,
             $cookieValue = $cookie->getValue(),
-            "Cookie [{$cookieName}] was found, but value [{$cookieValue}] does not match [{$value}]."
+            "Cookie [$cookieName] was found, but value [{$cookieValue}] does not match [{$value}]."
         );
 
         return $this;

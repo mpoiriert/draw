@@ -17,8 +17,6 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
 {
     private StampManuallyTriggeredEnvelopeListener $service;
 
-    private static Envelope $newEnvelope;
-
     protected function setUp(): void
     {
         $this->service = new StampManuallyTriggeredEnvelopeListener();

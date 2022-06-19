@@ -40,7 +40,11 @@ class DrawTransportFactory extends DoctrineTransportFactory
             /** @var \Doctrine\DBAL\Connection $driverConnection */
             $driverConnection = $this->registry->getConnection($configuration['connection']);
         } catch (\InvalidArgumentException $error) {
-            throw new TransportException(sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn), 0, $error);
+            throw new TransportException(
+                sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn),
+                0,
+                $error
+            );
         }
 
         $connection = new Connection($configuration, $driverConnection);
@@ -66,19 +70,32 @@ class DrawTransportFactory extends DoctrineTransportFactory
             $configuration['tag_table_name'] = $configuration['table_name'].'_tag';
         }
 
-        $configuration['auto_setup'] = filter_var($configuration['auto_setup'] ?? false, \FILTER_VALIDATE_BOOLEAN);
-        $configuration['redeliver_timeout'] = filter_var($configuration['redeliver_timeout'] ?? 3600, \FILTER_VALIDATE_INT);
+        $configuration = array_merge(
+            $configuration,
+            [
+                'auto_setup' => filter_var($configuration['auto_setup'] ?? false, \FILTER_VALIDATE_BOOLEAN),
+                'redeliver_timeout' => filter_var($configuration['redeliver_timeout'] ?? 3600, \FILTER_VALIDATE_INT),
+            ]
+        );
 
         // check for extra keys in options
         $optionsExtraKeys = array_diff(array_keys($options), array_keys(self::DEFAULT_OPTIONS));
         if (0 < \count($optionsExtraKeys)) {
-            throw new InvalidArgumentException(sprintf('Unknown option found : [%s]. Allowed options are [%s]', implode(', ', $optionsExtraKeys), implode(', ', array_keys(self::DEFAULT_OPTIONS))));
+            throw new InvalidArgumentException(sprintf(
+                'Unknown option found : [%s]. Allowed options are [%s]',
+                implode(', ', $optionsExtraKeys),
+                implode(', ', array_keys(self::DEFAULT_OPTIONS))
+            ));
         }
 
         // check for extra keys in options
         $queryExtraKeys = array_diff(array_keys($query), array_keys(self::DEFAULT_OPTIONS));
         if (0 < \count($queryExtraKeys)) {
-            throw new InvalidArgumentException(sprintf('Unknown option found in DSN: [%s]. Allowed options are [%s]', implode(', ', $queryExtraKeys), implode(', ', array_keys(self::DEFAULT_OPTIONS))));
+            throw new InvalidArgumentException(sprintf(
+                'Unknown option found in DSN: [%s]. Allowed options are [%s]',
+                implode(', ', $queryExtraKeys),
+                implode(', ', array_keys(self::DEFAULT_OPTIONS))
+            ));
         }
 
         return $configuration;

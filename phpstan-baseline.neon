@@ -1,9 +1,44 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Configuration\\\\Deserialization\\:\\:\\$deserializationEnableMaxDepth is unused\\.$#"
+			count: 1
+			path: packages/open-api/Configuration/Deserialization.php
+
+		-
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Configuration\\\\Deserialization\\:\\:\\$deserializationGroups is unused\\.$#"
+			count: 1
+			path: packages/open-api/Configuration/Deserialization.php
+
+		-
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Configuration\\\\Deserialization\\:\\:\\$propertiesMap is unused\\.$#"
+			count: 1
+			path: packages/open-api/Configuration/Deserialization.php
+
+		-
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Configuration\\\\Deserialization\\:\\:\\$validate is unused\\.$#"
+			count: 1
+			path: packages/open-api/Configuration/Deserialization.php
+
+		-
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Configuration\\\\Deserialization\\:\\:\\$validationGroups is unused\\.$#"
+			count: 1
+			path: packages/open-api/Configuration/Deserialization.php
+
+		-
 			message: "#^Parameter \\$param of method Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Extraction\\\\Extractor\\\\PhpDoc\\\\PhpDocOperationExtractorStubService\\:\\:invalidTypeParameter\\(\\) has invalid type Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Extraction\\\\Extractor\\\\PhpDoc\\\\toto\\.$#"
 			count: 1
 			path: packages/open-api/Tests/Extraction/Extractor/PhpDoc/OperationExtractorTest.php
+
+		-
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\Test\\:\\:\\$propertyFromBody is unused\\.$#"
+			count: 1
+			path: packages/open-api/Tests/Mock/Model/Test.php
+
+		-
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\Test\\:\\:\\$propertyGroupExclusion is unused\\.$#"
+			count: 1
+			path: packages/open-api/Tests/Mock/Model/Test.php
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getRole\\(\\)\\.$#"

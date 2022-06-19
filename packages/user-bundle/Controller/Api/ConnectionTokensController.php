@@ -14,6 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 // todo refactor to be reusable
@@ -48,13 +50,16 @@ class ConnectionTokensController extends AbstractController
         JwtAuthenticator $authenticator,
         UserPasswordHasherInterface $passwordEncoder
     ): ConnectionToken {
-        $user = $userProvider->loadUserByIdentifier($credential->getUsername());
-
-        if (null === $user) {
+        try {
+            $user = $userProvider->loadUserByIdentifier($credential->getUsername());
+        } catch (UserNotFoundException $exception) {
             throw new HttpException(400, 'User not found');
         }
 
-        if (!$passwordEncoder->isPasswordValid($user, $credential->getPassword())) {
+        if (
+            !$user instanceof PasswordAuthenticatedUserInterface
+            || !$passwordEncoder->isPasswordValid($user, $credential->getPassword())
+        ) {
             throw new HttpException(403, 'Invalid credential');
         }
 

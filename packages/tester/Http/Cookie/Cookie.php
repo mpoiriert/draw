@@ -124,7 +124,7 @@ class Cookie
     /**
      * Get the cookie value.
      *
-     * @return string
+     * @return string|null
      */
     public function getValue()
     {
@@ -214,9 +214,9 @@ class Cookie
     /**
      * Set the unix timestamp for which the cookie will expire.
      *
-     * @param int $timestamp Unix timestamp
+     * @param int|string $timestamp Unix timestamp
      */
-    public function setExpires($timestamp)
+    public function setExpires($timestamp): void
     {
         $this->data['Expires'] = is_numeric($timestamp)
             ? (int) $timestamp
