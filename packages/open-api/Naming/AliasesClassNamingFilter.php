@@ -5,7 +5,7 @@ namespace Draw\Component\OpenApi\Naming;
 class AliasesClassNamingFilter implements ClassNamingFilterInterface
 {
     /**
-     * @var string[]
+     * @var array<array{class: string, alias: string}>
      */
     private array $definitionAliases;
 

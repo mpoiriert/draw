@@ -9,6 +9,12 @@ trait MockBuilderTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
+    /**
+     * @template T of object
+     * @phpstan-param class-string<T> $originalClassName
+     *
+     * @return MockObject&T
+     */
     protected function createMockWithExtraMethods(string $originalClassName, array $methods): MockObject
     {
         return $this->getMockBuilder($originalClassName)

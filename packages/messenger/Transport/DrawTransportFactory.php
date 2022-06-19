@@ -29,7 +29,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
     }
 
     /**
-     * @return TransportInterface|DrawTransport
+     * @return TransportInterface&DrawTransport
      */
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
@@ -66,8 +66,8 @@ class DrawTransportFactory extends DoctrineTransportFactory
             $configuration['tag_table_name'] = $configuration['table_name'].'_tag';
         }
 
-        $configuration['auto_setup'] = filter_var($configuration['auto_setup'], \FILTER_VALIDATE_BOOLEAN);
-        $configuration['redeliver_timeout'] = filter_var($configuration['redeliver_timeout'], \FILTER_VALIDATE_INT);
+        $configuration['auto_setup'] = filter_var($configuration['auto_setup'] ?? false, \FILTER_VALIDATE_BOOLEAN);
+        $configuration['redeliver_timeout'] = filter_var($configuration['redeliver_timeout'] ?? 3600, \FILTER_VALIDATE_INT);
 
         // check for extra keys in options
         $optionsExtraKeys = array_diff(array_keys($options), array_keys(self::DEFAULT_OPTIONS));

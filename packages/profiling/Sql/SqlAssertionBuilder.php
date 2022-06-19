@@ -7,9 +7,9 @@ use Draw\Component\Tester\DataTester;
 final class SqlAssertionBuilder
 {
     /**
-     * @var ?callable
+     * @var array{0: string, 1: int}|null
      */
-    private $countAssertion = null;
+    private ?array $countAssertion = null;
 
     /**
      * @param int|null $count The exact count of query expected

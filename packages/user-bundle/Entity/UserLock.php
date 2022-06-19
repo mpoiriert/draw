@@ -73,7 +73,7 @@ class UserLock
         return $this->id;
     }
 
-    public function setId(?int $id): self
+    public function setId(?string $id): self
     {
         $this->id = $id;
 

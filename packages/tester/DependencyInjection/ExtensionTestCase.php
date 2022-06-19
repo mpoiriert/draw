@@ -8,18 +8,12 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 abstract class ExtensionTestCase extends TestCase
 {
-    protected static $definitions = [];
-    protected static $aliases = [];
+    protected static array $definitions = [];
+    protected static array $aliases = [];
 
-    /**
-     * @var Extension
-     */
-    private $extension;
+    private ?Extension $extension = null;
 
-    /**
-     * @var ContainerBuilder
-     */
-    private static $containerBuilder;
+    private static ?ContainerBuilder $containerBuilder = null;
 
     abstract public function createExtension(): Extension;
 
@@ -57,9 +51,9 @@ abstract class ExtensionTestCase extends TestCase
     /**
      * @dataProvider provideTestHasServiceDefinition
      *
-     * @param string $aliasOf If the id is a alias it's a alias of which service ?
+     * @param ?string $aliasOf If the id is a alias it's a alias of which service ?
      */
-    public function testHasServiceDefinition(string $id, ?string $aliasOf = null)
+    public function testHasServiceDefinition(string $id, ?string $aliasOf = null): void
     {
         if ($aliasOf) {
             self::$aliases[] = $id;
@@ -80,7 +74,7 @@ abstract class ExtensionTestCase extends TestCase
         }
     }
 
-    public function testDefinitionsMatchChecks()
+    public function testDefinitionsMatchChecks(): void
     {
         $actualIds = array_values(
             array_diff(
@@ -100,7 +94,7 @@ abstract class ExtensionTestCase extends TestCase
         );
     }
 
-    public function testAliasesMatchChecks()
+    public function testAliasesMatchChecks(): void
     {
         $actualIds = array_values(
             array_diff(

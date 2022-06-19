@@ -42,7 +42,7 @@ class CookieJar implements CookieJarInterface
         return null;
     }
 
-    public function clear($domain = null, $path = null, $name = null): void
+    public function clear($domain = null, $path = null, $name = null): self
     {
         if (!$domain) {
             $this->cookies = [];
@@ -69,6 +69,8 @@ class CookieJar implements CookieJarInterface
                 }
             );
         }
+
+        return $this;
     }
 
     public function clearSessionCookies(): void

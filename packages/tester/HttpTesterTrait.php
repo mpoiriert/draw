@@ -6,10 +6,7 @@ use Draw\Component\Tester\Http\ClientInterface;
 
 trait HttpTesterTrait
 {
-    /**
-     * @var ClientInterface
-     */
-    protected static $httpTesterClient;
+    protected static ?ClientInterface $httpTesterClient = null;
 
     public function httpTester(): ClientInterface
     {
