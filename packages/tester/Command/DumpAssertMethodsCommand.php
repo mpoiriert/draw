@@ -80,6 +80,12 @@ class DumpAssertMethodsCommand extends Command
 
             $ignore = false;
 
+            $docComment = $method->getDocComment();
+
+            if (false !== strpos($docComment, ' @deprecated')) {
+                $ignore = true;
+            }
+
             switch (true) {
                 case 0 === strpos($method->name, 'assertAttribute'):
                 case 'assertThat' === $method->name:
@@ -96,6 +102,16 @@ class DumpAssertMethodsCommand extends Command
                 ];
             } else {
                 $methods[$method->name]['parameters'] = $parameters;
+                if ($ignore) {
+                    $methods[$method->name]['ignore'] = true;
+                }
+            }
+        }
+
+        // Ignore method that don't exist anymore
+        foreach (array_keys($methods) as $name) {
+            if (!$reflectionClass->hasMethod($name)) {
+                $methods[$name]['ignore'] = true;
             }
         }
 

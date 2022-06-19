@@ -12,16 +12,6 @@ Do not forgot that all the asserts are not available and that the **$this->getDa
 that is normally pass trough the **PHPUnit Assert** methods.
 
 
-assertArraySubset
-^^^^^^^^^^^^^^^^^
-
-.. literalinclude:: ../AssertTrait.php
-   :name: assert-ArraySubset
-   :start-after: //example-start: assertArraySubset
-   :end-before: //example-end: assertArraySubset
-   :dedent: 4
-   :prepend: <?php
-
 assertContains
 ^^^^^^^^^^^^^^
 
@@ -299,46 +289,6 @@ assertNotInstanceOf
    :name: assert-NotInstanceOf
    :start-after: //example-start: assertNotInstanceOf
    :end-before: //example-end: assertNotInstanceOf
-   :dedent: 4
-   :prepend: <?php
-
-assertInternalType
-^^^^^^^^^^^^^^^^^^
-
-.. literalinclude:: ../AssertTrait.php
-   :name: assert-InternalType
-   :start-after: //example-start: assertInternalType
-   :end-before: //example-end: assertInternalType
-   :dedent: 4
-   :prepend: <?php
-
-assertNotInternalType
-^^^^^^^^^^^^^^^^^^^^^
-
-.. literalinclude:: ../AssertTrait.php
-   :name: assert-NotInternalType
-   :start-after: //example-start: assertNotInternalType
-   :end-before: //example-end: assertNotInternalType
-   :dedent: 4
-   :prepend: <?php
-
-assertRegExp
-^^^^^^^^^^^^
-
-.. literalinclude:: ../AssertTrait.php
-   :name: assert-RegExp
-   :start-after: //example-start: assertRegExp
-   :end-before: //example-end: assertRegExp
-   :dedent: 4
-   :prepend: <?php
-
-assertNotRegExp
-^^^^^^^^^^^^^^^
-
-.. literalinclude:: ../AssertTrait.php
-   :name: assert-NotRegExp
-   :start-after: //example-start: assertNotRegExp
-   :end-before: //example-end: assertNotRegExp
    :dedent: 4
    :prepend: <?php
 
@@ -789,5 +739,215 @@ assertStringNotContainsStringIgnoringCase
    :name: assert-StringNotContainsStringIgnoringCase
    :start-after: //example-start: assertStringNotContainsStringIgnoringCase
    :end-before: //example-end: assertStringNotContainsStringIgnoringCase
+   :dedent: 4
+   :prepend: <?php
+
+assertObjectEquals
+^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-ObjectEquals
+   :start-after: //example-start: assertObjectEquals
+   :end-before: //example-end: assertObjectEquals
+   :dedent: 4
+   :prepend: <?php
+
+assertFileEqualsCanonicalizing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-FileEqualsCanonicalizing
+   :start-after: //example-start: assertFileEqualsCanonicalizing
+   :end-before: //example-end: assertFileEqualsCanonicalizing
+   :dedent: 4
+   :prepend: <?php
+
+assertFileEqualsIgnoringCase
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-FileEqualsIgnoringCase
+   :start-after: //example-start: assertFileEqualsIgnoringCase
+   :end-before: //example-end: assertFileEqualsIgnoringCase
+   :dedent: 4
+   :prepend: <?php
+
+assertFileNotEqualsCanonicalizing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-FileNotEqualsCanonicalizing
+   :start-after: //example-start: assertFileNotEqualsCanonicalizing
+   :end-before: //example-end: assertFileNotEqualsCanonicalizing
+   :dedent: 4
+   :prepend: <?php
+
+assertFileNotEqualsIgnoringCase
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-FileNotEqualsIgnoringCase
+   :start-after: //example-start: assertFileNotEqualsIgnoringCase
+   :end-before: //example-end: assertFileNotEqualsIgnoringCase
+   :dedent: 4
+   :prepend: <?php
+
+assertStringEqualsFileCanonicalizing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-StringEqualsFileCanonicalizing
+   :start-after: //example-start: assertStringEqualsFileCanonicalizing
+   :end-before: //example-end: assertStringEqualsFileCanonicalizing
+   :dedent: 4
+   :prepend: <?php
+
+assertStringEqualsFileIgnoringCase
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-StringEqualsFileIgnoringCase
+   :start-after: //example-start: assertStringEqualsFileIgnoringCase
+   :end-before: //example-end: assertStringEqualsFileIgnoringCase
+   :dedent: 4
+   :prepend: <?php
+
+assertStringNotEqualsFileCanonicalizing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-StringNotEqualsFileCanonicalizing
+   :start-after: //example-start: assertStringNotEqualsFileCanonicalizing
+   :end-before: //example-end: assertStringNotEqualsFileCanonicalizing
+   :dedent: 4
+   :prepend: <?php
+
+assertStringNotEqualsFileIgnoringCase
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-StringNotEqualsFileIgnoringCase
+   :start-after: //example-start: assertStringNotEqualsFileIgnoringCase
+   :end-before: //example-end: assertStringNotEqualsFileIgnoringCase
+   :dedent: 4
+   :prepend: <?php
+
+assertIsNotReadable
+^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-IsNotReadable
+   :start-after: //example-start: assertIsNotReadable
+   :end-before: //example-end: assertIsNotReadable
+   :dedent: 4
+   :prepend: <?php
+
+assertIsNotWritable
+^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-IsNotWritable
+   :start-after: //example-start: assertIsNotWritable
+   :end-before: //example-end: assertIsNotWritable
+   :dedent: 4
+   :prepend: <?php
+
+assertDirectoryDoesNotExist
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-DirectoryDoesNotExist
+   :start-after: //example-start: assertDirectoryDoesNotExist
+   :end-before: //example-end: assertDirectoryDoesNotExist
+   :dedent: 4
+   :prepend: <?php
+
+assertDirectoryIsNotReadable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-DirectoryIsNotReadable
+   :start-after: //example-start: assertDirectoryIsNotReadable
+   :end-before: //example-end: assertDirectoryIsNotReadable
+   :dedent: 4
+   :prepend: <?php
+
+assertDirectoryIsNotWritable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-DirectoryIsNotWritable
+   :start-after: //example-start: assertDirectoryIsNotWritable
+   :end-before: //example-end: assertDirectoryIsNotWritable
+   :dedent: 4
+   :prepend: <?php
+
+assertFileDoesNotExist
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-FileDoesNotExist
+   :start-after: //example-start: assertFileDoesNotExist
+   :end-before: //example-end: assertFileDoesNotExist
+   :dedent: 4
+   :prepend: <?php
+
+assertFileIsNotReadable
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-FileIsNotReadable
+   :start-after: //example-start: assertFileIsNotReadable
+   :end-before: //example-end: assertFileIsNotReadable
+   :dedent: 4
+   :prepend: <?php
+
+assertFileIsNotWritable
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-FileIsNotWritable
+   :start-after: //example-start: assertFileIsNotWritable
+   :end-before: //example-end: assertFileIsNotWritable
+   :dedent: 4
+   :prepend: <?php
+
+assertIsClosedResource
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-IsClosedResource
+   :start-after: //example-start: assertIsClosedResource
+   :end-before: //example-end: assertIsClosedResource
+   :dedent: 4
+   :prepend: <?php
+
+assertIsNotClosedResource
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-IsNotClosedResource
+   :start-after: //example-start: assertIsNotClosedResource
+   :end-before: //example-end: assertIsNotClosedResource
+   :dedent: 4
+   :prepend: <?php
+
+assertMatchesRegularExpression
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-MatchesRegularExpression
+   :start-after: //example-start: assertMatchesRegularExpression
+   :end-before: //example-end: assertMatchesRegularExpression
+   :dedent: 4
+   :prepend: <?php
+
+assertDoesNotMatchRegularExpression
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. literalinclude:: ../AssertTrait.php
+   :name: assert-DoesNotMatchRegularExpression
+   :start-after: //example-start: assertDoesNotMatchRegularExpression
+   :end-before: //example-end: assertDoesNotMatchRegularExpression
    :dedent: 4
    :prepend: <?php
