@@ -113,7 +113,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
             $criteria = [];
             foreach ($doctrineFindByFields as $name) {
                 if ($serializationMetadata && isset($serializationMetadata->propertyMetadata[$name])) {
-                    $dataName = $serializationMetadata->propertyMetadata[$name]->serializedName;
+                    $dataName = $serializationMetadata->propertyMetadata[$name]->serializedName ?? $name;
                 } else {
                     $dataName = $name;
                 }

@@ -92,6 +92,12 @@ composer-update:
 cs-fix:
 	docker-compose exec php php vendor/bin/php-cs-fixer fix --allow-risky=yes -v
 
+phpstan:
+	docker-compose exec php php vendor/bin/phpstan analyse
+
+phpstan-generate-baseline:
+	docker-compose exec php php vendor/bin/phpstan analyse --generate-baseline
+
 composer-normalize:
 	[ -f ./composer-normalize] && echo 'composer-normalizer available' || wget https://github.com/ergebnis/composer-normalize/releases/download/2.24.1/composer-normalize.phar -O composer-normalize
 	sudo chmod a+x composer-normalize

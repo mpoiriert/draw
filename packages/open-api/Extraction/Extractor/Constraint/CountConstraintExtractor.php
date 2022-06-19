@@ -13,7 +13,7 @@ class CountConstraintExtractor extends BaseConstraintExtractor
     }
 
     /**
-     * @param Count|Constraint $constraint
+     * @param Count&Constraint $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {

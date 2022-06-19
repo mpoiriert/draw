@@ -7,6 +7,7 @@ use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
+use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -64,9 +65,11 @@ class UserAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
+        /** @var TagAdmin $tagAdmin */
         $tagAdmin = $this->getConfigurationPool()
             ->getAdminByClass(Tag::class);
 
+        /** @var UserLockAdmin $userLockAdmin */
         $userLockAdmin = $this->getConfigurationPool()
             ->getAdminByClass(UserLock::class);
 

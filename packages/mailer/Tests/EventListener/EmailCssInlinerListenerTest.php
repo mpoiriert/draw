@@ -3,6 +3,7 @@
 namespace Draw\Component\Mailer\Tests\EventListener;
 
 use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Envelope;
@@ -76,8 +77,11 @@ class EmailCssInlinerListenerTest extends TestCase
 
     public function testInlineEmailCss(): void
     {
+        /** @var Email&MockObject $message */
+        $message = $this->createMock(Email::class);
+
         $event = new MessageEvent(
-            $message = $this->createMock(Email::class),
+            $message,
             new Envelope(new Address('test@example.com'), [new Address('test@example.com')]),
             uniqid('transport-')
         );

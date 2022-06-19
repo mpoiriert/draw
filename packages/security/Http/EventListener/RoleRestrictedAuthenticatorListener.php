@@ -7,7 +7,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
-use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 
 class RoleRestrictedAuthenticatorListener implements EventSubscriberInterface
@@ -26,7 +25,6 @@ class RoleRestrictedAuthenticatorListener implements EventSubscriberInterface
 
     public function checkPassport(CheckPassportEvent $event): void
     {
-        /** @var Passport $passport */
         $passport = $event->getPassport();
 
         if (!$badge = $passport->getBadge(RoleRestrictedBadge::class)) {

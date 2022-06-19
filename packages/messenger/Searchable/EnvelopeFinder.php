@@ -15,7 +15,7 @@ class EnvelopeFinder implements EnvelopeFinderInterface
 {
     private TransportRepository $transportRepository;
 
-    private EnvelopeFilterInterface $defaultFilter;
+    private AggregatedEnvelopeFilter $defaultFilter;
 
     public function __construct(TransportRepository $transportRepository)
     {

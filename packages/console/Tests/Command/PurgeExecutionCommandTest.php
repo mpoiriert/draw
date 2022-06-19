@@ -20,12 +20,12 @@ class PurgeExecutionCommandTest extends TestCase
     use CommandTestTrait;
 
     /**
-     * @var Connection|MockObject
+     * @var Connection&MockObject
      */
     private Connection $connection;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private LoggerInterface $logger;
 

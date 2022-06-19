@@ -19,7 +19,7 @@ class UnlockUserAction
 
     public function __invoke(AdminInterface $admin, UserInterface $currentUser)
     {
-        /** @var LockableUserInterface $user */
+        /** @var LockableUserInterface&\Stringable $user */
         $user = $admin->getSubject();
 
         $admin->checkAccess('unlock', $user);

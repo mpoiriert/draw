@@ -23,7 +23,7 @@ class EnvelopeFinderTest extends TestCase
     private EnvelopeFinder $service;
 
     /**
-     * @var TransportRepository|MockObject
+     * @var TransportRepository&MockObject
      */
     private TransportRepository $transportRepository;
 

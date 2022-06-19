@@ -3,6 +3,7 @@
 namespace Draw\Component\Mailer\Tests\Twig;
 
 use Draw\Component\Mailer\Twig\TranslationExtension;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
@@ -15,6 +16,9 @@ class TranslationExtensionTest extends TestCase
 {
     private TranslationExtension $object;
 
+    /**
+     * @var TranslatorInterface&MockObject
+     */
     private TranslatorInterface $translator;
 
     protected function setUp(): void

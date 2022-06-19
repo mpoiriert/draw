@@ -95,7 +95,11 @@
         "symfony/translation-contracts": "^2.5",
         "symfony/twig-bundle": "^5.4.3",
         "symfony/web-profiler-bundle": "^5.4.3",
-        "terminal42/service-annotation-bundle": "^1.1"
+        "terminal42/service-annotation-bundle": "^1.1",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.7",
+        "phpstan/phpstan-symfony": "^1.2",
+        "phpstan/phpstan-phpunit": "^1.1"
     },
     "replace": {
         "draw/application": "self.version",
@@ -164,7 +168,8 @@
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "phpstan/extension-installer": true
         }
     },
     "extra": {

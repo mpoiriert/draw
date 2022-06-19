@@ -64,19 +64,19 @@ class TestsCoverageCheckCommandTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid coverage percentage value');
 
-        $this->executeCommand(static::FIXTURES_FILE, '');
+        $this->executeCommand(self::FIXTURES_FILE, '');
     }
 
     public function testCodeNotCoveredEnough(): void
     {
-        $commandTester = $this->executeCommand(static::FIXTURES_FILE, $against = 50);
+        $commandTester = $this->executeCommand(self::FIXTURES_FILE, $against = 50);
 
         static::assertSame(1, $commandTester->getStatusCode());
 
         $display = $commandTester->getDisplay();
 
         $lines = [
-            '[ERROR] Code coverage is '.static::COMPUTED_PERCENTAGE.'%, which is below the accepted '.$against.'%',
+            '[ERROR] Code coverage is '.self::COMPUTED_PERCENTAGE.'%, which is below the accepted '.$against.'%',
         ];
 
         foreach ($lines as $line) {
@@ -89,7 +89,7 @@ class TestsCoverageCheckCommandTest extends TestCase
 
     public function testCodeCoveredEnough(): void
     {
-        $commandTester = $this->executeCommand(static::FIXTURES_FILE, $against = 40);
+        $commandTester = $this->executeCommand(self::FIXTURES_FILE, $against = 40);
 
         static::assertSame(0, $commandTester->getStatusCode());
 
@@ -99,7 +99,7 @@ class TestsCoverageCheckCommandTest extends TestCase
             'Automation test coverage check',
             '[NOTE] Coverage threshold: '.$against,
             '[NOTE] Against file:',
-            '[OK] Code coverage is '.static::COMPUTED_PERCENTAGE.'%',
+            '[OK] Code coverage is '.self::COMPUTED_PERCENTAGE.'%',
         ];
 
         foreach ($lines as $line) {

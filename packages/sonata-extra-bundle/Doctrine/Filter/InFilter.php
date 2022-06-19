@@ -2,13 +2,13 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Doctrine\Filter;
 
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\Filter;
 
 class InFilter extends Filter
 {
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $data): void
+    public function filter(ProxyQueryInterface $query, $alias, $field, $data): void
     {
         if (!$data || !\is_array($data) || !\array_key_exists('value', $data)) {
             return;
@@ -24,10 +24,10 @@ class InFilter extends Filter
         $values = array_filter(array_map('trim', $values));
 
         // c.name > '1' => c.name OPERATOR :FIELDNAME
-        $parameterName = $this->getNewParameterName($queryBuilder);
+        $parameterName = $this->getNewParameterName($query);
 
-        $this->applyWhere($queryBuilder, sprintf('%s.%s IN (:%s)', $alias, $field, $parameterName));
-        $queryBuilder->setParameter($parameterName, $values);
+        $this->applyWhere($query, sprintf('%s.%s IN (:%s)', $alias, $field, $parameterName));
+        $query->getQueryBuilder()->setParameter($parameterName, $values);
     }
 
     public function getDefaultOptions(): array

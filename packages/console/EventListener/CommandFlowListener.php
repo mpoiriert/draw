@@ -28,7 +28,6 @@ class CommandFlowListener implements EventSubscriberInterface
         'cache:clear',
     ];
 
-    /** @var Connection|PrimaryReadReplicaConnection */
     private Connection $connection;
 
     private EventDispatcherInterface $eventDispatcher;
@@ -152,7 +151,7 @@ class CommandFlowListener implements EventSubscriberInterface
 
         $executionId = $this->connection->lastInsertId();
 
-        if ($reconnectToSlave) {
+        if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
             $this->connection->ensureConnectedToReplica();
         }
 
@@ -286,7 +285,7 @@ class CommandFlowListener implements EventSubscriberInterface
 
         $this->connection->prepare($query)->executeStatement($parameters);
 
-        if ($reconnectToSlave) {
+        if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
             $this->connection->ensureConnectedToReplica();
         }
     }

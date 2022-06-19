@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -146,19 +147,30 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
                 unset($errorData['invalidValue']);
             }
 
-            switch (true) {
-                case !($constraint = $constraintViolation->getConstraint()):
-                case null === $constraint->payload:
-                    break;
-                default:
-                    $errorData['payload'] = $constraint->payload;
-                    break;
+            if (null !== $payload = $this->getConstraintPayload($constraintViolation)) {
+                $errorData['payload'] = $payload;
             }
 
             $errors[] = $errorData;
         }
 
         return $errors;
+    }
+
+    /**
+     * @return mixed
+     */
+    private function getConstraintPayload(ConstraintViolationInterface $constraintViolation)
+    {
+        if (!$constraintViolation instanceof ConstraintViolation) {
+            return null;
+        }
+
+        if (!$constraint = $constraintViolation->getConstraint()) {
+            return null;
+        }
+
+        return $constraint->payload;
     }
 
     private function getExceptionDetail(\Throwable $e): array

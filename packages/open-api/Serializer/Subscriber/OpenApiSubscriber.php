@@ -75,10 +75,13 @@ class OpenApiSubscriber implements EventSubscriberInterface
     {
         $object = $event->getObject();
 
-        $visitor = $event->getVisitor();
-        /* @var $visitor JsonSerializationVisitor */
-
         if (!$object instanceof VendorExtensionSupportInterface) {
+            return;
+        }
+
+        $visitor = $event->getVisitor();
+
+        if (!$visitor instanceof JsonSerializationVisitor) {
             return;
         }
 

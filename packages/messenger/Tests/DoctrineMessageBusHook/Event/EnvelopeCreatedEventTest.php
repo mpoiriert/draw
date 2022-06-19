@@ -17,7 +17,7 @@ class EnvelopeCreatedEventTest extends TestCase
     private EnvelopeCreatedEvent $object;
 
     /**
-     * @var MessageHolderInterface|MockObject
+     * @var MessageHolderInterface&MockObject
      */
     private MessageHolderInterface $messageHolder;
 

@@ -16,19 +16,11 @@ use PHPUnit\Framework\TestCase;
  */
 class LockableUserTraitTest extends TestCase
 {
-    private LockableUserInterface $object;
+    private UserStub $object;
 
     protected function setUp(): void
     {
-        $this->object = new class() implements SecurityUserInterface, LockableUserInterface {
-            use LockableUserTrait;
-            use MessageHolderTrait;
-            use SecurityUserTrait;
-
-            public function getId()
-            {
-            }
-        };
+        $this->object = new UserStub();
     }
 
     public function testManualLockMutator(): void
@@ -264,5 +256,16 @@ class LockableUserTraitTest extends TestCase
         $this->object->removeUserLock($lock);
 
         static::assertCount(1, $this->object->getLocks(), 'Manual lock should not be removed if set to false');
+    }
+}
+
+class UserStub implements SecurityUserInterface, LockableUserInterface
+{
+    use LockableUserTrait;
+    use MessageHolderTrait;
+    use SecurityUserTrait;
+
+    public function getId()
+    {
     }
 }

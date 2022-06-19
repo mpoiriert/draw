@@ -6,6 +6,7 @@ use Draw\Component\OpenApi\Controller\OpenApiController;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -16,10 +17,19 @@ class OpenApiControllerTest extends TestCase
 {
     private OpenApiController $object;
 
+    /**
+     * @var OpenApi&MockObject
+     */
     private OpenApi $openApi;
 
+    /**
+     * @var SchemaBuilderInterface&MockObject
+     */
     private SchemaBuilderInterface $schemaBuilder;
 
+    /**
+     * @var UrlGeneratorInterface&MockObject
+     */
     private UrlGeneratorInterface $urlGenerator;
 
     private string $sandboxUrl;

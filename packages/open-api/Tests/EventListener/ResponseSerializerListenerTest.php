@@ -8,6 +8,7 @@ use Draw\Component\OpenApi\EventListener\ResponseSerializerListener;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,10 +28,19 @@ class ResponseSerializerListenerTest extends TestCase
 {
     private ResponseSerializerListener $object;
 
+    /**
+     * @var SerializerInterface&MockObject
+     */
     private SerializerInterface $serializer;
 
+    /**
+     * @var SerializationContextFactoryInterface&MockObject
+     */
     private SerializationContextFactoryInterface $serializationContextFactory;
 
+    /**
+     * @var EventDispatcherInterface&MockObject
+     */
     private EventDispatcherInterface $eventDispatcher;
 
     protected function setUp(): void

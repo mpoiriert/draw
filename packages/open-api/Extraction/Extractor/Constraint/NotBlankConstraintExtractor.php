@@ -14,11 +14,12 @@ class NotBlankConstraintExtractor extends BaseConstraintExtractor
     }
 
     /**
-     * @param Constraint|NotBlank $constraint
+     * @param Constraint&NotBlank $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {
         $this->assertSupportConstraint($constraint);
+
         if (!isset($context->validationConfiguration->format)) {
             $context->validationConfiguration->format = 'not empty';
         }

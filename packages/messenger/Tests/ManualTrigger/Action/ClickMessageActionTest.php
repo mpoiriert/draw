@@ -9,6 +9,7 @@ use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,16 +32,31 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class ClickMessageActionTest extends TestCase
 {
-    private ClickMessageAction $action;
+    private ClickMessageAction $object;
 
+    /**
+     * @var MessageBusInterface&MockObject
+     */
     private MessageBusInterface $messageBus;
 
+    /**
+     * @var EnvelopeFinder&MockObject
+     */
     private EnvelopeFinder $envelopeFinder;
 
+    /**
+     * @var EventDispatcherInterface&MockObject
+     */
     private EventDispatcherInterface $eventDispatcher;
 
+    /**
+     * @var TranslatorInterface&MockObject
+     */
     private TranslatorInterface $translator;
 
+    /**
+     * @var TransportRepository&MockObject
+     */
     private TransportRepository $transportRepository;
 
     private Request $request;
@@ -54,7 +70,7 @@ class ClickMessageActionTest extends TestCase
             )
         );
 
-        $this->action = new ClickMessageAction(
+        $this->object = new ClickMessageAction(
             $this->messageBus = $this->createMock(MessageBusInterface::class),
             $this->envelopeFinder = $this->createMock(EnvelopeFinder::class),
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
@@ -67,7 +83,7 @@ class ClickMessageActionTest extends TestCase
     {
         static::assertSame(
             'dMUuid',
-            $this->action::MESSAGE_ID_PARAMETER_NAME
+            $this->object::MESSAGE_ID_PARAMETER_NAME
         );
     }
 
@@ -152,7 +168,7 @@ class ClickMessageActionTest extends TestCase
                 ->method('trans');
         }
 
-        $response = \call_user_func($this->action, $messageId, $this->request);
+        $response = \call_user_func($this->object, $messageId, $this->request);
 
         if ($translatedMessage) {
             static::assertSame(
@@ -220,7 +236,7 @@ class ClickMessageActionTest extends TestCase
             ->method('ack')
             ->with($envelope);
 
-        $response = \call_user_func($this->action, $messageId, $this->request);
+        $response = \call_user_func($this->object, $messageId, $this->request);
 
         static::assertSame(
             [
@@ -280,7 +296,7 @@ class ClickMessageActionTest extends TestCase
 
         static::assertSame(
             $response,
-            \call_user_func($this->action, $messageId, $this->request)
+            \call_user_func($this->object, $messageId, $this->request)
         );
     }
 
@@ -345,7 +361,7 @@ class ClickMessageActionTest extends TestCase
 
         static::assertSame(
             $response,
-            \call_user_func($this->action, $messageId, $this->request)
+            \call_user_func($this->object, $messageId, $this->request)
         );
     }
 }

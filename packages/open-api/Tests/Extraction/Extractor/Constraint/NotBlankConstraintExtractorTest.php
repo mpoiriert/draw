@@ -16,14 +16,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class NotBlankConstraintExtractorTest extends TestCase
 {
-    /**
-     * @var NotBlankConstraintExtractor
-     */
-    private $extractor;
+    private NotBlankConstraintExtractor $object;
 
     protected function setUp(): void
     {
-        $this->extractor = new NotBlankConstraintExtractor();
+        $this->object = new NotBlankConstraintExtractor();
     }
 
     public function provideTestSupport(): iterable
@@ -44,7 +41,7 @@ class NotBlankConstraintExtractorTest extends TestCase
      */
     public function testSupport(Constraint $constraint, bool $expected)
     {
-        static::assertSame($expected, $this->extractor->supportConstraint($constraint));
+        static::assertSame($expected, $this->object->supportConstraint($constraint));
     }
 
     public function testExtractConstraintBaseParameter(): void
@@ -53,7 +50,7 @@ class NotBlankConstraintExtractorTest extends TestCase
         $context = new ConstraintExtractionContext();
         $context->validationConfiguration = new QueryParameter();
 
-        $this->extractor->extractConstraint($constraint, $context);
+        $this->object->extractConstraint($constraint, $context);
 
         static::assertSame('not empty', $context->validationConfiguration->format);
         static::assertTrue($context->validationConfiguration->required);
@@ -66,7 +63,7 @@ class NotBlankConstraintExtractorTest extends TestCase
         $context->propertyName = 'test';
         $context->classSchema = $context->validationConfiguration = new Schema();
 
-        $this->extractor->extractConstraint($constraint, $context);
+        $this->object->extractConstraint($constraint, $context);
 
         static::assertSame('not empty', $context->validationConfiguration->format);
         static::assertContains('test', $context->classSchema->required);
@@ -79,7 +76,7 @@ class NotBlankConstraintExtractorTest extends TestCase
         $context = new ConstraintExtractionContext();
         $context->validationConfiguration = new QueryParameter();
 
-        $this->extractor->extractConstraint($constraint, $context);
+        $this->object->extractConstraint($constraint, $context);
 
         static::assertSame('not empty', $context->validationConfiguration->format);
         static::assertNull($context->validationConfiguration->required);

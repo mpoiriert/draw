@@ -7,6 +7,7 @@ use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
 use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -22,8 +23,14 @@ class BrokerTest extends TestCase
 
     private string $consolePath;
 
+    /**
+     * @var ProcessFactoryInterface&MockObject
+     */
     private ProcessFactoryInterface $processFactory;
 
+    /**
+     * @var EventDispatcherInterface&MockObject
+     */
     private EventDispatcherInterface $eventDispatcher;
 
     protected function setUp(): void

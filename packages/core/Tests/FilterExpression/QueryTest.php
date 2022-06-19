@@ -50,6 +50,7 @@ class QueryTest extends TestCase
         $this->object->andWhere($expression1 = $this->createMock(Expression::class));
         $this->object->andWhere($expression2 = $this->createMock(Expression::class));
 
+        /** @var CompositeExpression $expression */
         $expression = $this->object->getExpression();
 
         static::assertInstanceOf(

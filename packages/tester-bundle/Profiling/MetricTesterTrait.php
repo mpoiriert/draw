@@ -10,7 +10,7 @@ use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 /**
- * @method ClientInterface httpTester
+ * @method ClientInterface httpTester()
  */
 trait MetricTesterTrait
 {

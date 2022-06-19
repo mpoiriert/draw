@@ -33,10 +33,12 @@ class PasswordChangeEnforcerListener implements EventSubscriberInterface
     {
         $user = $event->getUser();
 
-        switch (true) {
-            case !$user instanceof PasswordChangeUserInterface:
-            case !$user->getNeedChangePassword():
-                return;
+        if (!$user instanceof PasswordChangeUserInterface) {
+            return;
+        }
+
+        if (!$user->getNeedChangePassword()) {
+            return;
         }
 
         $request = $event->getRequest();

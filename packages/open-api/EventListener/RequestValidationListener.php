@@ -35,7 +35,7 @@ class RequestValidationListener implements EventSubscriberInterface
     public function __construct(ValidatorInterface $validator, array $prefixes = [])
     {
         $this->validator = $validator;
-        $this->prefixes = array_merge(static::PREFIXES_DEFAULT, $prefixes);
+        $this->prefixes = array_merge(self::PREFIXES_DEFAULT, $prefixes);
     }
 
     public function onKernelController(ControllerEvent $event): void

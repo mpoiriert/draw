@@ -15,6 +15,7 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFact
 use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMessageListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 use Draw\Component\Tester\MockBuilderTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -26,19 +27,28 @@ class DoctrineBusMessageListenerTest extends TestCase
 {
     use MockBuilderTrait;
 
-    private DoctrineBusMessageListener $service;
+    private DoctrineBusMessageListener $object;
 
+    /**
+     * @var EnvelopeFactoryInterface&MockObject
+     */
     private EnvelopeFactoryInterface $envelopeFactory;
 
+    /**
+     * @var MessageBusInterface&MockObject
+     */
     private MessageBusInterface $messageBus;
 
+    /**
+     * @var EntityManagerInterface&MockObject
+     */
     private EntityManagerInterface $entityManager;
 
     protected function setUp(): void
     {
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
 
-        $this->service = new DoctrineBusMessageListener(
+        $this->object = new DoctrineBusMessageListener(
             $this->messageBus = $this->createMock(MessageBusInterface::class),
             $this->envelopeFactory = $this->createMock(EnvelopeFactoryInterface::class)
         );
@@ -48,7 +58,7 @@ class DoctrineBusMessageListenerTest extends TestCase
     {
         static::assertInstanceOf(
             EventSubscriber::class,
-            $this->service
+            $this->object
         );
     }
 
@@ -61,7 +71,7 @@ class DoctrineBusMessageListenerTest extends TestCase
                 Events::postFlush,
                 Events::onClear,
             ],
-            $this->service->getSubscribedEvents()
+            $this->object->getSubscribedEvents()
         );
     }
 
@@ -77,7 +87,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $classMetadata->rootEntityName = \get_class($messageHolder);
 
-        $this->service->postPersist(
+        $this->object->postPersist(
             new LifecycleEventArgs(
                 $messageHolder,
                 $this->entityManager
@@ -86,7 +96,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         static::assertSame(
             [$messageHolder],
-            $this->service->getFlattenMessageHolders()
+            $this->object->getFlattenMessageHolders()
         );
     }
 
@@ -98,7 +108,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->expects(static::never())
             ->method('getClassMetadata');
 
-        $this->service->postPersist(
+        $this->object->postPersist(
             new LifecycleEventArgs(
                 $messageHolder,
                 $this->entityManager
@@ -107,7 +117,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         static::assertSame(
             [],
-            $this->service->getFlattenMessageHolders()
+            $this->object->getFlattenMessageHolders()
         );
     }
 
@@ -123,7 +133,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $classMetadata->rootEntityName = \get_class($messageHolder);
 
-        $this->service->postLoad(
+        $this->object->postLoad(
             new LifecycleEventArgs(
                 $messageHolder,
                 $this->entityManager
@@ -132,7 +142,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         static::assertSame(
             [$messageHolder],
-            $this->service->getFlattenMessageHolders()
+            $this->object->getFlattenMessageHolders()
         );
     }
 
@@ -142,11 +152,11 @@ class DoctrineBusMessageListenerTest extends TestCase
             $this->createMock(MessageHolderInterface::class)
         );
 
-        $this->service->onClear(new OnClearEventArgs($this->entityManager));
+        $this->object->onClear(new OnClearEventArgs($this->entityManager));
 
         static::assertSame(
             [],
-            $this->service->getFlattenMessageHolders()
+            $this->object->getFlattenMessageHolders()
         );
     }
 
@@ -156,11 +166,11 @@ class DoctrineBusMessageListenerTest extends TestCase
             $messageHolder = $this->createMock(MessageHolderInterface::class)
         );
 
-        $this->service->onClear(new OnClearEventArgs($this->entityManager, \get_class($messageHolder)));
+        $this->object->onClear(new OnClearEventArgs($this->entityManager, \get_class($messageHolder)));
 
         static::assertCount(
             0,
-            $this->service->getFlattenMessageHolders()
+            $this->object->getFlattenMessageHolders()
         );
     }
 
@@ -170,11 +180,11 @@ class DoctrineBusMessageListenerTest extends TestCase
             $this->createMock(MessageHolderInterface::class)
         );
 
-        $this->service->onClear(new OnClearEventArgs($this->entityManager, \stdClass::class));
+        $this->object->onClear(new OnClearEventArgs($this->entityManager, \stdClass::class));
 
         static::assertCount(
             1,
-            $this->service->getFlattenMessageHolders()
+            $this->object->getFlattenMessageHolders()
         );
     }
 
@@ -188,7 +198,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->expects(static::never())
             ->method('dispatch');
 
-        $this->service->postFlush();
+        $this->object->postFlush();
     }
 
     public function testPostFlushOnlyUninitializedProxy(): void
@@ -210,7 +220,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->expects(static::never())
             ->method('dispatch');
 
-        $this->service->postFlush();
+        $this->object->postFlush();
     }
 
     public function testPostFlushWithOneMessage(): void
@@ -251,7 +261,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->with($envelope)
             ->willReturnArgument(0);
 
-        $this->service->postFlush();
+        $this->object->postFlush();
     }
 
     public function testPostFlushWithMultipleMessageHolder(): void
@@ -287,16 +297,16 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->with($envelope)
             ->willReturnArgument(0);
 
-        $this->service->postFlush();
+        $this->object->postFlush();
     }
 
     private function addMessageHolder($messageHolder): void
     {
-        $messageHolders = ReflectionAccessor::getPropertyValue($this->service, 'messageHolders');
+        $messageHolders = ReflectionAccessor::getPropertyValue($this->object, 'messageHolders');
         $messageHolders[\get_class($messageHolder)][spl_object_id($messageHolder)] = $messageHolder;
 
         ReflectionAccessor::setPropertyValue(
-            $this->service,
+            $this->object,
             'messageHolders',
             $messageHolders
         );

@@ -23,7 +23,9 @@ class PurgeExpiredMessageCommandTest extends TestCase
     use CommandTestTrait;
     use MockBuilderTrait;
 
-    /** @var TransportRepository|MockObject */
+    /**
+     * @var TransportRepository&MockObject
+     */
     private TransportRepository $transportRepository;
 
     public function createCommand(): Command

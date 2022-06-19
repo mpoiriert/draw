@@ -6,6 +6,7 @@ use Aws\Ec2\Ec2Client;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,8 +20,14 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 {
     private NewestInstanceRoleCheckListener $service;
 
+    /**
+     * @var Ec2Client&MockObject
+     */
     private Ec2Client $ec2Client;
 
+    /**
+     * @var ImdsClientInterface&MockObject
+     */
     private ImdsClientInterface $imdsClient;
 
     protected function setUp(): void

@@ -42,7 +42,7 @@ class RefreshUserLockController extends CRUDController
 
         return $this->redirect($admin->generateUrl(
             'list',
-            ['filter' => ['user' => ['value' => $existingObject->getId()]]]
+            ['filter' => ['user' => ['value' => $admin->id($existingObject)]]]
         ));
     }
 }

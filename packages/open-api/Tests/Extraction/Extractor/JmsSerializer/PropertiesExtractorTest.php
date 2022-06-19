@@ -122,8 +122,6 @@ class JmsExtractorStubModel
     public $name;
 
     /**
-     * @var
-     *
      * @Serializer\Type("Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubGeneric<string>")
      * @Serializer\Groups({"test"})
      * @Serializer\ReadOnlyProperty
