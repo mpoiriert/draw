@@ -54,7 +54,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
 
         $session = $request->getSession();
 
-        $lastUsed = $session->get(static::LAST_USED_SESSION_ATTRIBUTE);
+        $lastUsed = $session->get(self::LAST_USED_SESSION_ATTRIBUTE);
 
         if (null !== $lastUsed && $this->delay < (time() - $lastUsed)) {
             $session->invalidate();
@@ -75,7 +75,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
             return;
         }
 
-        $request->getSession()->set(static::LAST_USED_SESSION_ATTRIBUTE, time());
+        $request->getSession()->set(self::LAST_USED_SESSION_ATTRIBUTE, time());
     }
 
     public function onKernelResponseAddDialog(ResponseEvent $event): void

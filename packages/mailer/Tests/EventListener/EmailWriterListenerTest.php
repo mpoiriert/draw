@@ -5,6 +5,7 @@ namespace Draw\Component\Mailer\Tests\EventListener;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailWriterListener;
 use Draw\Component\Tester\MockBuilderTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,6 +27,9 @@ class EmailWriterListenerTest extends TestCase
 
     private EmailWriterListener $object;
 
+    /**
+     * @var ContainerInterface&MockObject
+     */
     private ContainerInterface $serviceLocator;
 
     protected function setUp(): void

@@ -6,6 +6,7 @@ use Draw\Component\OpenApi\Configuration\Deserialization;
 use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Schema\QueryParameter;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,9 @@ class RequestValidationListenerTest extends TestCase
 {
     private RequestValidationListener $object;
 
+    /**
+     * @var ValidatorInterface&MockObject
+     */
     private ValidatorInterface $validator;
 
     protected function setUp(): void

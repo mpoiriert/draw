@@ -20,7 +20,9 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
 {
     use CommandTestTrait;
 
-    /** @var CloudWatchLogsClient|MockObject */
+    /**
+     * @var CloudWatchLogsClient&MockObject
+     */
     private CloudWatchLogsClient $cloudWatchLogsClient;
 
     public function createCommand(): Command

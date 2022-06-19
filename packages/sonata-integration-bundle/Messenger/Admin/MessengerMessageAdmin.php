@@ -110,7 +110,7 @@ class MessengerMessageAdmin extends AbstractAdmin
     }
 
     /**
-     * @param ProxyQueryInterface|QueryBuilder $query
+     * @param ProxyQueryInterface&QueryBuilder $query
      */
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {

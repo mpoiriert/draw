@@ -14,7 +14,7 @@ class ChoiceConstraintExtractor extends BaseConstraintExtractor
     }
 
     /**
-     * @param Choice|Constraint $constraint
+     * @param Choice&Constraint $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {

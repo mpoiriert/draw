@@ -13,7 +13,7 @@ class LengthConstraintExtractor extends BaseConstraintExtractor
     }
 
     /**
-     * @param Length|Constraint $constraint
+     * @param Length&Constraint $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {

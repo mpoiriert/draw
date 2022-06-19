@@ -34,6 +34,7 @@ class StrtotimeTest extends TestCase
 
     public function testReturnValueConstraint(): void
     {
+        /** @var Type $constraint */
         $constraint = $this->object->returnValueConstraint;
 
         static::assertInstanceOf(

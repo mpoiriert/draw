@@ -15,6 +15,7 @@ use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
@@ -36,13 +37,16 @@ class CommandFlowListenerTest extends TestCase
 
     private CommandFlowListener $object;
 
+    /**
+     * @var EventDispatcherInterface&MockObject
+     */
     private EventDispatcherInterface $eventDispatcher;
 
     private ?Execution $execution = null;
 
     public static function setUpBeforeClass(): void
     {
-        static::$entityManager = static::setUpMySqlWithAnnotationDriver(
+        self::$entityManager = static::setUpMySqlWithAnnotationDriver(
             [\dirname((new \ReflectionClass(Execution::class))->getFileName())],
         );
     }
@@ -50,12 +54,12 @@ class CommandFlowListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new CommandFlowListener(
-            static::$entityManager->getConnection(),
+            self::$entityManager->getConnection(),
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
         );
 
         if ($this->execution) {
-            static::$entityManager->refresh($this->execution);
+            self::$entityManager->refresh($this->execution);
         }
     }
 
@@ -444,7 +448,7 @@ class CommandFlowListenerTest extends TestCase
         static::assertNotNull($id = $event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
 
-        $this->execution = static::$entityManager->find(Execution::class, $id);
+        $this->execution = self::$entityManager->find(Execution::class, $id);
 
         return $this->execution;
     }
@@ -502,13 +506,13 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $execution->setState(uniqid('state-'));
-        static::$entityManager->flush();
+        self::$entityManager->flush();
 
         $this->object->logCommandStart($event);
 
         static::assertSame($execution->getId(), $option->getDefault());
 
-        static::$entityManager->refresh($execution);
+        self::$entityManager->refresh($execution);
 
         static::assertSame(Execution::STATE_STARTED, $execution->getState());
     }
@@ -575,7 +579,7 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->logCommandTerminate($event);
 
-        static::$entityManager->refresh($execution);
+        self::$entityManager->refresh($execution);
 
         static::assertSame(Execution::STATE_TERMINATED, $execution->getState());
         static::assertSame($output, $execution->getOutput());
@@ -599,11 +603,11 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn(str_repeat('Z', 50001));
 
         $execution->setOutput('');
-        static::$entityManager->flush();
+        self::$entityManager->flush();
 
         $this->object->logCommandTerminate($event);
 
-        static::$entityManager->refresh($execution);
+        self::$entityManager->refresh($execution);
 
         static::assertSame(Execution::STATE_TERMINATED, $execution->getState());
         static::assertStringContainsString(
@@ -673,7 +677,7 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->logCommandError($event);
 
-        static::$entityManager->refresh($execution);
+        self::$entityManager->refresh($execution);
 
         static::assertSame(Execution::STATE_ERROR, $execution->getState());
         static::assertStringEndsWith($outputString, $execution->getOutput());
@@ -706,11 +710,11 @@ class CommandFlowListenerTest extends TestCase
 
         // If current state is error, state will not be changed
         $execution->setState(Execution::STATE_TERMINATED);
-        static::$entityManager->flush();
+        self::$entityManager->flush();
 
         $this->object->logCommandError($event);
 
-        static::$entityManager->refresh($execution);
+        self::$entityManager->refresh($execution);
 
         static::assertSame(Execution::STATE_AUTO_ACKNOWLEDGE, $execution->getState());
         static::assertSame($reason, $execution->getAutoAcknowledgeReason());
@@ -738,7 +742,7 @@ class CommandFlowListenerTest extends TestCase
     private function createCommandEvent(): Event\ConsoleCommandEvent
     {
         $command = new PurgeExecutionCommand(
-            static::$entityManager->getConnection(),
+            self::$entityManager->getConnection(),
             new NullLogger()
         );
 

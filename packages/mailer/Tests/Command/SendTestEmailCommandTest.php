@@ -20,7 +20,7 @@ class SendTestEmailCommandTest extends TestCase
     use CommandTestTrait;
 
     /**
-     * @var MailerInterface|MockObject
+     * @var MailerInterface&MockObject
      */
     private MailerInterface $mailer;
 

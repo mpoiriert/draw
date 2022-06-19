@@ -110,23 +110,17 @@ final class LoginController extends AbstractController
         ManagerRegistry $managerRegistry
     ): Response {
         $user = $this->getUser();
+
+        if ($this->passwordHaveBeenUpdateRecently($request, $user)) {
+            return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
+        }
+
         $form = $this->createForm(
             ChangePasswordForm::class,
             $user
         );
 
         $form->handleRequest($request);
-
-        switch (true) {
-            case $form->isSubmitted():
-            case !$request->query->has('t'):
-            case !$user instanceof SecurityUserInterface:
-            case null === $passwordUpdatedAt = $user->getPasswordUpdatedAt():
-            case $passwordUpdatedAt->getTimestamp() <= $request->query->getInt('t'):
-                break;
-            default:
-                return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $managerRegistry->getManagerForClass(\get_class($user))->flush();
@@ -139,5 +133,22 @@ final class LoginController extends AbstractController
             '@DrawUser/security/reset.html.twig',
             ['form' => $form->createView()]
         );
+    }
+
+    private function passwordHaveBeenUpdateRecently(Request $request, UserInterface $user): bool
+    {
+        if ($request->query->has('t')) {
+            return false;
+        }
+
+        if (!$user instanceof SecurityUserInterface) {
+            return false;
+        }
+
+        if (null === $passwordUpdatedAt = $user->getPasswordUpdatedAt()) {
+            return false;
+        }
+
+        return $passwordUpdatedAt->getTimestamp() > $request->query->getInt('t');
     }
 }

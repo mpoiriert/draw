@@ -17,7 +17,7 @@ class TwoFactorAuthorizationTest extends TestCase
      */
     private static $entityManager;
 
-    private static $user;
+    private static User $user;
 
     public static function setUpBeforeClass(): void
     {
@@ -56,9 +56,9 @@ class TwoFactorAuthorizationTest extends TestCase
         static::assertTrue(self::$user->isForceEnablingTwoFactorAuthentication());
         /** @var KernelBrowser $client */
         $client = $this->getService('test.client');
-        $client->followRedirects(true);
+        $client->followRedirects();
 
-        $crawler = $this->loginToAdmin($client, static::$user->getUsername(), 'test');
+        $crawler = $this->loginToAdmin($client, self::$user->getUsername(), 'test');
 
         static::assertStringContainsString(
             '/admin/app/user/'.self::$user->getId().'/enable-2fa',
@@ -112,7 +112,7 @@ class TwoFactorAuthorizationTest extends TestCase
     public function test2faLoginToAdminFailed(KernelBrowser $client): KernelBrowser
     {
         $crawler = $client->submit(
-            $this->loginToAdmin($client, static::$user->getUsername(), 'test')
+            $this->loginToAdmin($client, self::$user->getUsername(), 'test')
                 ->selectButton('Login')
                 ->form(['_auth_code' => '11111'], 'POST')
         );
@@ -149,10 +149,10 @@ class TwoFactorAuthorizationTest extends TestCase
         $user->setRoles(['ROLE_ADMIN']);
         $user->setForceEnablingTwoFactorAuthentication(false);
 
-        static::$entityManager->flush();
+        self::$entityManager->flush();
 
         $client->submit(
-            $this->loginToAdmin($client, static::$user->getUsername(), 'test')
+            $this->loginToAdmin($client, self::$user->getUsername(), 'test')
                 ->selectButton('Login')
                 ->form(['_auth_code' => '123456'], 'POST')
         );
@@ -172,10 +172,10 @@ class TwoFactorAuthorizationTest extends TestCase
 
     private function reloadUser(): User
     {
-        static::$user = static::$entityManager->find(User::class, static::$user->getId());
-        static::$entityManager->refresh(static::$user);
+        self::$user = self::$entityManager->find(User::class, self::$user->getId());
+        self::$entityManager->refresh(self::$user);
 
-        return static::$user;
+        return self::$user;
     }
 
     private function loginToAdmin(

@@ -7,6 +7,7 @@ use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
 use Draw\Component\Tester\MockBuilderTrait;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Envelope;
@@ -31,10 +32,19 @@ class MessageAuthenticatorTest extends TestCase
 
     private MessageAuthenticator $service;
 
+    /**
+     * @var EnvelopeFinder&MockObject
+     */
     private EnvelopeFinder $envelopeFinder;
 
+    /**
+     * @var UserProviderInterface&MockObject
+     */
     private UserProviderInterface $userProvider;
 
+    /**
+     * @var Security&MockObject
+     */
     private Security $security;
 
     protected function setUp(): void

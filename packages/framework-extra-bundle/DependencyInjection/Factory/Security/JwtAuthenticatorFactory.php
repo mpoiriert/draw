@@ -53,6 +53,10 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
      */
     public function addConfiguration(NodeDefinition $builder): void
     {
+        if (!$builder instanceof ArrayNodeDefinition) {
+            throw new \RuntimeException(sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, \get_class($builder)));
+        }
+
         $builder
             ->children()
                 ->scalarNode('provider')->end()

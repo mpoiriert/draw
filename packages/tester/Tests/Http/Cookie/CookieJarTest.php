@@ -18,7 +18,7 @@ class CookieJarTest extends TestCase
         $this->jar = new CookieJar();
     }
 
-    protected function getTestCookies()
+    protected function getTestCookies(): array
     {
         return [
             new Cookie([

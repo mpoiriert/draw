@@ -130,12 +130,18 @@ class OperationExtractor implements ExtractorInterface
     private function extractExceptionResponses(DocBlock $docBlock, Operation $target): void
     {
         foreach ($docBlock->getTagsByName('throws') as $throwTag) {
-            /* @var $throwTag DocBlock\Tags\Throws */
+            if (!$throwTag instanceof DocBlock\Tags\Throws) {
+                throw new \UnexpectedValueException();
+            }
 
             $type = (string) $throwTag->getType();
             $exceptionClass = new \ReflectionClass($type);
-            /** @var \Exception $exception */
             $exception = $exceptionClass->newInstanceWithoutConstructor();
+
+            if (!$exception instanceof \Exception) {
+                throw new \UnexpectedValueException();
+            }
+
             [$code, $message] = $this->getExceptionInformation($exception);
             $target->responses[$code] = $exceptionResponse = new Response();
 
@@ -163,6 +169,21 @@ class OperationExtractor implements ExtractorInterface
         return null;
     }
 
+    private function findParameterByName(Operation $operation, string $name): ?Parameter
+    {
+        foreach ($operation->parameters as $parameter) {
+            if (!$parameter instanceof Parameter) {
+                continue;
+            }
+
+            if ($parameter->name === $name) {
+                return $parameter;
+            }
+        }
+
+        return null;
+    }
+
     private function extractParameters(
         DocBlock $docBlock,
         Operation $target,
@@ -171,18 +192,13 @@ class OperationExtractor implements ExtractorInterface
         $bodyParameter = $this->findBodyParameter($target);
 
         foreach ($docBlock->getTagsByName('param') as $paramTag) {
-            /* @var $paramTag DocBlock\Tags\Param */
+            if (!$paramTag instanceof DocBlock\Tags\Param) {
+                throw new \UnexpectedValueException();
+            }
 
             $parameterName = trim($paramTag->getVariableName(), '$');
 
-            /** @var Parameter|null $parameter */
-            $parameter = null;
-            foreach ($target->parameters as $existingParameter) {
-                if ($existingParameter->name == $parameterName) {
-                    $parameter = $existingParameter;
-                    break;
-                }
-            }
+            $parameter = $this->findParameterByName($target, $parameterName);
 
             if (null !== $parameter) {
                 if (!$parameter->description) {
@@ -219,7 +235,6 @@ class OperationExtractor implements ExtractorInterface
             }
 
             if (null !== $bodyParameter) {
-                /* @var BodyParameter $bodyParameter */
                 if (isset($bodyParameter->schema->properties[$parameterName])) {
                     $parameter = $bodyParameter->schema->properties[$parameterName];
 
@@ -253,7 +268,10 @@ class OperationExtractor implements ExtractorInterface
         $hasVoid = false;
         $returnTag = null;
         foreach ($docBlock->getTagsByName('return') as $returnTag) {
-            /* @var $returnTag DocBlock\Tags\Return_ */
+            if (!$returnTag instanceof DocBlock\Tags\Return_) {
+                throw new \UnexpectedValueException();
+            }
+
             $type = $returnTag->getType();
             $hasVoid = $hasVoid || $type instanceof Void_;
             if ($type instanceof Compound) {

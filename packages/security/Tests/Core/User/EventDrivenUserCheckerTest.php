@@ -5,6 +5,7 @@ namespace Draw\Component\Security\Tests\Core\User;
 use Draw\Component\Security\Core\Event\CheckPostAuthEvent;
 use Draw\Component\Security\Core\Event\CheckPreAuthEvent;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,15 +16,21 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class EventDrivenUserCheckerTest extends TestCase
 {
-    private EventDrivenUserChecker $service;
+    private EventDrivenUserChecker $object;
 
+    /**
+     * @var UserCheckerInterface&MockObject
+     */
     private UserCheckerInterface $decoratedUserChecker;
 
+    /**
+     * @var EventDispatcherInterface&MockObject
+     */
     private EventDispatcherInterface $eventDispatcher;
 
     protected function setUp(): void
     {
-        $this->service = new EventDrivenUserChecker(
+        $this->object = new EventDrivenUserChecker(
             $this->decoratedUserChecker = $this->createMock(UserCheckerInterface::class),
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
         );
@@ -33,7 +40,7 @@ class EventDrivenUserCheckerTest extends TestCase
     {
         static::assertInstanceOf(
             UserCheckerInterface::class,
-            $this->service
+            $this->object
         );
     }
 
@@ -61,7 +68,7 @@ class EventDrivenUserCheckerTest extends TestCase
             )
             ->willReturnArgument(0);
 
-        $this->service->checkPreAuth($user);
+        $this->object->checkPreAuth($user);
     }
 
     public function testCheckPostAuth(): void
@@ -88,6 +95,6 @@ class EventDrivenUserCheckerTest extends TestCase
             )
             ->willReturnArgument(0);
 
-        $this->service->checkPostAuth($user);
+        $this->object->checkPostAuth($user);
     }
 }

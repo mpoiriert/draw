@@ -28,7 +28,7 @@ class VersionLinkDocumentationExtractor implements ExtractorInterface
             return false;
         }
 
-        if ($target->getVendorData()[static::VENDOR_DATA_FLAG] ?? false) {
+        if ($target->getVendorData()[self::VENDOR_DATA_FLAG] ?? false) {
             return false;
         }
 
@@ -49,7 +49,7 @@ class VersionLinkDocumentationExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        $target->setVendorDataKey(static::VENDOR_DATA_FLAG, true);
+        $target->setVendorDataKey(self::VENDOR_DATA_FLAG, true);
 
         $version = $extractionContext->getParameter('api.version');
 

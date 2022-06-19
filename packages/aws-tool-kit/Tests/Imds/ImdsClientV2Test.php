@@ -3,6 +3,7 @@
 namespace Draw\Component\AwsToolKit\Tests\Imds;
 
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -14,6 +15,9 @@ class ImdsClientV2Test extends TestCase
 {
     private ImdsClientV2 $imdsClientV1;
 
+    /**
+     * @var HttpClientInterface&MockObject
+     */
     private HttpClientInterface $httpClient;
 
     protected function setUp(): void

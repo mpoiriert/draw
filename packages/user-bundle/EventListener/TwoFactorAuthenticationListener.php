@@ -43,23 +43,32 @@ class TwoFactorAuthenticationListener implements EventSubscriberInterface
         $user = $event->getUser();
         $request = $event->getRequest();
 
-        switch (true) {
-            case !$user instanceof TwoFactorAuthenticationUserInterface:
-            case !$user instanceof SecurityUserInterface:
-            case !$user->isForceEnablingTwoFactorAuthentication():
-            case $user->isTotpAuthenticationEnabled():
-                return;
-            case $request->attributes->get('_route') === $this->enableRoute:
-                $event->allowHandlingRequest();
-
-                return;
-            default:
-                $event->setResponse(
-                    new RedirectResponse($this->urlGenerator->generate($this->enableRoute, ['id' => $user->getId()])),
-                    '2fa_need_enabling'
-                );
-                break;
+        if (!$user instanceof TwoFactorAuthenticationUserInterface) {
+            return;
         }
+
+        if (!$user instanceof SecurityUserInterface) {
+            return;
+        }
+
+        if (!$user->isForceEnablingTwoFactorAuthentication()) {
+            return;
+        }
+
+        if ($user->isTotpAuthenticationEnabled()) {
+            return;
+        }
+
+        if ($request->attributes->get('_route') === $this->enableRoute) {
+            $event->allowHandlingRequest();
+
+            return;
+        }
+
+        $event->setResponse(
+            new RedirectResponse($this->urlGenerator->generate($this->enableRoute, ['id' => $user->getId()])),
+            '2fa_need_enabling'
+        );
     }
 
     public function allowHandlingRequestWhenTwoFactorAuthenticationInProgress(UserRequestInterceptionEvent $event): void

@@ -149,6 +149,9 @@ class OperationExtractorTest extends TestCase
     }
 }
 
+/**
+ * @template T of mixed
+ */
 class PhpDocOperationExtractorStubClass
 {
 }
@@ -198,7 +201,7 @@ class PhpDocOperationExtractorStubService
     /**
      * @return PhpDocOperationExtractorStubClass<int>
      */
-    public function genericCollection()
+    public function genericCollection(): PhpDocOperationExtractorStubClass
     {
         return new PhpDocOperationExtractorStubClass();
     }

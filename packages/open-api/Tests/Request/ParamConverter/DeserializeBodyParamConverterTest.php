@@ -8,6 +8,7 @@ use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Exception\LogicException;
 use JMS\Serializer\Exception\UnsupportedFormatException;
 use JMS\Serializer\SerializerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
@@ -22,6 +23,9 @@ class DeserializeBodyParamConverterTest extends TestCase
 {
     private DeserializeBodyParamConverter $object;
 
+    /**
+     * @var SerializerInterface&MockObject
+     */
     private SerializerInterface $serializer;
 
     protected function setUp(): void

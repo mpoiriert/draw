@@ -5,6 +5,7 @@ namespace Draw\Component\OpenApi\Tests\EventListener;
 use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\Schema\QueryParameter;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,9 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 {
     private RequestQueryParameterFetcherListener $object;
 
+    /**
+     * @var Reader&MockObject
+     */
     private Reader $reader;
 
     protected function setUp(): void

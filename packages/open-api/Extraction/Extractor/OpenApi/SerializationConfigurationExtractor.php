@@ -65,7 +65,8 @@ class SerializationConfigurationExtractor implements ExtractorInterface
             }
 
             /** @var Response $response */
-            if ($response = $extractionContext->getParameter('response')) {
+            $response = $extractionContext->getParameter('response');
+            if ($response) {
                 foreach ($serialization->getHeaders() as $name => $header) {
                     $response->headers[$name] = $header;
                 }

@@ -13,11 +13,12 @@ class RangeConstraintExtractor extends BaseConstraintExtractor
     }
 
     /**
-     * @param Range|Constraint $constraint
+     * @param Range&Constraint $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {
         $this->assertSupportConstraint($constraint);
+
         $context->validationConfiguration->maximum = $constraint->max;
         $context->validationConfiguration->minimum = $constraint->min;
     }

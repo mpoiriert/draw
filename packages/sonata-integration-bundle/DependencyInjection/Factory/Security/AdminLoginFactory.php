@@ -22,11 +22,12 @@ class AdminLoginFactory extends FormLoginFactory
         return 'draw_admin_login';
     }
 
-    /**
-     * @param NodeDefinition|ArrayNodeDefinition $node
-     */
     public function addConfiguration(NodeDefinition $node): void
     {
+        if (!$node instanceof ArrayNodeDefinition) {
+            throw new \RuntimeException(sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, \get_class($node)));
+        }
+
         parent::addConfiguration($node);
 
         $node

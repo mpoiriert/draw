@@ -4,64 +4,62 @@ namespace Draw\Component\Profiling\Tests;
 
 use Draw\Component\Profiling\ProfilerCoordinator;
 use Draw\Component\Profiling\ProfilerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ProfilerCoordinatorTest extends TestCase
 {
     private const PROFILER_TYPE = 'test';
 
-    /**
-     * @var ProfilerCoordinator
-     */
-    private $profilerCoordinator;
+    private ProfilerCoordinator $object;
 
     /**
-     * @var ProfilerInterface
+     * @var ProfilerInterface&MockObject
      */
-    private $profiler;
+    private ProfilerInterface $profiler;
 
     protected function setUp(): void
     {
-        $this->profilerCoordinator = new ProfilerCoordinator();
+        $this->object = new ProfilerCoordinator();
         $this->profiler = $this->createMock(ProfilerInterface::class);
     }
 
     public function testIsStartedDefault(): void
     {
-        static::assertFalse($this->profilerCoordinator->isStarted());
+        static::assertFalse($this->object->isStarted());
     }
 
     public function testIsStartedAfterStart(): void
     {
-        $this->profilerCoordinator->startAll();
-        static::assertTrue($this->profilerCoordinator->isStarted());
+        $this->object->startAll();
+        static::assertTrue($this->object->isStarted());
     }
 
     public function testIsStartedAfterStop(): void
     {
-        $this->profilerCoordinator->startAll();
-        $this->profilerCoordinator->stopAll();
-        static::assertFalse($this->profilerCoordinator->isStarted());
+        $this->object->startAll();
+        $this->object->stopAll();
+        static::assertFalse($this->object->isStarted());
     }
 
     public function testRegisterProfile()
     {
         $this->profiler->expects(static::once())->method('getType')->willReturn(self::PROFILER_TYPE);
-        $this->profilerCoordinator->registerProfiler($this->profiler);
+        $this->object->registerProfiler($this->profiler);
     }
 
     public function testStarAll()
     {
         $this->testRegisterProfile();
         $this->profiler->expects(static::once())->method('start');
-        $this->profilerCoordinator->startAll();
+        $this->object->startAll();
     }
 
     public function testStopAll()
     {
         $this->testStarAll();
         $this->profiler->expects(static::once())->method('stop')->willReturn($result = 'result');
-        $metrics = $this->profilerCoordinator->stopAll();
+        $metrics = $this->object->stopAll();
 
         static::assertObjectHasAttribute(self::PROFILER_TYPE, $metrics);
         static::assertSame($result, $metrics->{self::PROFILER_TYPE});

@@ -15,7 +15,7 @@ class BasicEnvelopeFactoryTest extends TestCase
     private BasicEnvelopeFactory $object;
 
     /**
-     * @var EventDispatcherInterface|MockObject
+     * @var EventDispatcherInterface&MockObject
      */
     private EventDispatcherInterface $eventDispatcher;
 

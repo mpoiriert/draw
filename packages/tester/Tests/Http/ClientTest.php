@@ -18,10 +18,8 @@ class ClientTest extends TestCase
 {
     public function testConstruct()
     {
-        /** @var RequestExecutionerInterface|MockObject $requestExecutioner */
-        $requestExecutioner = $this->getMockBuilder(RequestExecutionerInterface::class)
-            ->setMethods(['executeRequest'])
-            ->getMock();
+        /** @var RequestExecutionerInterface&MockObject $requestExecutioner */
+        $requestExecutioner = $this->createMock(RequestExecutionerInterface::class);
 
         $requestExecutioner->method('executeRequest')
             ->willReturnCallback(function (RequestInterface $request) {

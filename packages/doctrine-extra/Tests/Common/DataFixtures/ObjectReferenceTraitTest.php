@@ -4,6 +4,7 @@ namespace Draw\DoctrineExtra\Tests\Common\DataFixtures;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Draw\DoctrineExtra\Common\DataFixtures\ObjectReferenceTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class ObjectReferenceTraitTest extends TestCase
@@ -13,6 +14,9 @@ class ObjectReferenceTraitTest extends TestCase
      */
     private object $trait;
 
+    /**
+     * @var ReferenceRepository&MockObject
+     */
     private ReferenceRepository $referenceRepository;
 
     protected function setUp(): void

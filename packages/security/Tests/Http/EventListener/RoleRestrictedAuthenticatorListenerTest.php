@@ -4,6 +4,7 @@ namespace Draw\Component\Security\Tests\Http\EventListener;
 
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\RoleRestrictedBadge;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -21,8 +22,14 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
 {
     private RoleRestrictedAuthenticatorListener $service;
 
+    /**
+     * @var RoleHierarchyInterface&MockObject
+     */
     private RoleHierarchyInterface $roleHierarchy;
 
+    /**
+     * @var UserInterface&MockObject
+     */
     private UserInterface $user;
 
     protected function setUp(): void

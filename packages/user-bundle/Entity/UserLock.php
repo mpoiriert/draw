@@ -209,6 +209,11 @@ class UserLock
 
     public function __toString(): string
     {
-        return $this->getUser().' -> '.$this->getReason().' -> '.($this->isActive() ? 'Active' : 'Inactive');
+        return sprintf(
+            '%s -> %s -> %s',
+            $this->getUser(),
+            $this->getReason(),
+            ($this->isActive() ? 'Active' : 'Inactive'),
+        );
     }
 }

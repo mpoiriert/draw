@@ -16,11 +16,11 @@ class EvaluatorTest extends TestCase
         ['property1' => 'value3', 'property2' => 'value4'],
     ];
 
-    private $evaluator;
+    private Evaluator $object;
 
     protected function setUp(): void
     {
-        $this->evaluator = new Evaluator();
+        $this->object = new Evaluator();
     }
 
     public function provideExecute(): iterable
@@ -72,13 +72,13 @@ class EvaluatorTest extends TestCase
     /**
      * @dataProvider provideExecute
      */
-    public function testExecute(Query $query, int $expectedCount)
+    public function testExecute(Query $query, int $expectedCount): void
     {
         static::assertCount(
             $expectedCount,
-            $this->evaluator->execute(
+            $this->object->execute(
                 $query,
-                static::SAMPLE_DATA
+                self::SAMPLE_DATA
             )
         );
     }

@@ -14,20 +14,20 @@ use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
  */
 class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInterface
 {
-    private AutoStampEnvelopeListener $service;
+    private AutoStampEnvelopeListener $object;
 
     private static Envelope $newEnvelope;
 
     protected function setUp(): void
     {
-        $this->service = new AutoStampEnvelopeListener();
+        $this->object = new AutoStampEnvelopeListener();
     }
 
     public function testConstruct(): void
     {
         static::assertInstanceOf(
             EventSubscriberInterface::class,
-            $this->service
+            $this->object
         );
     }
 
@@ -39,23 +39,23 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
                     ['handleStampingAwareMessage'],
                 ],
             ],
-            $this->service::getSubscribedEvents()
+            $this->object::getSubscribedEvents()
         );
     }
 
     public function stamp(Envelope $envelope): Envelope
     {
-        return static::$newEnvelope = new Envelope((object) []);
+        return self::$newEnvelope = new Envelope((object) []);
     }
 
     public function testHandleStampingAwareMessage(): void
     {
         $envelope = new Envelope($this);
 
-        $this->service->handleStampingAwareMessage($event = new SendMessageToTransportsEvent($envelope));
+        $this->object->handleStampingAwareMessage($event = new SendMessageToTransportsEvent($envelope));
 
         static::assertSame(
-            static::$newEnvelope,
+            self::$newEnvelope,
             $event->getEnvelope()
         );
     }
@@ -73,7 +73,7 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
             }
         );
 
-        $this->service->handleStampingAwareMessage(new SendMessageToTransportsEvent($envelope));
+        $this->object->handleStampingAwareMessage(new SendMessageToTransportsEvent($envelope));
 
         static::assertFalse($message->called, 'Stamp should not have been called.');
     }

@@ -3,6 +3,7 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\Logger\EventListener;
 
 use Draw\Bundle\FrameworkExtraBundle\Logger\EventListener\SlowRequestLoggerListener;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -15,10 +16,16 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class SlowRequestLoggerTest extends TestCase
 {
-    private SlowRequestLoggerListener $service;
+    private SlowRequestLoggerListener $object;
 
+    /**
+     * @var LoggerInterface&MockObject
+     */
     private LoggerInterface $logger;
 
+    /**
+     * @var RequestMatcherInterface&MockObject
+     */
     private RequestMatcherInterface $requestMatcher;
 
     private array $durations = [];
@@ -27,7 +34,7 @@ class SlowRequestLoggerTest extends TestCase
     {
         $this->requestMatcher = $this->createMock(RequestMatcherInterface::class);
 
-        $this->service = new SlowRequestLoggerListener(
+        $this->object = new SlowRequestLoggerListener(
             $this->logger = $this->createMock(LoggerInterface::class),
             [
                 ($this->durations[] = 5000) => [$this->requestMatcher],
@@ -40,7 +47,7 @@ class SlowRequestLoggerTest extends TestCase
     {
         static::assertInstanceOf(
             EventSubscriberInterface::class,
-            $this->service
+            $this->object
         );
     }
 
@@ -50,7 +57,7 @@ class SlowRequestLoggerTest extends TestCase
             [
                 TerminateEvent::class => ['onKernelTerminate', 2048],
             ],
-            $this->service::getSubscribedEvents()
+            $this->object::getSubscribedEvents()
         );
     }
 
@@ -97,7 +104,7 @@ class SlowRequestLoggerTest extends TestCase
 
         $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($this->durations) / 1000) - 1);
 
-        $this->service->onKernelTerminate($event);
+        $this->object->onKernelTerminate($event);
     }
 
     public function testOnKernelTerminateNoMatch(): void
@@ -120,6 +127,6 @@ class SlowRequestLoggerTest extends TestCase
 
         $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($this->durations) / 1000) - 1);
 
-        $this->service->onKernelTerminate($event);
+        $this->object->onKernelTerminate($event);
     }
 }

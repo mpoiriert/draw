@@ -79,7 +79,7 @@ class ReflectionAccessorTest extends TestCase
 
         static::assertSame(
             $static,
-            static::$privateStaticProperty
+            self::$privateStaticProperty
         );
     }
 
@@ -93,7 +93,7 @@ class ReflectionAccessorTest extends TestCase
     public function testCallMethodStaticFunctionNoArgument(): void
     {
         static::assertSame(
-            static::privateStaticFunction(),
+            self::privateStaticFunction(),
             ReflectionAccessor::callMethod($this, 'privateStaticFunction')
         );
     }
@@ -101,7 +101,7 @@ class ReflectionAccessorTest extends TestCase
     public function testCallMethodStaticFunctionWithArgument(): void
     {
         static::assertSame(
-            static::privateStaticFunction($value = uniqid()),
+            self::privateStaticFunction($value = uniqid()),
             ReflectionAccessor::callMethod($this, 'privateStaticFunction', $value)
         );
     }
