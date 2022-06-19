@@ -11,28 +11,23 @@ use Psr\Http\Message\ResponseInterface;
 class CookieJar implements CookieJarInterface
 {
     /** @var Cookie[] Loaded cookie data */
-    private $cookies = [];
+    private array $cookies = [];
 
-    /** @var bool */
-    private $strictMode;
+    private bool $strictMode;
 
     /**
      * @param bool $strictMode set to true to throw exceptions when invalid
      *                         cookies are added to the cookie jar
      */
-    public function __construct($strictMode = false)
+    public function __construct(bool $strictMode = false)
     {
         $this->strictMode = $strictMode;
     }
 
     /**
      * Finds and returns the cookie based on the name.
-     *
-     * @param string $name cookie name to search for
-     *
-     * @return Cookie|null cookie that was found or null if not found
      */
-    public function getCookieByName($name)
+    public function getCookieByName(?string $name): ?Cookie
     {
         // don't allow a null name
         if (null === $name) {
@@ -43,14 +38,14 @@ class CookieJar implements CookieJarInterface
                 return $cookie;
             }
         }
+
+        return null;
     }
 
-    public function clear($domain = null, $path = null, $name = null)
+    public function clear($domain = null, $path = null, $name = null): void
     {
         if (!$domain) {
             $this->cookies = [];
-
-            return;
         } elseif (!$path) {
             $this->cookies = array_filter(
                 $this->cookies,
@@ -76,7 +71,7 @@ class CookieJar implements CookieJarInterface
         }
     }
 
-    public function clearSessionCookies()
+    public function clearSessionCookies(): void
     {
         $this->cookies = array_filter(
             $this->cookies,
@@ -84,7 +79,7 @@ class CookieJar implements CookieJarInterface
         );
     }
 
-    public function setCookie(Cookie $cookie)
+    public function setCookie(Cookie $cookie): bool
     {
         // If the name string is empty (but not 0), ignore the set-cookie
         // string entirely.
@@ -144,12 +139,12 @@ class CookieJar implements CookieJarInterface
         return true;
     }
 
-    public function count()
+    public function count(): int
     {
         return \count($this->cookies);
     }
 
-    public function getIterator()
+    public function getIterator(): \Iterator
     {
         return new \ArrayIterator(array_values($this->cookies));
     }
@@ -157,7 +152,7 @@ class CookieJar implements CookieJarInterface
     public function extractCookies(
         RequestInterface $request,
         ResponseInterface $response
-    ) {
+    ): void {
         if ($cookieHeader = $response->getHeader('Set-Cookie')) {
             foreach ($cookieHeader as $cookie) {
                 $sc = Cookie::fromString($cookie);
@@ -176,10 +171,8 @@ class CookieJar implements CookieJarInterface
      * Computes cookie path following RFC 6265 section 5.1.4.
      *
      * @see https://tools.ietf.org/html/rfc6265#section-5.1.4
-     *
-     * @return string
      */
-    public static function getCookiePathFromRequest(RequestInterface $request)
+    public static function getCookiePathFromRequest(RequestInterface $request): string
     {
         $uriPath = $request->getUri()->getPath();
         if ('' === $uriPath) {
@@ -198,7 +191,7 @@ class CookieJar implements CookieJarInterface
         return substr($uriPath, 0, $lastSlashPos);
     }
 
-    public function withCookieHeader(RequestInterface $request)
+    public function withCookieHeader(RequestInterface $request): RequestInterface
     {
         $values = [];
         $uri = $request->getUri();
@@ -226,7 +219,7 @@ class CookieJar implements CookieJarInterface
      * If a cookie already exists and the server asks to set it again with a
      * null value, the cookie must be deleted.
      */
-    private function removeCookieIfEmpty(Cookie $cookie)
+    private function removeCookieIfEmpty(Cookie $cookie): void
     {
         $cookieValue = $cookie->getValue();
         if (null === $cookieValue || '' === $cookieValue) {

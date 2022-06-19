@@ -4,7 +4,7 @@ namespace Draw\Component\Core;
 
 class DynamicArrayObject extends \ArrayObject
 {
-    public function __construct($input, $flags = 0, $iterator_class = 'ArrayIterator')
+    final public function __construct($input, $flags = 0, $iterator_class = 'ArrayIterator')
     {
         parent::__construct($input, $flags, $iterator_class);
 
@@ -30,48 +30,21 @@ class DynamicArrayObject extends \ArrayObject
         $this->offsetSet($key, $value);
     }
 
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Whether a offset exists.
-     *
-     * @see http://php.net/manual/en/arrayaccess.offsetexists.php
-     *
-     * @param mixed $offset <p>
-     *                      An offset to check for.
-     *                      </p>
-     *
-     * @return bool true on success or false on failure.
-     *              </p>
-     *              <p>
-     *              The return value will be casted to boolean if non-boolean was returned.
-     */
-    public function offsetExists($offset)
+    public function offsetExists($key): bool
     {
         return true;
     }
 
-    /**
-     * (PHP 5 &gt;= 5.0.0)<br/>
-     * Offset to retrieve.
-     *
-     * @see http://php.net/manual/en/arrayaccess.offsetget.php
-     *
-     * @param mixed $offset <p>
-     *                      The offset to retrieve.
-     *                      </p>
-     *
-     * @return mixed can return all value types
-     */
-    public function offsetGet($offset)
+    public function offsetGet($key)
     {
-        if (!parent::offsetExists($offset)) {
-            $this[$offset] = new static([], $this->getFlags(), $this->getIteratorClass());
+        if (!parent::offsetExists($key)) {
+            $this[$key] = new static([], $this->getFlags(), $this->getIteratorClass());
         }
 
-        return parent::offsetGet($offset);
+        return parent::offsetGet($key);
     }
 
-    public function getArrayCopy()
+    public function getArrayCopy(): array
     {
         $result = parent::getArrayCopy();
         foreach ($result as $key => $value) {

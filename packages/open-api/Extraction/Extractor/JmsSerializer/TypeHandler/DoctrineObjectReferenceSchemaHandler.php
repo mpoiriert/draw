@@ -59,14 +59,14 @@ class DoctrineObjectReferenceSchemaHandler implements TypeToSchemaHandlerInterfa
 
     private function getTypeFromJsmFactory(string $class, string $propertyId): ?array
     {
-        switch (true) {
-            case null === $classMetadata = $this->metadataFactory->getMetadataForClass($class):
-            case null === $propertyMetadata = $classMetadata->propertyMetadata[$propertyId] ?? null:
-                return null;
+        if (!$classMetadata = $this->metadataFactory->getMetadataForClass($class)) {
+            return null;
         }
 
-        $type = $propertyMetadata->type['name'];
+        if (null === $propertyMetadata = $classMetadata->propertyMetadata[$propertyId] ?? null) {
+            return null;
+        }
 
-        return TypeSchemaExtractor::getPrimitiveType($type);
+        return TypeSchemaExtractor::getPrimitiveType($propertyMetadata->type['name'] ?? null);
     }
 }

@@ -32,10 +32,12 @@ class RequestHeadersProcessor
 
     public function __invoke(array $records): array
     {
-        switch (true) {
-            case null === $this->requestStack:
-            case null === $request = $this->requestStack->getMainRequest():
-                return $records;
+        if (null === $this->requestStack) {
+            return $records;
+        }
+
+        if (!$request = $this->requestStack->getMainRequest()) {
+            return $records;
         }
 
         $headers = $request->headers->all();

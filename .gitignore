@@ -32,3 +32,5 @@ composer-normalize
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+/phpstan.phar

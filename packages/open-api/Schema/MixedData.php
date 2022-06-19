@@ -2,10 +2,10 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-class MixedData
+final class MixedData
 {
     /**
-     * @var MixedData
+     * @var mixed
      */
     public $data;
 
@@ -22,7 +22,7 @@ class MixedData
 
         if ($valueIsArray && \is_array($value)) {
             foreach ($value as $key => $data) {
-                $value[$key] = static::convert($data);
+                $value[$key] = self::convert($data);
             }
 
             return $value;
@@ -32,6 +32,6 @@ class MixedData
             return $value;
         }
 
-        return new static($value);
+        return new self($value);
     }
 }

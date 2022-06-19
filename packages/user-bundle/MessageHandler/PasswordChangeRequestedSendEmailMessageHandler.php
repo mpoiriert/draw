@@ -28,8 +28,10 @@ class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerIn
 
     public function __invoke(PasswordChangeRequestedMessage $message): void
     {
+        $user = $this->userEntityRepository->find($message->getUserId());
+
         switch (true) {
-            case null === $user = $this->userEntityRepository->find($message->getUserId()):
+            case null === $user:
             case !$user instanceof PasswordChangeUserInterface:
             case !$user->getNeedChangePassword():
             case !method_exists($user, 'getEmail'):

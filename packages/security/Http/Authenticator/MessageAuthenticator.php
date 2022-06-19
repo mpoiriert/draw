@@ -54,10 +54,9 @@ class MessageAuthenticator extends AbstractAuthenticator
     public function authenticate(Request $request): Passport
     {
         $messageId = $request->get($this->requestParameterKey);
-        switch (true) {
-            case null === $messageId:
-            case null === $user = $this->getMessageUser($messageId):
-                throw new CustomUserMessageAuthenticationException('Invalid message id.');
+
+        if (!$user = $this->getMessageUser($messageId)) {
+            throw new CustomUserMessageAuthenticationException('Invalid message id.');
         }
 
         return new SelfValidatingPassport(
@@ -72,14 +71,19 @@ class MessageAuthenticator extends AbstractAuthenticator
 
     private function getMessageUser(?string $messageId): ?UserInterface
     {
+        if (null === $messageId) {
+            return null;
+        }
+
         try {
-            switch (true) {
-                case null === $messageId:
-                case null === $message = $this->envelopeFinder->findById($messageId)->getMessage():
-                case !$message instanceof AutoConnectInterface:
-                    return null;
+            if (null === $message = $this->envelopeFinder->findById($messageId)->getMessage()) {
+                return null;
             }
         } catch (MessageNotFoundException $exception) {
+            return null;
+        }
+
+        if (!$message instanceof AutoConnectInterface) {
             return null;
         }
 
