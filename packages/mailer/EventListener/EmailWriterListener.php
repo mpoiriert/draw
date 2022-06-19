@@ -55,7 +55,7 @@ class EmailWriterListener implements EventSubscriberInterface
     /**
      * @internal
      *
-     * @return array|EmailWriterInterface[]
+     * @return array<array{0: string|EmailWriterInterface, 1: string}>
      */
     public function getWriters(string $email): array
     {

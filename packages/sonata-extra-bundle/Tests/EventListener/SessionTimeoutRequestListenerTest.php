@@ -6,9 +6,9 @@ use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -298,7 +298,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
         ];
 
         $newResponse = (clone $response);
-        $newResponse->headers = new HeaderBag();
+        $newResponse->headers = new ResponseHeaderBag();
         yield 'not-html-content-type' => [
             $newResponse,
             $user,

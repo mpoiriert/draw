@@ -2,8 +2,10 @@ includes:
   - phpstan-baseline.neon
 
 parameters:
-  level: 2
+  level: 3
   paths:
     - app
     - packages
     - tests
+  ignoreErrors:
+      - '#Trying to mock an undefined method [a-zA-Z0-9\\_]#'

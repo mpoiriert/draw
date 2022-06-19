@@ -191,7 +191,7 @@ class Execution
      */
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updatedAt ?: $this->updatedAt = $this->getCreatedAt();
+        return $this->updatedAt ?: $this->updatedAt = DateTimeUtils::toDateTimeImmutable($this->getCreatedAt());
     }
 
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self

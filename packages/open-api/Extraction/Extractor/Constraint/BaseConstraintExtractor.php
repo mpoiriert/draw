@@ -52,7 +52,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
                 break;
         }
 
-        return \count($constraints);
+        return !empty(\count($constraints));
     }
 
     private function getValidationGroups(ExtractionContextInterface $extractionContext): ?array
@@ -63,7 +63,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     }
 
     /**
-     * @return array|Constraint[]
+     * @return array<string,array<Constraint>>
      */
     private function getPropertiesConstraints(
         \ReflectionClass $reflectionClass,

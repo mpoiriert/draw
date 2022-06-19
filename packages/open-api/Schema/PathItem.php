@@ -83,18 +83,26 @@ class PathItem
     public ?string $ref = null;
 
     /**
-     * @return array|Operation[]
+     * @return array{
+     *     get?: Operation,
+     *     put?: Operation,
+     *     post?: Operation,
+     *     delete?: Operation,
+     *     options?: Operation,
+     *     head?: Operation,
+     *     patch?: Operation}
+     *     |Operation[]
      */
     public function getOperations(): array
     {
-        $operations = [];
-        foreach ($this as $key => $value) {
-            if (!$value instanceof Operation) {
-                continue;
-            }
-            $operations[$key] = $value;
-        }
-
-        return $operations;
+        return array_filter([
+            'get' => $this->get,
+            'put' => $this->put,
+            'post' => $this->post,
+            'delete' => $this->delete,
+            'options' => $this->options,
+            'head' => $this->head,
+            'patch' => $this->patch,
+        ]);
     }
 }
