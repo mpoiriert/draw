@@ -105,18 +105,14 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * User date of birth.
      *
-     * @var \DateTimeImmutable|null
-     *
      * @ORM\Column(name="date_of_birth", type="datetime_immutable", nullable=true)
      */
-    private $dateOfBirth;
+    private ?\DateTimeImmutable $dateOfBirth = null;
 
     /**
-     * @var string
-     *
      * @ORM\Column(type="text")
      */
-    private $comment = '';
+    private string $comment = '';
 
     public function __construct()
     {
@@ -127,11 +123,9 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     }
 
     /**
-     * @return string
-     *
      * @ORM\PrePersist
      */
-    public function getId()
+    public function getId(): string
     {
         if (null === $this->id) {
             $this->id = Uuid::uuid6()->toString();
@@ -140,10 +134,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     */
-    public function setId($id)
+    public function setId(string $id)
     {
         $this->id = $id;
     }
@@ -232,6 +223,16 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public function setLevel(string $level): void
     {
         $this->level = $level;
+    }
+
+    public function getComment(): string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(string $comment): void
+    {
+        $this->comment = $comment;
     }
 
     public function getRolesList(): array

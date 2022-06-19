@@ -76,9 +76,7 @@ class MessageAuthenticator extends AbstractAuthenticator
         }
 
         try {
-            if (null === $message = $this->envelopeFinder->findById($messageId)->getMessage()) {
-                return null;
-            }
+            $message = $this->envelopeFinder->findById($messageId)->getMessage();
         } catch (MessageNotFoundException $exception) {
             return null;
         }

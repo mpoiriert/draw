@@ -9,11 +9,15 @@ use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\ManualTrigger\ManuallyTriggeredMessageUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ForgotPasswordEmailWriter implements EmailWriterInterface
 {
     private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator;
 
+    /**
+     * @var EntityRepository<SecurityUserInterface>
+     */
     private EntityRepository $userEntityRepository;
 
     private string $resetPasswordRoute;
@@ -46,11 +50,10 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
         $forgotPasswordEmail
             ->to($email = $forgotPasswordEmail->getEmailAddress());
 
-        /** @var SecurityUserInterface $user */
-        $user = $this->userEntityRepository
-            ->findOneBy(['email' => $email]);
+        /** @var ?UserInterface $user */
+        $user = $this->userEntityRepository->findOneBy(['email' => $email]);
 
-        if (!$user) {
+        if (null === $user) {
             $forgotPasswordEmail
                 ->htmlTemplate('@DrawUser/Email/reset_password_email_user_not_found.html.twig')
                 ->callToActionLink(
@@ -69,7 +72,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
             ->callToActionLink(
                 $this->messageUrlGenerator->generateLink(
                     new RedirectToSecuredRouteMessage(
-                        $user->getId(),
+                        $user->getUserIdentifier(),
                         $this->resetPasswordRoute,
                         ['t' => time()]
                     ),

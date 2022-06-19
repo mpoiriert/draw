@@ -6,6 +6,7 @@ use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
+use Draw\Component\OpenApi\Schema\BaseParameter;
 use Draw\Component\OpenApi\Schema\BodyParameter;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Parameter;
@@ -169,13 +170,9 @@ class OperationExtractor implements ExtractorInterface
         return null;
     }
 
-    private function findParameterByName(Operation $operation, string $name): ?Parameter
+    private function findParameterByName(Operation $operation, string $name): ?BaseParameter
     {
         foreach ($operation->parameters as $parameter) {
-            if (!$parameter instanceof Parameter) {
-                continue;
-            }
-
             if ($parameter->name === $name) {
                 return $parameter;
             }
@@ -216,7 +213,7 @@ class OperationExtractor implements ExtractorInterface
                         $bodyParameter->schema,
                         $subContext
                     );
-                } elseif (!$parameter->type) {
+                } elseif ($parameter instanceof Parameter && !$parameter->type) {
                     $primitiveType = TypeSchemaExtractor::getPrimitiveType(
                         (string) $paramTag->getType(),
                         $extractionContext

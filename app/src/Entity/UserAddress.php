@@ -13,17 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UserAddress
 {
     /**
-     * @var int|null
-     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(name="id", type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var User
-     *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\User",
      *     inversedBy="userAddresses"
@@ -31,25 +27,21 @@ class UserAddress
      *
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
-    private $user;
+    private ?User $user = null;
 
     /**
-     * @var Address
-     *
      * @ORM\Embedded(class="App\Entity\Address")
      *
      * @Serializer\Type("App\Entity\Address")
      *
      * @Assert\Valid
      */
-    private $address;
+    private ?Address $address;
 
     /**
-     * @var int|null
-     *
      * @ORM\Column(name="position", type="integer", options={"default": "0"}, nullable=false)
      */
-    private $position;
+    private ?int $position = null;
 
     public function __construct()
     {

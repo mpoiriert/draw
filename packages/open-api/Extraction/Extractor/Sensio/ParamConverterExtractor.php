@@ -53,7 +53,7 @@ class ParamConverterExtractor implements ExtractorInterface
         }
 
         $paramConverter = $this->getParamConverter($source);
-        if (null === ($type = $paramConverter->getClass())) {
+        if (empty($type = $paramConverter->getClass())) {
             foreach ($source->getParameters() as $parameter) {
                 if ($parameter->getName() != $paramConverter->getName()) {
                     continue;

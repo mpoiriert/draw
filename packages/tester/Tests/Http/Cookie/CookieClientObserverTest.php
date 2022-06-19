@@ -23,10 +23,8 @@ class CookieClientObserverTest extends TestCase
 
     /**
      * @depends testConstruct
-     *
-     * @return CookieClientObserver
      */
-    public function testRequestNoCookie(CookieClientObserver $clientObserver)
+    public function testRequestNoCookie(CookieClientObserver $clientObserver): CookieClientObserver
     {
         $request = $clientObserver->preSendRequest(new Request('GET', 'http://locahhost/test'));
 
@@ -39,10 +37,8 @@ class CookieClientObserverTest extends TestCase
 
     /**
      * @depends testRequestNoCookie
-     *
-     * @return CookieClientObserver
      */
-    public function testResponseWithCookie(CookieClientObserver $clientObserver)
+    public function testResponseWithCookie(CookieClientObserver $clientObserver): CookieClientObserver
     {
         $response = $clientObserver->postSendRequest(
             new Request('GET', 'http://locahhost/test'),
@@ -56,10 +52,8 @@ class CookieClientObserverTest extends TestCase
 
     /**
      * @depends testResponseWithCookie
-     *
-     * @return CookieClientObserver
      */
-    public function testRequestWithCookie(CookieClientObserver $clientObserver)
+    public function testRequestWithCookie(CookieClientObserver $clientObserver): CookieClientObserver
     {
         $request = $clientObserver->preSendRequest(new Request('GET', 'http://locahhost/test'));
 
@@ -73,10 +67,8 @@ class CookieClientObserverTest extends TestCase
 
     /**
      * @depends testRequestWithCookie
-     *
-     * @return CookieClientObserver
      */
-    public function testRemoveCookie(CookieClientObserver $clientObserver)
+    public function testRemoveCookie(CookieClientObserver $clientObserver): CookieClientObserver
     {
         $response = $clientObserver->postSendRequest(
             new Request('GET', 'http://locahhost/test'),
@@ -90,10 +82,8 @@ class CookieClientObserverTest extends TestCase
 
     /**
      * @depends testRemoveCookie
-     *
-     * @return CookieClientObserver
      */
-    public function testRequestCookieRemoved(CookieClientObserver $clientObserver)
+    public function testRequestCookieRemoved(CookieClientObserver $clientObserver): CookieClientObserver
     {
         return $this->testRequestNoCookie($clientObserver);
     }

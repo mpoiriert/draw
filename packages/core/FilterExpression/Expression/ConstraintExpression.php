@@ -13,13 +13,10 @@ class ConstraintExpression extends Expression
      */
     private $constraints;
 
-    /**
-     * @var string|null
-     */
-    private $path;
+    private ?string $path;
 
     /**
-     * @var string|GroupSequence|(string|GroupSequence)[]|null
+     * @var string|GroupSequence|array<string|GroupSequence>|null
      */
     private $groups;
 
@@ -27,8 +24,8 @@ class ConstraintExpression extends Expression
      * If no constraint is passed, the constraint
      * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
      *
-     * @param Constraint|Constraint[]|null $constraints The constraint(s) to validate against
-     * @param string|GroupSequence|(string|GroupSequence)[]|null $groups      The validation groups to validate. If none is given, "Default" is assumed
+     * @param Constraint|Constraint[]|null                          $constraints The constraint(s) to validate against
+     * @param string|GroupSequence|array<string|GroupSequence>|null $groups      The validation groups to validate. If none is given, "Default" is assumed
      *
      * @see ValidatorInterface::validate()
      */
@@ -53,7 +50,7 @@ class ConstraintExpression extends Expression
     }
 
     /**
-     * @return string|GroupSequence
+     * @return string|GroupSequence|array<string|GroupSequence>|null
      */
     public function getGroups()
     {

@@ -223,8 +223,7 @@ class CookieJar implements CookieJarInterface
      */
     private function removeCookieIfEmpty(Cookie $cookie): void
     {
-        $cookieValue = $cookie->getValue();
-        if (null === $cookieValue || '' === $cookieValue) {
+        if (empty($cookie->getValue())) {
             $this->clear(
                 $cookie->getDomain(),
                 $cookie->getPath(),
