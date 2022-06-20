@@ -7,26 +7,26 @@ use PHPUnit\Framework\TestCase;
 
 class CookieTest extends TestCase
 {
-    public function testInitializesDefaultValues()
+    public function testInitializesDefaultValues(): void
     {
         $cookie = new Cookie();
         static::assertEquals('/', $cookie->getPath());
     }
 
-    public function testConvertsDateTimeMaxAgeToUnixTimestamp()
+    public function testConvertsDateTimeMaxAgeToUnixTimestamp(): void
     {
         $cookie = new Cookie(['Expires' => 'November 20, 1984']);
         static::assertIsInt($cookie->getExpires());
     }
 
-    public function testAddsExpiresBasedOnMaxAge()
+    public function testAddsExpiresBasedOnMaxAge(): void
     {
         $t = time();
         $cookie = new Cookie(['Max-Age' => 100]);
         static::assertEquals($t + 100, $cookie->getExpires());
     }
 
-    public function testHoldsValues()
+    public function testHoldsValues(): void
     {
         $t = time();
         $data = [
@@ -79,7 +79,7 @@ class CookieTest extends TestCase
         static::assertFalse($cookie->getHttpOnly());
     }
 
-    public function testDeterminesIfExpired()
+    public function testDeterminesIfExpired(): void
     {
         $c = new Cookie();
         $c->setExpires(10);
@@ -88,7 +88,7 @@ class CookieTest extends TestCase
         static::assertFalse($c->isExpired());
     }
 
-    public function testMatchesDomain()
+    public function testMatchesDomain(): void
     {
         $cookie = new Cookie();
         static::assertTrue($cookie->matchesDomain('baz.com'));
@@ -116,7 +116,7 @@ class CookieTest extends TestCase
         static::assertTrue($cookie->matchesDomain('example.local'));
     }
 
-    public function pathMatchProvider()
+    public function pathMatchProvider(): array
     {
         return [
             ['/foo', '/foo', true],
@@ -139,19 +139,15 @@ class CookieTest extends TestCase
 
     /**
      * @dataProvider pathMatchProvider
-     *
-     * @param string $cookiePath
-     * @param string $requestPath
-     * @param bool   $isMatch
      */
-    public function testMatchesPath($cookiePath, $requestPath, $isMatch)
+    public function testMatchesPath(string $cookiePath, string $requestPath, bool $isMatch): void
     {
         $cookie = new Cookie();
         $cookie->setPath($cookiePath);
-        static::assertEquals($isMatch, $cookie->matchesPath($requestPath));
+        static::assertSame($isMatch, $cookie->matchesPath($requestPath));
     }
 
-    public function cookieValidateProvider()
+    public function cookieValidateProvider(): array
     {
         return [
             ['foo', 'baz', 'bar', true],
@@ -167,12 +163,9 @@ class CookieTest extends TestCase
     /**
      * @dataProvider cookieValidateProvider
      *
-     * @param string      $name
-     * @param string      $value
-     * @param string      $domain
      * @param bool|string $result
      */
-    public function testValidatesCookies($name, $value, $domain, $result)
+    public function testValidatesCookies(string $name, string $value, string $domain, $result): void
     {
         $cookie = new Cookie([
             'Name' => $name,
@@ -182,13 +175,13 @@ class CookieTest extends TestCase
         static::assertSame($result, $cookie->validate());
     }
 
-    public function testDoesNotMatchIp()
+    public function testDoesNotMatchIp(): void
     {
         $cookie = new Cookie(['Domain' => '192.168.16.']);
         static::assertFalse($cookie->matchesDomain('192.168.16.121'));
     }
 
-    public function testConvertsToString()
+    public function testConvertsToString(): void
     {
         $t = 1382916008;
         $cookie = new Cookie([
@@ -208,10 +201,8 @@ class CookieTest extends TestCase
 
     /**
      * Provides the parsed information from a cookie.
-     *
-     * @return array
      */
-    public function cookieParserDataProvider()
+    public function cookieParserDataProvider(): array
     {
         return [
             [
@@ -229,8 +220,14 @@ class CookieTest extends TestCase
                     'HttpOnly' => false,
                 ],
             ],
-            ['', []],
-            ['foo', []],
+            [
+                '',
+                [],
+            ],
+            [
+                'foo',
+                [],
+            ],
             [
                 'foo="bar"',
                 [
@@ -246,8 +243,8 @@ class CookieTest extends TestCase
                 ],
             ],
             // Test setting a blank value for a cookie
-            [[
-                'foo=', 'foo =', 'foo =;', 'foo= ;', 'foo =', 'foo= ', ],
+            [
+                ['foo=', 'foo =', 'foo =;', 'foo= ;', 'foo =', 'foo= '],
                 [
                     'Name' => 'foo',
                     'Value' => '',
@@ -261,8 +258,8 @@ class CookieTest extends TestCase
                 ],
             ],
             // Test setting a value and removing quotes
-            [[
-                'foo=1', 'foo =1', 'foo =1;', 'foo=1 ;', 'foo =1', 'foo= 1', 'foo = 1 ;', ],
+            [
+                ['foo=1', 'foo =1', 'foo =1;', 'foo=1 ;', 'foo =1', 'foo= 1', 'foo = 1 ;'],
                 [
                     'Name' => 'foo',
                     'Value' => '1',
@@ -367,10 +364,9 @@ class CookieTest extends TestCase
     /**
      * @dataProvider cookieParserDataProvider
      *
-     * @param string $cookie
-     * @param array  $parsed
+     * @param string|array $cookie
      */
-    public function testParseCookie($cookie, $parsed)
+    public function testParseCookie($cookie, array $parsed): void
     {
         foreach ((array) $cookie as $v) {
             $c = Cookie::fromString($v);
@@ -378,18 +374,18 @@ class CookieTest extends TestCase
 
             if (isset($p['Expires'])) {
                 // Remove expires values from the assertion if they are relatively equal
-                if (abs($p['Expires'] != strtotime($parsed['Expires'])) < 40) {
-                    unset($p['Expires']);
-                    unset($parsed['Expires']);
+                $parsedExpires = \is_int($parsed['Expires']) ? $parsed['Expires'] : strtotime($parsed['Expires']);
+                if (abs($p['Expires'] - $parsedExpires) < 600) {
+                    unset($p['Expires'], $parsed['Expires']);
                 }
             }
 
             if (!empty($parsed)) {
                 foreach ($parsed as $key => $value) {
-                    static::assertEquals($parsed[$key], $p[$key], 'Comparing '.$key.' '.var_export($value, true).' : '.var_export($parsed, true).' | '.var_export($p, true));
+                    static::assertEquals($value, $p[$key], 'Comparing '.$key.' '.var_export($value, true).' : '.var_export($parsed, true).' | '.var_export($p, true));
                 }
                 foreach ($p as $key => $value) {
-                    static::assertEquals($p[$key], $parsed[$key], 'Comparing '.$key.' '.var_export($value, true).' : '.var_export($parsed, true).' | '.var_export($p, true));
+                    static::assertEquals($value, $parsed[$key], 'Comparing '.$key.' '.var_export($value, true).' : '.var_export($parsed, true).' | '.var_export($p, true));
                 }
             } else {
                 static::assertEquals([

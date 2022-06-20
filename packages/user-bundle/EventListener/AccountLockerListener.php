@@ -50,23 +50,28 @@ class AccountLockerListener implements EventSubscriberInterface
     public function handleUserRequestInterceptionEvent(UserRequestInterceptionEvent $event): void
     {
         $user = $event->getUser();
-        switch (true) {
-            case !$user instanceof LockableUserInterface:
-            case !$this->accountLocker->isLocked($user):
-                return;
-            case $event->getRequest()->attributes->get('_route') === $this->accountLockedRoute:
-                $event->allowHandlingRequest();
 
-                return;
-            default:
-                $this->userFeed->addToFeed($user, 'error', 'account_locked');
-                $event->setResponse(
-                    new RedirectResponse(
-                        $this->urlGenerator->generate($this->accountLockedRoute)
-                    ),
-                    self::INTERCEPTION_REASON
-                );
+        if (!$user instanceof LockableUserInterface) {
+            return;
         }
+
+        if (!$this->accountLocker->isLocked($user)) {
+            return;
+        }
+
+        if ($event->getRequest()->attributes->get('_route') === $this->accountLockedRoute) {
+            $event->allowHandlingRequest();
+
+            return;
+        }
+
+        $this->userFeed->addToFeed($user, 'error', 'account_locked');
+        $event->setResponse(
+            new RedirectResponse(
+                $this->urlGenerator->generate($this->accountLockedRoute)
+            ),
+            self::INTERCEPTION_REASON
+        );
     }
 
     public function handlerGetUserLocksEvent(GetUserLocksEvent $event): void

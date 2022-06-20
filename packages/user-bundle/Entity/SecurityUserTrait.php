@@ -112,7 +112,7 @@ trait SecurityUserTrait
         switch (true) {
             case null === $this->passwordUpdatedAt:
             case $this->passwordUpdatedAt->getTimestamp() !== $passwordUpdatedAt->getTimestamp():
-                $this->passwordUpdatedAt = \DateTimeImmutable::createFromFormat('U', $passwordUpdatedAt->getTimestamp());
+                $this->passwordUpdatedAt = \DateTimeImmutable::createFromFormat('U', (string) $passwordUpdatedAt->getTimestamp());
                 if ($this instanceof LockableUserInterface) {
                     $this->unlock(UserLock::REASON_PASSWORD_EXPIRED);
                 }

@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#1 \\$node of method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeBuilder\\:\\:append\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\|null given\\.$#"
+			count: 1
+			path: packages/framework-extra-bundle/DependencyInjection/Integration/LoggerIntegration.php
+
+		-
 			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Configuration\\\\Deserialization\\:\\:\\$deserializationEnableMaxDepth is unused\\.$#"
 			count: 1
 			path: packages/open-api/Configuration/Deserialization.php

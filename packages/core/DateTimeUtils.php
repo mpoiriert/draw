@@ -27,7 +27,7 @@ final class DateTimeUtils
             case null === $dateTime:
                 return null;
             default:
-                return \DateTimeImmutable::createFromFormat('U', $dateTime->getTimestamp());
+                return \DateTimeImmutable::createFromFormat('U', (string) $dateTime->getTimestamp());
         }
     }
 
@@ -37,7 +37,7 @@ final class DateTimeUtils
             case null === $dateTime:
                 return null;
             default:
-                return \DateTime::createFromFormat('U', $dateTime->getTimestamp());
+                return \DateTime::createFromFormat('U', (string) $dateTime->getTimestamp());
         }
     }
 

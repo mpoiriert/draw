@@ -4,7 +4,7 @@ namespace Draw\Bundle\UserBundle\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-interface LockableUserInterface extends UserInterface
+interface LockableUserInterface extends UserInterface, \Stringable
 {
     public function hasManualLock(): bool;
 
