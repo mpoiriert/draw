@@ -122,7 +122,14 @@
         "draw/tester": "self.version",
         "draw/tester-bundle": "self.version",
         "draw/user-bundle": "self.version",
-        "draw/validator": "self.version"
+        "draw/validator": "self.version",
+        "symfony/polyfill-php54": "1.99",
+        "symfony/polyfill-php55": "1.99",
+        "symfony/polyfill-php56": "1.99",
+        "symfony/polyfill-php70": "1.99",
+        "symfony/polyfill-php71": "1.99",
+        "symfony/polyfill-php72": "1.99",
+        "symfony/polyfill-php73": "1.99"
     },
     "conflict": {
         "doctrine/data-fixtures": "<1.5.2",
