@@ -48,44 +48,38 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     ];
 
     /**
-     * @var string
-     *
      * @ORM\Id
      * @ORM\Column(name="id", type="guid")
      *
      * @Serializer\ReadOnlyProperty
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
-     * @var Tag[]|Collection
+     * @var Collection<Tag>
      *
      * @ORM\ManyToMany(
      *     targetEntity="App\Entity\Tag"
      * )
      */
-    private $tags;
+    private Collection $tags;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="level", type="string", nullable=false, options={"default": "user"})
      */
-    private $level = 'user';
+    private string $level = 'user';
 
     /**
-     * @var Address
-     *
      * @ORM\Embedded(class="App\Entity\Address", columnPrefix="address_")
      *
      * @Assert\Valid
      */
-    private $address;
+    private Address $address;
 
     /**
      * @var UserAddress[]|Collection
@@ -100,7 +94,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * )
      * @ORM\OrderBy({"position": "ASC"})
      */
-    private $userAddresses;
+    private Collection $userAddresses;
 
     /**
      * User date of birth.
@@ -164,11 +158,17 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     }
 
     /**
-     * @param Tag[]|Collection $tags
+     * @phpstan-param Collection<Tag>|array<int,Tag> $tags
+     *
+     * @param mixed $tags
      */
-    public function setTags($tags)
+    public function setTags($tags): void
     {
-        $this->tags = $tags;
+        $this->tags = new ArrayCollection();
+
+        foreach ($tags as $tag) {
+            $this->tags->add($tag);
+        }
     }
 
     public function getAddress(): Address

@@ -30,7 +30,7 @@ final class AdminValueResolver implements ArgumentValueResolverInterface
             return false;
         }
 
-        if (AdminInterface::class !== $type && !is_a($type, AdminInterface::class)) {
+        if (AdminInterface::class !== $type) {
             return false;
         }
 

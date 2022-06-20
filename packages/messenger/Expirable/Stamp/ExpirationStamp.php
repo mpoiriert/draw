@@ -12,7 +12,7 @@ class ExpirationStamp implements StampInterface
 
     public function __construct(\DateTimeInterface $expiration)
     {
-        $this->dateTime = \DateTimeImmutable::createFromFormat('U', $expiration->getTimestamp());
+        $this->dateTime = \DateTimeImmutable::createFromFormat('U', (string) $expiration->getTimestamp());
     }
 
     public function getDateTime(): \DateTimeInterface

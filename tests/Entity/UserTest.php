@@ -85,7 +85,7 @@ class UserTest extends TestCase
         static::assertSame(
             [
                 'activateUserLock:'.$userLock->getReason(),
-                'userId:'.$userLock->getUser()->getId(),
+                'userId:'.$userLock->getUser()->getUserIdentifier(),
             ],
             $stamp->getTags(),
         );

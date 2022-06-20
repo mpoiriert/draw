@@ -112,7 +112,7 @@ class EmailWriterListenerTest extends TestCase
             ->method('getHeaders')
             ->willReturn($headers = new Headers());
 
-        $headers->add(new UnstructuredHeader('X-DrawEmail', 1));
+        $headers->add(new UnstructuredHeader('X-DrawEmail', '1'));
 
         $this->object->composeMessage($this->createMessageEvent($message));
     }

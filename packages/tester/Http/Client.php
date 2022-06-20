@@ -13,9 +13,9 @@ class Client implements ClientInterface
     private $requestExecutioner;
 
     /**
-     * @var ClientObserver[]
+     * @var array<array<ClientObserver>>
      */
-    private $observers = [];
+    private array $observers = [];
 
     public function __construct(
         ?RequestExecutionerInterface $requestExecutioner = null,
@@ -129,7 +129,6 @@ class Client implements ClientInterface
         $observers = $this->observers;
         ksort($observers);
 
-        /** @var ClientObserver[] $observers */
         $observers = array_merge(...$observers);
 
         foreach ($observers as $observer) {

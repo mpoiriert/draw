@@ -69,7 +69,7 @@ class UserLockLifeCycleMessageHandler implements MessageSubscriberInterface
                     $stamps[] = new SearchableTagStamp(
                         [
                             'activateUserLock:'.$userLock->getReason(),
-                            'userId:'.$userLock->getUser()->getId(),
+                            'userId:'.$userLock->getUser()->getUserIdentifier(),
                         ],
                         true
                     );

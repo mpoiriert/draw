@@ -88,7 +88,7 @@ class EmailWriterListener implements EventSubscriberInterface
             return;
         }
 
-        $headers->add(new UnstructuredHeader('X-DrawEmail', 1));
+        $headers->add(new UnstructuredHeader('X-DrawEmail', '1'));
 
         $envelope = $event->getEnvelope();
 
