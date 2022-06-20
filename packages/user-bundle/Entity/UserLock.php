@@ -24,10 +24,10 @@ class UserLock
     private ?string $id = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Draw\Bundle\UserBundle\Entity\SecurityUserInterface")
+     * @ORM\ManyToOne(targetEntity="Draw\Bundle\UserBundle\Entity\LockableUserInterface")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private ?SecurityUserInterface $user = null;
+    private ?LockableUserInterface $user = null;
 
     /**
      * @ORM\Column(name="reason", type="string", length=255, nullable=false)
@@ -80,16 +80,16 @@ class UserLock
         return $this;
     }
 
-    public function getUser(): ?SecurityUserInterface
+    public function getUser(): ?LockableUserInterface
     {
         return $this->user;
     }
 
-    public function setUser(?SecurityUserInterface $user): self
+    public function setUser(?LockableUserInterface $user): self
     {
         $this->user = $user;
 
-        if ($user instanceof LockableUserInterface && $this->getReason()) {
+        if ($this->reason && null !== $this->user) {
             $user->lock($this);
         }
 
@@ -105,7 +105,7 @@ class UserLock
     {
         $this->reason = $reason;
 
-        if ($this->reason && $this->user instanceof LockableUserInterface) {
+        if ($this->reason && null !== $this->user) {
             $this->user->lock($this);
         }
 
