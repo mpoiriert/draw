@@ -42,20 +42,20 @@ class ProfilerCoordinatorTest extends TestCase
         static::assertFalse($this->object->isStarted());
     }
 
-    public function testRegisterProfile()
+    public function testRegisterProfile(): void
     {
         $this->profiler->expects(static::once())->method('getType')->willReturn(self::PROFILER_TYPE);
         $this->object->registerProfiler($this->profiler);
     }
 
-    public function testStarAll()
+    public function testStarAll(): void
     {
         $this->testRegisterProfile();
         $this->profiler->expects(static::once())->method('start');
         $this->object->startAll();
     }
 
-    public function testStopAll()
+    public function testStopAll(): void
     {
         $this->testStarAll();
         $this->profiler->expects(static::once())->method('stop')->willReturn($result = 'result');

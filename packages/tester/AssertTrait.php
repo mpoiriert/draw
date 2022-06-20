@@ -137,8 +137,6 @@ trait AssertTrait
     // example-start: assertEmpty
     /**
      * Asserts that a variable is empty.
-     *
-     * @psalm-assert empty $actual
      */
     public function assertEmpty(string $message = ''): self
     {
@@ -151,8 +149,6 @@ trait AssertTrait
     // example-start: assertNotEmpty
     /**
      * Asserts that a variable is not empty.
-     *
-     * @psalm-assert !empty $actual
      */
     public function assertNotEmpty(string $message = ''): self
     {
@@ -221,8 +217,6 @@ trait AssertTrait
     // example-start: assertTrue
     /**
      * Asserts that a condition is true.
-     *
-     * @psalm-assert true $condition
      */
     public function assertTrue(string $message = ''): self
     {
@@ -235,8 +229,6 @@ trait AssertTrait
     // example-start: assertNotTrue
     /**
      * Asserts that a condition is not true.
-     *
-     * @psalm-assert !true $condition
      */
     public function assertNotTrue(string $message = ''): self
     {
@@ -249,8 +241,6 @@ trait AssertTrait
     // example-start: assertFalse
     /**
      * Asserts that a condition is false.
-     *
-     * @psalm-assert false $condition
      */
     public function assertFalse(string $message = ''): self
     {
@@ -263,8 +253,6 @@ trait AssertTrait
     // example-start: assertNotFalse
     /**
      * Asserts that a condition is not false.
-     *
-     * @psalm-assert !false $condition
      */
     public function assertNotFalse(string $message = ''): self
     {
@@ -277,8 +265,6 @@ trait AssertTrait
     // example-start: assertNull
     /**
      * Asserts that a variable is null.
-     *
-     * @psalm-assert null $actual
      */
     public function assertNull(string $message = ''): self
     {
@@ -291,8 +277,6 @@ trait AssertTrait
     // example-start: assertNotNull
     /**
      * Asserts that a variable is not null.
-     *
-     * @psalm-assert !null $actual
      */
     public function assertNotNull(string $message = ''): self
     {
@@ -344,10 +328,6 @@ trait AssertTrait
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     * @psalm-template ExpectedType
-     * @psalm-param ExpectedType $expected
-     * @psalm-assert =ExpectedType $actual
-     *
      * @param mixed $expected
      */
     public function assertSame($expected, string $message = ''): self
@@ -377,10 +357,6 @@ trait AssertTrait
     // example-start: assertInstanceOf
     /**
      * Asserts that a variable is of a given type.
-     *
-     * @psalm-template ExpectedType of object
-     * @psalm-param class-string<ExpectedType> $expected
-     * @psalm-assert =ExpectedType $actual
      */
     public function assertInstanceOf(string $expected, string $message = ''): self
     {
@@ -393,10 +369,6 @@ trait AssertTrait
     // example-start: assertNotInstanceOf
     /**
      * Asserts that a variable is not of a given type.
-     *
-     * @psalm-template ExpectedType of object
-     * @psalm-param class-string<ExpectedType> $expected
-     * @psalm-assert !ExpectedType $actual
      */
     public function assertNotInstanceOf(string $expected, string $message = ''): self
     {
@@ -655,8 +627,6 @@ trait AssertTrait
     // example-start: assertIsArray
     /**
      * Asserts that a variable is of type array.
-     *
-     * @psalm-assert array $actual
      */
     public function assertIsArray(string $message = ''): self
     {
@@ -669,8 +639,6 @@ trait AssertTrait
     // example-start: assertIsBool
     /**
      * Asserts that a variable is of type bool.
-     *
-     * @psalm-assert bool $actual
      */
     public function assertIsBool(string $message = ''): self
     {
@@ -683,8 +651,6 @@ trait AssertTrait
     // example-start: assertIsFloat
     /**
      * Asserts that a variable is of type float.
-     *
-     * @psalm-assert float $actual
      */
     public function assertIsFloat(string $message = ''): self
     {
@@ -697,8 +663,6 @@ trait AssertTrait
     // example-start: assertIsInt
     /**
      * Asserts that a variable is of type int.
-     *
-     * @psalm-assert int $actual
      */
     public function assertIsInt(string $message = ''): self
     {
@@ -711,8 +675,6 @@ trait AssertTrait
     // example-start: assertIsNumeric
     /**
      * Asserts that a variable is of type numeric.
-     *
-     * @psalm-assert numeric $actual
      */
     public function assertIsNumeric(string $message = ''): self
     {
@@ -725,8 +687,6 @@ trait AssertTrait
     // example-start: assertIsObject
     /**
      * Asserts that a variable is of type object.
-     *
-     * @psalm-assert object $actual
      */
     public function assertIsObject(string $message = ''): self
     {
@@ -739,8 +699,6 @@ trait AssertTrait
     // example-start: assertIsResource
     /**
      * Asserts that a variable is of type resource.
-     *
-     * @psalm-assert resource $actual
      */
     public function assertIsResource(string $message = ''): self
     {
@@ -753,8 +711,6 @@ trait AssertTrait
     // example-start: assertIsString
     /**
      * Asserts that a variable is of type string.
-     *
-     * @psalm-assert string $actual
      */
     public function assertIsString(string $message = ''): self
     {
@@ -767,8 +723,6 @@ trait AssertTrait
     // example-start: assertIsScalar
     /**
      * Asserts that a variable is of type scalar.
-     *
-     * @psalm-assert scalar $actual
      */
     public function assertIsScalar(string $message = ''): self
     {
@@ -781,8 +735,6 @@ trait AssertTrait
     // example-start: assertIsCallable
     /**
      * Asserts that a variable is of type callable.
-     *
-     * @psalm-assert callable $actual
      */
     public function assertIsCallable(string $message = ''): self
     {
@@ -795,8 +747,6 @@ trait AssertTrait
     // example-start: assertIsIterable
     /**
      * Asserts that a variable is of type iterable.
-     *
-     * @psalm-assert iterable $actual
      */
     public function assertIsIterable(string $message = ''): self
     {
@@ -809,8 +759,6 @@ trait AssertTrait
     // example-start: assertIsNotArray
     /**
      * Asserts that a variable is not of type array.
-     *
-     * @psalm-assert !array $actual
      */
     public function assertIsNotArray(string $message = ''): self
     {
@@ -823,8 +771,6 @@ trait AssertTrait
     // example-start: assertIsNotBool
     /**
      * Asserts that a variable is not of type bool.
-     *
-     * @psalm-assert !bool $actual
      */
     public function assertIsNotBool(string $message = ''): self
     {
@@ -837,8 +783,6 @@ trait AssertTrait
     // example-start: assertIsNotFloat
     /**
      * Asserts that a variable is not of type float.
-     *
-     * @psalm-assert !float $actual
      */
     public function assertIsNotFloat(string $message = ''): self
     {
@@ -851,8 +795,6 @@ trait AssertTrait
     // example-start: assertIsNotInt
     /**
      * Asserts that a variable is not of type int.
-     *
-     * @psalm-assert !int $actual
      */
     public function assertIsNotInt(string $message = ''): self
     {
@@ -865,8 +807,6 @@ trait AssertTrait
     // example-start: assertIsNotNumeric
     /**
      * Asserts that a variable is not of type numeric.
-     *
-     * @psalm-assert !numeric $actual
      */
     public function assertIsNotNumeric(string $message = ''): self
     {
@@ -879,8 +819,6 @@ trait AssertTrait
     // example-start: assertIsNotObject
     /**
      * Asserts that a variable is not of type object.
-     *
-     * @psalm-assert !object $actual
      */
     public function assertIsNotObject(string $message = ''): self
     {
@@ -893,8 +831,6 @@ trait AssertTrait
     // example-start: assertIsNotResource
     /**
      * Asserts that a variable is not of type resource.
-     *
-     * @psalm-assert !resource $actual
      */
     public function assertIsNotResource(string $message = ''): self
     {
@@ -907,8 +843,6 @@ trait AssertTrait
     // example-start: assertIsNotString
     /**
      * Asserts that a variable is not of type string.
-     *
-     * @psalm-assert !string $actual
      */
     public function assertIsNotString(string $message = ''): self
     {
@@ -921,8 +855,6 @@ trait AssertTrait
     // example-start: assertIsNotScalar
     /**
      * Asserts that a variable is not of type scalar.
-     *
-     * @psalm-assert !scalar $actual
      */
     public function assertIsNotScalar(string $message = ''): self
     {
@@ -935,8 +867,6 @@ trait AssertTrait
     // example-start: assertIsNotCallable
     /**
      * Asserts that a variable is not of type callable.
-     *
-     * @psalm-assert !callable $actual
      */
     public function assertIsNotCallable(string $message = ''): self
     {
@@ -949,8 +879,6 @@ trait AssertTrait
     // example-start: assertIsNotIterable
     /**
      * Asserts that a variable is not of type iterable.
-     *
-     * @psalm-assert !iterable $actual
      */
     public function assertIsNotIterable(string $message = ''): self
     {
@@ -1213,8 +1141,6 @@ trait AssertTrait
     // example-start: assertIsClosedResource
     /**
      * Asserts that a variable is of type resource and is closed.
-     *
-     * @psalm-assert resource $actual
      */
     public function assertIsClosedResource(string $message = ''): self
     {
@@ -1227,8 +1153,6 @@ trait AssertTrait
     // example-start: assertIsNotClosedResource
     /**
      * Asserts that a variable is not of type resource.
-     *
-     * @psalm-assert !resource $actual
      */
     public function assertIsNotClosedResource(string $message = ''): self
     {

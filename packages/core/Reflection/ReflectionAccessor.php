@@ -4,7 +4,10 @@ namespace Draw\Component\Core\Reflection;
 
 final class ReflectionAccessor
 {
-    public static function callMethod($objectOrClass, string $methodName, ...$arguments)
+    /**
+     * @param object|string $objectOrClass
+     */
+    public static function callMethod($objectOrClass, string $methodName, string ...$arguments)
     {
         $methodReflection = self::createAccessibleMethodReflection($objectOrClass, $methodName);
 
@@ -13,6 +16,9 @@ final class ReflectionAccessor
         return $methodReflection->invoke($object, ...$arguments);
     }
 
+    /**
+     * @param object|string $objectOrClass
+     */
     public static function getPropertyValue($objectOrClass, string $propertyName)
     {
         $property = self::createAccessiblePropertyReflection($objectOrClass, $propertyName);
@@ -22,6 +28,10 @@ final class ReflectionAccessor
             : $property->getValue($objectOrClass);
     }
 
+    /**
+     * @param object|string $objectOrClass
+     * @param mixed         $value
+     */
     public static function setPropertyValue($objectOrClass, string $propertyName, $value): void
     {
         $property = self::createAccessiblePropertyReflection($objectOrClass, $propertyName);
@@ -31,6 +41,10 @@ final class ReflectionAccessor
             : $property->setValue($objectOrClass, $value);
     }
 
+    /**
+     * @param object|string       $objectOrClass
+     * @param array<string,mixed> $map
+     */
     public static function setPropertiesValue($objectOrClass, array $map): void
     {
         foreach ($map as $property => $value) {

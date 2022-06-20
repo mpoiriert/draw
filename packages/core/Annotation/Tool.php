@@ -6,7 +6,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 
 class Tool
 {
-    public static function ignoreNamespacesBaseOnClassExistence(string $class, array $namespaces)
+    public static function ignoreNamespacesBaseOnClassExistence(string $class, array $namespaces): void
     {
         if (class_exists(AnnotationReader::class)) {
             if (class_exists($class)) {

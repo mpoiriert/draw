@@ -36,7 +36,7 @@ class UserOnboardingEmailWriter implements EmailWriterInterface
             $email->callToActionLink(
                 $this->messageUrlGenerator->generateLink(
                     new RedirectToSecuredRouteMessage(
-                        $email->getUserIdentifier(),
+                        $email->getUserId(),
                         'draw_user_account_confirmation'
                     ),
                     new \DateTimeImmutable($this->messageExpirationDelay),

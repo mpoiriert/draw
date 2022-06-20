@@ -139,7 +139,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         );
     }
 
-    private function assignParameters($config, ContainerBuilder $container)
+    private function assignParameters(array $config, ContainerBuilder $container): void
     {
         $parameterNames = [
             'user_entity_class',
@@ -156,7 +156,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         array $config,
         PhpFileLoader $loader,
         ContainerBuilder $container
-    ) {
+    ): void {
         if (!$config['enabled']) {
             return;
         }
@@ -294,7 +294,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         }
     }
 
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $configs = $container->getExtensionConfig('draw_user');
 

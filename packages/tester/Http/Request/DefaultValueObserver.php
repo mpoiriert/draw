@@ -20,12 +20,11 @@ class DefaultValueObserver extends ClientObserver
     public function preSendRequest(RequestInterface $request): RequestInterface
     {
         $request = $this->withDefaultHeaders($request);
-        $request = $this->withDefaultQueryParameters($request);
 
-        return $request;
+        return $this->withDefaultQueryParameters($request);
     }
 
-    public function withDefaultQueryParameters(RequestInterface $request)
+    public function withDefaultQueryParameters(RequestInterface $request): RequestInterface
     {
         if ($this->queryParameters) {
             $uri = $request->getUri();
@@ -37,7 +36,7 @@ class DefaultValueObserver extends ClientObserver
         return $request;
     }
 
-    public function withDefaultHeaders(RequestInterface $request)
+    public function withDefaultHeaders(RequestInterface $request): RequestInterface
     {
         foreach ($this->headers as $name => $value) {
             if ($request->hasHeader($name)) {

@@ -7,5 +7,13 @@ parameters:
     - app
     - packages
     - tests
+  checkGenericClassInNonGenericObjectType: false
   ignoreErrors:
       - '#Trying to mock an undefined method [a-zA-Z0-9\\_]#'
+      #- '#provideTestArgument\(\) return type has no value type specified in iterable type (iterable|array).#'
+      #- '#provideTestOption\(\) return type has no value type specified in iterable type (iterable|array).#'
+      #- '#getHandledMessages\(\) return type has no value type specified in iterable type (iterable|array).#'
+      #- '#Test::getDefaultConfiguration\(\) return type has no value type specified in iterable type array.#'
+      #- '#Test::getConfiguration\(\) return type has no value type specified in iterable type array.#'
+      #- '#Test::provide[a-zA-Z0-9]*\(\) return type has no value type specified in iterable type (iterable|array).#'
+      #- '#Method [a-zA-Z0-9\\]*::getForEmails\(\) return type has no value type specified in iterable type (iterable|array).#'

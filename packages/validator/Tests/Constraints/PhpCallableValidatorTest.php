@@ -46,6 +46,9 @@ class PhpCallableValidatorTest extends TestCase
         $this->object->validate(null, new NotNull());
     }
 
+    /**
+     * @return array<string, array{0: mixed, ?Constraint, int}>
+     */
     public function provideTestValidate(): array
     {
         return [

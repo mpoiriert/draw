@@ -204,13 +204,23 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testPostFlushOnlyUninitializedProxy(): void
     {
         $this->addMessageHolder(
-            $messageHolder = $this->createMock(Proxy::class)
-        );
+            new class() implements Proxy,
+            MessageHolderInterface {
+                public function getOnHoldMessages(bool $clear): array
+                {
+                    return [];
+                }
 
-        $messageHolder
-            ->expects(static::once())
-            ->method('__isInitialized')
-            ->willReturn(false);
+                public function __load(): void
+                {
+                }
+
+                public function __isInitialized(): bool
+                {
+                    return false;
+                }
+            }
+        );
 
         $this->envelopeFactory
             ->expects(static::never())
@@ -300,7 +310,7 @@ class DoctrineBusMessageListenerTest extends TestCase
         $this->object->postFlush();
     }
 
-    private function addMessageHolder($messageHolder): void
+    private function addMessageHolder(MessageHolderInterface $messageHolder): void
     {
         $messageHolders = ReflectionAccessor::getPropertyValue($this->object, 'messageHolders');
         $messageHolders[\get_class($messageHolder)][spl_object_id($messageHolder)] = $messageHolder;

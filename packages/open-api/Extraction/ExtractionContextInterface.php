@@ -11,16 +11,19 @@ interface ExtractionContextInterface
 
     public function getRootSchema(): Root;
 
-    public function hasParameter($name): bool;
+    public function hasParameter(string $name): bool;
 
-    public function getParameter($name, $default = null);
+    public function getParameter(string $name, $default = null);
 
     public function getParameters(): array;
 
-    public function setParameter($name, $value): void;
+    public function setParameter(string $name, $value): void;
 
-    public function removeParameter($name): void;
+    public function removeParameter(string $name): void;
 
+    /**
+     * @param array<string,mixed> $parameters
+     */
     public function setParameters(array $parameters): void;
 
     public function createSubContext(): self;

@@ -110,7 +110,7 @@ class OpenApiIntegration implements IntegrationInterface
         );
     }
 
-    private function configOpenApi(array $config, PhpFileLoader $loader, ContainerBuilder $container)
+    private function configOpenApi(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             return;
@@ -267,7 +267,7 @@ class OpenApiIntegration implements IntegrationInterface
         );
     }
 
-    private function configResponse(array $config, PhpFileLoader $loader, ContainerBuilder $container)
+    private function configResponse(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             return;
@@ -294,7 +294,7 @@ class OpenApiIntegration implements IntegrationInterface
         $this->configResponseExceptionHandler($config['exceptionHandler'], $loader, $container);
     }
 
-    private function configResponseExceptionHandler(array $config, PhpFileLoader $loader, ContainerBuilder $container)
+    private function configResponseExceptionHandler(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             $container->removeDefinition(ResponseApiExceptionListener::class);
@@ -333,7 +333,7 @@ class OpenApiIntegration implements IntegrationInterface
             );
     }
 
-    private function configRequest(array $config, PhpFileLoader $loader, ContainerBuilder $container)
+    private function configRequest(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             return;

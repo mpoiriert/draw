@@ -22,7 +22,10 @@ class TranslationExtension extends AbstractExtension
         ];
     }
 
-    public function trans($messages, array $arguments = [], $domain = null, $locale = null, $count = null): ?string
+    /**
+     * @param string|string[] $messages
+     */
+    public function trans($messages, array $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): ?string
     {
         if (!\is_array($messages)) {
             $messages = [$messages];

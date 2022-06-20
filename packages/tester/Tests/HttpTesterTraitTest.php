@@ -12,7 +12,7 @@ class HttpTesterTraitTest extends TestCase
 {
     use HttpTesterTrait;
 
-    private $createClientHasBeenCalled = false;
+    private bool $createClientHasBeenCalled = false;
 
     public function createHttpTesterClient(): ClientInterface
     {
@@ -21,7 +21,7 @@ class HttpTesterTraitTest extends TestCase
         return new Client(new CurlRequestExecutioner());
     }
 
-    public function testHttpTester()
+    public function testHttpTester(): void
     {
         $client = $this->httpTester();
         static::assertInstanceOf(ClientInterface::class, $client);
@@ -34,7 +34,7 @@ class HttpTesterTraitTest extends TestCase
     /**
      * @depends testHttpTester
      */
-    public function testClearHttpTesterClient()
+    public function testClearHttpTesterClient(): void
     {
         $this->clearHttpTesterClient();
         static::assertNull(static::$httpTesterClient);

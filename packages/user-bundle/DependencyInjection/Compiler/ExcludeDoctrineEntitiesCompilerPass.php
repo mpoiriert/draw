@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ExcludeDoctrineEntitiesCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has('doctrine.orm.default_annotation_metadata_driver')) {
             return;

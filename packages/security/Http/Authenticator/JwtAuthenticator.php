@@ -119,7 +119,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         throw new HttpException(Response::HTTP_FORBIDDEN, $this->translate($exception->getMessageKey(), $exception->getMessageData()));
     }
 
-    private function translate($message, array $data = []): string
+    private function translate(string $message, array $data = []): string
     {
         if (!$this->translator) {
             return strtr($message, $data);

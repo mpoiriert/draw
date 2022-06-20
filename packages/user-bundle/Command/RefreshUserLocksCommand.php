@@ -25,7 +25,7 @@ class RefreshUserLocksCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:user:refresh-user-locks')

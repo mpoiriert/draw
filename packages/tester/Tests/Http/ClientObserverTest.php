@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClientObserverTest extends TestCase
 {
-    public function testPreSendRequest()
+    public function testPreSendRequest(): void
     {
         $clientObserver = $this->getMockForAbstractClass(ClientObserver::class);
 
@@ -22,7 +22,7 @@ class ClientObserverTest extends TestCase
         );
     }
 
-    public function testPostSendRequest()
+    public function testPostSendRequest(): void
     {
         $clientObserver = $this->getMockForAbstractClass(ClientObserver::class);
 

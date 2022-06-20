@@ -22,7 +22,7 @@ class Evaluator
     }
 
     /**
-     * @return array Return the filtered data
+     * @return iterable<mixed> Return the filtered data
      */
     public function execute(Query $query, iterable $data): iterable
     {

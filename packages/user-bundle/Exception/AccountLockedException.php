@@ -13,6 +13,9 @@ class AccountLockedException extends AuthenticationException
      */
     private array $reasons = [];
 
+    /**
+     * @param array|string[] $reasons
+     */
     public function __construct(string $messageKey, array $reasons)
     {
         $this->reasons = $reasons;
@@ -25,21 +28,25 @@ class AccountLockedException extends AuthenticationException
         return $this->messageKey;
     }
 
+    /**
+     * @return array|string[]
+     */
     public function getReasons(): array
     {
         return $this->reasons;
     }
 
-    public function setReasons(array $reasons): void
-    {
-        $this->reasons = $reasons;
-    }
-
+    /**
+     * @phpstan-return mixed[]
+     */
     public function __serialize(): array
     {
         return [$this->messageKey, $this->reasons, parent::__serialize()];
     }
 
+    /**
+     * @phpstan-param mixed[] $data
+     */
     public function __unserialize(array $data): void
     {
         [$this->messageKey, $this->reasons, $parentData] = $data;

@@ -180,7 +180,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.schema_builder',
                     [SchemaBuilderInterface::class],
-                    function (Definition $definition) {
+                    function (Definition $definition): void {
                         $this->assertSame(SymfonySchemaBuilder::class, $definition->getClass());
                     }
                 ),
@@ -333,7 +333,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.controller.open_api_controller',
                     [OpenApiController::class],
-                    function (Definition $definition) {
+                    function (Definition $definition): void {
                         $this->assertSame(
                             [
                                 'controller.service_arguments' => [[]],
@@ -354,7 +354,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.naming.aliases_class_naming_filter',
                     [AliasesClassNamingFilter::class],
-                    function (Definition $definition) {
+                    function (Definition $definition): void {
                         $this->assertSame(
                             [
                                 ['class' => 'App\\Entity\\', 'alias' => ''],

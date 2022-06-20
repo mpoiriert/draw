@@ -213,7 +213,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         [
                             BrokerDefaultValuesListener::class,
                         ],
-                        function (Definition $definition) {
+                        function (Definition $definition): void {
                             static::assertSame(
                                 [
                                     'default' => [
@@ -257,7 +257,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         [
                             DoctrineBusMessageListener::class,
                         ],
-                        function (Definition $definition) {
+                        function (Definition $definition): void {
                             static::assertSame(
                                 [
                                     'doctrine.event_subscriber' => [
@@ -285,7 +285,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         [
                             EnvelopeFactoryDelayStampListener::class,
                         ],
-                        function (Definition $definition) {
+                        function (Definition $definition): void {
                             static::assertSame(
                                 [
                                     '$delay' => 5000,

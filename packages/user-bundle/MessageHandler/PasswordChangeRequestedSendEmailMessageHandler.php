@@ -8,11 +8,15 @@ use Draw\Bundle\UserBundle\Entity\PasswordChangeUserInterface;
 use Draw\Bundle\UserBundle\Message\PasswordChangeRequestedMessage;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerInterface
 {
     private MailerInterface $mailer;
 
+    /**
+     * @var EntityRepository<UserInterface>
+     */
     private EntityRepository $userEntityRepository;
 
     public static function getHandledMessages(): iterable
@@ -20,6 +24,9 @@ class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerIn
         yield PasswordChangeRequestedMessage::class => 'handlePasswordChangeRequestedMessage';
     }
 
+    /**
+     * @param EntityRepository<UserInterface> $drawUserEntityRepository
+     */
     public function __construct(EntityRepository $drawUserEntityRepository, MailerInterface $mailer)
     {
         $this->userEntityRepository = $drawUserEntityRepository;
@@ -30,15 +37,14 @@ class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerIn
     {
         $user = $this->userEntityRepository->find($message->getUserId());
 
-        switch (true) {
-            case null === $user:
-            case !$user instanceof PasswordChangeUserInterface:
-            case !$user->getNeedChangePassword():
-            case !method_exists($user, 'getEmail'):
-            case !$user->getEmail():
-                return;
+        if (!$user instanceof PasswordChangeUserInterface || $user->getNeedChangePassword()) {
+            return;
         }
 
-        $this->mailer->send((new PasswordChangeRequestedEmail())->setUserIdentifier($user->getId()));
+        if (!method_exists($user, 'getEmail') || empty($user->getEmail)) {
+            return;
+        }
+
+        $this->mailer->send((new PasswordChangeRequestedEmail())->setUserId($user->getId()));
     }
 }

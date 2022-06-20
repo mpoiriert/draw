@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class DecoratesCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $container->setDefinition(
             'draw.sonata.builder.orm_form',

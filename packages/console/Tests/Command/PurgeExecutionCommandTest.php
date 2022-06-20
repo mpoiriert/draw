@@ -87,7 +87,7 @@ class PurgeExecutionCommandTest extends TestCase
         $this->execute(['--sleep' => -1]);
     }
 
-    public function testExecute()
+    public function testExecute(): void
     {
         $date = '2000-01-01 00:00:01';
 

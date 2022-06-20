@@ -237,7 +237,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         $this->object->onKernelController($controllerEvent);
     }
 
-    public function __invoke()
+    public function __invoke(): void
     {
     }
 }

@@ -21,13 +21,13 @@ class ToUserEmailWriter implements EmailWriterInterface
         $this->userEntityRepository = $drawUserEntityRepository;
     }
 
-    public function compose(ToUserEmailInterface $email)
+    public function compose(ToUserEmailInterface $email): void
     {
         if (!$email instanceof Email || $email->getTo()) {
             return;
         }
 
-        $user = $this->userEntityRepository->find($email->getUserIdentifier());
+        $user = $this->userEntityRepository->find($email->getUserId());
 
         if (!$user) {
             return;

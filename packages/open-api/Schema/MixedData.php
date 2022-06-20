@@ -14,7 +14,12 @@ final class MixedData
         $this->data = $data;
     }
 
-    public static function convert($value, $valueIsArray = false)
+    /**
+     * @param mixed $value
+     *
+     * @return array|self|null
+     */
+    public static function convert($value, bool $valueIsArray = false)
     {
         if (null === $value) {
             return null;

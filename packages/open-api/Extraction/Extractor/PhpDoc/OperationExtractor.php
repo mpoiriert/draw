@@ -104,18 +104,18 @@ class OperationExtractor implements ExtractorInterface
         return [500, null];
     }
 
-    public function registerExceptionResponseCodes($exceptionClass, $code = 500, $message = null): void
+    public function registerExceptionResponseCodes(string $exceptionClass, int $code = 500, ?string $message = null): void
     {
         $this->exceptionResponseCodes[$exceptionClass] = [$code, $message];
     }
 
     private function extractStatusCode(
-        $type,
+        ?Type $type,
         Response $response,
         ExtractionContextInterface $extractionContext,
         \ReflectionMethod $source
     ): int {
-        if (\in_array($type, ['void', 'null'])) {
+        if (\in_array((string) $type, ['void', 'null'])) {
             return 204;
         }
 

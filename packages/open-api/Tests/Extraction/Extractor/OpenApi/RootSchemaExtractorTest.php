@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class RootSchemaExtractorTest extends TestCase
 {
-    public function provideTestCanExtract()
+    public function provideTestCanExtract(): array
     {
         return [
             [[], new Root(), false],
@@ -30,7 +30,7 @@ class RootSchemaExtractorTest extends TestCase
      * @param $type
      * @param $expected
      */
-    public function testCanExtract($source, $type, $expected)
+    public function testCanExtract($source, $type, $expected): void
     {
         $extractor = new JsonRootSchemaExtractor(SerializerBuilder::create()->build());
 

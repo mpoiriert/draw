@@ -32,8 +32,7 @@ return (new \PhpCsFixer\Config())
         'single_line_throw' => false,
         '@DoctrineAnnotation' => true,
         // Disabled risky for now
-        'declare_strict_types' => false,
-        'void_return' => false,
+        'declare_strict_types' => false
     ])
     ->setFinder($finder)
 ;

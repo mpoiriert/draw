@@ -50,7 +50,7 @@ class Test
     /**
      * @param string $property
      */
-    public function setProperty($property)
+    public function setProperty($property): void
     {
         $this->property = $property;
     }

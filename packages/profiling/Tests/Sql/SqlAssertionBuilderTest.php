@@ -17,7 +17,7 @@ class SqlAssertionBuilderTest extends TestCase
         $this->assertionBuilder = new SqlAssertionBuilder();
     }
 
-    public function provideTestAssertCountEquals()
+    public function provideTestAssertCountEquals(): iterable
     {
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [1, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
@@ -31,13 +31,13 @@ class SqlAssertionBuilderTest extends TestCase
      * @param $expectedCount
      * @param $shouldFail
      */
-    public function testProvideAssertCountEquals($expectedCount, DataTester $dataTester, $shouldFail)
+    public function testProvideAssertCountEquals($expectedCount, DataTester $dataTester, $shouldFail): void
     {
         $this->assertionBuilder->assertCountEquals($expectedCount);
         $this->invoke($dataTester, $shouldFail);
     }
 
-    public function provideTestAssertCountGreaterThanOrEqual()
+    public function provideTestAssertCountGreaterThanOrEqual(): \Generator
     {
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
@@ -51,13 +51,13 @@ class SqlAssertionBuilderTest extends TestCase
      * @param $expectedCount
      * @param $shouldFail
      */
-    public function testAssertCountGreaterThanOrEqual($expectedCount, DataTester $dataTester, $shouldFail)
+    public function testAssertCountGreaterThanOrEqual($expectedCount, DataTester $dataTester, $shouldFail): void
     {
         $this->assertionBuilder->assertCountGreaterThanOrEqual($expectedCount);
         $this->invoke($dataTester, $shouldFail);
     }
 
-    public function provideTestAssertCountLessThanOrEqual()
+    public function provideTestAssertCountLessThanOrEqual(): \Generator
     {
         yield [1, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
@@ -71,13 +71,13 @@ class SqlAssertionBuilderTest extends TestCase
      * @param $expectedCount
      * @param $shouldFail
      */
-    public function testAssertCountLessThanOrEqual($expectedCount, DataTester $dataTester, $shouldFail)
+    public function testAssertCountLessThanOrEqual($expectedCount, DataTester $dataTester, $shouldFail): void
     {
         $this->assertionBuilder->assertCountLessThanOrEqual($expectedCount);
         $this->invoke($dataTester, $shouldFail);
     }
 
-    public function testInvokeFailMessage()
+    public function testInvokeFailMessage(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Queries:
@@ -89,7 +89,7 @@ Failed asserting that 2 matches expected 0.');
             ->test(SqlAssertionBuilder::create(0));
     }
 
-    public function testInvokeNoAssertionException()
+    public function testInvokeNoAssertionException(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No assertion configured.');
@@ -98,7 +98,7 @@ Failed asserting that 2 matches expected 0.');
             ->test(SqlAssertionBuilder::create());
     }
 
-    private function invoke(DataTester $dataTester, $shouldFail)
+    private function invoke(DataTester $dataTester, $shouldFail): void
     {
         $exception = null;
         try {

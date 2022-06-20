@@ -39,7 +39,7 @@ class NotBlankConstraintExtractorTest extends TestCase
     /**
      * @dataProvider provideTestSupport
      */
-    public function testSupport(Constraint $constraint, bool $expected)
+    public function testSupport(Constraint $constraint, bool $expected): void
     {
         static::assertSame($expected, $this->object->supportConstraint($constraint));
     }

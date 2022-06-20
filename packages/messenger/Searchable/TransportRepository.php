@@ -39,7 +39,7 @@ class TransportRepository
     }
 
     /**
-     * @return array|TransportInterface[]
+     * @return iterable<string,TransportInterface>
      */
     public function findAll(): iterable
     {

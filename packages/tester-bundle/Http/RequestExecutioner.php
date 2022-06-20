@@ -90,7 +90,10 @@ class RequestExecutioner implements RequestExecutionerInterface
         return $this->lastBrowser;
     }
 
-    private function extractServerData(RequestInterface $request)
+    /**
+     * @return array<string,string>
+     */
+    private function extractServerData(RequestInterface $request): array
     {
         $server = [];
         foreach ($request->getHeaders() as $key => $value) {

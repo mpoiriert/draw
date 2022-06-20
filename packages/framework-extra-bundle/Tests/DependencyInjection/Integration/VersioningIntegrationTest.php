@@ -55,7 +55,7 @@ class VersioningIntegrationTest extends IntegrationTestCase
                     [
                         FetchRunningVersionListener::class,
                     ],
-                    function (Definition $definition) {
+                    function (Definition $definition): void {
                         $parameter = $definition->getArgument('$projectDirectory');
 
                         static::assertInstanceOf(Parameter::class, $parameter);

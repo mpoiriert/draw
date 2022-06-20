@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PublicPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);

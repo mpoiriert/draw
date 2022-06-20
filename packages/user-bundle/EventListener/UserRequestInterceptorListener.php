@@ -49,7 +49,7 @@ class UserRequestInterceptorListener implements EventSubscriberInterface
         $this->firewallMap = $firewallMap;
     }
 
-    public function handleRequestEvent(RequestEvent $requestEvent)
+    public function handleRequestEvent(RequestEvent $requestEvent): void
     {
         $user = $this->security->getUser();
         if (!$user) {

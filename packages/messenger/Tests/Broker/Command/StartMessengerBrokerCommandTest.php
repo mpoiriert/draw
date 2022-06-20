@@ -96,7 +96,7 @@ class StartMessengerBrokerCommandTest extends TestCase
 
         $this->eventDispatcher->addListener(
             BrokerStartedEvent::class,
-            function (BrokerStartedEvent $event) use ($concurrent, $timeout, $context) {
+            function (BrokerStartedEvent $event) use ($concurrent, $timeout, $context): void {
                 $this->assertSame(
                     $context,
                     $event->getBroker()->getContext()

@@ -29,12 +29,12 @@ class ExtractionContext implements ExtractionContextInterface
         return $this->openApi;
     }
 
-    public function hasParameter($name): bool
+    public function hasParameter(string $name): bool
     {
         return \array_key_exists($name, $this->parameters);
     }
 
-    public function getParameter($name, $default = null)
+    public function getParameter(string $name, $default = null)
     {
         return $this->hasParameter($name) ? $this->parameters[$name] : $default;
     }
@@ -44,12 +44,15 @@ class ExtractionContext implements ExtractionContextInterface
         return $this->parameters;
     }
 
-    public function setParameter($name, $value): void
+    /**
+     * @param mixed $value
+     */
+    public function setParameter(string $name, $value): void
     {
         $this->parameters[$name] = $value;
     }
 
-    public function removeParameter($name): void
+    public function removeParameter(string $name): void
     {
         unset($this->parameters[$name]);
     }

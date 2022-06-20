@@ -131,14 +131,20 @@ class Deserialization extends ParamConverter
         $this->setDeserializationContextOptions('enableMaxDepth', $deserializationEnableMaxDepth);
     }
 
-    private function setDeserializationContextOptions($name, $value): void
+    /**
+     * @param mixed $value
+     */
+    private function setDeserializationContextOptions(string $name, $value): void
     {
         $options = $this->getOptions();
         $options['deserializationContext'][$name] = $value;
         $this->setOptions($options);
     }
 
-    private function getDeserializationContextOptions($name)
+    /**
+     * @return mixed
+     */
+    private function getDeserializationContextOptions(string $name)
     {
         return $this->getOptions()['deserializationContext'][$name] ?? null;
     }

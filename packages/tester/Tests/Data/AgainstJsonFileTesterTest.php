@@ -17,13 +17,13 @@ class AgainstJsonFileTesterTest extends TestCase
         self::$data = (object) ['url' => 'http://google.com'];
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         (new DataTester(self::$data))
             ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'));
     }
 
-    public function testInvokeDoesNotMatch()
+    public function testInvokeDoesNotMatch(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Failed asserting that two objects are equal.');
@@ -32,7 +32,7 @@ class AgainstJsonFileTesterTest extends TestCase
             ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'));
     }
 
-    public function testInvokePropertyPathChecksValue()
+    public function testInvokePropertyPathChecksValue(): void
     {
         (new DataTester(self::$data))
             ->test(
@@ -45,7 +45,7 @@ class AgainstJsonFileTesterTest extends TestCase
             );
     }
 
-    public function testInvokePropertyPathChecksValueFail()
+    public function testInvokePropertyPathChecksValueFail(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Path: url
@@ -62,7 +62,7 @@ Failed asserting that two strings are equal.');
             );
     }
 
-    public function testInvokePropertyPathChecksCallable()
+    public function testInvokePropertyPathChecksCallable(): void
     {
         $called = false;
         (new DataTester(self::$data))
@@ -70,7 +70,7 @@ Failed asserting that two strings are equal.');
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
-                        'url' => function (DataTester $dataTester) use (&$called) {
+                        'url' => function (DataTester $dataTester) use (&$called): void {
                             // Make sure the DataTester have the value of the path
                             $dataTester->assertEquals('http://google.com');
 
@@ -82,7 +82,7 @@ Failed asserting that two strings are equal.');
         static::assertTrue($called);
     }
 
-    public function testInvokePropertyPathChecksCallableFail()
+    public function testInvokePropertyPathChecksCallableFail(): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Failed asserting that two strings are equal.');
@@ -91,7 +91,7 @@ Failed asserting that two strings are equal.');
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
-                        'url' => function (DataTester $dataTester) {
+                        'url' => function (DataTester $dataTester): void {
                             // Make sure the DataTester have the value of the path
                             $dataTester->assertEquals('wrong-value');
                         },
@@ -100,7 +100,7 @@ Failed asserting that two strings are equal.');
             );
     }
 
-    public function testInvokeFileNotFoundException()
+    public function testInvokeFileNotFoundException(): void
     {
         $filePath = __DIR__.'/does-not-exists.json';
         $this->expectException(AssertionFailedError::class);

@@ -42,9 +42,12 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
         return $client;
     }
 
-    private $connectionTokens = [];
+    /**
+     * @var array<string,string>
+     */
+    private array $connectionTokens = [];
 
-    public function getConnectionToken($email): string
+    public function getConnectionToken(string $email): string
     {
         if (!isset($this->connectionTokens[$email])) {
             $user = $this->getService(EntityManagerInterface::class)
@@ -60,7 +63,7 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
         return $this->connectionTokens[$email];
     }
 
-    public function connect($withEmail = 'admin@example.com')
+    public function connect(string $withEmail = 'admin@example.com'): void
     {
         $this->httpTester()
             ->registerObserver(

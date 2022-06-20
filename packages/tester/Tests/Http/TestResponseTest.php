@@ -20,7 +20,7 @@ class TestResponseTest extends TestCase
         return new TestResponse(new Request('GET', '/test'), $response);
     }
 
-    public function provideAssertSuccessful()
+    public function provideAssertSuccessful(): array
     {
         return [
             // 2xx
@@ -71,11 +71,8 @@ class TestResponseTest extends TestCase
 
     /**
      * @dataProvider provideAssertSuccessful
-     *
-     * @param $statusCode
-     * @param $expectSuccess
      */
-    public function testAssertSuccessful($statusCode, $expectSuccess)
+    public function testAssertSuccessful(int $statusCode, bool $expectSuccess): void
     {
         $testResponse = $this->createTestResponse(new Response($statusCode));
 
@@ -91,7 +88,7 @@ class TestResponseTest extends TestCase
         );
     }
 
-    public function testAssertStatusPass()
+    public function testAssertStatusPass(): void
     {
         $testResponse = $this->createTestResponse(new Response(100));
 
@@ -102,7 +99,7 @@ class TestResponseTest extends TestCase
         );
     }
 
-    public function testAssertStatusFail()
+    public function testAssertStatusFail(): void
     {
         $testResponse = $this->createTestResponse(new Response(100));
 
@@ -112,7 +109,7 @@ class TestResponseTest extends TestCase
         $testResponse->assertStatus(666);
     }
 
-    public function provideAssertRedirectStatusCode()
+    public function provideAssertRedirectStatusCode(): array
     {
         return [
             // 2xx
@@ -164,11 +161,8 @@ class TestResponseTest extends TestCase
 
     /**
      * @dataProvider provideAssertRedirectStatusCode
-     *
-     * @param $statusCode
-     * @param $expectSuccess
      */
-    public function testAssertRedirectStatusCode($statusCode, $expectSuccess)
+    public function testAssertRedirectStatusCode(int $statusCode, bool $expectSuccess): void
     {
         $testResponse = $this->createTestResponse(new Response($statusCode));
 
@@ -180,7 +174,7 @@ class TestResponseTest extends TestCase
         $testResponse->assertRedirect();
     }
 
-    public function testAssertRedirectUriPass()
+    public function testAssertRedirectUriPass(): void
     {
         $testResponse = $this->createTestResponse(
             new Response(301, ['location' => ['/redirect-to']])
@@ -193,7 +187,7 @@ class TestResponseTest extends TestCase
         );
     }
 
-    public function testAssertRedirectUriFail()
+    public function testAssertRedirectUriFail(): void
     {
         $testResponse = $this->createTestResponse(
             new Response(301, ['location' => ['/redirect-elsewhere']])
@@ -207,7 +201,7 @@ class TestResponseTest extends TestCase
         $testResponse->assertRedirect('/redirect-to');
     }
 
-    public function provideAssertHeader()
+    public function provideAssertHeader(): array
     {
         return [
             'pass-one-value' => ['header', 'value', ['header' => ['value']], true],
@@ -224,12 +218,10 @@ class TestResponseTest extends TestCase
     /**
      * @dataProvider provideAssertHeader
      *
-     * @param $headerName
-     * @param $value
-     * @param $headers
-     * @param $expectedPass
+     * @param mixed $value
+     * @phpstan-param array<string, mixed> $headers
      */
-    public function testAssertHeader($headerName, $value, $headers, $expectedPass)
+    public function testAssertHeader(string $headerName, $value, array $headers, bool $expectedPass): void
     {
         $testResponse = $this->createTestResponse(new Response(200, $headers));
 
@@ -256,7 +248,7 @@ class TestResponseTest extends TestCase
         );
     }
 
-    public function testGetResponseBodyContents()
+    public function testGetResponseBodyContents(): void
     {
         $testResponse = $this->createTestResponse(new Response(200, [], 'body'));
 
@@ -272,7 +264,7 @@ class TestResponseTest extends TestCase
         );
     }
 
-    public function testAssertCookie()
+    public function testAssertCookie(): void
     {
         $testResponse = $this->createTestResponse(
             new Response(200, ['Set-Cookie' => ['name=value']])
@@ -285,7 +277,7 @@ class TestResponseTest extends TestCase
         );
     }
 
-    public function testAssertCookieValue()
+    public function testAssertCookieValue(): void
     {
         $testResponse = $this->createTestResponse(
             new Response(200, ['Set-Cookie' => ['name=value']])
@@ -298,7 +290,7 @@ class TestResponseTest extends TestCase
         );
     }
 
-    public function testAssertCookieNotFound()
+    public function testAssertCookieNotFound(): void
     {
         $testResponse = $this->createTestResponse(
             new Response(200, ['Set-Cookie' => ['name=value']])
@@ -316,7 +308,7 @@ class TestResponseTest extends TestCase
         $testResponse->assertCookie('other-cookie');
     }
 
-    public function testAssertCookieValueNotMatch()
+    public function testAssertCookieValueNotMatch(): void
     {
         $testResponse = $this->createTestResponse(
             new Response(200, ['Set-Cookie' => ['name=value']])
@@ -335,7 +327,7 @@ class TestResponseTest extends TestCase
         $testResponse->assertCookie('name', 'other-value');
     }
 
-    public function testCreateJsonDataTester()
+    public function testCreateJsonDataTester(): void
     {
         $testResponse = $this->createTestResponse(
             new Response(200, [], '{}')

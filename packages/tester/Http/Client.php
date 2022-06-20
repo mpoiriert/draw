@@ -8,14 +8,14 @@ use Psr\Http\Message\StreamInterface;
 
 class Client implements ClientInterface
 {
-    private $requestFactory;
+    private RequestFactoryInterface $requestFactory;
 
-    private $requestExecutioner;
+    private RequestExecutionerInterface $requestExecutioner;
 
     /**
      * @var array<array<ClientObserver>>
      */
-    private array $observers = [];
+    private array $clientObservers = [];
 
     public function __construct(
         ?RequestExecutionerInterface $requestExecutioner = null,
@@ -36,27 +36,19 @@ class Client implements ClientInterface
         $this->requestExecutioner = $requestExecutioner;
     }
 
-    public function registerObserver(ClientObserver $observer, $position = 0): void
+    public function registerObserver(ClientObserver $clientObserver, int $position = 0): void
     {
-        $this->observers[$position][] = $observer;
+        $this->clientObservers[$position][] = $clientObserver;
     }
 
-    /**
-     * @param $uri
-     * @param string $version
-     */
-    public function get($uri, array $headers = [], $version = '1.1'): TestResponse
+    public function get(string $uri, array $headers = [], string $version = '1.1'): TestResponse
     {
         return $this->send(
             $this->createRequest('GET', $uri, null, $headers, $version)
         );
     }
 
-    /**
-     * @param $uri
-     * @param string $version
-     */
-    public function head($uri, array $headers = [], $version = '1.1'): TestResponse
+    public function head(string $uri, array $headers = [], string $version = '1.1'): TestResponse
     {
         return $this->send(
             $this->createRequest('HEAD', $uri, null, $headers, $version)
@@ -64,11 +56,9 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param $uri
      * @param string|resource|StreamInterface|null $body
-     * @param string                               $version
      */
-    public function put($uri, $body, array $headers = [], $version = '1.1'): TestResponse
+    public function put(string $uri, $body, array $headers = [], string $version = '1.1'): TestResponse
     {
         return $this->send(
             $this->createRequest('PUT', $uri, $body, $headers, $version)
@@ -76,11 +66,9 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param $uri
      * @param string|resource|StreamInterface|null $body
-     * @param string                               $version
      */
-    public function post($uri, $body, array $headers = [], $version = '1.1'): TestResponse
+    public function post(string $uri, $body, array $headers = [], string $version = '1.1'): TestResponse
     {
         return $this->send(
             $this->createRequest('POST', $uri, $body, $headers, $version)
@@ -88,33 +76,23 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param $uri
      * @param string|resource|StreamInterface|null $body
-     * @param string                               $version
      */
-    public function patch($uri, $body, array $headers = [], $version = '1.1'): TestResponse
+    public function patch(string $uri, $body, array $headers = [], string $version = '1.1'): TestResponse
     {
         return $this->send(
             $this->createRequest('PATCH', $uri, $body, $headers, $version)
         );
     }
 
-    /**
-     * @param $uri
-     * @param string $version
-     */
-    public function delete($uri, array $headers = [], $version = '1.1'): TestResponse
+    public function delete(string $uri, array $headers = [], string $version = '1.1'): TestResponse
     {
         return $this->send(
             $this->createRequest('DELETE', $uri, null, $headers, $version)
         );
     }
 
-    /**
-     * @param $uri
-     * @param string $version
-     */
-    public function options($uri, array $headers = [], $version = '1.1'): TestResponse
+    public function options(string $uri, array $headers = [], string $version = '1.1'): TestResponse
     {
         return $this->send(
             $this->createRequest('OPTIONS', $uri, null, $headers, $version)
@@ -126,7 +104,7 @@ class Client implements ClientInterface
      */
     public function send(RequestInterface $request): TestResponse
     {
-        $observers = $this->observers;
+        $observers = $this->clientObservers;
         ksort($observers);
 
         $observers = array_merge(...$observers);
@@ -139,7 +117,6 @@ class Client implements ClientInterface
             $observer->preExecute($request, $this->requestExecutioner);
         }
 
-        $e = null;
         try {
             $response = $this->requestExecutioner->executeRequest($request);
         } catch (\Throwable $exception) {
@@ -162,12 +139,9 @@ class Client implements ClientInterface
     }
 
     /**
-     * @param $method
-     * @param $uri
      * @param string|resource|StreamInterface|null $body
-     * @param string                               $version
      */
-    public function createRequest($method, $uri, $body = null, array $headers = [], $version = '1.1'): RequestInterface
+    public function createRequest(string $method, string $uri, $body = null, array $headers = [], string $version = '1.1'): RequestInterface
     {
         return $this->requestFactory->createRequest(...\func_get_args());
     }

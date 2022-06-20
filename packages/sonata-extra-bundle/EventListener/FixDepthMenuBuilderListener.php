@@ -16,7 +16,7 @@ class FixDepthMenuBuilderListener implements EventSubscriberInterface
         ];
     }
 
-    public function fixDepth(ConfigureMenuEvent $event)
+    public function fixDepth(ConfigureMenuEvent $event): void
     {
         $menu = $event->getMenu();
 

@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 
 class CollectionUtil
 {
-    public static function assignPosition($element, Collection $collection, $attribute = 'position')
+    public static function assignPosition($element, Collection $collection, $attribute = 'position'): void
     {
         $method = 'get'.$attribute;
         $currentPosition = \call_user_func([$element, $method]);

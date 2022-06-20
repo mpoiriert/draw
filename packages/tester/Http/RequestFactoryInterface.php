@@ -10,10 +10,7 @@ interface RequestFactoryInterface
     /**
      * This method will create a RequestInterface that can be use for the ClientInterface::send method.
      *
-     * @param $method
-     * @param $uri
      * @param string|resource|StreamInterface|null $body
-     * @param string                               $version
      */
-    public function createRequest($method, $uri, $body = null, array $headers = [], $version = '1.1'): RequestInterface;
+    public function createRequest(string $method, string $uri, $body = null, array $headers = [], string $version = '1.1'): RequestInterface;
 }

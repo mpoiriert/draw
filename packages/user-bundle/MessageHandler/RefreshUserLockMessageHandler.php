@@ -8,6 +8,7 @@ use Draw\Bundle\UserBundle\AccountLocker;
 use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\Message\RefreshUserLockMessage;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class RefreshUserLockMessageHandler implements MessageSubscriberInterface
 {
@@ -15,6 +16,9 @@ class RefreshUserLockMessageHandler implements MessageSubscriberInterface
 
     private EntityManagerInterface $entityManager;
 
+    /**
+     * @var EntityRepository<UserInterface>
+     */
     private EntityRepository $userEntityRepository;
 
     public static function getHandledMessages(): array
@@ -24,6 +28,9 @@ class RefreshUserLockMessageHandler implements MessageSubscriberInterface
         ];
     }
 
+    /**
+     * @param EntityRepository<UserInterface> $drawUserEntityRepository
+     */
     public function __construct(
         AccountLocker $accountLocker,
         EntityManagerInterface $entityManager,

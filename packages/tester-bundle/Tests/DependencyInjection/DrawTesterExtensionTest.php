@@ -35,7 +35,7 @@ class DrawTesterExtensionTest extends ExtensionTestCase
         yield [HandleMessagesMappingProvider::class];
     }
 
-    public function testProfilerInterfaceIsAutoConfigured()
+    public function testProfilerInterfaceIsAutoConfigured(): void
     {
         $container = $this->load([]);
         $childDefinition = $container->getAutoconfiguredInstanceof()[ProfilerInterface::class];

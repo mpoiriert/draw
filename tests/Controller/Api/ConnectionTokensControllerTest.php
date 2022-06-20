@@ -7,7 +7,7 @@ use Firebase\JWT\JWT;
 
 class ConnectionTokensControllerTest extends TestCase
 {
-    public function testRefresh()
+    public function testRefresh(): void
     {
         $token = JWT::encode(
             [

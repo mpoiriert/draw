@@ -31,7 +31,7 @@ class TypeSchemaExtractorTest extends TestCase
      * @param $type
      * @param $canBeExtract
      */
-    public function testCanExtract($source, $type, $canBeExtract)
+    public function testCanExtract($source, $type, $canBeExtract): void
     {
         $extractor = new TypeSchemaExtractor();
 
@@ -50,7 +50,7 @@ class TypeSchemaExtractorTest extends TestCase
         }
     }
 
-    public function testExtract()
+    public function testExtract(): void
     {
         $extractor = new TypeSchemaExtractor();
 

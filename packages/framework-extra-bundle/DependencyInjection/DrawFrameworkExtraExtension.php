@@ -62,7 +62,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         return new Configuration($this->integrations);
     }
 
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         foreach ($this->integrations as $integration) {
             $container->addObjectResource($integration);

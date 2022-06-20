@@ -66,7 +66,7 @@ class LoggerIntegrationTest extends IntegrationTestCase
                     [
                         SlowRequestLoggerListener::class,
                     ],
-                    function (Definition $definition) {
+                    function (Definition $definition): void {
                         $requestMatcherDefinitions = $definition->getArgument('$requestMatchers');
 
                         static::assertCount(2, $requestMatcherDefinitions);

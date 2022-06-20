@@ -56,7 +56,7 @@ class OperationExtractorTest extends TestCase
         $this->phpDocOperationExtractor->extract($source, $type, $context);
     }
 
-    public function testExtract()
+    public function testExtract(): void
     {
         $this->phpDocOperationExtractor->registerExceptionResponseCodes(
             'Draw\Component\OpenApi\Exception\ExtractionImpossibleException',
@@ -72,7 +72,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtractVoid()
+    public function testExtractVoid(): void
     {
         $context = $this->extractStubServiceMethod('void');
 
@@ -82,7 +82,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtractDefaultVoid()
+    public function testExtractDefaultVoid(): void
     {
         $context = $this->extractStubServiceMethod('defaultVoid');
 
@@ -92,7 +92,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtractArrayOfPrimitive()
+    public function testExtractArrayOfPrimitive(): void
     {
         $context = $this->extractStubServiceMethod('arrayOfPrimitive');
 
@@ -102,7 +102,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtractGenericCollection()
+    public function testExtractGenericCollection(): void
     {
         $context = $this->extractStubServiceMethod('genericCollection');
 
@@ -112,7 +112,7 @@ class OperationExtractorTest extends TestCase
         );
     }
 
-    public function testExtractInvalidTypeParameter()
+    public function testExtractInvalidTypeParameter(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No type found for parameter named [param] for operation id [operation_id]');
@@ -157,7 +157,7 @@ class PhpDocOperationExtractorStubClass
 }
 
 /**
- * This class is a stub and the code implementation make no sens, just the doc is usefull.
+ * This class is a stub and the code implementation make no sens, just the doc is useful.
  */
 class PhpDocOperationExtractorStubService
 {
@@ -182,11 +182,11 @@ class PhpDocOperationExtractorStubService
     /**
      * @return void Does not return value
      */
-    public function void()
+    public function void(): void
     {
     }
 
-    public function defaultVoid()
+    public function defaultVoid(): void
     {
     }
 
@@ -209,7 +209,7 @@ class PhpDocOperationExtractorStubService
     /**
      * @param toto $param
      */
-    public function invalidTypeParameter($param)
+    public function invalidTypeParameter($param): void
     {
     }
 }

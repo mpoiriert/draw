@@ -18,7 +18,7 @@ class SuperGlobalsExtractorTest extends TestCase
         $this->superGlobalsExtractor = new SuperGlobalsExtractor(null, 'gp');
     }
 
-    public function testExtractSuperGlobals()
+    public function testExtractSuperGlobals(): void
     {
         $request = new Request(
             'POST',

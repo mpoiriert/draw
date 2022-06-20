@@ -110,7 +110,10 @@ class TestsCoverageCheckCommandTest extends TestCase
         }
     }
 
-    private function executeCommand($xlm, $coverage): CommandTester
+    /**
+     * @param mixed $coverage
+     */
+    private function executeCommand(string $xlm, $coverage): CommandTester
     {
         $this->execute([
             'clover-xlm-file-path' => $xlm,

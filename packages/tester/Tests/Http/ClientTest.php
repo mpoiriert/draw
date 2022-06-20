@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class ClientTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): Client
     {
         /** @var RequestExecutionerInterface&MockObject $requestExecutioner */
         $requestExecutioner = $this->createMock(RequestExecutionerInterface::class);
@@ -48,7 +48,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testGet(Client $client)
+    public function testGet(Client $client): void
     {
         $testResponse = $client->get(
             $uri = '/test',
@@ -69,7 +69,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testHead(Client $client)
+    public function testHead(Client $client): void
     {
         $testResponse = $client->head(
             $uri = '/test',
@@ -90,7 +90,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testPut(Client $client)
+    public function testPut(Client $client): void
     {
         $testResponse = $client->put(
             $uri = '/test',
@@ -112,7 +112,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testPost(Client $client)
+    public function testPost(Client $client): void
     {
         $testResponse = $client->post(
             $uri = '/test',
@@ -134,7 +134,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testDelete(Client $client)
+    public function testDelete(Client $client): void
     {
         $testResponse = $client->delete(
             $uri = '/test',
@@ -155,7 +155,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testOptions(Client $client)
+    public function testOptions(Client $client): void
     {
         $testResponse = $client->options(
             $uri = '/test',
@@ -176,7 +176,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testPatch(Client $client)
+    public function testPatch(Client $client): void
     {
         $testResponse = $client->patch(
             $uri = '/test',
@@ -198,7 +198,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testSend(Client $client)
+    public function testSend(Client $client): void
     {
         $request = new Request(
             $method = 'POST',
@@ -223,7 +223,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testCreateRequest(Client $client)
+    public function testCreateRequest(Client $client): void
     {
         $request = $client->createRequest(
             $method = 'POST',
@@ -246,7 +246,7 @@ class ClientTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testRegisterObserver(Client $client)
+    public function testRegisterObserver(Client $client): void
     {
         $mockClientObserver = $this->getMockBuilder(ClientObserver::class)
             ->setMethodsExcept([])
@@ -270,12 +270,12 @@ class ClientTest extends TestCase
 
     public function assertValidTestResponse(
         TestResponse $testResponse,
-        $method,
-        $uri,
-        $body = null,
+        string $method,
+        string $uri,
+        ?string $body = null,
         array $headers = [],
-        $version = '1.1'
-    ) {
+        string $version = '1.1'
+    ): void {
         $body = $body ?: '';
         $response = $testResponse->getResponse();
 
@@ -301,12 +301,12 @@ class ClientTest extends TestCase
 
     public function assertValidRequest(
         RequestInterface $request,
-        $method,
-        $uri,
-        $body = null,
+        string $method,
+        string $uri,
+        ?string $body = null,
         array $headers = [],
-        $version = '1.1'
-    ) {
+        string $version = '1.1'
+    ): void {
         // We seek at the beginning of the body to be sure that nobody change the position before
         $request->getBody()->seek(0);
 

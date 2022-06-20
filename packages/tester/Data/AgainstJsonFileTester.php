@@ -18,7 +18,7 @@ class AgainstJsonFileTester
         $this->propertyPathsCheck = $propertyPathsCheck;
     }
 
-    public function __invoke(DataTester $tester)
+    public function __invoke(DataTester $tester): void
     {
         if (!file_exists($this->fullJsonFilePath)) {
             Assert::fail(
@@ -34,7 +34,7 @@ class AgainstJsonFileTester
             foreach ($this->propertyPathsCheck as $path => $callable) {
                 if (!\is_callable($callable)) {
                     $value = $callable;
-                    $callable = function (DataTester $tester) use ($value, $path) {
+                    $callable = function (DataTester $tester) use ($value, $path): void {
                         $tester->assertEquals($value, 'Path: '.$path);
                     };
                 }

@@ -265,7 +265,8 @@ class UserStub implements SecurityUserInterface, LockableUserInterface
     use MessageHolderTrait;
     use SecurityUserTrait;
 
-    public function getId()
+    public function getId(): string
     {
+        return '';
     }
 }

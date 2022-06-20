@@ -7,6 +7,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface SecurityUserInterface extends PasswordAuthenticatedUserInterface, UserInterface
 {
+    /**
+     * @return mixed
+     */
     public function getId();
 
     public function getUserIdentifier(): ?string;

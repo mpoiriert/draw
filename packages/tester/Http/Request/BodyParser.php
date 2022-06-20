@@ -24,8 +24,9 @@ class BodyParser
         $this->autoRemoveFileOnShutdown = $autoRemoveFileOnShutdown;
     }
 
-    public function parse($body, $contentType)
+    public function parse(string $body, ?string $contentType): array
     {
+        $contentType = (string) $contentType;
         $results = [
             'post' => [],
             'files' => [],
@@ -90,7 +91,12 @@ class BodyParser
         return $results;
     }
 
-    private function parseContentDisposition($contentDisposition)
+    /**
+     * @param mixed $contentDisposition
+     *
+     * @return array{type: string, data: array<string, string>}
+     */
+    private function parseContentDisposition($contentDisposition): array
     {
         $parts = explode(';', $contentDisposition);
         $parts = array_map('trim', $parts);
@@ -106,7 +112,13 @@ class BodyParser
         return compact('type', 'data');
     }
 
-    private function createFileEntry($inputName, $content, $type, $name)
+    /**
+     * @param mixed $inputName
+     * @param mixed $content
+     * @param mixed $type
+     * @param mixed $name
+     */
+    private function createFileEntry($inputName, $content, $type, $name): array
     {
         $result = [];
         $tmp_name = tempnam($this->tempDirectory, 'draw_');
@@ -121,7 +133,7 @@ class BodyParser
         $data = compact('name', 'type', 'tmp_name', 'error', 'size');
         foreach ($data as $key => $value) {
             $tempArray = $structure;
-            array_walk_recursive($tempArray, function (&$temp) use ($value) {
+            array_walk_recursive($tempArray, function (&$temp) use ($value): void {
                 if ('temp' != $temp) {
                     return;
                 }

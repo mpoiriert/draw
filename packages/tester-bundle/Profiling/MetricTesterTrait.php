@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 trait MetricTesterTrait
 {
-    public function assertMetrics($metricAssertions)
+    public function assertMetrics($metricAssertions): void
     {
         if (!\is_array($metricAssertions)) {
             $metricAssertions = [$metricAssertions];
