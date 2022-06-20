@@ -9,6 +9,7 @@ use Draw\Bundle\UserBundle\EmailWriter\ForgotPasswordEmailWriter;
 use Draw\Bundle\UserBundle\EmailWriter\PasswordChangeRequestedEmailWriter;
 use Draw\Bundle\UserBundle\EmailWriter\ToUserEmailWriter;
 use Draw\Bundle\UserBundle\EmailWriter\UserOnboardingEmailWriter;
+use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\EventListener\AccountLockerListener;
@@ -307,6 +308,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
                 'orm' => [
                     'resolve_target_entities' => [
                         SecurityUserInterface::class => $config['user_entity_class'],
+                        LockableUserInterface::class => $config['user_entity_class'],
                     ],
                 ],
             ]);
