@@ -6,16 +6,16 @@ use Symfony\Component\Console\Event\ConsoleEvent;
 
 class LoadExecutionIdEvent extends ConsoleEvent
 {
-    private ?int $executionId = null;
+    private ?string $executionId = null;
 
     private bool $ignoreTracking = false;
 
-    public function getExecutionId(): ?int
+    public function getExecutionId(): ?string
     {
         return $this->executionId;
     }
 
-    public function setExecutionId(int $executionId): self
+    public function setExecutionId(string $executionId): self
     {
         $this->executionId = $executionId;
 

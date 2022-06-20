@@ -66,11 +66,11 @@ class ExecutionTest extends TestCase
 
     public function testIdMutator(): void
     {
-        static::assertNull($this->entity->getId());
+        static::assertNotNull($this->entity->getId());
 
         static::assertSame(
             $this->entity,
-            $this->entity->setId($value = random_int(\PHP_INT_MIN, \PHP_INT_MAX))
+            $this->entity->setId($value = uniqid('id-'))
         );
 
         static::assertSame(
