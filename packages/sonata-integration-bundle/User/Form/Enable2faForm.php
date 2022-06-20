@@ -39,7 +39,7 @@ final class Enable2faForm extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

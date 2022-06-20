@@ -10,7 +10,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class TestsCoverageCheckCommand extends Command
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('draw:tester:coverage-check')

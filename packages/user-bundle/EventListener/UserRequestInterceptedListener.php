@@ -15,7 +15,7 @@ class UserRequestInterceptedListener implements EventSubscriberInterface
         ];
     }
 
-    public function errorOnUserRequestIntercepted(UserRequestInterceptedEvent $event)
+    public function errorOnUserRequestIntercepted(UserRequestInterceptedEvent $event): void
     {
         $request = $event->getRequest();
 

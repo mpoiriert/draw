@@ -37,7 +37,7 @@ class SchemaCleaner
                 $selectedSchemas = [];
                 array_walk(
                     $definitionSchemas,
-                    function (Schema $schema, $name) use (&$selectedSchemas, &$replaceSchemas) {
+                    function (Schema $schema, $name) use (&$selectedSchemas, &$replaceSchemas): void {
                         foreach ($selectedSchemas as $selectedName => $selectedSchema) {
                             if ($this->isEqual($selectedSchema, $schema)) {
                                 $replaceSchemas[$name] = $selectedName;
@@ -83,7 +83,7 @@ class SchemaCleaner
         foreach ($definitionsToRename as $objectName => $names) {
             array_walk(
                 $names,
-                function ($name, $index) use ($objectName, $rootSchema) {
+                function ($name, $index) use ($objectName, $rootSchema): void {
                     $replaceWith = $objectName.($index ? '?'.$index : '');
                     // If the replace name is the same as the current index we do not do anything
                     if ($replaceWith == $name) {
@@ -103,13 +103,16 @@ class SchemaCleaner
         return $rootSchema;
     }
 
-    private function hasSchemaReference($data, $reference)
+    /**
+     * @param mixed $data
+     */
+    private function hasSchemaReference($data, string $reference): bool
     {
         if (!\is_object($data) && !\is_array($data)) {
             return false;
         }
 
-        if (\is_object($data)) {
+        if (!\is_array($data)) {
             if ($data instanceof Schema || $data instanceof PathItem) {
                 if ($data->ref == $reference) {
                     return true;
@@ -117,7 +120,7 @@ class SchemaCleaner
             }
         }
 
-        foreach ($data as &$value) {
+        foreach ($data as $value) {
             if ($this->hasSchemaReference($value, $reference)) {
                 return true;
             }
@@ -126,13 +129,16 @@ class SchemaCleaner
         return false;
     }
 
-    private function replaceSchemaReference($data, $definitionToReplace, $definitionToReplaceWith)
+    /**
+     * @param mixed $data
+     */
+    private function replaceSchemaReference($data, string $definitionToReplace, string $definitionToReplaceWith): void
     {
         if (!\is_object($data) && !\is_array($data)) {
             return;
         }
 
-        if (\is_object($data)) {
+        if (!\is_array($data)) {
             if ($data instanceof Schema || $data instanceof PathItem) {
                 if ($data->ref == $definitionToReplace) {
                     $data->ref = $definitionToReplaceWith;
@@ -140,15 +146,12 @@ class SchemaCleaner
             }
         }
 
-        foreach ($data as &$value) {
+        foreach ($data as $value) {
             $this->replaceSchemaReference($value, $definitionToReplace, $definitionToReplaceWith);
         }
     }
 
-    /**
-     * @return bool
-     */
-    private function isEqual(Schema $schemaA, Schema $schemaB)
+    private function isEqual(Schema $schemaA, Schema $schemaB): bool
     {
         return $schemaA == $schemaB;
     }

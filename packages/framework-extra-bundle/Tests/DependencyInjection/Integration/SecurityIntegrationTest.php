@@ -82,7 +82,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         [
                             JwtEncoder::class,
                         ],
-                        function (Definition $definition) use ($key) {
+                        function (Definition $definition) use ($key): void {
                             static::assertSame(
                                 $key,
                                 $definition->getArgument('$key')
@@ -114,7 +114,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         [
                             SystemAuthenticator::class,
                         ],
-                        function (Definition $definition) {
+                        function (Definition $definition): void {
                             static::assertSame(
                                 ['ROLE_SYSTEM'],
                                 $definition->getArgument('$roles')
@@ -146,7 +146,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         [
                             SystemConsoleAuthenticatorListener::class,
                         ],
-                        function (Definition $definition) {
+                        function (Definition $definition): void {
                             static::assertTrue(
                                 $definition->getArgument('$systemAutoLogin')
                             );

@@ -16,7 +16,10 @@ abstract class Expression
         return new CompositeExpression(CompositeExpression::TYPE_AND, \func_get_args());
     }
 
-    public static function validate($path, $constraints = null, $groups = null): ConstraintExpression
+    /**
+     * @param string[]|null $groups
+     */
+    public static function validate(string $path, ?EqualTo $constraints = null, ?array $groups = null): ConstraintExpression
     {
         return new ConstraintExpression($path, $constraints, $groups);
     }

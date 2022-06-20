@@ -51,7 +51,7 @@ class InstallSandboxCommandTest extends TestCase
     {
         $path = sys_get_temp_dir().'/sandbox';
 
-        register_shutdown_function(function () use ($path) {
+        register_shutdown_function(function () use ($path): void {
             if (is_dir($path)) {
                 (new Filesystem())->remove($path);
             }
@@ -79,7 +79,7 @@ class InstallSandboxCommandTest extends TestCase
     {
         $path = sys_get_temp_dir().'/sandbox';
 
-        register_shutdown_function(function () use ($path) {
+        register_shutdown_function(function () use ($path): void {
             if (is_dir($path)) {
                 (new Filesystem())->remove($path);
             }

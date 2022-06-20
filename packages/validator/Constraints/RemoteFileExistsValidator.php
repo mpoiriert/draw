@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class RemoteFileExistsValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof RemoteFileExists) {
             throw new UnexpectedTypeException($constraint, RemoteFileExists::class);
@@ -21,7 +21,7 @@ class RemoteFileExistsValidator extends ConstraintValidator
         }
     }
 
-    public function remoteFileExists($url): bool
+    public function remoteFileExists(string $url): bool
     {
         if ($handle = @fopen($url, 'r')) {
             fclose($handle);

@@ -12,7 +12,7 @@ class UsersControllerTest extends TestCase
      * @beforeClass
      * @afterClass
      */
-    public static function cleanUp()
+    public static function cleanUp(): void
     {
         static::getService(EntityManagerInterface::class)
             ->createQueryBuilder()
@@ -23,16 +23,14 @@ class UsersControllerTest extends TestCase
             ->execute();
     }
 
-    public function testUsersAction()
+    public function testUsersAction(): void
     {
-        return $this->httpTester()
+        $this->httpTester()
             ->get('/api/users')
-            ->assertStatus(200)
-            ->toJsonDataTester()
-            ->getData();
+            ->assertStatus(200);
     }
 
-    public function testUsersCreateAction()
+    public function testUsersCreateAction(): object
     {
         $this->connect();
 
@@ -54,12 +52,8 @@ class UsersControllerTest extends TestCase
 
     /**
      * @depends testUsersCreateAction
-     *
-     * @param $user
-     *
-     * @return mixed
      */
-    public function testUsersEditAction($user)
+    public function testUsersEditAction(object $user): void
     {
         $this->httpTester()
             ->put(
@@ -75,10 +69,8 @@ class UsersControllerTest extends TestCase
 
     /**
      * @depends testUsersCreateAction
-     *
-     * @param $user
      */
-    public function testUsersDeleteAction($user)
+    public function testUsersDeleteAction(object $user): void
     {
         $this->httpTester()
             ->delete('/api/users/'.$user->id)

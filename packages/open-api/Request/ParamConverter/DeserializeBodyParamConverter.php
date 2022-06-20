@@ -85,7 +85,7 @@ class DeserializeBodyParamConverter implements ParamConverterInterface
         return $content->getArrayCopy();
     }
 
-    private function deserialize($data, ParamConverter $configuration)
+    private function deserialize(string $data, ParamConverter $configuration)
     {
         $options = $configuration->getOptions();
 

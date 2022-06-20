@@ -20,7 +20,7 @@ trait HttpTesterTrait
     /**
      * @beforeClass
      */
-    public static function clearHttpTesterClient()
+    public static function clearHttpTesterClient(): void
     {
         static::$httpTesterClient = null;
     }

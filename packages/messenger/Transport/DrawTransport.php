@@ -281,7 +281,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
     {
         $tableName = $this->connection->getConfiguration()['table_name'];
 
-        return $this->driverConnection->executeStatement(
+        return (int) $this->driverConnection->executeStatement(
             'DELETE FROM '.$tableName.' WHERE expires_at < ?',
             [DateTimeUtils::toDateTimeImmutable($since)],
             [Types::DATETIME_IMMUTABLE]

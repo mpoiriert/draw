@@ -9,7 +9,6 @@ use Draw\Bundle\UserBundle\Message\RedirectToSecuredRouteMessage;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\ManualTrigger\ManuallyTriggeredMessageUrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class ForgotPasswordEmailWriter implements EmailWriterInterface
 {
@@ -45,12 +44,12 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
         $this->userEntityRepository = $drawUserEntityRepository;
     }
 
-    public function compose(ForgotPasswordEmail $forgotPasswordEmail)
+    public function compose(ForgotPasswordEmail $forgotPasswordEmail): void
     {
         $forgotPasswordEmail
             ->to($email = $forgotPasswordEmail->getEmailAddress());
 
-        /** @var ?UserInterface $user */
+        /** @var ?SecurityUserInterface $user */
         $user = $this->userEntityRepository->findOneBy(['email' => $email]);
 
         if (null === $user) {
@@ -72,7 +71,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
             ->callToActionLink(
                 $this->messageUrlGenerator->generateLink(
                     new RedirectToSecuredRouteMessage(
-                        $user->getUserIdentifier(),
+                        $user->getId(),
                         $this->resetPasswordRoute,
                         ['t' => time()]
                     ),

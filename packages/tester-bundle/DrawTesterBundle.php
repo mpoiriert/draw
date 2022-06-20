@@ -14,20 +14,20 @@ class DrawTesterBundle extends Bundle
 {
     public static $ids = [];
 
-    public static function addServicesToTest($ids)
+    public static function addServicesToTest($ids): void
     {
         $ids = (array) $ids;
         self::$ids += $ids;
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new CompilerPass());
         $container->addCompilerPass(new MessengerPass(), PassConfig::TYPE_OPTIMIZE);
         $container->addCompilerPass(new PublicPass(), PassConfig::TYPE_AFTER_REMOVING);
     }
 
-    public function boot()
+    public function boot(): void
     {
         if ($this->container->has(ProfilerCoordinator::class)) {
             $this->container->get(ProfilerCoordinator::class)->startAll();

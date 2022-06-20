@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Loader;
 
 class DrawTesterExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $container
@@ -37,7 +37,7 @@ class DrawTesterExtension extends Extension
         )->setPublic(true);
     }
 
-    private function configureProfiling($config, Loader\FileLoader $fileLoader, ContainerBuilder $container)
+    private function configureProfiling($config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;

@@ -72,7 +72,7 @@ class DataTesterTest extends TestCase
             $tester,
             $tester->ifPathIsReadable(
                 'toto',
-                function (DataTester $tester) use (&$hasBeenCalled) {
+                function (DataTester $tester) use (&$hasBeenCalled): void {
                     // To remove the warning of the ide we use the variable
                     // assigning true would have been enough
                     $hasBeenCalled = null !== $tester;
@@ -101,7 +101,7 @@ class DataTesterTest extends TestCase
         static::assertSame(
             $tester,
             $tester->each(
-                function (DataTester $tester) use (&$callbackCount) {
+                function (DataTester $tester) use (&$callbackCount): void {
                     ++$callbackCount;
                 }
             )

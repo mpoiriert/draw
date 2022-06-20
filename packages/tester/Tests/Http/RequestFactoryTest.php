@@ -9,7 +9,7 @@ use Psr\Http\Message\RequestInterface;
 
 class RequestFactoryTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): RequestFactory
     {
         $requestFactory = new RequestFactory();
         static::assertInstanceOf(RequestFactoryInterface::class, $requestFactory);
@@ -20,7 +20,7 @@ class RequestFactoryTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testCreateRequest(RequestFactory $requestFactory)
+    public function testCreateRequest(RequestFactory $requestFactory): void
     {
         $request = $requestFactory->createRequest(
             $method = 'POST',

@@ -154,7 +154,10 @@ trait DrawMessageTrait
         return $this;
     }
 
-    public function getTags(): Collection
+    /**
+     * @return DrawMessageTagInterface[]|Collection<DrawMessageTagInterface>
+     */
+    public function getTags()
     {
         return $this->tags ?: $this->tags = new ArrayCollection();
     }

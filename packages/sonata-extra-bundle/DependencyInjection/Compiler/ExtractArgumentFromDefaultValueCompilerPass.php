@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ExtractArgumentFromDefaultValueCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $definition = $container->getDefinition($id);

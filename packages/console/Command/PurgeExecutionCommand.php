@@ -114,7 +114,7 @@ class PurgeExecutionCommand extends Command
      */
     private function purgeBatch(\DateTime $before, int $batchSize): int
     {
-        return $this->connection->executeStatement(
+        return (int) $this->connection->executeStatement(
             'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
             [Execution::STATE_TERMINATED, $before, $batchSize],
             [Types::STRING, Types::DATETIME_MUTABLE, Types::INTEGER]

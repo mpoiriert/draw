@@ -45,12 +45,12 @@ class OpenApi
         if (null === $serializer) {
             $serializer = SerializerBuilder::create()
                 ->configureListeners(
-                    function (EventDispatcher $dispatcher) {
+                    function (EventDispatcher $dispatcher): void {
                         $dispatcher->addSubscriber(new OpenApiSubscriber());
                     }
                 )
                 ->configureHandlers(
-                    function (HandlerRegistry $handlerRegistry) {
+                    function (HandlerRegistry $handlerRegistry): void {
                         $handlerRegistry->registerSubscribingHandler(new OpenApiHandler());
                     }
                 )
@@ -104,26 +104,30 @@ class OpenApi
         }
     }
 
-    public function extract($source, $type = null, ?ExtractionContextInterface $extractionContext = null)
+    /**
+     * @param mixed $source
+     * @param mixed $target
+     */
+    public function extract($source, $target = null, ?ExtractionContextInterface $extractionContext = null)
     {
-        if (null === $type) {
-            $type = new Schema();
+        if (null === $target) {
+            $target = new Schema();
         }
 
         if (null === $extractionContext) {
-            $extractionContext = new ExtractionContext($this, $type);
+            $extractionContext = new ExtractionContext($this, $target);
         }
 
         foreach ($this->extractors as $extractor) {
-            if ($extractor->canExtract($source, $type, $extractionContext)) {
+            if ($extractor->canExtract($source, $target, $extractionContext)) {
                 try {
-                    $extractor->extract($source, $type, $extractionContext);
+                    $extractor->extract($source, $target, $extractionContext);
                 } catch (ExtractionCompletedException $error) {
                     break;
                 }
             }
         }
 
-        return $type;
+        return $target;
     }
 }

@@ -25,7 +25,7 @@ class DynamicArrayObject extends \ArrayObject
         return $this->offsetGet($key);
     }
 
-    public function __set($key, $value)
+    public function __set($key, $value): void
     {
         $this->offsetSet($key, $value);
     }

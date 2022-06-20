@@ -8,7 +8,7 @@ class ViolationListTester
 {
     private $violations;
 
-    public function __invoke(DataTester $tester)
+    public function __invoke(DataTester $tester): void
     {
         $tester->assertCount(
             \count($this->violations),

@@ -79,7 +79,7 @@ final class CommandDataTester
         return $this;
     }
 
-    public function __invoke(DataTester $dataTester)
+    public function __invoke(DataTester $dataTester): void
     {
         $dataTester->path('statusCode')->assertEquals($this->expectedStatusCode);
 

@@ -57,7 +57,7 @@ class Tag
         return $this->label;
     }
 
-    public function setLabel(string $label)
+    public function setLabel(string $label): void
     {
         $this->label = $label;
     }
@@ -67,7 +67,7 @@ class Tag
         return $this->active;
     }
 
-    public function setActive(bool $active)
+    public function setActive(bool $active): void
     {
         $this->active = $active;
     }

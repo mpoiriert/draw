@@ -59,7 +59,7 @@ class CronIntegrationTest extends IntegrationTestCase
                     [
                         CronManager::class,
                     ],
-                    function (Definition $definition) {
+                    function (Definition $definition): void {
                         $methodCalls = $definition->getMethodCalls();
 
                         static::assertCount(1, $methodCalls);

@@ -7,7 +7,7 @@ use Draw\Component\Profiling\Sql\SqlAssertionBuilder;
 
 class PingControllerTest extends TestCase
 {
-    public function testPing()
+    public function testPing(): void
     {
         $response = $this->httpTester()
             ->get('/ping')

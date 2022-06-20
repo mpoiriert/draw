@@ -46,6 +46,9 @@ class EmailWriterListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param EmailWriterInterface|string $writer
+     */
     public function addWriter(string $emailClass, $writer, string $writerMethod, int $priority = 0): void
     {
         $this->writers[$emailClass][$priority][] = [$writer, $writerMethod];

@@ -123,7 +123,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         }
     }
 
-    private function getDefinitionName($className, array $context): string
+    private function getDefinitionName(string $className, array $context): string
     {
         $newName = $className;
         foreach ($this->classNamingFilters as $classNamingFilter) {
@@ -133,7 +133,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         return $newName;
     }
 
-    private function getHash($modelName, ?array $context = null): string
+    private function getHash(string $modelName, ?array $context = null): string
     {
         $context = $context ?: [];
 
@@ -150,6 +150,9 @@ class TypeSchemaExtractor implements ExtractorInterface
         return array_search($hash, $this->definitionHashes[$modelName]);
     }
 
+    /**
+     * @param mixed $type
+     */
     public static function getPrimitiveType($type, ?ExtractionContextInterface $extractionContext = null): ?array
     {
         if (!\is_string($type)) {

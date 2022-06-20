@@ -35,7 +35,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
         $this->entityManager = $entityManager;
     }
 
-    public function start()
+    public function start(): void
     {
         $configuration = $this->entityManager->getConnection()->getConfiguration();
         $this->logger = $configuration->getSQLLogger();
@@ -84,7 +84,12 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
         return parent::stop();
     }
 
-    private function sanitizeQuery($query)
+    /**
+     * @param array<string, mixed> $query
+     *
+     * @return array<string, mixed>
+     */
+    private function sanitizeQuery(array $query): array
     {
         $query['explainable'] = true;
         if (null === $query['params']) {

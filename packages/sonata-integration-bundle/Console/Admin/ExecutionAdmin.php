@@ -34,7 +34,7 @@ class ExecutionAdmin extends AbstractAdmin
     /**
      * @required
      */
-    public function inject(CommandRegistry $commandFactory, KernelInterface $kernel, EntityManagerInterface $entityManager)
+    public function inject(CommandRegistry $commandFactory, KernelInterface $kernel, EntityManagerInterface $entityManager): void
     {
         $this->kernel = $kernel;
         $this->commandFactory = $commandFactory;

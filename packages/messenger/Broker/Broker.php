@@ -83,7 +83,7 @@ class Broker
     /**
      * @param array|Process[] $processes
      */
-    private function stopProcesses(array $processes, int $timeout)
+    private function stopProcesses(array $processes, int $timeout): void
     {
         foreach ($processes as $process) {
             if ($process->isRunning()) {

@@ -66,7 +66,7 @@ class TransportTester
         return $messages;
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->transport->reset();
     }

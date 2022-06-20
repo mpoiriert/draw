@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class CompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $evaluator = $container->getDefinition('draw.tester.expression_filter');
 

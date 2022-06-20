@@ -146,9 +146,12 @@ class DataTester
         return $this;
     }
 
+    /**
+     * @param mixed ...$parameters
+     */
     public static function createCallable(string $methodName, ...$parameters): callable
     {
-        return function (self $dataTester) use ($methodName, $parameters) {
+        return function (self $dataTester) use ($methodName, $parameters): void {
             \call_user_func_array([$dataTester, $methodName], array_values($parameters));
         };
     }

@@ -230,7 +230,7 @@ class ResponseApiExceptionListenerTest extends TestCase
         ];
 
         $exception = new class() extends \Exception implements \JsonSerializable {
-            public function jsonSerialize()
+            public function jsonSerialize(): void
             {
             }
         };

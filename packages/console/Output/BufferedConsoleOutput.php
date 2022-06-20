@@ -43,7 +43,7 @@ class BufferedConsoleOutput extends ConsoleOutput
     /**
      * This is to prevent infinite loop since the error output is self.
      */
-    public function setVerbosity(int $level)
+    public function setVerbosity(int $level): void
     {
         if ($this->getVerbosity() === $level) {
             return;

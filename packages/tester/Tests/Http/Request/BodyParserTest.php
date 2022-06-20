@@ -7,19 +7,16 @@ use PHPUnit\Framework\TestCase;
 
 class BodyParserTest extends TestCase
 {
-    /**
-     * @var BodyParser
-     */
-    private $bodyParser;
+    private BodyParser$bodyParser;
 
-    private $boundary = 'V2ymHFg03ehbqgZCaKO6jy';
+    private string $boundary = 'V2ymHFg03ehbqgZCaKO6jy';
 
     protected function setUp(): void
     {
         $this->bodyParser = new BodyParser();
     }
 
-    public function testParseFormDataOneField()
+    public function testParseFormDataOneField(): void
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -41,7 +38,7 @@ class BodyParserTest extends TestCase
         );
     }
 
-    public function testParseFormDataTwoFields()
+    public function testParseFormDataTwoFields(): void
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -68,7 +65,7 @@ class BodyParserTest extends TestCase
         );
     }
 
-    public function testParseFormDataFieldArray()
+    public function testParseFormDataFieldArray(): void
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -90,7 +87,7 @@ class BodyParserTest extends TestCase
         );
     }
 
-    public function testParseFormDataFieldContentWithAmpersand()
+    public function testParseFormDataFieldContentWithAmpersand(): void
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -112,7 +109,7 @@ class BodyParserTest extends TestCase
         );
     }
 
-    public function testParseFormDataFieldContentWithEqual()
+    public function testParseFormDataFieldContentWithEqual(): void
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -134,7 +131,7 @@ class BodyParserTest extends TestCase
         );
     }
 
-    public function testParseFormDataFile()
+    public function testParseFormDataFile(): void
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
         $body = <<<BODY
@@ -181,7 +178,7 @@ class BodyParserTest extends TestCase
      *
      * @see http://php.net/manual/en/features.file-upload.post-method.php#121833
      */
-    public function testParseFormDataFileNested()
+    public function testParseFormDataFileNested(): void
     {
         $contentType = "Content-Type: multipart/mixed; boundary={$this->boundary}";
 

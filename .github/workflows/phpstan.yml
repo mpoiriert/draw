@@ -1,0 +1,33 @@
+---
+# https://github.com/marketplace/actions/checkout
+# https://github.com/marketplace/actions/setup-php-action
+
+name: PHPStan
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer
+      - name: Composer
+        run: composer install
+      - name: Composer for vendor-bin
+        run: composer install
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse

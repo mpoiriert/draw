@@ -161,7 +161,7 @@ class MailerIntegrationTest extends IntegrationTestCase
                         [
                             DefaultFromEmailWriter::class,
                         ],
-                        function (Definition $definition) {
+                        function (Definition $definition): void {
                             $defaultFromDefinition = $definition->getArgument('$defaultFrom');
 
                             static::assertInstanceOf(

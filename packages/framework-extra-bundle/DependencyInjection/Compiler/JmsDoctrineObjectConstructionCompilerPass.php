@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class JmsDoctrineObjectConstructionCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (null === $container->getDefinition('jms_serializer.doctrine_object_constructor')->getDecoratedService()) {
             return;

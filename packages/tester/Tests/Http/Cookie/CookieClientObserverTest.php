@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class CookieClientObserverTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): CookieClientObserver
     {
         $cookieClientObserver = new CookieClientObserver();
 

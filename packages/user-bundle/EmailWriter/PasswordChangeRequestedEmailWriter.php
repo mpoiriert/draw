@@ -35,7 +35,7 @@ class PasswordChangeRequestedEmailWriter implements EmailWriterInterface
         }
 
         if (!$email->getCallToActionLink()) {
-            $user = $this->userProvider->loadUserByIdentifier($email->getUserIdentifier());
+            $user = $this->userProvider->loadUserByIdentifier($email->getUserId());
 
             $parameters = [];
             if ($user instanceof SecurityUserInterface) {
@@ -45,7 +45,7 @@ class PasswordChangeRequestedEmailWriter implements EmailWriterInterface
             $email->callToActionLink(
                 $this->messageUrlGenerator->generateLink(
                     new RedirectToSecuredRouteMessage(
-                        $email->getUserIdentifier(),
+                        $email->getUserId(),
                         'admin_change_password',
                         $parameters
                     ),

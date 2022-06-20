@@ -9,6 +9,10 @@ class RedirectToSecuredRouteMessage extends AutoConnect implements RedirectToRou
 {
     use RedirectToRouteMessageTrait;
 
+    /**
+     * @param mixed               $userId
+     * @param array<string,mixed> $urlParameters
+     */
     public function __construct($userId, string $route, array $urlParameters = [])
     {
         parent::__construct($userId);

@@ -36,12 +36,12 @@ final class SqlAssertionBuilder
         $this->countAssertion = ['assertLessThanOrEqual', $count];
     }
 
-    public function assertCountEquals($count): void
+    public function assertCountEquals(int $count): void
     {
         $this->countAssertion = ['assertEquals', $count];
     }
 
-    public function __invoke(DataTester $tester)
+    public function __invoke(DataTester $tester): void
     {
         if (!$this->countAssertion) {
             throw new \RuntimeException('No assertion configured.');

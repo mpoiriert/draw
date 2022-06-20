@@ -28,7 +28,7 @@ abstract class ConfigurationTestCase extends TestCase
     /**
      * @dataProvider provideTestInvalidConfiguration
      */
-    public function testInvalidConfiguration(array $configuration, string $expectedMessage)
+    public function testInvalidConfiguration(array $configuration, string $expectedMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);
 
@@ -49,7 +49,7 @@ abstract class ConfigurationTestCase extends TestCase
         }
     }
 
-    public function testDefault()
+    public function testDefault(): void
     {
         $config = $this->processConfiguration([[]]);
 

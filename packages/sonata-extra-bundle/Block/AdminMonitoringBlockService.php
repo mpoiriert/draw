@@ -101,7 +101,7 @@ class AdminMonitoringBlockService implements BlockServiceInterface
                 ->setTtl(0);
     }
 
-    private function findThresholdSetting(array $thresholds, $count)
+    private function findThresholdSetting(array $thresholds, int $count): array
     {
         foreach ($thresholds as $threshold) {
             if (!isset($threshold['if'])) {

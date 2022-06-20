@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         $dataToTest = 'A string value';
 
@@ -20,7 +20,7 @@ class ExampleTest extends TestCase
 
     // example-end: TestClass
 
-    public function testConciseNew()
+    public function testConciseNew(): void
     {
         // example-start: ConciseNew
         (new DataTester('A string value'))
@@ -28,7 +28,7 @@ class ExampleTest extends TestCase
         // example-end: ConciseNew
     }
 
-    public function testPath()
+    public function testPath(): void
     {
         // example-start: TestPath
         (new DataTester((object) ['key' => 'value']))
@@ -37,7 +37,7 @@ class ExampleTest extends TestCase
         // example-end: TestPath
     }
 
-    public function testChainPath()
+    public function testChainPath(): void
     {
         // example-start: ChainTestPath
         $tester = new DataTester((object) ['key1' => 'value1', 'key2' => 'value2']);
@@ -46,7 +46,7 @@ class ExampleTest extends TestCase
         // example-end: ChainTestPath
     }
 
-    public function testDeeperPath()
+    public function testDeeperPath(): void
     {
         // example-start: DeeperPathTest
         (new DataTester((object) ['level1' => (object) ['level2' => 'value']]))
@@ -55,19 +55,19 @@ class ExampleTest extends TestCase
         // example-end: DeeperPathTest
     }
 
-    public function testEach()
+    public function testEach(): void
     {
         // example-start: EachTest
         (new DataTester(['value1', 'value2']))
             ->each(
-                function (DataTester $tester) {
+                function (DataTester $tester): void {
                     $tester->assertIsString();
                 }
             );
         // example-end: EachTest
     }
 
-    public function testTransform()
+    public function testTransform(): void
     {
         // example-start: Transform
         (new DataTester('{"key":"value"}'))
@@ -76,7 +76,7 @@ class ExampleTest extends TestCase
         // example-end: Transform
     }
 
-    public function testTransformAssert()
+    public function testTransformAssert(): void
     {
         // example-start: AssertTransform
         (new DataTester('{"key":"value"}'))
@@ -86,7 +86,7 @@ class ExampleTest extends TestCase
         // example-end: AssertTransform
     }
 
-    public function testTransformAssertCustom()
+    public function testTransformAssertCustom(): void
     {
         // example-start: AssertTransformCustom
         (new DataTester('{"key":"value"}'))
@@ -96,13 +96,13 @@ class ExampleTest extends TestCase
         // example-end: AssertTransformCustom
     }
 
-    public function testIfPathIsReadable()
+    public function testIfPathIsReadable(): void
     {
         // example-start: IfPathIsReadable
         (new DataTester(null))
             ->ifPathIsReadable(
                 'notExistingPath',
-                function (DataTester $tester) {
+                function (DataTester $tester): void {
                     // Will not be call with current data to test
                 }
             );
@@ -110,7 +110,7 @@ class ExampleTest extends TestCase
         static::assertTrue(true); // This is to prevent PHPUnit to flag test as risky
     }
 
-    public function testIfPathIsReadableAndEach()
+    public function testIfPathIsReadableAndEach(): void
     {
         // example-start: IfPathIsReadableAndEach
         $users = [
@@ -126,12 +126,12 @@ class ExampleTest extends TestCase
         ];
         (new DataTester($users))
             ->each(
-                function (DataTester $tester) {
+                function (DataTester $tester): void {
                     $tester->path('firstName')->assertIsString();
                     $tester->path('active')->assertIsBool();
                     $tester->ifPathIsReadable(
                         'referral',
-                        function (DataTester $tester) {
+                        function (DataTester $tester): void {
                             $tester->assertIsString();
                         }
                     );
@@ -140,7 +140,7 @@ class ExampleTest extends TestCase
         // example-end: IfPathIsReadableAndEach
     }
 
-    public function testUser()
+    public function testUser(): void
     {
         // example-start: TestWithClassCallable
         $user = (object) [
@@ -154,7 +154,7 @@ class ExampleTest extends TestCase
         // example-end: TestWithClassCallable
     }
 
-    public function testUsers()
+    public function testUsers(): void
     {
         // example-start: EachWithClassCallableEach
         $users = [
@@ -178,13 +178,13 @@ class ExampleTest extends TestCase
 // example-start: UserDataTester
 class UserDataTester
 {
-    public function __invoke(DataTester $tester)
+    public function __invoke(DataTester $tester): void
     {
         $tester->path('firstName')->assertIsString();
         $tester->path('active')->assertIsBool();
         $tester->ifPathIsReadable(
             'referral',
-            function (DataTester $tester) {
+            function (DataTester $tester): void {
                 $tester->assertIsString();
             }
         );

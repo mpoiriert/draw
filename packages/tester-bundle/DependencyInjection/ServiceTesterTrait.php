@@ -26,7 +26,7 @@ trait ServiceTesterTrait
         return self::$mainTestContainer;
     }
 
-    public static function getService(string $service)
+    public static function getService(string $service): ?object
     {
         return static::getMainTestContainer()->get($service);
     }

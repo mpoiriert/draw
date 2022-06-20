@@ -8,6 +8,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class GetUserLocksEvent extends Event
 {
+    /**
+     * @var array<string, UserLock>
+     */
     private array $locks = [];
 
     private LockableUserInterface $user;
@@ -17,7 +20,7 @@ class GetUserLocksEvent extends Event
         $this->user = $user;
     }
 
-    public function addLock(UserLock $userLock)
+    public function addLock(UserLock $userLock): void
     {
         $this->locks[$userLock->getReason()] = $userLock;
     }

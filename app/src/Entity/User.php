@@ -128,7 +128,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         return $this->id;
     }
 
-    public function setId(string $id)
+    public function setId(string $id): void
     {
         $this->id = $id;
     }
@@ -144,7 +144,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         return $roles;
     }
 
-    public function setRoles(array $roles)
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
@@ -189,7 +189,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         return $this->userAddresses;
     }
 
-    public function addUserAddress(UserAddress $userAddress)
+    public function addUserAddress(UserAddress $userAddress): void
     {
         if (!$this->userAddresses->contains($userAddress)) {
             CollectionUtil::assignPosition($userAddress, $this->userAddresses);
@@ -198,7 +198,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         }
     }
 
-    public function removeUserAddress(UserAddress $userAddress)
+    public function removeUserAddress(UserAddress $userAddress): void
     {
         if ($this->userAddresses->contains($userAddress)) {
             $this->userAddresses->removeElement($userAddress);

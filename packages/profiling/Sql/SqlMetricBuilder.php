@@ -11,7 +11,7 @@ class SqlMetricBuilder implements MetricBuilderInterface
      */
     private $logs = [];
 
-    public function addLog(SqlLog $sqlLog)
+    public function addLog(SqlLog $sqlLog): void
     {
         $this->logs[] = $sqlLog;
     }

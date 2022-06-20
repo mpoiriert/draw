@@ -73,7 +73,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         return $object;
     }
 
-    private function loadObject($class, $data, DeserializationContext $context, array $path): ?object
+    private function loadObject(string $class, $data, DeserializationContext $context, array $path): ?object
     {
         $objectManager = $this->managerRegistry->getManagerForClass($class);
         $classMetadataFactory = $objectManager->getMetadataFactory();

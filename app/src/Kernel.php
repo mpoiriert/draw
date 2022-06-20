@@ -10,7 +10,7 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $container->removeDefinition('jms_serializer.stopwatch_subscriber');
     }

@@ -54,7 +54,7 @@ class PropertiesExtractorTest extends TestCase
      * @param $type
      * @param $canBeExtract
      */
-    public function testCanExtract($source, $type, $canBeExtract)
+    public function testCanExtract($source, $type, $canBeExtract): void
     {
         if (null !== $source) {
             $source = new \ReflectionClass($source);
@@ -75,7 +75,7 @@ class PropertiesExtractorTest extends TestCase
         }
     }
 
-    public function testExtract()
+    public function testExtract(): void
     {
         $reflectionClass = new \ReflectionClass(__NAMESPACE__.'\JmsExtractorStubModel');
 
@@ -169,7 +169,7 @@ class JmsExtractorStubModel
      * @Serializer\Type(JmsExtractorStubModel::class)
      * @Serializer\Groups({"test"})
      */
-    public function getVirtual()
+    public function getVirtual(): void
     {
     }
 }

@@ -96,7 +96,7 @@ class Cookie
         return rtrim($str, '; ');
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return $this->data;
     }
@@ -116,7 +116,7 @@ class Cookie
      *
      * @param string $name Cookie name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->data['Name'] = $name;
     }
@@ -136,7 +136,7 @@ class Cookie
      *
      * @param string $value Cookie value
      */
-    public function setValue($value)
+    public function setValue($value): void
     {
         $this->data['Value'] = $value;
     }
@@ -156,7 +156,7 @@ class Cookie
      *
      * @param string $domain
      */
-    public function setDomain($domain)
+    public function setDomain($domain): void
     {
         $this->data['Domain'] = $domain;
     }
@@ -176,7 +176,7 @@ class Cookie
      *
      * @param string $path Path of the cookie
      */
-    public function setPath($path)
+    public function setPath($path): void
     {
         $this->data['Path'] = $path;
     }
@@ -196,7 +196,7 @@ class Cookie
      *
      * @param int $maxAge Max age of the cookie in seconds
      */
-    public function setMaxAge($maxAge)
+    public function setMaxAge($maxAge): void
     {
         $this->data['Max-Age'] = $maxAge;
     }
@@ -238,7 +238,7 @@ class Cookie
      *
      * @param bool $secure Set to true or false if secure
      */
-    public function setSecure($secure)
+    public function setSecure($secure): void
     {
         $this->data['Secure'] = $secure;
     }
@@ -258,7 +258,7 @@ class Cookie
      *
      * @param bool $discard Set to true or false if this is a session cookie
      */
-    public function setDiscard($discard)
+    public function setDiscard($discard): void
     {
         $this->data['Discard'] = $discard;
     }
@@ -278,7 +278,7 @@ class Cookie
      *
      * @param bool $httpOnly Set to true or false if this is HTTP only
      */
-    public function setHttpOnly($httpOnly)
+    public function setHttpOnly($httpOnly): void
     {
         $this->data['HttpOnly'] = $httpOnly;
     }

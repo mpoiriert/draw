@@ -6,10 +6,7 @@ use Psr\Http\Message\RequestInterface;
 
 class SuperGlobalsExtractor
 {
-    /**
-     * @var BodyParser
-     */
-    private $bodyParser;
+    private BodyParser $bodyParser;
 
     private $requestOrder;
 
@@ -19,7 +16,10 @@ class SuperGlobalsExtractor
         $this->requestOrder = $requestOrder ?: \ini_get('variables_order');
     }
 
-    public function extractSuperGlobals(RequestInterface $request)
+    /**
+     * @return array{_SERVER: mixed, _POST: mixed, _GET: mixed, _COOKIE: mixed, _FILES: mixed, _REQUEST: mixed}
+     */
+    public function extractSuperGlobals(RequestInterface $request): array
     {
         $body = $request->getBody();
         $body->rewind();
@@ -37,7 +37,12 @@ class SuperGlobalsExtractor
         ];
     }
 
-    public function assignSuperGlobals($extractedSuperGlobals)
+    /**
+     * @param array{_SERVER: array<string,mixed>, _POST: array<string,mixed>, _GET: array<string,mixed>, _COOKIE: array<string,mixed>, _FILES: array<string,mixed>, _REQUEST: array<string,mixed>} $extractedSuperGlobals
+     *
+     * @return array{_SERVER: array<string,mixed>, _POST: array<string,mixed>, _GET: array<string,mixed>, _COOKIE: array<string,mixed>, _FILES: array<string,mixed>, _REQUEST: array<string,mixed>}
+     */
+    public function assignSuperGlobals(array $extractedSuperGlobals): array
     {
         $previousSuperGlobals = [
             '_SERVER' => $_SERVER,
@@ -58,7 +63,10 @@ class SuperGlobalsExtractor
         return $previousSuperGlobals;
     }
 
-    public function extractCookieData(RequestInterface $request)
+    /**
+     * @return array<string, string>
+     */
+    public function extractCookieData(RequestInterface $request): array
     {
         $cookie = [];
         foreach ($request->getHeader('Cookie') as $cookieLine) {
@@ -79,7 +87,14 @@ class SuperGlobalsExtractor
         return $cookie;
     }
 
-    public function mergeDataForRequest($get, $post, $cookie)
+    /**
+     * @param array<string, mixed>  $post
+     * @param array<string, string> $cookie
+     * @param array<string, mixed>  $get
+     *
+     * @return array<string, mixed>
+     */
+    public function mergeDataForRequest(array $get, array $post, array $cookie): array
     {
         $requestOrder = preg_replace('#[^cgp]#', '', strtolower($this->requestOrder)) ?: 'gp';
         $data = ['g' => $get, 'p' => $post, 'c' => $cookie];
@@ -92,7 +107,7 @@ class SuperGlobalsExtractor
         return $request;
     }
 
-    public function extractGetData(RequestInterface $request)
+    public function extractGetData(RequestInterface $request): array
     {
         $get = [];
         parse_str($request->getUri()->getQuery(), $get);
@@ -100,7 +115,10 @@ class SuperGlobalsExtractor
         return $get;
     }
 
-    private function extractServerData(RequestInterface $request)
+    /**
+     * @return array<string, string>
+     */
+    private function extractServerData(RequestInterface $request): array
     {
         $server = [];
         foreach ($request->getHeaders() as $key => $value) {

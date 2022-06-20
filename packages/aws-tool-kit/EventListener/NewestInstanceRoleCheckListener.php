@@ -84,7 +84,7 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
         }
     }
 
-    private function disableCommand(ConsoleCommandEvent $event, $reason)
+    private function disableCommand(ConsoleCommandEvent $event, string $reason): void
     {
         $event->disableCommand();
         $this->logger->info('Command disabled', ['reason' => $reason, 'service' => 'NewestInstanceRoleListener']);

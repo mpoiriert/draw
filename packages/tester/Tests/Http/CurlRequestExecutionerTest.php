@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class CurlRequestExecutionerTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): CurlRequestExecutioner
     {
         $curlRequestExecutioner = new CurlRequestExecutioner();
 
@@ -22,7 +22,7 @@ class CurlRequestExecutionerTest extends TestCase
     /**
      * @depends testConstruct
      */
-    public function testExecuteRequest(CurlRequestExecutioner $curlRequestExecutioner)
+    public function testExecuteRequest(CurlRequestExecutioner $curlRequestExecutioner): void
     {
         $request = new Request(
             'GET',

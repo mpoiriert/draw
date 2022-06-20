@@ -44,6 +44,9 @@ class RemoteFileExistsValidatorTest extends TestCase
         $this->object->validate(null, new NotNull());
     }
 
+    /**
+     * @return array<string, array{0: string, 1: int}>
+     */
     public function provideFiles(): array
     {
         return [

@@ -27,7 +27,7 @@ class SlowRequestLoggerListener implements EventSubscriberInterface
         $this->requestMatchers = $requestMatchers;
     }
 
-    public function onKernelTerminate(TerminateEvent $event)
+    public function onKernelTerminate(TerminateEvent $event): void
     {
         $request = $event->getRequest();
 
