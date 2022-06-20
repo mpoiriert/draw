@@ -313,7 +313,7 @@ class CommandFlowListenerTest extends TestCase
     {
         $event = new LoadExecutionIdEvent(
             $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput($id = random_int(1, \PHP_INT_MAX)),
+            $this->createOptionExecutionIdInput($id = uniqid('id-')),
             $this->createMock(OutputInterface::class)
         );
 
@@ -363,7 +363,9 @@ class CommandFlowListenerTest extends TestCase
             ->with(
                 'command__execution',
                 static::callback(function (array $arguments) use ($commandName) {
-                    $this->assertCount(6, $arguments);
+                    $this->assertCount(7, $arguments);
+
+                    $this->assertIsString($arguments['id']);
 
                     $this->assertSame(
                         $commandName,
@@ -407,16 +409,11 @@ class CommandFlowListenerTest extends TestCase
 
         $connection
             ->expects(static::once())
-            ->method('lastInsertId')
-            ->willReturn($id = random_int(1, \PHP_INT_MAX));
-
-        $connection
-            ->expects(static::once())
             ->method('ensureConnectedToReplica');
 
         $this->object->generateFromDatabase($event);
 
-        static::assertSame($id, $event->getExecutionId());
+        static::assertIsString($event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
     }
 
@@ -536,7 +533,7 @@ class CommandFlowListenerTest extends TestCase
 
         $event = new Event\ConsoleTerminateEvent(
             $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput(-1),
+            $this->createOptionExecutionIdInput(uniqid('id-')),
             $this->createMock(OutputInterface::class),
             0
         );
@@ -720,7 +717,7 @@ class CommandFlowListenerTest extends TestCase
         static::assertSame($reason, $execution->getAutoAcknowledgeReason());
     }
 
-    private function createOptionExecutionIdInput(int $id): InputInterface
+    private function createOptionExecutionIdInput(string $id): InputInterface
     {
         $input = $this->createMock(InputInterface::class);
 

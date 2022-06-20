@@ -5,6 +5,7 @@ namespace Draw\Component\Console\Entity;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\Core\DateTimeUtils;
+use Ramsey\Uuid\Uuid;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 use Symfony\Component\Console\Input\ArrayInput;
 
@@ -48,10 +49,9 @@ class Execution
 
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(name="id", type="integer", options={"unsigned": true})
+     * @ORM\Column(name="id", type="guid")
      */
-    private ?int $id = null;
+    private ?string $id = null;
 
     /**
      * This is the command name when created trough the dashboard.
@@ -97,12 +97,16 @@ class Execution
      */
     private ?string $autoAcknowledgeReason = null;
 
-    public function getId(): ?int
+    public function getId(): string
     {
+        if (null === $this->id) {
+            $this->id = Uuid::uuid6()->toString();
+        }
+
         return $this->id;
     }
 
-    public function setId(?int $id): self
+    public function setId(?string $id): self
     {
         $this->id = $id;
 

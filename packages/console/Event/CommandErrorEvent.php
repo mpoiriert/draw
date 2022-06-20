@@ -6,19 +6,19 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class CommandErrorEvent extends Event
 {
-    private int $executionId;
+    private string $executionId;
 
     private string $outputString;
 
     private ?string $autoAcknowledgeReason = null;
 
-    public function __construct(int $executionId, string $outputString)
+    public function __construct(string $executionId, string $outputString)
     {
         $this->executionId = $executionId;
         $this->outputString = $outputString;
     }
 
-    public function getExecutionId(): int
+    public function getExecutionId(): string
     {
         return $this->executionId;
     }

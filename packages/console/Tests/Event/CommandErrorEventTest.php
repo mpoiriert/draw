@@ -13,14 +13,14 @@ class CommandErrorEventTest extends TestCase
 {
     private CommandErrorEvent $event;
 
-    private int $executionId;
+    private string $executionId;
 
     private string $outputString;
 
     protected function setUp(): void
     {
         $this->event = new CommandErrorEvent(
-            $this->executionId = random_int(\PHP_INT_MIN, \PHP_INT_MAX),
+            $this->executionId = uniqid('id-'),
             $this->outputString = uniqid('output-')
         );
     }

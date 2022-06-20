@@ -8,6 +8,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\Event\CommandErrorEvent;
 use Draw\Component\Console\Event\LoadExecutionIdEvent;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Event;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -114,7 +115,7 @@ class CommandFlowListener implements EventSubscriberInterface
 
     public function loadIdFromInput(LoadExecutionIdEvent $event): void
     {
-        if ($executionId = $this->getExecutionId($event)) {
+        if (null !== $executionId = $this->getExecutionId($event)) {
             $event->setExecutionId($executionId);
         }
     }
@@ -137,9 +138,12 @@ class CommandFlowListener implements EventSubscriberInterface
 
         $date = date('Y-m-d H:i:s');
 
+        $executionId = Uuid::uuid6()->toString();
+
         $this->connection->insert(
             'command__execution',
             [
+                'id' => $executionId,
                 'command_name' => $event->getCommand()->getName(),
                 'created_at' => $date,
                 'updated_at' => $date,
@@ -149,13 +153,11 @@ class CommandFlowListener implements EventSubscriberInterface
             ]
         );
 
-        $executionId = $this->connection->lastInsertId();
-
         if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
             $this->connection->ensureConnectedToReplica();
         }
 
-        $event->setExecutionId((int) $executionId);
+        $event->setExecutionId($executionId);
     }
 
     public function logCommandStart(Event\ConsoleCommandEvent $event): void
