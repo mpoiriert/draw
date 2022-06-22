@@ -1,7 +1,8 @@
-<?php namespace PHPSTORM_META {
-    $STATIC_METHOD_TYPES = [
-        \Draw\Bundle\TesterBundle\DependencyInjection\ServiceTesterTrait::getService('') => [
-            "" == "@",
-        ],
-    ];
-}
+<?php
+
+namespace PHPSTORM_META;
+
+override(
+    \Draw\Bundle\TesterBundle\DependencyInjection\ServiceTesterTrait::getService(),
+    map(["" => "@"])
+);

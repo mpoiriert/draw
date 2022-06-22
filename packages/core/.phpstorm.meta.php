@@ -1,12 +1,13 @@
-<?php namespace PHPSTORM_META {
-    override(
-        \Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface::getBadge(0),
-        map(["" => "@"])
-    );
+<?php
 
-    override(
-        \Symfony\Component\Security\Http\Authenticator\Passport\Passport::getBadge(0),
-        map(["" => "@"])
-    );
-}
+namespace PHPSTORM_META;
 
+override(
+    \Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface::getBadge(),
+    map(["" => "@"])
+);
+
+override(
+    \Symfony\Component\Security\Http\Authenticator\Passport\Passport::getBadge(),
+    map(["" => "@"])
+);
