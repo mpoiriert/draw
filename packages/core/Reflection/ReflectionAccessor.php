@@ -6,8 +6,9 @@ final class ReflectionAccessor
 {
     /**
      * @param object|string $objectOrClass
+     * @param mixed         ...$arguments
      */
-    public static function callMethod($objectOrClass, string $methodName, string ...$arguments)
+    public static function callMethod($objectOrClass, string $methodName, ...$arguments)
     {
         $methodReflection = self::createAccessibleMethodReflection($objectOrClass, $methodName);
 
