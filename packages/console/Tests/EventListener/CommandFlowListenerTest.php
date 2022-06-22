@@ -17,6 +17,7 @@ use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -29,6 +30,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @covers \Draw\Component\Console\EventListener\CommandFlowListener
+ */
 class CommandFlowListenerTest extends TestCase
 {
     use DoctrineOrmTrait;
@@ -41,6 +45,11 @@ class CommandFlowListenerTest extends TestCase
      * @var EventDispatcherInterface&MockObject
      */
     private EventDispatcherInterface $eventDispatcher;
+
+    /**
+     * @var LoggerInterface&MockObject
+     */
+    private LoggerInterface $logger;
 
     private ?Execution $execution = null;
 
@@ -55,7 +64,8 @@ class CommandFlowListenerTest extends TestCase
     {
         $this->object = new CommandFlowListener(
             self::$entityManager->getConnection(),
-            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
+            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            $this->logger = $this->createMock(LoggerInterface::class)
         );
 
         if ($this->execution) {
@@ -111,8 +121,8 @@ class CommandFlowListenerTest extends TestCase
             $option->getShortcut()
         );
 
-        static::assertTrue(
-            $option->isValueOptional()
+        static::assertFalse(
+            $option->isValueRequired()
         );
 
         static::assertSame(
@@ -120,7 +130,7 @@ class CommandFlowListenerTest extends TestCase
             $option->getDescription()
         );
 
-        static::assertNull(
+        static::assertFalse(
             $option->getDefault()
         );
 
@@ -321,6 +331,68 @@ class CommandFlowListenerTest extends TestCase
 
         static::assertSame($id, $event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
+    }
+
+    public function testGenerateFromDatabaseIgnoredException(): void
+    {
+        $event = new LoadExecutionIdEvent(
+            $command = $this->createMock(Command::class),
+            $input = $this->createMock(InputInterface::class),
+            $this->createMock(OutputInterface::class)
+        );
+
+        $command
+            ->expects(static::once())
+            ->method('getName')
+            ->willReturn(uniqid('command-'));
+
+        $input
+            ->expects(static::once())
+            ->method('getArguments')
+            ->willReturn([]);
+
+        $input
+            ->expects(static::once())
+            ->method('getOptions')
+            ->willReturn([]);
+
+        ReflectionAccessor::setPropertyValue(
+            $this->object,
+            'connection',
+            $connection = $this->createMock(PrimaryReadReplicaConnection::class),
+        );
+
+        $connection
+            ->expects(static::once())
+            ->method('isConnectedToPrimary')
+            ->willReturn(false);
+
+        $connection
+            ->expects(static::once())
+            ->method('insert')
+            ->willThrowException($error = new \Exception());
+
+        $connection
+            ->expects(static::once())
+            ->method('ensureConnectedToReplica');
+
+        $this->logger
+            ->expects(static::once())
+            ->method('error')
+            ->with(
+                'Command flow listener error while generating execution id',
+                ['error' => $error]
+            );
+
+        try {
+            $this->object->generateFromDatabase($event);
+            static::fail('Exception was expected');
+        } catch (\Throwable $exception) {
+            static::assertSame($exception, $error, 'Exception does not match');
+        }
+
+        static::assertNull($event->getExecutionId());
+        static::assertTrue($event->getIgnoreTracking());
     }
 
     public function testGenerateFromDatabase(): void

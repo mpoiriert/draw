@@ -39,7 +39,7 @@ class AddCommandExecutionOptionsCompilerPass implements CompilerPassInterface
                 [
                     CommandFlowListener::OPTION_IGNORE,
                     null,
-                    InputOption::VALUE_OPTIONAL,
+                    InputOption::VALUE_NONE,
                     'Flag to ignore login of the execution to the databases.',
                 ]
             );
