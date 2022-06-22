@@ -8,6 +8,7 @@ use Doctrine\DBAL\Exception as DBALException;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\Event\CommandErrorEvent;
 use Draw\Component\Console\Event\LoadExecutionIdEvent;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Event;
 use Symfony\Component\Console\Input\InputOption;
@@ -33,6 +34,8 @@ class CommandFlowListener implements EventSubscriberInterface
 
     private EventDispatcherInterface $eventDispatcher;
 
+    private LoggerInterface $logger;
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -54,10 +57,12 @@ class CommandFlowListener implements EventSubscriberInterface
 
     public function __construct(
         Connection $executionConnection,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        LoggerInterface $logger
     ) {
         $this->connection = $executionConnection;
         $this->eventDispatcher = $eventDispatcher;
+        $this->logger = $logger;
     }
 
     public function configureOptions(Event\ConsoleCommandEvent $event): void
@@ -69,7 +74,7 @@ class CommandFlowListener implements EventSubscriberInterface
                 new InputOption(
                     self::OPTION_IGNORE,
                     null,
-                    InputOption::VALUE_OPTIONAL,
+                    InputOption::VALUE_NONE,
                     'Flag to ignore login of the execution to the databases.',
                 )
             );
@@ -140,21 +145,28 @@ class CommandFlowListener implements EventSubscriberInterface
 
         $executionId = Uuid::uuid6()->toString();
 
-        $this->connection->insert(
-            'command__execution',
-            [
-                'id' => $executionId,
-                'command_name' => $event->getCommand()->getName(),
-                'created_at' => $date,
-                'updated_at' => $date,
-                'output' => '',
-                'state' => Execution::STATE_STARTED,
-                'input' => json_encode($parameters),
-            ]
-        );
+        try {
+            $this->connection->insert(
+                'command__execution',
+                [
+                    'id' => $executionId,
+                    'command_name' => $event->getCommand()->getName(),
+                    'created_at' => $date,
+                    'updated_at' => $date,
+                    'output' => '',
+                    'state' => Execution::STATE_STARTED,
+                    'input' => json_encode($parameters),
+                ]
+            );
+        } catch (\Throwable $error) {
+            $this->logger->error('Command flow listener error while generating execution id', ['error' => $error]);
+            $event->ignoreTracking();
 
-        if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
-            $this->connection->ensureConnectedToReplica();
+            throw $error;
+        } finally {
+            if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
+                $this->connection->ensureConnectedToReplica();
+            }
         }
 
         $event->setExecutionId($executionId);
@@ -162,6 +174,10 @@ class CommandFlowListener implements EventSubscriberInterface
 
     public function logCommandStart(Event\ConsoleCommandEvent $event): void
     {
+        if ($event->getInput()->getOption(self::OPTION_IGNORE)) {
+            return;
+        }
+
         $executionId = $this->eventDispatcher->dispatch(new LoadExecutionIdEvent(
             $event->getCommand(),
             $event->getInput(),

@@ -42,7 +42,7 @@ class NullCommandTest extends TestCase
         yield [
             'draw-execution-ignore',
             null,
-            InputOption::VALUE_OPTIONAL,
+            InputOption::VALUE_NONE,
         ];
 
         yield [
