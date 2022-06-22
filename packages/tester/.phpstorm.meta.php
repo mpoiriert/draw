@@ -1,12 +1,8 @@
-<?php namespace PHPSTORM_META {
-    $STATIC_METHOD_TYPES = [
-        \Draw\Component\Tester\ServiceTesterTrait::getService('') => [
-            "" == "@",
-        ],
-    ];
+<?php
 
-    override(
-        \Draw\Component\Tester\MockBuilderTrait::createMockWithExtraMethods(0),
-        map([""=>"$0"])
-    );
-}
+namespace PHPSTORM_META;
+
+override(
+    \Draw\Component\Tester\MockBuilderTrait::createMockWithExtraMethods(),
+    map(["" => "@"])
+);
