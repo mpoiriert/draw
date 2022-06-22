@@ -30,6 +30,8 @@ use Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
 use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
 use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
+use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
+use Draw\Component\OpenApi\Versioning\RouteVersionMatcherInterface;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use Metadata\MetadataFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -173,8 +175,12 @@ class OpenApiIntegration implements IntegrationInterface
             $container
                 ->getDefinition(VersionLinkDocumentationExtractor::class)
                 ->setArgument('$versions', $config['versioning']['versions']);
+
+            $container
+                ->setAlias(RouteVersionMatcherInterface::class, RouteDefaultApiRouteVersionMatcher::class);
         } else {
             $container->removeDefinition(VersionLinkDocumentationExtractor::class);
+            $container->removeDefinition(RouteDefaultApiRouteVersionMatcher::class);
         }
 
         if (!class_exists(DoctrineBundle::class)) {

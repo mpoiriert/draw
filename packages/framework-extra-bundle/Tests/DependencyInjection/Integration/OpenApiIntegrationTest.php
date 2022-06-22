@@ -52,6 +52,7 @@ use Draw\Component\OpenApi\Serializer\Handler\ObjectReferenceHandler;
 use Draw\Component\OpenApi\Serializer\Handler\OpenApiHandler;
 use Draw\Component\OpenApi\Serializer\Subscriber\OpenApiSubscriber;
 use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
+use Draw\Component\OpenApi\Versioning\RouteVersionMatcherInterface;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use Metadata\MetadataFactoryInterface;
 use Symfony\Component\DependencyInjection\Definition;
@@ -390,6 +391,9 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 ),
             ],
             [
+                RouteDefaultApiRouteVersionMatcher::class => [
+                    RouteVersionMatcherInterface::class,
+                ],
                 'jms_serializer.naming_strategy' => [
                     PropertyNamingStrategyInterface::class,
                 ],

@@ -6,7 +6,10 @@ use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 
-class ApiParameterVersionMatcherTest extends TestCase
+/**
+ * @covers \Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher
+ */
+class RouteDefaultApiRouteVersionMatcherTest extends TestCase
 {
     public function testMatchVersionTrue(): void
     {
