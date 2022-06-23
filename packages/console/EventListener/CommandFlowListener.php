@@ -162,7 +162,7 @@ class CommandFlowListener implements EventSubscriberInterface
             $this->logger->error('Command flow listener error while generating execution id', ['error' => $error]);
             $event->ignoreTracking();
 
-            throw $error;
+            return;
         } finally {
             if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
                 $this->connection->ensureConnectedToReplica();

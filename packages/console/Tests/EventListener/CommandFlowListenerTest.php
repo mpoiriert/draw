@@ -384,12 +384,7 @@ class CommandFlowListenerTest extends TestCase
                 ['error' => $error]
             );
 
-        try {
-            $this->object->generateFromDatabase($event);
-            static::fail('Exception was expected');
-        } catch (\Throwable $exception) {
-            static::assertSame($exception, $error, 'Exception does not match');
-        }
+        $this->object->generateFromDatabase($event);
 
         static::assertNull($event->getExecutionId());
         static::assertTrue($event->getIgnoreTracking());
