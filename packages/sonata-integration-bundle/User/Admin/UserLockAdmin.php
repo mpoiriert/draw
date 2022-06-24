@@ -11,7 +11,7 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
-use Sonata\Form\Type\BooleanType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class UserLockAdmin extends AbstractAdmin
 {
@@ -55,9 +55,18 @@ class UserLockAdmin extends AbstractAdmin
     public function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('reason', null, ['disabled' => true])
+            ->add('active', CheckboxType::class, ['disabled' => true, 'required' => false])
+            ->add('reason', null, ['disabled' => true, 'required' => false])
             ->add(
                 'createdAt',
+                SingleLineDateTimeType::class,
+                [
+                    'disabled' => true,
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'lockOn',
                 SingleLineDateTimeType::class,
                 [
                     'disabled' => true,
@@ -72,7 +81,6 @@ class UserLockAdmin extends AbstractAdmin
                     'required' => false,
                 ]
             )
-            ->add('active', BooleanType::class, ['disabled' => true, 'mapped' => false])
             ->add(
                 'unlockUntil',
                 SingleLineDateTimeType::class,
@@ -86,12 +94,12 @@ class UserLockAdmin extends AbstractAdmin
     {
         $show
             ->add('user')
+            ->add('active', 'boolean', ['inverse' => true])
             ->add('reason')
             ->add('createdAt')
             ->add('lockOn')
             ->add('expiresAt')
             ->add('unlockUntil')
-            ->add('active', 'boolean', ['inverse' => true])
             ->add(
                 'explanation',
                 null,
@@ -108,16 +116,16 @@ class UserLockAdmin extends AbstractAdmin
             $fields,
             [
                 'reason' => [],
-                'createdAt' => [],
-                'lockOn' => [],
-                'unlockUntil' => [],
                 'active' => [
                     'type' => 'boolean',
                     'options' => [
                         'inverse' => true,
-                        'virtual_field' => true,
                     ],
                 ],
+                'createdAt' => [],
+                'lockOn' => [],
+                'expiresAt' => [],
+                'unlockUntil' => [],
                 'actions' => [
                     'type' => ListMapper::TYPE_ACTIONS,
                     'options' => [

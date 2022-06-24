@@ -15,6 +15,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
@@ -48,7 +49,7 @@ class UserAdmin extends AbstractAdmin
             ->addIdentifier('id')
             ->add('email')
             ->add('tags', 'list')
-            ->add('isLocked', 'boolean', ['virtual_field' => true, 'inverse' => true])
+            ->add('isLocked', 'boolean', ['inverse' => true])
             ->add(
                 \constant(ListMapper::class.'::NAME_ACTIONS') ?: '_action',
                 null,
@@ -89,7 +90,7 @@ class UserAdmin extends AbstractAdmin
                     'fields' => $tagAdmin->configureGridFields([]),
                 ]
             )
-            ->add('isLocked', 'boolean', ['virtual_field' => true, 'inverse' => true])
+            ->add('isLocked', 'boolean', ['inverse' => true])
             ->add(
                 'userLocks',
                 'grid',
@@ -117,9 +118,15 @@ class UserAdmin extends AbstractAdmin
                 ->add('needChangePassword')
                 ->add('manualLock')
                 ->add(
+                    'isLocked',
+                    CheckboxType::class,
+                    ['disabled' => true, 'required' => false]
+                )
+                ->add(
                     'userLocks',
                     CollectionType::class,
                     [
+                        'required' => false,
                         'by_reference' => false,
                         'type_options' => [
                             'delete' => false,
