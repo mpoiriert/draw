@@ -37,11 +37,11 @@ class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerIn
     {
         $user = $this->userEntityRepository->find($message->getUserId());
 
-        if (!$user instanceof PasswordChangeUserInterface || $user->getNeedChangePassword()) {
+        if (!$user instanceof PasswordChangeUserInterface || !$user->getNeedChangePassword()) {
             return;
         }
 
-        if (!method_exists($user, 'getEmail') || empty($user->getEmail)) {
+        if (!method_exists($user, 'getEmail') || empty($user->getEmail())) {
             return;
         }
 
