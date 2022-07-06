@@ -7,6 +7,7 @@ use Draw\Bundle\SonataIntegrationBundle\User\Form\AdminLoginForm;
 use Draw\Bundle\SonataIntegrationBundle\User\Form\ChangePasswordForm;
 use Draw\Bundle\SonataIntegrationBundle\User\Form\ForgotPasswordForm;
 use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
+use Draw\Bundle\UserBundle\Entity\PasswordChangeUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -111,7 +112,7 @@ final class LoginController extends AbstractController
     ): Response {
         $user = $this->getUser();
 
-        if ($this->passwordHaveBeenUpdateRecently($request, $user)) {
+        if (!$this->needPasswordChange($request, $user)) {
             return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));
         }
 
@@ -135,20 +136,24 @@ final class LoginController extends AbstractController
         );
     }
 
-    private function passwordHaveBeenUpdateRecently(Request $request, UserInterface $user): bool
+    private function needPasswordChange(Request $request, UserInterface $user): bool
     {
-        if ($request->query->has('t')) {
-            return false;
+        if ($user instanceof PasswordChangeUserInterface && $user->getNeedChangePassword()) {
+            return true;
+        }
+
+        if (!$request->query->has('t')) {
+            return true;
         }
 
         if (!$user instanceof SecurityUserInterface) {
-            return false;
+            return true;
         }
 
         if (null === $passwordUpdatedAt = $user->getPasswordUpdatedAt()) {
-            return false;
+            return true;
         }
 
-        return $passwordUpdatedAt->getTimestamp() > $request->query->getInt('t');
+        return $passwordUpdatedAt->getTimestamp() < $request->query->getInt('t');
     }
 }
