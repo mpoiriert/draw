@@ -4,7 +4,7 @@ namespace Draw\Bundle\SonataIntegrationBundle\User\Controller;
 
 use Draw\Bundle\SonataIntegrationBundle\User\Form\Enable2fa;
 use Draw\Bundle\SonataIntegrationBundle\User\Form\Enable2faForm;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\QrCode\QrCodeGenerator;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -19,16 +19,18 @@ class TwoFactorAuthenticationController extends CRUDController
         TotpAuthenticatorInterface $totpAuthenticator,
         QrCodeGenerator $qrCodeGenerator
     ): Response {
-        /** @var TwoFactorAuthenticationUserInterface $user */
+        /** @var ByTimeBaseOneTimePasswordInterface $user */
         $user = $this->admin->getSubject();
 
         $this->admin->checkAccess('enable-2fa', $user);
 
         $form = $this->createForm(Enable2faForm::class, $enable2fa = new Enable2fa());
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setTotpSecret($enable2fa->totpSecret);
             if ($totpAuthenticator->checkCode($user, $enable2fa->code)) {
+                $user->enableProvider('totp');
                 $this->admin->getModelManager()->update($user);
 
                 $this->addFlash(
@@ -72,12 +74,13 @@ class TwoFactorAuthenticationController extends CRUDController
 
     public function disable2faAction(Request $request): RedirectResponse
     {
-        /** @var TwoFactorAuthenticationUserInterface $user */
+        /** @var ByTimeBaseOneTimePasswordInterface $user */
         $user = $this->admin->getSubject();
 
         $this->admin->checkAccess('disable-2fa', $user);
 
         $user->setTotpSecret(null);
+        $user->disableProvider('totp');
         $this->admin->getModelManager()->update($user);
         $this->addFlash(
             'sonata_flash_success',

@@ -99,7 +99,8 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.7",
         "phpstan/phpstan-symfony": "^1.2",
-        "phpstan/phpstan-phpunit": "^1.1"
+        "phpstan/phpstan-phpunit": "^1.1",
+        "scheb/2fa-email": "^5.12"
     },
     "replace": {
         "draw/application": "self.version",

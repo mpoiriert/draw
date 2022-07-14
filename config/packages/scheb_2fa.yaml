@@ -5,6 +5,14 @@ scheb_two_factor:
         server_name: draw.example.com
         issuer: Draw
         template: '@DrawUser/security/2fa_login.html.twig'
+
+    email:
+        digits: 6
+        sender_email: 'support@example.com'
+        sender_name: 'Example - Support'
+        template: '@DrawUser/security/2fa_login.html.twig'
+        mailer: 'Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\AuthCodeMailer'
+
     security_tokens:
         - Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken
         # If you're using guard-based authentication, you have to use this one:

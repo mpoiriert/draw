@@ -47,6 +47,9 @@ class ConfigurationTest extends ConfigurationTestCase
                 'enabled' => false,
                 'enable_route' => 'admin_app_user_enable-2fa',
                 'enforcing_roles' => [],
+                'email' => [
+                    'enabled' => false,
+                ],
             ],
             'password_change_enforcer' => [
                 'enabled' => false,

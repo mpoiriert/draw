@@ -32,7 +32,12 @@ email:
         subject: 'Welcome'
         top_section: |
             <p>Your account have been created.<p>
-            <p>Please click on the button below to finaly your account creation.</p>
+            <p>Please click on the button below to finally your account creation.</p>
         call_to_action_text: 'Finalise my account creation'
         bottom_section: |
             <p>Follow the instruction on the site to finalise your account creation.</p>
+
+    2fa_auth_code:
+        subject: 'Authentication Code'
+        top_section: |
+            <p>This is the authentication to complete your sign in process.<p>

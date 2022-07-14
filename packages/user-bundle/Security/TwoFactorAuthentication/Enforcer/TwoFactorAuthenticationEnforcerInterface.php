@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer;
 
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 
 interface TwoFactorAuthenticationEnforcerInterface
 {

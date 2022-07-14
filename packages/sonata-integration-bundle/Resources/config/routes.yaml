@@ -1,0 +1,3 @@
+draw_sonata_integration.2fa.resend_code:
+  path: '/resend-auth-code'
+  controller: 'draw.sonata.user.action.two_factor_authentication_resend_code_action'

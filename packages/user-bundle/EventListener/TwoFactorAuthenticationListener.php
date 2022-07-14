@@ -4,7 +4,8 @@ namespace Draw\Bundle\UserBundle\EventListener;
 
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptionEvent;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -43,11 +44,11 @@ class TwoFactorAuthenticationListener implements EventSubscriberInterface
         $user = $event->getUser();
         $request = $event->getRequest();
 
-        if (!$user instanceof TwoFactorAuthenticationUserInterface) {
+        if (!$user instanceof SecurityUserInterface) {
             return;
         }
 
-        if (!$user instanceof SecurityUserInterface) {
+        if (!$user instanceof TwoFactorAuthenticationUserInterface || $user->asOneProviderEnabled()) {
             return;
         }
 
@@ -55,7 +56,7 @@ class TwoFactorAuthenticationListener implements EventSubscriberInterface
             return;
         }
 
-        if ($user->isTotpAuthenticationEnabled()) {
+        if (!$user instanceof ByTimeBaseOneTimePasswordInterface) {
             return;
         }
 

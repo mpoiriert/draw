@@ -16,7 +16,10 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Component\Validator\Constraints\Count;
 
 /**
  * @TagSonataAdmin(group="User", manager_type="orm", pager_type="simple", icon="fas fa-user")
@@ -121,6 +124,19 @@ class UserAdmin extends AbstractAdmin
                     'isLocked',
                     CheckboxType::class,
                     ['disabled' => true, 'required' => false]
+                )
+                ->add(
+                    'enabledProviders',
+                    ChoiceType::class,
+                    [
+                        'choices' => ['email' => 'email', 'totp' => 'totp'],
+                        'choice_label' => fn ($choice) => new TranslatableMessage('enabledProviders.choice.'.$choice),
+                        'multiple' => true,
+                        'expanded' => true,
+                        'constraints' => [
+                            new Count(['max' => 1]),
+                        ],
+                    ]
                 )
                 ->add(
                     'userLocks',

@@ -714,12 +714,6 @@
                 "passwordUpdatedAt": {
                     "format": "date-time",
                     "type": "string"
-                },
-                "totpSecret": {
-                    "type": "string"
-                },
-                "forceEnablingTwoFactorAuthentication": {
-                    "type": "boolean"
                 }
             }
         },

@@ -24,6 +24,8 @@ use Draw\Bundle\UserBundle\MessageHandler\NewUserSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
 use Draw\Bundle\UserBundle\MessageHandler\RefreshUserLockMessageHandler;
 use Draw\Bundle\UserBundle\MessageHandler\UserLockLifeCycleMessageHandler;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\AuthCodeMailer;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Email\EmailTwoFactorProvider;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\RolesTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\TwoFactorAuthenticationEnforcerInterface;
@@ -82,6 +84,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             $bundleDirectory.'/Exception/',
             $bundleDirectory.'/Message/',
             $bundleDirectory.'/Resources/',
+            $bundleDirectory.'/Security/TwoFactorAuthentication/Entity/',
             $bundleDirectory.'/Tests/',
         ];
 
@@ -259,6 +262,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             $containerBuilder->removeDefinition(RolesTwoFactorAuthenticationEnforcer::class);
             $containerBuilder->removeDefinition(TwoFactorAuthenticationEntityListener::class);
             $containerBuilder->removeDefinition(TwoFactorAuthenticationListener::class);
+            $containerBuilder->removeDefinition(AuthCodeMailer::class);
+            $containerBuilder->removeDefinition(EmailTwoFactorProvider::class);
 
             return;
         }
@@ -273,6 +278,20 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         $containerBuilder
             ->getDefinition(TwoFactorAuthenticationListener::class)
             ->setArgument('$enableRoute', $config['enable_route']);
+
+        if ($config['email']['enabled']) {
+            $containerBuilder->setDefinition(
+                EmailTwoFactorProvider::class,
+                new Definition(EmailTwoFactorProvider::class)
+            )
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->setDecoratedService('scheb_two_factor.security.email.provider', 'draw.user.scheb_two_factor.security.email.provider.inner')
+                ->setArgument('$decorated', new Reference('draw.user.scheb_two_factor.security.email.provider.inner'));
+        } else {
+            $containerBuilder->removeDefinition(AuthCodeMailer::class);
+            $containerBuilder->removeDefinition(EmailTwoFactorProvider::class);
+        }
 
         if ($config['enforcing_roles']) {
             $containerBuilder
