@@ -1,0 +1,5 @@
+auth_code:
+  email: "Enter the code received by email"
+  totp: "Enter the code from your authenticator application"
+
+resend: "Resend code"

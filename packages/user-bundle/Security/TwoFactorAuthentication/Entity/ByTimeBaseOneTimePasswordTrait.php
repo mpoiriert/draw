@@ -1,22 +1,19 @@
 <?php
 
-namespace Draw\Bundle\UserBundle\Entity;
+namespace Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 
-trait TwoFactorAuthenticationUserTrait
+trait ByTimeBaseOneTimePasswordTrait
 {
+    use ConfigurationTrait;
+
     /**
      * @ORM\Column(name="totp_secret", type="string", nullable=true)
      */
     private ?string $totpSecret = null;
-
-    /**
-     * @ORM\Column(name="force_enabling_two_factor_authentication", type="boolean", nullable=false, options={"default":"0"})
-     */
-    private bool $forceEnablingTwoFactorAuthentication = false;
 
     public function getTotpSecret(): ?string
     {
@@ -28,21 +25,11 @@ trait TwoFactorAuthenticationUserTrait
         $this->totpSecret = $totpSecret;
     }
 
-    public function isForceEnablingTwoFactorAuthentication(): bool
-    {
-        return $this->forceEnablingTwoFactorAuthentication;
-    }
-
-    public function setForceEnablingTwoFactorAuthentication(bool $forceEnablingTwoFactorAuthentication): void
-    {
-        $this->forceEnablingTwoFactorAuthentication = $forceEnablingTwoFactorAuthentication;
-    }
-
     abstract public function getUserIdentifier(): ?string;
 
     public function isTotpAuthenticationEnabled(): bool
     {
-        return (bool) $this->totpSecret;
+        return \in_array('totp', $this->getEnabledProviders()) && $this->totpSecret;
     }
 
     public function getTotpAuthenticationUsername(): string

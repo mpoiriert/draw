@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74a75ad52cefdedaccfd590f88ea5ffc",
+    "content-hash": "752803f449b639f390e358c80748004d",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -12700,6 +12700,54 @@
                 "source": "https://github.com/scheb/2fa-bundle/tree/v5.13.2"
             },
             "time": "2022-04-16T10:18:34+00:00"
+        },
+        {
+            "name": "scheb/2fa-email",
+            "version": "v5.13.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scheb/2fa-email.git",
+                "reference": "a1359b763cd1c1d4bea314ca630cc062cdbdbc17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scheb/2fa-email/zipball/a1359b763cd1c1d4bea314ca630cc062cdbdbc17",
+                "reference": "a1359b763cd1c1d4bea314ca630cc062cdbdbc17",
+                "shasum": ""
+            },
+            "require": {
+                "scheb/2fa-bundle": "self.version"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Scheb\\TwoFactorBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Scheb",
+                    "email": "me@christianscheb.de"
+                }
+            ],
+            "description": "Extends scheb/2fa-bundle with two-factor authentication via email",
+            "homepage": "https://github.com/scheb/2fa",
+            "keywords": [
+                "2fa",
+                "Authentication",
+                "email",
+                "symfony",
+                "two-factor",
+                "two-step"
+            ],
+            "support": {
+                "source": "https://github.com/scheb/2fa-email/tree/v5.13.2"
+            },
+            "time": "2022-01-03T10:21:24+00:00"
         },
         {
             "name": "scheb/2fa-qr-code",

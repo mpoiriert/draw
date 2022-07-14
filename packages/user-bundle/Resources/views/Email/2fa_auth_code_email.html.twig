@@ -1,0 +1,6 @@
+{% extends '@draw-mailer/Email/Layout/call_to_action.html.twig' %}
+{% set draw_email_name = '2fa_auth_code' %}
+
+{% block call_to_action %}
+    <b>{{ auth_code }}</b>
+{% endblock %}

@@ -6,6 +6,7 @@ use Draw\Bundle\SonataIntegrationBundle\User\Controller\TwoFactorAuthenticationC
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 use Scheb\TwoFactorBundle\SchebTwoFactorBundle;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGenerator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -30,6 +31,8 @@ class DrawSonataIntegrationExtensionUser2faEnabledTest extends DrawSonataIntegra
 
         yield [TwoFactorAuthenticationExtension::class];
         yield [TwoFactorAuthenticationController::class];
+        yield ['draw.sonata.user.action.two_factor_authentication_resend_code_action'];
+        yield [CodeGenerator::class, 'scheb_two_factor.security.email.code_generator'];
     }
 
     protected function preLoad(array $config, ContainerBuilder $containerBuilder): void

@@ -23,3 +23,13 @@ App\Entity\User:
                 setter: 'setUserAddresses'
         userLocks:
             exclude: true
+        totpSecret:
+            exclude: true
+        forceEnablingTwoFactorAuthentication:
+            exclude: true
+        emailAuthCode:
+            exclude: true
+        emailAuthCodeGeneratedAt:
+            exclude: true
+        enabledProviders:
+            exclude: true

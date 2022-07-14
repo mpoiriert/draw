@@ -12,13 +12,18 @@ use Draw\Bundle\UserBundle\Entity\PasswordChangeEnforcerUserTrait;
 use Draw\Bundle\UserBundle\Entity\PasswordChangeUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
-use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByEmailInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByEmailTrait;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordTrait;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ConfigurationTrait;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
 use Draw\DoctrineExtra\Common\Collections\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,14 +34,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"email"})
  */
-class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface
+class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface, TwoFactorInterface, ByEmailInterface, ByTimeBaseOneTimePasswordInterface
 {
+    use ByEmailTrait;
+    use ByTimeBaseOneTimePasswordTrait;
+    use ConfigurationTrait;
     use LockableUserTrait;
     use MessageHolderTrait;
     use OnBoardingLifeCycleHookUserTrait;
     use PasswordChangeEnforcerUserTrait;
     use SecurityUserTrait;
-    use TwoFactorAuthenticationUserTrait;
 
     public const LEVEL_USER = 'user';
 

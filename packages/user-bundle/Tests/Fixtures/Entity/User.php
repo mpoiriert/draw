@@ -3,15 +3,15 @@
 namespace Draw\Bundle\UserBundle\Tests\Fixtures\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Draw\Bundle\UserBundle\Entity\TwoFactorAuthenticationUserTrait;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\TwoFactorAuthenticationUserInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordTrait;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 
 /**
  * @ORM\Entity
  */
 class User implements TwoFactorAuthenticationUserInterface
 {
-    use TwoFactorAuthenticationUserTrait;
+    use ByTimeBaseOneTimePasswordTrait;
 
     /**
      * @ORM\Id

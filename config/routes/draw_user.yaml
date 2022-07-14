@@ -8,3 +8,6 @@ api:
     type: "annotation"
     format: "json"
     prefix: "/api"
+
+2fa:
+    resource: '@DrawSonataIntegrationBundle/Resources/config/routes.yaml'

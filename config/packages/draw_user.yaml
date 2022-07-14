@@ -6,3 +6,4 @@ draw_user:
     password_change_enforcer: ~
     enforce_2fa:
         enforcing_roles: ['ROLE_2FA_ADMIN']
+        email: ~
