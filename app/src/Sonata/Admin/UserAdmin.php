@@ -126,7 +126,7 @@ class UserAdmin extends AbstractAdmin
                     ['disabled' => true, 'required' => false]
                 )
                 ->add(
-                    'enabledProviders',
+                    'twoFactorAuthenticationEnabledProviders',
                     ChoiceType::class,
                     [
                         'choices' => ['email' => 'email', 'totp' => 'totp'],

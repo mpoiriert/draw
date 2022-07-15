@@ -14,13 +14,13 @@ trait ByEmailTrait
     private ?string $emailAuthCode = null;
 
     /**
-     * @ORM\Column(name="email_auth_code_generated_at", type="date_immutable", nullable=true)
+     * @ORM\Column(name="email_auth_code_generated_at", type="datetime_immutable", nullable=true)
      */
     private ?\DateTimeImmutable $emailAuthCodeGeneratedAt = null;
 
     public function isEmailAuthEnabled(): bool
     {
-        return \in_array('email', $this->getEnabledProviders()) && $this->getEmailAuthRecipient();
+        return \in_array('email', $this->getTwoFactorAuthenticationEnabledProviders()) && $this->getEmailAuthRecipient();
     }
 
     public function getEmailAuthRecipient(): string

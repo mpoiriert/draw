@@ -93,7 +93,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                 new class() implements SecurityUserInterface,
                 TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
-                        asOneProviderEnabled as originalAsOneProviderEnabled;
+                        asOneTwoFActorAuthenticationProviderEnabled as originalAsOneProviderEnabled;
                     }
 
                     use SecurityUserTrait;
@@ -103,7 +103,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                         return 1;
                     }
 
-                    public function asOneProviderEnabled(): bool
+                    public function asOneTwoFActorAuthenticationProviderEnabled(): bool
                     {
                         return true;
                     }

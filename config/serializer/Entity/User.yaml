@@ -31,5 +31,5 @@ App\Entity\User:
             exclude: true
         emailAuthCodeGeneratedAt:
             exclude: true
-        enabledProviders:
+        twoFactorAuthenticationEnabledProviders:
             exclude: true
