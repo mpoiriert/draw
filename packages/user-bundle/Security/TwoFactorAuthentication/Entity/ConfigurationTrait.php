@@ -9,37 +9,42 @@ trait ConfigurationTrait
     /**
      * @var string[]
      *
-     * @ORM\Column(name="enabled_providers", type="json", nullable=true)
+     * @ORM\Column(name="two_factor_authentication_enabled_providers", type="json", nullable=true)
      */
-    private ?array $enabledProviders = [];
+    private ?array $twoFactorAuthenticationEnabledProviders = [];
 
     /**
      * @ORM\Column(name="force_enabling_two_factor_authentication", type="boolean", nullable=false, options={"default":"0"})
      */
     private bool $forceEnablingTwoFactorAuthentication = false;
 
-    public function getEnabledProviders(): array
+    public function getTwoFactorAuthenticationEnabledProviders(): array
     {
-        return $this->enabledProviders ?? $this->enabledProviders = [];
+        return $this->twoFactorAuthenticationEnabledProviders ?? $this->twoFactorAuthenticationEnabledProviders = [];
     }
 
-    public function setEnabledProviders(array $providers): void
+    public function setTwoFactorAuthenticationEnabledProviders(array $providers): void
     {
-        $this->enabledProviders = array_values($providers);
+        $this->twoFactorAuthenticationEnabledProviders = array_values($providers);
     }
 
-    public function enableProvider(string $provider): void
+    public function enableTwoFActorAuthenticationProvider(string $provider): void
     {
-        $enabledProviders = $this->getEnabledProviders();
+        $enabledProviders = $this->getTwoFactorAuthenticationEnabledProviders();
 
-        if (!\in_array($enabledProviders, $this->enabledProviders)) {
+        if (!\in_array($enabledProviders, $this->twoFactorAuthenticationEnabledProviders)) {
             $enabledProviders[] = $provider;
 
-            $this->setEnabledProviders($enabledProviders);
+            $this->setTwoFactorAuthenticationEnabledProviders($enabledProviders);
         }
     }
 
-    public function asOneProviderEnabled(): bool
+    public function disableTwoFActorAuthenticationProvider(string $provider): void
+    {
+        $this->setTwoFactorAuthenticationEnabledProviders(array_diff($this->getTwoFactorAuthenticationEnabledProviders(), [$provider]));
+    }
+
+    public function asOneTwoFActorAuthenticationProviderEnabled(): bool
     {
         if ($this instanceof ByEmailInterface && $this->isEmailAuthEnabled()) {
             return true;
@@ -50,11 +55,6 @@ trait ConfigurationTrait
         }
 
         return false;
-    }
-
-    public function disableProvider(string $provider): void
-    {
-        $this->setEnabledProviders(array_diff($this->getEnabledProviders(), [$provider]));
     }
 
     public function isForceEnablingTwoFactorAuthentication(): bool

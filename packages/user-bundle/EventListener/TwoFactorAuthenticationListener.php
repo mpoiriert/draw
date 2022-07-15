@@ -48,7 +48,7 @@ class TwoFactorAuthenticationListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$user instanceof TwoFactorAuthenticationUserInterface || $user->asOneProviderEnabled()) {
+        if (!$user instanceof TwoFactorAuthenticationUserInterface || $user->asOneTwoFActorAuthenticationProviderEnabled()) {
             return;
         }
 

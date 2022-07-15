@@ -30,7 +30,7 @@ class TwoFactorAuthenticationController extends CRUDController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setTotpSecret($enable2fa->totpSecret);
             if ($totpAuthenticator->checkCode($user, $enable2fa->code)) {
-                $user->enableProvider('totp');
+                $user->enableTwoFActorAuthenticationProvider('totp');
                 $this->admin->getModelManager()->update($user);
 
                 $this->addFlash(
@@ -80,7 +80,7 @@ class TwoFactorAuthenticationController extends CRUDController
         $this->admin->checkAccess('disable-2fa', $user);
 
         $user->setTotpSecret(null);
-        $user->disableProvider('totp');
+        $user->disableTwoFActorAuthenticationProvider('totp');
         $this->admin->getModelManager()->update($user);
         $this->addFlash(
             'sonata_flash_success',

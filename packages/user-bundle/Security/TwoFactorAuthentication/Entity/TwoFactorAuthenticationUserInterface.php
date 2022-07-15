@@ -4,15 +4,15 @@ namespace Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity;
 
 interface TwoFactorAuthenticationUserInterface
 {
-    public function getEnabledProviders(): array;
+    public function getTwoFactorAuthenticationEnabledProviders(): array;
 
-    public function setEnabledProviders(array $providers): void;
+    public function setTwoFactorAuthenticationEnabledProviders(array $providers): void;
 
-    public function enableProvider(string $provider): void;
+    public function enableTwoFActorAuthenticationProvider(string $provider): void;
 
-    public function disableProvider(string $provider): void;
+    public function disableTwoFActorAuthenticationProvider(string $provider): void;
 
-    public function asOneProviderEnabled(): bool;
+    public function asOneTwoFActorAuthenticationProviderEnabled(): bool;
 
     public function isForceEnablingTwoFactorAuthentication(): bool;
 
