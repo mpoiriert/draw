@@ -47,9 +47,11 @@ use Traversable;
 trait AssertTrait
 {
     /**
+     * @param $path null|string|PropertyPathInterface
+     *
      * @return mixed Return the data that is currently tested
      */
-    abstract public function getData();
+    abstract public function getData($path = null);
 ';
 
         foreach ($methods as $methodName => $information) {

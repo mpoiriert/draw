@@ -7,6 +7,7 @@
 namespace Draw\Component\Tester;
 
 use PHPUnit\Framework\Assert;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 /**
  * @internal
@@ -14,9 +15,11 @@ use PHPUnit\Framework\Assert;
 trait AssertTrait
 {
     /**
+     * @param $path null|string|PropertyPathInterface
+     *
      * @return mixed Return the data that is currently tested
      */
-    abstract public function getData();
+    abstract public function getData($path = null);
 
     // example-start: assertContains
     /**
