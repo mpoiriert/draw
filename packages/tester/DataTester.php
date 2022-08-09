@@ -4,6 +4,8 @@ namespace Draw\Component\Tester;
 
 use Draw\Component\Core\DataAccessor;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class DataTester extends DataAccessor
@@ -81,6 +83,13 @@ class DataTester extends DataAccessor
     public function test(callable $callable): self
     {
         \call_user_func($callable, $this);
+
+        return $this;
+    }
+
+    public function assertThat(Constraint $constraint, string $message = ''): self
+    {
+        TestCase::assertThat($this->getData(), $constraint, $message);
 
         return $this;
     }
