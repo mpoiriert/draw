@@ -4,15 +4,16 @@ namespace Draw\Component\Tester\Data;
 
 use Draw\Component\Tester\DataTester;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Constraint\Constraint;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class AgainstJsonFileTester
 {
-    private $fullJsonFilePath;
+    private string $fullJsonFilePath;
 
-    private $propertyPathsCheck;
+    private array $propertyPathsCheck;
 
-    public function __construct($fullJsonFilePath, $propertyPathsCheck = [])
+    public function __construct(string $fullJsonFilePath, array $propertyPathsCheck = [])
     {
         $this->fullJsonFilePath = $fullJsonFilePath;
         $this->propertyPathsCheck = $propertyPathsCheck;
@@ -32,6 +33,13 @@ class AgainstJsonFileTester
         if ($this->propertyPathsCheck) {
             $accessor = PropertyAccess::createPropertyAccessor();
             foreach ($this->propertyPathsCheck as $path => $callable) {
+                if ($callable instanceof Constraint) {
+                    $constraint = $callable;
+                    $callable = function (DataTester $dataTester) use ($constraint, $path): void {
+                        $constraint->evaluate($dataTester->getData(), 'Path: '.$path);
+                    };
+                }
+
                 if (!\is_callable($callable)) {
                     $value = $callable;
                     $callable = function (DataTester $tester) use ($value, $path): void {
