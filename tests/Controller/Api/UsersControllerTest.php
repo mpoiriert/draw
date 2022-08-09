@@ -32,9 +32,7 @@ class UsersControllerTest extends TestCase
 
     public function testUsersCreateAction(): object
     {
-        $this->connect();
-
-        return $this->httpTester()
+        return $this->connect($this->httpTester())
             ->post(
                 '/api/users',
                 json_encode([
