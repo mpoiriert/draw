@@ -2,10 +2,9 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\TestCase;
-use Draw\Component\Tester\Data\AgainstJsonFileTester;
+use Draw\Bundle\TesterBundle\WebTestCase;
 
-class OpenApiControllerTest extends TestCase
+class OpenApiControllerTest extends WebTestCase
 {
     private bool $writeFile = false;
 
@@ -13,21 +12,20 @@ class OpenApiControllerTest extends TestCase
     {
         $file = __DIR__.'/fixtures/api-doc.json';
 
-        $responseTester = $this->httpTester()
-            ->get('/api-doc.json')
-            ->assertStatus(200);
+        $client = static::createJsonClient();
 
-        $jsonTester = $responseTester
-            ->toJsonDataTester();
+        $client->request('get', '/api-doc.json');
+
+        static::assertResponseIsSuccessful();
+        static::assertResponseIsJson();
 
         // We keep this since the file must be rewrite often
         if ($this->writeFile) {
-            $content = $responseTester->getResponseBodyContents();
+            $content = static::getResponseContent();
             file_put_contents($file, json_encode(json_decode($content), \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES));
         }
 
-        $jsonTester
-            ->test(new AgainstJsonFileTester($file));
+        static::assertResponseJsonAgainstFile($file);
     }
 
     public function testWriteFile(): void

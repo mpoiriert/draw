@@ -2,20 +2,18 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\TestCase;
-use Draw\Component\Profiling\Sql\SqlAssertionBuilder;
+use Draw\Bundle\TesterBundle\WebTestCase;
 
-class PingControllerTest extends TestCase
+class PingControllerTest extends WebTestCase
 {
     public function testPing(): void
     {
-        $response = $this->httpTester()
-            ->get('/ping')
-            ->assertStatus(200)
-            ->getResponseBodyContents();
+        $client = static::createClient();
 
-        static::assertSame('pong', $response);
+        $client->request('GET', '/ping');
 
-        $this->assertMetrics(SqlAssertionBuilder::create(1));
+        static::assertResponseIsSuccessful();
+
+        static::assertSame('pong', static::getResponseContent());
     }
 }
