@@ -5,6 +5,7 @@ namespace Draw\Component\Tester\Data;
 use Draw\Component\Tester\DataTester;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class AgainstJsonFileTester
@@ -36,7 +37,7 @@ class AgainstJsonFileTester
                 if ($callable instanceof Constraint) {
                     $constraint = $callable;
                     $callable = function (DataTester $dataTester) use ($constraint, $path): void {
-                        $constraint->evaluate($dataTester->getData(), 'Path: '.$path);
+                        TestCase::assertThat($dataTester->getData(), $constraint, 'Path: '.$path);
                     };
                 }
 

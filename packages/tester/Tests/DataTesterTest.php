@@ -3,6 +3,7 @@
 namespace Draw\Component\Tester\Tests;
 
 use Draw\Component\Tester\DataTester;
+use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -137,5 +138,10 @@ class DataTesterTest extends TestCase
         $this->expectExceptionMessage('This is not a string.');
 
         (new DataTester(1))->test(DataTester::createCallable('assertIsString', 'This is not a string.'));
+    }
+
+    public function testAssertThat(): void
+    {
+        (new DataTester(1))->assertThat(new IsIdentical(1));
     }
 }
