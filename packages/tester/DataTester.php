@@ -96,6 +96,9 @@ class DataTester extends DataAccessor
 
     /**
      * @param mixed ...$parameters
+     *
+     * @deprecated
+     * @see DataTester::assertThat
      */
     public static function createCallable(string $methodName, ...$parameters): callable
     {
