@@ -2,28 +2,30 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Doctrine\Filter;
 
+use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\Filter;
 
 class InFilter extends Filter
 {
-    public function filter(ProxyQueryInterface $query, $alias, $field, $data): void
+    public function filter(ProxyQueryInterface $query, string $alias, string $field, FilterData $data): void
     {
-        if (!$data || !\is_array($data) || !\array_key_exists('value', $data)) {
+        $value = $data->getValue();
+
+        if (empty($value)) {
             return;
         }
 
-        $data['value'] = trim($data['value']);
+        $value = trim($value);
 
-        if (0 === mb_strlen($data['value'])) {
+        if (0 === mb_strlen($value)) {
             return;
         }
 
-        $values = explode(',', $data['value']);
+        $values = explode(',', $value);
         $values = array_filter(array_map('trim', $values));
 
-        // c.name > '1' => c.name OPERATOR :FIELDNAME
         $parameterName = $this->getNewParameterName($query);
 
         $this->applyWhere($query, sprintf('%s.%s IN (:%s)', $alias, $field, $parameterName));
@@ -37,10 +39,13 @@ class InFilter extends Filter
 
     public function getRenderSettings(): array
     {
-        return [ChoiceType::class, [
-            'field_type' => $this->getFieldType(),
-            'field_options' => $this->getFieldOptions(),
-            'label' => $this->getLabel(),
-        ]];
+        return [
+            ChoiceType::class,
+            [
+                'field_type' => $this->getFieldType(),
+                'field_options' => $this->getFieldOptions(),
+                'label' => $this->getLabel(),
+            ],
+        ];
     }
 }
