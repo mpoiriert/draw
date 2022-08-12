@@ -4,6 +4,13 @@
     "fake-string": {
       "type": "string"
     },
+    "fake-integers": {
+      "items": {
+        "format": "int32",
+        "type": "integer"
+      },
+      "type": "array"
+    },
     "fake-strings": {
       "type": "array",
       "items": {

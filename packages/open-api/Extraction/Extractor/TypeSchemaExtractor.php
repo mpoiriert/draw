@@ -181,10 +181,12 @@ class TypeSchemaExtractor implements ExtractorInterface
             ];
         }
 
+        $type = (string) $result;
+
         $primitiveType = [];
 
         $typeOfArray = str_replace('[]', '', $type);
-        if ($typeOfArray != $type) {
+        if ($typeOfArray !== $type) {
             if ($typeOfArray !== substr($type, 0, -2)) {
                 return null;
             }

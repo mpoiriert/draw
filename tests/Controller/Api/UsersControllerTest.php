@@ -68,6 +68,28 @@ class UsersControllerTest extends TestCase
     /**
      * @depends testUsersCreateAction
      */
+    public function testSetTagsAction(object $user): void
+    {
+        $this->httpTester()
+            ->put(
+                '/api/users/'.$user->id,
+                json_encode([
+                    'tags' => [
+                        ['id' => 1],
+                    ],
+                ])
+            )
+            ->assertStatus(200)
+            ->toJsonDataTester()
+            ->path('tags')
+            ->assertCount(1)
+            ->path('[0].id')
+            ->assertSame(1);
+    }
+
+    /**
+     * @depends testUsersCreateAction
+     */
     public function testUsersDeleteAction(object $user): void
     {
         $this->httpTester()
