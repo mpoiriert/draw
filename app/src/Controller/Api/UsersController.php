@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\OpenApi\Configuration\Deserialization;
@@ -67,6 +68,24 @@ class UsersController extends AbstractController
         $entityManager->flush();
 
         return $target;
+    }
+
+    /**
+     * @Route(methods={"PUT"}, path="/users/{id}/tags")
+     *
+     * @OpenApi\Operation(operationId="userSetTags")
+     *
+     * @Deserialization(name="tags", class="array<App\Entity\Tag>")
+     *
+     * @IsGranted("ROLE_ADMIN")
+     *
+     * @return array<Tag> The new list of tags
+     */
+    public function setTagsAction(User $target, array $tags): array
+    {
+        $target->setTags($tags);
+
+        return $target->getTags()->toArray();
     }
 
     /**

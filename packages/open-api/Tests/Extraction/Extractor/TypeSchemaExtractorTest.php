@@ -13,62 +13,84 @@ use PHPUnit\Framework\TestCase;
 
 class TypeSchemaExtractorTest extends TestCase
 {
+    private TypeSchemaExtractor $object;
+
+    protected function setUp(): void
+    {
+        $this->object = new TypeSchemaExtractor();
+    }
+
     public function provideTestCanExtract(): iterable
     {
-        return [
-            ['string', null, false],
-            [null, new Schema(), false],
-            ['string', new Schema(), true],
-            ['string[]', new Schema(), true],
-            [new Schema(), new Schema(), false],
+        yield 'invalid-target' => [
+            'string',
+            null,
+            false,
+        ];
+
+        yield 'null-source' => [
+            null,
+            new Schema(),
+            false,
+        ];
+
+        yield 'primitive-source' => [
+            'string',
+            new Schema(),
+            true,
+        ];
+
+        yield 'primitive[]-source' => [
+            'string[]',
+            new Schema(),
+            true,
+        ];
+
+        yield 'array<primitive>-source' => [
+            'array<string>',
+            new Schema(),
+            true,
         ];
     }
 
     /**
      * @dataProvider provideTestCanExtract
      *
-     * @param $source
-     * @param $type
-     * @param $canBeExtract
+     * @param mixed $source
+     * @param mixed $type
      */
-    public function testCanExtract($source, $type, $canBeExtract): void
+    public function testCanExtract($source, $type, bool $canBeExtract): void
     {
-        $extractor = new TypeSchemaExtractor();
+        $context = $this->createMock(ExtractionContextInterface::class);
 
-        /** @var ExtractionContextInterface $context */
-        $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
-
-        static::assertSame($canBeExtract, $extractor->canExtract($source, $type, $context));
+        static::assertSame(
+            $canBeExtract,
+            $this->object->canExtract($source, $type, $context)
+        );
 
         if (!$canBeExtract) {
-            try {
-                $extractor->extract($source, $type, $context);
-                static::fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
-            } catch (ExtractionImpossibleException $e) {
-                static::assertTrue(true);
-            }
+            $this->expectExceptionObject(new ExtractionImpossibleException());
+            $this->object->extract($source, $type, $context);
         }
     }
 
     public function testExtract(): void
     {
-        $extractor = new TypeSchemaExtractor();
-
-        $context = $this->getExtractionContext([$extractor]);
+        $context = $this->getExtractionContext([$this->object]);
 
         $schema = $context->getRootSchema();
 
         $schema->addDefinition('fake-string', $modelSchema = new Schema());
-        $extractor->extract('string', $modelSchema, $context);
+        $this->object->extract('string', $modelSchema, $context);
 
         $schema->addDefinition('fake-strings', $modelSchema = new Schema());
-        $extractor->extract('string[]', $modelSchema, $context);
+        $this->object->extract('string[]', $modelSchema, $context);
 
-        $schema->addDefinition('fake-strings', $modelSchema = new Schema());
-        $extractor->extract('string[]', $modelSchema, $context);
+        $schema->addDefinition('fake-integers', $modelSchema = new Schema());
+        $this->object->extract('array<int>', $modelSchema, $context);
 
         $schema->addDefinition('object', $modelSchema = new Schema());
-        $extractor->extract(TypeExtractorStubModel::class, $modelSchema, $context);
+        $this->object->extract(TypeExtractorStubModel::class, $modelSchema, $context);
 
         $jsonSchema = $context->getOpenApi()->dump($context->getRootSchema(), false);
 
