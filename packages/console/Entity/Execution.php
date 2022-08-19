@@ -97,6 +97,9 @@ class Execution
      */
     private ?string $autoAcknowledgeReason = null;
 
+    /**
+     * @ORM\PrePersist
+     */
     public function getId(): string
     {
         if (null === $this->id) {
