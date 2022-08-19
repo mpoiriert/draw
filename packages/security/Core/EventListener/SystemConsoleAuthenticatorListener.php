@@ -53,9 +53,15 @@ class SystemConsoleAuthenticatorListener implements EventSubscriberInterface
 
     public function connectSystem(ConsoleCommandEvent $consoleCommandEvent): void
     {
-        $consoleCommandEvent->getInput()->bind($consoleCommandEvent->getCommand()->getDefinition());
+        $input = $consoleCommandEvent->getInput();
 
-        if (!$consoleCommandEvent->getInput()->hasOption(self::OPTION_AS_SYSTEM)) {
+        $input->bind($consoleCommandEvent->getCommand()->getDefinition());
+
+        if (!$input->hasOption(self::OPTION_AS_SYSTEM) || !$input->getOption(self::OPTION_AS_SYSTEM)) {
+            return;
+        }
+
+        if ($this->tokenStorage->getToken()) {
             return;
         }
 
