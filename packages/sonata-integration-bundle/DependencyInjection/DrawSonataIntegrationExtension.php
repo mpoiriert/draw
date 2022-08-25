@@ -23,7 +23,6 @@ use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationEx
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminRuntime;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
-use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGenerator;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -212,17 +211,16 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             throw new RuntimeException('The bundle SchebTwoFactorBundle needs to be registered to have 2FA enabled.');
         }
 
-        $container
-            ->setAlias(CodeGenerator::class, 'scheb_two_factor.security.email.code_generator');
-
-        $container
-            ->setDefinition(
-                'draw.sonata.user.action.two_factor_authentication_resend_code_action',
-                new Definition(TwoFactorAuthenticationResendCodeAction::class)
-            )
-            ->setAutoconfigured(true)
-            ->setAutowired(true)
-            ->addTag('controller.service_arguments');
+        if ($config['2fa']['email']['enabled']) {
+            $container
+                ->setDefinition(
+                    'draw.sonata.user.action.two_factor_authentication_resend_code_action',
+                    new Definition(TwoFactorAuthenticationResendCodeAction::class)
+                )
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->addTag('controller.service_arguments');
+        }
 
         $reflectionClass = new \ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
         if (!$reflectionClass->implementsInterface(TwoFactorAuthenticationUserInterface::class)) {

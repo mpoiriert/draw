@@ -67,6 +67,9 @@ class ConfigurationTest extends ConfigurationTestCase
                 'user_admin_code' => UserAdmin::class,
                 '2fa' => [
                     'enabled' => false,
+                    'email' => [
+                        'enabled' => false,
+                    ],
                     'field_positions' => [
                         TwoFactorAuthenticationExtension::FIELD_2FA_ENABLED => [
                             'list' => ListMapper::NAME_ACTIONS,
