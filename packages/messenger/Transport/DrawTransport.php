@@ -83,7 +83,13 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
     {
         if ($this->driverConnection->getDatabasePlatform() instanceof MySQLPlatform) {
             $tableName = $this->connection->getConfiguration()['table_name'];
-            $this->driverConnection->delete($tableName, ['delivered_at' => '9999-12-31', 'id' => $id]);
+            $this->driverConnection->executeQuery(
+                sprintf(
+                    'DELETE FROM %s WHERE id = ? AND delivered_at >= ?',
+                    $tableName
+                ),
+                [$id, '9999-12-31']
+            );
         }
 
         return parent::find($id);
