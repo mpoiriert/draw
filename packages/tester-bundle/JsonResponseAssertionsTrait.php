@@ -2,9 +2,9 @@
 
 namespace Draw\Bundle\TesterBundle;
 
-use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Tester\Data\AgainstJsonFileTester;
 use Draw\Component\Tester\DataTester;
+use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\BrowserKitAssertionsTrait;
 
 trait JsonResponseAssertionsTrait
