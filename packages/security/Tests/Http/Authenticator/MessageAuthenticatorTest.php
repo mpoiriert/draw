@@ -5,7 +5,7 @@ namespace Draw\Component\Security\Tests\Http\Authenticator;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
-use Draw\Component\Tester\MockBuilderTrait;
+use Draw\Component\Tester\MockTrait;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +28,7 @@ use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
  */
 class MessageAuthenticatorTest extends TestCase
 {
-    use MockBuilderTrait;
+    use MockTrait;
 
     private MessageAuthenticator $service;
 

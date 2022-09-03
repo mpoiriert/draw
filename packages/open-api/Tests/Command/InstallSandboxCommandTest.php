@@ -2,10 +2,10 @@
 
 namespace Draw\Component\OpenApi\Tests\Command;
 
-use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,6 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class InstallSandboxCommandTest extends TestCase
 {
     use CommandTestTrait;
+    use MockTrait;
 
     public function createCommand(): Command
     {
@@ -85,10 +86,10 @@ class InstallSandboxCommandTest extends TestCase
             }
         });
 
-        ReflectionAccessor::setPropertyValue(
+        $filesystem = $this->mockProperty(
             $this->command,
             'filesystem',
-            $filesystem = $this->createMock(Filesystem::class)
+            Filesystem::class
         );
 
         $filesystem

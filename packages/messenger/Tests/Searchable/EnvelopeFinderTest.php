@@ -5,7 +5,7 @@ namespace Draw\Component\Messenger\Tests\Searchable;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
-use Draw\Component\Tester\MockBuilderTrait;
+use Draw\Component\Tester\MockTrait;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
  */
 class EnvelopeFinderTest extends TestCase
 {
-    use MockBuilderTrait;
+    use MockTrait;
 
     private EnvelopeFinder $service;
 
