@@ -4,7 +4,7 @@ namespace Draw\Component\Mailer\Tests\EventListener;
 
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailWriterListener;
-use Draw\Component\Tester\MockBuilderTrait;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\Mime\RawMessage;
  */
 class EmailWriterListenerTest extends TestCase
 {
-    use MockBuilderTrait;
+    use MockTrait;
 
     private EmailWriterListener $object;
 

@@ -7,7 +7,7 @@ use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\MockBuilderTrait;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +21,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 class PurgeExpiredMessageCommandTest extends TestCase
 {
     use CommandTestTrait;
-    use MockBuilderTrait;
+    use MockTrait;
 
     /**
      * @var TransportRepository&MockObject

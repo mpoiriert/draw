@@ -13,8 +13,8 @@ use Draw\Component\Console\Event\CommandErrorEvent;
 use Draw\Component\Console\Event\LoadExecutionIdEvent;
 use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Console\Output\BufferedConsoleOutput;
-use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -36,6 +36,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class CommandFlowListenerTest extends TestCase
 {
     use DoctrineOrmTrait;
+    use MockTrait;
 
     private static EntityManagerInterface $entityManager;
 
@@ -251,10 +252,10 @@ class CommandFlowListenerTest extends TestCase
             $this->createMock(OutputInterface::class)
         );
 
-        ReflectionAccessor::setPropertyValue(
+        $connection = $this->mockProperty(
             $this->object,
             'connection',
-            $connection = $this->createMock(Connection::class),
+            Connection::class
         );
 
         $connection
@@ -282,10 +283,10 @@ class CommandFlowListenerTest extends TestCase
             $this->createMock(OutputInterface::class)
         );
 
-        ReflectionAccessor::setPropertyValue(
+        $connection = $this->mockProperty(
             $this->object,
             'connection',
-            $connection = $this->createMock(Connection::class),
+            Connection::class
         );
 
         $connection
@@ -356,10 +357,10 @@ class CommandFlowListenerTest extends TestCase
             ->method('getOptions')
             ->willReturn([]);
 
-        ReflectionAccessor::setPropertyValue(
+        $connection = $this->mockProperty(
             $this->object,
             'connection',
-            $connection = $this->createMock(PrimaryReadReplicaConnection::class),
+            PrimaryReadReplicaConnection::class
         );
 
         $connection
@@ -413,10 +414,10 @@ class CommandFlowListenerTest extends TestCase
             ->method('getOptions')
             ->willReturn(['null' => null, 'zero' => 0, 'false' => false, 'other' => 'value']);
 
-        ReflectionAccessor::setPropertyValue(
+        $connection = $this->mockProperty(
             $this->object,
             'connection',
-            $connection = $this->createMock(PrimaryReadReplicaConnection::class),
+            PrimaryReadReplicaConnection::class
         );
 
         $connection
@@ -583,10 +584,10 @@ class CommandFlowListenerTest extends TestCase
 
     public function testLogCommandTerminateReplication(): void
     {
-        ReflectionAccessor::setPropertyValue(
+        $connection = $this->mockProperty(
             $this->object,
             'connection',
-            $connection = $this->createMock(PrimaryReadReplicaConnection::class),
+            PrimaryReadReplicaConnection::class
         );
 
         $connection

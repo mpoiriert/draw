@@ -3,7 +3,6 @@
 namespace Draw\Component\Messenger\Tests\Transport;
 
 use Doctrine\DBAL\Connection;
-use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\Searchable\SearchableTransportInterface;
@@ -11,6 +10,7 @@ use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
+use Draw\Component\Tester\MockTrait;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -26,6 +26,8 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
  */
 class DrawTransportTest extends TestCase
 {
+    use MockTrait;
+
     private DrawTransport $service;
 
     /**
@@ -98,10 +100,10 @@ class DrawTransportTest extends TestCase
      */
     public function testSendException(): void
     {
-        ReflectionAccessor::setPropertyValue(
+        $driverConnection = $this->mockProperty(
             $this->service,
             'driverConnection',
-            $driverConnection = $this->createMock(Connection::class)
+            Connection::class
         );
 
         $driverConnection->expects(static::once())
@@ -166,10 +168,10 @@ class DrawTransportTest extends TestCase
      */
     public function testFindByTagsNoTags(): void
     {
-        ReflectionAccessor::setPropertyValue(
+        $driverConnection = $this->mockProperty(
             $this->service,
             'driverConnection',
-            $driverConnection = $this->createMock(Connection::class)
+            Connection::class
         );
 
         $driverConnection->expects(static::never())

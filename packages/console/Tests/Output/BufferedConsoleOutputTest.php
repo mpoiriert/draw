@@ -3,7 +3,7 @@
 namespace Draw\Component\Console\Tests\Output;
 
 use Draw\Component\Console\Output\BufferedConsoleOutput;
-use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class BufferedConsoleOutputTest extends TestCase
 {
+    use MockTrait;
     private BufferedConsoleOutput $object;
 
     protected function setUp(): void
@@ -31,10 +32,10 @@ class BufferedConsoleOutputTest extends TestCase
 
     public function testSetDecorated(): void
     {
-        ReflectionAccessor::setPropertyValue(
+        $formatter = $this->mockProperty(
             $this->object,
             'formatter',
-            $formatter = $this->createMock(OutputFormatterInterface::class)
+            OutputFormatterInterface::class
         );
 
         $formatter

@@ -6,7 +6,7 @@ use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
 use Draw\Component\Security\Jwt\JwtEncoder;
-use Draw\Component\Tester\MockBuilderTrait;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +30,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class JwtAuthenticatorTest extends TestCase
 {
-    use MockBuilderTrait;
+    use MockTrait;
 
     private JwtAuthenticator $object;
 

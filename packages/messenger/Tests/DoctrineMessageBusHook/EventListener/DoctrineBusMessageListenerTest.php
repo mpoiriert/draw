@@ -14,7 +14,7 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterfac
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMessageListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
-use Draw\Component\Tester\MockBuilderTrait;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -25,7 +25,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class DoctrineBusMessageListenerTest extends TestCase
 {
-    use MockBuilderTrait;
+    use MockTrait;
 
     private DoctrineBusMessageListener $object;
 
