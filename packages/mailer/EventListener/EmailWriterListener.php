@@ -108,7 +108,6 @@ class EmailWriterListener implements EventSubscriberInterface
 
     private function getTypes(RawMessage $message): array
     {
-        /* @phpstan-ignore-next-line */
         return [\get_class($message)]
             + class_parents($message)
             + class_implements($message);
