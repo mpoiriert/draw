@@ -85,6 +85,19 @@ class JwtAuthenticatorTest extends TestCase
         static::assertTrue($this->object->supports($request));
     }
 
+    public function testSupportsInvalidToken(): void
+    {
+        $request = new Request();
+        $request->headers->set('Authorization', 'Bearer '.uniqid('jwt-'));
+
+        $this->jwtEncoder
+            ->expects(static::once())
+            ->method('decode')
+            ->willThrowException(new \UnexpectedValueException());
+
+        static::assertFalse($this->object->supports($request));
+    }
+
     public function testSupportsNoToken(): void
     {
         static::assertFalse($this->object->supports(new Request()));
@@ -186,7 +199,7 @@ class JwtAuthenticatorTest extends TestCase
         $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
 
         $this->jwtEncoder
-            ->expects(static::once())
+            ->expects(static::any())
             ->method('decode')
             ->with($token)
             ->willReturn((object) [$this->userIdentifierPayloadKey => $userId = uniqid('id-')]);
@@ -233,7 +246,7 @@ class JwtAuthenticatorTest extends TestCase
         $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
 
         $this->jwtEncoder
-            ->expects(static::once())
+            ->expects(static::any())
             ->method('decode')
             ->with($token)
             ->willReturn(
@@ -279,13 +292,29 @@ class JwtAuthenticatorTest extends TestCase
         $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
 
         $this->jwtEncoder
-            ->expects(static::once())
+            ->expects(static::any())
             ->method('decode')
             ->with($token)
             ->willReturn((object) []);
 
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('Token attribute ['.$this->userIdentifierPayloadKey.'] not found');
+
+        $this->object->authenticate($request);
+    }
+
+    public function testAuthenticateInvalidPayload(): void
+    {
+        $request = new Request();
+        $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
+
+        $this->jwtEncoder
+            ->expects(static::any())
+            ->method('decode')
+            ->with($token)
+            ->willThrowException(new \UnexpectedValueException());
+
+        $this->expectException(\UnexpectedValueException::class);
 
         $this->object->authenticate($request);
     }

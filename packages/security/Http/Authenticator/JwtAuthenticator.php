@@ -83,18 +83,36 @@ class JwtAuthenticator extends AbstractAuthenticator
 
     public function getToken(Request $request): ?string
     {
-        if ($request->headers->has('Authorization')) {
-            if (preg_match('/Bearer\s(\S+)/', $request->headers->get('Authorization'), $matches)) {
-                return $matches[1];
-            }
+        if (!$request->headers->has('Authorization')) {
+            return null;
+        }
+        if (!preg_match('/Bearer\s(\S+)/', $request->headers->get('Authorization'), $matches)) {
+            return null;
         }
 
-        return null;
+        $token = $matches[1];
+
+        if (null === $token) {
+            return null;
+        }
+
+        try {
+            $this->encoder->decode($token);
+
+            return $token;
+        } catch (\UnexpectedValueException $error) {
+            return null;
+        }
     }
 
     public function authenticate(Request $request): Passport
     {
         $token = $this->getToken($request);
+
+        if (null === $token) {
+            throw new \UnexpectedValueException('Request does not contains valid token');
+        }
+
         $payload = $this->encoder->decode($token);
         $user = $this->getUserFromPayload($payload);
 
