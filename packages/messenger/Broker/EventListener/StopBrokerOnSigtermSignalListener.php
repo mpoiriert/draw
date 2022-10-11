@@ -20,6 +20,8 @@ class StopBrokerOnSigtermSignalListener implements EventSubscriberInterface
     public function onBrokerStarted(BrokerStartedEvent $event): void
     {
         $broker = $event->getBroker();
-        pcntl_signal(\SIGTERM, [$broker, 'stop']);
+        pcntl_signal(\SIGTERM, function () use ($broker): void {
+            $broker->stop();
+        });
     }
 }
