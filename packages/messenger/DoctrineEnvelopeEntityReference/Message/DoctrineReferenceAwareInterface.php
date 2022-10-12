@@ -5,12 +5,7 @@ namespace Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Message;
 interface DoctrineReferenceAwareInterface
 {
     /**
-     * @return array<mixed,object>
+     * @return array<string>
      */
-    public function getDoctrineObjects(): array;
-
-    /**
-     * @param array<mixed,object> $objects
-     */
-    public function restoreDoctrineObjects(array $objects): void;
+    public function getPropertiesWithDoctrineObject(): array;
 }

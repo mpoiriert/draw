@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Component\Messenger\Tests\Transport\Event;
+namespace Draw\Component\Messenger\Tests\SerializerEventDispatcher\Event;
 
-use Draw\Component\Messenger\Transport\Event\PreEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 

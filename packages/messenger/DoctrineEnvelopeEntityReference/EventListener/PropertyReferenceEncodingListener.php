@@ -3,12 +3,13 @@
 namespace Draw\Component\Messenger\DoctrineEnvelopeEntityReference\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Message\DoctrineReferenceAwareInterface;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Stamp\PropertyReferenceStamp;
-use Draw\Component\Messenger\Transport\Event\BaseSerializerEvent;
-use Draw\Component\Messenger\Transport\Event\PostDecodeEvent;
-use Draw\Component\Messenger\Transport\Event\PostEncodeEvent;
-use Draw\Component\Messenger\Transport\Event\PreEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\BaseSerializerEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PropertyReferenceEncodingListener implements EventSubscriberInterface
@@ -39,7 +40,18 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
 
         $stamps = [];
 
-        foreach ($message->getDoctrineObjects() as $key => $object) {
+        foreach ($message->getPropertiesWithDoctrineObject() as $propertyName) {
+            $object = ReflectionAccessor::getPropertyValue(
+                $message,
+                $propertyName
+            );
+
+            ReflectionAccessor::setPropertyValue(
+                $message,
+                $propertyName,
+                null
+            );
+
             $metadata = $this->managerRegistry
                 ->getManagerForClass(\get_class($object))
                 ->getClassMetadata(\get_class($object));
@@ -48,7 +60,7 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
             $metadata->getIdentifierValues($object);
 
             $stamps[] = new PropertyReferenceStamp(
-                $key,
+                $propertyName,
                 $metadata->getName(),
                 $metadata->getIdentifierValues($object)
             );
@@ -69,14 +81,14 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
 
         $stamps = $event->getEnvelope()->all(PropertyReferenceStamp::class);
 
-        $doctrineObjects = [];
-
         foreach ($stamps as $stamp) {
-            $doctrineObjects[$stamp->getKey()] = $this->managerRegistry
-                ->getManagerForClass($stamp->getClass())
-                ->find($stamp->getClass(), $stamp->getIdentifiers());
+            ReflectionAccessor::setPropertyValue(
+                $message,
+                $stamp->getPropertyName(),
+                $this->managerRegistry
+                    ->getManagerForClass($stamp->getClass())
+                    ->find($stamp->getClass(), $stamp->getIdentifiers())
+            );
         }
-
-        $message->restoreDoctrineObjects($doctrineObjects);
     }
 }

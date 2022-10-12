@@ -1,10 +1,10 @@
 <?php
 
-namespace Draw\Component\Messenger\Transport\Serialization;
+namespace Draw\Component\Messenger\SerializerEventDispatcher;
 
-use Draw\Component\Messenger\Transport\Event\PostDecodeEvent;
-use Draw\Component\Messenger\Transport\Event\PostEncodeEvent;
-use Draw\Component\Messenger\Transport\Event\PreEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;

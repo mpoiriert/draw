@@ -1,12 +1,12 @@
 <?php
 
-namespace DoctrineEnvelopeEntityReference\EventListener;
+namespace Draw\Component\Messenger\Tests\DoctrineEnvelopeEntityReference\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\EventListener\PropertyReferenceEncodingListener;
-use Draw\Component\Messenger\Transport\Event\PostDecodeEvent;
-use Draw\Component\Messenger\Transport\Event\PostEncodeEvent;
-use Draw\Component\Messenger\Transport\Event\PreEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

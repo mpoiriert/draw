@@ -6,28 +6,22 @@ use Symfony\Component\Messenger\Stamp\StampInterface;
 
 class PropertyReferenceStamp implements StampInterface
 {
-    /**
-     * @var string|int
-     */
-    private $key;
+    private string $propertyName;
 
     private string $class;
 
     private array $identifiers;
 
-    public function __construct($key, string $class, array $identifiers)
+    public function __construct(string $propertyName, string $class, array $identifiers)
     {
-        $this->key = $key;
+        $this->propertyName = $propertyName;
         $this->class = $class;
         $this->identifiers = $identifiers;
     }
 
-    /**
-     * @return int|string
-     */
-    public function getKey()
+    public function getPropertyName(): string
     {
-        return $this->key;
+        return $this->propertyName;
     }
 
     public function getClass(): string

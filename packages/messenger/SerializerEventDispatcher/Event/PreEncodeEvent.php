@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\Messenger\Transport\Event;
+namespace Draw\Component\Messenger\SerializerEventDispatcher\Event;
 
 use Symfony\Component\Messenger\Envelope;
 

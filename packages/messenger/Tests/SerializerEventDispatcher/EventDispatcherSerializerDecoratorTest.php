@@ -1,11 +1,12 @@
 <?php
 
-namespace Draw\Component\Messenger\Tests\Transport\Serialization;
+namespace Draw\Component\Messenger\Tests\SerializerEventDispatcher;
 
-use Draw\Component\Messenger\Transport\Event\PostDecodeEvent;
-use Draw\Component\Messenger\Transport\Event\PostEncodeEvent;
-use Draw\Component\Messenger\Transport\Event\PreEncodeEvent;
-use Draw\Component\Messenger\Transport\Serialization\EventDispatcherSerializerDecorator;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
+use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
@@ -15,8 +16,14 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
 {
     private EventDispatcherSerializerDecorator $object;
 
-    private SerializerInterface $serializer;
+    /**
+     * @var SerializerInterface&MockObject
+     */
+    private $serializer;
 
+    /**
+     * @var EventDispatcherInterface&MockObject
+     */
     private EventDispatcherInterface $eventDispatcher;
 
     protected function setUp(): void
@@ -50,7 +57,8 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
             ->method('dispatch')
             ->with(
                 new PostDecodeEvent($envelope)
-            );
+            )
+            ->willReturnArgument(0);
 
         static::assertSame(
             $envelope,
@@ -68,7 +76,8 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
             ->withConsecutive(
                 [new PreEncodeEvent($envelope)],
                 [new PostEncodeEvent($envelope)]
-            );
+            )
+            ->willReturnArgument(0);
 
         $this->serializer
             ->expects(static::once())
