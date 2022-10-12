@@ -11,6 +11,7 @@ use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\Command\StartMessengerBrokerCommand;
 use Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener;
 use Draw\Component\Messenger\Broker\EventListener\StopBrokerOnSigtermSignalListener;
+use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\EventListener\PropertyReferenceEncodingListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\BasicEnvelopeFactory;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMessageListener;
@@ -26,6 +27,7 @@ use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\TransportRepository;
+use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
@@ -34,6 +36,7 @@ use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MessengerIntegration
@@ -76,6 +79,10 @@ class MessengerIntegrationTest extends IntegrationTestCase
                     ],
                 ],
             ],
+            'serializer_event_dispatcher' => [
+                'enabled' => false,
+                'transport' => 'messenger.transport.native_php_serializer',
+            ],
             'versioning' => [
                 'enabled' => false,
                 'stop_on_new_version' => [
@@ -88,6 +95,12 @@ class MessengerIntegrationTest extends IntegrationTestCase
     public function provideTestLoad(): iterable
     {
         $defaultServices = [
+            new ServiceConfiguration(
+                'draw.messenger.doctrine_envelope_entity_reference.event_listener.property_reference_encoding_listener',
+                [
+                    PropertyReferenceEncodingListener::class,
+                ]
+            ),
             new ServiceConfiguration(
                 'draw.messenger.transport.draw_transport_factory',
                 [
@@ -163,6 +176,46 @@ class MessengerIntegrationTest extends IntegrationTestCase
             array_merge(
                 $defaultServices,
                 []
+            ),
+            $defaultAliases,
+        ];
+
+        yield 'serializer_event_dispatcher' => [
+            [
+                [
+                    'serializer_event_dispatcher' => [
+                        'transport' => 'messenger.transport.serializer',
+                    ],
+                ],
+            ],
+            array_merge(
+                $defaultServices,
+                [
+                    new ServiceConfiguration(
+                        'draw.messenger.serializer_event_dispatcher.event_dispatcher_serializer_decorator',
+                        [
+                            EventDispatcherSerializerDecorator::class,
+                        ],
+                        function (Definition $definition): void {
+                            static::assertSame(
+                                ['messenger.transport.serializer', 'messenger.transport.serializer.inner', 0],
+                                $definition->getDecoratedService(),
+                            );
+
+                            $argument = $definition->getArgument(0);
+
+                            static::assertInstanceOf(
+                                Reference::class,
+                                $argument
+                            );
+
+                            static::assertSame(
+                                'messenger.transport.serializer.inner',
+                                (string) $argument
+                            );
+                        }
+                    ),
+                ]
             ),
             $defaultAliases,
         ];

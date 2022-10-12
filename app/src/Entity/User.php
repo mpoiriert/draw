@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Message\NewUserMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -121,6 +122,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         $this->tags = new ArrayCollection();
         $this->userAddresses = new ArrayCollection();
         $this->setNeedChangePassword(true);
+        $this->onHoldMessages[NewUserMessage::class] = new NewUserMessage($this);
     }
 
     /**

@@ -4,6 +4,8 @@ framework:
 
         transports:
             async: 'draw://default?queue_name=default'
+            async_high_priority: 'draw://default?queue_name=async_high_priority'
+            async_low_priority: 'draw://default?queue_name=async_low_priority'
             failed: 'draw://default?queue_name=failed'
             sync: 'sync://'
 

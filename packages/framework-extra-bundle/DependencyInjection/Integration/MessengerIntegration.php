@@ -16,6 +16,7 @@ use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\TransportRepository;
+use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
@@ -47,9 +48,10 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         $ignoreFolders = [
             'Broker',
             'DoctrineMessageBusHook',
-            'Resources',
-            'Tests',
             'Message',
+            'Resources',
+            'SerializerEventDispatcher',
+            'Tests',
             'Versioning',
         ];
 
@@ -79,6 +81,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
 
         $this->loadBroker($config['broker'], $loader, $container);
         $this->loadDoctrineMessageBusHook($config['doctrine_message_bus_hook'], $loader, $container);
+        $this->loadSerializerEventDispatcher($config['serializer_event_dispatcher'], $loader, $container);
         $this->loadVersioning($config['versioning'], $loader, $container);
 
         $container
@@ -174,6 +177,27 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         }
     }
 
+    private function loadSerializerEventDispatcher(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $this->registerClasses(
+            $loader,
+            'Draw\\Component\\Messenger\\SerializerEventDispatcher\\',
+            \dirname((new \ReflectionClass(EventDispatcherSerializerDecorator::class))->getFileName()),
+        );
+
+        $container
+            ->getDefinition(EventDispatcherSerializerDecorator::class)
+            ->setDecoratedService(
+                $config['transport'],
+                $config['transport'].'.inner'
+            )
+            ->setArgument(0, new Reference($config['transport'].'.inner'));
+    }
+
     private function loadVersioning(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
@@ -214,6 +238,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
                 ->append($this->createVersioningNode())
                 ->append($this->createBrokerNode())
                 ->append($this->createDoctrineMessageBusHookNode())
+                ->append($this->createSerializerEventDispatcherNode())
             ->end();
     }
 
@@ -309,6 +334,15 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
             ->canBeEnabled()
             ->children()
                 ->arrayNode('stop_on_new_version')->canBeDisabled()->end()
+            ->end();
+    }
+
+    private function createSerializerEventDispatcherNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('serializer_event_dispatcher'))
+            ->canBeEnabled()
+            ->children()
+                ->scalarNode('transport')->defaultValue('messenger.transport.native_php_serializer')->end()
             ->end();
     }
 

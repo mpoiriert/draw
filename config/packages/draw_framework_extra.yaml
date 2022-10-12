@@ -23,12 +23,14 @@ draw_framework_extra:
     subject_from_html_title: ~
 
   messenger:
+    async_routing_configuration: true
     broker:
       contexts:
         default:
           receivers: [ 'async' ]
     doctrine_message_bus_hook: ~
     versioning: ~
+    serializer_event_dispatcher: ~
 
   open_api:
 
