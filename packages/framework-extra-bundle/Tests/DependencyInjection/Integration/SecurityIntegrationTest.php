@@ -7,6 +7,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityInt
 use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
+use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -34,6 +35,10 @@ class SecurityIntegrationTest extends IntegrationTestCase
             'console_authentication' => [
                 'enabled' => false,
                 'system_auto_login' => false,
+            ],
+            'messenger_authentication' => [
+                'enabled' => false,
+                'system_auto_login' => true,
             ],
             'jwt' => [
                 'encoder' => [
@@ -128,6 +133,27 @@ class SecurityIntegrationTest extends IntegrationTestCase
                     SystemAuthenticatorInterface::class,
                 ],
             ],
+        ];
+
+        yield 'messenger_authentication' => [
+            [
+                [
+                    'messenger_authentication' => [
+                        'system_auto_login' => true,
+                    ],
+                ],
+            ],
+            array_merge(
+                $defaultServices,
+                [
+                    new ServiceConfiguration(
+                        'draw.security.core.event_listener.system_messenger_authenticator_listener',
+                        [
+                            SystemMessengerAuthenticatorListener::class,
+                        ],
+                    ),
+                ],
+            ),
         ];
 
         yield 'console_authentication' => [

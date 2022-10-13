@@ -5,6 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
+use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -53,6 +54,12 @@ class SecurityIntegration implements IntegrationInterface
                     SystemAuthenticatorInterface::class,
                     SystemAuthenticator::class
                 );
+        }
+
+        if (!$this->isConfigEnabled($container, $config['messenger_authentication'])
+            || !$config['messenger_authentication']['system_auto_login']
+        ) {
+            $container->removeDefinition(SystemMessengerAuthenticatorListener::class);
         }
 
         if (!$this->isConfigEnabled($container, $config['console_authentication'])) {
@@ -126,6 +133,12 @@ class SecurityIntegration implements IntegrationInterface
                             ->addDefaultChildrenIfNoneSet()
                             ->scalarPrototype()->defaultValue('ROLE_SYSTEM')->end()
                         ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('messenger_authentication')
+                    ->canBeEnabled()
+                    ->children()
+                        ->booleanNode('system_auto_login')->defaultValue(true)->end()
                     ->end()
                 ->end()
                 ->arrayNode('console_authentication')
