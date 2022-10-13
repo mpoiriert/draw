@@ -58,6 +58,7 @@ draw_framework_extra:
   security:
     console_authentication:
       system_auto_login: true
+    messenger_authentication: ~
     jwt:
       encoder:
         key: 'unique-key'
