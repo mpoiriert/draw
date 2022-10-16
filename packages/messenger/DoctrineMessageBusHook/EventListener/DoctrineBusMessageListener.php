@@ -11,8 +11,9 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterfac
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
-class DoctrineBusMessageListener implements EventSubscriber
+class DoctrineBusMessageListener implements EventSubscriber, ResetInterface
 {
     /**
      * @var array|MessageHolderInterface[]
@@ -90,13 +91,13 @@ class DoctrineBusMessageListener implements EventSubscriber
 
     private function trackMessageHolder(LifecycleEventArgs $event): void
     {
-        $entity = $event->getEntity();
+        $entity = $event->getObject();
 
         if (!$entity instanceof MessageHolderInterface) {
             return;
         }
 
-        $entityManager = $event->getEntityManager();
+        $entityManager = $event->getObjectManager();
 
         $classMetadata = $entityManager->getClassMetadata(\get_class($entity));
         $className = $classMetadata->rootEntityName;
@@ -104,7 +105,7 @@ class DoctrineBusMessageListener implements EventSubscriber
     }
 
     /**
-     * @return array|MessageHolderInterface[]
+     * @return array<MessageHolderInterface>
      *
      * @internal
      */
@@ -115,5 +116,10 @@ class DoctrineBusMessageListener implements EventSubscriber
         }
 
         return \call_user_func_array('array_merge', array_values($this->messageHolders));
+    }
+
+    public function reset(): void
+    {
+        $this->messageHolders = [];
     }
 }
