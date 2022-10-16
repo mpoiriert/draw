@@ -19,6 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @covers \Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMessageListener
@@ -58,6 +59,11 @@ class DoctrineBusMessageListenerTest extends TestCase
     {
         static::assertInstanceOf(
             EventSubscriber::class,
+            $this->object
+        );
+
+        static::assertInstanceOf(
+            ResetInterface::class,
             $this->object
         );
     }
@@ -308,6 +314,25 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->willReturnArgument(0);
 
         $this->object->postFlush();
+    }
+
+    public function testReset(): void
+    {
+        $messageHolder = $this->createMock(MessageHolderInterface::class);
+
+        $this->addMessageHolder($messageHolder);
+
+        static::assertSame(
+            [$messageHolder],
+            $this->object->getFlattenMessageHolders()
+        );
+
+        $this->object->reset();
+
+        static::assertSame(
+            [],
+            $this->object->getFlattenMessageHolders()
+        );
     }
 
     private function addMessageHolder(MessageHolderInterface $messageHolder): void
