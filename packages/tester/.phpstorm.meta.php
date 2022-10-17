@@ -8,6 +8,6 @@ override(
 );
 
 override(
-    \App\Component\TestHelper\MockerTrait::mockProperty(2),
+    \Draw\Component\Tester\MockTrait::mockProperty(2),
     map([""=>"$2"])
 );
