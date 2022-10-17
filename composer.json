@@ -54,6 +54,7 @@
         "symfony/translation": "^5.4.3",
         "symfony/twig-bridge": "^5.4.3",
         "symfony/validator": "^5.4.3",
+        "symfony/workflow": "^5.4.3",
         "symfony/yaml": "^5.4.3",
         "twig/twig": "^3.3"
     },
@@ -124,6 +125,7 @@
         "draw/tester-bundle": "self.version",
         "draw/user-bundle": "self.version",
         "draw/validator": "self.version",
+        "draw/workflow": "self.version",
         "symfony/polyfill-php54": "1.99",
         "symfony/polyfill-php55": "1.99",
         "symfony/polyfill-php56": "1.99",
@@ -158,6 +160,7 @@
             "Draw\\Component\\Security\\": "packages/security/",
             "Draw\\Component\\Tester\\": "packages/tester/",
             "Draw\\Component\\Validator\\": "packages/validator/",
+            "Draw\\Component\\Workflow\\": "packages/workflow/",
             "Draw\\Contracts\\": "packages/contracts/",
             "Draw\\DoctrineExtra\\": "packages/doctrine-extra/"
         },
