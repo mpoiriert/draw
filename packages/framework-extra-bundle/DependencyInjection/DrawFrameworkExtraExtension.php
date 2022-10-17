@@ -17,6 +17,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -55,6 +56,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new SecurityIntegration();
         $this->integrations[] = new TesterIntegration();
         $this->integrations[] = new VersioningIntegration();
+        $this->integrations[] = new WorkflowIntegration();
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
