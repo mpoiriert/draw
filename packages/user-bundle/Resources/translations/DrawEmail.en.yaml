@@ -40,4 +40,4 @@ email:
     2fa_auth_code:
         subject: 'Authentication Code'
         top_section: |
-            <p>This is the authentication to complete your sign in process.<p>
+            <p>This is the authentication code to complete your sign-in process.<p>
