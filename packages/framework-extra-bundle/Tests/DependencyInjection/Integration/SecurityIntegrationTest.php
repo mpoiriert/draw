@@ -6,6 +6,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
+use Draw\Component\Security\Core\Authorization\Voter\AbstainRoleHierarchyVoter;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
@@ -50,6 +51,11 @@ class SecurityIntegrationTest extends IntegrationTestCase
                 'enabled' => false,
                 'roles' => ['ROLE_SYSTEM'],
             ],
+            'voters' => [
+                'abstain_role_hierarchy' => [
+                    'enabled' => false,
+                ],
+            ],
         ];
     }
 
@@ -67,6 +73,32 @@ class SecurityIntegrationTest extends IntegrationTestCase
         yield 'default' => [
             [],
             $defaultServices,
+        ];
+
+        yield 'console_authentication' => [
+            [
+                [
+                    'console_authentication' => [
+                        'system_auto_login' => true,
+                    ],
+                ],
+            ],
+            array_merge(
+                $defaultServices,
+                [
+                    new ServiceConfiguration(
+                        'draw.security.core.event_listener.system_console_authenticator_listener',
+                        [
+                            SystemConsoleAuthenticatorListener::class,
+                        ],
+                        function (Definition $definition): void {
+                            static::assertTrue(
+                                $definition->getArgument('$systemAutoLogin')
+                            );
+                        }
+                    ),
+                ],
+            ),
         ];
 
         yield 'jwt' => [
@@ -98,6 +130,27 @@ class SecurityIntegrationTest extends IntegrationTestCase
                                 $definition->getArgument('$algorithm')
                             );
                         }
+                    ),
+                ],
+            ),
+        ];
+
+        yield 'messenger_authentication' => [
+            [
+                [
+                    'messenger_authentication' => [
+                        'system_auto_login' => true,
+                    ],
+                ],
+            ],
+            array_merge(
+                $defaultServices,
+                [
+                    new ServiceConfiguration(
+                        'draw.security.core.event_listener.system_messenger_authenticator_listener',
+                        [
+                            SystemMessengerAuthenticatorListener::class,
+                        ],
                     ),
                 ],
             ),
@@ -135,11 +188,11 @@ class SecurityIntegrationTest extends IntegrationTestCase
             ],
         ];
 
-        yield 'messenger_authentication' => [
+        yield 'voters' => [
             [
                 [
-                    'messenger_authentication' => [
-                        'system_auto_login' => true,
+                    'voters' => [
+                        'abstain_role_hierarchy' => true,
                     ],
                 ],
             ],
@@ -147,39 +200,18 @@ class SecurityIntegrationTest extends IntegrationTestCase
                 $defaultServices,
                 [
                     new ServiceConfiguration(
-                        'draw.security.core.event_listener.system_messenger_authenticator_listener',
+                        'draw.security.voter.abstain_role_hierarchy_voter',
                         [
-                            SystemMessengerAuthenticatorListener::class,
+                            AbstainRoleHierarchyVoter::class,
                         ],
                     ),
                 ],
             ),
-        ];
-
-        yield 'console_authentication' => [
             [
-                [
-                    'console_authentication' => [
-                        'system_auto_login' => true,
-                    ],
+                AbstainRoleHierarchyVoter::class => [
+                    'security.access.role_hierarchy_voter',
                 ],
             ],
-            array_merge(
-                $defaultServices,
-                [
-                    new ServiceConfiguration(
-                        'draw.security.core.event_listener.system_console_authenticator_listener',
-                        [
-                            SystemConsoleAuthenticatorListener::class,
-                        ],
-                        function (Definition $definition): void {
-                            static::assertTrue(
-                                $definition->getArgument('$systemAutoLogin')
-                            );
-                        }
-                    ),
-                ],
-            ),
         ];
     }
 }

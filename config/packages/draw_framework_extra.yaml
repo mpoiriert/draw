@@ -63,5 +63,7 @@ draw_framework_extra:
       encoder:
         key: 'unique-key'
     system_authentication: ~
+    voters:
+      abstain_role_hierarchy: ~
 
   versioning: ~

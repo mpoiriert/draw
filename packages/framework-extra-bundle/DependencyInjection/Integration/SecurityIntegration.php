@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
+use Draw\Component\Security\Core\Authorization\Voter\AbstainRoleHierarchyVoter;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
@@ -26,6 +27,7 @@ class SecurityIntegration implements IntegrationInterface
         $this->loadCore($config, $loader, $container);
         $this->loadJwt($config, $loader, $container);
         $this->loadHttp($config, $loader, $container);
+        $this->loadVoters($config, $loader, $container);
     }
 
     private function loadCore(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -39,6 +41,7 @@ class SecurityIntegration implements IntegrationInterface
             ),
             [
                 $directory.'/Authentication/Token/',
+                $directory.'/Authorization/Voter/',
                 $directory.'/User/EventDrivenUserChecker.php',
             ]
         );
@@ -97,6 +100,28 @@ class SecurityIntegration implements IntegrationInterface
             $container,
             $namespace,
             'draw.security.jwt.'
+        );
+    }
+
+    private function loadVoters(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        $this->registerClasses(
+            $loader,
+            $namespace = 'Draw\\Component\\Security\\Core\\Authorization\\Voter\\',
+            \dirname((new \ReflectionClass(AbstainRoleHierarchyVoter::class))->getFileName())
+        );
+
+        if (!$this->isConfigEnabled($container, $config['voters']['abstain_role_hierarchy'])) {
+            $container->removeDefinition(AbstainRoleHierarchyVoter::class);
+        } else {
+            $container
+                ->setAlias('security.access.role_hierarchy_voter', AbstainRoleHierarchyVoter::class);
+        }
+
+        $this->renameDefinitions(
+            $container,
+            $namespace,
+            'draw.security.voter.'
         );
     }
 
@@ -160,6 +185,13 @@ class SecurityIntegration implements IntegrationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('voters')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('abstain_role_hierarchy')
+                            ->canBeEnabled()
+                        ->end()
+                    ->end()
             ->end();
     }
 }
