@@ -6,6 +6,8 @@ use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Draw\Bundle\SonataExtraBundle\EventListener\AutoHelpListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
+use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
+use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -26,6 +28,15 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
 
         if (!($config['auto_help']['enabled'] ?? false)) {
             $container->removeDefinition(AutoHelpListener::class);
+        }
+
+        if (!($config['can_security_handler']['enabled'] ?? false)) {
+            $container->removeDefinition(CanSecurityHandler::class);
+            $container->removeDefinition(DefaultCanVoter::class);
+        } else {
+            if (!$config['can_security_handler']['grant_by_default']) {
+                $container->removeDefinition(DefaultCanVoter::class);
+            }
         }
 
         if (!($config['session_timeout']['enabled'] ?? false)) {

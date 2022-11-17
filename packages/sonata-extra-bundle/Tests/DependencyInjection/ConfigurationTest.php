@@ -19,6 +19,10 @@ class ConfigurationTest extends ConfigurationTestCase
             'auto_help' => [
                 'enabled' => false,
             ],
+            'can_security_handler' => [
+                'enabled' => false,
+                'grant_by_default' => true,
+            ],
             'fix_menu_depth' => [
                 'enabled' => false,
             ],

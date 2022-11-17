@@ -14,6 +14,10 @@
             <tag name="sonata.admin.filter.type"/>
         </service>
 
+        <service id="Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler" decorates="sonata.admin.security.handler.role">
+            <argument type="service" id=".inner"/>
+        </service>
+
         <service id="Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter">
             <tag name="sonata.admin.filter.type"/>
         </service>
