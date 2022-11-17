@@ -16,6 +16,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->append($this->createAutoHelpNode())
+                ->append($this->createCanSecurityHandlerNode())
                 ->append($this->createFixMenuDepthNode())
                 ->append($this->createSessionTimeoutNode())
             ->end();
@@ -27,6 +28,15 @@ class Configuration implements ConfigurationInterface
     {
         return (new ArrayNodeDefinition('auto_help'))
             ->canBeEnabled();
+    }
+
+    private function createCanSecurityHandlerNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('can_security_handler'))
+            ->canBeEnabled()
+            ->children()
+                ->booleanNode('grant_by_default')->defaultValue(true)->end()
+            ->end();
     }
 
     private function createFixMenuDepthNode(): ArrayNodeDefinition
