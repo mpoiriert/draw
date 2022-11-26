@@ -3,7 +3,6 @@
 namespace Draw\Bundle\SonataExtraBundle\Doctrine\Filter;
 
 use Sonata\AdminBundle\Filter\Model\FilterData;
-use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\Filter;
 
@@ -32,20 +31,17 @@ class InFilter extends Filter
         $query->getQueryBuilder()->setParameter($parameterName, $values);
     }
 
+    public function getFormOptions(): array
+    {
+        return [
+           'field_type' => $this->getFieldType(),
+           'field_options' => $this->getFieldOptions(),
+           'label' => $this->getLabel(),
+       ];
+    }
+
     public function getDefaultOptions(): array
     {
         return ['advanced_filter' => false];
-    }
-
-    public function getRenderSettings(): array
-    {
-        return [
-            ChoiceType::class,
-            [
-                'field_type' => $this->getFieldType(),
-                'field_options' => $this->getFieldOptions(),
-                'label' => $this->getLabel(),
-            ],
-        ];
     }
 }

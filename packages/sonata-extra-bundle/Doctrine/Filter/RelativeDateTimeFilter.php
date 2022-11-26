@@ -3,7 +3,6 @@
 namespace Draw\Bundle\SonataExtraBundle\Doctrine\Filter;
 
 use Sonata\AdminBundle\Filter\Model\FilterData;
-use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
 use Sonata\AdminBundle\Form\Type\Operator\NumberOperatorType;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\DoctrineORMAdminBundle\Filter\Filter;
@@ -52,24 +51,21 @@ class RelativeDateTimeFilter extends Filter
         $query->getQueryBuilder()->setParameter($parameterName, $inputValue);
     }
 
+    public function getFormOptions(): array
+    {
+        return [
+            'label' => $this->getLabel(),
+            'operator_type' => $this->getOption('operator_type'),
+            'operator_options' => $this->getOption('operator_options'),
+        ];
+    }
+
     public function getDefaultOptions(): array
     {
         return [
             'operator_type' => NumberOperatorType::class,
             'operator_options' => [],
             'default_operator' => NumberOperatorType::TYPE_LESS_EQUAL,
-        ];
-    }
-
-    public function getRenderSettings(): array
-    {
-        return [
-            DefaultType::class,
-            [
-                'label' => $this->getLabel(),
-                'operator_type' => $this->getOption('operator_type'),
-                'operator_options' => $this->getOption('operator_options'),
-            ],
         ];
     }
 }

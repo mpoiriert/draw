@@ -22,15 +22,16 @@ use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Constraints\Count;
 
 /**
- * @TagSonataAdmin(group="User", manager_type="orm", pager_type="simple", icon="fas fa-user")
+ * @TagSonataAdmin(
+ *     group="User",
+ *     manager_type="orm",
+ *     pager_type="simple",
+ *     icon="fas fa-user",
+ *     model_class=User::class
+ * )
  */
 class UserAdmin extends AbstractAdmin
 {
-    public function __construct($code, $class = User::class, $baseControllerName = null)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-    }
-
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter

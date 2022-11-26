@@ -14,6 +14,16 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterface
 {
+    public function getKey(): string
+    {
+        return 'draw_messenger_message';
+    }
+
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     public function createAuthenticator(
         ContainerBuilder $container,
         string $firewallName,
@@ -36,11 +46,6 @@ class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterf
         }
 
         return $serviceId;
-    }
-
-    public function getKey(): string
-    {
-        return 'draw_messenger_message';
     }
 
     public function addConfiguration(NodeDefinition $builder): void

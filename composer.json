@@ -19,7 +19,7 @@
         "doctrine/persistence": "^2.2",
         "guzzlehttp/psr7": "^1.8 || ^2.0",
         "jms/serializer": "^3.11",
-        "jms/serializer-bundle": "^3.7",
+        "jms/serializer-bundle": "^4.2",
         "phpdocumentor/reflection-docblock": "^5.2",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "psr/http-message": "^1.0",

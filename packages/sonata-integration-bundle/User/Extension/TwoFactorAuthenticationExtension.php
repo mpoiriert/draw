@@ -100,13 +100,13 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
         $collection->add(
             'enable-2fa',
             $admin->getRouterIdParameter().'/enable-2fa',
-            ['_controller' => TwoFactorAuthenticationController::class.':enable2faAction']
+            ['_controller' => TwoFactorAuthenticationController::class.'::enable2faAction']
         );
 
         $collection->add(
             'disable-2fa',
             $admin->getRouterIdParameter().'/disable-2fa',
-            ['_controller' => TwoFactorAuthenticationController::class.':disable2faAction']
+            ['_controller' => TwoFactorAuthenticationController::class.'::disable2faAction']
         );
     }
 

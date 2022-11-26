@@ -105,7 +105,9 @@ trait LockableUserTrait
     }
 
     /**
-     * @return array|UserLock[]
+     * @return array<string, UserLock>
+     *
+     * @phpstan-return  array<string, UserLock>
      */
     public function getLocks(): array
     {

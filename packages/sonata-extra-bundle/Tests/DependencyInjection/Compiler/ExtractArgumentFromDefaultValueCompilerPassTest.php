@@ -33,17 +33,13 @@ class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
 
         $this->compilerPass->process($this->containerBuilder);
 
-        static::assertNull(
-            $definition->getArgument(0)
-        );
-
         static::assertSame(
-            Entity::class,
-            $definition->getArgument(1)
-        );
-
-        static::assertNull(
-            $definition->getArgument(2)
+            [
+                0 => null,
+                1 => Entity::class,
+                2 => null,
+            ],
+            $definition->getArguments()
         );
     }
 
@@ -58,17 +54,11 @@ class ExtractArgumentFromDefaultValueCompilerPassTest extends TestCase
 
         $this->compilerPass->process($this->containerBuilder);
 
-        static::assertNull(
-            $definition->getArgument(0)
-        );
-
         static::assertSame(
-            $argument,
-            $definition->getArgument(1)
-        );
-
-        static::assertNull(
-            $definition->getArgument(2)
+            [
+                1 => $argument,
+            ],
+            $definition->getArguments()
         );
     }
 }

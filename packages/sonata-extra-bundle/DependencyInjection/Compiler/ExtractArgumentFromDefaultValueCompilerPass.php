@@ -10,6 +10,7 @@ class ExtractArgumentFromDefaultValueCompilerPass implements CompilerPassInterfa
 {
     public function process(ContainerBuilder $container): void
     {
+        // todo remove on next sonata admin major since parameter in constructor will not be supported
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             $definition = $container->getDefinition($id);
 
@@ -21,6 +22,8 @@ class ExtractArgumentFromDefaultValueCompilerPass implements CompilerPassInterfa
             }
 
             $parameters = $reflectionClass->getMethod('__construct')->getParameters();
+            $allNull = true;
+            $parametersToSet = [];
             foreach ($parameters as $index => $parameter) {
                 if (isset($definition->getArguments()[$index])) {
                     continue;
@@ -32,12 +35,22 @@ class ExtractArgumentFromDefaultValueCompilerPass implements CompilerPassInterfa
                     $defaultValue = $parameter->getDefaultValue();
                 }
 
+                if (null !== $defaultValue) {
+                    $allNull = false;
+                }
+
                 switch ($parameter->name) {
                     case 'code':
                     case 'class':
                     case 'baseControllerName':
-                        $definition->setArgument($index, $defaultValue);
+                        $parametersToSet[$index] = $defaultValue;
                         break;
+                }
+            }
+
+            if (!$allNull) {
+                foreach ($parametersToSet as $index => $value) {
+                    $definition->setArgument($index, $value);
                 }
             }
         }

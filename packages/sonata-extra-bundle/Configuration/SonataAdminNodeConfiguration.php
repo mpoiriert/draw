@@ -59,14 +59,13 @@ class SonataAdminNodeConfiguration extends ArrayNodeDefinition
     public static function configureFromConfiguration(Definition $definition, array $config): Definition
     {
         return $definition
-            ->setArguments([null, $config['entity_class'], $config['controller_class']])
             ->addTag(
                 'sonata.admin',
                 array_filter(
                     array_intersect_key(
                         $config,
                         array_flip(['group', 'icon', 'label', 'pager_type', 'show_in_dashboard'])
-                    ) + ['manager_type' => 'orm'],
+                    ) + ['manager_type' => 'orm', 'model_class' => $config['entity_class'], 'controller' => $config['controller_class']],
                     fn ($value) => null !== $value
                 )
             );
