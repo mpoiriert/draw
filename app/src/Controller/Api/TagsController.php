@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\OpenApi\Configuration\Deserialization;
 use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
+use Draw\DoctrineExtra\ORM\EntityHandler;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TagsController
@@ -80,9 +81,9 @@ class TagsController
      *
      * @return Tag[] All tags
      */
-    public function listAction(EntityManagerInterface $entityManager): array
+    public function listAction(EntityHandler $entityHandler): array
     {
-        return $entityManager->getRepository(Tag::class)->findAll();
+        return $entityHandler->findAll(Tag::class);
     }
 
     /**
@@ -94,13 +95,12 @@ class TagsController
      *
      * @return void Empty return value mean success
      */
-    public function activateAllAction(EntityManagerInterface $entityManager): void
+    public function activateAllAction(EntityHandler $entityHandler): void
     {
-        $tags = $entityManager->getRepository(Tag::class)->findBy(['active' => false]);
-        foreach ($tags as $tag) {
+        foreach ($entityHandler->findBy(Tag::class, ['active' => false]) as $tag) {
             $tag->setActive(true);
         }
 
-        $entityManager->flush();
+        $entityHandler->flush();
     }
 }

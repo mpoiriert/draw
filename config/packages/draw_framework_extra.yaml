@@ -6,6 +6,9 @@ draw_framework_extra:
   configuration: ~
 
   console: ~
+
+  doctrine_extra: ~
+
   log:
     enable_all_processors: true
 

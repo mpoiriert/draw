@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\OpenApi\Configuration\Deserialization;
 use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
+use Draw\DoctrineExtra\ORM\EntityHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -128,9 +129,9 @@ class UsersController extends AbstractController
      *
      * @return User[] All users
      */
-    public function listAction(EntityManagerInterface $entityManager): array
+    public function listAction(EntityHandler $entityHandler): array
     {
-        return $entityManager->getRepository(User::class)->findAll();
+        return $entityHandler->findAll(User::class);
     }
 
     /**
