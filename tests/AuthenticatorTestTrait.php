@@ -3,10 +3,10 @@
 namespace App\Tests;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Tester\Http\ClientInterface;
 use Draw\Component\Tester\Http\Request\DefaultValueObserver;
+use Draw\DoctrineExtra\ORM\EntityHandler;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 trait AuthenticatorTestTrait
@@ -19,9 +19,10 @@ trait AuthenticatorTestTrait
     public function getConnectionToken(string $email): string
     {
         if (!isset($this->connectionTokens[$email])) {
-            $user = static::getContainer()->get(EntityManagerInterface::class)
-                ->getRepository(User::class)
-                ->findOneBy(['email' => $email]);
+            $user = static::getContainer()
+                ->get(EntityHandler::class)
+                ->findOneBy(User::class, ['email' => $email]);
+
             if (null === $user) {
                 throw new \InvalidArgumentException('User with email ['.$email.'] not found.');
             }
