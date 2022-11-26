@@ -6,6 +6,11 @@ parameters:
 			path: packages/framework-extra-bundle/DependencyInjection/Integration/LoggerIntegration.php
 
 		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEmpty\\(\\) with array\\{stdClass, stdClass\\} will always evaluate to false\\.$#"
+			count: 1
+			path: packages/messenger/Tests/DoctrineMessageBusHook/Entity/MessageHolderTraitTest.php
+
+		-
 			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Configuration\\\\Deserialization\\:\\:\\$deserializationEnableMaxDepth is unused\\.$#"
 			count: 1
 			path: packages/open-api/Configuration/Deserialization.php
@@ -44,6 +49,11 @@ parameters:
 			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\Test\\:\\:\\$propertyGroupExclusion is unused\\.$#"
 			count: 1
 			path: packages/open-api/Tests/Mock/Model/Test.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#"
+			count: 1
+			path: packages/security/Http/Authenticator/JwtAuthenticator.php
 
 		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getRole\\(\\)\\.$#"
@@ -89,3 +99,8 @@ parameters:
 			message: "#^Class Draw\\\\Bundle\\\\SonataIntegrationBundle\\\\User\\\\Security\\\\AdminLoginAuthenticator extends @final class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\\.$#"
 			count: 1
 			path: packages/sonata-integration-bundle/User/Security/AdminLoginAuthenticator.php
+
+		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertArrayHasKey\\(\\) with string\\|null and array\\{\\} will always evaluate to false\\.$#"
+			count: 1
+			path: packages/user-bundle/Tests/AccountLocker/Entity/LockableUserTraitTest.php

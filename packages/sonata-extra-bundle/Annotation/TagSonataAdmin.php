@@ -11,62 +11,35 @@ use Terminal42\ServiceAnnotationBundle\Annotation\ServiceTagInterface;
  */
 class TagSonataAdmin implements ServiceTagInterface
 {
-    /**
-     * @var string
-     */
-    public $label;
+    public ?string $model_class = null;
 
-    /**
-     * @var string
-     */
-    public $manager_type;
+    public ?string $code = null;
 
-    /**
-     * @var string
-     */
-    public $group;
+    public ?string $controller = null;
 
-    /**
-     * @var bool
-     */
-    public $show_in_dashboard;
+    public ?string $label;
 
-    /**
-     * @var bool
-     */
-    public $show_mosaic_button;
+    public ?string $manager_type;
 
-    /**
-     * @var bool
-     */
-    public $keep_open;
+    public ?string $group;
 
-    /**
-     * @var bool
-     */
-    public $on_top;
+    public ?bool $show_in_dashboard;
 
-    /**
-     * @var string
-     */
-    public $icon;
+    public ?bool $show_mosaic_button;
 
-    /**
-     * @var string
-     */
-    public $label_translator_strategy;
+    public ?bool $keep_open;
 
-    /**
-     * @var string
-     */
-    public $label_catalogue;
+    public ?bool $on_top;
 
-    /**
-     * @var string
-     */
-    public $pager_type;
+    public ?string $icon;
 
-    private $data = [];
+    public ?string $label_translator_strategy;
+
+    public ?string $label_catalogue;
+
+    public ?string $pager_type;
+
+    private array $data;
 
     public function __construct(array $data)
     {

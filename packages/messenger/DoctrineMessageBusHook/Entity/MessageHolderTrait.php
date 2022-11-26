@@ -6,6 +6,9 @@ trait MessageHolderTrait
 {
     protected array $onHoldMessages = [];
 
+    /**
+     * @return object[]
+     */
     public function getOnHoldMessages(bool $clear): array
     {
         $result = [];

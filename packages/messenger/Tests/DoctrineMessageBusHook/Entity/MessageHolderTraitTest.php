@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\Messenger\Tests\Entity;
+namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\Entity;
 
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
 use PHPUnit\Framework\TestCase;

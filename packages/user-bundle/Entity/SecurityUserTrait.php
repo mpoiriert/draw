@@ -122,7 +122,7 @@ trait SecurityUserTrait
         return $this;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
@@ -132,7 +132,7 @@ trait SecurityUserTrait
         $this->plainPassword = null;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getUserIdentifier();
     }

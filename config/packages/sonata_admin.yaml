@@ -60,6 +60,7 @@ sonata_admin:
         role_super_admin: 'ROLE_SUPER_ADMIN'
 
 sonata_block:
+    http_cache: false
     blocks:
         sonata.admin.block.admin_list:
             contexts: [ 'admin' ]

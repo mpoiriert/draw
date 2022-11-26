@@ -13,6 +13,16 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
 {
+    public function getKey(): string
+    {
+        return 'draw_jwt';
+    }
+
+    public function getPriority(): int
+    {
+        return 0;
+    }
+
     public function createAuthenticator(
         ContainerBuilder $container,
         string $firewallName,
@@ -41,11 +51,6 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
         }
 
         return $serviceId;
-    }
-
-    public function getKey(): string
-    {
-        return 'draw_jwt';
     }
 
     /**

@@ -10,15 +10,15 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 /**
- * @TagSonataAdmin(group="Tag", manager_type="orm", pager_type="simple")
+ * @TagSonataAdmin(
+ *     group="Tag",
+ *     manager_type="orm",
+ *     pager_type="simple",
+ *     model_class=Tag::class
+ * )
  */
 class TagAdmin extends AbstractAdmin
 {
-    public function __construct($code, $class = Tag::class, $baseControllerName = null)
-    {
-        parent::__construct($code, $class, $baseControllerName);
-    }
-
     protected function configureListFields(ListMapper $list): void
     {
         $list

@@ -35,6 +35,11 @@ class DynamicArrayObject extends \ArrayObject
         return true;
     }
 
+    /**
+     * @param mixed $key
+     *
+     * @return mixed
+     */
     public function offsetGet($key)
     {
         if (!parent::offsetExists($key)) {
