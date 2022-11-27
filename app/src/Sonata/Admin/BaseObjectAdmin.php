@@ -23,8 +23,14 @@ use Sonata\AdminBundle\Form\FormMapper;
  *     sub_class=ChildObject1::class
  * )
  * @TagSonataAdminSubClass(
- *     label="Child Object 2",
- *     sub_class=ChildObject2::class
+ *     label="Child Object 2 False expresion",
+ *     sub_class=ChildObject2::class,
+ *     ifExpression="false"
+ * )
+ * @TagSonataAdminSubClass(
+ *     label="Child Object 2 True Expression",
+ *     sub_class=ChildObject2::class,
+ *     ifExpression="true"
  * )
  */
 class BaseObjectAdmin extends AbstractAdmin
