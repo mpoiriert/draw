@@ -8,6 +8,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCom
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\TagIfExpressionCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\JwtAuthenticatorFactory;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\MessengerMessageAuthenticatorFactory;
@@ -31,9 +32,12 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder
-            ->expects(static::exactly(7))
+            ->expects(static::exactly(8))
             ->method('addCompilerPass')
             ->withConsecutive(
+                [
+                    static::isInstanceOf(TagIfExpressionCompilerPass::class),
+                ],
                 [
                     static::isInstanceOf(UserCheckerDecoratorPass::class),
                 ],

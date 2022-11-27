@@ -2,6 +2,10 @@ App\Entity\User:
     properties:
         address:
             type: 'App\Entity\Address'
+        childObject1:
+            exclude: true
+        childObject2:
+            exclude: true
         manualLock:
             exclude: true
         messageQueue:
