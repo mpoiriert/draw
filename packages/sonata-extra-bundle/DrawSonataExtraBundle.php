@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle;
 
+use Draw\Bundle\SonataExtraBundle\DependencyInjection\Compiler\AutoConfigureSubClassesCompilerClass;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\Compiler\DecoratesCompilerPass;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\Compiler\ExtractArgumentFromDefaultValueCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -16,6 +17,12 @@ class DrawSonataExtraBundle extends Bundle
             new ExtractArgumentFromDefaultValueCompilerPass(),
             PassConfig::TYPE_BEFORE_OPTIMIZATION,
             1
+        );
+
+        $container->addCompilerPass(
+            new AutoConfigureSubClassesCompilerClass(),
+            PassConfig::TYPE_BEFORE_OPTIMIZATION,
+            -1
         );
 
         $container->addCompilerPass(new DecoratesCompilerPass());
