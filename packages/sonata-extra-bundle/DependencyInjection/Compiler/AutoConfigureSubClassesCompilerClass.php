@@ -9,6 +9,9 @@ class AutoConfigureSubClassesCompilerClass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
+        $adminPoolDefinition = $container->getDefinition('sonata.admin.pool');
+        $adminClasses = $adminPoolDefinition->getArgument(3);
+
         foreach ($container->findTaggedServiceIds('sonata.admin.sub_class') as $serviceId => $tags) {
             $subClasses = [];
             foreach ($tags as $tag) {
@@ -21,6 +24,12 @@ class AutoConfigureSubClassesCompilerClass implements CompilerPassInterface
             $container
                 ->getDefinition($serviceId)
                 ->addMethodCall('setSubClasses', [$subClasses]);
+
+            foreach (array_unique($subClasses) as $subClass) {
+                $adminClasses[$subClass][] = $serviceId;
+            }
         }
+
+        $adminPoolDefinition->setArgument(3, $adminClasses);
     }
 }
