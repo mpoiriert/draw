@@ -116,6 +116,22 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      */
     private string $comment = '';
 
+    /**
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\ChildObject1"
+     * )
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private ?ChildObject1 $childObject1;
+
+    /**
+     * @ORM\ManyToOne(
+     *     targetEntity="App\Entity\ChildObject2"
+     * )
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private ?ChildObject2 $childObject2;
+
     public function __construct()
     {
         $this->address = new Address();
@@ -159,7 +175,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     }
 
     /**
-     * @return Tag[]|Collection
+     * @return Collection<Tag>
      */
     public function getTags()
     {
@@ -191,7 +207,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     }
 
     /**
-     * @return UserAddress[]|Collection
+     * @return Collection<UserAddress>
      */
     public function getUserAddresses()
     {
@@ -247,5 +263,25 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public function getRolesList(): array
     {
         return $this->getRoles();
+    }
+
+    public function getChildObject1(): ?ChildObject1
+    {
+        return $this->childObject1;
+    }
+
+    public function setChildObject1(?ChildObject1 $childObject1): void
+    {
+        $this->childObject1 = $childObject1;
+    }
+
+    public function getChildObject2(): ?ChildObject2
+    {
+        return $this->childObject2;
+    }
+
+    public function setChildObject2(?ChildObject2 $childObject2): void
+    {
+        $this->childObject2 = $childObject2;
     }
 }

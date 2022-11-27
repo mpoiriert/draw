@@ -52,6 +52,8 @@ class UserAdmin extends AbstractAdmin
         $list
             ->addIdentifier('id')
             ->add('email')
+            ->add('childObject1')
+            ->add('childObject2')
             ->add('tags', 'list')
             ->add('isLocked', 'boolean', ['inverse' => true])
             ->add(
@@ -80,6 +82,8 @@ class UserAdmin extends AbstractAdmin
 
         $show
             ->add('id')
+            ->add('childObject1')
+            ->add('childObject2')
             ->add('email')
             ->add('dateOfBirth')
             ->add('roles', 'json')
@@ -111,6 +115,8 @@ class UserAdmin extends AbstractAdmin
         $form
             ->tab('User')
                 ->add('email')
+                ->add('childObject1')
+                ->add('childObject2')
                 ->add('plainPassword', TextType::class, ['required' => false])
                 ->add(
                     'dateOfBirth',
