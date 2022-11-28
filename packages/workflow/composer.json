@@ -15,7 +15,8 @@
         "symfony/workflow": "^5.4.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0 || ^9.0"
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "symfony/security": "^5.4.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
