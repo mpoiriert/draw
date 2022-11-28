@@ -18,7 +18,7 @@ class TagIfExpressionCompilerPass implements CompilerPassInterface
                         $result = ReflectionAccessor::callMethod(
                             $container,
                             'getExpressionLanguage'
-                        )->evaluate($tag['ifExpression'], ['container' => $this]);
+                        )->evaluate($tag['ifExpression'], ['container' => $container]);
 
                         if (!$result) {
                             unset($tagsConfiguration[$tagName][$index]);
