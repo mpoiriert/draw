@@ -5,6 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration;
 use Draw\Component\Workflow\EventListener\AddTransitionNameToContextListener;
+use Draw\Component\Workflow\EventListener\AddUserToContextListener;
 
 /**
  * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration
@@ -33,6 +34,12 @@ class WorkflowIntegrationTest extends IntegrationTestCase
         yield [
             [],
             [
+                new ServiceConfiguration(
+                    'draw.workflow.event_listener.add_user_to_context_listener',
+                    [
+                        AddUserToContextListener::class,
+                    ]
+                ),
                 new ServiceConfiguration(
                     'draw.workflow.event_listener.add_transition_name_to_context_listener',
                     [
