@@ -376,7 +376,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
                     'tag_entity_class' => MessengerMessageTagStub::class,
                     'broker' => [
                         'contexts' => [
-                           'default' => ['receivers' => ['async']],
+                            'default' => ['receivers' => ['async']],
                         ],
                     ],
                     'async_routing_configuration' => true,

@@ -34,10 +34,10 @@ class InFilter extends Filter
     public function getFormOptions(): array
     {
         return [
-           'field_type' => $this->getFieldType(),
-           'field_options' => $this->getFieldOptions(),
-           'label' => $this->getLabel(),
-       ];
+            'field_type' => $this->getFieldType(),
+            'field_options' => $this->getFieldOptions(),
+            'label' => $this->getLabel(),
+        ];
     }
 
     public function getDefaultOptions(): array
