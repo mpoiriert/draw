@@ -54,6 +54,9 @@ class SystemToken extends AbstractToken
         return true;
     }
 
+    /**
+     * @return mixed
+     */
     public function getCredentials()
     {
         return null;

@@ -51,19 +51,19 @@ class AdminMonitoringBlockService implements BlockServiceInterface
                     'limit' => 256,
                     'template' => '@DrawSonataExtra/Block/block_monitoring.html.twig',
                     'thresholds' => [
-                            'success' => [
-                                'if' => 'count == 0',
-                                'settings' => [
-                                    'css_class' => 'bg-green',
-                                ],
-                            ],
-                            'alert' => [
-                                'if' => 'count >= 1',
-                                'settings' => [
-                                    'css_class' => 'bg-red',
-                                ],
+                        'success' => [
+                            'if' => 'count == 0',
+                            'settings' => [
+                                'css_class' => 'bg-green',
                             ],
                         ],
+                        'alert' => [
+                            'if' => 'count >= 1',
+                            'settings' => [
+                                'css_class' => 'bg-red',
+                            ],
+                        ],
+                    ],
                 ]
             );
     }
