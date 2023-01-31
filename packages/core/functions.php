@@ -18,8 +18,7 @@ if (!\function_exists(__NAMESPACE__.'\use_trait')) {
         } while ($class = get_parent_class($class));
 
         foreach (array_unique($allTraits) as $usedTrait) {
-            $traits = class_uses($usedTrait);
-            if (isset($traits[$trait])) {
+            if (use_trait($usedTrait, $trait)) {
                 return true;
             }
         }
