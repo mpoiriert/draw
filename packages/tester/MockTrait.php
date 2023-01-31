@@ -31,6 +31,13 @@ trait MockTrait
             ->getMock();
     }
 
+    /**
+     * @template T of object
+     *
+     * @phpstan-param class-string $originalClassName
+     *
+     * @return MockObject&T
+     */
     public function mockProperty(object $object, string $property, string $originalClassName): MockObject
     {
         ReflectionAccessor::setPropertyValue(
