@@ -65,20 +65,20 @@ tester-generate-doc:
 tester-generate-all: tester-dump-assert-methods tester-generate-trait tester-generate-doc
 
 monorepo-merge:
-	docker-compose exec php vendor/bin/monorepo-builder merge
+	docker-compose exec php vendor-bin/monorepo/vendor/bin/monorepo-builder merge
 
 monorepo-split:
-	docker-compose exec php vendor/bin/monorepo-builder split
+	docker-compose exec php vendor-bin/monorepo/vendor/bin/monorepo-builder split
 
 monorepo-release:
 	DRY_RUN=--dry-run
 ifeq ($(run),1)
 	DRY_RUN=
 endif
-	docker-compose exec php vendor/bin/monorepo-builder release $(version) $$DRY_RUN
+	docker-compose exec php vendor-bin/monorepo/vendor/bin/monorepo-builder release $(version) $$DRY_RUN
 
 monorepo-release-patch:
-	docker-compose exec php vendor/bin/monorepo-builder release patch
+	docker-compose exec php vendor-bin/monorepo/vendor/bin/monorepo-builder release patch
 
 composer-update:
 	unlink composer.lock

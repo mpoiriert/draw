@@ -4,7 +4,7 @@
 /docker-compose.override.yaml
 /draw.iml
 composer-normalize
-/vendor-bin/**/vendor
+/vendor-bin/**/vendor/
 /public/version.txt
 /public/open-api
 
