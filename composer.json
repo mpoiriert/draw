@@ -111,6 +111,7 @@
         "draw/contracts": "self.version",
         "draw/core": "self.version",
         "draw/doctrine-extra": "self.version",
+        "draw/fixer": "self.version",
         "draw/framework-extra-bundle": "self.version",
         "draw/log": "self.version",
         "draw/mailer": "self.version",
@@ -163,7 +164,8 @@
             "Draw\\Component\\Validator\\": "packages/validator/",
             "Draw\\Component\\Workflow\\": "packages/workflow/",
             "Draw\\Contracts\\": "packages/contracts/",
-            "Draw\\DoctrineExtra\\": "packages/doctrine-extra/"
+            "Draw\\DoctrineExtra\\": "packages/doctrine-extra/",
+            "Draw\\Fixer\\": "packages/fixer/"
         },
         "files": [
             "packages/core/functions.php",

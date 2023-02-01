@@ -41,7 +41,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return false;
         }
 
-        if (null === self::getPrimitiveType($source, $extractionContext)) {
+        if (null === static::getPrimitiveType($source, $extractionContext)) {
             return false;
         }
 
@@ -60,7 +60,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        $primitiveType = self::getPrimitiveType($source, $extractionContext);
+        $primitiveType = static::getPrimitiveType($source, $extractionContext);
 
         $target->type = $primitiveType['type'];
 

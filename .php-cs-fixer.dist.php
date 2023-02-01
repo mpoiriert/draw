@@ -3,9 +3,11 @@
 $finder = (new \PhpCsFixer\Finder)
     ->in(__DIR__)
     ->exclude('var')
+    ->exclude('packages/fixer/Tests/fixtures/ClassPrivateStaticCallFixerTest')
+    ->exclude('packages/fixer/Tests/fixtures/ClassStaticCallFixerTest')
 ;
 
-return (new \PhpCsFixer\Config())
+$config = (new \PhpCsFixer\Config())
     ->setRules([
         '@PHP74Migration' => true,
         '@PHP74Migration:risky' => true,
@@ -35,7 +37,9 @@ return (new \PhpCsFixer\Config())
         'single_line_throw' => false,
         '@DoctrineAnnotation' => true,
         // Disabled risky for now
-        'declare_strict_types' => false
+        'declare_strict_types' => false,
     ])
     ->setFinder($finder)
 ;
+
+return \Draw\Fixer\RuleSet::adjust($config);
