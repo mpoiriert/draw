@@ -24,16 +24,13 @@ class UserAddress
      *     targetEntity="App\Entity\User",
      *     inversedBy="userAddresses"
      * )
-     *
      * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private ?User $user = null;
 
     /**
      * @ORM\Embedded(class="App\Entity\Address")
-     *
      * @Serializer\Type("App\Entity\Address")
-     *
      * @Assert\Valid
      */
     private ?Address $address;

@@ -3,6 +3,7 @@
 namespace Draw\Component\Core\Tests;
 
 use function Draw\Component\Core\use_trait;
+
 use PHPUnit\Framework\TestCase;
 
 class FunctionTest extends TestCase

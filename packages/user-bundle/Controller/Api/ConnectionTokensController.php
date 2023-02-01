@@ -30,16 +30,12 @@ class ConnectionTokensController extends AbstractController
      * is reach you should call the POST /api/connection-tokens endpoint to get a new one.
      *
      * @Route(name="connection_token_create", methods={"POST"}, path="/connection-tokens")
-     *
      * @OpenApi\Operation(
      *     tags="Security",
      *     operationId="drawUserBundleCreateConnectionToken"
      * )
-     *
      * @Deserialization(name="credential")
-     *
      * @Serialization(statusCode=201)
-     *
      * @Security("not is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @return ConnectionToken The newly created token
@@ -68,14 +64,11 @@ class ConnectionTokensController extends AbstractController
 
     /**
      * @Route(name="drawUserBundle_connection_token_refresh", methods={"POST"}, path="/connection-tokens/refresh")
-     *
      * @OpenApi\Operation(
      *     tags="Security",
      *     operationId="drawUserBundleRefreshConnectionToken"
      * )
-     *
      * @Serialization(statusCode=200)
-     *
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @return ConnectionToken The refreshed token
@@ -87,14 +80,11 @@ class ConnectionTokensController extends AbstractController
 
     /**
      * @Route(name="drawUserBundle_connection_clear", methods={"DELETE"}, path="/connection-tokens/current")
-     *
      * @OpenApi\Operation(
      *     tags="Security",
      *     operationId="drawUserBundleDeleteConnectionToken"
      * )
-     *
      * @Serialization(statusCode=204)
-     *
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @return void Nothing to be returned

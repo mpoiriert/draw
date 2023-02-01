@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraint;
  * A base class to do assertion base on php callable.
  *
  * @Annotation
+ *
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 class PhpCallable extends Constraint

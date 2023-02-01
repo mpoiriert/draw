@@ -14,7 +14,6 @@ class TagsController
 {
     /**
      * @Route(methods={"POST"}, path="/tags")
-     *
      * @OpenApi\Operation(operationId="tagCreate")
      *
      * @Deserialization
@@ -33,9 +32,7 @@ class TagsController
 
     /**
      * @Route(methods={"PUT"}, path="/tags/{id}")
-     *
      * @OpenApi\Operation(operationId="tagEdit")
-     *
      * @Deserialization(
      *     propertiesMap={"id": "id"}
      * )
@@ -51,7 +48,6 @@ class TagsController
 
     /**
      * @Route(name="tag_get", methods={"GET"}, path="/tags/{id}")
-     *
      * @OpenApi\Operation(operationId="tagGet")
      *
      * @return Tag The tag
@@ -63,7 +59,6 @@ class TagsController
 
     /**
      * @Route(methods={"DELETE"}, path="/tags/{id}")
-     *
      * @OpenApi\Operation(operationId="tagDelete")
      *
      * @return void Empty response mean success
@@ -76,7 +71,6 @@ class TagsController
 
     /**
      * @Route(methods={"GET"}, path="/tags")
-     *
      * @OpenApi\Operation(operationId="tagList")
      *
      * @return Tag[] All tags
@@ -88,9 +82,7 @@ class TagsController
 
     /**
      * @Route(methods={"POST"}, path="/tags/activate-all")
-     *
      * @OpenApi\Operation(operationId="tagActivateAll")
-     *
      * @Serialization(statusCode=204)
      *
      * @return void Empty return value mean success

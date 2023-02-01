@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Form\FormMapper;
  *     manager_type="orm",
  *     model_class=BaseObject::class
  * )
- *
  * @TagSonataAdminSubClass(
  *     label="Child Object 1",
  *     sub_class=ChildObject1::class

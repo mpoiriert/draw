@@ -13,8 +13,6 @@ final class SqlAssertionBuilder
 
     /**
      * @param int|null $count The exact count of query expected
-     *
-     * @return SqlAssertionBuilder
      */
     public static function create(?int $count = null): self
     {

@@ -32,6 +32,7 @@ class DrawTransportTest extends TestCase
 
     /**
      * @beforeClass
+     *
      * @afterClass
      */
     public static function cleanUp(): void
@@ -274,6 +275,7 @@ class DrawTransportTest extends TestCase
 
     /**
      * @depends      testSetup
+     *
      * @dataProvider provideTestSendSearchableMessage
      *
      * @param array|Envelope[] $insertEnvelopes

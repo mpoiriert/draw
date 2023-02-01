@@ -130,7 +130,6 @@ class Root implements VendorExtensionSupportInterface
      * @var SecurityScheme[]
      *
      * @Assert\Valid()
-     *
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\SecurityScheme>")
      * @JMS\SerializedName("securityDefinitions")
      */
@@ -145,7 +144,6 @@ class Root implements VendorExtensionSupportInterface
      * @var SecurityRequirement[]
      *
      * @Assert\Valid()
-     *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\SecurityRequirement>")
      */
     public ?array $security = null;
@@ -167,7 +165,6 @@ class Root implements VendorExtensionSupportInterface
      * Additional external documentation.
      *
      * @Assert\Valid
-     *
      * @JMS\SerializedName("externalDocs")
      */
     public ?ExternalDocumentation $externalDocs = null;

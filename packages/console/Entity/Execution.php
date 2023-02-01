@@ -21,7 +21,6 @@ use Symfony\Component\Console\Input\ArrayInput;
  *         @ORM\Index(name="auto_acknowledge_reason", columns={"auto_acknowledge_reason"})
  *     }
  * )
- *
  * @ORM\HasLifecycleCallbacks
  */
 class Execution

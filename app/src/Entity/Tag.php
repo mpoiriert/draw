@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  * @ORM\Table(name="draw_acme__tag")
- *
  * @UniqueEntity(fields={"label"})
  */
 class Tag
@@ -34,7 +33,6 @@ class Tag
      * @var string
      *
      * @ORM\Column(name="label", type="string", length=255, nullable=false)
-     *
      * @Assert\NotNull
      * @Assert\Length(min=3, max=255, allowEmptyString=false)
      */

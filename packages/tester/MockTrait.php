@@ -14,6 +14,7 @@ trait MockTrait
 
     /**
      * @template T of object
+     *
      * @phpstan-param class-string<T> $originalClassName
      *
      * @return MockObject&T

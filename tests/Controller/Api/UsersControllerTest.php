@@ -10,6 +10,7 @@ class UsersControllerTest extends TestCase
 {
     /**
      * @beforeClass
+     *
      * @afterClass
      */
     public static function cleanUp(): void

@@ -14,7 +14,6 @@ class Address
      * @var string|null
      *
      * @ORM\Column(name="street", type="string", options={"default": ""})
-     *
      * @Serializer\Type("string")
      */
     private $street = '';
@@ -23,7 +22,6 @@ class Address
      * @var string|null
      *
      * @ORM\Column(name="postal_code", type="string", options={"default": ""})
-     *
      * @Serializer\Type("string")
      */
     private $postalCode = '';
@@ -32,7 +30,6 @@ class Address
      * @var string|null
      *
      * @ORM\Column(name="city", type="string", options={"default": ""})
-     *
      * @Serializer\Type("string")
      */
     private $city = '';
@@ -41,7 +38,6 @@ class Address
      * @var string|null
      *
      * @ORM\Column(name="country", type="string", options={"default": ""})
-     *
      * @Serializer\Type("string")
      */
     private $country = '';

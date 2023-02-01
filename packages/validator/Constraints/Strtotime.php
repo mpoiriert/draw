@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints\Type;
  * Assertion that the string value is compatible with strtotime in php.
  *
  * @Annotation
+ *
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 class Strtotime extends PhpCallable

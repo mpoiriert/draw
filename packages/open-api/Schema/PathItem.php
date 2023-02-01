@@ -72,7 +72,6 @@ class PathItem
      * @var BaseParameter[]
      *
      * @Assert\Valid()
-     *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\BaseParameter>")
      */
     public ?array $parameters = null;

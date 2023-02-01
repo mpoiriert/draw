@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Annotation
+ *
  * @Target({"METHOD"})
  */
 class BodyParameter extends BaseParameter

@@ -24,7 +24,6 @@ class Test
      *
      * @Serializer\Type("string")
      * @Serializer\Groups({"Included"})
-     *
      * @Assert\NotEqualTo("invalidValue")
      */
     private $propertyFromBody;
