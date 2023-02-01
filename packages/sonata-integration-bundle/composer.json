@@ -5,7 +5,7 @@
     "type": "symfony-bundle",
     "keywords": ["symfony", "sonata"],
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "draw/framework-extra-bundle": "^0.10",
         "draw/sonata-extra-bundle": "^0.10",
         "symfony/framework-bundle": "^5.4.3",

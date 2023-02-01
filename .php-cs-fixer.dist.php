@@ -38,6 +38,7 @@ $config = (new \PhpCsFixer\Config())
         '@DoctrineAnnotation' => true,
         // Disabled risky for now
         'declare_strict_types' => false,
+        'phpdoc_separation' => false,
     ])
     ->setFinder($finder)
 ;

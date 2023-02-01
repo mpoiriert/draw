@@ -1,4 +1,4 @@
-FROM php:7.4.2-fpm
+FROM php:8.1.5-fpm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends vim curl debconf subversion git apt-transport-https apt-utils \
@@ -34,7 +34,7 @@ RUN apt-get install -y --no-install-recommends awscli
 #XDEBUG
 ARG xdebug
 RUN if [ $xdebug = "1" ] ; then \
-    pecl install -f xdebug-2.9.8 \
+    pecl install -f xdebug-3.1.4 \
     && docker-php-ext-enable xdebug \
     ; fi
 

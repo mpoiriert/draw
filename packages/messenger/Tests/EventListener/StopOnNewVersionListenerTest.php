@@ -2,12 +2,12 @@
 
 namespace Draw\Component\Messenger\Tests\EventListener;
 
+use ColinODell\PsrTestLogger\TestLogger;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
 use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
