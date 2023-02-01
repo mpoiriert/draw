@@ -35,12 +35,7 @@ class DynamicArrayObject extends \ArrayObject
         return true;
     }
 
-    /**
-     * @param mixed $key
-     *
-     * @return mixed
-     */
-    public function offsetGet($key)
+    public function offsetGet(mixed $key): mixed
     {
         if (!parent::offsetExists($key)) {
             $this[$key] = new static([], $this->getFlags(), $this->getIteratorClass());
