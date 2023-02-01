@@ -208,7 +208,12 @@
         "branch-alias": {
             "dev-master": "0.9-dev"
         },
-        "src-dir": "app/src"
+        "src-dir": "app/src",
+        "bamarni-bin": {
+            "bin-links": false,
+            "forward-command": true,
+            "target-directory": "vendor-bin"
+        }
     },
     "scripts": {
         "post-install-cmd": [
