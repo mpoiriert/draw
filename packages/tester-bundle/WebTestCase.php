@@ -13,7 +13,7 @@ abstract class WebTestCase extends KernelTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        self::getClient(null);
+        static::getClient(null);
     }
 
     /**
@@ -42,7 +42,7 @@ abstract class WebTestCase extends KernelTestCase
         $client->setServerParameters($server);
 
         // This will initialize the client
-        self::getClient($client);
+        static::getClient($client);
 
         return $client;
     }
