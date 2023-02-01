@@ -37,11 +37,10 @@ class OperationExtractorTest extends TestCase
     /**
      * @dataProvider provideTestCanExtract
      *
-     * @param $source
-     * @param $type
-     * @param $canBeExtract
+     * @param mixed $source
+     * @param mixed $type
      */
-    public function testCanExtract($source, $type, $canBeExtract): void
+    public function testCanExtract($source, $type, bool $canBeExtract): void
     {
         /** @var ExtractionContextInterface $context */
         $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
@@ -162,7 +161,7 @@ class PhpDocOperationExtractorStubClass
 class PhpDocOperationExtractorStubService
 {
     /**
-     * @param $string
+     * @param mixed $string
      *
      * @throws \Exception                    When problem occur
      * @throws \LengthException

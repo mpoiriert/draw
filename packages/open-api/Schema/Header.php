@@ -50,7 +50,6 @@ class Header
      * Default value is csv.
      *
      * @Assert\Choice({"csv", "ssv", "tsv", "pipes"})
-     *
      * @JMS\SerializedName("collectionFormat")
      */
     public ?string $collectionFormat = null;

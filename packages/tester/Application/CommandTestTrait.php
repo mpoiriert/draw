@@ -70,7 +70,7 @@ trait CommandTestTrait
         }
 
         TestCase::assertSame(
-        // We use count instead of InputDefinition::getArgumentCounts to support array argument
+            // We use count instead of InputDefinition::getArgumentCounts to support array argument
             \count($definition->getArguments()),
             $position,
             'Argument count does not match'

@@ -39,7 +39,6 @@ class Items
      *   Default value is csv.
      *
      * @Assert\Choice({"csv", "ssv", "tsv", "pipes"})
-     *
      * @JMS\SerializedName("collectionFormat")
      */
     public ?string $collectionFormat = null;
@@ -130,7 +129,6 @@ class Items
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor14
      *
      * @JMS\SerializedName("multipleOf")
-     *
      * @Assert\GreaterThan(0)
      */
     public ?int $multipleOf = null;

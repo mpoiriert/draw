@@ -7,6 +7,7 @@ use Terminal42\ServiceAnnotationBundle\Annotation\ServiceTagInterface;
 
 /**
  * @Annotation
+ *
  * @Target("CLASS")
  */
 class TagSonataAdmin implements ServiceTagInterface

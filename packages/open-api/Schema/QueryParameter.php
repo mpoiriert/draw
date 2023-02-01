@@ -6,6 +6,7 @@ use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @Annotation
+ *
  * @Target({"METHOD"})
  */
 class QueryParameter extends Parameter

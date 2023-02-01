@@ -219,6 +219,7 @@ class TestResponseTest extends TestCase
      * @dataProvider provideAssertHeader
      *
      * @param mixed $value
+     *
      * @phpstan-param array<string, mixed> $headers
      */
     public function testAssertHeader(string $headerName, $value, array $headers, bool $expectedPass): void

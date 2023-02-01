@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Annotation
+ *
  * @Target({"METHOD"})
  */
 class Parameter extends BaseParameter implements ValidationConfigurationInterface
@@ -44,7 +45,6 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
      *   Default value is csv.
      *
      * @Assert\Choice({"csv", "ssv", "tsv", "pipes", "multi"})
-     *
      * @JMS\SerializedName("collectionFormat")
      */
     public ?string $collectionFormat = null;

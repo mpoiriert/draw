@@ -27,11 +27,8 @@ class SqlAssertionBuilderTest extends TestCase
 
     /**
      * @dataProvider provideTestAssertCountEquals
-     *
-     * @param $expectedCount
-     * @param $shouldFail
      */
-    public function testProvideAssertCountEquals($expectedCount, DataTester $dataTester, $shouldFail): void
+    public function testProvideAssertCountEquals(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
     {
         $this->assertionBuilder->assertCountEquals($expectedCount);
         $this->invoke($dataTester, $shouldFail);
@@ -47,11 +44,8 @@ class SqlAssertionBuilderTest extends TestCase
 
     /**
      * @dataProvider provideTestAssertCountGreaterThanOrEqual
-     *
-     * @param $expectedCount
-     * @param $shouldFail
      */
-    public function testAssertCountGreaterThanOrEqual($expectedCount, DataTester $dataTester, $shouldFail): void
+    public function testAssertCountGreaterThanOrEqual(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
     {
         $this->assertionBuilder->assertCountGreaterThanOrEqual($expectedCount);
         $this->invoke($dataTester, $shouldFail);
@@ -67,11 +61,8 @@ class SqlAssertionBuilderTest extends TestCase
 
     /**
      * @dataProvider provideTestAssertCountLessThanOrEqual
-     *
-     * @param $expectedCount
-     * @param $shouldFail
      */
-    public function testAssertCountLessThanOrEqual($expectedCount, DataTester $dataTester, $shouldFail): void
+    public function testAssertCountLessThanOrEqual(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
     {
         $this->assertionBuilder->assertCountLessThanOrEqual($expectedCount);
         $this->invoke($dataTester, $shouldFail);

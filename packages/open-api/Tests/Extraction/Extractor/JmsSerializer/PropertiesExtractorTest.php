@@ -50,11 +50,10 @@ class PropertiesExtractorTest extends TestCase
     /**
      * @dataProvider provideTestCanExtract
      *
-     * @param $source
-     * @param $type
-     * @param $canBeExtract
+     * @param mixed $source
+     * @param mixed $type
      */
-    public function testCanExtract($source, $type, $canBeExtract): void
+    public function testCanExtract($source, $type, bool $canBeExtract): void
     {
         if (null !== $source) {
             $source = new \ReflectionClass($source);
@@ -115,6 +114,7 @@ class JmsExtractorStubModel
      * The name.
      *
      * @var string
+     *
      * @Serializer\Type("string")
      * @Serializer\Groups({"test"})
      * @Serializer\ReadOnlyProperty
@@ -132,6 +132,7 @@ class JmsExtractorStubModel
      * Serialized property.
      *
      * @var string
+     *
      * @Serializer\Type("string")
      * @Serializer\SerializedName("serializeProperty")
      * @Serializer\Groups({"test"})
@@ -142,6 +143,7 @@ class JmsExtractorStubModel
      * The array.
      *
      * @var array
+     *
      * @Serializer\Type("array<Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubModel>")
      * @Serializer\Groups({"test"})
      */
@@ -151,12 +153,14 @@ class JmsExtractorStubModel
      * The array.
      *
      * @var array
+     *
      * @Serializer\Type("array<Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubModel>")
      */
     public $notThereByGroup;
 
     /**
      * @var string
+     *
      * @Serializer\Exclude
      * @Serializer\Groups({"test"})
      */
@@ -180,6 +184,7 @@ class JmsExtractorStubGeneric
      * The generic property.
      *
      * @var string
+     *
      * @Serializer\Type("generic")
      * @Serializer\Groups({"test"})
      * @Serializer\ReadOnlyProperty

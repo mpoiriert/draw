@@ -32,7 +32,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="draw_acme__user")
  * @ORM\HasLifecycleCallbacks
- *
  * @UniqueEntity(fields={"email"})
  */
 class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface, TwoFactorInterface, ByEmailInterface, ByTimeBaseOneTimePasswordInterface
@@ -58,7 +57,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * @ORM\Id
      * @ORM\Column(name="id", type="guid")
-     *
      * @Serializer\ReadOnlyProperty
      */
     private ?string $id = null;
@@ -84,7 +82,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
 
     /**
      * @ORM\Embedded(class="App\Entity\Address", columnPrefix="address_")
-     *
      * @Assert\Valid
      */
     private Address $address;
@@ -93,7 +90,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @var UserAddress[]|Collection
      *
      * @Assert\Valid
-     *
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\UserAddress",
      *     cascade={"persist"},

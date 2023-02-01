@@ -6,7 +6,7 @@ use Draw\Component\Tester\DataTester;
 
 class ViolationListTester
 {
-    private $violations;
+    private array $violations = [];
 
     public function __invoke(DataTester $tester): void
     {
@@ -23,12 +23,9 @@ class ViolationListTester
     }
 
     /**
-     * @param $propertyPath
-     * @param $message
-     *
-     * @return $this
+     * @return static
      */
-    public function addViolation($propertyPath, $message)
+    public function addViolation(string $propertyPath, string $message)
     {
         $this->violations[] = compact('propertyPath', 'message');
 
@@ -38,11 +35,9 @@ class ViolationListTester
     /**
      * Check code of the last added violation.
      *
-     * @param $code
-     *
-     * @return $this
+     * @return static
      */
-    public function code($code)
+    public function code(string $code)
     {
         $this->violations[\count($this->violations) - 1]['code'] = $code;
 
@@ -52,9 +47,9 @@ class ViolationListTester
     /**
      * Check invalid value on the last added violation.
      *
-     * @param $invalidValue
+     * @param mixed $invalidValue
      *
-     * @return $this
+     * @return static
      */
     public function invalidValue($invalidValue)
     {

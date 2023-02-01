@@ -26,11 +26,10 @@ class RootSchemaExtractorTest extends TestCase
     /**
      * @dataProvider provideTestCanExtract
      *
-     * @param $source
-     * @param $type
-     * @param $expected
+     * @param mixed $source
+     * @param mixed $type
      */
-    public function testCanExtract($source, $type, $expected): void
+    public function testCanExtract($source, $type, bool $expected): void
     {
         $extractor = new JsonRootSchemaExtractor(SerializerBuilder::create()->build());
 

@@ -9,7 +9,6 @@ trait SecurityUserTrait
 {
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     *
      * @Assert\Email()
      * @Assert\NotBlank()
      */

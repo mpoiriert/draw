@@ -28,6 +28,7 @@ class UserTest extends TestCase
 
     /**
      * @before
+     *
      * @after
      */
     public function cleanUp(): void

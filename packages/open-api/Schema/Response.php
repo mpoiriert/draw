@@ -22,7 +22,6 @@ class Response
 
     /**
      * @Assert\Valid()
-     *
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Header>")
      */
     public ?array $headers = null;

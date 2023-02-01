@@ -13,21 +13,16 @@ class TestController
 {
     /**
      * @Route(methods={"POST"}, path="/tests")
-     *
      * @OpenApi\Operation(
      *     operationId="createTest",
      *     tags={"test"}
      * )
-     *
      * @OpenApi\QueryParameter(name="param1")
-     *
      * @OpenApi\Vendor(name="x-test", value={"key": "value", "object": {"property": "value"}})
-     *
      * @Deserialization(
      *     name="test",
      *     deserializationGroups={"Included"}
      * )
-     *
      * @Serialization(
      *     statusCode=201,
      *     serializerGroups={"Included"},
@@ -49,12 +44,10 @@ class TestController
 
     /**
      * @Route(methods={"POST"}, path="/tests-array")
-     *
      * @OpenApi\Operation(
      *     operationId="arrayTest",
      *     tags={"test"}
      * )
-     *
      * @OpenApi\QueryParameter(
      *     name="param1",
      *     type="array",
@@ -75,7 +68,6 @@ class TestController
 
     /**
      * @Route(methods={"GET"}, path="/v2/void", defaults={"_api_version": 2})
-     *
      * @OpenApi\Operation(
      *     operationId="version2",
      *     tags={"test"}

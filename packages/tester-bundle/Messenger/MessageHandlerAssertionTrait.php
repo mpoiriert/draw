@@ -24,7 +24,7 @@ trait MessageHandlerAssertionTrait
         foreach ($configuration as $index => $messages) {
             if (class_exists($index)) {
                 foreach ($busses as $busName) {
-                    $configuration[$busName] = array_merge(($configuration[$busName] ?? []), [$index => $messages]);
+                    $configuration[$busName] = array_merge($configuration[$busName] ?? [], [$index => $messages]);
                 }
                 unset($configuration[$index]);
             }

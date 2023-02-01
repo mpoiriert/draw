@@ -213,7 +213,7 @@ class UserLock
             '%s -> %s -> %s',
             $this->getUser(),
             $this->getReason(),
-            ($this->isActive() ? 'Active' : 'Inactive'),
+            $this->isActive() ? 'Active' : 'Inactive',
         );
     }
 }

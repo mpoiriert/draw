@@ -110,14 +110,12 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
 
     /**
      * @Assert\Valid()
-     *
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Schema>")
      */
     public ?array $properties = null;
 
     /**
      * @Assert\Valid
-     *
      * @JMS\SerializedName("additionalProperties")
      */
     public ?Schema $additionalProperties = null;
@@ -154,7 +152,6 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      * Additional external documentation.
      *
      * @Assert\Valid
-     *
      * @JMS\SerializedName("externalDocs")
      */
     public ?ExternalDocumentation $externalDocs = null;
@@ -165,7 +162,6 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
      * @var mixed
      *
      * @Assert\Valid
-     *
      * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
     public $example;

@@ -38,6 +38,7 @@ class TwoFactorAuthorizationTest extends TestCase
 
     /**
      * @afterClass
+     *
      * @beforeClass
      */
     public static function cleanUp(): void

@@ -20,7 +20,6 @@ class UsersController extends AbstractController
 {
     /**
      * @Route(methods={"POST"}, path="/users")
-     *
      * @OpenApi\Operation(operationId="userCreate")
      *
      * @Deserialization
@@ -39,9 +38,7 @@ class UsersController extends AbstractController
 
     /**
      * @Route(name="me", methods={"GET"}, path="/me")
-     *
      * @OpenApi\Operation(operationId="me")
-     *
      * @Serialization(statusCode=204)
      *
      * @return User The currently connected user
@@ -53,13 +50,10 @@ class UsersController extends AbstractController
 
     /**
      * @Route(methods={"PUT"}, path="/users/{id}")
-     *
      * @OpenApi\Operation(operationId="userEdit")
-     *
      * @Deserialization(
      *     propertiesMap={"id": "id"}
      * )
-     *
      * @IsGranted("ROLE_ADMIN")
      *
      * @return User The update user
@@ -73,11 +67,8 @@ class UsersController extends AbstractController
 
     /**
      * @Route(methods={"PUT"}, path="/users/{id}/tags")
-     *
      * @OpenApi\Operation(operationId="userSetTags")
-     *
      * @Deserialization(name="tags", class="array<App\Entity\Tag>")
-     *
      * @IsGranted("ROLE_ADMIN")
      *
      * @return array<Tag> The new list of tags
@@ -91,9 +82,7 @@ class UsersController extends AbstractController
 
     /**
      * @Route(name="user_get", methods={"GET"}, path="/users/{id}")
-     *
      * @OpenApi\Operation(operationId="userGet")
-     *
      * @IsGranted("ROLE_ADMIN")
      *
      * @return User The user
@@ -105,11 +94,8 @@ class UsersController extends AbstractController
 
     /**
      * @Route(name="user_delete", methods={"DELETE"}, path="/users/{id}")
-     *
      * @OpenApi\Operation(operationId="userDelete")
-     *
      * @IsGranted("ROLE_ADMIN")
-     *
      * @Serialization(statusCode=204)
      *
      * @return void Empty response mean success
@@ -124,7 +110,6 @@ class UsersController extends AbstractController
      * Return a paginator list of users.
      *
      * @Route(methods={"GET"}, path="/users")
-     *
      * @OpenApi\Operation(operationId="userList")
      *
      * @return User[] All users
@@ -138,7 +123,6 @@ class UsersController extends AbstractController
      * Send a reset password email to the user.
      *
      * @Route(methods={"POST"}, path="/users/{id}/reset-password-email")
-     *
      * @OpenApi\Operation(operationId="userSendResetPasswordEmail")
      *
      * @return void No return value mean email has been sent

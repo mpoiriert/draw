@@ -86,7 +86,6 @@ class Operation implements VendorExtensionSupportInterface
      * @var BaseParameter[]
      *
      * @Assert\Valid()
-     *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\BaseParameter>")
      */
     public array $parameters = [];
@@ -99,7 +98,6 @@ class Operation implements VendorExtensionSupportInterface
      * @Assert\NotNull()
      * @Assert\Valid()
      * @Assert\Count(min=1, minMessage="Operation must have at leas one response.")
-     *
      * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Response>")
      */
     public array $responses = [];
@@ -132,7 +130,6 @@ class Operation implements VendorExtensionSupportInterface
      * @var SecurityRequirement[]
      *
      * @Assert\Valid()
-     *
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\SecurityRequirement>")
      */
     public ?array $security = null;
