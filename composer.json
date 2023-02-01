@@ -56,7 +56,8 @@
         "symfony/validator": "^5.4.3",
         "symfony/workflow": "^5.4.3",
         "symfony/yaml": "^5.4.3",
-        "twig/twig": "^3.3"
+        "twig/twig": "^3.3",
+        "friendsofphp/php-cs-fixer": "^3.13"
     },
     "require-dev": {
         "ext-pcntl": "*",
