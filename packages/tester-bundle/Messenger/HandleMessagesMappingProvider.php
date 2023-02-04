@@ -6,13 +6,12 @@ class HandleMessagesMappingProvider
 {
     private $mappingByMessage;
 
-    private $mappingByHandler;
+    private $mappingByHandler = [];
 
     public function __construct(array $mapping = [])
     {
         ksort($mapping);
         $this->mappingByMessage = $mapping;
-        $this->mappingByHandler = [];
         foreach ($mapping as $bus => $messages) {
             foreach ($messages as $message => $handlers) {
                 foreach ($handlers as $handler) {
