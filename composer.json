@@ -147,7 +147,9 @@
         "symfony/polyfill-php70": "1.99",
         "symfony/polyfill-php71": "1.99",
         "symfony/polyfill-php72": "1.99",
-        "symfony/polyfill-php73": "1.99"
+        "symfony/polyfill-php73": "1.99",
+        "symfony/polyfill-php80": "1.99",
+        "symfony/polyfill-php81": "1.99"
     },
     "conflict": {
         "doctrine/data-fixtures": "<1.5.2",
