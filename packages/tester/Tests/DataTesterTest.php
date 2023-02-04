@@ -4,7 +4,6 @@ namespace Draw\Component\Tester\Tests;
 
 use Draw\Component\Tester\DataTester;
 use PHPUnit\Framework\Constraint\IsIdentical;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 class DataTesterTest extends TestCase
@@ -125,19 +124,6 @@ class DataTesterTest extends TestCase
 
         static::assertInstanceOf(DataTester::class, $newTester);
         $newTester->path('key')->assertSame('value');
-    }
-
-    public function testCreateCallable(): void
-    {
-        (new DataTester(1))->test(DataTester::createCallable('assertIsInt'));
-    }
-
-    public function testCreateCallableFailing(): void
-    {
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('This is not a string.');
-
-        (new DataTester(1))->test(DataTester::createCallable('assertIsString', 'This is not a string.'));
     }
 
     public function testAssertThat(): void

@@ -8,13 +8,8 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class TransportRepository
 {
-    private ContainerInterface $transportLocator;
-    private array $transportNames;
-
-    public function __construct(ContainerInterface $transportLocator, array $transportNames = [])
+    public function __construct(private ContainerInterface $transportLocator, private array $transportNames = [])
     {
-        $this->transportLocator = $transportLocator;
-        $this->transportNames = $transportNames;
     }
 
     public function has(string $transportName): bool

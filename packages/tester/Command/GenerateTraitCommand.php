@@ -27,7 +27,7 @@ class GenerateTraitCommand extends Command
     {
         $filePath = $input->getArgument('assertMethodsFilePath');
         $reflectionClass = new \ReflectionClass(Assert::class);
-        $methods = json_decode(file_get_contents($filePath), true);
+        $methods = json_decode(file_get_contents($filePath), true, 512, \JSON_THROW_ON_ERROR);
 
         $class = '<?php
 /**
@@ -88,13 +88,13 @@ trait AssertTrait
 
             $docCommentLines = [];
             foreach (explode("\n", $docComment) as $line) {
-                if (false !== strpos($line, '$'.$information['dataParameter'])) {
-                    if (false !== strpos($line, '@param')) {
+                if (str_contains($line, '$'.$information['dataParameter'])) {
+                    if (str_contains($line, '@param')) {
                         continue;
                     }
                 }
 
-                if (false !== strpos($line, '@throws')) {
+                if (str_contains($line, '@throws')) {
                     continue;
                 }
 

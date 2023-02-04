@@ -8,14 +8,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class EnvelopeCreatedEvent extends Event
 {
-    private Envelope $envelope;
-
-    private MessageHolderInterface $messageHolder;
-
-    public function __construct(MessageHolderInterface $messageHolder, Envelope $envelope)
+    public function __construct(private MessageHolderInterface $messageHolder, private Envelope $envelope)
     {
-        $this->envelope = $envelope;
-        $this->messageHolder = $messageHolder;
     }
 
     public function getMessageHolder(): MessageHolderInterface

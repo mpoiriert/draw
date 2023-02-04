@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class AgainstJsonFileTesterTest extends TestCase
 {
-    private static $data;
+    private static \stdClass $data;
 
     public static function setUpBeforeClass(): void
     {

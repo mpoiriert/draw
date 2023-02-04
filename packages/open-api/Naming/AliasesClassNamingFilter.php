@@ -5,13 +5,10 @@ namespace Draw\Component\OpenApi\Naming;
 class AliasesClassNamingFilter implements ClassNamingFilterInterface
 {
     /**
-     * @var array<array{class: string, alias: string}>
+     * @param array<mixed, array<string, string>> $definitionAliases
      */
-    private array $definitionAliases;
-
-    public function __construct(array $definitionAliases)
+    public function __construct(private array $definitionAliases)
     {
-        $this->definitionAliases = $definitionAliases;
     }
 
     public function filterClassName(string $originalClassName, array $context = [], ?string $newName = null): string
@@ -20,8 +17,8 @@ class AliasesClassNamingFilter implements ClassNamingFilterInterface
         foreach ($this->definitionAliases as $configuration) {
             $class = $configuration['class'];
             $alias = $configuration['alias'];
-            if ('\\' === substr($class, -1)) {
-                if (0 === strpos($className, $class)) {
+            if (str_ends_with($class, '\\')) {
+                if (str_starts_with($className, $class)) {
                     return str_replace($class, $alias, $className);
                 }
                 continue;

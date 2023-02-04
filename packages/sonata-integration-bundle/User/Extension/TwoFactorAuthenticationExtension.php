@@ -13,16 +13,10 @@ use Symfony\Component\Security\Core\Security;
 
 class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 {
-    public const FIELD_2FA_ENABLED = '2fa_enabled';
+    final public const FIELD_2FA_ENABLED = '2fa_enabled';
 
-    private array $fieldPositions;
-
-    private Security $security;
-
-    public function __construct(array $fieldPositions, Security $security)
+    public function __construct(private array $fieldPositions, private Security $security)
     {
-        $this->security = $security;
-        $this->fieldPositions = $fieldPositions;
     }
 
     public function getAccessMapping(AdminInterface $admin): array

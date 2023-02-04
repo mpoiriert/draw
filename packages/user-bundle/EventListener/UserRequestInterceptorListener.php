@@ -20,12 +20,6 @@ class UserRequestInterceptorListener implements EventSubscriberInterface
 
     private const INTERCEPTION_REASON = 'original_request_url';
 
-    private EventDispatcherInterface $eventDispatcher;
-
-    private ?FirewallMap $firewallMap = null;
-
-    private Security $security;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -40,13 +34,10 @@ class UserRequestInterceptorListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        Security $security,
-        ?FirewallMap $firewallMap
+        private EventDispatcherInterface $eventDispatcher,
+        private Security $security,
+        private ?FirewallMap $firewallMap
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->security = $security;
-        $this->firewallMap = $firewallMap;
     }
 
     public function handleRequestEvent(RequestEvent $requestEvent): void

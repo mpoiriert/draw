@@ -11,20 +11,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ManuallyTriggeredMessageUrlGenerator
 {
-    private MessageBusInterface $messageBus;
-
-    private UrlGeneratorInterface $urlGenerator;
-
-    private string $routeName;
-
     public function __construct(
-        MessageBusInterface $messageBus,
-        UrlGeneratorInterface $urlGenerator,
-        string $routeName = 'draw_messenger.message_click'
+        private MessageBusInterface $messageBus,
+        private UrlGeneratorInterface $urlGenerator,
+        private string $routeName = 'draw_messenger.message_click'
     ) {
-        $this->messageBus = $messageBus;
-        $this->urlGenerator = $urlGenerator;
-        $this->routeName = $routeName;
     }
 
     /**

@@ -11,20 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class RolesTwoFactorAuthenticationEnforcer implements TwoFactorAuthenticationEnforcerInterface
 {
-    private RoleHierarchyInterface $roleHierarchy;
-
-    /**
-     * @var string[]
-     */
-    private array $enforcingRoles;
-
     /**
      * @param string[] $enforcingRoles
      */
-    public function __construct(RoleHierarchyInterface $roleHierarchy, array $enforcingRoles)
-    {
-        $this->roleHierarchy = $roleHierarchy;
-        $this->enforcingRoles = $enforcingRoles;
+    public function __construct(
+        private RoleHierarchyInterface $roleHierarchy,
+        private array $enforcingRoles
+    ) {
     }
 
     public function shouldEnforceTwoFactorAuthentication(TwoFactorAuthenticationUserInterface $user): bool

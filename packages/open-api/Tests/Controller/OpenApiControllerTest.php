@@ -115,7 +115,7 @@ class OpenApiControllerTest extends TestCase
             ->expects(static::once())
             ->method('dump')
             ->with($rootSchema)
-            ->willReturn($rootSchemaJson = json_encode(['version' => $version]));
+            ->willReturn($rootSchemaJson = json_encode(['version' => $version], \JSON_THROW_ON_ERROR));
 
         $this->urlGenerator
             ->expects(static::never())

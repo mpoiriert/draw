@@ -26,20 +26,11 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
 class DrawTransport extends DoctrineTransport implements PurgeableTransportInterface, SearchableTransportInterface
 {
-    private DBALConnection $driverConnection;
-
-    private Connection $connection;
-
-    private SerializerInterface $serializer;
-
     public function __construct(
-        DBALConnection $driverConnection,
-        Connection $connection,
-        SerializerInterface $serializer
+        private DBALConnection $driverConnection,
+        private Connection $connection,
+        private SerializerInterface $serializer
     ) {
-        $this->driverConnection = $driverConnection;
-        $this->connection = $connection;
-        $this->serializer = $serializer;
         parent::__construct($connection, $serializer);
     }
 
@@ -52,10 +43,10 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         $encodedMessage = $this->serializer->encode($envelope);
 
         $delayStamp = $envelope->last(DelayStamp::class);
-        $delay = null !== $delayStamp ? $delayStamp->getDelay() : null;
-        $delay = $delay ?? ($envelope->last(ManualTriggerStamp::class) ? null : 0);
+        $delay = $delayStamp?->getDelay();
+        $delay ??= $envelope->last(ManualTriggerStamp::class) ? null : 0;
         $expirationStamp = $envelope->last(ExpirationStamp::class);
-        $expiresAt = $expirationStamp ? $expirationStamp->getDateTime() : null;
+        $expiresAt = $expirationStamp?->getDateTime();
 
         $this->cleanQueue($envelope);
 
@@ -166,7 +157,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->executeStatement([
                 $id,
                 $body,
-                json_encode($headers),
+                json_encode($headers, \JSON_THROW_ON_ERROR),
                 $this->connection->getConfiguration()['queue_name'],
                 self::formatDateTime($now),
                 $availableAt ? self::formatDateTime($availableAt) : null,

@@ -8,11 +8,8 @@ use Psr\Http\Message\RequestInterface;
 
 class DefaultBaseUriObserver extends ClientObserver
 {
-    private $baseUri;
-
-    public function __construct($baseUri)
+    public function __construct(private $baseUri)
     {
-        $this->baseUri = $baseUri;
     }
 
     public function preSendRequest(RequestInterface $request): RequestInterface

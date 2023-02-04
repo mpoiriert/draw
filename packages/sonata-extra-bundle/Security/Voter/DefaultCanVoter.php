@@ -11,7 +11,7 @@ class DefaultCanVoter implements VoterInterface
     {
         $vote = VoterInterface::ACCESS_ABSTAIN;
         foreach ($attributes as $attribute) {
-            if (0 !== strpos($attribute, 'SONATA_CAN_')) {
+            if (!str_starts_with((string) $attribute, 'SONATA_CAN_')) {
                 return VoterInterface::ACCESS_ABSTAIN;
             }
 

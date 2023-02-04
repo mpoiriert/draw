@@ -11,14 +11,8 @@ use Twig\Environment;
 
 class UserCountBlock extends AbstractBlockService
 {
-    private string $adminCode;
-
-    protected Pool $pool;
-
-    public function __construct(Environment $twig, Pool $pool, string $userAdminCode)
+    public function __construct(Environment $twig, protected Pool $pool, private string $userAdminCode)
     {
-        $this->adminCode = $userAdminCode;
-        $this->pool = $pool;
         parent::__construct($twig);
     }
 
@@ -69,7 +63,7 @@ class UserCountBlock extends AbstractBlockService
             'text' => 'Total users',
             'translation_domain' => null,
             'color' => 'bg-aqua',
-            'code' => $this->adminCode,
+            'code' => $this->userAdminCode,
             'filters' => [],
             'limit' => 1000,
             'template' => '@SonataAdmin/Block/block_stats.html.twig',

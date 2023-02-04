@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class SqlMetricBuilderTest extends TestCase
 {
-    private $metricBuilder;
+    private SqlMetricBuilder $metricBuilder;
 
     protected function setUp(): void
     {

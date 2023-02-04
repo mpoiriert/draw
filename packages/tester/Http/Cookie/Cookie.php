@@ -5,10 +5,9 @@ namespace Draw\Component\Tester\Http\Cookie;
 /**
  * Set-Cookie object.
  */
-class Cookie
+class Cookie implements \Stringable
 {
-    /** @var array */
-    private static $defaults = [
+    private static array $defaults = [
         'Name' => null,
         'Value' => null,
         'Domain' => null,
@@ -20,7 +19,7 @@ class Cookie
         'HttpOnly' => false,
     ];
     /** @var array Cookie data */
-    private $data;
+    private array $data;
 
     /**
      * Create a new Cookie object from a string.
@@ -80,7 +79,7 @@ class Cookie
         }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $str = $this->data['Name'].'='.$this->data['Value'].'; ';
         foreach ($this->data as $k => $v) {
@@ -216,7 +215,7 @@ class Cookie
      *
      * @param int|string $timestamp Unix timestamp
      */
-    public function setExpires($timestamp): void
+    public function setExpires(int|string $timestamp): void
     {
         $this->data['Expires'] = is_numeric($timestamp)
             ? (int) $timestamp
@@ -297,10 +296,8 @@ class Cookie
      *   path is a %x2F ("/") character.
      *
      * @param string $requestPath Path to check against
-     *
-     * @return bool
      */
-    public function matchesPath($requestPath)
+    public function matchesPath(string $requestPath): bool
     {
         $cookiePath = $this->getPath();
         // Match on exact matches or when path is the default empty "/"
@@ -308,11 +305,11 @@ class Cookie
             return true;
         }
         // Ensure that the cookie-path is a prefix of the request path.
-        if ($cookiePath && 0 !== strpos($requestPath, $cookiePath)) {
+        if ($cookiePath && !str_starts_with($requestPath, $cookiePath)) {
             return false;
         }
         // Match if the last character of the cookie-path is "/"
-        if ('/' === substr($cookiePath, -1, 1)) {
+        if (str_ends_with($cookiePath, '/')) {
             return true;
         }
         // Match if the first character not included in cookie path is "/"
@@ -359,7 +356,7 @@ class Cookie
      *
      * @return bool|string Returns true if valid or an error message if invalid
      */
-    public function validate()
+    public function validate(): bool|string
     {
         // Names must not be empty, but can be 0
         $name = $this->getName();

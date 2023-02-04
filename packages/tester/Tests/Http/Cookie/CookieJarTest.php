@@ -10,8 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class CookieJarTest extends TestCase
 {
-    /** @var CookieJar */
-    private $jar;
+    private CookieJar $jar;
 
     protected function setUp(): void
     {

@@ -21,11 +21,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 final class LoginController extends AbstractController
 {
-    private AuthenticationUtils $authenticationUtils;
-
-    public function __construct(AuthenticationUtils $authenticationUtils)
+    public function __construct(private AuthenticationUtils $authenticationUtils)
     {
-        $this->authenticationUtils = $authenticationUtils;
     }
 
     /**
@@ -124,7 +121,7 @@ final class LoginController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $managerRegistry->getManagerForClass(\get_class($user))->flush();
+            $managerRegistry->getManagerForClass($user::class)->flush();
             $userFeed->addToFeed($user, 'success', 'password_changed');
 
             return new RedirectResponse($this->generateUrl('sonata_admin_dashboard'));

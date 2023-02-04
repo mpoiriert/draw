@@ -7,11 +7,8 @@ use Draw\Component\Security\Http\Message\AutoConnectInterface;
 
 class AutoConnect implements AutoConnectInterface, ManuallyTriggeredInterface
 {
-    private string $userIdentifier;
-
-    public function __construct(string $userIdentifier)
+    public function __construct(private string $userIdentifier)
     {
-        $this->userIdentifier = $userIdentifier;
     }
 
     public function getUserIdentifier(): string

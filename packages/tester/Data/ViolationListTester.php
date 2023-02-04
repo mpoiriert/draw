@@ -22,10 +22,7 @@ class ViolationListTester
         }
     }
 
-    /**
-     * @return static
-     */
-    public function addViolation(string $propertyPath, string $message)
+    public function addViolation(string $propertyPath, string $message): static
     {
         $this->violations[] = compact('propertyPath', 'message');
 
@@ -34,10 +31,8 @@ class ViolationListTester
 
     /**
      * Check code of the last added violation.
-     *
-     * @return static
      */
-    public function code(string $code)
+    public function code(string $code): static
     {
         $this->violations[\count($this->violations) - 1]['code'] = $code;
 
@@ -46,12 +41,8 @@ class ViolationListTester
 
     /**
      * Check invalid value on the last added violation.
-     *
-     * @param mixed $invalidValue
-     *
-     * @return static
      */
-    public function invalidValue($invalidValue)
+    public function invalidValue(mixed $invalidValue): static
     {
         $this->violations[\count($this->violations) - 1]['invalidValue'] = $invalidValue;
 

@@ -8,19 +8,13 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class MessageLinkErrorEvent extends Event
 {
-    private Request $request;
-
-    private string $messageId;
-
-    private \Throwable $error;
-
     private ?Response $response = null;
 
-    public function __construct(Request $request, string $messageId, \Throwable $exception)
-    {
-        $this->request = $request;
-        $this->messageId = $messageId;
-        $this->error = $exception;
+    public function __construct(
+        private Request $request,
+        private string $messageId,
+        private \Throwable $error
+    ) {
     }
 
     public function getRequest(): Request

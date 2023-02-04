@@ -38,8 +38,8 @@ class SchemaCleanerTest extends TestCase
         $cleanedSchema = $this->object->clean($schema);
 
         static::assertEquals(
-            json_decode(file_get_contents($clean), true),
-            json_decode($openApi->dump($cleanedSchema, false), true)
+            json_decode(file_get_contents($clean), true, 512, \JSON_THROW_ON_ERROR),
+            json_decode($openApi->dump($cleanedSchema, false), true, 512, \JSON_THROW_ON_ERROR)
         );
     }
 }

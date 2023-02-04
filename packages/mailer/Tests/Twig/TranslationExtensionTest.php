@@ -70,7 +70,7 @@ class TranslationExtensionTest extends TestCase
             ->method('trans')
             ->with(
                 $message,
-                array_merge($arguments, ['%count%' => $count]),
+                [...$arguments, ...['%count%' => $count]],
                 $domain,
                 $locale
             )

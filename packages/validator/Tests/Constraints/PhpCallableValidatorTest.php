@@ -62,10 +62,8 @@ class PhpCallableValidatorTest extends TestCase
 
     /**
      * @dataProvider provideTestValidate
-     *
-     * @param mixed $value
      */
-    public function testValidate($value, ?Constraint $returnValueConstraint, int $violationsCount): void
+    public function testValidate(mixed $value, ?Constraint $returnValueConstraint, int $violationsCount): void
     {
         $validator = Validation::createValidator();
 

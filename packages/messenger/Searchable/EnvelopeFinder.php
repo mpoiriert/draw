@@ -13,13 +13,10 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
 class EnvelopeFinder implements EnvelopeFinderInterface
 {
-    private TransportRepository $transportRepository;
-
     private AggregatedEnvelopeFilter $defaultFilter;
 
-    public function __construct(TransportRepository $transportRepository)
+    public function __construct(private TransportRepository $transportRepository)
     {
-        $this->transportRepository = $transportRepository;
         $this->defaultFilter = new AggregatedEnvelopeFilter([ExpirationStamp::createEnvelopeFilter()]);
     }
 

@@ -20,35 +20,20 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class MessageAuthenticator extends AbstractAuthenticator
 {
-    private EnvelopeFinder $envelopeFinder;
-
-    private UserProviderInterface $userProvider;
-
-    private Security $security;
-
-    private string $requestParameterKey;
-
     public function __construct(
-        EnvelopeFinder $envelopeFinder,
-        UserProviderInterface $userProvider,
-        Security $security,
-        string $requestParameterKey = 'dMUuid'
+        private EnvelopeFinder $envelopeFinder,
+        private UserProviderInterface $userProvider,
+        private Security $security,
+        private string $requestParameterKey = 'dMUuid'
     ) {
-        $this->security = $security;
-        $this->userProvider = $userProvider;
-        $this->envelopeFinder = $envelopeFinder;
-        $this->requestParameterKey = $requestParameterKey;
     }
 
     public function supports(Request $request): ?bool
     {
-        switch (true) {
-            case null === $user = $this->getMessageUser($request->get($this->requestParameterKey)):
-            case !$this->isDifferentUser($user):
-                return false;
-            default:
-                return true;
-        }
+        return match (true) {
+            null === $user = $this->getMessageUser($request->get($this->requestParameterKey)), !$this->isDifferentUser($user) => false,
+            default => true,
+        };
     }
 
     public function authenticate(Request $request): Passport
@@ -77,7 +62,7 @@ class MessageAuthenticator extends AbstractAuthenticator
 
         try {
             $message = $this->envelopeFinder->findById($messageId)->getMessage();
-        } catch (MessageNotFoundException $exception) {
+        } catch (MessageNotFoundException) {
             return null;
         }
 

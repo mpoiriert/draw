@@ -16,20 +16,14 @@ use Symfony\Contracts\Service\ResetInterface;
 class DoctrineBusMessageListener implements EventSubscriber, ResetInterface
 {
     /**
-     * @var array|MessageHolderInterface[]
+     * @var MessageHolderInterface[]
      */
     private array $messageHolders = [];
 
-    private MessageBusInterface $messageBus;
-
-    private EnvelopeFactoryInterface $envelopeFactory;
-
     public function __construct(
-        MessageBusInterface $messageBus,
-        EnvelopeFactoryInterface $envelopeFactory
+        private MessageBusInterface $messageBus,
+        private EnvelopeFactoryInterface $envelopeFactory
     ) {
-        $this->messageBus = $messageBus;
-        $this->envelopeFactory = $envelopeFactory;
     }
 
     public function getSubscribedEvents(): array
@@ -99,7 +93,7 @@ class DoctrineBusMessageListener implements EventSubscriber, ResetInterface
 
         $entityManager = $event->getObjectManager();
 
-        $classMetadata = $entityManager->getClassMetadata(\get_class($entity));
+        $classMetadata = $entityManager->getClassMetadata($entity::class);
         $className = $classMetadata->rootEntityName;
         $this->messageHolders[$className][spl_object_id($entity)] = $entity;
     }

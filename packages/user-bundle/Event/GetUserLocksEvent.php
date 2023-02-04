@@ -13,11 +13,8 @@ class GetUserLocksEvent extends Event
      */
     private array $locks = [];
 
-    private LockableUserInterface $user;
-
-    public function __construct(LockableUserInterface $user)
+    public function __construct(private LockableUserInterface $user)
     {
-        $this->user = $user;
     }
 
     public function addLock(UserLock $userLock): void

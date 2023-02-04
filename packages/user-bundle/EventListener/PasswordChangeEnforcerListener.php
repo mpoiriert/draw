@@ -10,10 +10,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PasswordChangeEnforcerListener implements EventSubscriberInterface
 {
-    private string $changePasswordRoute;
-
-    private UrlGeneratorInterface $urlGenerator;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -22,11 +18,9 @@ class PasswordChangeEnforcerListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        string $changePasswordRoute = 'admin_change_password'
+        private UrlGeneratorInterface $urlGenerator,
+        private string $changePasswordRoute = 'admin_change_password'
     ) {
-        $this->urlGenerator = $urlGenerator;
-        $this->changePasswordRoute = $changePasswordRoute;
     }
 
     public function checkNeedNeedChangePassword(UserRequestInterceptionEvent $event): void

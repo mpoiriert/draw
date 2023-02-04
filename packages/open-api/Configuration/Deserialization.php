@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
  */
 class Deserialization extends ParamConverter
 {
-    public const DEFAULT_PARAMETER_NAME = 'target';
+    final public const DEFAULT_PARAMETER_NAME = 'target';
 
     /**
      * The groups use for deserialization.
@@ -131,10 +131,7 @@ class Deserialization extends ParamConverter
         $this->setDeserializationContextOptions('enableMaxDepth', $deserializationEnableMaxDepth);
     }
 
-    /**
-     * @param mixed $value
-     */
-    private function setDeserializationContextOptions(string $name, $value): void
+    private function setDeserializationContextOptions(string $name, mixed $value): void
     {
         $options = $this->getOptions();
         $options['deserializationContext'][$name] = $value;

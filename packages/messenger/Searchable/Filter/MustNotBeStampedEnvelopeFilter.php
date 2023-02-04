@@ -9,13 +9,10 @@ use Symfony\Component\Messenger\Stamp\SentToFailureTransportStamp;
 final class MustNotBeStampedEnvelopeFilter implements EnvelopeFilterInterface
 {
     /**
-     * @var array|string[]
+     * @param string[] $stampClasses
      */
-    private array $stampClasses;
-
-    public function __construct(array $stampClasses)
+    public function __construct(private array $stampClasses)
     {
-        $this->stampClasses = $stampClasses;
     }
 
     public function __invoke(Envelope $envelope): bool

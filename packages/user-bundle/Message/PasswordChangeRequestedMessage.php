@@ -8,17 +8,8 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessag
 
 class PasswordChangeRequestedMessage implements LifeCycleAwareMessageInterface
 {
-    /**
-     * @var mixed
-     */
-    private $userId;
-
-    /**
-     * @param mixed $userId
-     */
-    public function __construct($userId = null)
+    public function __construct(private mixed $userId = null)
     {
-        $this->userId = $userId;
     }
 
     /**

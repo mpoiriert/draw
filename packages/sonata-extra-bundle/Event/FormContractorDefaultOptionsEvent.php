@@ -7,24 +7,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class FormContractorDefaultOptionsEvent extends Event
 {
-    private ?string $type;
-
-    private FieldDescriptionInterface $fieldDescription;
-
-    private array $formOptions;
-
-    private array $defaultOptions;
-
     public function __construct(
-        ?string $type,
-        FieldDescriptionInterface $fieldDescription,
-        array $formOptions,
-        array $defaultOptions
+        private ?string $type,
+        private FieldDescriptionInterface $fieldDescription,
+        private array $formOptions,
+        private array $defaultOptions
     ) {
-        $this->type = $type;
-        $this->fieldDescription = $fieldDescription;
-        $this->formOptions = $formOptions;
-        $this->defaultOptions = $defaultOptions;
     }
 
     public function getType(): ?string

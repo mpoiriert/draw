@@ -55,11 +55,8 @@ class TypeSchemaExtractorTest extends TestCase
 
     /**
      * @dataProvider provideTestCanExtract
-     *
-     * @param mixed $source
-     * @param mixed $type
      */
-    public function testCanExtract($source, $type, bool $canBeExtract): void
+    public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
         $context = $this->createMock(ExtractionContextInterface::class);
 

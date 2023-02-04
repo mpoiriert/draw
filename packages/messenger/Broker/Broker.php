@@ -11,28 +11,16 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class Broker
 {
-    private string $context;
-
-    private EventDispatcherInterface $eventDispatcher;
-
     private bool $stopped = false;
-
-    private ProcessFactoryInterface $processFactory;
 
     private bool $allowFinishingProcess = true;
 
-    private string $consolePath;
-
     public function __construct(
-        string $context,
-        string $consolePath,
-        ProcessFactoryInterface $processFactory,
-        EventDispatcherInterface $eventDispatcher
+        private string $context,
+        private string $consolePath,
+        private ProcessFactoryInterface $processFactory,
+        private EventDispatcherInterface $eventDispatcher
     ) {
-        $this->context = $context;
-        $this->consolePath = $consolePath;
-        $this->processFactory = $processFactory;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getContext(): string

@@ -10,10 +10,6 @@ use Symfony\Component\HttpKernel\Event\TerminateEvent;
 
 class SlowRequestLoggerListener implements EventSubscriberInterface
 {
-    private LoggerInterface $logger;
-
-    private array $requestMatchers;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -21,10 +17,8 @@ class SlowRequestLoggerListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(LoggerInterface $logger, array $requestMatchers)
+    public function __construct(private LoggerInterface $logger, private array $requestMatchers)
     {
-        $this->logger = $logger;
-        $this->requestMatchers = $requestMatchers;
     }
 
     public function onKernelTerminate(TerminateEvent $event): void

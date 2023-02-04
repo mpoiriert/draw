@@ -19,7 +19,7 @@ class RuleSet
 
         foreach ($fixers as $fixer) {
             foreach ($currentFixers as $currentFixer) {
-                if (\get_class($fixer) === \get_class($currentFixer)) {
+                if ($fixer::class === $currentFixer::class) {
                     continue 2;
                 }
             }

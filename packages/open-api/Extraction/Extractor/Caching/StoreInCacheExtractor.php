@@ -11,22 +11,16 @@ use Symfony\Component\Config\Resource\FileResource;
 
 class StoreInCacheExtractor implements ExtractorInterface
 {
-    private bool $debug;
-
-    private string $cacheDirectory;
-
-    private FileTrackingExtractor $fileTrackingExtractor;
-
     public static function getDefaultPriority(): int
     {
         return -9999;
     }
 
-    public function __construct(FileTrackingExtractor $fileTrackingExtractor, bool $debug, string $cacheDirectory)
-    {
-        $this->fileTrackingExtractor = $fileTrackingExtractor;
-        $this->debug = $debug;
-        $this->cacheDirectory = $cacheDirectory;
+    public function __construct(
+        private FileTrackingExtractor $fileTrackingExtractor,
+        private bool $debug,
+        private string $cacheDirectory
+    ) {
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool

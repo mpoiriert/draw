@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 class MessengerPassTest extends TestCase
 {
-    private $compilerPass;
+    private MessengerPass $compilerPass;
 
     protected function setUp(): void
     {

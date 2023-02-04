@@ -4,8 +4,5 @@ namespace Draw\Bundle\UserBundle\Email;
 
 interface ToUserEmailInterface
 {
-    /**
-     * @return mixed
-     */
-    public function getUserId();
+    public function getUserId(): string|int|null;
 }

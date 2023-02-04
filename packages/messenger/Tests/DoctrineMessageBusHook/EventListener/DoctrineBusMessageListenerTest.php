@@ -88,10 +88,10 @@ class DoctrineBusMessageListenerTest extends TestCase
         $this->entityManager
             ->expects(static::once())
             ->method('getClassMetadata')
-            ->with(\get_class($messageHolder))
+            ->with($messageHolder::class)
             ->willReturn($classMetadata = new ClassMetadata(uniqid()));
 
-        $classMetadata->rootEntityName = \get_class($messageHolder);
+        $classMetadata->rootEntityName = $messageHolder::class;
 
         $this->object->postPersist(
             new LifecycleEventArgs(
@@ -134,10 +134,10 @@ class DoctrineBusMessageListenerTest extends TestCase
         $this->entityManager
             ->expects(static::once())
             ->method('getClassMetadata')
-            ->with(\get_class($messageHolder))
+            ->with($messageHolder::class)
             ->willReturn($classMetadata = new ClassMetadata(uniqid()));
 
-        $classMetadata->rootEntityName = \get_class($messageHolder);
+        $classMetadata->rootEntityName = $messageHolder::class;
 
         $this->object->postLoad(
             new LifecycleEventArgs(
@@ -172,7 +172,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             $messageHolder = $this->createMock(MessageHolderInterface::class)
         );
 
-        $this->object->onClear(new OnClearEventArgs($this->entityManager, \get_class($messageHolder)));
+        $this->object->onClear(new OnClearEventArgs($this->entityManager, $messageHolder::class));
 
         static::assertCount(
             0,
@@ -338,7 +338,7 @@ class DoctrineBusMessageListenerTest extends TestCase
     private function addMessageHolder(MessageHolderInterface $messageHolder): void
     {
         $messageHolders = ReflectionAccessor::getPropertyValue($this->object, 'messageHolders');
-        $messageHolders[\get_class($messageHolder)][spl_object_id($messageHolder)] = $messageHolder;
+        $messageHolders[$messageHolder::class][spl_object_id($messageHolder)] = $messageHolder;
 
         ReflectionAccessor::setPropertyValue(
             $this->object,

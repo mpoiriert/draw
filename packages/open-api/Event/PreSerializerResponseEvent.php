@@ -8,20 +8,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PreSerializerResponseEvent extends Event
 {
-    /**
-     * @var mixed
-     */
-    private $result;
-
-    private ?Serialization $serialization;
-
-    private SerializationContext $context;
-
-    public function __construct($result, ?Serialization $view, SerializationContext $context)
-    {
-        $this->result = $result;
-        $this->serialization = $view;
-        $this->context = $context;
+    public function __construct(
+        private mixed $result,
+        private ?Serialization $serialization,
+        private SerializationContext $context
+    ) {
     }
 
     public function getResult()

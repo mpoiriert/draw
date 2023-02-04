@@ -22,21 +22,20 @@ class ClientTest extends TestCase
         $requestExecutioner = $this->createMock(RequestExecutionerInterface::class);
 
         $requestExecutioner->method('executeRequest')
-            ->willReturnCallback(function (RequestInterface $request) {
-                return new Response(
-                    200,
-                    [],
-                    json_encode(
-                        [
-                            'method' => $request->getMethod(),
-                            'uri' => $request->getUri()->__toString(),
-                            'body' => $request->getBody()->getContents(),
-                            'headers' => $request->getHeaders(),
-                            'version' => $request->getProtocolVersion(),
-                        ]
-                    )
-                );
-            });
+            ->willReturnCallback(fn (RequestInterface $request) => new Response(
+                200,
+                [],
+                json_encode(
+                    [
+                        'method' => $request->getMethod(),
+                        'uri' => $request->getUri()->__toString(),
+                        'body' => $request->getBody()->getContents(),
+                        'headers' => $request->getHeaders(),
+                        'version' => $request->getProtocolVersion(),
+                    ],
+                    \JSON_THROW_ON_ERROR
+                )
+            ));
 
         $client = new Client($requestExecutioner);
 
@@ -285,7 +284,7 @@ class ClientTest extends TestCase
         $response->getBody()->seek(0);
 
         static::assertJsonStringEqualsJsonString(
-            json_encode(compact('method', 'uri', 'body', 'headers', 'version')),
+            json_encode(compact('method', 'uri', 'body', 'headers', 'version'), \JSON_THROW_ON_ERROR),
             $response->getBody()->getContents()
         );
 

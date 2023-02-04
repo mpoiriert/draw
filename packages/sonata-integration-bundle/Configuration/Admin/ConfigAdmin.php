@@ -31,7 +31,7 @@ class ConfigAdmin extends AbstractAdmin
 
         $form->get('data')->addModelTransformer(new CallbackTransformer(
             fn ($data) => null !== $data ? json_encode($data, \JSON_PRETTY_PRINT) : null,
-            fn ($data) => !empty($data) ? json_decode($data, true) : null
+            fn ($data) => !empty($data) ? json_decode((string) $data, true, 512, \JSON_THROW_ON_ERROR) : null
         ));
     }
 

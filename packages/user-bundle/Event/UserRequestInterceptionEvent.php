@@ -13,16 +13,10 @@ class UserRequestInterceptionEvent extends Event
 
     private ?string $reason = null;
 
-    private Request $request;
-
     private ?Response $response = null;
 
-    private UserInterface $user;
-
-    public function __construct(UserInterface $user, Request $request)
+    public function __construct(private UserInterface $user, private Request $request)
     {
-        $this->request = $request;
-        $this->user = $user;
     }
 
     public function setResponse(Response $response, string $reason): void

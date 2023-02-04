@@ -11,32 +11,26 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="draw_acme__tag")
  * @UniqueEntity(fields={"label"})
  */
-class Tag
+class Tag implements \Stringable
 {
     /**
-     * @var int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var bool
-     *
      * @ORM\Column(name="active", type="boolean", options={"default": "1"})
      */
-    private $active = true;
+    private bool $active = true;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="label", type="string", length=255, nullable=false)
      * @Assert\NotNull
      * @Assert\Length(min=3, max=255, allowEmptyString=false)
      */
-    private $label;
+    private ?string $label = null;
 
     public function getId()
     {
@@ -70,7 +64,7 @@ class Tag
         $this->active = $active;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->getLabel();
     }

@@ -9,18 +9,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ConstraintExpression extends Expression
 {
     /**
-     * @var Constraint|Constraint[]|null
-     */
-    private $constraints;
-
-    private ?string $path;
-
-    /**
-     * @var string|GroupSequence|array<string|GroupSequence>|null
-     */
-    private $groups;
-
-    /**
      * If no constraint is passed, the constraint
      * {@link \Symfony\Component\Validator\Constraints\Valid} is assumed.
      *
@@ -29,17 +17,17 @@ class ConstraintExpression extends Expression
      *
      * @see ValidatorInterface::validate()
      */
-    public function __construct(?string $path, $constraints = null, $groups = null)
-    {
-        $this->constraints = $constraints;
-        $this->path = $path;
-        $this->groups = $groups;
+    public function __construct(
+        private ?string $path,
+        private $constraints = null,
+        private $groups = null
+    ) {
     }
 
     /**
      * @return Constraint|Constraint[]|null
      */
-    public function getConstraints()
+    public function getConstraints(): Constraint|array|null
     {
         return $this->constraints;
     }
@@ -52,7 +40,7 @@ class ConstraintExpression extends Expression
     /**
      * @return string|GroupSequence|array<string|GroupSequence>|null
      */
-    public function getGroups()
+    public function getGroups(): string|GroupSequence|array|null
     {
         return $this->groups;
     }

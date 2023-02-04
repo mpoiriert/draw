@@ -9,12 +9,9 @@ use Psr\Http\Message\ResponseInterface;
 
 class ExtractSuperGlobalObserver extends ClientObserver
 {
-    /**
-     * @var SuperGlobalsExtractor
-     */
-    private $superGlobalExtractors;
+    private SuperGlobalsExtractor $superGlobalExtractors;
 
-    private $previousSuperGlobal;
+    private ?array $previousSuperGlobal = null;
 
     public function __construct(?SuperGlobalsExtractor $superGlobalsExtractor = null)
     {

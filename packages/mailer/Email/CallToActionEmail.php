@@ -11,11 +11,10 @@ class CallToActionEmail extends TemplatedEmail
     public function getContext(): array
     {
         $context = parent::getContext();
-        $extraContexts[] = [
-            'call_to_action_link' => $this->callToActionLink,
-        ];
 
-        return array_merge($context, ...$extraContexts);
+        $context['call_to_action_link'] = $this->callToActionLink;
+
+        return $context;
     }
 
     public function getCallToActionLink(): ?string

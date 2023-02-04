@@ -14,17 +14,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class StartMessengerBrokerCommand extends Command
 {
-    private EventDispatcherInterface $eventDispatcher;
-
-    private ProcessFactoryInterface $processFactory;
-
-    private string $consolePath;
-
-    public function __construct(string $consolePath, ProcessFactoryInterface $processFactory, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->consolePath = $consolePath;
-        $this->processFactory = $processFactory;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private string $consolePath,
+        private ProcessFactoryInterface $processFactory,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
         parent::__construct();
     }
 

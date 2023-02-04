@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class SuperGlobalsExtractorTest extends TestCase
 {
-    /**
-     * @var SuperGlobalsExtractor
-     */
-    private $superGlobalsExtractor;
+    private SuperGlobalsExtractor $superGlobalsExtractor;
 
     protected function setUp(): void
     {

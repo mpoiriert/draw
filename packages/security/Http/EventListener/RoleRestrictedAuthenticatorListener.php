@@ -11,16 +11,13 @@ use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 
 class RoleRestrictedAuthenticatorListener implements EventSubscriberInterface
 {
-    private RoleHierarchyInterface $roleHierarchy;
-
     public static function getSubscribedEvents(): array
     {
         return [CheckPassportEvent::class => ['checkPassport', -1]];
     }
 
-    public function __construct(RoleHierarchyInterface $roleHierarchy)
+    public function __construct(private RoleHierarchyInterface $roleHierarchy)
     {
-        $this->roleHierarchy = $roleHierarchy;
     }
 
     public function checkPassport(CheckPassportEvent $event): void

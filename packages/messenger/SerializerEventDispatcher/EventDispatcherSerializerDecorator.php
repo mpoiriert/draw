@@ -11,14 +11,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventDispatcherSerializerDecorator implements SerializerInterface
 {
-    private EventDispatcherInterface $eventDispatcher;
-
-    private SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->serializer = $serializer;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private SerializerInterface $serializer,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     public function decode(array $encodedEnvelope): Envelope

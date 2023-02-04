@@ -11,11 +11,8 @@ use Draw\Component\OpenApi\Schema\Operation;
 
 class ParameterExtractor implements ExtractorInterface
 {
-    private Reader $reader;
-
-    public function __construct(Reader $reader)
+    public function __construct(private Reader $reader)
     {
-        $this->reader = $reader;
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool

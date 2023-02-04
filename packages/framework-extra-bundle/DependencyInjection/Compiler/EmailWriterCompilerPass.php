@@ -17,7 +17,7 @@ class EmailWriterCompilerPass implements CompilerPassInterface
     {
         try {
             $emailWriterListenerDefinition = $container->findDefinition(EmailWriterListener::class);
-        } catch (ServiceNotFoundException $exception) {
+        } catch (ServiceNotFoundException) {
             return;
         }
 

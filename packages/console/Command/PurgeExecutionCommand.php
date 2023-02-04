@@ -14,18 +14,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PurgeExecutionCommand extends Command
 {
-    public const DEFAULT_DELAY = '-1 month';
-    public const DEFAULT_WAIT_SECOND = 10;
-    public const DEFAULT_BATCH_SIZE = 1000;
-
-    private Connection $connection;
+    final public const DEFAULT_DELAY = '-1 month';
+    final public const DEFAULT_WAIT_SECOND = 10;
+    final public const DEFAULT_BATCH_SIZE = 1000;
 
     private ?LoggerInterface $logger;
 
-    public function __construct(Connection $executionConnection, ?LoggerInterface $logger = null)
+    public function __construct(private Connection $executionConnection, ?LoggerInterface $logger = null)
     {
         parent::__construct();
-        $this->connection = $executionConnection;
         $this->logger = $logger ?: new NullLogger();
     }
 
@@ -103,7 +100,7 @@ class PurgeExecutionCommand extends Command
             }
 
             $this->logger->debug('Sleeping for {seconds} seconds during purge.', ['seconds' => $seconds]);
-            usleep($seconds * 1000000);
+            usleep($seconds * 1_000_000);
         }
 
         return $total;
@@ -114,7 +111,7 @@ class PurgeExecutionCommand extends Command
      */
     private function purgeBatch(\DateTime $before, int $batchSize): int
     {
-        return (int) $this->connection->executeStatement(
+        return (int) $this->executionConnection->executeStatement(
             'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
             [Execution::STATE_TERMINATED, $before, $batchSize],
             [Types::STRING, Types::DATETIME_MUTABLE, Types::INTEGER]

@@ -16,15 +16,9 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
 {
     private EventDispatcherSerializerDecorator $object;
 
-    /**
-     * @var SerializerInterface&MockObject
-     */
-    private $serializer;
+    private MockObject&SerializerInterface $serializer;
 
-    /**
-     * @var EventDispatcherInterface&MockObject
-     */
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
     protected function setUp(): void
     {

@@ -16,16 +16,10 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 final class ResponseApiExceptionListener implements EventSubscriberInterface
 {
-    private bool $debug;
-
     /**
      * @var array<string,int>
      */
     private array $errorCodes;
-
-    private string $violationKey;
-
-    private bool $omitConstraintInvalidValue;
 
     private const DEFAULT_STATUS_CODE = 500;
 
@@ -38,15 +32,12 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        bool $debug = false,
+        private bool $debug = false,
         array $errorCodes = [],
-        string $violationKey = 'errors',
-        bool $omitConstraintInvalidValue = false
+        private string $violationKey = 'errors',
+        private bool $omitConstraintInvalidValue = false
     ) {
-        $this->debug = $debug;
         $this->errorCodes = array_filter($errorCodes);
-        $this->violationKey = $violationKey;
-        $this->omitConstraintInvalidValue = $omitConstraintInvalidValue;
     }
 
     public function addErrorDefinition(PreDumpRootSchemaEvent $event): void
@@ -176,7 +167,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
     private function getExceptionDetail(\Throwable $e): array
     {
         $result = [
-            'class' => \get_class($e),
+            'class' => $e::class,
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
             'file' => $e->getFile(),
@@ -202,7 +193,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
             return $exception->getStatusCode();
         }
 
-        $exceptionClass = \get_class($exception);
+        $exceptionClass = $exception::class;
         $reflectionExceptionClass = new \ReflectionClass($exceptionClass);
 
         foreach ($this->errorCodes as $exceptionMapClass => $value) {

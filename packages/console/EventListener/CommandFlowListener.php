@@ -19,9 +19,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommandFlowListener implements EventSubscriberInterface
 {
-    public const OPTION_EXECUTION_ID = 'draw-execution-id';
+    final public const OPTION_EXECUTION_ID = 'draw-execution-id';
 
-    public const OPTION_IGNORE = 'draw-execution-ignore';
+    final public const OPTION_IGNORE = 'draw-execution-ignore';
 
     private array $commandsToIgnore = [
         'help',
@@ -29,12 +29,6 @@ class CommandFlowListener implements EventSubscriberInterface
         'doctrine:database:create',
         'cache:clear',
     ];
-
-    private Connection $connection;
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    private LoggerInterface $logger;
 
     public static function getSubscribedEvents(): array
     {
@@ -56,13 +50,10 @@ class CommandFlowListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        Connection $executionConnection,
-        EventDispatcherInterface $eventDispatcher,
-        LoggerInterface $logger
+        private Connection $connection,
+        private EventDispatcherInterface $eventDispatcher,
+        private LoggerInterface $logger
     ) {
-        $this->connection = $executionConnection;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->logger = $logger;
     }
 
     public function configureOptions(Event\ConsoleCommandEvent $event): void
@@ -113,7 +104,7 @@ class CommandFlowListener implements EventSubscriberInterface
             if (!$this->connection->createSchemaManager()->tablesExist(['command__execution'])) {
                 $event->ignoreTracking();
             }
-        } catch (DBALException $exception) {
+        } catch (DBALException) {
             $event->ignoreTracking();
         }
     }
@@ -132,10 +123,8 @@ class CommandFlowListener implements EventSubscriberInterface
         $input = $event->getInput();
         $parameters = $input->getArguments();
 
-        $options = array_filter($input->getOptions(), function ($value) {
-            // We want to keep 0 value
-            return false !== $value && null !== $value;
-        });
+        // We want to keep 0 value
+        $options = array_filter($input->getOptions(), fn ($value) => false !== $value && null !== $value);
 
         foreach ($options as $key => $value) {
             $parameters['--'.$key] = $value;
@@ -155,7 +144,7 @@ class CommandFlowListener implements EventSubscriberInterface
                     'updated_at' => $date,
                     'output' => '',
                     'state' => Execution::STATE_STARTED,
-                    'input' => json_encode($parameters),
+                    'input' => json_encode($parameters, \JSON_THROW_ON_ERROR),
                 ]
             );
         } catch (\Throwable $error) {

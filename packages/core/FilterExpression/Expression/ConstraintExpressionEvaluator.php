@@ -26,7 +26,7 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
     public function evaluate($data, Expression $expression): bool
     {
         if (!$expression instanceof ConstraintExpression) {
-            throw new \InvalidArgumentException('Expression of class ['.\get_class($expression).'] is not supported');
+            throw new \InvalidArgumentException('Expression of class ['.$expression::class.'] is not supported');
         }
 
         $value = $data;

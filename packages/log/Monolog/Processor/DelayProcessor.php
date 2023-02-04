@@ -4,13 +4,10 @@ namespace Draw\Component\Log\Monolog\Processor;
 
 class DelayProcessor
 {
-    private string $key;
-
     private ?float $start = null;
 
-    public function __construct(string $key = 'delay')
+    public function __construct(private string $key = 'delay')
     {
-        $this->key = $key;
     }
 
     public function __invoke(array $records): array

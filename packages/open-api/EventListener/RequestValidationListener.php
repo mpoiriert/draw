@@ -21,8 +21,6 @@ class RequestValidationListener implements EventSubscriberInterface
         'body' => '$.body',
     ];
 
-    private ValidatorInterface $validator;
-
     private array $prefixes;
 
     public static function getSubscribedEvents(): array
@@ -32,9 +30,8 @@ class RequestValidationListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(ValidatorInterface $validator, array $prefixes = [])
+    public function __construct(private ValidatorInterface $validator, array $prefixes = [])
     {
-        $this->validator = $validator;
         $this->prefixes = array_merge(self::PREFIXES_DEFAULT, $prefixes);
     }
 
@@ -85,7 +82,7 @@ class RequestValidationListener implements EventSubscriberInterface
         foreach ($violations as $violation) {
             $path = $violation->getPropertyPath();
             if ($pathPrefix) {
-                $path = $pathPrefix.(0 === strpos($path, '[') || !$path ? $path : '.'.$path);
+                $path = $pathPrefix.(str_starts_with($path, '[') || !$path ? $path : '.'.$path);
             }
             /* @var ConstraintViolationInterface $violation */
             $constraintViolations[] = new ConstraintViolation(

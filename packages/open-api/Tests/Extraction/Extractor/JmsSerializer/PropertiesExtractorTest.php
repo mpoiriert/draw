@@ -49,11 +49,8 @@ class PropertiesExtractorTest extends TestCase
 
     /**
      * @dataProvider provideTestCanExtract
-     *
-     * @param mixed $source
-     * @param mixed $type
      */
-    public function testCanExtract($source, $type, bool $canBeExtract): void
+    public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
         if (null !== $source) {
             $source = new \ReflectionClass($source);
@@ -68,7 +65,7 @@ class PropertiesExtractorTest extends TestCase
             try {
                 $this->jmsExtractor->extract($source, $type, $context);
                 static::fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
-            } catch (ExtractionImpossibleException $e) {
+            } catch (ExtractionImpossibleException) {
                 static::assertTrue(true);
             }
         }

@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class PropertyReferenceEncodingListener implements EventSubscriberInterface
 {
-    private ManagerRegistry $managerRegistry;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -25,9 +23,8 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(private ManagerRegistry $managerRegistry)
     {
-        $this->managerRegistry = $managerRegistry;
     }
 
     public function createPropertyReferenceStamps(PreEncodeEvent $event): void
@@ -53,8 +50,8 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
             );
 
             $metadata = $this->managerRegistry
-                ->getManagerForClass(\get_class($object))
-                ->getClassMetadata(\get_class($object));
+                ->getManagerForClass($object::class)
+                ->getClassMetadata($object::class);
 
             $metadata->getName();
             $metadata->getIdentifierValues($object);

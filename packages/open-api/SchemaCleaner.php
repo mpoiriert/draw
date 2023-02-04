@@ -14,7 +14,7 @@ use Draw\Component\OpenApi\Schema\Schema;
  */
 class SchemaCleaner
 {
-    public const VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
+    final public const VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
 
     /**
      * @return Root The cleaned schema
@@ -103,10 +103,7 @@ class SchemaCleaner
         return $rootSchema;
     }
 
-    /**
-     * @param mixed $data
-     */
-    private function hasSchemaReference($data, string $reference): bool
+    private function hasSchemaReference(mixed $data, string $reference): bool
     {
         if (!\is_object($data) && !\is_array($data)) {
             return false;
@@ -129,11 +126,11 @@ class SchemaCleaner
         return false;
     }
 
-    /**
-     * @param mixed $data
-     */
-    private function replaceSchemaReference($data, string $definitionToReplace, string $definitionToReplaceWith): void
-    {
+    private function replaceSchemaReference(
+        mixed $data,
+        string $definitionToReplace,
+        string $definitionToReplaceWith
+    ): void {
         if (!\is_object($data) && !\is_array($data)) {
             return;
         }

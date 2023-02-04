@@ -9,11 +9,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AccountLocker
 {
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(private EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function isLocked(LockableUserInterface $user): bool

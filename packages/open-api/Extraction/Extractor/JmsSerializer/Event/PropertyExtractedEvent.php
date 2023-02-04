@@ -8,13 +8,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PropertyExtractedEvent extends Event
 {
-    private PropertyMetadata $propertyMetadata;
-    private Schema $schema;
-
-    public function __construct(PropertyMetadata $propertyMetadata, Schema $schema)
+    public function __construct(private PropertyMetadata $propertyMetadata, private Schema $schema)
     {
-        $this->propertyMetadata = $propertyMetadata;
-        $this->schema = $schema;
     }
 
     public function getPropertyMetadata(): PropertyMetadata

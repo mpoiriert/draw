@@ -8,13 +8,8 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class UserAdminRuntime implements RuntimeExtensionInterface
 {
-    private string $userAdminCode;
-    private Pool $pool;
-
-    public function __construct(Pool $pool, string $userAdminCode)
+    public function __construct(private Pool $pool, private string $userAdminCode)
     {
-        $this->pool = $pool;
-        $this->userAdminCode = $userAdminCode;
     }
 
     public function getUserAdmin(): AdminInterface

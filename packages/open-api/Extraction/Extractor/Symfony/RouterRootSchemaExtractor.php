@@ -17,19 +17,15 @@ use Symfony\Component\Routing\RouterInterface;
 
 class RouterRootSchemaExtractor implements ExtractorInterface
 {
-    private Reader $annotationReader;
-
-    private ?RouteVersionMatcherInterface $versionMatcher;
-
     public static function getDefaultPriority(): int
     {
         return 256;
     }
 
-    public function __construct(Reader $reader, ?RouteVersionMatcherInterface $versionMatcher = null)
-    {
-        $this->annotationReader = $reader;
-        $this->versionMatcher = $versionMatcher;
+    public function __construct(
+        private Reader $annotationReader,
+        private ?RouteVersionMatcherInterface $versionMatcher = null
+    ) {
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
@@ -78,7 +74,7 @@ class RouterRootSchemaExtractor implements ExtractorInterface
 
             try {
                 $reflectionMethod = new \ReflectionMethod($class, $method);
-            } catch (\ReflectionException $exception) {
+            } catch (\ReflectionException) {
                 continue;
             }
 

@@ -7,10 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class CurlRequestExecutioner implements RequestExecutionerInterface
 {
-    /**
-     * @var \pdeans\Http\Client
-     */
-    private $client;
+    private \pdeans\Http\Client $client;
 
     public function __construct()
     {

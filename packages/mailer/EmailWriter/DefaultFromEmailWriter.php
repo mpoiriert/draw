@@ -7,8 +7,6 @@ use Symfony\Component\Mime\Email;
 
 class DefaultFromEmailWriter implements EmailWriterInterface
 {
-    private Address $defaultFrom;
-
     public static function getForEmails(): array
     {
         return [
@@ -16,9 +14,8 @@ class DefaultFromEmailWriter implements EmailWriterInterface
         ];
     }
 
-    public function __construct(Address $defaultFrom)
+    public function __construct(private Address $defaultFrom)
     {
-        $this->defaultFrom = $defaultFrom;
     }
 
     public function setDefaultFrom(Email $email): void

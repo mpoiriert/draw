@@ -9,30 +9,19 @@ use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\Profiling\Sql\SqlLog;
+use Draw\Component\Profiling\Sql\SqlMetric;
 
 /**
  * SqlProfiler for Symfony use by Draw\Component\Profiling\Sql namespace to do metric calculation of SQL in integration tests.
  */
 class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private ?SQLLogger $logger = null;
 
-    /**
-     * @var SQLLogger
-     */
-    private $logger;
+    private ?DebugStack $debugLogger = null;
 
-    /**
-     * @var DebugStack
-     */
-    private $debugLogger;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public function start(): void
@@ -56,7 +45,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
         );
     }
 
-    public function stop()
+    public function stop(): SqlMetric
     {
         $metricBuilder = $this->getMetricBuilder();
         foreach ($this->debugLogger->queries as $query) {
@@ -109,10 +98,10 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
                     $query['types'][$j] = $type->getBindingType();
                     try {
                         $param = $type->convertToDatabaseValue($param, $this->entityManager->getConnection()->getDatabasePlatform());
-                    } catch (\TypeError $e) {
+                    } catch (\TypeError) {
                         // Error thrown while processing params, query is not explainable.
                         $query['explainable'] = false;
-                    } catch (ConversionException $e) {
+                    } catch (ConversionException) {
                         $query['explainable'] = false;
                     }
                 }
@@ -133,13 +122,11 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
      * The return value is an array with the sanitized value and a boolean
      * indicating if the original value was kept (allowing to use the sanitized
      * value to explain the query).
-     *
-     * @param mixed $var
      */
-    private function sanitizeParam($var): array
+    private function sanitizeParam(mixed $var): array
     {
         if (\is_object($var)) {
-            $className = \get_class($var);
+            $className = $var::class;
 
             return method_exists($var, '__toString') ?
                 [sprintf('/* Object(%s): */"%s"', $className, $var->__toString()), false] :

@@ -15,15 +15,9 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
 {
     private SystemMessengerAuthenticatorListener $object;
 
-    /**
-     * @var TokenStorageInterface&MockObject
-     */
-    private $tokenStorage;
+    private MockObject&TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var SystemAuthenticatorInterface&MockObject
-     */
-    private $systemAuthenticator;
+    private MockObject&SystemAuthenticatorInterface $systemAuthenticator;
 
     protected function setUp(): void
     {

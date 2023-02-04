@@ -14,7 +14,7 @@ class AddNewestInstanceRoleCommandOptionPass implements CompilerPassInterface
     {
         try {
             $container->findDefinition(NewestInstanceRoleCheckListener::class);
-        } catch (ServiceNotFoundException $exception) {
+        } catch (ServiceNotFoundException) {
             return;
         }
 

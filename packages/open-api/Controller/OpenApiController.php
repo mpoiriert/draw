@@ -12,21 +12,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OpenApiController
 {
-    private OpenApi $openApi;
-    private UrlGeneratorInterface $urlGenerator;
-    private SchemaBuilderInterface $schemaBuilder;
-    private string $sandboxUrl;
-
     public function __construct(
-        OpenApi $openApi,
-        SchemaBuilderInterface $schemaBuilder,
-        UrlGeneratorInterface $urlGenerator,
-        string $sandboxUrl
+        private OpenApi $openApi,
+        private SchemaBuilderInterface $schemaBuilder,
+        private UrlGeneratorInterface $urlGenerator,
+        private string $sandboxUrl
     ) {
-        $this->openApi = $openApi;
-        $this->schemaBuilder = $schemaBuilder;
-        $this->urlGenerator = $urlGenerator;
-        $this->sandboxUrl = $sandboxUrl;
     }
 
     public function apiDocAction(Request $request, ?string $version = null): Response

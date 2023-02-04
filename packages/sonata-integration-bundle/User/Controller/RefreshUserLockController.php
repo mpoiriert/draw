@@ -11,11 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RefreshUserLockController extends CRUDController
 {
-    private AccountLocker $accountLocker;
-
-    public function __construct(AccountLocker $accountLocker)
+    public function __construct(private AccountLocker $accountLocker)
     {
-        $this->accountLocker = $accountLocker;
     }
 
     public function refreshUserLocksAction(Request $request): Response
@@ -27,7 +24,7 @@ class RefreshUserLockController extends CRUDController
         $this->admin->checkAccess('refresh-user-locks', $existingObject);
 
         if (!$existingObject instanceof LockableUserInterface) {
-            throw new \RuntimeException('Invalid object of class ['.\get_class($existingObject).']. It must implements ['.LockableUserInterface::class.']');
+            throw new \RuntimeException('Invalid object of class ['.$existingObject::class.']. It must implements ['.LockableUserInterface::class.']');
         }
 
         $this->accountLocker->refreshUserLocks($existingObject);

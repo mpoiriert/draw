@@ -15,26 +15,11 @@ class AdminMonitoringBlockService implements BlockServiceInterface
     use BlockFilterTrait;
     use BlockTrait;
 
-    /**
-     * @var ExpressionLanguage
-     */
-    private $expressionLanguage;
-
-    /**
-     * @var Pool
-     */
-    private $pool;
-
-    /**
-     * @var Environment
-     */
-    private $twig;
-
-    public function __construct(Pool $pool, Environment $twig, ExpressionLanguage $expressionLanguage)
-    {
-        $this->expressionLanguage = $expressionLanguage;
-        $this->pool = $pool;
-        $this->twig = $twig;
+    public function __construct(
+        private Pool $pool,
+        private Environment $twig,
+        private ExpressionLanguage $expressionLanguage
+    ) {
     }
 
     public function configureSettings(OptionsResolver $resolver): void

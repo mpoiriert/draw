@@ -6,11 +6,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CheckPreAuthEvent
 {
-    private UserInterface $user;
-
-    public function __construct(UserInterface $user)
+    public function __construct(private UserInterface $user)
     {
-        $this->user = $user;
     }
 
     public function getUser(): UserInterface

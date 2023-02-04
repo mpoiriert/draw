@@ -16,24 +16,15 @@ use Metadata\MetadataFactoryInterface;
  */
 class DoctrineObjectConstructor implements ObjectConstructorInterface
 {
-    public const ON_MISSING_NULL = 'null';
-    public const ON_MISSING_EXCEPTION = 'exception';
-    public const ON_MISSING_FALLBACK = 'fallback';
-
-    private ManagerRegistry $managerRegistry;
-
-    private MetadataFactoryInterface $metadataFactory;
-
-    private ObjectConstructorInterface $fallbackConstructor;
+    final public const ON_MISSING_NULL = 'null';
+    final public const ON_MISSING_EXCEPTION = 'exception';
+    final public const ON_MISSING_FALLBACK = 'fallback';
 
     public function __construct(
-        ManagerRegistry $managerRegistry,
-        ObjectConstructorInterface $fallbackConstructor,
-        MetadataFactoryInterface $metadataFactory
+        private ManagerRegistry $managerRegistry,
+        private ObjectConstructorInterface $fallbackConstructor,
+        private MetadataFactoryInterface $metadataFactory
     ) {
-        $this->managerRegistry = $managerRegistry;
-        $this->metadataFactory = $metadataFactory;
-        $this->fallbackConstructor = $fallbackConstructor;
     }
 
     public function construct(

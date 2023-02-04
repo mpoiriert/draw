@@ -10,10 +10,7 @@ use Symfony\Component\Messenger\Envelope;
 
 class TransportTesterTest extends TestCase
 {
-    /**
-     * @var TransportTester
-     */
-    private $transportTester;
+    private TransportTester $transportTester;
 
     protected function setUp(): void
     {

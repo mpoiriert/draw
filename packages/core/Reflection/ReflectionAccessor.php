@@ -4,11 +4,7 @@ namespace Draw\Component\Core\Reflection;
 
 final class ReflectionAccessor
 {
-    /**
-     * @param object|string $objectOrClass
-     * @param mixed         ...$arguments
-     */
-    public static function callMethod($objectOrClass, string $methodName, ...$arguments)
+    public static function callMethod(object|string $objectOrClass, string $methodName, mixed ...$arguments)
     {
         $methodReflection = self::createAccessibleMethodReflection($objectOrClass, $methodName);
 
@@ -17,10 +13,7 @@ final class ReflectionAccessor
         return $methodReflection->invoke($object, ...$arguments);
     }
 
-    /**
-     * @param object|string $objectOrClass
-     */
-    public static function getPropertyValue($objectOrClass, string $propertyName)
+    public static function getPropertyValue(object|string $objectOrClass, string $propertyName)
     {
         $property = self::createAccessiblePropertyReflection($objectOrClass, $propertyName);
 
@@ -29,11 +22,7 @@ final class ReflectionAccessor
             : $property->getValue($objectOrClass);
     }
 
-    /**
-     * @param object|string $objectOrClass
-     * @param mixed         $value
-     */
-    public static function setPropertyValue($objectOrClass, string $propertyName, $value): void
+    public static function setPropertyValue(object|string $objectOrClass, string $propertyName, mixed $value): void
     {
         $property = self::createAccessiblePropertyReflection($objectOrClass, $propertyName);
 
@@ -43,10 +32,9 @@ final class ReflectionAccessor
     }
 
     /**
-     * @param object|string       $objectOrClass
      * @param array<string,mixed> $map
      */
-    public static function setPropertiesValue($objectOrClass, array $map): void
+    public static function setPropertiesValue(object|string $objectOrClass, array $map): void
     {
         foreach ($map as $property => $value) {
             self::setPropertyValue($objectOrClass, $property, $value);
@@ -55,16 +43,13 @@ final class ReflectionAccessor
 
     private static function createAccessibleMethodReflection($objectOrClass, string $methodName): \ReflectionMethod
     {
-        $class = \is_object($objectOrClass) ? \get_class($objectOrClass) : $objectOrClass;
+        $class = \is_object($objectOrClass) ? $objectOrClass::class : $objectOrClass;
 
         $reflectionClass = new \ReflectionClass($class);
 
         while (true) {
             if ($reflectionClass->hasMethod($methodName)) {
-                $reflectionMethod = $reflectionClass->getMethod($methodName);
-                $reflectionMethod->setAccessible(true);
-
-                return $reflectionMethod;
+                return $reflectionClass->getMethod($methodName);
             }
 
             if (!$reflectionClass = $reflectionClass->getParentClass()) {
@@ -76,16 +61,13 @@ final class ReflectionAccessor
 
     private static function createAccessiblePropertyReflection($objectOrClass, string $propertyName): \ReflectionProperty
     {
-        $class = \is_object($objectOrClass) ? \get_class($objectOrClass) : $objectOrClass;
+        $class = \is_object($objectOrClass) ? $objectOrClass::class : $objectOrClass;
 
         $reflectionClass = new \ReflectionClass($class);
 
         while (true) {
             if ($reflectionClass->hasProperty($propertyName)) {
-                $reflectionProperty = $reflectionClass->getProperty($propertyName);
-                $reflectionProperty->setAccessible(true);
-
-                return $reflectionProperty;
+                return $reflectionClass->getProperty($propertyName);
             }
 
             if (!$reflectionClass = $reflectionClass->getParentClass()) {

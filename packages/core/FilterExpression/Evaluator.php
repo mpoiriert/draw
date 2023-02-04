@@ -11,7 +11,7 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 
 class Evaluator
 {
-    private $serviceProvider;
+    private ServiceProviderInterface $serviceProvider;
 
     public function __construct(?ServiceProviderInterface $serviceProvider = null)
     {
@@ -22,7 +22,7 @@ class Evaluator
     }
 
     /**
-     * @return iterable<mixed> Return the filtered data
+     * @return iterable Return the filtered data
      */
     public function execute(Query $query, iterable $data): iterable
     {

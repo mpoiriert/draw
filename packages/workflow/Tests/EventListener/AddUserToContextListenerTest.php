@@ -15,10 +15,7 @@ class AddUserToContextListenerTest extends TestCase
 {
     private AddUserToContextListener $object;
 
-    /**
-     * @var Security&MockObject;
-     */
-    private $security;
+    private MockObject&Security $security;
 
     protected function setUp(): void
     {

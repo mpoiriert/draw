@@ -8,14 +8,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class TokenProcessor
 {
-    protected TokenStorageInterface $tokenStorage;
-
-    private string $key;
-
-    public function __construct(TokenStorageInterface $tokenStorage, string $key = 'token')
+    public function __construct(protected TokenStorageInterface $tokenStorage, private string $key = 'token')
     {
-        $this->key = $key;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function getToken(): ?TokenInterface

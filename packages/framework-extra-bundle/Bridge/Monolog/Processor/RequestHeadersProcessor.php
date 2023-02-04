@@ -9,25 +9,18 @@ class RequestHeadersProcessor
     protected const UPPER = '_ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     protected const LOWER = '-abcdefghijklmnopqrstuvwxyz';
 
-    private ?RequestStack $requestStack;
-
     private ?array $onlyHeaders;
 
     private ?array $ignoreHeaders;
 
-    private string $key;
-
     public function __construct(
-        ?RequestStack $requestStack = null,
+        private ?RequestStack $requestStack = null,
         array $onlyHeaders = [],
         array $ignoreHeaders = [],
-        string $key = 'request_headers'
+        private string $key = 'request_headers'
     ) {
-        $this->requestStack = $requestStack;
-        $this->key = $key;
-
-        $this->onlyHeaders = array_flip(array_map([$this, 'normalizeHeaderName'], $onlyHeaders));
-        $this->ignoreHeaders = array_flip(array_map([$this, 'normalizeHeaderName'], $ignoreHeaders));
+        $this->onlyHeaders = array_flip(array_map($this->normalizeHeaderName(...), $onlyHeaders));
+        $this->ignoreHeaders = array_flip(array_map($this->normalizeHeaderName(...), $ignoreHeaders));
     }
 
     public function __invoke(array $records): array

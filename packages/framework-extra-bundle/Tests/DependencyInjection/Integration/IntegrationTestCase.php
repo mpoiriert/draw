@@ -91,11 +91,8 @@ abstract class IntegrationTestCase extends TestCase
 
         return (new Processor())->processConfiguration(
             new class($treeBuilder) implements ConfigurationInterface {
-                private TreeBuilder $treeBuilder;
-
-                public function __construct(TreeBuilder $treeBuilder)
+                public function __construct(private TreeBuilder $treeBuilder)
                 {
-                    $this->treeBuilder = $treeBuilder;
                 }
 
                 public function getConfigTreeBuilder(): TreeBuilder
@@ -214,16 +211,10 @@ abstract class IntegrationTestCase extends TestCase
 
 class ServiceConfiguration
 {
-    private string $id;
-
-    private array $aliases;
-
     private $definitionCheckCallback;
 
-    public function __construct(string $id, array $aliases, ?callable $definitionCheckCallback = null)
+    public function __construct(private string $id, private array $aliases, ?callable $definitionCheckCallback = null)
     {
-        $this->id = $id;
-        $this->aliases = $aliases;
         $this->definitionCheckCallback = $definitionCheckCallback;
     }
 

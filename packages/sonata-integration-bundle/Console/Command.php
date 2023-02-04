@@ -4,20 +4,12 @@ namespace Draw\Bundle\SonataIntegrationBundle\Console;
 
 class Command
 {
-    private string $name;
-
-    private string $commandName;
-
-    private ?string $label;
-
-    private ?string $icon;
-
-    public function __construct(string $name, string $commandName, ?string $label = null, ?string $icon = null)
-    {
-        $this->name = $name;
-        $this->commandName = $commandName;
-        $this->label = $label;
-        $this->icon = $icon;
+    public function __construct(
+        private string $name,
+        private string $commandName,
+        private ?string $label = null,
+        private ?string $icon = null
+    ) {
     }
 
     public function getName(): string

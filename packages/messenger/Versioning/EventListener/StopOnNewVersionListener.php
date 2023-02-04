@@ -12,10 +12,6 @@ use Symfony\Component\Messenger\Worker;
 
 class StopOnNewVersionListener implements EventSubscriberInterface
 {
-    private ?LoggerInterface $logger;
-
-    private VersionVerificationInterface $versionVerification;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -25,10 +21,10 @@ class StopOnNewVersionListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(VersionVerificationInterface $versionVerification, ?LoggerInterface $logger = null)
-    {
-        $this->versionVerification = $versionVerification;
-        $this->logger = $logger;
+    public function __construct(
+        private VersionVerificationInterface $versionVerification,
+        private ?LoggerInterface $logger = null
+    ) {
     }
 
     public function onWorkerStarted(WorkerStartedEvent $event): void

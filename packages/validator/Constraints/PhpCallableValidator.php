@@ -28,7 +28,7 @@ class PhpCallableValidator extends ConstraintValidator
                 case !\count($this->context->getValidator()->validate($result, $constraint->returnValueConstraint)):
                     return;
             }
-        } catch (\Throwable $throwable) {
+        } catch (\Throwable) {
         }
 
         $this->context->buildViolation($constraint->message)

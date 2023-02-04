@@ -61,7 +61,7 @@ class ProfilerCoordinatorTest extends TestCase
         $this->profiler->expects(static::once())->method('stop')->willReturn($result = 'result');
         $metrics = $this->object->stopAll();
 
-        static::assertObjectHasAttribute(self::PROFILER_TYPE, $metrics);
+        static::assertTrue(isset($metrics->{self::PROFILER_TYPE}));
         static::assertSame($result, $metrics->{self::PROFILER_TYPE});
     }
 }

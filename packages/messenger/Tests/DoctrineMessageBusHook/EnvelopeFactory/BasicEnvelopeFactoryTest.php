@@ -29,8 +29,10 @@ class BasicEnvelopeFactoryTest extends TestCase
     public function testCreateEnvelopes(): void
     {
         $messageHolder = $this->createMock(MessageHolderInterface::class);
-        $messages[] = (object) [];
-        $messages[] = (object) [];
+        $messages = [
+            (object) [],
+            (object) [],
+        ];
 
         $newEnvelope = new Envelope($messages[0]);
 

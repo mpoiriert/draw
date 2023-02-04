@@ -10,14 +10,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class TestResponse
 {
-    private RequestInterface $request;
-
-    private ResponseInterface $response;
-
-    public function __construct(RequestInterface $request, ResponseInterface $response)
+    public function __construct(private RequestInterface $request, private ResponseInterface $response)
     {
-        $this->request = $request;
-        $this->response = $response;
     }
 
     public function getRequest(): RequestInterface
@@ -102,10 +96,8 @@ class TestResponse
 
     /**
      * Asserts that the response contains the given header and equals the optional value.
-     *
-     * @param mixed $value
      */
-    public function assertHeader(string $headerName, $value = null): self
+    public function assertHeader(string $headerName, mixed $value = null): self
     {
         PHPUnit::assertTrue(
             $this->getResponse()->hasHeader($headerName),
@@ -130,10 +122,8 @@ class TestResponse
 
     /**
      * Asserts that the response contains the given cookie and equals the optional value.
-     *
-     * @param mixed $value
      */
-    public function assertCookie(string $cookieName, $value = null): self
+    public function assertCookie(string $cookieName, mixed $value = null): self
     {
         $cookies = $this->getCookies();
         $cookie = \array_key_exists($cookieName, $cookies) ? $cookies[$cookieName] : null;

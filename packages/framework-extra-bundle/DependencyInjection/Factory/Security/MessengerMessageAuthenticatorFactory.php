@@ -51,7 +51,7 @@ class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterf
     public function addConfiguration(NodeDefinition $builder): void
     {
         if (!$builder instanceof ArrayNodeDefinition) {
-            throw new \RuntimeException(sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, \get_class($builder)));
+            throw new \RuntimeException(sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, $builder::class));
         }
 
         $builder

@@ -45,11 +45,11 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     use PasswordChangeEnforcerUserTrait;
     use SecurityUserTrait;
 
-    public const LEVEL_USER = 'user';
+    final public const LEVEL_USER = 'user';
 
-    public const LEVEL_ADMIN = 'admin';
+    final public const LEVEL_ADMIN = 'admin';
 
-    public const LEVELS = [
+    final public const LEVELS = [
         self::LEVEL_USER,
         self::LEVEL_ADMIN,
     ];
@@ -118,7 +118,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * )
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private ?ChildObject1 $childObject1;
+    private ?ChildObject1 $childObject1 = null;
 
     /**
      * @ORM\ManyToOne(
@@ -126,7 +126,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * )
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private ?ChildObject2 $childObject2;
+    private ?ChildObject2 $childObject2 = null;
 
     public function __construct()
     {
@@ -173,17 +173,15 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * @return Collection<Tag>
      */
-    public function getTags()
+    public function getTags(): Collection
     {
         return $this->tags;
     }
 
     /**
      * @phpstan-param Collection<Tag>|array<int,Tag> $tags
-     *
-     * @param mixed $tags
      */
-    public function setTags($tags): void
+    public function setTags(Collection|array $tags): void
     {
         $this->tags = new ArrayCollection();
 

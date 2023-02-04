@@ -48,7 +48,7 @@ class ConnectionTokensController extends AbstractController
     ): ConnectionToken {
         try {
             $user = $userProvider->loadUserByIdentifier($credential->getUsername());
-        } catch (UserNotFoundException $exception) {
+        } catch (UserNotFoundException) {
             throw new HttpException(400, 'User not found');
         }
 

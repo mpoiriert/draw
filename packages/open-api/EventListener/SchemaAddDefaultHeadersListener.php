@@ -9,10 +9,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class SchemaAddDefaultHeadersListener implements EventSubscriberInterface
 {
-    private ArrayTransformerInterface $arrayTransformer;
-
-    private array $headers;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -20,10 +16,10 @@ final class SchemaAddDefaultHeadersListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(array $headers, ArrayTransformerInterface $arrayTransformer)
-    {
-        $this->headers = $headers;
-        $this->arrayTransformer = $arrayTransformer;
+    public function __construct(
+        private array $headers,
+        private ArrayTransformerInterface $arrayTransformer
+    ) {
     }
 
     public function addHeaders(PreDumpRootSchemaEvent $event): void

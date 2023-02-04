@@ -18,14 +18,6 @@ class AccountLockerListener implements EventSubscriberInterface
 {
     private const INTERCEPTION_REASON = 'account_locked';
 
-    private AccountLocker $accountLocker;
-
-    private UrlGeneratorInterface $urlGenerator;
-
-    private string $accountLockedRoute;
-
-    private UserFeedInterface $userFeed;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -36,15 +28,11 @@ class AccountLockerListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        AccountLocker $accountLocker,
-        UrlGeneratorInterface $urlGenerator,
-        UserFeedInterface $userFeed,
-        string $accountLockedRoute = 'draw_user_account_locker_account_locked'
+        private AccountLocker $accountLocker,
+        private UrlGeneratorInterface $urlGenerator,
+        private UserFeedInterface $userFeed,
+        private string $accountLockedRoute = 'draw_user_account_locker_account_locked'
     ) {
-        $this->accountLocker = $accountLocker;
-        $this->urlGenerator = $urlGenerator;
-        $this->accountLockedRoute = $accountLockedRoute;
-        $this->userFeed = $userFeed;
     }
 
     public function handleUserRequestInterceptionEvent(UserRequestInterceptionEvent $event): void

@@ -21,30 +21,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ClickMessageAction
 {
-    public const MESSAGE_ID_PARAMETER_NAME = 'dMUuid';
-
-    private MessageBusInterface $messageBus;
-
-    private EnvelopeFinder $enveloperFinder;
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    private TranslatorInterface $translator;
-
-    private TransportRepository $transportRepository;
+    final public const MESSAGE_ID_PARAMETER_NAME = 'dMUuid';
 
     public function __construct(
-        MessageBusInterface $messageBus,
-        EnvelopeFinder $enveloperFinder,
-        EventDispatcherInterface $eventDispatcher,
-        TranslatorInterface $translator,
-        TransportRepository $transportRepository
+        private MessageBusInterface $messageBus,
+        private EnvelopeFinder $enveloperFinder,
+        private EventDispatcherInterface $eventDispatcher,
+        private TranslatorInterface $translator,
+        private TransportRepository $transportRepository
     ) {
-        $this->messageBus = $messageBus;
-        $this->enveloperFinder = $enveloperFinder;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->translator = $translator;
-        $this->transportRepository = $transportRepository;
     }
 
     public function __invoke(

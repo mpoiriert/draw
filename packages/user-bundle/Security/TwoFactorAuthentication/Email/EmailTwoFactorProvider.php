@@ -9,11 +9,8 @@ use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\TwoFactorProviderInterface
 
 class EmailTwoFactorProvider implements TwoFactorProviderInterface
 {
-    private BaseEmailTwoFactorProvider $decorated;
-
-    public function __construct(BaseEmailTwoFactorProvider $decorated)
+    public function __construct(private BaseEmailTwoFactorProvider $decorated)
     {
-        $this->decorated = $decorated;
     }
 
     public function beginAuthentication(AuthenticationContextInterface $context): bool
@@ -30,7 +27,7 @@ class EmailTwoFactorProvider implements TwoFactorProviderInterface
     {
         try {
             return $this->decorated->validateAuthenticationCode($user, $authenticationCode);
-        } catch (\Throwable $error) {
+        } catch (\Throwable) {
             return false;
         }
     }

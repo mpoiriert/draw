@@ -4,21 +4,15 @@ namespace Draw\Component\Core\FilterExpression\Expression;
 
 class CompositeExpression extends Expression
 {
-    public const TYPE_AND = 'AND';
+    final public const TYPE_AND = 'AND';
 
-    public const TYPE_OR = 'OR';
-
-    private string $type;
+    final public const TYPE_OR = 'OR';
 
     /**
-     * @var array|Expression[]
+     * @param array|Expression[] $expressions
      */
-    private array $expressions;
-
-    public function __construct(string $type, array $expressions)
+    public function __construct(private string $type, private array $expressions)
     {
-        $this->type = $type;
-        $this->expressions = $expressions;
     }
 
     public function getType(): string

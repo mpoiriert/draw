@@ -14,10 +14,8 @@ class DataTester extends DataAccessor
 
     /**
      * Execute the callable if the path is readable. Useful to test array|object with optional key|property.
-     *
-     * @param string|PropertyPathInterface $path
      */
-    public function ifPathIsReadable($path, callable $callable): self
+    public function ifPathIsReadable(string|PropertyPathInterface $path, callable $callable): self
     {
         if ($this->isReadable($path)) {
             $callable($this->path($path));
@@ -46,10 +44,7 @@ class DataTester extends DataAccessor
         return $this;
     }
 
-    /**
-     * @param string|PropertyPathInterface $path
-     */
-    public function assertPathIsReadable($path, ?string $message = null): self
+    public function assertPathIsReadable(string|PropertyPathInterface $path, ?string $message = null): self
     {
         Assert::assertTrue(
             $this->isReadable($path),
@@ -61,10 +56,7 @@ class DataTester extends DataAccessor
         return $this;
     }
 
-    /**
-     * @param string|PropertyPathInterface $path
-     */
-    public function assertPathIsNotReadable($path, ?string $message = null): self
+    public function assertPathIsNotReadable(string|PropertyPathInterface $path, ?string $message = null): self
     {
         Assert::assertFalse(
             $this->isReadable($path),
@@ -92,18 +84,5 @@ class DataTester extends DataAccessor
         TestCase::assertThat($this->getData(), $constraint, $message);
 
         return $this;
-    }
-
-    /**
-     * @param mixed ...$parameters
-     *
-     * @deprecated
-     * @see DataTester::assertThat
-     */
-    public static function createCallable(string $methodName, ...$parameters): callable
-    {
-        return function (self $dataTester) use ($methodName, $parameters): void {
-            \call_user_func_array([$dataTester, $methodName], array_values($parameters));
-        };
     }
 }

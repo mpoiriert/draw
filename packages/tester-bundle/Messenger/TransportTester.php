@@ -13,22 +13,13 @@ use Symfony\Component\Validator\Constraints\Type;
 
 class TransportTester
 {
-    /**
-     * @var InMemoryTransport
-     */
-    private $transport;
+    private InMemoryTransport $transport;
 
-    /**
-     * @var Evaluator
-     */
-    private $evaluator;
-
-    public function __construct(TransportInterface $transport, Evaluator $evaluator)
+    public function __construct(TransportInterface $transport, private Evaluator $evaluator)
     {
         if (!$transport instanceof InMemoryTransport) {
-            throw new \RuntimeException(sprintf('TransportTester only support [%s]. Object of class [%s]', InMemoryTransport::class, \get_class($transport)));
+            throw new \RuntimeException(sprintf('TransportTester only support [%s]. Object of class [%s]', InMemoryTransport::class, $transport::class));
         }
-        $this->evaluator = $evaluator;
         $this->transport = $transport;
     }
 

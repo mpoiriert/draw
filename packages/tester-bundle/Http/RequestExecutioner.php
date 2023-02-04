@@ -12,24 +12,14 @@ use Symfony\Component\BrowserKit\Cookie;
 
 class RequestExecutioner implements RequestExecutionerInterface
 {
-    /**
-     * @var BodyParser
-     */
-    private $bodyParser;
+    private BodyParser $bodyParser;
 
-    /**
-     * @var BrowserFactoryInterface
-     */
-    private $browserFactory;
+    private ?AbstractBrowser $lastBrowser = null;
 
-    /**
-     * @var AbstractBrowser
-     */
-    private $lastBrowser;
-
-    public function __construct(BrowserFactoryInterface $httpKernelBrowserFactory, ?BodyParser $bodyParser = null)
-    {
-        $this->browserFactory = $httpKernelBrowserFactory;
+    public function __construct(
+        private BrowserFactoryInterface $browserFactory,
+        ?BodyParser $bodyParser = null
+    ) {
         $this->bodyParser = $bodyParser ?: new BodyParser();
     }
 

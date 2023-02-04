@@ -12,16 +12,13 @@ use Draw\Component\OpenApi\Schema\Schema;
 
 class SerializationConfigurationExtractor implements ExtractorInterface
 {
-    private Reader $annotationReader;
-
     public static function getDefaultPriority(): int
     {
         return 128;
     }
 
-    public function __construct(Reader $reader)
+    public function __construct(private Reader $annotationReader)
     {
-        $this->annotationReader = $reader;
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool

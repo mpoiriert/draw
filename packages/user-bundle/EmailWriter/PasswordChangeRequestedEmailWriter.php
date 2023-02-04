@@ -11,21 +11,15 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class PasswordChangeRequestedEmailWriter implements EmailWriterInterface
 {
-    private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator;
-
-    private UserProviderInterface $userProvider;
-
     public static function getForEmails(): array
     {
         return ['compose' => 0];
     }
 
     public function __construct(
-        ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
-        UserProviderInterface $userProvider
+        private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
+        private UserProviderInterface $userProvider
     ) {
-        $this->messageUrlGenerator = $messageUrlGenerator;
-        $this->userProvider = $userProvider;
     }
 
     public function compose(PasswordChangeRequestedEmail $email): void

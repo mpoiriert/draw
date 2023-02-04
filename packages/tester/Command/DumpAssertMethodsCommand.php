@@ -23,7 +23,7 @@ class DumpAssertMethodsCommand extends Command
         $filePath = $input->getArgument('filePath');
 
         if (file_exists($filePath)) {
-            $methods = json_decode(file_get_contents($filePath), true);
+            $methods = json_decode(file_get_contents($filePath), true, 512, \JSON_THROW_ON_ERROR);
         } else {
             $methods = [];
         }
@@ -31,7 +31,7 @@ class DumpAssertMethodsCommand extends Command
         $reflectionClass = new \ReflectionClass(Assert::class);
 
         foreach ($reflectionClass->getMethods() as $method) {
-            if (0 !== strpos($method->name, 'assert')) {
+            if (!str_starts_with($method->name, 'assert')) {
                 continue;
             }
             $parameters = [];
@@ -70,7 +70,7 @@ class DumpAssertMethodsCommand extends Command
                 default:
                     foreach ($parameters as $parameterName) {
                         switch (true) {
-                            case 0 === strpos($parameterName, 'actual'):
+                            case str_starts_with($parameterName, 'actual'):
                                 $guessParameter = $parameterName;
                                 break;
                         }
@@ -82,12 +82,12 @@ class DumpAssertMethodsCommand extends Command
 
             $docComment = $method->getDocComment();
 
-            if (false !== strpos($docComment, ' @deprecated')) {
+            if (str_contains($docComment, ' @deprecated')) {
                 $ignore = true;
             }
 
             switch (true) {
-                case 0 === strpos($method->name, 'assertAttribute'):
+                case str_starts_with($method->name, 'assertAttribute'):
                 case 'assertThat' === $method->name:
                     $ignore = true;
                     break;

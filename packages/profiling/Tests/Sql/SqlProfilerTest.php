@@ -5,14 +5,12 @@ namespace Draw\Component\Profiling\Tests\Sql;
 use Draw\Component\Profiling\Sql\SqlMetric;
 use Draw\Component\Profiling\Sql\SqlMetricBuilder;
 use Draw\Component\Profiling\Sql\SqlProfiler;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class SqlProfilerTest extends TestCase
 {
-    /**
-     * @var SqlProfiler
-     */
-    private $profiler;
+    private SqlProfiler&MockObject $profiler;
 
     protected function setUp(): void
     {

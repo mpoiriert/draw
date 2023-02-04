@@ -8,13 +8,6 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class DataAccessor
 {
-    /**
-     * The root data that the asserts will be done on.
-     *
-     * @var mixed
-     */
-    private $data;
-
     private static ?PropertyAccessorInterface $propertyAccessor = null;
 
     /**
@@ -31,9 +24,12 @@ class DataAccessor
         return self::$propertyAccessor;
     }
 
-    final public function __construct($data)
-    {
-        $this->data = $data;
+    final public function __construct(
+        /**
+         * The root data that the asserts will be done on.
+         */
+        private mixed $data
+    ) {
     }
 
     /**

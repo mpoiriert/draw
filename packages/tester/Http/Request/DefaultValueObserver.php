@@ -7,14 +7,8 @@ use Psr\Http\Message\RequestInterface;
 
 class DefaultValueObserver extends ClientObserver
 {
-    private $headers;
-
-    private $queryParameters;
-
-    public function __construct(array $headers = [], $queryParameters = [])
+    public function __construct(private array $headers = [], private $queryParameters = [])
     {
-        $this->headers = $headers;
-        $this->queryParameters = $queryParameters;
     }
 
     public function preSendRequest(RequestInterface $request): RequestInterface
