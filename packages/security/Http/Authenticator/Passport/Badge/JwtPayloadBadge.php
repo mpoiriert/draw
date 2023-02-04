@@ -17,7 +17,7 @@ final class JwtPayloadBadge implements BadgeInterface
     public function __construct(array $payload)
     {
         // Enforce assoc array instead of object recursively
-        $this->payload = json_decode(json_encode($payload), true);
+        $this->payload = json_decode(json_encode($payload, \JSON_THROW_ON_ERROR), true, 512, \JSON_THROW_ON_ERROR);
     }
 
     public function getPayloadKeyValue(string $key)

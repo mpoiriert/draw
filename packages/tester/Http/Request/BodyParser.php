@@ -8,20 +8,12 @@ class BodyParser
 {
     /**
      * The temp directory where the files will be save.
-     *
-     * @var string
      */
-    private $tempDirectory;
+    private string $tempDirectory;
 
-    /**
-     * @var bool
-     */
-    private $autoRemoveFileOnShutdown = true;
-
-    public function __construct($tempDirectory = null, $autoRemoveFileOnShutdown = true)
+    public function __construct(?string $tempDirectory = null, private bool $autoRemoveFileOnShutdown = true)
     {
         $this->tempDirectory = $tempDirectory ?: sys_get_temp_dir();
-        $this->autoRemoveFileOnShutdown = $autoRemoveFileOnShutdown;
     }
 
     public function parse(string $body, ?string $contentType): array
@@ -32,7 +24,7 @@ class BodyParser
             'files' => [],
         ];
 
-        if (false !== strpos($contentType, 'application/x-www-form-urlencoded')) {
+        if (str_contains($contentType, 'application/x-www-form-urlencoded')) {
             parse_str($body, $post);
             $results['post'] = $post;
 
@@ -92,13 +84,11 @@ class BodyParser
     }
 
     /**
-     * @param mixed $contentDisposition
-     *
      * @return array{type: string, data: array<string, string>}
      */
-    private function parseContentDisposition($contentDisposition): array
+    private function parseContentDisposition(mixed $contentDisposition): array
     {
-        $parts = explode(';', $contentDisposition);
+        $parts = explode(';', (string) $contentDisposition);
         $parts = array_map('trim', $parts);
         $type = array_shift($parts);
         $data = [];
@@ -112,13 +102,7 @@ class BodyParser
         return compact('type', 'data');
     }
 
-    /**
-     * @param mixed $inputName
-     * @param mixed $content
-     * @param mixed $type
-     * @param mixed $name
-     */
-    private function createFileEntry($inputName, $content, $type, $name): array
+    private function createFileEntry(string $inputName, string $content, string $type, string $name): array
     {
         $result = [];
         $tmp_name = tempnam($this->tempDirectory, 'draw_');

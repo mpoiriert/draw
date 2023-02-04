@@ -12,13 +12,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerInterface
 {
-    private MailerInterface $mailer;
-
-    /**
-     * @var EntityRepository<UserInterface>
-     */
-    private EntityRepository $userEntityRepository;
-
     public static function getHandledMessages(): iterable
     {
         yield PasswordChangeRequestedMessage::class => 'handlePasswordChangeRequestedMessage';
@@ -27,15 +20,15 @@ class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerIn
     /**
      * @param EntityRepository<UserInterface> $drawUserEntityRepository
      */
-    public function __construct(EntityRepository $drawUserEntityRepository, MailerInterface $mailer)
-    {
-        $this->userEntityRepository = $drawUserEntityRepository;
-        $this->mailer = $mailer;
+    public function __construct(
+        private EntityRepository $drawUserEntityRepository,
+        private MailerInterface $mailer
+    ) {
     }
 
     public function __invoke(PasswordChangeRequestedMessage $message): void
     {
-        $user = $this->userEntityRepository->find($message->getUserId());
+        $user = $this->drawUserEntityRepository->find($message->getUserId());
 
         if (!$user instanceof PasswordChangeUserInterface || !$user->getNeedChangePassword()) {
             return;

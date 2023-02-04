@@ -23,21 +23,21 @@ use Symfony\Component\Console\Input\ArrayInput;
  * )
  * @ORM\HasLifecycleCallbacks
  */
-class Execution
+class Execution implements \Stringable
 {
-    public const STATE_INITIALIZED = 'initialized';
+    final public const STATE_INITIALIZED = 'initialized';
 
-    public const STATE_STARTED = 'started';
+    final public const STATE_STARTED = 'started';
 
-    public const STATE_ERROR = 'error';
+    final public const STATE_ERROR = 'error';
 
-    public const STATE_TERMINATED = 'terminated';
+    final public const STATE_TERMINATED = 'terminated';
 
-    public const STATE_ACKNOWLEDGE = 'acknowledge';
+    final public const STATE_ACKNOWLEDGE = 'acknowledge';
 
-    public const STATE_AUTO_ACKNOWLEDGE = 'auto_acknowledge';
+    final public const STATE_AUTO_ACKNOWLEDGE = 'auto_acknowledge';
 
-    public const STATES = [
+    final public const STATES = [
         self::STATE_INITIALIZED,
         self::STATE_STARTED,
         self::STATE_ERROR,
@@ -225,7 +225,7 @@ class Execution
     {
         $converter = new AnsiToHtmlConverter();
 
-        return nl2br($converter->convert($this->getOutput()));
+        return nl2br((string) $converter->convert($this->getOutput()));
     }
 
     public function getCommandLine(): string

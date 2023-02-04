@@ -124,7 +124,7 @@ class LoggerIntegration implements IntegrationInterface
                     ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('methods')
-                    ->beforeNormalization()->ifString()->then(fn ($v) => preg_split('/\s*,\s*/', $v))->end()
+                    ->beforeNormalization()->ifString()->then(fn ($v) => preg_split('/\s*,\s*/', (string) $v))->end()
                     ->prototype('scalar')->end()
                 ->end()
             ->end();

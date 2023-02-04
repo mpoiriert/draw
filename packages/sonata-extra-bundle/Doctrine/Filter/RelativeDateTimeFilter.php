@@ -15,7 +15,7 @@ class RelativeDateTimeFilter extends Filter
             return;
         }
 
-        $value = trim($data->getValue());
+        $value = trim((string) $data->getValue());
 
         if (0 === mb_strlen($value)) {
             return;

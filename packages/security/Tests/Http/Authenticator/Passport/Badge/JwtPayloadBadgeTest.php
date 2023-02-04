@@ -93,14 +93,10 @@ class JwtPayloadBadgeTest extends TestCase
         );
 
         foreach ($payload as $key => $value) {
-            switch ($key) {
-                case $extraKey:
-                    static::assertSame($value, $badge->getPayloadKeyValue($key));
-                    break;
-                default:
-                    static::assertNull($badge->getPayloadKeyValue($key));
-                    break;
-            }
+            match ($key) {
+                $extraKey => static::assertSame($value, $badge->getPayloadKeyValue($key)),
+                default => static::assertNull($badge->getPayloadKeyValue($key)),
+            };
         }
     }
 }

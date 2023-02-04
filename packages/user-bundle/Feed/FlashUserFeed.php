@@ -11,17 +11,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FlashUserFeed implements UserFeedInterface
 {
-    private RequestStack $requestStack;
-
-    private Security $security;
-
-    private TranslatorInterface $translator;
-
-    public function __construct(RequestStack $requestStack, Security $security, ?TranslatorInterface $translator)
-    {
-        $this->requestStack = $requestStack;
-        $this->security = $security;
-        $this->translator = $translator;
+    public function __construct(
+        private RequestStack $requestStack,
+        private Security $security,
+        private ?TranslatorInterface $translator
+    ) {
     }
 
     public function addToFeed(UserInterface $user, string $type, string $message, array $parameters = [], string $domain = 'DrawUserFeed'): void
@@ -40,7 +34,7 @@ class FlashUserFeed implements UserFeedInterface
                     $this->translator->trans($message, $parameters, $domain)
                 );
             }
-        } catch (SessionNotFoundException $error) {
+        } catch (SessionNotFoundException) {
             return;
         }
     }

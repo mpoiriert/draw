@@ -10,11 +10,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UnlockUserAction
 {
-    private UserFeedInterface $userFeed;
-
-    public function __construct(UserFeedInterface $userFeed)
+    public function __construct(private UserFeedInterface $userFeed)
     {
-        $this->userFeed = $userFeed;
     }
 
     public function __invoke(AdminInterface $admin, UserInterface $currentUser)
@@ -37,7 +34,7 @@ class UnlockUserAction
                     [],
                     'SonataAdminBundle'
                 );
-        } catch (\Throwable $error) {
+        } catch (\Throwable) {
             $this->userFeed
                 ->addToFeed(
                     $currentUser,

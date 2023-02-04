@@ -10,17 +10,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventDispatcherFormContractor implements FormContractorInterface
 {
-    private FormContractorInterface $decoratedFormContractor;
-
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        FormContractorInterface $decoratedFormContractor,
-        EventDispatcherInterface $eventDispatcher
+        private FormContractorInterface $decoratedFormContractor,
+        private EventDispatcherInterface $eventDispatcher
     ) {
-        $this->decoratedFormContractor = $decoratedFormContractor;
-
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void

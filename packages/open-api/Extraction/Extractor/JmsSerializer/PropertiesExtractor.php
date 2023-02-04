@@ -24,13 +24,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class PropertiesExtractor implements ExtractorInterface
 {
-    public const CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY = 'jms-enable-version-exclusion-strategy';
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    private MetadataFactoryInterface $factory;
-
-    private PropertyNamingStrategyInterface $namingStrategy;
+    final public const CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY = 'jms-enable-version-exclusion-strategy';
 
     /**
      * @var array|TypeToSchemaHandlerInterface[]
@@ -43,15 +37,11 @@ class PropertiesExtractor implements ExtractorInterface
     }
 
     public function __construct(
-        MetadataFactoryInterface $factory,
-        PropertyNamingStrategyInterface $namingStrategy,
-        EventDispatcherInterface $eventDispatcher,
+        private MetadataFactoryInterface $factory,
+        private PropertyNamingStrategyInterface $namingStrategy,
+        private EventDispatcherInterface $eventDispatcher,
         ?iterable $typeToSchemaHandlers = null
     ) {
-        $this->factory = $factory;
-        $this->namingStrategy = $namingStrategy;
-        $this->eventDispatcher = $eventDispatcher;
-
         $this->typeToSchemaHandlers = $typeToSchemaHandlers ?: $this::getDefaultHandlers();
     }
 
@@ -187,7 +177,7 @@ class PropertiesExtractor implements ExtractorInterface
             }
 
             return $factory->create($docComment)->getSummary();
-        } catch (\ReflectionException $e) {
+        } catch (\ReflectionException) {
             return '';
         }
     }

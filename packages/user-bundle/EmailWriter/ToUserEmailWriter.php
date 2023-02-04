@@ -9,16 +9,13 @@ use Symfony\Component\Mime\Email;
 
 class ToUserEmailWriter implements EmailWriterInterface
 {
-    private EntityRepository $userEntityRepository;
-
     public static function getForEmails(): array
     {
         return ['compose' => -255];
     }
 
-    public function __construct(EntityRepository $drawUserEntityRepository)
+    public function __construct(private EntityRepository $drawUserEntityRepository)
     {
-        $this->userEntityRepository = $drawUserEntityRepository;
     }
 
     public function compose(ToUserEmailInterface $email): void
@@ -27,7 +24,7 @@ class ToUserEmailWriter implements EmailWriterInterface
             return;
         }
 
-        $user = $this->userEntityRepository->find($email->getUserId());
+        $user = $this->drawUserEntityRepository->find($email->getUserId());
 
         if (!$user) {
             return;

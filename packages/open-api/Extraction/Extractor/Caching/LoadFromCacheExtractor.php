@@ -11,19 +11,13 @@ use Symfony\Component\Config\ConfigCache;
 
 class LoadFromCacheExtractor implements ExtractorInterface
 {
-    private bool $debug;
-
-    private string $cacheDirectory;
-
     public static function getDefaultPriority(): int
     {
         return 9999;
     }
 
-    public function __construct(bool $debug, string $cacheDirectory)
+    public function __construct(private bool $debug, private string $cacheDirectory)
     {
-        $this->debug = $debug;
-        $this->cacheDirectory = $cacheDirectory;
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool

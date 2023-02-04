@@ -11,11 +11,8 @@ class SystemToken extends AbstractToken
     {
         parent::__construct($roles);
         $this->setUser(new class($roles) implements UserInterface {
-            private array $roles;
-
-            public function __construct(array $roles)
+            public function __construct(private array $roles)
             {
-                $this->roles = $roles;
             }
 
             public function getRoles(): array

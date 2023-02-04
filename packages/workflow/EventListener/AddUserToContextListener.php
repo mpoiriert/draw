@@ -8,8 +8,6 @@ use Symfony\Component\Workflow\Event\TransitionEvent;
 
 class AddUserToContextListener implements EventSubscriberInterface
 {
-    private Security $security;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -17,9 +15,8 @@ class AddUserToContextListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(Security $security)
+    public function __construct(private Security $security)
     {
-        $this->security = $security;
     }
 
     public function addUserToContext(TransitionEvent $transitionEvent): void

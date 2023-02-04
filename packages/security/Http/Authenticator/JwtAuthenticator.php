@@ -20,28 +20,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class JwtAuthenticator extends AbstractAuthenticator
 {
-    private UserProviderInterface $userProvider;
-
-    private JwtEncoder $encoder;
-
-    private string $userIdentifierPayloadKey;
-
-    private string $userIdentifierGetter;
-
-    private ?TranslatorInterface $translator;
-
     public function __construct(
-        JwtEncoder $encoder,
-        UserProviderInterface $userProvider,
-        string $userIdentifierPayloadKey,
-        string $userIdentifierGetter,
-        ?TranslatorInterface $translator = null
+        private JwtEncoder $encoder,
+        private UserProviderInterface $userProvider,
+        private string $userIdentifierPayloadKey,
+        private string $userIdentifierGetter,
+        private ?TranslatorInterface $translator = null
     ) {
-        $this->encoder = $encoder;
-        $this->userProvider = $userProvider;
-        $this->userIdentifierPayloadKey = $userIdentifierPayloadKey;
-        $this->userIdentifierGetter = $userIdentifierGetter;
-        $this->translator = $translator;
     }
 
     public function supports(Request $request): ?bool
@@ -100,7 +85,7 @@ class JwtAuthenticator extends AbstractAuthenticator
             $this->encoder->decode($token);
 
             return $token;
-        } catch (\UnexpectedValueException $error) {
+        } catch (\UnexpectedValueException) {
             return null;
         }
     }

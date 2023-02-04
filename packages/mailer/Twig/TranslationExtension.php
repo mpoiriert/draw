@@ -8,11 +8,8 @@ use Twig\TwigFilter;
 
 class TranslationExtension extends AbstractExtension
 {
-    private TranslatorInterface $translator;
-
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     public function getFilters(): array
@@ -25,7 +22,7 @@ class TranslationExtension extends AbstractExtension
     /**
      * @param string|string[] $messages
      */
-    public function trans($messages, array $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): ?string
+    public function trans(string|array $messages, array $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): ?string
     {
         if (!\is_array($messages)) {
             $messages = [$messages];

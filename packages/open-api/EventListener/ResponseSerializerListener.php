@@ -18,14 +18,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ResponseSerializerListener implements EventSubscriberInterface
 {
-    private EventDispatcherInterface $eventDispatcher;
-
-    private SerializationContextFactoryInterface $serializationContextFactory;
-
-    private bool $serializeNull;
-
-    private SerializerInterface $serializer;
-
     public static function getSubscribedEvents(): array
     {
         // Must be executed before SensioFrameworkExtraBundle's listener
@@ -36,15 +28,11 @@ class ResponseSerializerListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        SerializerInterface $serializer,
-        SerializationContextFactoryInterface $serializationContextFactory,
-        EventDispatcherInterface $eventDispatcher,
-        bool $serializeNull
+        private SerializerInterface $serializer,
+        private SerializationContextFactoryInterface $serializationContextFactory,
+        private EventDispatcherInterface $eventDispatcher,
+        private bool $serializeNull
     ) {
-        $this->serializationContextFactory = $serializationContextFactory;
-        $this->serializer = $serializer;
-        $this->serializeNull = $serializeNull;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function onKernelView(ViewEvent $event): void
@@ -113,10 +101,8 @@ class ResponseSerializerListener implements EventSubscriberInterface
 
     /**
      * @see ResponseHeaderBag::set
-     *
-     * @param mixed $values
      */
-    public static function setResponseHeader(Request $request, string $key, $values, bool $replace = true): void
+    public static function setResponseHeader(Request $request, string $key, mixed $values, bool $replace = true): void
     {
         $responseHeaderBag = $request->attributes->get('_responseHeaderBag', new ResponseHeaderBag());
         if (!$responseHeaderBag instanceof ResponseHeaderBag) {

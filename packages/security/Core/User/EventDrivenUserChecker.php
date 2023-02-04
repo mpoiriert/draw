@@ -10,14 +10,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventDrivenUserChecker implements UserCheckerInterface
 {
-    private UserCheckerInterface $decoratedUserChecker;
-
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(UserCheckerInterface $decoratedUserChecker, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->decoratedUserChecker = $decoratedUserChecker;
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private UserCheckerInterface $decoratedUserChecker,
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     public function checkPreAuth(UserInterface $user): void

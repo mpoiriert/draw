@@ -8,14 +8,10 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CanSecurityHandler implements SecurityHandlerInterface
 {
-    private SecurityHandlerInterface $decoratedSecurityHandler;
-
-    private AuthorizationCheckerInterface $authorizationChecker;
-
-    public function __construct(SecurityHandlerInterface $decoratedSecurityHandler, AuthorizationCheckerInterface $authorizationChecker)
-    {
-        $this->decoratedSecurityHandler = $decoratedSecurityHandler;
-        $this->authorizationChecker = $authorizationChecker;
+    public function __construct(
+        private SecurityHandlerInterface $decoratedSecurityHandler,
+        private AuthorizationCheckerInterface $authorizationChecker
+    ) {
     }
 
     public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool
@@ -29,7 +25,7 @@ class CanSecurityHandler implements SecurityHandlerInterface
         }
 
         foreach ((array) $attributes as $attribute) {
-            if (\is_string($attribute) && 0 !== strpos($attribute, 'ROLE_')) {
+            if (\is_string($attribute) && !str_starts_with($attribute, 'ROLE_')) {
                 if (!$this->authorizationChecker->isGranted('SONATA_CAN_'.$attribute, $object)) {
                     return false;
                 }

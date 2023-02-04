@@ -2,6 +2,7 @@
 
 namespace Draw\Component\OpenApi\Serializer\Subscriber;
 
+use Draw\Component\OpenApi\Schema\BaseParameter;
 use Draw\Component\OpenApi\Schema\VendorExtensionSupportInterface;
 use JMS\Serializer\EventDispatcher\Events;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
@@ -26,10 +27,10 @@ class OpenApiSubscriber implements EventSubscriberInterface
     {
         $object = $event->getObject();
         if (\is_object($object) &&
-            is_subclass_of($object, 'Draw\Component\OpenApi\Schema\BaseParameter') &&
-            \get_class($object) !== $event->getType()['name']
+            is_subclass_of($object, BaseParameter::class) &&
+            $object::class !== $event->getType()['name']
         ) {
-            $event->setType(\get_class($event->getObject()));
+            $event->setType($event->getObject()::class);
         }
     }
 
@@ -59,7 +60,7 @@ class OpenApiSubscriber implements EventSubscriberInterface
                 continue;
             }
 
-            if (0 !== strpos($key, 'x-')) {
+            if (!str_starts_with($key, 'x-')) {
                 continue;
             }
 

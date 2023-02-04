@@ -25,8 +25,6 @@ class OpenApi
 {
     private SerializerInterface $serializer;
 
-    private ?EventDispatcherInterface $eventDispatcher;
-
     /**
      * @var iterable|ExtractorInterface[]
      */
@@ -40,7 +38,7 @@ class OpenApi
         ?iterable $extractors = null,
         ?SerializerInterface $serializer = null,
         ?SchemaCleaner $schemaCleaner = null,
-        ?EventDispatcherInterface $eventDispatcher = null
+        private ?EventDispatcherInterface $eventDispatcher = null
     ) {
         if (null === $serializer) {
             $serializer = SerializerBuilder::create()
@@ -59,7 +57,6 @@ class OpenApi
 
         $this->serializer = $serializer;
         $this->schemaCleaner = $schemaCleaner ?: new SchemaCleaner();
-        $this->eventDispatcher = $eventDispatcher;
         $this->extractors = $extractors ?: [new JsonRootSchemaExtractor($this->serializer)];
     }
 
@@ -104,12 +101,11 @@ class OpenApi
         }
     }
 
-    /**
-     * @param mixed $source
-     * @param mixed $target
-     */
-    public function extract($source, $target = null, ?ExtractionContextInterface $extractionContext = null)
-    {
+    public function extract(
+        mixed $source,
+        mixed $target = null,
+        ?ExtractionContextInterface $extractionContext = null
+    ) {
         if (null === $target) {
             $target = new Schema();
         }
@@ -122,7 +118,7 @@ class OpenApi
             if ($extractor->canExtract($source, $target, $extractionContext)) {
                 try {
                     $extractor->extract($source, $target, $extractionContext);
-                } catch (ExtractionCompletedException $error) {
+                } catch (ExtractionCompletedException) {
                     break;
                 }
             }

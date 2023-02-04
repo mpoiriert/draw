@@ -60,14 +60,9 @@ class AwsToolKitIntegration implements IntegrationInterface
     {
         $node
             ->validate()
-                ->ifTrue(function (array $config) {
-                    switch (true) {
-                        case !$config['newest_instance_role_check']['enabled']:
-                        case null !== $config['imds_version']:
-                            return false;
-                    }
-
-                    return true;
+                ->ifTrue(fn (array $config) => match (true) {
+                    !$config['newest_instance_role_check']['enabled'], null !== $config['imds_version'] => false,
+                    default => true,
                 })
                 ->thenInvalid('You must define a imds_version since you enabled newest_instance_role_check')
             ->end()

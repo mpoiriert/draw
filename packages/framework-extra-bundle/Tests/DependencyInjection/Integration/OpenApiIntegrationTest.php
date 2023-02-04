@@ -86,7 +86,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 'definitionAliases' => [
                 ],
                 'classNamingFilters' => [
-                    0 => 'Draw\\Component\\OpenApi\\Naming\\AliasesClassNamingFilter',
+                    0 => AliasesClassNamingFilter::class,
                 ],
                 'headers' => [],
             ],

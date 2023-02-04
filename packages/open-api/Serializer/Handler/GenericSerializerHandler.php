@@ -25,6 +25,6 @@ class GenericSerializerHandler implements EventSubscriberInterface
             return;
         }
 
-        $event->setType(\get_class($event->getObject()));
+        $event->setType($event->getObject()::class);
     }
 }

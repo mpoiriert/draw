@@ -7,14 +7,8 @@ use Firebase\JWT\Key;
 
 class JwtEncoder
 {
-    private string $algorithm;
-
-    private string $key;
-
-    public function __construct(string $key, string $algorithm)
+    public function __construct(private string $key, private string $algorithm)
     {
-        $this->algorithm = $algorithm;
-        $this->key = $key;
     }
 
     public function encode(array $payload, ?\DateTimeInterface $expiration = null): string

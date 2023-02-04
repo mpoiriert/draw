@@ -6,10 +6,7 @@ use Draw\Component\Core\FilterExpression\Expression\Expression;
 
 class Query
 {
-    /**
-     * @var Expression
-     */
-    private $expression = null;
+    private ?Expression $expression = null;
 
     public function where(Expression $expression): self
     {

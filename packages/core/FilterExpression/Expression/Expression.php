@@ -34,7 +34,7 @@ abstract class Expression
             $expressions[] = static::validate($path, new EqualTo($value));
         }
 
-        return \call_user_func_array([self::class, 'andX'], $expressions);
+        return \call_user_func_array(static::andX(...), $expressions);
     }
 
     public function evaluateBy(): string

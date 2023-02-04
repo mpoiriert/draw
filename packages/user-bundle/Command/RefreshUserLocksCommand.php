@@ -12,16 +12,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class RefreshUserLocksCommand extends Command
 {
-    private EntityRepository $entityRepository;
-
-    private MessageBusInterface $messageBus;
-
     public function __construct(
-        MessageBusInterface $messageBus,
-        EntityRepository $drawUserEntityRepository
+        private MessageBusInterface $messageBus,
+        private EntityRepository $drawUserEntityRepository
     ) {
-        $this->messageBus = $messageBus;
-        $this->entityRepository = $drawUserEntityRepository;
         parent::__construct();
     }
 
@@ -41,9 +35,9 @@ class RefreshUserLocksCommand extends Command
 
         $io->section('Sending [RefreshUserLockMessage] messages');
 
-        $progressBar = $io->createProgressBar($this->entityRepository->count([]));
+        $progressBar = $io->createProgressBar($this->drawUserEntityRepository->count([]));
 
-        $rows = $this->entityRepository->createQueryBuilder('user')
+        $rows = $this->drawUserEntityRepository->createQueryBuilder('user')
             ->select('user.id')
             ->getQuery()
             ->execute();

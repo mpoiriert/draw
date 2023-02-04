@@ -75,7 +75,7 @@ class SuperGlobalsExtractor
                     continue;
                 }
 
-                if (false === strpos($oneCookie, '=')) {
+                if (!str_contains($oneCookie, '=')) {
                     continue;
                 }
 
@@ -96,12 +96,12 @@ class SuperGlobalsExtractor
      */
     public function mergeDataForRequest(array $get, array $post, array $cookie): array
     {
-        $requestOrder = preg_replace('#[^cgp]#', '', strtolower($this->requestOrder)) ?: 'gp';
+        $requestOrder = preg_replace('#[^cgp]#', '', strtolower((string) $this->requestOrder)) ?: 'gp';
         $data = ['g' => $get, 'p' => $post, 'c' => $cookie];
 
         $request = [];
         foreach (str_split($requestOrder) as $order) {
-            $request = array_merge($request, $data[$order]);
+            $request = [...$request, ...$data[$order]];
         }
 
         return $request;

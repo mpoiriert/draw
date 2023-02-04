@@ -10,13 +10,10 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * @var IntegrationInterface[]
+     * @param IntegrationInterface[] $integrations
      */
-    private array $integrations;
-
-    public function __construct(array $integrations = [])
+    public function __construct(private array $integrations = [])
     {
-        $this->integrations = $integrations;
     }
 
     public function getConfigTreeBuilder(): TreeBuilder

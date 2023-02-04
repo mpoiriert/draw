@@ -349,14 +349,14 @@ class MessengerIntegrationTest extends IntegrationTestCase
                     ),
                 ]
             ),
-            array_merge(
-                $defaultAliases,
-                [
+            [
+                ...$defaultAliases,
+                ...[
                     BasicEnvelopeFactory::class => [
                         EnvelopeFactoryInterface::class,
                     ],
-                ]
-            ),
+                ],
+            ],
         ];
     }
 

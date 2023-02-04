@@ -13,11 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ParamConverterExtractor implements ExtractorInterface
 {
-    private Reader $reader;
-
-    public function __construct(Reader $reader)
+    public function __construct(private Reader $reader)
     {
-        $this->reader = $reader;
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool

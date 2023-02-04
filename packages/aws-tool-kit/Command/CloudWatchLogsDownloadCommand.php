@@ -11,11 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CloudWatchLogsDownloadCommand extends Command
 {
-    private ?CloudWatchLogsClient $cloudWatchClient;
-
-    public function __construct(?CloudWatchLogsClient $cloudWatchClient)
+    public function __construct(private ?CloudWatchLogsClient $cloudWatchClient)
     {
-        $this->cloudWatchClient = $cloudWatchClient;
         parent::__construct();
     }
 

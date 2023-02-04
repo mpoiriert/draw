@@ -162,10 +162,8 @@ class CookieTest extends TestCase
 
     /**
      * @dataProvider cookieValidateProvider
-     *
-     * @param bool|string $result
      */
-    public function testValidatesCookies(string $name, string $value, string $domain, $result): void
+    public function testValidatesCookies(string $name, string $value, string $domain, bool|string $result): void
     {
         $cookie = new Cookie([
             'Name' => $name,
@@ -183,7 +181,7 @@ class CookieTest extends TestCase
 
     public function testConvertsToString(): void
     {
-        $t = 1382916008;
+        $t = 1_382_916_008;
         $cookie = new Cookie([
             'Name' => 'test',
             'Value' => '123',
@@ -363,10 +361,8 @@ class CookieTest extends TestCase
 
     /**
      * @dataProvider cookieParserDataProvider
-     *
-     * @param string|array $cookie
      */
-    public function testParseCookie($cookie, array $parsed): void
+    public function testParseCookie(string|array $cookie, array $parsed): void
     {
         foreach ((array) $cookie as $v) {
             $c = Cookie::fromString($v);
@@ -374,7 +370,7 @@ class CookieTest extends TestCase
 
             if (isset($p['Expires'])) {
                 // Remove expires values from the assertion if they are relatively equal
-                $parsedExpires = \is_int($parsed['Expires']) ? $parsed['Expires'] : strtotime($parsed['Expires']);
+                $parsedExpires = \is_int($parsed['Expires']) ? $parsed['Expires'] : strtotime((string) $parsed['Expires']);
                 if (abs($p['Expires'] - $parsedExpires) < 600) {
                     unset($p['Expires'], $parsed['Expires']);
                 }

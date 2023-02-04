@@ -10,11 +10,8 @@ use JMS\Serializer\SerializerInterface;
 
 class JsonRootSchemaExtractor implements ExtractorInterface
 {
-    private SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(private SerializerInterface $serializer)
     {
-        $this->serializer = $serializer;
     }
 
     public static function getDefaultPriority(): int
@@ -67,7 +64,7 @@ class JsonRootSchemaExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        $result = $this->serializer->deserialize($source, \get_class($target), 'json');
+        $result = $this->serializer->deserialize($source, $target::class, 'json');
 
         foreach ($result as $key => $value) {
             $target->{$key} = $value;

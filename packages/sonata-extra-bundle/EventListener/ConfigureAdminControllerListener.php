@@ -15,8 +15,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 final class ConfigureAdminControllerListener implements EventSubscriberInterface
 {
-    private AdminFetcherInterface $adminFetcher;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -24,9 +22,8 @@ final class ConfigureAdminControllerListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(AdminFetcherInterface $adminFetcher)
+    public function __construct(private AdminFetcherInterface $adminFetcher)
     {
-        $this->adminFetcher = $adminFetcher;
     }
 
     public function onKernelController(ControllerEvent $event): void

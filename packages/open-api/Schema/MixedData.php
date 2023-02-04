@@ -4,22 +4,11 @@ namespace Draw\Component\OpenApi\Schema;
 
 final class MixedData
 {
-    /**
-     * @var mixed
-     */
-    public $data;
-
-    public function __construct($data)
+    public function __construct(public mixed $data)
     {
-        $this->data = $data;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return array|self|null
-     */
-    public static function convert($value, bool $valueIsArray = false)
+    public static function convert(mixed $value, bool $valueIsArray = false): array|self|null
     {
         if (null === $value) {
             return null;

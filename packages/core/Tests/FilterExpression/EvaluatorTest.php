@@ -76,9 +76,11 @@ class EvaluatorTest extends TestCase
     {
         static::assertCount(
             $expectedCount,
-            $this->object->execute(
-                $query,
-                self::SAMPLE_DATA
+            iterator_to_array(
+                $this->object->execute(
+                    $query,
+                    self::SAMPLE_DATA
+                )
             )
         );
     }

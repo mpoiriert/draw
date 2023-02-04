@@ -85,7 +85,7 @@ trait IntegrationTrait
         }
 
         foreach ($container->getDefinitions() as $id => $definition) {
-            if (0 !== strpos($id, $classOrNamespace)) {
+            if (!str_starts_with($id, $classOrNamespace)) {
                 continue;
             }
 

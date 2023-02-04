@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class CookieClientObserver extends ClientObserver
 {
-    private $cookieJar;
+    private CookieJar $cookieJar;
 
     public function __construct()
     {

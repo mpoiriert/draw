@@ -181,7 +181,7 @@ class DeserializeBodyParamConverterTest extends TestCase
             ['id' => 'id'],
             ['id' => $id = uniqid('id-')],
             ['name' => $name = uniqid('name'), 'id' => $id],
-            json_encode(['name' => $name]),
+            json_encode(['name' => $name], \JSON_THROW_ON_ERROR),
         ];
 
         yield 'empty-body' => [
@@ -222,7 +222,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         $this->serializer
             ->expects(static::once())
             ->method('deserialize')
-            ->with(json_encode($expectedData))
+            ->with(json_encode($expectedData, \JSON_THROW_ON_ERROR))
             ->willReturn((object) []);
 
         $this->object->apply($request, $paramConverter);

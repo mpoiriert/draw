@@ -12,14 +12,8 @@ class VersionLinkDocumentationExtractor implements ExtractorInterface
 {
     private const VENDOR_DATA_FLAG = 'X-DrawOpenApi-VersionLinkDocumentation';
 
-    private array $versions;
-
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(array $versions, UrlGeneratorInterface $urlGenerator)
+    public function __construct(private array $versions, private UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
-        $this->versions = $versions;
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool

@@ -63,7 +63,7 @@ class OperationExtractor implements ExtractorInterface
 
         try {
             $docBlock = $this->createDocBlock($source);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return;
         }
 

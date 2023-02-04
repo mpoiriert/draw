@@ -13,12 +13,6 @@ use Symfony\Component\Security\Core\Security;
 
 class TwoFactorAuthenticationListener implements EventSubscriberInterface
 {
-    private string $enableRoute;
-
-    private Security $security;
-
-    private UrlGeneratorInterface $urlGenerator;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -30,13 +24,10 @@ class TwoFactorAuthenticationListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        UrlGeneratorInterface $urlGenerator,
-        Security $security,
-        string $enableRoute = 'admin_app_user_enable-2fa'
+        private UrlGeneratorInterface $urlGenerator,
+        private Security $security,
+        private string $enableRoute = 'admin_app_user_enable-2fa'
     ) {
-        $this->security = $security;
-        $this->urlGenerator = $urlGenerator;
-        $this->enableRoute = $enableRoute;
     }
 
     public function checkNeedToEnableTwoFactorAuthentication(UserRequestInterceptionEvent $event): void

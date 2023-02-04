@@ -9,17 +9,14 @@ class SqlMetricBuilder implements MetricBuilderInterface
     /**
      * @var SqlLog[]
      */
-    private $logs = [];
+    private array $logs = [];
 
     public function addLog(SqlLog $sqlLog): void
     {
         $this->logs[] = $sqlLog;
     }
 
-    /**
-     * @return SqlMetric
-     */
-    public function build()
+    public function build(): SqlMetric
     {
         $queries = array_map(
             fn (SqlLog $log) => $log->query,

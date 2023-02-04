@@ -9,11 +9,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RedirectToRouteMessageHandler implements MessageHandlerInterface
 {
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(RedirectToRouteMessageInterface $message): RedirectResponse

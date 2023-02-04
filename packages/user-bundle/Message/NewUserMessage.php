@@ -4,23 +4,11 @@ namespace Draw\Bundle\UserBundle\Message;
 
 class NewUserMessage
 {
-    /**
-     * @var mixed
-     */
-    private $userId;
-
-    /**
-     * @param mixed $userId
-     */
-    public function __construct($userId = null)
+    public function __construct(private string|int|null $userId = null)
     {
-        $this->userId = $userId;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUserId()
+    public function getUserId(): string|int|null
     {
         return $this->userId;
     }

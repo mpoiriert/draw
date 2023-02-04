@@ -10,14 +10,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class AgainstJsonFileTester
 {
-    private string $fullJsonFilePath;
-
-    private array $propertyPathsCheck;
-
-    public function __construct(string $fullJsonFilePath, array $propertyPathsCheck = [])
+    public function __construct(private string $fullJsonFilePath, private array $propertyPathsCheck = [])
     {
-        $this->fullJsonFilePath = $fullJsonFilePath;
-        $this->propertyPathsCheck = $propertyPathsCheck;
     }
 
     public function __invoke(DataTester $tester): void
@@ -29,7 +23,7 @@ class AgainstJsonFileTester
             );
         }
 
-        $data = json_decode(file_get_contents($this->fullJsonFilePath));
+        $data = json_decode(file_get_contents($this->fullJsonFilePath), null, 512, \JSON_THROW_ON_ERROR);
 
         if ($this->propertyPathsCheck) {
             $accessor = PropertyAccess::createPropertyAccessor();

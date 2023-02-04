@@ -9,15 +9,12 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessag
 
 class TemporaryUnlockedMessage implements LifeCycleAwareMessageInterface
 {
-    private bool $wasLocked;
-
     private \DateTimeImmutable $until;
 
     private ?string $userIdentifier = null;
 
-    public function __construct(bool $wasLocked, \DateTimeInterface $until)
+    public function __construct(private bool $wasLocked, \DateTimeInterface $until)
     {
-        $this->wasLocked = $wasLocked;
         $this->until = DateTimeUtils::toDateTimeImmutable($until);
     }
 

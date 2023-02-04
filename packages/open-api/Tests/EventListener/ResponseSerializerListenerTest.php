@@ -197,7 +197,7 @@ class ResponseSerializerListenerTest extends TestCase
             ->expects(static::once())
             ->method('serialize')
             ->with($result, 'json', $context)
-            ->willReturn($jsonResult = json_encode(['key' => uniqid('value-')]));
+            ->willReturn($jsonResult = json_encode(['key' => uniqid('value-')], \JSON_THROW_ON_ERROR));
 
         $this->object->onKernelView($event);
 

@@ -12,13 +12,14 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class GridExtension extends AbstractAdminExtension
 {
-    public const VIRTUAL_FIELD_TYPES = [ListMapper::TYPE_ACTIONS, ListMapper::TYPE_BATCH, ListMapper::TYPE_SELECT];
+    final public const VIRTUAL_FIELD_TYPES = [
+        ListMapper::TYPE_ACTIONS,
+        ListMapper::TYPE_BATCH,
+        ListMapper::TYPE_SELECT,
+    ];
 
-    private TypeGuesserInterface $guesser;
-
-    public function __construct(TypeGuesserInterface $guesser)
+    public function __construct(private TypeGuesserInterface $guesser)
     {
-        $this->guesser = $guesser;
     }
 
     public function configureShowFields(ShowMapper $show): void

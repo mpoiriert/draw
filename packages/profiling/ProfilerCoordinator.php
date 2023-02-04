@@ -7,9 +7,9 @@ class ProfilerCoordinator
     /**
      * @var ProfilerInterface[]
      */
-    private $profilers = [];
+    private array $profilers = [];
 
-    private $started = false;
+    private bool $started = false;
 
     public function __construct(iterable $profilers = [])
     {

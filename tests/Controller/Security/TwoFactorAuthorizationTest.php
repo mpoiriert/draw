@@ -10,12 +10,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class TwoFactorAuthorizationTest extends TestCase
 {
-    public const ADMIN_URL = '/admin';
+    final public const ADMIN_URL = '/admin';
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private static $entityManager;
+    private static EntityManagerInterface $entityManager;
 
     private static User $user;
 

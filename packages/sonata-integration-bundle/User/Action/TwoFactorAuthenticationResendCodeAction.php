@@ -10,16 +10,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class TwoFactorAuthenticationResendCodeAction
 {
-    private CodeGeneratorInterface $codeGenerator;
-
-    private UrlGeneratorInterface $urlGenerator;
-
     public function __construct(
-        CodeGeneratorInterface $codeGenerator,
-        UrlGeneratorInterface $urlGenerator
+        private CodeGeneratorInterface $codeGenerator,
+        private UrlGeneratorInterface $urlGenerator
     ) {
-        $this->codeGenerator = $codeGenerator;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function __invoke(UserInterface $user): RedirectResponse

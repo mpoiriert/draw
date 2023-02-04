@@ -12,11 +12,8 @@ use Draw\Component\OpenApi\SchemaCleaner;
 
 class InheritanceExtractor implements ExtractorInterface
 {
-    private ManagerRegistry $managerRegistry;
-
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(private ManagerRegistry $managerRegistry)
     {
-        $this->managerRegistry = $managerRegistry;
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool

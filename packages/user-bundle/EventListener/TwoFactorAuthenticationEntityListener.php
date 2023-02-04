@@ -7,11 +7,8 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuth
 
 class TwoFactorAuthenticationEntityListener
 {
-    private TwoFactorAuthenticationEnforcerInterface $twoFactorAuthenticationEnforcer;
-
-    public function __construct(TwoFactorAuthenticationEnforcerInterface $twoFactorAuthenticationEnforcer)
+    public function __construct(private TwoFactorAuthenticationEnforcerInterface $twoFactorAuthenticationEnforcer)
     {
-        $this->twoFactorAuthenticationEnforcer = $twoFactorAuthenticationEnforcer;
     }
 
     public function preUpdate(TwoFactorAuthenticationUserInterface $user): void

@@ -11,14 +11,10 @@ use Metadata\MetadataFactoryInterface;
 
 class DoctrineObjectReferenceSchemaHandler implements TypeToSchemaHandlerInterface
 {
-    private ManagerRegistry $managerRegistry;
-
-    private MetadataFactoryInterface $metadataFactory;
-
-    public function __construct(ManagerRegistry $managerRegistry, MetadataFactoryInterface $factory)
-    {
-        $this->managerRegistry = $managerRegistry;
-        $this->metadataFactory = $factory;
+    public function __construct(
+        private ManagerRegistry $managerRegistry,
+        private MetadataFactoryInterface $metadataFactory
+    ) {
     }
 
     public function extractSchemaFromType(

@@ -10,8 +10,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class RequestQueryParameterFetcherListener implements EventSubscriberInterface
 {
-    private Reader $reader;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -19,9 +17,8 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(Reader $reader)
+    public function __construct(private Reader $reader)
     {
-        $this->reader = $reader;
     }
 
     public function onKernelController(ControllerEvent $event): void
@@ -38,7 +35,7 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
         }
 
         $annotations = $this->reader->getMethodAnnotations(
-            new \ReflectionMethod(\get_class($controller[0]), $controller[1])
+            new \ReflectionMethod($controller[0]::class, $controller[1])
         );
 
         $parameters = [];
@@ -70,23 +67,14 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
                         $value = $request->query->get($name) + 0;
                         break;
                     case 'array':
-                        switch ($annotation->collectionFormat) {
-                            case 'csv':
-                                $separator = ',';
-                                break;
-                            case 'ssv':
-                                $separator = ' ';
-                                break;
-                            case 'tsv':
-                                $separator = "\t";
-                                break;
-                            case 'pipes':
-                                $separator = '|';
-                                break;
-                            case 'multi':
-                            default:
-                                throw new \RuntimeException(sprintf('Unsupported collection format [%s]', $annotation->collectionFormat));
-                        }
+                        $separator = match ($annotation->collectionFormat) {
+                            'csv' => ',',
+                            'ssv' => ' ',
+                            'tsv' => "\t",
+                            'pipes' => '|',
+                            // no break
+                            default => throw new \RuntimeException(sprintf('Unsupported collection format [%s]', $annotation->collectionFormat)),
+                        };
                         $value = explode($separator, (string) $request->query->get($name));
                         break;
                     default:

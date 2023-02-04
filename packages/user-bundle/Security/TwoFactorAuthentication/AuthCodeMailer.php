@@ -9,11 +9,8 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class AuthCodeMailer implements AuthCodeMailerInterface
 {
-    private MailerInterface $mailer;
-
-    public function __construct(MailerInterface $mailer)
+    public function __construct(private MailerInterface $mailer)
     {
-        $this->mailer = $mailer;
     }
 
     public function sendAuthCode(TwoFactorInterface $user): void

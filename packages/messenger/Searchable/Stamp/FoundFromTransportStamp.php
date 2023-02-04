@@ -6,11 +6,8 @@ use Symfony\Component\Messenger\Stamp\StampInterface;
 
 class FoundFromTransportStamp implements StampInterface
 {
-    private string $transportName;
-
-    public function __construct(string $transportName)
+    public function __construct(private string $transportName)
     {
-        $this->transportName = $transportName;
     }
 
     public function getTransportName(): string

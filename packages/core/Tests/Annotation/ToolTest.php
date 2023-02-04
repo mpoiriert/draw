@@ -15,7 +15,7 @@ class ToolTest extends TestCase
     public function testIgnoreNamespacesBaseOnClassExistenceClassExists(): void
     {
         $namespaces = [$namespace = uniqid('namespaces-')];
-        Tool::ignoreNamespacesBaseOnClassExistence(__CLASS__, $namespaces);
+        Tool::ignoreNamespacesBaseOnClassExistence(self::class, $namespaces);
 
         static::assertArrayNotHasKey(
             $namespace,

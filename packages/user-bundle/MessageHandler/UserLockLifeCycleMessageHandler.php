@@ -17,20 +17,14 @@ use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 class UserLockLifeCycleMessageHandler implements MessageSubscriberInterface
 {
-    private EntityManagerInterface $entityManager;
-
-    private MessageBusInterface $messageBus;
-
     public static function getHandledMessages(): iterable
     {
         yield NewUserLockMessage::class => 'handleNewUserLockMessage';
         yield UserLockDelayedActivationMessage::class => 'handleUserLockDelayedActivationMessage';
     }
 
-    public function __construct(MessageBusInterface $messageBus, EntityManagerInterface $entityManager)
+    public function __construct(private MessageBusInterface $messageBus, private EntityManagerInterface $entityManager)
     {
-        $this->messageBus = $messageBus;
-        $this->entityManager = $entityManager;
     }
 
     public function handleNewUserLockMessage(NewUserLockMessage $message): void

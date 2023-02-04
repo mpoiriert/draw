@@ -16,7 +16,7 @@ class InFilter extends Filter
             return;
         }
 
-        $value = trim($value);
+        $value = trim((string) $value);
 
         if (0 === mb_strlen($value)) {
             return;

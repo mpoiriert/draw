@@ -6,12 +6,9 @@ use Draw\Component\Profiling\ProfilerInterface;
 
 abstract class SqlProfiler implements ProfilerInterface
 {
-    public const PROFILER_TYPE = 'sql';
+    final public const PROFILER_TYPE = 'sql';
 
-    /**
-     * @var SqlMetricBuilder
-     */
-    protected $metricBuilder;
+    protected ?SqlMetricBuilder $metricBuilder = null;
 
     public function getMetricBuilder(): SqlMetricBuilder
     {
@@ -22,10 +19,7 @@ abstract class SqlProfiler implements ProfilerInterface
         return $this->metricBuilder;
     }
 
-    /**
-     * @return SqlMetric
-     */
-    public function stop()
+    public function stop(): SqlMetric
     {
         return $this->getMetricBuilder()->build();
     }

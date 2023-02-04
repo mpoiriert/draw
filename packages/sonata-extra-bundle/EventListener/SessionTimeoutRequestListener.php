@@ -12,12 +12,6 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
 {
     private const LAST_USED_SESSION_ATTRIBUTE = 'draw_sonata_integration_last_used';
 
-    private int $delay;
-
-    private Security $security;
-
-    private UrlGeneratorInterface $urlGenerator;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -31,11 +25,11 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(Security $security, UrlGeneratorInterface $urlGenerator, int $delay = 3600)
-    {
-        $this->delay = $delay;
-        $this->security = $security;
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(
+        private Security $security,
+        private UrlGeneratorInterface $urlGenerator,
+        private int $delay = 3600
+    ) {
     }
 
     public function onKernelRequestInvalidate(RequestEvent $event): void
@@ -86,7 +80,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
             return;
         }
 
-        if (0 !== strpos($response->headers->get('Content-type', ''), 'text/html')) {
+        if (!str_starts_with($response->headers->get('Content-type', ''), 'text/html')) {
             return;
         }
 
@@ -94,11 +88,11 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
             return;
         }
 
-        if (false === strpos($content, '<meta data-sonata-admin')) {
+        if (!str_contains($content, '<meta data-sonata-admin')) {
             return;
         }
 
-        if (false === strpos($content, '<title>')) {
+        if (!str_contains($content, '<title>')) {
             return;
         }
 

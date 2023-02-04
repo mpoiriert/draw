@@ -11,36 +11,28 @@ use JMS\Serializer\Annotation as Serializer;
 class Address
 {
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="street", type="string", options={"default": ""})
      * @Serializer\Type("string")
      */
-    private $street = '';
+    private ?string $street = '';
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="postal_code", type="string", options={"default": ""})
      * @Serializer\Type("string")
      */
-    private $postalCode = '';
+    private ?string $postalCode = '';
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="city", type="string", options={"default": ""})
      * @Serializer\Type("string")
      */
-    private $city = '';
+    private ?string $city = '';
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="country", type="string", options={"default": ""})
      * @Serializer\Type("string")
      */
-    private $country = '';
+    private ?string $country = '';
 
     public function getStreet(): ?string
     {

@@ -16,11 +16,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class DeserializeBodyParamConverter implements ParamConverterInterface
 {
-    private SerializerInterface $serializer;
-
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(private SerializerInterface $serializer)
     {
-        $this->serializer = $serializer;
     }
 
     public function supports(ParamConverter $configuration): bool
@@ -45,20 +42,23 @@ class DeserializeBodyParamConverter implements ParamConverterInterface
     {
         $contentType = $request->headers->get('Content-Type');
         switch (true) {
-            case 0 === strpos($contentType, 'application/json'):
-                // This allow a empty body to be consider as '{}'
-                if (null === ($requestData = json_decode($request->getContent(), true))) {
+            case str_starts_with($contentType, 'application/json'):
+                // This allows an empty body to be consider as '{}'
+                try {
+                    $requestData = json_decode($request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+                } catch (\JsonException $e) {
                     $requestData = [];
                 }
+
                 break;
-            case 0 === strpos($contentType, 'multipart/form-data'):
+            case str_starts_with($contentType, 'multipart/form-data'):
                 $requestData = $request->request->all();
                 break;
             default:
                 throw new UnsupportedMediaTypeHttpException('Unsupported request Content-Type ['.$contentType.']');
         }
 
-        $result = json_encode($this->assignPropertiesFromAttribute($request, $configuration, $requestData));
+        $result = json_encode($this->assignPropertiesFromAttribute($request, $configuration, $requestData), \JSON_THROW_ON_ERROR);
 
         return '[]' === $result ? '{}' : $result;
     }

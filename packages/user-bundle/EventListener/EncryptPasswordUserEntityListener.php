@@ -9,15 +9,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 // todo check why we have this with a $autoGeneratePassword parameter, should it not be always true ?
 class EncryptPasswordUserEntityListener
 {
-    private UserPasswordHasherInterface $passwordHasher;
-    private bool $autoGeneratePassword;
-
     public function __construct(
-        UserPasswordHasherInterface $passwordHasher,
-        bool $autoGeneratePassword = true
+        private UserPasswordHasherInterface $passwordHasher,
+        private bool $autoGeneratePassword = true
     ) {
-        $this->passwordHasher = $passwordHasher;
-        $this->autoGeneratePassword = $autoGeneratePassword;
     }
 
     public function preUpdate(SecurityUserInterface $user): void

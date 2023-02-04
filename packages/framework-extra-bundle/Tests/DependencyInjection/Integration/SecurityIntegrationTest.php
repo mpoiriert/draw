@@ -83,9 +83,9 @@ class SecurityIntegrationTest extends IntegrationTestCase
                     ],
                 ],
             ],
-            array_merge(
-                $defaultServices,
-                [
+            [
+                ...$defaultServices,
+                ...[
                     new ServiceConfiguration(
                         'draw.security.core.event_listener.system_console_authenticator_listener',
                         [
@@ -98,7 +98,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         }
                     ),
                 ],
-            ),
+            ],
         ];
 
         yield 'jwt' => [
@@ -111,9 +111,9 @@ class SecurityIntegrationTest extends IntegrationTestCase
                     ],
                 ],
             ],
-            array_merge(
-                $defaultServices,
-                [
+            [
+                ...$defaultServices,
+                ...[
                     new ServiceConfiguration(
                         'draw.security.jwt.jwt_encoder',
                         [
@@ -132,7 +132,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         }
                     ),
                 ],
-            ),
+            ],
         ];
 
         yield 'messenger_authentication' => [
@@ -143,9 +143,9 @@ class SecurityIntegrationTest extends IntegrationTestCase
                     ],
                 ],
             ],
-            array_merge(
-                $defaultServices,
-                [
+            [
+                ...$defaultServices,
+                ...[
                     new ServiceConfiguration(
                         'draw.security.core.event_listener.system_messenger_authenticator_listener',
                         [
@@ -153,7 +153,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         ],
                     ),
                 ],
-            ),
+            ],
         ];
 
         yield 'system_authentication' => [
@@ -164,9 +164,9 @@ class SecurityIntegrationTest extends IntegrationTestCase
                     ],
                 ],
             ],
-            array_merge(
-                $defaultServices,
-                [
+            [
+                ...$defaultServices,
+                ...[
                     new ServiceConfiguration(
                         'draw.security.core.authentication.system_authenticator',
                         [
@@ -180,7 +180,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         }
                     ),
                 ],
-            ),
+            ],
             [
                 SystemAuthenticator::class => [
                     SystemAuthenticatorInterface::class,
@@ -196,9 +196,9 @@ class SecurityIntegrationTest extends IntegrationTestCase
                     ],
                 ],
             ],
-            array_merge(
-                $defaultServices,
-                [
+            [
+                ...$defaultServices,
+                ...[
                     new ServiceConfiguration(
                         'draw.security.voter.abstain_role_hierarchy_voter',
                         [
@@ -206,7 +206,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         ],
                     ),
                 ],
-            ),
+            ],
             [
                 AbstainRoleHierarchyVoter::class => [
                     'security.access.role_hierarchy_voter',

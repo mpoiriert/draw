@@ -102,7 +102,7 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
             ->expects(static::once())
             ->method('getReachableRoleNames')
             ->with($roles)
-            ->willReturn(array_merge($roles, [$role = uniqid('ROLE_')]));
+            ->willReturn([...$roles, ...[$role = uniqid('ROLE_')]]);
 
         $badge = new RoleRestrictedBadge($role);
 

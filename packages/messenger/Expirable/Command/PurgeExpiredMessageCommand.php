@@ -13,14 +13,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PurgeExpiredMessageCommand extends Command
 {
-    public const DEFAULT_DELAY = '-1 month';
+    final public const DEFAULT_DELAY = '-1 month';
 
-    private TransportRepository $transportRepository;
-
-    public function __construct(TransportRepository $transportRepository)
+    public function __construct(private TransportRepository $transportRepository)
     {
-        $this->transportRepository = $transportRepository;
-
         parent::__construct();
     }
 

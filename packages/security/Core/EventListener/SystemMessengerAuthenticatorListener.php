@@ -9,10 +9,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class SystemMessengerAuthenticatorListener implements EventSubscriberInterface
 {
-    private SystemAuthenticatorInterface $systemAuthenticator;
-
-    private TokenStorageInterface $tokenStorage;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -21,11 +17,9 @@ class SystemMessengerAuthenticatorListener implements EventSubscriberInterface
     }
 
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        SystemAuthenticatorInterface $systemAuthenticator
+        private TokenStorageInterface $tokenStorage,
+        private SystemAuthenticatorInterface $systemAuthenticator
     ) {
-        $this->systemAuthenticator = $systemAuthenticator;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function connectSystem(): void

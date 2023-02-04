@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-abstract class BaseObject
+abstract class BaseObject implements \Stringable
 {
     /**
      * @ORM\Id

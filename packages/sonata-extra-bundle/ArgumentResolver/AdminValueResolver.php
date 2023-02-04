@@ -15,11 +15,8 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
  */
 final class AdminValueResolver implements ArgumentValueResolverInterface
 {
-    private AdminFetcherInterface $adminFetcher;
-
-    public function __construct(AdminFetcherInterface $adminFetcher)
+    public function __construct(private AdminFetcherInterface $adminFetcher)
     {
-        $this->adminFetcher = $adminFetcher;
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
@@ -36,7 +33,7 @@ final class AdminValueResolver implements ArgumentValueResolverInterface
 
         try {
             $admin = $this->adminFetcher->get($request);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return false;
         }
 

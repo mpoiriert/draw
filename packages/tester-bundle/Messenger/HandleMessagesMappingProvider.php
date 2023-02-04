@@ -4,9 +4,9 @@ namespace Draw\Bundle\TesterBundle\Messenger;
 
 class HandleMessagesMappingProvider
 {
-    private $mappingByMessage;
+    private array $mappingByMessage;
 
-    private $mappingByHandler = [];
+    private array $mappingByHandler = [];
 
     public function __construct(array $mapping = [])
     {

@@ -11,11 +11,11 @@ use Ramsey\Uuid\Uuid;
  * @ORM\Table(name="draw_user__user_lock")
  * @ORM\HasLifecycleCallbacks
  */
-class UserLock
+class UserLock implements \Stringable
 {
-    public const REASON_PASSWORD_EXPIRED = 'password-expired';
+    final public const REASON_PASSWORD_EXPIRED = 'password-expired';
 
-    public const REASON_MANUAL_LOCK = 'manual-lock';
+    final public const REASON_MANUAL_LOCK = 'manual-lock';
 
     /**
      * @ORM\Id
@@ -186,14 +186,10 @@ class UserLock
 
     public function isSame(self $userLock): bool
     {
-        switch (true) {
-            case $userLock->getReason() !== $this->getReason():
-            case !DateTimeUtils::isSameTimestamp($userLock->getLockOn(), $this->getLockOn()):
-            case !DateTimeUtils::isSameTimestamp($userLock->getExpiresAt(), $this->getExpiresAt()):
-                return false;
-        }
-
-        return true;
+        return match (true) {
+            $userLock->getReason() !== $this->getReason(), !DateTimeUtils::isSameTimestamp($userLock->getLockOn(), $this->getLockOn()), !DateTimeUtils::isSameTimestamp($userLock->getExpiresAt(), $this->getExpiresAt()) => false,
+            default => true,
+        };
     }
 
     public function copyInto(self $userLock): void

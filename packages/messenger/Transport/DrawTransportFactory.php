@@ -103,6 +103,6 @@ class DrawTransportFactory extends DoctrineTransportFactory
 
     public function supports(string $dsn, array $options): bool
     {
-        return 0 === strpos($dsn, 'draw://');
+        return str_starts_with($dsn, 'draw://');
     }
 }

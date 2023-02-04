@@ -101,7 +101,7 @@ class Foo {
 
         if ('(' === $nextToken->getContent()) {
             $type = 'method';
-        } elseif (0 === strpos($referencedName, '$')) {
+        } elseif (str_starts_with($referencedName, '$')) {
             $type = 'property';
         } else {
             $type = 'constant';

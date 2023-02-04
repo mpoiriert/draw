@@ -71,11 +71,11 @@ class InstallSandboxCommand extends Command
             // Remove the first directory (eg. "wysiwyg-editor-master") from the file path
             $explodedPath = explode('/', $filename, 2);
             $realFilePath = $explodedPath[1];
-            if (0 !== strpos($realFilePath, 'dist/')) {
+            if (!str_starts_with($realFilePath, 'dist/')) {
                 continue;
             }
 
-            if ('/' === substr($filename, -1)) {
+            if (str_ends_with($filename, '/')) {
                 $this->filesystem->mkdir($outputPath.'/'.$realFilePath);
             } else {
                 copy($zipFile, $outputPath.'/'.substr($realFilePath, \strlen('dist/')));

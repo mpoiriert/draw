@@ -11,11 +11,8 @@ use Symfony\Component\Messenger\Envelope;
 
 class NewUserMessage implements DoctrineReferenceAwareInterface, AsyncMessageInterface, StampingAwareInterface
 {
-    private ?User $user = null;
-
-    public function __construct(User $user)
+    public function __construct(private ?User $user)
     {
-        $this->user = $user;
     }
 
     public function getUser(): User

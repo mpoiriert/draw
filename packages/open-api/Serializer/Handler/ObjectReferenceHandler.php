@@ -12,8 +12,6 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class ObjectReferenceHandler implements SubscribingHandlerInterface
 {
-    private ManagerRegistry $managerRegistry;
-
     public static function getSubscribingMethods(): array
     {
         return [
@@ -32,9 +30,8 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
         ];
     }
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(private ManagerRegistry $managerRegistry)
     {
-        $this->managerRegistry = $managerRegistry;
     }
 
     public function serializeObjectReference(

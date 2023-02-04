@@ -12,36 +12,21 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ForgotPasswordEmailWriter implements EmailWriterInterface
 {
-    private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator;
-
-    /**
-     * @var EntityRepository<SecurityUserInterface>
-     */
-    private EntityRepository $userEntityRepository;
-
-    private string $resetPasswordRoute;
-
-    private string $inviteCreateAccountRoute;
-
-    private UrlGeneratorInterface $urlGenerator;
-
     public static function getForEmails(): array
     {
         return ['compose' => 255];
     }
 
+    /**
+     * @param EntityRepository<SecurityUserInterface> $drawUserEntityRepository
+     */
     public function __construct(
-        EntityRepository $drawUserEntityRepository,
-        ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
-        UrlGeneratorInterface $urlGenerator,
-        string $resetPasswordRoute,
-        string $inviteCreateAccountRoute
+        private EntityRepository $drawUserEntityRepository,
+        private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
+        private UrlGeneratorInterface $urlGenerator,
+        private string $resetPasswordRoute,
+        private string $inviteCreateAccountRoute
     ) {
-        $this->messageUrlGenerator = $messageUrlGenerator;
-        $this->urlGenerator = $urlGenerator;
-        $this->inviteCreateAccountRoute = $inviteCreateAccountRoute;
-        $this->resetPasswordRoute = $resetPasswordRoute;
-        $this->userEntityRepository = $drawUserEntityRepository;
     }
 
     public function compose(ForgotPasswordEmail $forgotPasswordEmail): void
@@ -50,7 +35,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
             ->to($email = $forgotPasswordEmail->getEmailAddress());
 
         /** @var ?SecurityUserInterface $user */
-        $user = $this->userEntityRepository->findOneBy(['email' => $email]);
+        $user = $this->drawUserEntityRepository->findOneBy(['email' => $email]);
 
         if (null === $user) {
             $forgotPasswordEmail

@@ -6,17 +6,14 @@ use Draw\Component\Core\FilterExpression\Evaluator;
 
 class CompositeExpressionEvaluator extends ExpressionEvaluator
 {
-    private Evaluator $evaluator;
-
-    public function __construct(Evaluator $evaluator)
+    public function __construct(private Evaluator $evaluator)
     {
-        $this->evaluator = $evaluator;
     }
 
     public function evaluate($data, Expression $expression): bool
     {
         if (!$expression instanceof CompositeExpression) {
-            throw new \InvalidArgumentException('Expression of class ['.\get_class($expression).'] is not supported');
+            throw new \InvalidArgumentException('Expression of class ['.$expression::class.'] is not supported');
         }
 
         $type = $expression->getType();

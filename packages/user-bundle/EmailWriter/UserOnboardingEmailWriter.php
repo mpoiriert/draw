@@ -9,21 +9,15 @@ use Draw\Component\Messenger\ManualTrigger\ManuallyTriggeredMessageUrlGenerator;
 
 class UserOnboardingEmailWriter implements EmailWriterInterface
 {
-    private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator;
-
-    private string $messageExpirationDelay;
-
     public static function getForEmails(): array
     {
         return ['compose' => 0];
     }
 
     public function __construct(
-        ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
-        string $messageExpirationDelay = '+ 7 days'
+        private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
+        private string $messageExpirationDelay = '+ 7 days'
     ) {
-        $this->messageExpirationDelay = $messageExpirationDelay;
-        $this->messageUrlGenerator = $messageUrlGenerator;
     }
 
     public function compose(UserOnboardingEmail $email): void

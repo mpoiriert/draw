@@ -9,11 +9,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class BasicEnvelopeFactory implements EnvelopeFactoryInterface
 {
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
+    public function __construct(private EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function createEnvelopes(MessageHolderInterface $messageHolder, array $messages): array

@@ -14,7 +14,7 @@ class AddCommandExecutionOptionsCompilerPass implements CompilerPassInterface
     {
         try {
             $container->findDefinition(CommandFlowListener::class);
-        } catch (ServiceNotFoundException $exception) {
+        } catch (ServiceNotFoundException) {
             return;
         }
 

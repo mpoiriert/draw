@@ -45,15 +45,9 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
 
     private function getGenericType(PropertyMetadata $item): ?string
     {
-        switch (true) {
-            case !isset($item->type['name']):
-            case \in_array($item->type['name'], ['array', 'ArrayCollection']):
-            case !class_exists($item->type['name']):
-            case !isset($item->type['params'][0]['name']):
-            case isset($item->type['params'][1]['name']):
-                return null;
-        }
-
-        return $item->type['params'][0]['name'];
+        return match (true) {
+            !isset($item->type['name']), \in_array($item->type['name'], ['array', 'ArrayCollection']), !class_exists($item->type['name']), !isset($item->type['params'][0]['name']), isset($item->type['params'][1]['name']) => null,
+            default => $item->type['params'][0]['name'],
+        };
     }
 }

@@ -9,9 +9,9 @@ use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 
 class SimpleObjectConstructor implements ObjectConstructorInterface
 {
-    public const ON_MISSING_NULL = 'null';
-    public const ON_MISSING_EXCEPTION = 'exception';
-    public const ON_MISSING_FALLBACK = 'fallback';
+    final public const ON_MISSING_NULL = 'null';
+    final public const ON_MISSING_EXCEPTION = 'exception';
+    final public const ON_MISSING_FALLBACK = 'fallback';
 
     public function construct(
         DeserializationVisitorInterface $visitor,

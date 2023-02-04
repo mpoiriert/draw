@@ -12,11 +12,6 @@ use phpDocumentor\Reflection\Types\Collection;
 
 class TypeSchemaExtractor implements ExtractorInterface
 {
-    /**
-     * @var array|ClassNamingFilterInterface[]
-     */
-    private array $classNamingFilters;
-
     private array $definitionHashes = [];
 
     private static ?TypeResolver $typeResolver = null;
@@ -26,9 +21,11 @@ class TypeSchemaExtractor implements ExtractorInterface
         return 128;
     }
 
-    public function __construct(array $classNamingFilters = [])
+    /**
+     * @param ClassNamingFilterInterface[] $classNamingFilters
+     */
+    public function __construct(private array $classNamingFilters = [])
     {
-        $this->classNamingFilters = $classNamingFilters;
     }
 
     /**
@@ -150,10 +147,7 @@ class TypeSchemaExtractor implements ExtractorInterface
         return array_search($hash, $this->definitionHashes[$modelName]);
     }
 
-    /**
-     * @param mixed $type
-     */
-    public static function getPrimitiveType($type, ?ExtractionContextInterface $extractionContext = null): ?array
+    public static function getPrimitiveType(mixed $type, ?ExtractionContextInterface $extractionContext = null): ?array
     {
         if (!\is_string($type)) {
             return null;
@@ -163,7 +157,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             self::$typeResolver = new TypeResolver();
         }
 
-        if (0 === strpos($type, '?')) {
+        if (str_starts_with($type, '?')) {
             $type = substr($type, 1);
         }
 

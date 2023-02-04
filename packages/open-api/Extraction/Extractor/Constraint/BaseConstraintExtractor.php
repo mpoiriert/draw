@@ -31,7 +31,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
         if (!$this->supportConstraint($constraint)) {
             throw new \InvalidArgumentException(sprintf(
                 'The constraint of type [%s] is not supported by [%s]',
-                \get_class($constraint),
+                $constraint::class,
                 static::class
             ));
         }
@@ -51,7 +51,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
             case $target instanceof QueryParameter && $source instanceof QueryParameter:
                 $constraints = array_filter(
                     $target->constraints,
-                    [$this, 'supportConstraint']
+                    $this->supportConstraint(...)
                 );
                 break;
         }
@@ -122,10 +122,10 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
 
                 $finalPropertyConstraints = array_filter(
                     $finalPropertyConstraints,
-                    [$this, 'supportConstraint']
+                    $this->supportConstraint(...)
                 );
 
-                $constraints[$propertyName] = array_merge($constraints[$propertyName], $finalPropertyConstraints);
+                $constraints[$propertyName] = [...$constraints[$propertyName], ...$finalPropertyConstraints];
             }
         }
 
@@ -157,7 +157,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
             $constraintExtractionContext->context = 'query';
             $constraints = array_filter(
                 $target->constraints,
-                [$this, 'supportConstraint']
+                $this->supportConstraint(...)
             );
             foreach ($constraints as $constraint) {
                 $constraintExtractionContext->validationConfiguration = $target;

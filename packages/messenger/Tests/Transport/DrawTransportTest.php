@@ -40,8 +40,8 @@ class DrawTransportTest extends TestCase
         try {
             static::loadDefaultConnection()
                 ->executeStatement('DELETE FROM draw_messenger__message');
-        } catch (\Throwable $throwable) {
-            // Table may not exists we ignore it
+        } catch (\Throwable) {
+            // Table may not exist we ignore it
         }
     }
 

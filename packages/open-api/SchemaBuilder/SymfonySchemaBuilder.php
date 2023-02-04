@@ -11,22 +11,15 @@ use Symfony\Component\Routing\RouterInterface;
 class SymfonySchemaBuilder implements SchemaBuilderInterface
 {
     /**
-     * @var array|Root[]
+     * @var Root[]
      */
     private array $openApiSchemas = [];
 
-    private ParameterBagInterface $parameterBag;
-    private RouterInterface $router;
-    private OpenApi $openApi;
-
     public function __construct(
-        OpenApi $openApi,
-        RouterInterface $router,
-        ParameterBagInterface $parameterBag
+        private OpenApi $openApi,
+        private RouterInterface $router,
+        private ParameterBagInterface $parameterBag
     ) {
-        $this->openApi = $openApi;
-        $this->parameterBag = $parameterBag;
-        $this->router = $router;
     }
 
     public function build(?string $version = null): Root
@@ -45,7 +38,10 @@ class SymfonySchemaBuilder implements SchemaBuilderInterface
         $extractionContext->setParameter('api.cacheable', false);
         $extractionContext->setParameter('api.version', $version);
 
-        $this->openApi->extract(json_encode($this->parameterBag->get('draw_open_api.root_schema')), $schema);
+        $this->openApi->extract(
+            json_encode($this->parameterBag->get('draw_open_api.root_schema'), \JSON_THROW_ON_ERROR),
+            $schema
+        );
 
         if (!isset($schema->vendor['X-DrawOpenApi-FromCache'])) {
             $extractionContext->setParameter('api.cacheable', true);

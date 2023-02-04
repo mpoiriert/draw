@@ -11,30 +11,22 @@ use Draw\Component\OpenApi\Schema\VendorInterface;
 
 class VendorExtractor implements ExtractorInterface
 {
-    private Reader $annotationReader;
-
     public static function getDefaultPriority(): int
     {
         return 128;
     }
 
-    public function __construct(Reader $annotationReader)
+    public function __construct(private Reader $annotationReader)
     {
-        $this->annotationReader = $annotationReader;
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
-        switch (true) {
-            case !$target instanceof VendorExtensionSupportInterface:
-                return false;
-            case $source instanceof \ReflectionMethod:
-            case $source instanceof \ReflectionClass:
-            case $source instanceof \ReflectionProperty:
-                return true;
-        }
-
-        return false;
+        return match (true) {
+            !$target instanceof VendorExtensionSupportInterface => false,
+            $source instanceof \ReflectionMethod, $source instanceof \ReflectionClass, $source instanceof \ReflectionProperty => true,
+            default => false,
+        };
     }
 
     /**
@@ -53,11 +45,9 @@ class VendorExtractor implements ExtractorInterface
     }
 
     /**
-     * @param \ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector
-     *
-     * @return array|VendorInterface[]
+     * @return VendorInterface[]
      */
-    private function getAnnotations($reflector): array
+    private function getAnnotations(\ReflectionMethod|\ReflectionClass|\ReflectionProperty $reflector): array
     {
         $classLevelAnnotations = [];
         $annotations = [];
@@ -93,14 +83,9 @@ class VendorExtractor implements ExtractorInterface
     {
         $classAnnotations = array_filter(
             $classAnnotations,
-            function (VendorInterface $classAnnotation) use ($currentAnnotations) {
-                switch (true) {
-                    case !$classAnnotation->allowClassLevelConfiguration():
-                    case $this->alreadyPresentIn($classAnnotation, $currentAnnotations):
-                        return false;
-                }
-
-                return true;
+            fn (VendorInterface $classAnnotation) => match (true) {
+                !$classAnnotation->allowClassLevelConfiguration(), $this->alreadyPresentIn($classAnnotation, $currentAnnotations) => false,
+                default => true,
             }
         );
 

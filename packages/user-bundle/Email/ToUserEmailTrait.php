@@ -4,25 +4,16 @@ namespace Draw\Bundle\UserBundle\Email;
 
 trait ToUserEmailTrait
 {
-    /**
-     * @var mixed
-     */
-    private $userId = null;
+    private string|int|null $userId = null;
 
-    /**
-     * @param mixed $userId
-     */
-    public function setUserId($userId): self
+    public function setUserId(string|int $userId): self
     {
         $this->userId = $userId;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUserId()
+    public function getUserId(): string|int|null
     {
         return $this->userId;
     }

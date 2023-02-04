@@ -4,17 +4,8 @@ namespace Draw\Bundle\UserBundle\Message;
 
 class RefreshUserLockMessage
 {
-    /**
-     * @var mixed
-     */
-    private $userId;
-
-    /**
-     * @param mixed $userId
-     */
-    public function __construct($userId)
+    public function __construct(private mixed $userId)
     {
-        $this->userId = $userId;
     }
 
     /**

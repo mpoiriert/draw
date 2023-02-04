@@ -36,11 +36,8 @@ class OperationExtractorTest extends TestCase
 
     /**
      * @dataProvider provideTestCanExtract
-     *
-     * @param mixed $source
-     * @param mixed $type
      */
-    public function testCanExtract($source, $type, bool $canBeExtract): void
+    public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
         /** @var ExtractionContextInterface $context */
         $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
@@ -58,7 +55,7 @@ class OperationExtractorTest extends TestCase
     public function testExtract(): void
     {
         $this->phpDocOperationExtractor->registerExceptionResponseCodes(
-            'Draw\Component\OpenApi\Exception\ExtractionImpossibleException',
+            ExtractionImpossibleException::class,
             400
         );
         $this->phpDocOperationExtractor->registerExceptionResponseCodes('LengthException', 408, 'Define message');
@@ -161,15 +158,12 @@ class PhpDocOperationExtractorStubClass
 class PhpDocOperationExtractorStubService
 {
     /**
-     * @param mixed $string
-     *
-     * @throws \Exception                    When problem occur
+     * @throws \Exception                          When problem occur
      * @throws \LengthException
      * @throws ExtractionImpossibleException
-     *
      * @return PhpDocOperationExtractorStubService
      */
-    public function operation(self $service, $string, array $array)
+    public function operation(self $service, mixed $string, array $array)
     {
         if ($string) {
             throw new ExtractionImpossibleException();

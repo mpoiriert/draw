@@ -13,7 +13,7 @@ class MessengerBrokerCompilerPass implements CompilerPassInterface
     {
         try {
             $definition = $container->findDefinition(StartMessengerBrokerCommand::class);
-        } catch (ServiceNotFoundException $exception) {
+        } catch (ServiceNotFoundException) {
             return;
         }
 

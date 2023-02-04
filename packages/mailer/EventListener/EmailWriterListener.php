@@ -13,8 +13,6 @@ use Symfony\Component\Mime\RawMessage;
 
 class EmailWriterListener implements EventSubscriberInterface
 {
-    private ContainerInterface $serviceLocator;
-
     private array $writers = [];
 
     private array $sortedWriters = [];
@@ -26,14 +24,13 @@ class EmailWriterListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(ContainerInterface $serviceLocator)
+    public function __construct(private ContainerInterface $serviceLocator)
     {
-        $this->serviceLocator = $serviceLocator;
     }
 
     public function registerEmailWriter(EmailWriterInterface $emailWriter): void
     {
-        $class = \get_class($emailWriter);
+        $class = $emailWriter::class;
         $forEmails = ReflectionAccessor::callMethod($emailWriter, 'getForEmails');
         foreach ($forEmails as $methodName => $priority) {
             if (\is_int($methodName)) {
@@ -46,11 +43,12 @@ class EmailWriterListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param EmailWriterInterface|string $writer
-     */
-    public function addWriter(string $emailClass, $writer, string $writerMethod, int $priority = 0): void
-    {
+    public function addWriter(
+        string $emailClass,
+        EmailWriterInterface|string $writer,
+        string $writerMethod,
+        int $priority = 0
+    ): void {
         $this->writers[$emailClass][$priority][] = [$writer, $writerMethod];
         unset($this->sortedWriters[$emailClass]);
     }
@@ -108,7 +106,7 @@ class EmailWriterListener implements EventSubscriberInterface
 
     private function getTypes(RawMessage $message): array
     {
-        return [\get_class($message)]
+        return [$message::class]
             + class_parents($message)
             + class_implements($message);
     }

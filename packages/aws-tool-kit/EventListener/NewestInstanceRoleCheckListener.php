@@ -19,11 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class NewestInstanceRoleCheckListener implements EventSubscriberInterface
 {
-    public const OPTION_AWS_NEWEST_INSTANCE_ROLE = 'aws-newest-instance-role';
-
-    private Ec2Client $ec2Client;
-
-    private ImdsClientInterface $imdsClient;
+    final public const OPTION_AWS_NEWEST_INSTANCE_ROLE = 'aws-newest-instance-role';
 
     private LoggerInterface $logger;
 
@@ -36,10 +32,11 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(Ec2Client $ec2Client, ImdsClientInterface $imdsClient, ?LoggerInterface $logger = null)
-    {
-        $this->ec2Client = $ec2Client;
-        $this->imdsClient = $imdsClient;
+    public function __construct(
+        private Ec2Client $ec2Client,
+        private ImdsClientInterface $imdsClient,
+        ?LoggerInterface $logger = null
+    ) {
         $this->logger = $logger ?: new NullLogger();
     }
 

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class SqlAssertionBuilderTest extends TestCase
 {
-    private $assertionBuilder;
+    private SqlAssertionBuilder $assertionBuilder;
 
     protected function setUp(): void
     {

@@ -7,17 +7,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class BrokerStartedEvent extends Event
 {
-    private Broker $broker;
-
-    private int $concurrent;
-
-    private int $timeout;
-
-    public function __construct(Broker $broker, int $concurrent, int $timeout)
-    {
-        $this->broker = $broker;
-        $this->concurrent = $concurrent;
-        $this->timeout = $timeout;
+    public function __construct(
+        private Broker $broker,
+        private int $concurrent,
+        private int $timeout
+    ) {
     }
 
     public function getBroker(): Broker

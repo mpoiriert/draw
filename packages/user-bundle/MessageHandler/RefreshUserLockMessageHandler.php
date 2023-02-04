@@ -12,15 +12,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class RefreshUserLockMessageHandler implements MessageSubscriberInterface
 {
-    private AccountLocker $accountLocker;
-
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var EntityRepository<UserInterface>
-     */
-    private EntityRepository $userEntityRepository;
-
     public static function getHandledMessages(): array
     {
         return [
@@ -32,18 +23,15 @@ class RefreshUserLockMessageHandler implements MessageSubscriberInterface
      * @param EntityRepository<UserInterface> $drawUserEntityRepository
      */
     public function __construct(
-        AccountLocker $accountLocker,
-        EntityManagerInterface $entityManager,
-        EntityRepository $drawUserEntityRepository
+        private AccountLocker $accountLocker,
+        private EntityManagerInterface $entityManager,
+        private EntityRepository $drawUserEntityRepository
     ) {
-        $this->accountLocker = $accountLocker;
-        $this->entityManager = $entityManager;
-        $this->userEntityRepository = $drawUserEntityRepository;
     }
 
     public function handleRefreshUserLockMessage(RefreshUserLockMessage $message): void
     {
-        if (!$user = $this->userEntityRepository->find($message->getUserId())) {
+        if (!$user = $this->drawUserEntityRepository->find($message->getUserId())) {
             return;
         }
 
@@ -51,7 +39,7 @@ class RefreshUserLockMessageHandler implements MessageSubscriberInterface
             throw new \UnexpectedValueException(sprintf(
                 'Expected instance of [%s], instance of [%s] returned.',
                 LockableUserInterface::class,
-                \get_class($user)
+                $user::class
             ));
         }
 

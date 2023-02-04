@@ -10,11 +10,8 @@ use Draw\Component\OpenApi\Schema\Tag;
 
 class TagExtractor implements ExtractorInterface
 {
-    private Reader $annotationReader;
-
-    public function __construct(Reader $reader)
+    public function __construct(private Reader $annotationReader)
     {
-        $this->annotationReader = $reader;
     }
 
     public static function getDefaultPriority(): int

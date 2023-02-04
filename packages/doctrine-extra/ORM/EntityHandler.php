@@ -8,11 +8,8 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class EntityHandler
 {
-    private ManagerRegistry $managerRegistry;
-
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(private ManagerRegistry $managerRegistry)
     {
-        $this->managerRegistry = $managerRegistry;
     }
 
     public function getManagerForClass(string $class): ?EntityManagerInterface
@@ -33,7 +30,7 @@ class EntityHandler
 
     public function persist(object $object): void
     {
-        $this->getManagerForClass(\get_class($object))->persist($object);
+        $this->getManagerForClass($object::class)->persist($object);
     }
 
     public function flush(?string $class = null): void

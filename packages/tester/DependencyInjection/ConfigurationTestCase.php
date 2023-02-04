@@ -9,10 +9,7 @@ use Symfony\Component\Config\Definition\Processor;
 
 abstract class ConfigurationTestCase extends TestCase
 {
-    /**
-     * @var ConfigurationInterface
-     */
-    private $configuration;
+    private ConfigurationInterface $configuration;
 
     abstract public function createConfiguration(): ConfigurationInterface;
 

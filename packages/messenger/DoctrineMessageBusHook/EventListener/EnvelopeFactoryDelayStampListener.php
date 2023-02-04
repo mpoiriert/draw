@@ -8,11 +8,8 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 class EnvelopeFactoryDelayStampListener implements EventSubscriberInterface
 {
-    private int $delay;
-
-    public function __construct(int $delay)
+    public function __construct(private int $delay)
     {
-        $this->delay = $delay;
     }
 
     public static function getSubscribedEvents(): array

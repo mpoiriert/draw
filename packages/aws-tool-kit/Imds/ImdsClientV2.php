@@ -8,11 +8,8 @@ class ImdsClientV2 implements ImdsClientInterface
 {
     private ?string $token = null;
 
-    private HttpClientInterface $httpClient;
-
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(private HttpClientInterface $httpClient)
     {
-        $this->httpClient = $httpClient;
     }
 
     public function getCurrentInstanceId(): ?string

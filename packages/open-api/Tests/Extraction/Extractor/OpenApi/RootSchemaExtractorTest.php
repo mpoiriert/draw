@@ -25,11 +25,8 @@ class RootSchemaExtractorTest extends TestCase
 
     /**
      * @dataProvider provideTestCanExtract
-     *
-     * @param mixed $source
-     * @param mixed $type
      */
-    public function testCanExtract($source, $type, bool $expected): void
+    public function testCanExtract(mixed $source, mixed $type, bool $expected): void
     {
         $extractor = new JsonRootSchemaExtractor(SerializerBuilder::create()->build());
 
@@ -45,7 +42,7 @@ class RootSchemaExtractorTest extends TestCase
             try {
                 $extractor->extract($source, $type, $context);
                 static::fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
-            } catch (ExtractionImpossibleException $e) {
+            } catch (ExtractionImpossibleException) {
                 static::assertTrue(true);
             }
         }
