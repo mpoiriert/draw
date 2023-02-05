@@ -24,7 +24,6 @@ return [
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     Scheb\TwoFactorBundle\SchebTwoFactorBundle::class => ['all' => true],
-    Terminal42\ServiceAnnotationBundle\Terminal42ServiceAnnotationBundle::class => ['dev' => true, 'test' => true],
     Aws\Symfony\AwsBundle::class => ['all' => true],
     Draw\Bundle\SonataIntegrationBundle\DrawSonataIntegrationBundle::class => ['all' => true],
     Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle::class => ['all' => true],

@@ -15,11 +15,10 @@ class AutoConfigureSubClassesCompilerClass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('sonata.admin.sub_class') as $serviceId => $tags) {
             $subClasses = [];
             foreach ($tags as $tag) {
-                $subClasses = array_merge(
-                    [$tag['label'] => $tag['sub_class']],
-                    $subClasses
-                );
+                $subClasses[$tag['position'] ?? 0][$tag['label']] = $tag['sub_class'];
             }
+
+            $subClasses = array_merge(...$subClasses);
 
             $container
                 ->getDefinition($serviceId)

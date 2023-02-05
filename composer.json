@@ -109,7 +109,6 @@
         "symfony/var-dumper": "5.4.*",
         "symfony/var-exporter": "5.4.*",
         "symfony/web-profiler-bundle": "5.4.*",
-        "terminal42/service-annotation-bundle": "^1.1",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.7",
         "phpstan/phpstan-symfony": "^1.2",
