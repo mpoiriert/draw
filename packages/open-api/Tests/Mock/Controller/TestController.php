@@ -3,8 +3,8 @@
 namespace Draw\Component\OpenApi\Tests\Mock\Controller;
 
 use Draw\Component\OpenApi\Configuration\Deserialization;
-use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
+use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\Component\OpenApi\Tests\Mock\Model\Test;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,18 +23,18 @@ class TestController
      *     name="test",
      *     deserializationGroups={"Included"}
      * )
-     * @Serialization(
-     *     statusCode=201,
-     *     serializerGroups={"Included"},
-     *     headers={
-     *         "X-Draw": @OpenApi\Header(type="string", description="Description of the header")
-     *     }
-     * )
      *
      * @param string $param1 param1 description
      *
      * @return Test The created test entity
      */
+    #[Serialization(
+        statusCode: 201,
+        serializerGroups: ['Included'],
+        /*      headers: [
+                  'X-Draw' => @OpenApi\Header(type: 'string', description: 'Description of the header'),
+              ],*/
+    )]
     public function createAction(Test $test, string $param1 = 'default'): Test
     {
         $test->setProperty($param1);

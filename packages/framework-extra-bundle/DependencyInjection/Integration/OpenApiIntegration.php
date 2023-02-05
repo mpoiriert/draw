@@ -4,7 +4,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Draw\Component\OpenApi\Configuration\Deserialization;
-use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Controller\OpenApiController;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\EventListener\RequestValidationListener;
@@ -32,6 +31,7 @@ use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
 use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
 use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
+use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
 use Draw\Component\OpenApi\Versioning\RouteVersionMatcherInterface;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;

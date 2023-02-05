@@ -5,9 +5,9 @@ namespace App\Controller\Api;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
+use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -40,7 +40,6 @@ class UsersController extends AbstractController
     /**
      * @Route(name="me", methods={"GET"}, path="/me")
      * @OpenApi\Operation(operationId="me")
-     * @Serialization(statusCode=204)
      *
      * @return User The currently connected user
      */
@@ -104,12 +103,12 @@ class UsersController extends AbstractController
      * @Route(name="user_delete", methods={"DELETE"}, path="/users/{id}")
      * @OpenApi\Operation(operationId="userDelete")
      * @IsGranted("ROLE_ADMIN")
-     * @Serialization(statusCode=204)
      *
      * @ParamConverter("target", class=User::class, converter="doctrine.orm")
      *
      * @return void Empty response mean success
      */
+    #[Serialization(statusCode: 204)]
     public function deleteAction(User $target, EntityManagerInterface $entityManager): void
     {
         $entityManager->remove($target);

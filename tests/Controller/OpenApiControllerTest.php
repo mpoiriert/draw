@@ -19,7 +19,7 @@ class OpenApiControllerTest extends WebTestCase
         static::assertResponseIsSuccessful();
         static::assertResponseIsJson();
 
-        // We keep this since the file must be rewrite often
+        // We keep this since the file must be rewritten often
         if ($this->writeFile) {
             $content = static::getResponseContent();
             file_put_contents(

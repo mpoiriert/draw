@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\EventListener;
 
-use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Event\PreSerializerResponseEvent;
+use Draw\Component\OpenApi\Serializer\Serialization;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -60,20 +60,20 @@ class ResponseSerializerListener implements EventSubscriberInterface
         $context = $this->serializationContextFactory->createSerializationContext();
         $context->setSerializeNull($this->serializeNull);
 
-        $serialization = $request->attributes->get('_draw_open_api_serialization');
+        $serialization = $request->attributes->get('_draw_open_api_serialization', new Serialization());
 
-        if ($serialization instanceof Serialization) {
-            if ($version = $serialization->getSerializerVersion()) {
-                $context->setVersion($version);
-            }
+        \assert($serialization instanceof Serialization);
 
-            if ($groups = $serialization->getSerializerGroups()) {
-                $context->setGroups($groups);
-            }
+        if ($version = $serialization->serializerVersion) {
+            $context->setVersion($version);
+        }
 
-            foreach ($serialization->getContextAttributes() as $key => $value) {
-                $context->setAttribute($key, $value);
-            }
+        if ($groups = $serialization->serializerGroups) {
+            $context->setGroups($groups);
+        }
+
+        foreach ($serialization->contextAttributes as $key => $value) {
+            $context->setAttribute($key, $value);
         }
 
         $this->eventDispatcher->dispatch(new PreSerializerResponseEvent($result, $serialization, $context));
@@ -81,10 +81,8 @@ class ResponseSerializerListener implements EventSubscriberInterface
         $data = $this->serializer->serialize($result, $requestFormat, $context);
         $response = new JsonResponse($data, 200, ['Content-Type' => 'application/'.$requestFormat], true);
 
-        if ($serialization instanceof Serialization
-            && $serialization->getStatusCode()
-        ) {
-            $response->setStatusCode($serialization->getStatusCode());
+        if ($serialization->statusCode) {
+            $response->setStatusCode($serialization->statusCode);
         }
 
         $event->setResponse($response);

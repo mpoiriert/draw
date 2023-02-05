@@ -2,8 +2,8 @@
 
 namespace Draw\Component\OpenApi\Tests\Event;
 
-use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Event\PreSerializerResponseEvent;
+use Draw\Component\OpenApi\Serializer\Serialization;
 use JMS\Serializer\SerializationContext;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +24,7 @@ class PreSerializerResponseEventTest extends TestCase
     {
         $this->object = new PreSerializerResponseEvent(
             $this->result = (object) [],
-            $this->serialization = new Serialization([]),
+            $this->serialization = new Serialization(),
             $this->serializationContext = new SerializationContext()
         );
     }
