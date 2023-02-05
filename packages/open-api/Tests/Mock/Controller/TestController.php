@@ -30,11 +30,9 @@ class TestController
      */
     #[Serialization(
         statusCode: 201,
-        serializerGroups: ['Included'],
-        /*      headers: [
-                  'X-Draw' => @OpenApi\Header(type: 'string', description: 'Description of the header'),
-              ],*/
+        serializerGroups: ['Included']
     )]
+    #[OpenApi\Header(name: 'X-Draw', description: 'Description of the header', type: 'string')]
     public function createAction(Test $test, string $param1 = 'default'): Test
     {
         $test->setProperty($param1);

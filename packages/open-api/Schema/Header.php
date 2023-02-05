@@ -7,13 +7,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @see https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#headerObject
- *
- * @author Martin Poirier Theoret <mpoiriert@gmail.com>
- *
- * @Annotation
  */
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class Header
 {
+    /**
+     * This is only use in the context of an attribute.
+     *
+     * @JMS\Exclude
+     */
+    public ?string $name;
+
     /**
      * A short description of the header.
      */
@@ -59,11 +63,9 @@ class Header
      *
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor101.
      *
-     * @var mixed
-     *
      * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
-    public $default;
+    public mixed $default = null;
 
     /**
      * @see  http://json-schema.org/latest/json-schema-validation.html#anchor17
@@ -142,6 +144,46 @@ class Header
      * @JMS\SerializedName("multipleOf")
      */
     public ?int $multipleOf = null;
+
+    public function __construct(
+        ?string $name = null,
+        ?string $description = null,
+        ?string $type = null,
+        ?string $format = null,
+        ?string $collectionFormat = null,
+        mixed $default = null,
+        ?int $maximum = null,
+        ?bool $exclusiveMaximum = null,
+        ?int $minimum = null,
+        ?bool $exclusiveMinimum = null,
+        ?int $maxLength = null,
+        ?int $minLength = null,
+        ?string $pattern = null,
+        ?int $maxItems = null,
+        ?int $minItems = null,
+        ?bool $uniqueItems = null,
+        ?array $enum = null,
+        ?int $multipleOf = null
+    ) {
+        $this->name = $name;
+        $this->description = $description;
+        $this->type = $type;
+        $this->format = $format;
+        $this->collectionFormat = $collectionFormat;
+        $this->default = $default;
+        $this->maximum = $maximum;
+        $this->exclusiveMaximum = $exclusiveMaximum;
+        $this->minimum = $minimum;
+        $this->exclusiveMinimum = $exclusiveMinimum;
+        $this->maxLength = $maxLength;
+        $this->minLength = $minLength;
+        $this->pattern = $pattern;
+        $this->maxItems = $maxItems;
+        $this->minItems = $minItems;
+        $this->uniqueItems = $uniqueItems;
+        $this->enum = $enum;
+        $this->multipleOf = $multipleOf;
+    }
 
     /**
      * @JMS\PreSerialize

@@ -502,6 +502,12 @@
                         "description": "The created test entity",
                         "schema": {
                             "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Mock.Model.Test"
+                        },
+                        "headers": {
+                            "X-Draw": {
+                                "description": "Description of the header",
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
