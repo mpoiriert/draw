@@ -4,8 +4,8 @@ namespace App\Controller\Api;
 
 use App\Entity\Tag;
 use Doctrine\ORM\EntityManagerInterface;
-use Draw\Component\OpenApi\Configuration\Deserialization;
 use Draw\Component\OpenApi\Configuration\Serialization;
+use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,14 +16,14 @@ class TagsController
      * @Route(methods={"POST"}, path="/tags")
      * @OpenApi\Operation(operationId="tagCreate")
      *
-     * @Deserialization
-     *
      * @Serialization(statusCode=201)
      *
      * @return Tag The newly created tag
      */
-    public function createAction(Tag $target, EntityManagerInterface $entityManager): Tag
-    {
+    public function createAction(
+        #[RequestBody] Tag $target,
+        EntityManagerInterface $entityManager
+    ): Tag {
         $entityManager->persist($target);
         $entityManager->flush();
 
@@ -33,14 +33,13 @@ class TagsController
     /**
      * @Route(methods={"PUT"}, path="/tags/{id}")
      * @OpenApi\Operation(operationId="tagEdit")
-     * @Deserialization(
-     *     propertiesMap={"id": "id"}
-     * )
      *
      * @return Tag The update tag
      */
-    public function editAction(Tag $target, EntityManagerInterface $entityManager): Tag
-    {
+    public function editAction(
+        #[RequestBody(propertiesMap: ['id' => 'id'])] Tag $target,
+        EntityManagerInterface $entityManager
+    ): Tag {
         $entityManager->flush();
 
         return $target;

@@ -73,16 +73,13 @@ class UsersControllerTest extends TestCase
     {
         $this->httpTester()
             ->put(
-                '/api/users/'.$user->id,
+                '/api/users/'.$user->id.'/tags',
                 json_encode([
-                    'tags' => [
-                        ['id' => 1],
-                    ],
+                    ['id' => 1],
                 ])
             )
             ->assertStatus(200)
             ->toJsonDataTester()
-            ->path('tags')
             ->assertCount(1)
             ->path('[0].id')
             ->assertSame(1);

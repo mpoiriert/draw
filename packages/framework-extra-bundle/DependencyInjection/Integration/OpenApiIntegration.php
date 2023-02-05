@@ -27,6 +27,8 @@ use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter;
+use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
+use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
 use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
 use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
@@ -363,6 +365,8 @@ class OpenApiIntegration implements IntegrationInterface
             $openApiComponentDir.'/Request',
         );
 
+        $container->removeDefinition(RequestBody::class);
+
         $container
             ->getDefinition(RequestValidationListener::class)
             ->setArgument(
@@ -377,6 +381,7 @@ class OpenApiIntegration implements IntegrationInterface
 
         if (!$config['bodyDeserialization']['enabled']) {
             $container->removeDefinition(DeserializeBodyParamConverter::class);
+            $container->removeDefinition(RequestBodyValueResolver::class);
         } else {
             $container->getDefinition(DeserializeBodyParamConverter::class)
                 ->addTag('request.param_converter', ['converter' => 'draw_open_api.request_body']);
