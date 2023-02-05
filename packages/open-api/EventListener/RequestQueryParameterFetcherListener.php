@@ -34,8 +34,14 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
             return;
         }
 
+        $controllerObject = $controller[0];
+
+        if (!\is_object($controllerObject)) {
+            return;
+        }
+
         $annotations = $this->reader->getMethodAnnotations(
-            new \ReflectionMethod($controller[0]::class, $controller[1])
+            new \ReflectionMethod(\get_class($controllerObject), $controller[1])
         );
 
         $parameters = [];
