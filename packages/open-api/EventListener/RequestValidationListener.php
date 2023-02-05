@@ -3,6 +3,7 @@
 namespace Draw\Component\OpenApi\EventListener;
 
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
+use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema\QueryParameter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -40,13 +41,18 @@ class RequestValidationListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $constraints = [];
         if ($request->attributes->has('_draw_body_validation')) {
-            /** @var ParamConverter $configuration */
+            /** @var ParamConverter|RequestBody $configuration */
             $configuration = $request->attributes->get('_draw_body_validation');
+
+            $parameterName = $configuration instanceof RequestBody
+                ? $configuration->argumentName
+                : $configuration->getName();
+
             $constraints = array_merge(
                 $constraints,
                 $this->bonifyConstraints(
                     $this->validate(
-                        $request->attributes->get($configuration->getName()),
+                        $request->attributes->get($parameterName),
                         $configuration
                     ),
                     $this->prefixes['body']
@@ -100,13 +106,17 @@ class RequestValidationListener implements EventSubscriberInterface
         return $constraintViolations;
     }
 
-    private function validate($object, ParamConverter $paramConverter): ConstraintViolationListInterface
+    private function validate($object, ParamConverter|RequestBody $paramConverter): ConstraintViolationListInterface
     {
-        $options = $paramConverter->getOptions();
-        if ($options['validate'] ?? true) {
-            $groups = $paramConverter->getOptions()['validator']['groups'] ?? ['Default'];
+        if ($paramConverter instanceof RequestBody && $paramConverter->validate) {
+            return $this->validator->validate($object, null, $paramConverter->validationGroups ?? ['Default']);
+        } elseif ($paramConverter instanceof ParamConverter) { // todo remove this when we drop support for ParamConverter
+            $options = $paramConverter->getOptions();
+            if ($options['validate'] ?? true) {
+                $groups = $paramConverter->getOptions()['validator']['groups'] ?? ['Default'];
 
-            return $this->validator->validate($object, null, $groups);
+                return $this->validator->validate($object, null, $groups);
+            }
         }
 
         return new ConstraintViolationList();

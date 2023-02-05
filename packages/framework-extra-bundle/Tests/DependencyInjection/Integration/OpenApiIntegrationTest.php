@@ -29,6 +29,7 @@ use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\Dynami
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\GenericTemplateHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\ParameterExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\RequestBodyArgumentResolverExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\SerializationConfigurationExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\TagExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VendorExtractor;
@@ -42,6 +43,7 @@ use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter;
+use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
 use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
 use Draw\Component\OpenApi\SchemaCleaner;
@@ -190,6 +192,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     [DeserializeBodyParamConverter::class]
                 ),
                 new ServiceConfiguration(
+                    'draw.open_api.request.value_resolver.request_body_value_resolver',
+                    [RequestBodyValueResolver::class]
+                ),
+                new ServiceConfiguration(
                     'draw.open_api.extractor.constraint.choice_constraint_extractor',
                     [ChoiceConstraintExtractor::class]
                 ),
@@ -256,6 +262,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.extractor.open_api.parameter_extractor',
                     [ParameterExtractor::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.request_body_argument_resolver_extractor',
+                    [RequestBodyArgumentResolverExtractor::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.extractor.open_api.serialization_configuration_extractor',

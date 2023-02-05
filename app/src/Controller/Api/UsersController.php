@@ -5,11 +5,12 @@ namespace App\Controller\Api;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Draw\Component\OpenApi\Configuration\Deserialization;
 use Draw\Component\OpenApi\Configuration\Serialization;
+use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,14 +23,14 @@ class UsersController extends AbstractController
      * @Route(methods={"POST"}, path="/users")
      * @OpenApi\Operation(operationId="userCreate")
      *
-     * @Deserialization
-     *
      * @IsGranted("ROLE_ADMIN")
      *
      * @return User The newly created user
      */
-    public function createAction(User $target, EntityManagerInterface $entityManager): User
-    {
+    public function createAction(
+        #[RequestBody] User $target,
+        EntityManagerInterface $entityManager
+    ): User {
         $entityManager->persist($target);
         $entityManager->flush();
 
@@ -51,15 +52,14 @@ class UsersController extends AbstractController
     /**
      * @Route(methods={"PUT"}, path="/users/{id}")
      * @OpenApi\Operation(operationId="userEdit")
-     * @Deserialization(
-     *     propertiesMap={"id": "id"}
-     * )
      * @IsGranted("ROLE_ADMIN")
      *
      * @return User The update user
      */
-    public function editAction(User $target, EntityManagerInterface $entityManager): User
-    {
+    public function editAction(
+        #[RequestBody(propertiesMap: ['id' => 'id'])] User $target,
+        EntityManagerInterface $entityManager
+    ): User {
         $entityManager->flush();
 
         return $target;
@@ -68,14 +68,20 @@ class UsersController extends AbstractController
     /**
      * @Route(methods={"PUT"}, path="/users/{id}/tags")
      * @OpenApi\Operation(operationId="userSetTags")
-     * @Deserialization(name="tags", class="array<App\Entity\Tag>")
      * @IsGranted("ROLE_ADMIN")
+     *
+     * @ParamConverter("target", class=User::class, converter="doctrine.orm")
      *
      * @return array<Tag> The new list of tags
      */
-    public function setTagsAction(User $target, array $tags): array
-    {
+    public function setTagsAction(
+        User $target,
+        #[RequestBody(type: 'array<App\Entity\Tag>')] array $tags,
+        EntityManagerInterface $entityManager
+    ): array {
         $target->setTags($tags);
+
+        $entityManager->flush();
 
         return $target->getTags()->toArray();
     }
@@ -84,6 +90,8 @@ class UsersController extends AbstractController
      * @Route(name="user_get", methods={"GET"}, path="/users/{id}")
      * @OpenApi\Operation(operationId="userGet")
      * @IsGranted("ROLE_ADMIN")
+     *
+     * @ParamConverter("target", class=User::class, converter="doctrine.orm")
      *
      * @return User The user
      */
@@ -97,6 +105,8 @@ class UsersController extends AbstractController
      * @OpenApi\Operation(operationId="userDelete")
      * @IsGranted("ROLE_ADMIN")
      * @Serialization(statusCode=204)
+     *
+     * @ParamConverter("target", class=User::class, converter="doctrine.orm")
      *
      * @return void Empty response mean success
      */
