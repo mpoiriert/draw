@@ -2,23 +2,17 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
 
-use Doctrine\Common\Annotations\Reader;
-use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
-use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
+use Draw\Component\OpenApi\Serializer\Serialization;
 
 class SerializationConfigurationExtractor implements ExtractorInterface
 {
     public static function getDefaultPriority(): int
     {
         return 128;
-    }
-
-    public function __construct(private Reader $annotationReader)
-    {
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
@@ -53,20 +47,16 @@ class SerializationConfigurationExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        $groups = [];
+        $serialization = $this->getSerialization($extractionContext->getParameter('controller-reflection-method'));
 
-        if ($serialization = $this->getSerialization($extractionContext->getParameter('controller-reflection-method'))) {
-            $groups = $serialization->getSerializerGroups();
-            if ($statusCode = $serialization->getStatusCode()) {
-                $extractionContext->setParameter('response-status-code', $statusCode);
-            }
+        if (null === $serialization) {
+            return;
+        }
 
-            $response = $extractionContext->getParameter('response');
-            if ($response instanceof Response) {
-                foreach ($serialization->getHeaders() as $name => $header) {
-                    $response->headers[$name] = $header;
-                }
-            }
+        $groups = $serialization->serializerGroups;
+
+        if ($statusCode = $serialization->statusCode) {
+            $extractionContext->setParameter('response-status-code', $statusCode);
         }
 
         if (!empty($groups)) {
@@ -78,6 +68,9 @@ class SerializationConfigurationExtractor implements ExtractorInterface
 
     private function getSerialization(\ReflectionMethod $reflectionMethod): ?Serialization
     {
-        return $this->annotationReader->getMethodAnnotation($reflectionMethod, Serialization::class);
+        $attribute = $reflectionMethod
+            ->getAttributes(Serialization::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null;
+
+        return $attribute?->newInstance();
     }
 }

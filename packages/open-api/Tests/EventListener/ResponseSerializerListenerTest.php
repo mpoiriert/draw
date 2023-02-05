@@ -2,9 +2,9 @@
 
 namespace Draw\Component\OpenApi\Tests\EventListener;
 
-use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Event\PreSerializerResponseEvent;
 use Draw\Component\OpenApi\EventListener\ResponseSerializerListener;
+use Draw\Component\OpenApi\Serializer\Serialization;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
@@ -145,12 +145,15 @@ class ResponseSerializerListenerTest extends TestCase
             ->method('createSerializationContext')
             ->willReturn($context = new SerializationContext());
 
-        $request->attributes->set('_draw_open_api_serialization', $serialization = new Serialization([]));
-
-        $serialization->setSerializerVersion($version = uniqid('version-'));
-        $serialization->setSerializerGroups($groups = [uniqid('group-')]);
-        $serialization->setContextAttributes(['key' => 'value']);
-        $serialization->setStatusCode(201);
+        $request->attributes->set(
+            '_draw_open_api_serialization',
+            $serialization = new Serialization(
+                statusCode: 201,
+                serializerGroups: $groups = [uniqid('group-')],
+                serializerVersion: $version = uniqid('version-'),
+                contextAttributes: ['key' => 'value']
+            )
+        );
 
         $this->eventDispatcher
             ->expects(static::once())
@@ -211,7 +214,7 @@ class ResponseSerializerListenerTest extends TestCase
         );
 
         static::assertSame($jsonResult, $response->getContent());
-        static::assertSame($serialization->getStatusCode(), $response->getStatusCode());
+        static::assertSame($serialization->statusCode, $response->getStatusCode());
     }
 
     public function testOnKernelResponse(): void

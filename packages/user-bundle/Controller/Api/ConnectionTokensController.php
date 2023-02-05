@@ -5,8 +5,8 @@ namespace Draw\Bundle\UserBundle\Controller\Api;
 use Draw\Bundle\UserBundle\DTO\ConnectionToken;
 use Draw\Bundle\UserBundle\DTO\Credential;
 use Draw\Component\OpenApi\Configuration\Deserialization;
-use Draw\Component\OpenApi\Configuration\Serialization;
 use Draw\Component\OpenApi\Schema as OpenApi;
+use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -35,11 +35,11 @@ class ConnectionTokensController extends AbstractController
      *     operationId="drawUserBundleCreateConnectionToken"
      * )
      * @Deserialization(name="credential")
-     * @Serialization(statusCode=201)
      * @Security("not is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @return ConnectionToken The newly created token
      */
+    #[Serialization(statusCode: 201)]
     public function createAction(
         Credential $credential,
         UserProviderInterface $userProvider,
@@ -68,7 +68,6 @@ class ConnectionTokensController extends AbstractController
      *     tags="Security",
      *     operationId="drawUserBundleRefreshConnectionToken"
      * )
-     * @Serialization(statusCode=200)
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @return ConnectionToken The refreshed token
@@ -84,11 +83,11 @@ class ConnectionTokensController extends AbstractController
      *     tags="Security",
      *     operationId="drawUserBundleDeleteConnectionToken"
      * )
-     * @Serialization(statusCode=204)
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @return void Nothing to be returned
      */
+    #[Serialization(statusCode: 204)]
     public function clearAction(): void
     {
     }

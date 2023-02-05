@@ -2,7 +2,7 @@
 
 namespace Draw\Component\OpenApi\Event;
 
-use Draw\Component\OpenApi\Configuration\Serialization;
+use Draw\Component\OpenApi\Serializer\Serialization;
 use JMS\Serializer\SerializationContext;
 use Symfony\Contracts\EventDispatcher\Event;
 
