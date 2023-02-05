@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\Type;
  *
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD)]
 class Strtotime extends PhpCallable
 {
     public ?string $message = 'The value {{ value }} is not valid to use in strtotime.';
