@@ -13,11 +13,7 @@
         "draw/tester": "^0.10",
         "phpunit/phpunit": "^8.0 || ^9.0",
         "sonata-project/admin-bundle": "^4.8",
-        "sonata-project/doctrine-orm-admin-bundle": "^4.2",
-        "terminal42/service-annotation-bundle": "^1.1"
-    },
-    "suggest": {
-        "terminal42/service-annotation-bundle": "This allow to use annotation tag for service."
+        "sonata-project/doctrine-orm-admin-bundle": "^4.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

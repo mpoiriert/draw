@@ -4,7 +4,6 @@ namespace App\Sonata\Admin;
 
 use App\Entity\Tag;
 use App\Entity\User;
-use Draw\Bundle\SonataExtraBundle\Annotation\TagSonataAdmin;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
@@ -15,21 +14,23 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\CollectionType;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Validator\Constraints\Count;
 
-/**
- * @TagSonataAdmin(
- *     group="User",
- *     manager_type="orm",
- *     pager_type="simple",
- *     icon="fas fa-user",
- *     model_class=User::class
- * )
- */
+#[AutoconfigureTag(
+    name: 'sonata.admin',
+    attributes: [
+        'model_class' => User::class,
+        'manager_type' => 'orm',
+        'group' => 'User',
+        'icon' => 'fas fa-user',
+        'pager_type' => 'simple',
+    ]
+)]
 class UserAdmin extends AbstractAdmin
 {
     protected function configureDatagridFilters(DatagridMapper $filter): void
