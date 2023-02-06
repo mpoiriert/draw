@@ -10,7 +10,6 @@
         "symfony/validator": "^5.4.3"
     },
     "require-dev": {
-        "doctrine/annotations": "^1.11",
         "phpunit/phpunit": "^8.0 || ^9.0"
     },
     "minimum-stability": "dev",
@@ -20,8 +19,7 @@
             "Draw\\Component\\Core\\": ""
         },
         "files": [
-            "functions.php",
-            "ignore_annotations.php"
+            "functions.php"
         ]
     },
     "extra": {
