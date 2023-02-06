@@ -3,13 +3,10 @@
 namespace Draw\Component\OpenApi\Schema;
 
 use JMS\Serializer\Annotation as JMS;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Annotation
- *
- * @Target({"METHOD"})
- */
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class Tag
 {
     /**
@@ -31,4 +28,16 @@ class Tag
      * @JMS\SerializedName("externalDocs")
      */
     public ?ExternalDocumentation $externalDocs = null;
+
+    public function __construct(string $name, ?string $description = null, ?array $externalDocs = null)
+    {
+        $this->name = $name;
+        $this->description = $description;
+
+        if ($externalDocs) {
+            $this->externalDocs = new ExternalDocumentation();
+            $this->externalDocs->url = $externalDocs['url'];
+            $this->externalDocs->description = $externalDocs['description'] ?? null;
+        }
+    }
 }

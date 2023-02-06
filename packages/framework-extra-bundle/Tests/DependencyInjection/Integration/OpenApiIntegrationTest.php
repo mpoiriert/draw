@@ -31,10 +31,11 @@ use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\Generi
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\HeaderAttributeExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\ParameterExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\QueryParameterAttributeExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\RequestBodyArgumentResolverExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\SerializationConfigurationExtractor;
-use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\TagExtractor;
-use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VendorExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\TagAttributeExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VendorAttributeExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VersioningRootSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VersionLinkDocumentationExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\PhpDoc\OperationExtractor;
@@ -270,6 +271,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     [ParameterExtractor::class]
                 ),
                 new ServiceConfiguration(
+                    'draw.open_api.extractor.open_api.query_parameter_attribute_extractor',
+                    [QueryParameterAttributeExtractor::class]
+                ),
+                new ServiceConfiguration(
                     'draw.open_api.extractor.open_api.request_body_argument_resolver_extractor',
                     [RequestBodyArgumentResolverExtractor::class]
                 ),
@@ -278,12 +283,12 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     [SerializationConfigurationExtractor::class]
                 ),
                 new ServiceConfiguration(
-                    'draw.open_api.extractor.open_api.tag_extractor',
-                    [TagExtractor::class]
+                    'draw.open_api.extractor.open_api.tag_attribute_extractor',
+                    [TagAttributeExtractor::class]
                 ),
                 new ServiceConfiguration(
-                    'draw.open_api.extractor.open_api.vendor_extractor',
-                    [VendorExtractor::class]
+                    'draw.open_api.extractor.open_api.vendor_attribute_extractor',
+                    [VendorAttributeExtractor::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.extractor.open_api.versioning_root_schema_extractor',

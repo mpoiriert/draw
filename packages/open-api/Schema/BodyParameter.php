@@ -4,12 +4,6 @@ namespace Draw\Component\OpenApi\Schema;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Annotation
- *
- * @Target({"METHOD"})
- */
-#[\Attribute]
 class BodyParameter extends BaseParameter
 {
     /**

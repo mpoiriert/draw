@@ -2,15 +2,17 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
-/**
- * @Annotation
- *
- * @Target({"METHOD"})
- */
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class PathParameter extends Parameter
 {
-    public function __construct()
-    {
+    public function __construct(
+        string $name,
+        ?string $description = null,
+        string $type = 'string',
+    ) {
+        $this->name = $name;
+        $this->description = $description;
+        $this->type = $type;
         $this->required = true;
     }
 }

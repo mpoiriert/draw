@@ -5,29 +5,26 @@ namespace Draw\Component\OpenApi\Schema;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * Annotation use for documenting via extractor. This is not directly use in the schema itself.
- *
- * @Annotation
+ * Attribute use for documenting via extractor. This is not directly use in the schema itself.
  */
-class Vendor implements VendorInterface
+#[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
+class Vendor
 {
     /**
      * @Serializer\Exclude
      */
     public ?string $name = null;
 
-    /**
-     * @var mixed
-     */
-    public $value;
+    public mixed $value = null;
+
+    public function __construct(string $name, mixed $value = null)
+    {
+        $this->name = $name;
+        $this->value = $value;
+    }
 
     public function getVendorName(): string
     {
         return $this->name;
-    }
-
-    public function allowClassLevelConfiguration(): bool
-    {
-        return true;
     }
 }

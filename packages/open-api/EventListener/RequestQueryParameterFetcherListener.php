@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Schema\QueryParameter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -15,10 +14,6 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
         return [
             KernelEvents::CONTROLLER => ['onKernelController', 5],
         ];
-    }
-
-    public function __construct(private Reader $reader)
-    {
     }
 
     public function onKernelController(ControllerEvent $event): void
@@ -40,55 +35,68 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
             return;
         }
 
-        $annotations = $this->reader->getMethodAnnotations(
-            new \ReflectionMethod(\get_class($controllerObject), $controller[1])
-        );
-
         $parameters = [];
-        foreach ($annotations as $annotation) {
-            if (!$annotation instanceof QueryParameter) {
-                continue;
-            }
-            $parameters[] = $annotation;
 
-            $name = $annotation->name;
+        $reflectionParameters = (new \ReflectionMethod(\get_class($controllerObject), $controller[1]))
+            ->getParameters();
 
-            if ($request->attributes->has($name) && null !== $request->attributes->get($name)) {
-                throw new \InvalidArgumentException(sprintf('QueryParameterFetcherSubscriber parameter conflicts with a path parameter [%s] for route [%s]', $name, $request->attributes->get('_route')));
-            }
+        foreach ($reflectionParameters as $reflectionParameter) {
+            $attributes = $reflectionParameter
+                ->getAttributes(QueryParameter::class, \ReflectionAttribute::IS_INSTANCEOF);
 
-            if ($request->query->has($name)) {
-                switch ($annotation->type) {
-                    case 'string':
-                        $value = (string) $request->query->get($name);
-                        break;
-                    case 'integer':
-                        $value = $request->query->getInt($name);
-                        break;
-                    case 'boolean':
-                        $value = $request->query->getBoolean($name);
-                        break;
-                    case 'number':
-                        /** @var @phpstan-ignore-next-line $value */
-                        $value = $request->query->get($name) + 0;
-                        break;
-                    case 'array':
-                        $separator = match ($annotation->collectionFormat) {
-                            'csv' => ',',
-                            'ssv' => ' ',
-                            'tsv' => "\t",
-                            'pipes' => '|',
-                            // no break
-                            default => throw new \RuntimeException(sprintf('Unsupported collection format [%s]', $annotation->collectionFormat)),
-                        };
-                        $value = explode($separator, (string) $request->query->get($name));
-                        break;
-                    default:
-                        $value = $request->query->get($name);
-                        break;
+            foreach ($attributes as $attribute) {
+                $attribute = $attribute->newInstance();
+
+                \assert($attribute instanceof QueryParameter);
+
+                $parameters[] = $attribute;
+
+                $name = $attribute->name ?? $reflectionParameter->getName();
+
+                if ($request->attributes->has($name) && null !== $request->attributes->get($name)) {
+                    throw new \InvalidArgumentException(sprintf(
+                        'QueryParameterFetcherSubscriber parameter conflicts with a path parameter [%s] for route [%s]',
+                        $name,
+                        $request->attributes->get('_route')
+                    ));
                 }
 
-                $request->attributes->set($name, $value);
+                if ($request->query->has($name)) {
+                    switch ($attribute->type) {
+                        case 'string':
+                            $value = (string) $request->query->get($name);
+                            break;
+                        case 'integer':
+                            $value = $request->query->getInt($name);
+                            break;
+                        case 'boolean':
+                            $value = $request->query->getBoolean($name);
+                            break;
+                        case 'number':
+                            /** @var @phpstan-ignore-next-line $value */
+                            $value = $request->query->get($name) + 0;
+                            break;
+                        case 'array':
+                            $separator = match ($attribute->collectionFormat) {
+                                'csv' => ',',
+                                'ssv' => ' ',
+                                'tsv' => "\t",
+                                'pipes' => '|',
+                                // no break
+                                default => throw new \RuntimeException(sprintf(
+                                    'Unsupported collection format [%s]',
+                                    $attribute->collectionFormat
+                                )),
+                            };
+                            $value = explode($separator, (string) $request->query->get($name));
+                            break;
+                        default:
+                            $value = $request->query->get($name);
+                            break;
+                    }
+
+                    $request->attributes->set($name, $value);
+                }
             }
         }
 

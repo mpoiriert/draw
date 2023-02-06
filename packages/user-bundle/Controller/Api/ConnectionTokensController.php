@@ -4,7 +4,7 @@ namespace Draw\Bundle\UserBundle\Controller\Api;
 
 use Draw\Bundle\UserBundle\DTO\ConnectionToken;
 use Draw\Bundle\UserBundle\DTO\Credential;
-use Draw\Component\OpenApi\Configuration\Deserialization;
+use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
@@ -30,18 +30,14 @@ class ConnectionTokensController extends AbstractController
      * is reach you should call the POST /api/connection-tokens endpoint to get a new one.
      *
      * @Route(name="connection_token_create", methods={"POST"}, path="/connection-tokens")
-     * @OpenApi\Operation(
-     *     tags="Security",
-     *     operationId="drawUserBundleCreateConnectionToken"
-     * )
-     * @Deserialization(name="credential")
      * @Security("not is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @return ConnectionToken The newly created token
      */
+    #[OpenApi\Operation(operationId: 'drawUserBundleCreateConnectionToken', tags: ['Security'])]
     #[Serialization(statusCode: 201)]
     public function createAction(
-        Credential $credential,
+        #[RequestBody] Credential $credential,
         UserProviderInterface $userProvider,
         JwtAuthenticator $authenticator,
         UserPasswordHasherInterface $passwordEncoder
@@ -64,14 +60,11 @@ class ConnectionTokensController extends AbstractController
 
     /**
      * @Route(name="drawUserBundle_connection_token_refresh", methods={"POST"}, path="/connection-tokens/refresh")
-     * @OpenApi\Operation(
-     *     tags="Security",
-     *     operationId="drawUserBundleRefreshConnectionToken"
-     * )
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @return ConnectionToken The refreshed token
      */
+    #[OpenApi\Operation(operationId: 'drawUserBundleRefreshConnectionToken', tags: ['Security'])]
     public function refreshAction(JwtAuthenticator $authenticator): ConnectionToken
     {
         return new ConnectionToken($authenticator->generaToken($this->getUser()));
@@ -79,14 +72,11 @@ class ConnectionTokensController extends AbstractController
 
     /**
      * @Route(name="drawUserBundle_connection_clear", methods={"DELETE"}, path="/connection-tokens/current")
-     * @OpenApi\Operation(
-     *     tags="Security",
-     *     operationId="drawUserBundleDeleteConnectionToken"
-     * )
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @return void Nothing to be returned
      */
+    #[OpenApi\Operation(operationId: 'drawUserBundleDeleteConnectionToken', tags: ['Security'])]
     #[Serialization(statusCode: 204)]
     public function clearAction(): void
     {

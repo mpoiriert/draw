@@ -2,18 +2,14 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
 
-use Doctrine\Common\Annotations\Reader;
+use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Tag;
 
-class TagExtractor implements ExtractorInterface
+class TagAttributeExtractor implements ExtractorInterface
 {
-    public function __construct(private Reader $annotationReader)
-    {
-    }
-
     public static function getDefaultPriority(): int
     {
         return 128;
@@ -38,10 +34,12 @@ class TagExtractor implements ExtractorInterface
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {
-        foreach ($this->annotationReader->getMethodAnnotations($source) as $annotation) {
-            if ($annotation instanceof Tag) {
-                $target->tags[] = $annotation->name;
-            }
+        if (!$this->canExtract($source, $target, $extractionContext)) {
+            throw new ExtractionImpossibleException();
+        }
+
+        foreach ($source->getAttributes(Tag::class, \ReflectionAttribute::IS_INSTANCEOF) as $tag) {
+            $target->tags[] = $tag->newInstance()->name;
         }
     }
 }
