@@ -35,11 +35,6 @@ class ParamConverterExtractor implements ExtractorInterface
     }
 
     /**
-     * Extract the requested data.
-     *
-     * The system is a incrementing extraction system. A extractor can be call before you and you must complete the
-     * extraction.
-     *
      * @param \ReflectionMethod $source
      * @param Operation         $target
      */
@@ -57,6 +52,10 @@ class ParamConverterExtractor implements ExtractorInterface
                 }
                 $type = $parameter->getClass()->getName();
             }
+        }
+
+        if ('createTest' === $target->operationId) {
+            $a = 1;
         }
 
         $target->parameters[] = $parameter = new BodyParameter();

@@ -5,11 +5,6 @@ namespace Draw\Component\OpenApi\Schema;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @author Martin Poirier Theoret <mpoiriert@gmail.com>
- *
- * @Annotation
- */
 class Info
 {
     /**

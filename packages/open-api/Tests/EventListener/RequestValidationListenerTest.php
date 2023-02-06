@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\Tests\EventListener;
 
-use Draw\Component\OpenApi\Configuration\Deserialization;
 use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
@@ -82,8 +81,8 @@ class RequestValidationListenerTest extends TestCase
             null
         );
 
-        $request->attributes->set('_draw_body_validation', $paramConverter = new Deserialization([]));
-        $paramConverter->setName($name = uniqid('name-'));
+        $request->attributes->set('_draw_body_validation', $requestBody = new RequestBody());
+        $requestBody->argumentName = $name = uniqid('name-');
         $request->attributes->set($name, $bodyObject = (object) []);
 
         $this->validator
@@ -127,9 +126,9 @@ class RequestValidationListenerTest extends TestCase
             null
         );
 
-        $request->attributes->set('_draw_body_validation', $paramConverter = new Deserialization([]));
-        $paramConverter->setName($name = uniqid('name-'));
-        $paramConverter->setOptions(['validate' => false]);
+        $request->attributes->set('_draw_body_validation', $requestBody = new RequestBody(validate: false));
+        $requestBody->argumentName = $name = uniqid('name-');
+
         $request->attributes->set($name, (object) []);
 
         $this->validator
@@ -148,9 +147,12 @@ class RequestValidationListenerTest extends TestCase
             null
         );
 
-        $request->attributes->set('_draw_body_validation', $paramConverter = new Deserialization([]));
-        $paramConverter->setName($name = uniqid('name-'));
-        $paramConverter->setOptions(['validator' => ['groups' => $groups = [uniqid('group-')]]]);
+        $request->attributes->set(
+            '_draw_body_validation',
+            $requestBody = new RequestBody(validationGroups: $groups = [uniqid('group-')])
+        );
+        $requestBody->argumentName = $name = uniqid('name-');
+
         $request->attributes->set($name, $bodyObject = (object) []);
 
         $request->attributes->set('_draw_query_parameters_validation', [$queryParameter = new QueryParameter()]);
@@ -208,57 +210,6 @@ class RequestValidationListenerTest extends TestCase
                 $originalParameterViolation,
                 $violationList->get(1),
                 '$.query.'.$queryParameter->name
-            );
-        }
-    }
-
-    public function testOnKernelControllerWithErrorRequestBody(): void
-    {
-        $event = new ControllerEvent(
-            $this->createMock(HttpKernelInterface::class),
-            'gettype',
-            $request = new Request(),
-            null
-        );
-
-        $request->attributes->set('_draw_body_validation', $paramConverter = new RequestBody());
-        $paramConverter->argumentName = $name = uniqid('name-');
-        $paramConverter->validationGroups = $groups = [uniqid('group-')];
-        $request->attributes->set($name, $bodyObject = (object) []);
-
-        $this->validator
-            ->expects(static::exactly(1))
-            ->method('validate')
-            ->with(
-                $bodyObject,
-                null,
-                $groups
-            )
-            ->willReturn(
-                $bodyViolationList = new ConstraintViolationList(),
-            );
-
-        $bodyViolationList->add(
-            $originalBodyViolation = new ConstraintViolation(
-                uniqid('message-'),
-                uniqid('template-'),
-                [uniqid('parameter-1-')],
-                null,
-                'attribute',
-                null,
-            )
-        );
-
-        try {
-            $this->object->onKernelController($event);
-            static::fail('Expect exception of type: '.ConstraintViolationListException::class);
-        } catch (ConstraintViolationListException $error) {
-            $violationList = $error->getViolationList();
-
-            $this->assertViolationIsSimilar(
-                $originalBodyViolation,
-                $violationList->get(0),
-                '$.body.'.$originalBodyViolation->getPropertyPath()
             );
         }
     }

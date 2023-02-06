@@ -2,10 +2,8 @@
 
 namespace Draw\Component\OpenApi\Tests\EventListener;
 
-use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,16 +19,9 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 {
     private RequestQueryParameterFetcherListener $object;
 
-    /**
-     * @var Reader&MockObject
-     */
-    private Reader $reader;
-
     protected function setUp(): void
     {
-        $this->object = new RequestQueryParameterFetcherListener(
-            $this->reader = $this->createMock(Reader::class)
-        );
+        $this->object = new RequestQueryParameterFetcherListener();
     }
 
     public function testConstruct(): void
@@ -53,19 +44,17 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public function testOnKernelControllerUnParsableController(): void
     {
-        $this->reader
-            ->expects(static::never())
-            ->method('getMethodAnnotation');
-
         $event = new ControllerEvent(
             $this->createMock(HttpKernelInterface::class),
             'gettype',
-            new Request(),
+            $request = new Request(),
             null
         );
 
         $this->object
             ->onKernelController($event);
+
+        static::assertEmpty($request->attributes->all());
     }
 
     public function testOnKernelControllerInvoke(): void
@@ -77,32 +66,11 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
             null
         );
 
-        $this->reader
-            ->expects(static::once())
-            ->method('getMethodAnnotations')
-            ->with(
-                static::callback(function (\ReflectionMethod $method) {
-                    $this->assertSame(static::class, $method->getDeclaringClass()->name);
-                    $this->assertSame('__invoke', $method->name);
-
-                    return true;
-                })
-            )
-            ->willReturn([
-                (object) [],
-                $annotation = new QueryParameter(),
-            ]);
-
-        $annotation->name = uniqid('name-');
-        $request->query->set($annotation->name, $value = uniqid('value-'));
+        $request->query->set('test', $value = uniqid('value-'));
 
         $this->object->onKernelController($event);
 
-        static::assertSame($value, $request->attributes->get($annotation->name));
-        static::assertSame(
-            [$annotation],
-            $request->attributes->get('_draw_query_parameters_validation')
-        );
+        static::assertSame($value, $request->attributes->get('test'));
     }
 
     public function testOnKernelControllerAttributeConflict(): void
@@ -114,33 +82,12 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
             null
         );
 
-        $request->attributes->set(
-            $name = uniqid('name-'),
-            uniqid('value')
-        );
+        $request->attributes->set($name = 'test', uniqid('value-'));
 
         $request->attributes->set(
             '_route',
             $route = uniqid('route-')
         );
-
-        $this->reader
-            ->expects(static::once())
-            ->method('getMethodAnnotations')
-            ->with(
-                static::callback(function (\ReflectionMethod $method) {
-                    $this->assertSame(static::class, $method->getDeclaringClass()->name);
-                    $this->assertSame('__invoke', $method->name);
-
-                    return true;
-                })
-            )
-            ->willReturn([
-                (object) [],
-                $annotation = new QueryParameter(),
-            ]);
-
-        $annotation->name = $name;
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -156,71 +103,118 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public function provideOnKernelController(): iterable
     {
-        $arrayValues = [uniqid('value-1-'), uniqid('value-2-')];
+        foreach ((new \ReflectionObject($this))->getMethods() as $reflectionMethod) {
+            if (str_starts_with($reflectionMethod->getName(), 'actionTest')) {
+                $parameters = $reflectionMethod->getParameters();
 
-        yield 'default' => ['', $value = uniqid('value'), $value];
-        yield 'string' => ['string', $value = uniqid('value'), $value];
-        yield 'integer' => ['integer', (string) $value = random_int(\PHP_INT_MIN, \PHP_INT_MAX), $value];
-        yield 'number' => ['number', (string) ($value = random_int(-50, 50) + 0.12), $value];
-        yield 'array-csv' => ['array', implode(',', $arrayValues), $arrayValues, 'csv'];
-        yield 'array-ssv' => ['array', implode(' ', $arrayValues), $arrayValues, 'ssv'];
-        yield 'array-tsv' => ['array', implode("\t", $arrayValues), $arrayValues, 'tsv'];
-        yield 'array-pipes' => ['array', implode('|', $arrayValues), $arrayValues, 'pipes'];
-        yield 'boolean-0-false' => ['boolean', '0', false];
-        yield 'boolean-1-true' => ['boolean', '1', true];
-        yield 'boolean-true-true' => ['boolean', 'true', true];
-        yield 'boolean-false-false' => ['boolean', 'false', false];
+                yield $reflectionMethod->getName() => [
+                    $reflectionMethod->getName(),
+                    $parameters[0]->getDefaultValue(),
+                    $parameters[1]->getDefaultValue(),
+                ];
+            }
+        }
+    }
+
+    public function actionTestDefault(
+        mixed $value = 'expected-value',
+        #[QueryParameter] mixed $expectedValue = 'expected-value',
+    ): void {
+    }
+
+    public function actionTestString(
+        mixed $value = 'expected-value',
+        #[QueryParameter(type: 'string')] mixed $expectedValue = 'expected-value',
+    ): void {
+    }
+
+    public function actionTestInt(
+        mixed $value = '10',
+        #[QueryParameter(type: 'integer')] mixed $expectedValue = 10,
+    ): void {
+    }
+
+    public function actionTestNumber(
+        mixed $value = '10.12',
+        #[QueryParameter(type: 'number')] mixed $expectedValue = 10.12,
+    ): void {
+    }
+
+    public function actionTestArrayCsv(
+        mixed $value = 'test,toto',
+        #[QueryParameter(type: 'array', collectionFormat: 'csv')] mixed $expectedValue = ['test', 'toto'],
+    ): void {
+    }
+
+    public function actionTestArraySsv(
+        mixed $value = 'test toto',
+        #[QueryParameter(type: 'array', collectionFormat: 'ssv')] mixed $expectedValue = ['test', 'toto'],
+    ): void {
+    }
+
+    public function actionTestArrayTsv(
+        mixed $value = "test\ttoto",
+        #[QueryParameter(type: 'array', collectionFormat: 'tsv')] mixed $expectedValue = ['test', 'toto'],
+    ): void {
+    }
+
+    public function actionTestArrayPipes(
+        mixed $value = 'test|toto',
+        #[QueryParameter(type: 'array', collectionFormat: 'pipes')] mixed $expectedValue = ['test', 'toto'],
+    ): void {
+    }
+
+    public function actionTestBoolean0False(
+        mixed $value = '0',
+        #[QueryParameter(type: 'boolean')] mixed $expectedValue = false,
+    ): void {
+    }
+
+    public function actionTestBoolean1True(
+        mixed $value = '1',
+        #[QueryParameter(type: 'boolean')] mixed $expectedValue = true,
+    ): void {
+    }
+
+    public function actionTestBooleanTrueTrue(
+        mixed $value = 'true',
+        #[QueryParameter(type: 'boolean')] mixed $expectedValue = true,
+    ): void {
+    }
+
+    public function actionTestBooleanFalseFalse(
+        mixed $value = 'false',
+        #[QueryParameter(type: 'boolean')] mixed $expectedValue = false,
+    ): void {
     }
 
     /**
      * @dataProvider provideOnKernelController
      */
-    public function testOnKernelController(string $type, string $value, mixed $expectedValue, ?string $arraySeparator = null): void
+    public function testOnKernelController(string $methodName, mixed $value, mixed $expectedValue): void
     {
-        $queryParameter = new QueryParameter();
-        $queryParameter->name = 'test';
-        $queryParameter->type = $type;
-        if ('array' === $type) {
-            $queryParameter->collectionFormat = $arraySeparator;
-        }
-
-        $this->reader
-            ->expects(static::once())
-            ->method('getMethodAnnotations')
-            ->willReturn([$queryParameter]);
-
         $controllerEvent = new ControllerEvent(
             $this->createMock(KernelInterface::class),
-            [$this, 'testOnKernelController'],
+            [$this, $methodName],
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST
         );
 
-        $request->query->set('test', $value);
+        $request->query->set('expectedValue', $value);
 
         $this->object->onKernelController($controllerEvent);
 
         static::assertSame(
             $expectedValue,
-            $request->attributes->get('test')
+            $request->attributes->get('expectedValue')
         );
     }
 
     public function testOnKernelControllerInvalidArrayCollectionFormat(): void
     {
-        $queryParameter = new QueryParameter();
-        $queryParameter->name = 'test';
-        $queryParameter->type = 'array';
-        $queryParameter->collectionFormat = 'multi';
-
-        $this->reader
-            ->expects(static::once())
-            ->method('getMethodAnnotations')
-            ->willReturn([$queryParameter]);
-
         $controllerEvent = new ControllerEvent(
             $this->createMock(KernelInterface::class),
-            [$this, 'testOnKernelController'],
+            [$this, 'multiAction'],
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -229,13 +223,19 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Unsupported collection format [%s]', $queryParameter->collectionFormat)
+            sprintf('Unsupported collection format [%s]', 'multi')
         );
 
         $this->object->onKernelController($controllerEvent);
     }
 
-    public function __invoke(): void
-    {
+    public function __invoke(
+        #[QueryParameter] string $test
+    ): void {
+    }
+
+    public function multiAction(
+        #[QueryParameter(type: 'array', collectionFormat: 'multi')] string $test
+    ): void {
     }
 }

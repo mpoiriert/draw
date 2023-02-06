@@ -61,25 +61,18 @@ draw_open_api:
 
 ## Controller documentation
 
-To document a controller for Open Api you must use the @OpenApi\Tag or @OpenApi\Operation annotations.
+To document a controller for Open Api you must use the #[OpenApi\Tag] or #[OpenApi\Operation] attributes.
 
-```
-/**
- * @OpenApi\Tag("Acme")
- */
+```PHP
+#[OpenApi\Tag("Acme")]
 public function defaultAction()
 {
    //...
 }
 ```
 
-```
-/**
- * @OpenApi\Operation(
- *     operationId="default",
- *     tags={"Acme"}
- * )
- */
+```PHP
+#[OpenApi\Operation(operationId: 'default', tags: ["Acme"])
 public function defaultAction()
 {
    //...
@@ -104,12 +97,12 @@ information for Open Api and also configure which query parameters should be inj
 
 ```
 /**
- * @OpenApi\QueryParameter(name="param1")
- *
  * @param string $param1
  */
-public function createAction($param1 = 'default')
-{
+public function createAction(
+    #[OpenApi\QueryParameter] 
+    string $param1 = 'default'
+    ) {
    //...
 }
 ```

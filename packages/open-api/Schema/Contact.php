@@ -4,11 +4,6 @@ namespace Draw\Component\OpenApi\Schema;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @author Martin Poirier Theoret <mpoiriert@gmail.com>
- *
- * @Annotation
- */
 class Contact
 {
     /**

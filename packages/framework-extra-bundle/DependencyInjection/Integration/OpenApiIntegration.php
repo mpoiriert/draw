@@ -3,7 +3,6 @@
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Draw\Component\OpenApi\Configuration\Deserialization;
 use Draw\Component\OpenApi\Controller\OpenApiController;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\EventListener\RequestValidationListener;
@@ -74,7 +73,6 @@ class OpenApiIntegration implements IntegrationInterface
         $this->removeDefinitions(
             $container,
             [
-                Deserialization::class,
                 Serialization::class,
                 BaseConstraintExtractor::class,
                 ExtractionContext::class,

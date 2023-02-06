@@ -5,11 +5,6 @@ namespace Draw\Component\OpenApi\Schema;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Annotation
- *
- * @Target({"METHOD"})
- */
 class Parameter extends BaseParameter implements ValidationConfigurationInterface
 {
     /**
@@ -52,13 +47,11 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
     /**
      * Sets a default value to the parameter. The type of the value depends on the defined type.
      *
-     * @see http://json-schema.org/latest/json-schema-validation.html#anchor101
-     *
-     * @var mixed
+     * @see http://json-schema.org/latest/json-schema-validation.html#anchor101d
      *
      * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
-    public $default;
+    public mixed $default = null;
 
     /**
      * @see  http://json-schema.org/latest/json-schema-validation.html#anchor17

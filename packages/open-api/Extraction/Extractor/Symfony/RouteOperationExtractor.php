@@ -48,9 +48,7 @@ class RouteOperationExtractor implements ExtractorInterface
                 }
             }
 
-            $target->parameters[] = $pathParameter = new PathParameter();
-            $pathParameter->name = $pathVariable;
-            $pathParameter->type = 'string';
+            $target->parameters[] = new PathParameter($pathVariable);
         }
     }
 }

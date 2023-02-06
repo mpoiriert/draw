@@ -5,7 +5,6 @@ namespace Draw\Component\OpenApi\EventListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -41,12 +40,10 @@ class RequestValidationListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $constraints = [];
         if ($request->attributes->has('_draw_body_validation')) {
-            /** @var ParamConverter|RequestBody $configuration */
             $configuration = $request->attributes->get('_draw_body_validation');
+            \assert($configuration instanceof RequestBody);
 
-            $parameterName = $configuration instanceof RequestBody
-                ? $configuration->argumentName
-                : $configuration->getName();
+            $parameterName = $configuration->argumentName;
 
             $constraints = array_merge(
                 $constraints,
@@ -61,7 +58,8 @@ class RequestValidationListener implements EventSubscriberInterface
         }
 
         foreach ($request->attributes->get('_draw_query_parameters_validation', []) as $parameter) {
-            /* @var QueryParameter $parameter */
+            \assert($parameter instanceof QueryParameter);
+
             $constraints = array_merge(
                 $constraints,
                 $this->bonifyConstraints(
@@ -80,7 +78,7 @@ class RequestValidationListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array|ConstraintViolation[]
+     * @return ConstraintViolation[]
      */
     private function bonifyConstraints(ConstraintViolationListInterface $violations, string $pathPrefix): array
     {
@@ -106,17 +104,10 @@ class RequestValidationListener implements EventSubscriberInterface
         return $constraintViolations;
     }
 
-    private function validate($object, ParamConverter|RequestBody $paramConverter): ConstraintViolationListInterface
+    private function validate($object, RequestBody $paramConverter): ConstraintViolationListInterface
     {
-        if ($paramConverter instanceof RequestBody && $paramConverter->validate) {
+        if ($paramConverter->validate) {
             return $this->validator->validate($object, null, $paramConverter->validationGroups ?? ['Default']);
-        } elseif ($paramConverter instanceof ParamConverter) { // todo remove this when we drop support for ParamConverter
-            $options = $paramConverter->getOptions();
-            if ($options['validate'] ?? true) {
-                $groups = $paramConverter->getOptions()['validator']['groups'] ?? ['Default'];
-
-                return $this->validator->validate($object, null, $groups);
-            }
         }
 
         return new ConstraintViolationList();

@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\Symfony;
 
-use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor;
@@ -22,10 +21,8 @@ class RouterRootSchemaExtractor implements ExtractorInterface
         return 256;
     }
 
-    public function __construct(
-        private Reader $annotationReader,
-        private ?RouteVersionMatcherInterface $versionMatcher = null
-    ) {
+    public function __construct(private ?RouteVersionMatcherInterface $versionMatcher = null)
+    {
     }
 
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
@@ -106,24 +103,22 @@ class RouterRootSchemaExtractor implements ExtractorInterface
     }
 
     /**
-     * Return the operation for the route if the route is a Api route.
+     * Return the operation for the route if the route is an Api route.
      */
     private function getOperation(Route $route, \ReflectionMethod $method): ?Operation
     {
-        $operation = $this->annotationReader->getMethodAnnotation($method, Operation::class);
+        $attribute = $method->getAttributes(Operation::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null;
 
-        if ($operation instanceof Operation) {
-            return $operation;
+        if ($attribute) {
+            return $attribute->newInstance();
         }
 
         if ($route->getDefault('_draw_open_api')) {
             return new Operation();
         }
 
-        foreach ($this->annotationReader->getMethodAnnotations($method) as $annotation) {
-            if ($annotation instanceof Tag) {
-                return new Operation();
-            }
+        if ($method->getAttributes(Tag::class, \ReflectionAttribute::IS_INSTANCEOF)) {
+            return new Operation();
         }
 
         return null;

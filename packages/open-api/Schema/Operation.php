@@ -5,11 +5,7 @@ namespace Draw\Component\OpenApi\Schema;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @author Martin Poirier Theoret <mpoiriert@gmail.com>
- *
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_METHOD)]
 class Operation implements VendorExtensionSupportInterface
 {
     use VendorExtensionSupportTrait;
@@ -133,4 +129,12 @@ class Operation implements VendorExtensionSupportInterface
      * @JMS\Type("array<Draw\Component\OpenApi\Schema\SecurityRequirement>")
      */
     public ?array $security = null;
+
+    public function __construct(
+        ?string $operationId = null,
+        ?array $tags = null,
+    ) {
+        $this->operationId = $operationId;
+        $this->tags = $tags;
+    }
 }
