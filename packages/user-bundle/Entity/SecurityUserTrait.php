@@ -7,18 +7,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 trait SecurityUserTrait
 {
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email()
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\Email]
+    #[Assert\NotBlank]
     private ?string $email = null;
 
     /**
      * The hashed password.
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $password = null;
 
     /**
@@ -26,9 +23,7 @@ trait SecurityUserTrait
      */
     private ?string $plainPassword = null;
 
-    /**
-     * @ORM\Column(name="last_password_updated_at", type="datetime_immutable", nullable=true)
-     */
+    #[ORM\Column(name: 'last_password_updated_at', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $passwordUpdatedAt = null;
 
     public function getEmail(): ?string

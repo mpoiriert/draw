@@ -4,8 +4,8 @@ namespace Draw\Component\Tester;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\ORM\Tools\Setup;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -15,16 +15,13 @@ trait DoctrineOrmTrait
      * @param array       $entityDirectories To parse annotations
      * @param string|null $dsn               Will default on getenv('DATABASE_URL')
      */
-    protected static function setUpMySqlWithAnnotationDriver(
+    protected static function setUpMySqlWithAttributeDriver(
         array $entityDirectories,
         ?string $dsn = null
     ): ?EntityManagerInterface {
-        $config = Setup::createAnnotationMetadataConfiguration(
+        $config = ORMSetup::createAttributeMetadataConfiguration(
             $entityDirectories,
-            true,
-            null,
-            null,
-            false
+            true
         );
 
         $entityManager = EntityManager::create(

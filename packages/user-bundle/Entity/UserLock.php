@@ -6,52 +6,36 @@ use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\Core\DateTimeUtils;
 use Ramsey\Uuid\Uuid;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="draw_user__user_lock")
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'draw_user__user_lock')]
+#[ORM\HasLifecycleCallbacks]
 class UserLock implements \Stringable
 {
     final public const REASON_PASSWORD_EXPIRED = 'password-expired';
 
     final public const REASON_MANUAL_LOCK = 'manual-lock';
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="guid")
-     */
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'guid')]
     private ?string $id = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Draw\Bundle\UserBundle\Entity\LockableUserInterface")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: LockableUserInterface::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?LockableUserInterface $user = null;
 
-    /**
-     * @ORM\Column(name="reason", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: 'reason', type: 'string', length: 255, nullable: false)]
     private ?string $reason = null;
 
-    /**
-     * @ORM\Column(name="created_at", type="datetime_immutable", nullable=false)
-     */
+    #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @ORM\Column(name="lock_on", type="datetime_immutable", nullable=true)
-     */
+    #[ORM\Column(name: 'lock_on', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $lockOn = null;
 
-    /**
-     * @ORM\Column(name="expires_at", type="datetime_immutable", nullable=true)
-     */
+    #[ORM\Column(name: 'expires_at', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $expiresAt = null;
 
-    /**
-     * @ORM\Column(name="unlock_until", type="datetime_immutable", nullable=true)
-     */
+    #[ORM\Column(name: 'unlock_until', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $unlockUntil = null;
 
     public function __construct(?string $reason = null)
@@ -61,9 +45,7 @@ class UserLock implements \Stringable
         }
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function getId(): string
     {
         if (null === $this->id) {
@@ -112,9 +94,7 @@ class UserLock implements \Stringable
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt ?: $this->createdAt = new \DateTimeImmutable();

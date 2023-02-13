@@ -8,14 +8,11 @@ trait ConfigurationTrait
 {
     /**
      * @var string[]
-     *
-     * @ORM\Column(name="two_factor_authentication_enabled_providers", type="json", nullable=true)
      */
+    #[ORM\Column(name: 'two_factor_authentication_enabled_providers', type: 'json', nullable: true)]
     private ?array $twoFactorAuthenticationEnabledProviders = [];
 
-    /**
-     * @ORM\Column(name="force_enabling_two_factor_authentication", type="boolean", nullable=false, options={"default":"0"})
-     */
+    #[ORM\Column(name: 'force_enabling_two_factor_authentication', type: 'boolean', nullable: false, options: ['default' => '0'])]
     private bool $forceEnablingTwoFactorAuthentication = false;
 
     public function getTwoFactorAuthenticationEnabledProviders(): array

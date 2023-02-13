@@ -9,20 +9,14 @@ use Ramsey\Uuid\Uuid;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 use Symfony\Component\Console\Input\ArrayInput;
 
-/**
- * @ORM\Entity
- * @ORM\Table(
- *     name="command__execution",
- *     indexes={
- *         @ORM\Index(name="state", columns={"state"}),
- *         @ORM\Index(name="command", columns={"command"}),
- *         @ORM\Index(name="command_name", columns={"command_name"}),
- *         @ORM\Index(name="state_updated", columns={"state", "updated_at"}),
- *         @ORM\Index(name="auto_acknowledge_reason", columns={"auto_acknowledge_reason"})
- *     }
- * )
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'command__execution')]
+#[ORM\Index(columns: ['state'], name: 'state')]
+#[ORM\Index(columns: ['command'], name: 'command')]
+#[ORM\Index(columns: ['command_name'], name: 'command_name')]
+#[ORM\Index(columns: ['state', 'updated_at'], name: 'state_updated')]
+#[ORM\Index(columns: ['auto_acknowledge_reason'], name: 'auto_acknowledge_reason')]
+#[ORM\HasLifecycleCallbacks]
 class Execution implements \Stringable
 {
     final public const STATE_INITIALIZED = 'initialized';
@@ -46,59 +40,41 @@ class Execution implements \Stringable
         self::STATE_AUTO_ACKNOWLEDGE,
     ];
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="guid")
-     */
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'guid')]
     private ?string $id = null;
 
     /**
-     * This is the command name when created trough the dashboard.
-     *
-     * @ORM\Column(name="command", type="string", length=40, nullable=false, options={"default": "N/A"})
+     * This is the command name when created through the dashboard.
      */
+    #[ORM\Column(name: 'command', type: 'string', length: 40, nullable: false, options: ['default' => 'N/A'])]
     private ?string $command = null;
 
-    /**
-     * @ORM\Column(name="command_name", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: 'command_name', type: 'string', length: 255, nullable: false)]
     private ?string $commandName = null;
 
-    /**
-     * @ORM\Column(name="state", type="string", length=40, nullable=false)
-     */
+    #[ORM\Column(name: 'state', type: 'string', length: 40, nullable: false)]
     private ?string $state = null;
 
-    /**
-     * @ORM\Column(name="input", type="json", nullable=false)
-     */
+    #[ORM\Column(name: 'input', type: 'json', nullable: false)]
     private array $input = [];
 
     /**
      * The execution output of the command.
-     *
-     * @ORM\Column(name="output", type="text", nullable=false, options={"default": ""})
      */
+    #[ORM\Column(name: 'output', type: 'text', nullable: false, options: ['default' => ''])]
     private string $output = '';
 
-    /**
-     * @ORM\Column(name="created_at", type="datetime_immutable", nullable=false)
-     */
+    #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    /**
-     * @ORM\Column(name="updated_at", type="datetime_immutable", nullable=false)
-     */
+    #[ORM\Column(name: 'updated_at', type: 'datetime_immutable', nullable: false)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    /**
-     * @ORM\Column(name="auto_acknowledge_reason", type="string", nullable=true)
-     */
+    #[ORM\Column(name: 'auto_acknowledge_reason', type: 'string', nullable: true)]
     private ?string $autoAcknowledgeReason = null;
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function getId(): string
     {
         if (null === $this->id) {
@@ -175,9 +151,7 @@ class Execution implements \Stringable
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt ?: $this->createdAt = new \DateTimeImmutable();
@@ -192,9 +166,7 @@ class Execution implements \Stringable
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt ?: $this->updatedAt = DateTimeUtils::toDateTimeImmutable($this->getCreatedAt());
@@ -233,9 +205,7 @@ class Execution implements \Stringable
         return (string) (new ArrayInput($this->getInput()));
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function updateTimestamp(PreUpdateEventArgs $eventArgs): void
     {
         if (!$eventArgs->hasChangedField('updatedAt')) {
