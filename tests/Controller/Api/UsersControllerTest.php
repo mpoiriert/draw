@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Api;
 use App\Entity\User;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class UsersControllerTest extends TestCase
 {
@@ -93,5 +94,16 @@ class UsersControllerTest extends TestCase
         $this->httpTester()
             ->delete('/api/users/'.$user->id)
             ->assertStatus(204);
+    }
+
+    public function testCreateUnsupportedContentType(): void
+    {
+        $this->httpTester()
+            ->post(
+                '/api/users',
+                '<test />',
+                ['Content-Type' => 'application/xml']
+            )
+            ->assertStatus(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
     }
 }
