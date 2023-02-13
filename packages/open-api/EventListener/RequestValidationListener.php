@@ -6,7 +6,7 @@ use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema\QueryParameter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -26,7 +26,7 @@ class RequestValidationListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            KernelEvents::CONTROLLER => ['onKernelController', -5],
+            KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', -5],
         ];
     }
 
@@ -35,7 +35,7 @@ class RequestValidationListener implements EventSubscriberInterface
         $this->prefixes = array_merge(self::PREFIXES_DEFAULT, $prefixes);
     }
 
-    public function onKernelController(ControllerEvent $event): void
+    public function onKernelController(ControllerArgumentsEvent $event): void
     {
         $request = $event->getRequest();
         $constraints = [];
