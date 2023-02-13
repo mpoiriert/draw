@@ -51,7 +51,7 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
 
                 $parameters[] = $attribute;
 
-                $name = $attribute->name ?? $reflectionParameter->getName();
+                $name = $attribute->name ??= $reflectionParameter->getName();
 
                 if ($request->attributes->has($name) && null !== $request->attributes->get($name)) {
                     throw new \InvalidArgumentException(sprintf(
