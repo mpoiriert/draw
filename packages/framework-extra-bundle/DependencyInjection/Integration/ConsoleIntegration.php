@@ -56,7 +56,7 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
                     'mappings' => [
                         'DrawConsole' => [
                             'is_bundle' => false,
-                            'type' => 'annotation',
+                            'type' => 'attribute',
                             'dir' => \dirname($reflection->getFileName()),
                             'prefix' => $reflection->getNamespaceName(),
                         ],

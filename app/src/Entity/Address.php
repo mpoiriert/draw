@@ -5,33 +5,23 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
-/**
- * @ORM\Embeddable
- */
+#[ORM\Embeddable]
 class Address
 {
-    /**
-     * @ORM\Column(name="street", type="string", options={"default": ""})
-     * @Serializer\Type("string")
-     */
+    #[ORM\Column(name: 'street', type: 'string', options: ['default' => ''])]
+    #[Serializer\Type(name: 'string')]
     private ?string $street = '';
 
-    /**
-     * @ORM\Column(name="postal_code", type="string", options={"default": ""})
-     * @Serializer\Type("string")
-     */
+    #[ORM\Column(name: 'postal_code', type: 'string', options: ['default' => ''])]
+    #[Serializer\Type(name: 'string')]
     private ?string $postalCode = '';
 
-    /**
-     * @ORM\Column(name="city", type="string", options={"default": ""})
-     * @Serializer\Type("string")
-     */
+    #[ORM\Column(name: 'city', type: 'string', options: ['default' => ''])]
+    #[Serializer\Type(name: 'string')]
     private ?string $city = '';
 
-    /**
-     * @ORM\Column(name="country", type="string", options={"default": ""})
-     * @Serializer\Type("string")
-     */
+    #[ORM\Column(name: 'country', type: 'string', options: ['default' => ''])]
+    #[Serializer\Type(name: 'string')]
     private ?string $country = '';
 
     public function getStreet(): ?string

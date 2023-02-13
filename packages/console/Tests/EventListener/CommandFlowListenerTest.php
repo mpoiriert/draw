@@ -56,7 +56,7 @@ class CommandFlowListenerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$entityManager = static::setUpMySqlWithAnnotationDriver(
+        self::$entityManager = static::setUpMySqlWithAttributeDriver(
             [\dirname((new \ReflectionClass(Execution::class))->getFileName())],
         );
     }

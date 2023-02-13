@@ -6,22 +6,18 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait DrawMessageTagTrait
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\ManyToOne(
-     *     targetEntity="Draw\Component\Messenger\Transport\Entity\DrawMessageInterface",
-     *     inversedBy="tags",
-     * )
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[ORM\ManyToOne(
+        targetEntity: DrawMessageInterface::class,
+        inversedBy: 'tags',
+    )]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?DrawMessageInterface $message = null;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\Column(name="name", type="string")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[ORM\Column(type: 'string')]
     private ?string $name = null;
 
     public function setName(string $name): self

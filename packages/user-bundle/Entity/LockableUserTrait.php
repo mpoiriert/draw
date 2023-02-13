@@ -14,20 +14,16 @@ use function Draw\Component\Core\use_trait;
 
 trait LockableUserTrait
 {
-    /**
-     * @ORM\Column(name="manual_lock", type="boolean", nullable=false, options={"default":"0"})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => '0'])]
     private bool $manualLock = false;
 
-    /**
-     * @ORM\OneToMany(
-     *      targetEntity="Draw\Bundle\UserBundle\Entity\UserLock",
-     *      orphanRemoval=true,
-     *      mappedBy="user",
-     *      cascade={"persist"}
-     * )
-     * @ORM\OrderBy({"lockOn":"ASC", "createdAt":"ASC"})
-     */
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: UserLock::class,
+        cascade: ['persist'],
+        orphanRemoval: true,
+    )]
+    #[ORM\OrderBy(['lockOn' => 'ASC', 'createdAt' => 'ASC'])]
     private ?Collection $userLocks = null;
 
     public function hasManualLock(): bool

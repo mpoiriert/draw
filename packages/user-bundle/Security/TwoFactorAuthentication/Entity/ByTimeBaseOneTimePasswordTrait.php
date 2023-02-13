@@ -10,9 +10,7 @@ trait ByTimeBaseOneTimePasswordTrait
 {
     use ConfigurationTrait;
 
-    /**
-     * @ORM\Column(name="totp_secret", type="string", nullable=true)
-     */
+    #[ORM\Column(name: 'totp_secret', type: 'string', nullable: true)]
     private ?string $totpSecret = null;
 
     public function getTotpSecret(): ?string

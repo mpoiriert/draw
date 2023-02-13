@@ -4,14 +4,10 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class ChildObject1 extends BaseObject
 {
-    /**
-     * @ORM\Column(name="attribute_1", type="string")
-     */
+    #[ORM\Column(name: 'attribute_1', type: 'string')]
     private ?string $attribute1 = null;
 
     public function getAttribute1(): ?string

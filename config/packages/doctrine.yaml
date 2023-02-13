@@ -17,10 +17,10 @@ doctrine:
         mappings:
             App:
                 is_bundle: false
-                type: annotation
+                type: 'attribute'
                 dir: '%kernel.project_dir%/app/src/Entity'
                 prefix: 'App\Entity'
-                alias: App
+                alias: 'App'
 
 when@prod:
     doctrine:

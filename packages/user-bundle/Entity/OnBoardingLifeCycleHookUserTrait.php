@@ -11,9 +11,7 @@ use function Draw\Component\Core\use_trait;
 
 trait OnBoardingLifeCycleHookUserTrait
 {
-    /**
-     * @ORM\PostPersist()
-     */
+    #[ORM\PrePersist]
     public function raiseUserCreated(): void
     {
         switch (true) {

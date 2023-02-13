@@ -28,12 +28,10 @@ use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="draw_acme__user")
- * @ORM\HasLifecycleCallbacks
- * @UniqueEntity(fields={"email"})
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'draw_acme__user')]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(fields: ['email'])]
 class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface, TwoFactorInterface, ByEmailInterface, ByTimeBaseOneTimePasswordInterface
 {
     use ByEmailTrait;
@@ -54,78 +52,50 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         self::LEVEL_ADMIN,
     ];
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="guid")
-     * @Serializer\ReadOnlyProperty
-     */
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'guid')]
+    #[Serializer\ReadOnlyProperty]
     private ?string $id = null;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     /**
      * @var Collection<Tag>
-     *
-     * @ORM\ManyToMany(
-     *     targetEntity="App\Entity\Tag"
-     * )
      */
+    #[ORM\ManyToMany(targetEntity: Tag::class)]
     private Collection $tags;
 
-    /**
-     * @ORM\Column(name="level", type="string", nullable=false, options={"default": "user"})
-     */
+    #[ORM\Column(type: 'string', nullable: false, options: ['default' => 'user'])]
     private string $level = 'user';
 
-    /**
-     * @ORM\Embedded(class="App\Entity\Address", columnPrefix="address_")
-     * @Assert\Valid
-     */
+    #[ORM\Embedded(class: Address::class, columnPrefix: 'address_')]
+    #[Assert\Valid]
     private Address $address;
 
     /**
-     * @var UserAddress[]|Collection
-     *
-     * @Assert\Valid
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\UserAddress",
-     *     cascade={"persist"},
-     *     mappedBy="user",
-     *     orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"position": "ASC"})
+     * @var Collection<UserAddress>
      */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAddress::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC'])]
+    #[Assert\Valid]
     private Collection $userAddresses;
 
     /**
      * User date of birth.
-     *
-     * @ORM\Column(name="date_of_birth", type="datetime_immutable", nullable=true)
      */
+    #[ORM\Column(name: 'date_of_birth', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $dateOfBirth = null;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private string $comment = '';
 
-    /**
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\ChildObject1"
-     * )
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: ChildObject1::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?ChildObject1 $childObject1 = null;
 
-    /**
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\ChildObject2"
-     * )
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: ChildObject2::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?ChildObject2 $childObject2 = null;
 
     public function __construct()
@@ -137,9 +107,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         $this->onHoldMessages[NewUserMessage::class] = new NewUserMessage($this);
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function getId(): string
     {
         if (null === $this->id) {
@@ -203,7 +171,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * @return Collection<UserAddress>
      */
-    public function getUserAddresses()
+    public function getUserAddresses(): Collection
     {
         return $this->userAddresses;
     }

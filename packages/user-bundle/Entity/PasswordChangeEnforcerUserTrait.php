@@ -11,9 +11,7 @@ use function Draw\Component\Core\use_trait;
 
 trait PasswordChangeEnforcerUserTrait
 {
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":"0"})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => '0'])]
     private bool $needChangePassword = false;
 
     public function setNeedChangePassword(bool $needChangePassword): void

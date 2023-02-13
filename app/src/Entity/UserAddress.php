@@ -6,38 +6,25 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="acme__user_address")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'acme__user_address')]
 class UserAddress
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(name="id", type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private ?int $id = null;
 
-    /**
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\User",
-     *     inversedBy="userAddresses"
-     * )
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userAddresses')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
-    /**
-     * @ORM\Embedded(class="App\Entity\Address")
-     * @Serializer\Type("App\Entity\Address")
-     * @Assert\Valid
-     */
+    #[ORM\Embedded(class: Address::class)]
+    #[Assert\Valid]
+    #[Serializer\Type(name: Address::class)]
     private ?Address $address;
 
-    /**
-     * @ORM\Column(name="position", type="integer", options={"default": "0"}, nullable=false)
-     */
+    #[ORM\Column(name: 'position', type: 'integer', nullable: false, options: ['default' => 0])]
     private ?int $position = null;
 
     public function __construct()

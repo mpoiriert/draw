@@ -8,14 +8,10 @@ trait ByEmailTrait
 {
     use ConfigurationTrait;
 
-    /**
-     * @ORM\Column(name="email_auth_code", type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $emailAuthCode = null;
 
-    /**
-     * @ORM\Column(name="email_auth_code_generated_at", type="datetime_immutable", nullable=true)
-     */
+    #[ORM\Column(name: 'email_auth_code_generated_at', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $emailAuthCodeGeneratedAt = null;
 
     public function isEmailAuthEnabled(): bool
