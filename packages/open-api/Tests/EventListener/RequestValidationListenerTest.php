@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -50,7 +50,7 @@ class RequestValidationListenerTest extends TestCase
     {
         static::assertSame(
             [
-                KernelEvents::CONTROLLER => ['onKernelController', -5],
+                KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', -5],
             ],
             $this->object::getSubscribedEvents()
         );
@@ -58,9 +58,10 @@ class RequestValidationListenerTest extends TestCase
 
     public function testOnKernelControllerNoValidation(): void
     {
-        $event = new ControllerEvent(
+        $event = new ControllerArgumentsEvent(
             $this->createMock(HttpKernelInterface::class),
             'gettype',
+            [],
             new Request(),
             null
         );
@@ -74,9 +75,10 @@ class RequestValidationListenerTest extends TestCase
 
     public function testOnKernelControllerBodyValidationNoError(): void
     {
-        $event = new ControllerEvent(
+        $event = new ControllerArgumentsEvent(
             $this->createMock(HttpKernelInterface::class),
             'gettype',
+            [],
             $request = new Request(),
             null
         );
@@ -96,9 +98,10 @@ class RequestValidationListenerTest extends TestCase
 
     public function testOnKernelControllerQueryParametersValidationNoError(): void
     {
-        $event = new ControllerEvent(
+        $event = new ControllerArgumentsEvent(
             $this->createMock(HttpKernelInterface::class),
             'gettype',
+            [],
             $request = new Request(),
             null
         );
@@ -119,9 +122,10 @@ class RequestValidationListenerTest extends TestCase
 
     public function testOnKernelControllerDoNotValidate(): void
     {
-        $event = new ControllerEvent(
+        $event = new ControllerArgumentsEvent(
             $this->createMock(HttpKernelInterface::class),
             'gettype',
+            [],
             $request = new Request(),
             null
         );
@@ -140,9 +144,10 @@ class RequestValidationListenerTest extends TestCase
 
     public function testOnKernelControllerWithError(): void
     {
-        $event = new ControllerEvent(
+        $event = new ControllerArgumentsEvent(
             $this->createMock(HttpKernelInterface::class),
             'gettype',
+            [],
             $request = new Request(),
             null
         );
