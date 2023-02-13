@@ -22,13 +22,7 @@ class RequestBodyValueResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        $contentType = $request->headers->get('Content-Type');
-
-        return \count($argument->getAttributes(RequestBody::class, ArgumentMetadata::IS_INSTANCEOF))
-            && (
-                str_starts_with($contentType, 'application/json')
-                || str_starts_with($contentType, 'multipart/form-data')
-            );
+        return (bool) \count($argument->getAttributes(RequestBody::class, ArgumentMetadata::IS_INSTANCEOF));
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
