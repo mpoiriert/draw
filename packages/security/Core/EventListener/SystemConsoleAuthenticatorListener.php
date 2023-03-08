@@ -36,9 +36,8 @@ class SystemConsoleAuthenticatorListener implements EventSubscriberInterface
             ->addOption(
                 self::OPTION_AS_SYSTEM,
                 null,
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_NONE,
                 'Execute the current command connected as the system user.',
-                $this->systemAutoLogin
             );
     }
 
@@ -48,7 +47,13 @@ class SystemConsoleAuthenticatorListener implements EventSubscriberInterface
 
         $input->bind($consoleCommandEvent->getCommand()->getDefinition());
 
-        if (!$input->hasOption(self::OPTION_AS_SYSTEM) || !$input->getOption(self::OPTION_AS_SYSTEM)) {
+        $connect = $this->systemAutoLogin
+            || (
+                $input->hasOption(self::OPTION_AS_SYSTEM)
+                && $input->getOption(self::OPTION_AS_SYSTEM)
+            );
+
+        if (!$connect) {
             return;
         }
 
