@@ -22,7 +22,7 @@ trait ConfigurationTrait
 
     public function setTwoFactorAuthenticationEnabledProviders(array $providers): void
     {
-        $this->twoFactorAuthenticationEnabledProviders = array_values($providers);
+        $this->twoFactorAuthenticationEnabledProviders = array_values(array_unique($providers));
     }
 
     public function enableTwoFActorAuthenticationProvider(string $provider): void
