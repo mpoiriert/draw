@@ -7,9 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TestController
 {
-    /**
-     * @Route(path="/test")
-     */
+    #[Route(path: '/test')]
     public function testAction(): Response
     {
         return new Response();

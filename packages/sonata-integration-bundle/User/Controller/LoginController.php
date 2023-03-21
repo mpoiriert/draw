@@ -25,9 +25,7 @@ final class LoginController extends AbstractController
     {
     }
 
-    /**
-     * @Route("/resetting/forgot-password", name="admin_forgot_password", methods={"GET", "POST"})
-     */
+    #[Route(path: '/resetting/forgot-password', name: 'admin_forgot_password', methods: ['GET', 'POST'])]
     public function forgotPasswordAction(
         Request $request,
         MailerInterface $mailer
@@ -51,25 +49,19 @@ final class LoginController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/resetting/check-email", name="admin_check_email")
-     */
+    #[Route(path: '/resetting/check-email', name: 'admin_check_email')]
     public function checkEmailAction(): Response
     {
         return $this->render('@DrawUser/security/check_email.html.twig');
     }
 
-    /**
-     * @Route("/confirmation", name="draw_user_account_confirmation")
-     */
+    #[Route(path: '/confirmation', name: 'draw_user_account_confirmation')]
     public function confirmationAction(): Response
     {
         return $this->render('@DrawUser/security/confirmation.html.twig');
     }
 
-    /**
-     * @Route("/login", name="admin_login")
-     */
+    #[Route(path: '/login', name: 'admin_login')]
     public function loginAction(): Response
     {
         if ($this->getUser() instanceof UserInterface) {
@@ -91,17 +83,13 @@ final class LoginController extends AbstractController
         );
     }
 
-    /**
-     * @Route("/logout", name="admin_logout")
-     */
+    #[Route(path: '/logout', name: 'admin_logout')]
     public function logoutAction(): void
     {
         // Left empty intentionally because this will be handled by Symfony.
     }
 
-    /**
-     * @Route("/change-password", name="admin_change_password")
-     */
+    #[Route(path: '/change-password', name: 'admin_change_password')]
     public function changePasswordAction(
         Request $request,
         UserFeedInterface $userFeed,

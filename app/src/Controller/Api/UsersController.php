@@ -9,8 +9,8 @@ use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\DoctrineExtra\ORM\EntityHandler;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -20,12 +20,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class UsersController extends AbstractController
 {
     /**
-     * @Route(methods={"POST"}, path="/users")
-     *
-     * @IsGranted("ROLE_ADMIN")
-     *
      * @return User The newly created user
      */
+    #[Route(path: '/users', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userCreate')]
     public function createAction(
         #[RequestBody] User $target,
@@ -38,10 +36,9 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route(name="me", methods={"GET"}, path="/me")
-     *
      * @return User The currently connected user
      */
+    #[Route(path: '/me', name: 'me', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'me')]
     public function meAction(): User
     {
@@ -49,11 +46,10 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route(methods={"PUT"}, path="/users/{id}")
-     * @IsGranted("ROLE_ADMIN")
-     *
      * @return User The update user
      */
+    #[Route(path: '/users/{id}', methods: ['PUT'])]
+    #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userEdit')]
     public function editAction(
         #[RequestBody(propertiesMap: ['id' => 'id'])] User $target,
@@ -65,14 +61,12 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route(methods={"PUT"}, path="/users/{id}/tags")
-     * @IsGranted("ROLE_ADMIN")
-     *
-     * @ParamConverter("target", class=User::class, converter="doctrine.orm")
-     *
      * @return array<Tag> The new list of tags
      */
+    #[Route(path: '/users/{id}/tags', methods: ['PUT'])]
+    #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userSetTags')]
+    #[Entity('target', class: User::class)]
     public function setTagsAction(
         User $target,
         #[RequestBody(type: 'array<App\Entity\Tag>')] array $tags,
@@ -86,13 +80,11 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route(name="user_get", methods={"GET"}, path="/users/{id}")
-     * @IsGranted("ROLE_ADMIN")
-     *
-     * @ParamConverter("target", class=User::class, converter="doctrine.orm")
-     *
      * @return User The user
      */
+    #[Route(path: '/users/{id}', name: 'user_get', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[Entity('target', class: User::class)]
     #[OpenApi\Operation(operationId: 'userGet')]
     public function getAction(User $target): User
     {
@@ -100,13 +92,11 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @Route(name="user_delete", methods={"DELETE"}, path="/users/{id}")
-     * @IsGranted("ROLE_ADMIN")
-     *
-     * @ParamConverter("target", class=User::class, converter="doctrine.orm")
-     *
      * @return void Empty response mean success
      */
+    #[Route(path: '/users/{id}', name: 'user_delete', methods: ['DELETE'])]
+    #[Entity('target', class: User::class)]
+    #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userDelete')]
     #[Serialization(statusCode: 204)]
     public function deleteAction(User $target, EntityManagerInterface $entityManager): void
@@ -118,10 +108,9 @@ class UsersController extends AbstractController
     /**
      * Return a paginator list of users.
      *
-     * @Route(methods={"GET"}, path="/users")
-     *
      * @return User[] All users
      */
+    #[Route(path: '/users', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'userList')]
     public function listAction(EntityHandler $entityHandler): array
     {
@@ -131,10 +120,9 @@ class UsersController extends AbstractController
     /**
      * Send a reset password email to the user.
      *
-     * @Route(methods={"POST"}, path="/users/{id}/reset-password-email")
-     *
      * @return void No return value mean email has been sent
      */
+    #[Route(path: '/users/{id}/reset-password-email', methods: ['POST'])]
     #[OpenApi\Operation(operationId: 'userSendResetPasswordEmail')]
     public function sendResetPasswordEmail(User $target): void
     {
