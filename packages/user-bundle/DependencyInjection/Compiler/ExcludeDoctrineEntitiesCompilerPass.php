@@ -9,14 +9,14 @@ class ExcludeDoctrineEntitiesCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has('doctrine.orm.default_annotation_metadata_driver')) {
+        if (!$container->has('doctrine.orm.default_attribute_metadata_driver')) {
             return;
         }
 
-        $container->getDefinition('doctrine.orm.default_annotation_metadata_driver')
+        $container->getDefinition('doctrine.orm.default_attribute_metadata_driver')
             ->addMethodCall(
                 'addExcludePaths',
-                [$container->getParameter('draw.user.orm.default_annotation_metadata_driver.exclude_paths')]
+                [$container->getParameter('draw.user.orm.metadata_driver.exclude_paths')]
             );
     }
 }
