@@ -37,7 +37,7 @@ class DrawUserExtensionWithAccountLockerEnabledTest extends DrawUserExtensionTes
             [],
             $this
                 ->getContainerBuilder()
-                ->getParameter('draw.user.orm.default_annotation_metadata_driver.exclude_paths')
+                ->getParameter('draw.user.orm.metadata_driver.exclude_paths')
         );
     }
 }

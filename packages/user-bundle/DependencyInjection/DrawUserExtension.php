@@ -137,7 +137,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         }
 
         $container->setParameter(
-            'draw.user.orm.default_annotation_metadata_driver.exclude_paths',
+            'draw.user.orm.metadata_driver.exclude_paths',
             $this->excludeEntitiesPath
         );
     }
