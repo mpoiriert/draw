@@ -8,9 +8,7 @@ use Twig\Environment;
 
 class AccountLockedController
 {
-    /**
-     * @Route(name="draw_user_account_locker_account_locked", path="/account-locked")
-     */
+    #[Route(path: '/account-locked', name: 'draw_user_account_locker_account_locked')]
     public function indexAction(Environment $twig): Response
     {
         return new Response(

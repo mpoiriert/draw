@@ -8,9 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class KeepAliveController extends AbstractController
 {
-    /**
-     * @Route(name="keep_alive", methods={"GET"}, path="/keep-alive")
-     */
+    #[Route(path: '/keep-alive', name: 'keep_alive', methods: ['GET'])]
     public function keepAlive(): JsonResponse
     {
         return new JsonResponse();

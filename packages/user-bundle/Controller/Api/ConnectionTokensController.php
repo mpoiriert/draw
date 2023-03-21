@@ -29,11 +29,10 @@ class ConnectionTokensController extends AbstractController
      * If you decode the token you can read the **exp** attribute and see until when it's valid. Before the expiration
      * is reach you should call the POST /api/connection-tokens endpoint to get a new one.
      *
-     * @Route(name="connection_token_create", methods={"POST"}, path="/connection-tokens")
-     * @Security("not is_granted('IS_AUTHENTICATED_FULLY')")
-     *
      * @return ConnectionToken The newly created token
      */
+    #[Route(path: '/connection-tokens', name: 'connection_token_create', methods: ['POST'])]
+    #[Security('not is_granted("IS_AUTHENTICATED_FULLY")')]
     #[OpenApi\Operation(operationId: 'drawUserBundleCreateConnectionToken', tags: ['Security'])]
     #[Serialization(statusCode: 201)]
     public function createAction(
@@ -59,11 +58,10 @@ class ConnectionTokensController extends AbstractController
     }
 
     /**
-     * @Route(name="drawUserBundle_connection_token_refresh", methods={"POST"}, path="/connection-tokens/refresh")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     *
      * @return ConnectionToken The refreshed token
      */
+    #[Route(path: '/connection-tokens/refresh', name: 'drawUserBundle_connection_token_refresh', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[OpenApi\Operation(operationId: 'drawUserBundleRefreshConnectionToken', tags: ['Security'])]
     public function refreshAction(JwtAuthenticator $authenticator): ConnectionToken
     {
@@ -71,11 +69,10 @@ class ConnectionTokensController extends AbstractController
     }
 
     /**
-     * @Route(name="drawUserBundle_connection_clear", methods={"DELETE"}, path="/connection-tokens/current")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     *
      * @return void Nothing to be returned
      */
+    #[Route(path: '/connection-tokens/current', name: 'drawUserBundle_connection_clear', methods: ['DELETE'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[OpenApi\Operation(operationId: 'drawUserBundleDeleteConnectionToken', tags: ['Security'])]
     #[Serialization(statusCode: 204)]
     public function clearAction(): void

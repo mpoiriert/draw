@@ -8,12 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PingController
 {
-    /**
-     * @Route(methods={"GET"}, path="/ping")
-     *
-     * @return Response
-     */
-    public function ping(EntityManagerInterface $entityManager)
+    #[Route(path: '/ping', methods: ['GET'])]
+    public function ping(EntityManagerInterface $entityManager): Response
     {
         $entityManager->getConnection()->executeQuery('SELECT "test"');
 

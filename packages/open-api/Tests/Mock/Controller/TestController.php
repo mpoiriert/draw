@@ -12,12 +12,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class TestController
 {
     /**
-     * @Route(methods={"POST"}, path="/tests")
-     *
      * @param string $param1 param1 description
      *
      * @return Test The created test entity
      */
+    #[Route(path: '/tests', methods: ['POST'])]
     #[OpenApi\Operation(operationId: 'createTest', tags: ['test'])]
     #[Serialization(
         statusCode: 201,
@@ -43,12 +42,11 @@ class TestController
     }
 
     /**
-     * @Route(methods={"POST"}, path="/tests-array")
-     *
      * @param ?array $param1 The parameter
      *
      * @return ?array The query parameter value
      */
+    #[Route(path: '/tests-array', methods: ['POST'])]
     #[OpenApi\Operation(operationId: 'arrayTest', tags: ['test'])]
     public function arrayAction(
         #[OpenApi\QueryParameter(
@@ -64,10 +62,9 @@ class TestController
     }
 
     /**
-     * @Route(methods={"GET"}, path="/v2/void", defaults={"_api_version": 2})
-     *
      * @return void Nothing
      */
+    #[Route(path: '/v2/void', defaults: ['_api_version' => 2], methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'version2', tags: ['test'])]
     public function version2Action(): void
     {

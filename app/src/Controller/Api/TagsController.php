@@ -13,10 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagsController
 {
     /**
-     * @Route(methods={"POST"}, path="/tags")
-     *
      * @return Tag The newly created tag
      */
+    #[Route(path: '/tags', methods: ['POST'])]
     #[OpenApi\Operation(operationId: 'tagCreate')]
     #[Serialization(statusCode: 201)]
     public function createAction(
@@ -30,10 +29,9 @@ class TagsController
     }
 
     /**
-     * @Route(methods={"PUT"}, path="/tags/{id}")
-     *
      * @return Tag The update tag
      */
+    #[Route(path: '/tags/{id}', methods: ['PUT'])]
     #[OpenApi\Operation(operationId: 'tagEdit')]
     public function editAction(
         #[RequestBody(propertiesMap: ['id' => 'id'])] Tag $target,
@@ -45,10 +43,9 @@ class TagsController
     }
 
     /**
-     * @Route(name="tag_get", methods={"GET"}, path="/tags/{id}")
-     *
      * @return Tag The tag
      */
+    #[Route(path: '/tags/{id}', name: 'tag_get', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'tagGet')]
     public function getAction(Tag $target): Tag
     {
@@ -56,10 +53,9 @@ class TagsController
     }
 
     /**
-     * @Route(methods={"DELETE"}, path="/tags/{id}")
-     *
      * @return void Empty response mean success
      */
+    #[Route(path: '/tags/{id}', methods: ['DELETE'])]
     #[OpenApi\Operation(operationId: 'tagDelete')]
     public function deleteAction(Tag $target, EntityManagerInterface $entityManager): void
     {
@@ -68,10 +64,9 @@ class TagsController
     }
 
     /**
-     * @Route(methods={"GET"}, path="/tags")
-     *
      * @return Tag[] All tags
      */
+    #[Route(path: '/tags', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'tagList')]
     public function listAction(EntityHandler $entityHandler): array
     {
@@ -79,10 +74,9 @@ class TagsController
     }
 
     /**
-     * @Route(methods={"POST"}, path="/tags/activate-all")
-     *
      * @return void Empty return value mean success
      */
+    #[Route(path: '/tags/activate-all', methods: ['POST'])]
     #[OpenApi\Operation(operationId: 'tagActivateAll')]
     #[Serialization(statusCode: 204)]
     public function activateAllAction(EntityHandler $entityHandler): void
