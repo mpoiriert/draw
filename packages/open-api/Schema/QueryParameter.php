@@ -12,10 +12,12 @@ class QueryParameter extends Parameter
         ?string $type = null,
         ?string $collectionFormat = null,
         #[Serializer\Exclude]
-        public array $constraints = []
+        public array $constraints = [],
+        ?bool $required = null
     ) {
         $this->name = $name;
         $this->type = $type;
         $this->collectionFormat = $collectionFormat;
+        $this->required = $required;
     }
 }
