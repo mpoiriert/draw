@@ -44,6 +44,8 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
                 (new Definition(JwtEncoder::class))
                     ->setArgument('$key', $config['key'])
                     ->setArgument('$algorithm', $config['algorithm'])
+                    ->setArgument('$privateKey', $config['private_key'])
+                    ->setArgument('$passphrase', $config['passphrase'])
             );
 
         if ($serviceAlias = $config['service_alias'] ?? null) {
@@ -59,14 +61,16 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
     public function addConfiguration(NodeDefinition $builder): void
     {
         if (!$builder instanceof ArrayNodeDefinition) {
-            throw new \RuntimeException(sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, $builder::class));
+            throw new \RuntimeException(sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, \get_class($builder)));
         }
 
         $builder
             ->children()
                 ->scalarNode('provider')->end()
                 ->scalarNode('key')->isRequired()->end()
-                ->enumNode('algorithm')->values(['HS256'])->isRequired()->end()
+                ->scalarNode('private_key')->defaultValue(null)->end()
+                ->scalarNode('passphrase')->defaultValue(null)->end()
+                ->enumNode('algorithm')->values(['HS256', 'RS256'])->isRequired()->end()
                 ->scalarNode('service_alias')->defaultNull()->end()
                 ->scalarNode('user_identifier_payload_key')->defaultValue('userId')->end()
                 ->scalarNode('user_identifier_getter')->defaultValue('getId')->end()

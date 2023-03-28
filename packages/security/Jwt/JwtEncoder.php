@@ -7,7 +7,7 @@ use Firebase\JWT\Key;
 
 class JwtEncoder
 {
-    public function __construct(private string $key, private string $algorithm)
+    public function __construct(private string $key, private string $algorithm, private ?string $privateKey = null, private ?string $passphrase = null)
     {
     }
 
@@ -17,9 +17,15 @@ class JwtEncoder
             $payload['exp'] = $expiration->getTimestamp();
         }
 
+        $key = $this->key;
+
+        if ($this->privateKey) {
+            $key = openssl_pkey_get_private($this->privateKey, $this->passphrase);
+        }
+
         return JWT::encode(
             $payload,
-            $this->key,
+            $key,
             $this->algorithm
         );
     }
