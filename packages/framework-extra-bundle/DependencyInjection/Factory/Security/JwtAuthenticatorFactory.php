@@ -39,6 +39,7 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
             ->setArgument('$userProvider', new Reference($userProviderId))
             ->setArgument('$userIdentifierPayloadKey', $config['user_identifier_payload_key'])
             ->setArgument('$userIdentifierGetter', $config['user_identifier_getter'])
+            ->setArgument('$expiration', $config['expiration'])
             ->setArgument(
                 '$encoder',
                 (new Definition(JwtEncoder::class))
@@ -71,6 +72,7 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
                 ->scalarNode('private_key')->defaultValue(null)->end()
                 ->scalarNode('passphrase')->defaultValue(null)->end()
                 ->enumNode('algorithm')->values(['HS256', 'RS256'])->isRequired()->end()
+                ->scalarNode('expiration')->defaultValue('+ 7 days')->end()
                 ->scalarNode('service_alias')->defaultNull()->end()
                 ->scalarNode('user_identifier_payload_key')->defaultValue('userId')->end()
                 ->scalarNode('user_identifier_getter')->defaultValue('getId')->end()
