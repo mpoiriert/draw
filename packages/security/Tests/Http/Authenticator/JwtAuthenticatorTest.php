@@ -125,7 +125,7 @@ class JwtAuthenticatorTest extends TestCase
             $token,
             $this->object->generaToken(
                 $user,
-                null
+                0
             )
         );
     }

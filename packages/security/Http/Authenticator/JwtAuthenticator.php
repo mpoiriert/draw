@@ -25,7 +25,8 @@ class JwtAuthenticator extends AbstractAuthenticator
         private UserProviderInterface $userProvider,
         private string $userIdentifierPayloadKey,
         private string $userIdentifierGetter,
-        private ?TranslatorInterface $translator = null
+        private ?TranslatorInterface $translator = null,
+        private ?string $expiration = '+ 7 days'
     ) {
     }
 
@@ -39,14 +40,24 @@ class JwtAuthenticator extends AbstractAuthenticator
         return $this->encoder;
     }
 
-    public function generaToken(UserInterface $user, ?string $expiration = '+ 7 days', array $extraPayload = []): string
+    public function generaToken(UserInterface $user, null|int|string $expiration = null, array $extraPayload = []): string
     {
+        $expiration ??= $this->expiration;
+
+        if (0 === $expiration) {
+            $expiration = null;
+        } elseif (\is_int($expiration)) {
+            $expiration = (new \DateTimeImmutable())->setTimestamp($expiration);
+        } else {
+            $expiration = new \DateTimeImmutable($expiration);
+        }
+
         return $this->encoder->encode(
             array_merge(
                 [$this->userIdentifierPayloadKey => \call_user_func([$user, $this->userIdentifierGetter])],
                 $extraPayload
             ),
-            $expiration ? new \DateTimeImmutable($expiration) : null
+            $expiration
         );
     }
 
