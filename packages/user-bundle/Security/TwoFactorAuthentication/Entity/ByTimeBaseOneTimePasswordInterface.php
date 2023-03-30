@@ -9,4 +9,6 @@ interface ByTimeBaseOneTimePasswordInterface extends TwoFactorInterface, TwoFact
     public function getTotpSecret(): ?string;
 
     public function setTotpSecret(?string $totpSecret): void;
+
+    public function needToEnableTotpAuthenticationEnabled(): bool;
 }

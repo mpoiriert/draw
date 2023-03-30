@@ -19,7 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Translation\TranslatableMessage;
-use Symfony\Component\Validator\Constraints\Count;
 
 #[AutoconfigureTag(
     name: 'sonata.admin',
@@ -115,52 +114,62 @@ class UserAdmin extends AbstractAdmin
     {
         $form
             ->tab('User')
-                ->add('email')
-                ->add('childObject1')
-                ->add('childObject2')
-                ->add('plainPassword', TextType::class, ['required' => false])
-                ->add(
-                    'dateOfBirth',
-                    SingleLineDateTimeType::class,
-                    [
-                        'required' => false,
-                    ]
-                )
-                ->add('needChangePassword')
-                ->add('manualLock')
-                ->add(
-                    'isLocked',
-                    CheckboxType::class,
-                    ['disabled' => true, 'required' => false]
-                )
-                ->add(
-                    'twoFactorAuthenticationEnabledProviders',
-                    ChoiceType::class,
-                    [
-                        'choices' => ['email' => 'email', 'totp' => 'totp'],
-                        'choice_label' => fn ($choice) => new TranslatableMessage('enabledProviders.choice.'.$choice),
-                        'multiple' => true,
-                        'expanded' => true,
-                        'constraints' => [
-                            new Count(['max' => 1]),
+                ->with('General', ['class' => 'col-sm-6'])
+                    ->add('email')
+                    ->add('childObject1')
+                    ->add('childObject2')
+                    ->add('plainPassword', TextType::class, ['required' => false])
+                    ->add(
+                        'dateOfBirth',
+                        SingleLineDateTimeType::class,
+                        [
+                            'required' => false,
+                        ]
+                    )
+                    ->add('needChangePassword')
+                    ->add('manualLock')
+                    ->add(
+                        'isLocked',
+                        CheckboxType::class,
+                        ['disabled' => true, 'required' => false]
+                    )
+                    ->add(
+                        'twoFactorAuthenticationEnabledProviders',
+                        ChoiceType::class,
+                        [
+                            'choices' => ['email' => 'email', 'totp' => 'totp'],
+                            'choice_label' => fn ($choice) => new TranslatableMessage('enabledProviders.choice.'.$choice),
+                            'multiple' => true,
+                            'expanded' => true,
+                        ]
+                    )
+                    ->add(
+                        'userLocks',
+                        CollectionType::class,
+                        [
+                            'required' => false,
+                            'by_reference' => false,
+                            'type_options' => [
+                                'delete' => false,
+                            ],
                         ],
-                    ]
-                )
-                ->add(
-                    'userLocks',
-                    CollectionType::class,
-                    [
-                        'required' => false,
-                        'by_reference' => false,
-                        'type_options' => [
-                            'delete' => false,
-                        ],
-                    ],
-                    [
-                        'edit' => 'inline',
-                        'inline' => 'table',
-                    ]
-                )
+                        [
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                        ]
+                    )
+                ->end()
+                ->with('Security', ['class' => 'col-sm-6'])
+                    ->add(
+                        'roles',
+                        ChoiceType::class,
+                        [
+                            'choices' => ['ROLE_USER' => 'ROLE_USER', 'ROLE_ADMIN' => 'ROLE_ADMIN'],
+                            'multiple' => true,
+                            'expanded' => true,
+                        ]
+                    )
+                ->end()
             ->end();
     }
 }

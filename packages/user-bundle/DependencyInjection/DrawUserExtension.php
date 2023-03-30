@@ -277,7 +277,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
         $containerBuilder
             ->getDefinition(TwoFactorAuthenticationListener::class)
-            ->setArgument('$enableRoute', $config['enable_route']);
+            ->setArgument('$enableRoute', $config['enable_route'])
+            ->setArgument('$allowedRoutes', $config['allowed_routes']);
 
         if ($config['email']['enabled']) {
             $containerBuilder->setDefinition(

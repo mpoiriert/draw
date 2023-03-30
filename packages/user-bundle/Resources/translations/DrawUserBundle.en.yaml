@@ -32,6 +32,7 @@ form:
                 label: 'Code'
                 placeholder: '6 digits'
             submit: 'Enable'
+            cancel: 'Cancel'
 
 admin:
     flash:

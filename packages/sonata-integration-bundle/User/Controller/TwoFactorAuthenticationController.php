@@ -8,6 +8,7 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOne
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\QrCode\QrCodeGenerator;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,10 +25,20 @@ class TwoFactorAuthenticationController extends CRUDController
 
         $this->admin->checkAccess('enable-2fa', $user);
 
-        $form = $this->createForm(Enable2faForm::class, $enable2fa = new Enable2fa());
+        $form = $this->createForm(
+            Enable2faForm::class,
+            $enable2fa = new Enable2fa(),
+            ['user' => $user]
+        );
+
+        \assert($form instanceof Form);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ('cancel' === $form->getClickedButton()?->getName()) {
+                return new RedirectResponse($this->admin->generateObjectUrl('disable-2fa', $user));
+            }
+
             $user->setTotpSecret($enable2fa->totpSecret);
             if ($totpAuthenticator->checkCode($user, $enable2fa->code)) {
                 $user->enableTwoFActorAuthenticationProvider('totp');
@@ -47,8 +58,8 @@ class TwoFactorAuthenticationController extends CRUDController
             );
         }
 
-        // If the form was submit it will assigned, we want to keep the same
-        // Otherwise we will generate one
+        // If the form was submitted it will be assigned, we want to keep the same one
+        // Otherwise generate one
         if (!$form->isSubmitted()) {
             $user->setTotpSecret($totpAuthenticator->generateSecret());
             $totpSecret = $user->getTotpSecret();
