@@ -5,7 +5,6 @@ namespace Draw\Bundle\UserBundle\EventListener;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptionEvent;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordInterface;
-use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,7 +25,8 @@ class TwoFactorAuthenticationListener implements EventSubscriberInterface
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
         private Security $security,
-        private string $enableRoute = 'admin_app_user_enable-2fa'
+        private string $enableRoute = 'admin_app_user_enable-2fa',
+        private array $allowedRoutes = ['admin_app_user_disable-2fa'],
     ) {
     }
 
@@ -39,19 +39,19 @@ class TwoFactorAuthenticationListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$user instanceof TwoFactorAuthenticationUserInterface || $user->asOneTwoFActorAuthenticationProviderEnabled()) {
-            return;
-        }
-
-        if (!$user->isForceEnablingTwoFactorAuthentication()) {
-            return;
-        }
-
         if (!$user instanceof ByTimeBaseOneTimePasswordInterface) {
             return;
         }
 
-        if ($request->attributes->get('_route') === $this->enableRoute) {
+        if ($user->isTotpAuthenticationEnabled()) {
+            return;
+        }
+
+        if (!$user->isForceEnablingTwoFactorAuthentication() && !$user->needToEnableTotpAuthenticationEnabled()) {
+            return;
+        }
+
+        if (\in_array($request->attributes->get('_route'), [...$this->allowedRoutes, $this->enableRoute], true)) {
             $event->allowHandlingRequest();
 
             return;

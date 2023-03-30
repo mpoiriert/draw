@@ -34,9 +34,27 @@ final class Enable2faForm extends AbstractType
                 SubmitType::class,
                 [
                     'label' => 'form.enable_2fa.field.submit',
-                    'attr' => ['class' => 'btn-primary'],
+                    'attr' => ['class' => 'btn-primary', 'style' => 'float: left;'],
                 ]
             );
+
+        $user = $options['user'] ?? null;
+
+        if ($user && !$user->isForceEnablingTwoFactorAuthentication()) {
+            $builder
+                ->add(
+                    'cancel',
+                    SubmitType::class,
+                    [
+                        'label' => 'form.enable_2fa.field.cancel',
+                        'attr' => [
+                            'class' => 'btn-danger',
+                            'style' => 'float: right;',
+                        ],
+                        'validation_groups' => false,
+                    ]
+                );
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -45,6 +63,10 @@ final class Enable2faForm extends AbstractType
             ->setDefaults([
                 'data_class' => Enable2fa::class,
                 'translation_domain' => 'DrawUserBundle',
+                'user' => null,
+                'attr' => [
+                    'novalidate' => 'novalidate',
+                ],
             ]);
     }
 }

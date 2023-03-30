@@ -23,9 +23,10 @@ class TwoFactorAuthorizationTest extends TestCase
         $user = new User();
         $user->setEmail('test-2fa@example.com');
         $user->setPlainPassword('test');
+        $user->setRoles(['ROLE_ADMIN']);
 
         // This role for enabling 2fa as per configuration
-        $user->setRoles(['ROLE_2FA_ADMIN']);
+        $user->enableTwoFActorAuthenticationProvider('totp');
 
         self::$entityManager->persist($user);
         self::$entityManager->flush();
@@ -51,7 +52,7 @@ class TwoFactorAuthorizationTest extends TestCase
 
     public function testLoginRedirectEnable2fa(): KernelBrowser
     {
-        static::assertTrue(self::$user->isForceEnablingTwoFactorAuthentication());
+        static::assertTrue(self::$user->needToEnableTotpAuthenticationEnabled());
         /** @var KernelBrowser $client */
         $client = $this->getService('test.client');
         $client->followRedirects();
@@ -70,8 +71,39 @@ class TwoFactorAuthorizationTest extends TestCase
     /**
      * @depends testLoginRedirectEnable2fa
      */
+    public function testCancel(): KernelBrowser
+    {
+        /** @var KernelBrowser $client */
+        $client = $this->getService('test.client');
+        $client->followRedirects();
+
+        $crawler = $client->request('GET', '/admin/app/user/'.self::$user->getId().'/enable-2fa');
+
+        $client->submit(
+            $crawler->selectButton('Cancel')
+                ->form()
+        );
+
+        $this->reloadUser();
+
+        static::assertSame([], self::$user->getTwoFactorAuthenticationEnabledProviders());
+
+        return $client;
+    }
+
+    /**
+     * @depends testLoginRedirectEnable2fa
+     */
     public function testEnable2faInAdminInvalidCode(KernelBrowser $client): KernelBrowser
     {
+        $this->reloadUser();
+
+        // This role for enabling 2fa as per configuration
+        self::$user->setRoles(['ROLE_2FA_ADMIN']);
+        self::$entityManager->flush();
+
+        $this->loginToAdmin($client, self::$user->getUsername(), 'test');
+
         $crawler = $client->submit(
             $client->getCrawler()
                 ->selectButton('Enable')
@@ -98,8 +130,8 @@ class TwoFactorAuthorizationTest extends TestCase
         static::assertStringContainsString('/admin/dashboard', $crawler->getUri());
         static::assertStringContainsString('2FA successfully enabled.', $client->getResponse()->getContent());
 
-        $user = self::$entityManager->find(User::class, self::$user->getId());
-        static::assertTrue($user->isTotpAuthenticationEnabled());
+        $this->reloadUser();
+        static::assertTrue(self::$user->isTotpAuthenticationEnabled());
 
         return $client;
     }
