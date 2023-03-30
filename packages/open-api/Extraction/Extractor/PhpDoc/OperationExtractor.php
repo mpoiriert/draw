@@ -38,6 +38,11 @@ class OperationExtractor implements ExtractorInterface
         $this->docBlockFactory = $docBlockFactory ?: DocBlockFactory::createInstance();
     }
 
+    public function registerExceptionResponseCodes(string $exceptionClass, int $code = 500, ?string $message = null): void
+    {
+        $this->exceptionResponseCodes[$exceptionClass] = [$code, $message];
+    }
+
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$source instanceof \ReflectionMethod) {
@@ -102,11 +107,6 @@ class OperationExtractor implements ExtractorInterface
         }
 
         return [500, null];
-    }
-
-    public function registerExceptionResponseCodes(string $exceptionClass, int $code = 500, ?string $message = null): void
-    {
-        $this->exceptionResponseCodes[$exceptionClass] = [$code, $message];
     }
 
     private function extractStatusCode(

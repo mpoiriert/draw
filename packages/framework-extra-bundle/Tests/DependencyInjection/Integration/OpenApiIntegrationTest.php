@@ -114,8 +114,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     'enabled' => true,
                     'useDefaultExceptionsStatusCodes' => true,
                     'omitConstraintInvalidValue' => false,
-                    'exceptionsStatusCodes' => [
-                    ],
+                    'exceptionsStatusCodes' => [],
                     'violationKey' => 'errors',
                 ],
             ],
@@ -161,7 +160,9 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                         'serializeNull' => true,
                         'exceptionHandler' => [
                             'enabled' => true,
-                            'exceptionsStatusCodes' => [],
+                            'exceptionsStatusCodes' => [
+                                ['class' => \Exception::class, 'code' => 100],
+                            ],
                             'useDefaultExceptionsStatusCodes' => true,
                             'violationKey' => 'errors',
                             'omitConstraintInvalidValue' => false,
@@ -300,7 +301,27 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.extractor.php_doc.operation_extractor',
-                    [OperationExtractor::class]
+                    [OperationExtractor::class],
+                    function (Definition $definition): void {
+                        static::assertSame(
+                            [
+                                [
+                                    'registerExceptionResponseCodes',
+                                    [\Exception::class, 100],
+
+                                ],
+                                [
+                                    'registerExceptionResponseCodes',
+                                    [ConstraintViolationListException::class, 400],
+                                ],
+                                [
+                                    'registerExceptionResponseCodes',
+                                    [AccessDeniedException::class, 403],
+                                ],
+                            ],
+                            $definition->getMethodCalls()
+                        );
+                    }
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.extractor.sensio.param_converter_extractor',
@@ -436,6 +457,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 ],
                 'draw_open_api.response.serialize_null' => true,
                 'draw_open_api.response.exception_status_codes' => [
+                    \Exception::class => 100,
                     ConstraintViolationListException::class => 400,
                     AccessDeniedException::class => 403,
                 ],

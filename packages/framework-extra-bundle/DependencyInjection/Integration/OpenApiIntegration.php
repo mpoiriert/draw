@@ -20,6 +20,7 @@ use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event\PropertyExtr
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VersionLinkDocumentationExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\PhpDoc\OperationExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
@@ -337,6 +338,16 @@ class OpenApiIntegration implements IntegrationInterface
                 '$omitConstraintInvalidValue',
                 $config['omitConstraintInvalidValue']
             );
+
+        $operationExtractorDefinition = $container->getDefinition(OperationExtractor::class);
+
+        foreach ($codes as $exceptionClass => $code) {
+            $operationExtractorDefinition
+                ->addMethodCall(
+                    'registerExceptionResponseCodes',
+                    [$exceptionClass, $code]
+                );
+        }
     }
 
     private function configRequest(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
