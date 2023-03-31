@@ -9,6 +9,7 @@ use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -94,9 +95,15 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
             ->with('admin_2fa_login', ['preferProvider' => 'email'])
             ->willReturn($url = uniqid('https://'));
 
+        $securityMock = $this->createMock(Security::class);
+        $securityMock
+            ->expects(static::once())
+            ->method('getUser')
+            ->willReturn($user);
+
         $result = \call_user_func(
             $this->object,
-            $user
+            $securityMock
         );
 
         static::assertInstanceOf(

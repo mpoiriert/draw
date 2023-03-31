@@ -6,7 +6,7 @@ use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Security;
 
 class TwoFactorAuthenticationResendCodeAction
 {
@@ -16,8 +16,10 @@ class TwoFactorAuthenticationResendCodeAction
     ) {
     }
 
-    public function __invoke(UserInterface $user): RedirectResponse
+    public function __invoke(Security $security): RedirectResponse
     {
+        $user = $security->getUser();
+
         if (!$user instanceof TwoFactorInterface) {
             throw new \LogicException('User must implement class '.TwoFactorInterface::class);
         }
