@@ -128,7 +128,7 @@ class Root implements VendorExtensionSupportInterface
      * @var SecurityRequirement[]
      */
     #[Assert\Valid]
-    #[JMS\Type('array<string,'.SecurityRequirement::class.'>')]
+    #[JMS\Type('array<'.SecurityRequirement::class.'>')]
     public ?array $security = null;
 
     /**
