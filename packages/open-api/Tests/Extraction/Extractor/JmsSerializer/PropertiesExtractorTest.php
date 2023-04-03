@@ -111,65 +111,57 @@ class JmsExtractorStubModel
      * The name.
      *
      * @var string
-     *
-     * @Serializer\Type("string")
-     * @Serializer\Groups({"test"})
-     * @Serializer\ReadOnlyProperty
      */
+    #[Serializer\Type('string')]
+    #[Serializer\Groups(['test'])]
+    #[Serializer\ReadOnlyProperty]
     public $name;
 
-    /**
-     * @Serializer\Type("Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubGeneric<string>")
-     * @Serializer\Groups({"test"})
-     * @Serializer\ReadOnlyProperty
-     */
+    #[Serializer\Type(JmsExtractorStubGeneric::class.'<string>')]
+    #[Serializer\Groups(['test'])]
+    #[Serializer\ReadOnlyProperty]
     public $generic;
 
     /**
      * Serialized property.
      *
      * @var string
-     *
-     * @Serializer\Type("string")
-     * @Serializer\SerializedName("serializeProperty")
-     * @Serializer\Groups({"test"})
      */
+    #[Serializer\Type('string')]
+    #[Serializer\SerializedName('serializeProperty')]
+    #[Serializer\Groups(['test'])]
     public $serializeProperty;
 
     /**
      * The array.
      *
      * @var array
-     *
-     * @Serializer\Type("array<Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubModel>")
-     * @Serializer\Groups({"test"})
      */
+    #[Serializer\Type('array<'.self::class.'>')]
+    #[Serializer\Groups(['test'])]
     public $array;
 
     /**
      * The array.
      *
      * @var array
-     *
-     * @Serializer\Type("array<Draw\Component\OpenApi\Tests\Extraction\Extractor\JmsSerializer\JmsExtractorStubModel>")
      */
+    #[Serializer\Type('array<'.self::class.'>')]
     public $notThereByGroup;
 
     /**
      * @var string
-     *
-     * @Serializer\Exclude
-     * @Serializer\Groups({"test"})
      */
+    #[Serializer\Exclude]
+    #[Serializer\Groups(['test'])]
     public $notThere;
 
     /**
      * The virtual property.
-     *
-     * @Serializer\VirtualProperty
-     * @Serializer\Type(JmsExtractorStubModel::class)
-     * @Serializer\Groups({"test"})
      */
+    #[Serializer\VirtualProperty]
+    #[Serializer\Type(self::class)]
+    #[Serializer\Groups(['test'])]
     public function getVirtual(): void
     {
     }
@@ -181,10 +173,9 @@ class JmsExtractorStubGeneric
      * The generic property.
      *
      * @var string
-     *
-     * @Serializer\Type("generic")
-     * @Serializer\Groups({"test"})
-     * @Serializer\ReadOnlyProperty
      */
+    #[Serializer\Type('generic')]
+    #[Serializer\Groups(['test'])]
+    #[Serializer\ReadOnlyProperty]
     public $name;
 }

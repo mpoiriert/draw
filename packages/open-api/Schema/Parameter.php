@@ -12,10 +12,9 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
      * (that is, not an object). The value MUST be one of "string", "number", "integer", "boolean", "array" or "file".
      * If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded"
      * and the parameter MUST be in "formData".
-     *
-     * @Assert\NotNull
-     * @Assert\Choice({"string", "number", "integer", "boolean", "array", "file"})
      */
+    #[Assert\NotNull]
+    #[Assert\Choice(['string', 'number', 'integer', 'boolean', 'array', 'file'])]
     public ?string $type = null;
 
     /**
@@ -38,19 +37,17 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
      *           This is valid only for parameters in "query" or "formData".
      *
      *   Default value is csv.
-     *
-     * @Assert\Choice({"csv", "ssv", "tsv", "pipes", "multi"})
-     * @JMS\SerializedName("collectionFormat")
      */
+    #[Assert\Choice(['csv', 'ssv', 'tsv', 'pipes', 'multi'])]
+    #[JMS\SerializedName('collectionFormat')]
     public ?string $collectionFormat = null;
 
     /**
      * Sets a default value to the parameter. The type of the value depends on the defined type.
      *
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor101d
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
+    #[JMS\Type(MixedData::class)]
     public mixed $default = null;
 
     /**
@@ -60,37 +57,32 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor17
-     *
-     * @JMS\SerializedName("exclusiveMaximum")
      */
+    #[JMS\SerializedName('exclusiveMaximum')]
     public ?bool $exclusiveMaximum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
-     *
-     * @JMS\SerializedName("minimum")
      */
+    #[JMS\SerializedName('minimum')]
     public ?int $minimum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
-     *
-     * @JMS\SerializedName("exclusiveMinimum")
      */
+    #[JMS\SerializedName('exclusiveMinimum')]
     public ?bool $exclusiveMinimum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor26
-     *
-     * @JMS\SerializedName("maxLength")
      */
+    #[JMS\SerializedName('maxLength')]
     public ?int $maxLength = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor29
-     *
-     * @JMS\SerializedName("minLength")
      */
+    #[JMS\SerializedName('minLength')]
     public ?int $minLength = null;
 
     /**
@@ -100,42 +92,35 @@ class Parameter extends BaseParameter implements ValidationConfigurationInterfac
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor42
-     *
-     * @JMS\SerializedName("maxItems")
      */
+    #[JMS\SerializedName('maxItems')]
     public ?int $maxItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor45
-     *
-     * @JMS\SerializedName("minItems")
      */
+    #[JMS\SerializedName('minItems')]
     public ?int $minItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor49
-     *
-     * @JMS\SerializedName("uniqueItems")
      */
+    #[JMS\SerializedName('uniqueItems')]
     public ?bool $uniqueItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor76
-     *
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\MixedData>")
      */
+    #[JMS\Type('array<'.MixedData::class.'>')]
     public ?array $enum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor14
-     *
-     * @JMS\SerializedName("multipleOf")
      */
+    #[JMS\SerializedName('multipleOf')]
     public ?int $multipleOf = null;
 
-    /**
-     * @JMS\PreSerialize
-     */
+    #[JMS\PreSerialize]
     public function preSerialize(): void
     {
         $this->default = MixedData::convert($this->default);

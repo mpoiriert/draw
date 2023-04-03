@@ -14,7 +14,6 @@
         "symfony/console": "^5.4.3"
     },
     "require-dev": {
-        "doctrine/annotations": "^1.11",
         "doctrine/orm": "^2.11",
         "draw/tester": "^0.10",
         "phpunit/phpunit": "^8.0 || ^9.0",

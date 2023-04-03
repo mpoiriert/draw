@@ -2,12 +2,12 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
+use JMS\Serializer\Annotation as JMS;
+
 trait VendorExtensionSupportTrait
 {
-    /**
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\MixedData>")
-     * @JMS\Accessor(getter="getFakeVendor")
-     */
+    #[JMS\Type('array<string,'.MixedData::class.'>')]
+    #[JMS\Accessor(getter: 'getFakeVendor')]
     public ?array $vendor = [];
 
     public function getFakeVendor()

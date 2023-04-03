@@ -19,20 +19,15 @@ class SecurityScheme
 
     public ?string $flow = null;
 
-    /**
-     * @JMS\SerializedName("authorizationUrl")
-     */
+    #[JMS\SerializedName('authorizationUrl')]
     public ?string $authorizationUrl = null;
 
-    /**
-     * @JMS\SerializedName("tokenUrl")
-     */
+    #[JMS\SerializedName('tokenUrl')]
     public ?string $tokenUrl = null;
 
     /**
      * @var string[]
-     *
-     * @JMS\Type("array<string,string>")
      */
+    #[JMS\Type('array<string,string>')]
     public ?array $scopes = null;
 }

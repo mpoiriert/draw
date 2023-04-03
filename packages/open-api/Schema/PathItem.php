@@ -9,51 +9,44 @@ class PathItem
 {
     /**
      * A definition of a GET operation on this path.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?Operation $get = null;
 
     /**
      * A definition of a PUT operation on this path.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?Operation $put = null;
 
     /**
      * A definition of a POST operation on this path.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?Operation $post = null;
 
     /**
      * A definition of a DELETE operation on this path.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?Operation $delete = null;
 
     /**
      * A definition of a OPTIONS operation on this path.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?Operation $options = null;
 
     /**
      * A definition of a HEAD operation on this path.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?Operation $head = null;
 
     /**
      * A definition of a PATCH operation on this path.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?Operation $patch = null;
 
     /**
@@ -65,15 +58,12 @@ class PathItem
      * There can be one "body" parameter at most.
      *
      * @var BaseParameter[]
-     *
-     * @Assert\Valid()
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\BaseParameter>")
      */
+    #[Assert\Valid]
+    #[JMS\Type('array<'.BaseParameter::class.'>')]
     public ?array $parameters = null;
 
-    /**
-     * @JMS\SerializedName("$ref")
-     */
+    #[JMS\SerializedName('$ref')]
     public ?string $ref = null;
 
     /**

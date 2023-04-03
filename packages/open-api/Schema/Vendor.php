@@ -10,9 +10,7 @@ use JMS\Serializer\Annotation as Serializer;
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Vendor
 {
-    /**
-     * @Serializer\Exclude
-     */
+    #[Serializer\Exclude]
     public ?string $name = null;
 
     public mixed $value = null;
