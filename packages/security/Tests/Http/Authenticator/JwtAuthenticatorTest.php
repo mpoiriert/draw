@@ -130,6 +130,38 @@ class JwtAuthenticatorTest extends TestCase
         );
     }
 
+    public function testGenerateTokenDefaultNull(): void
+    {
+        ReflectionAccessor::setPropertyValue(
+            $this->object,
+            'expiration',
+            null
+        );
+
+        $user = $this->createMockWithExtraMethods(
+            UserInterface::class,
+            [$this->userIdentifierGetter]
+        );
+
+        $user
+            ->expects(static::once())
+            ->method($this->userIdentifierGetter)
+            ->willReturn($userId = uniqid('id'));
+
+        $this->jwtEncoder
+            ->expects(static::once())
+            ->method('encode')
+            ->with([$this->userIdentifierPayloadKey => $userId], null)
+            ->willReturn($token = uniqid('token-'));
+
+        static::assertSame(
+            $token,
+            $this->object->generaToken(
+                $user
+            )
+        );
+    }
+
     public function testGenerateTokenWithExpiration(): void
     {
         $user = $this->createMockWithExtraMethods(
