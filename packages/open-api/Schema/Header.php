@@ -13,9 +13,8 @@ class Header
 {
     /**
      * This is only use in the context of an attribute.
-     *
-     * @JMS\Exclude
      */
+    #[JMS\Exclude]
     public ?string $name;
 
     /**
@@ -25,10 +24,9 @@ class Header
 
     /**
      * The type of the object. The value MUST be one of "string",.
-     *
-     * @Assert\NotNull
-     * @Assert\Choice({"string", "number", "integer", "boolean", "array"})
      */
+    #[Assert\NotNull]
+    #[Assert\Choice(['string', 'number', 'integer', 'boolean', 'array'])]
     public ?string $type = null;
 
     /**
@@ -38,9 +36,8 @@ class Header
 
     /**
      * Required if type is "array". Describes the type of items in the array.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?Items $items = null;
 
     /**
@@ -52,19 +49,17 @@ class Header
      * pipes - pipe separated values foo|bar.
      *
      * Default value is csv.
-     *
-     * @Assert\Choice({"csv", "ssv", "tsv", "pipes"})
-     * @JMS\SerializedName("collectionFormat")
      */
+    #[Assert\Choice(['csv', 'ssv', 'tsv', 'pipes'])]
+    #[JMS\SerializedName('collectionFormat')]
     public ?string $collectionFormat = null;
 
     /**
      * Sets a default value to the data type. The type of the value depends on the defined type.
      *
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor101.
-     *
-     * @JMS\Type("Draw\Component\OpenApi\Schema\MixedData")
      */
+    #[JMS\Type(MixedData::class)]
     public mixed $default = null;
 
     /**
@@ -74,9 +69,8 @@ class Header
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor17
-     *
-     * @JMS\SerializedName("exclusiveMaximum")
      */
+    #[JMS\SerializedName('exclusiveMaximum')]
     public ?bool $exclusiveMaximum = null;
 
     /**
@@ -86,23 +80,20 @@ class Header
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor21
-     *
-     * @JMS\SerializedName("exclusiveMinimum")
      */
+    #[JMS\SerializedName('exclusiveMinimum')]
     public ?bool $exclusiveMinimum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor26
-     *
-     * @JMS\SerializedName("maxLength")
      */
+    #[JMS\SerializedName('maxLength')]
     public ?int $maxLength = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor29
-     *
-     * @JMS\SerializedName("minLength")
      */
+    #[JMS\SerializedName('minLength')]
     public ?int $minLength = null;
 
     /**
@@ -112,37 +103,32 @@ class Header
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor42
-     *
-     * @JMS\SerializedName("maxItems")
      */
+    #[JMS\SerializedName('maxItems')]
     public ?int $maxItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor45
-     *
-     * @JMS\SerializedName("minItems")
      */
+    #[JMS\SerializedName('minItems')]
     public ?int $minItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor49
-     *
-     * @JMS\SerializedName("uniqueItems")
      */
+    #[JMS\SerializedName('uniqueItems')]
     public ?bool $uniqueItems = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor76
-     *
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\MixedData>")
      */
+    #[JMS\Type('array<'.MixedData::class.'>')]
     public ?array $enum = null;
 
     /**
      * @see http://json-schema.org/latest/json-schema-validation.html#anchor14
-     *
-     * @JMS\SerializedName("multipleOf")
      */
+    #[JMS\SerializedName('multipleOf')]
     public ?int $multipleOf = null;
 
     public function __construct(
@@ -185,9 +171,7 @@ class Header
         $this->multipleOf = $multipleOf;
     }
 
-    /**
-     * @JMS\PreSerialize
-     */
+    #[JMS\PreSerialize]
     public function preSerialize(): void
     {
         $this->default = MixedData::convert($this->default);

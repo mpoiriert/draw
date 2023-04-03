@@ -10,32 +10,29 @@ class Test
     /**
      * Property description.
      *
-     * @Serializer\Type("string")
-     * @Serializer\Groups({"Included"})
-     *
      * @var string
      */
+    #[Serializer\Type('string')]
+    #[Serializer\Groups(['Included'])]
     private $property;
 
     /**
      * Property deserialize from body in test.
      *
      * @var string
-     *
-     * @Serializer\Type("string")
-     * @Serializer\Groups({"Included"})
-     * @Assert\NotEqualTo("invalidValue")
      */
+    #[Serializer\Type('string')]
+    #[Serializer\Groups(['Included'])]
+    #[Assert\NotEqualTo('invalidValue')]
     private $propertyFromBody;
 
     /**
      * Will be excluded because of the group.
      *
      * @var string
-     *
-     * @Serializer\Type("string")
-     * @Serializer\Groups({"Excluded"})
      */
+    #[Serializer\Type('string')]
+    #[Serializer\Groups(['Excluded'])]
     private $propertyGroupExclusion;
 
     /**

@@ -8,15 +8,13 @@ class License
 {
     /**
      * The license name used for the API.
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $name = null;
 
     /**
      * A URL to the license used for the API. MUST be in the format of a URL.
-     *
-     * @Assert\Url
      */
+    #[Assert\Url]
     public ?string $url = null;
 }

@@ -11,9 +11,8 @@ class Tag
 {
     /**
      * The name of the tag.
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $name = null;
 
     /**
@@ -24,9 +23,8 @@ class Tag
 
     /**
      * Additional external documentation for this tag.
-     *
-     * @JMS\SerializedName("externalDocs")
      */
+    #[JMS\SerializedName('externalDocs')]
     public ?ExternalDocumentation $externalDocs = null;
 
     public function __construct(string $name, ?string $description = null, ?array $externalDocs = null)

@@ -15,9 +15,8 @@ class Operation implements VendorExtensionSupportInterface
      * Tags can be used for logical grouping of operations by resources or any other qualifier.
      *
      * @var string[]
-     *
-     * @JMS\Type("array<string>")
      */
+    #[JMS\Type('array<string>')]
     public ?array $tags = null;
 
     /**
@@ -35,18 +34,16 @@ class Operation implements VendorExtensionSupportInterface
 
     /**
      * Additional external documentation for this operation.
-     *
-     * @Assert\Valid
      */
+    #[Assert\Valid]
     public ?ExternalDocumentation $externalDocs = null;
 
     /**
      * A friendly name for the operation.
      * The id MUST be unique among all operations described in the API.
      * Tools and libraries MAY use the operation id to uniquely identify an operation.
-     *
-     * @JMS\SerializedName("operationId")
      */
+    #[JMS\SerializedName('operationId')]
     public ?string $operationId = null;
 
     /**
@@ -55,9 +52,8 @@ class Operation implements VendorExtensionSupportInterface
      * An empty value MAY be used to clear the global definition. Value MUST be as described under Mime Types.
      *
      * @var string[]
-     *
-     * @JMS\Type("array<string>")
      */
+    #[JMS\Type('array<string>')]
     public ?array $consumes = null;
 
     /**
@@ -66,9 +62,8 @@ class Operation implements VendorExtensionSupportInterface
      * An empty value MAY be used to clear the global definition. Value MUST be as described under Mime Types.
      *
      * @var string[]
-     *
-     * @JMS\Type("array<string>")
      */
+    #[JMS\Type('array<string>')]
     public ?array $produces = null;
 
     /**
@@ -80,22 +75,20 @@ class Operation implements VendorExtensionSupportInterface
      * There can be one "body" parameter at most.
      *
      * @var BaseParameter[]
-     *
-     * @Assert\Valid()
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\BaseParameter>")
      */
+    #[Assert\Valid]
+    #[JMS\Type('array<'.BaseParameter::class.'>')]
     public array $parameters = [];
 
     /**
      * The list of possible responses as they are returned from executing this operation.
      *
      * @var Response[]
-     *
-     * @Assert\NotNull()
-     * @Assert\Valid()
-     * @Assert\Count(min=1, minMessage="Operation must have at leas one response.")
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Response>")
      */
+    #[Assert\NotNull]
+    #[Assert\Valid]
+    #[Assert\Count(min: 1, minMessage: 'Operation must have at leas one response.')]
+    #[JMS\Type('array<string,'.Response::class.'>')]
     public array $responses = [];
 
     /**
@@ -103,10 +96,9 @@ class Operation implements VendorExtensionSupportInterface
      * The value overrides the Swagger Object schemes definition.
      *
      * @var string[]
-     *
-     * @Assert\Choice({"http","https","ws","wss"}, multiple=true)
-     * @JMS\Type("array<string>")
      */
+    #[Assert\Choice(['http', 'https', 'ws', 'wss'], multiple: true)]
+    #[JMS\Type('array<string>')]
     public ?array $schemes = null;
 
     /**
@@ -124,10 +116,9 @@ class Operation implements VendorExtensionSupportInterface
      * To remove a top-level security declaration, an empty array can be used.
      *
      * @var SecurityRequirement[]
-     *
-     * @Assert\Valid()
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\SecurityRequirement>")
      */
+    #[Assert\Valid]
+    #[JMS\Type('array<'.SecurityRequirement::class.'>')]
     public ?array $security = null;
 
     public function __construct(

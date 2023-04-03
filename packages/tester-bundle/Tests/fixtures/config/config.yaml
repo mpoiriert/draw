@@ -1,5 +1,5 @@
 framework:
-    annotations: true
+    annotations: false
     secret: fos
     router:
         resource: '%kernel.project_dir%/Tests/fixtures/config/routing.yaml'

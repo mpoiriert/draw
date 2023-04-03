@@ -13,17 +13,15 @@ class Root implements VendorExtensionSupportInterface
      * Specifies the Swagger Specification version being used.
      * It can be used by the Swagger UI and other clients to interpret the API listing.
      * The value MUST be "2.0".
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $swagger = '2.0';
 
     /**
      * Provides metadata about the API. The metadata can be used by the clients if needed.
-     *
-     * @Assert\NotNull
-     * @Assert\Valid
      */
+    #[Assert\NotNull]
+    #[Assert\Valid]
     public ?Info $info = null;
 
     /**
@@ -37,9 +35,8 @@ class Root implements VendorExtensionSupportInterface
      * The base path on which the API is served, which is relative to the host.
      * If it is not included, the API is served directly under the host.
      * The value MUST start with a leading slash (/). The basePath does not support path templating.
-     *
-     * @JMS\SerializedName("basePath")
      */
+    #[JMS\SerializedName('basePath')]
     public ?string $basePath = null;
 
     /**
@@ -48,10 +45,9 @@ class Root implements VendorExtensionSupportInterface
      * If the schemes is not included, the default scheme to be used is the one used to access the specification.
      *
      * @var string[]
-     *
-     * @Assert\Choice({"http","https","ws","wss"}, multiple=true)
-     * @JMS\Type("array<string>")
      */
+    #[Assert\Choice(['http', 'https', 'ws', 'wss'], multiple: true)]
+    #[JMS\Type('array<string>')]
     public ?array $schemes = null;
 
     /**
@@ -60,9 +56,8 @@ class Root implements VendorExtensionSupportInterface
      * Value MUST be as described under Mime Types.
      *
      * @var string[]
-     *
-     * @JMS\Type("array<string>")
      */
+    #[JMS\Type('array<string>')]
     public ?array $consumes = null;
 
     /**
@@ -71,30 +66,27 @@ class Root implements VendorExtensionSupportInterface
      * Value MUST be as described under Mime Types.
      *
      * @var string[]
-     *
-     * @JMS\Type("array<string>")
      */
+    #[JMS\Type('array<string>')]
     public ?array $produces = null;
 
     /**
      * The available paths and operations for the API.
      *
      * @var PathItem[]
-     *
-     * @Assert\NotBlank()
-     * @Assert\Valid()
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\PathItem>")
      */
+    #[Assert\NotBlank]
+    #[Assert\Valid]
+    #[JMS\Type('array<string,'.PathItem::class.'>')]
     public ?array $paths = null;
 
     /**
      * An object to hold data types produced and consumed by operations.
      *
      * @var Schema[]
-     *
-     * @Assert\Valid()
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Schema>")
      */
+    #[Assert\Valid]
+    #[JMS\Type('array<string,'.Schema::class.'>')]
     public array $definitions = [];
 
     /**
@@ -102,10 +94,9 @@ class Root implements VendorExtensionSupportInterface
      * This property does not define global parameters for all operations.
      *
      * @var Parameter[]
-     *
-     * @Assert\Valid()
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\BaseParameter>")
      */
+    #[Assert\Valid]
+    #[JMS\Type('array<string,'.BaseParameter::class.'>')]
     public ?array $parameters = null;
 
     /**
@@ -113,21 +104,19 @@ class Root implements VendorExtensionSupportInterface
      * This property does not define global responses for all operations.
      *
      * @var Response[]
-     *
-     * @Assert\Valid()
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Response>")
      */
+    #[Assert\Valid]
+    #[JMS\Type('array<string,'.Response::class.'>')]
     public ?array $responses = null;
 
     /**
      * Security scheme definitions that can be used across the specification.
      *
      * @var SecurityScheme[]
-     *
-     * @Assert\Valid()
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\SecurityScheme>")
-     * @JMS\SerializedName("securityDefinitions")
      */
+    #[Assert\Valid]
+    #[JMS\Type('array<string,'.SecurityScheme::class.'>')]
+    #[JMS\SerializedName('securityDefinitions')]
     public ?array $securityDefinitions = null;
 
     /**
@@ -137,10 +126,9 @@ class Root implements VendorExtensionSupportInterface
      * Individual operations can override this definition.
      *
      * @var SecurityRequirement[]
-     *
-     * @Assert\Valid()
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\SecurityRequirement>")
      */
+    #[Assert\Valid]
+    #[JMS\Type('array<string,'.SecurityRequirement::class.'>')]
     public ?array $security = null;
 
     /**
@@ -151,17 +139,15 @@ class Root implements VendorExtensionSupportInterface
      * Each tag name in the list MUST be unique.
      *
      * @var Tag[]
-     *
-     * @JMS\Type("array<Draw\Component\OpenApi\Schema\Tag>")
      */
+    #[JMS\Type('array<'.Tag::class.'>')]
     public ?array $tags = null;
 
     /**
      * Additional external documentation.
-     *
-     * @Assert\Valid
-     * @JMS\SerializedName("externalDocs")
      */
+    #[Assert\Valid]
+    #[JMS\SerializedName('externalDocs')]
     public ?ExternalDocumentation $externalDocs = null;
 
     public function hasDefinition(string $name): bool

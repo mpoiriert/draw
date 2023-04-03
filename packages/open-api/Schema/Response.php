@@ -10,19 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Response
 {
-    /**
-     * @Assert\NotBlank
-     */
+    #[Assert\NotBlank]
     public ?string $description = null;
 
-    /**
-     * @Assert\Valid
-     */
+    #[Assert\Valid]
     public ?Schema $schema = null;
 
-    /**
-     * @Assert\Valid()
-     * @JMS\Type("array<string,Draw\Component\OpenApi\Schema\Header>")
-     */
+    #[Assert\Valid]
+    #[JMS\Type('array<string,'.Header::class.'>')]
     public ?array $headers = null;
 }

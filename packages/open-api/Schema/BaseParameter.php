@@ -9,19 +9,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Martin Poirier Theoret <mpoiriert@gmail.com>
  *
  * @see https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#parameterObject
- *
- * @JMS\Discriminator(
- *     field="in",
- *     map={
- *         "body": "Draw\Component\OpenApi\Schema\BodyParameter",
- *         "header": "Draw\Component\OpenApi\Schema\HeaderParameter",
- *         "path": "Draw\Component\OpenApi\Schema\PathParameter",
- *         "query": "Draw\Component\OpenApi\Schema\QueryParameter",
- *         "formData": "Draw\Component\OpenApi\Schema\FormDataParameter",
- *         "other": "Draw\Component\OpenApi\Schema\Parameter"
- *     }
- * )
  */
+#[JMS\Discriminator(
+    field: 'in',
+    map: [
+        'body' => BodyParameter::class,
+        'header' => HeaderParameter::class,
+        'path' => PathParameter::class,
+        'query' => QueryParameter::class,
+        'formData' => FormDataParameter::class,
+        'other' => Parameter::class,
+    ],
+)]
 abstract class BaseParameter
 {
     /**
@@ -30,9 +29,8 @@ abstract class BaseParameter
      *    See Path Templating for further information.
      *
      *  - For all other cases, the name corresponds to the parameter name used based on the in property.
-     *
-     * @Assert\NotBlank
      */
+    #[Assert\NotBlank]
     public ?string $name = null;
 
     /**
@@ -48,10 +46,8 @@ abstract class BaseParameter
      */
     public ?bool $required = null;
 
-    /**
-     * @JMS\VirtualProperty
-     * @JMS\SerializedName("in")
-     */
+    #[JMS\VirtualProperty]
+    #[JMS\SerializedName('in')]
     public function getType(): string
     {
         $striped = str_replace(
