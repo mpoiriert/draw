@@ -14,6 +14,13 @@ trait PasswordChangeEnforcerUserTrait
     #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => '0'])]
     private bool $needChangePassword = false;
 
+    public function requestPasswordChange(): void
+    {
+        // We set it to false to make sure change password flow is triggered
+        $this->setNeedChangePassword(false);
+        $this->setNeedChangePassword(true);
+    }
+
     public function setNeedChangePassword(bool $needChangePassword): void
     {
         if ($this->needChangePassword === $needChangePassword) {
