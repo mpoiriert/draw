@@ -15,13 +15,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TwoFactorAuthenticationController extends CRUDController
 {
+    protected function loadUser(Request $request): ByTimeBaseOneTimePasswordInterface
+    {
+        $user = $this->admin->getSubject();
+        if (!$user instanceof ByTimeBaseOneTimePasswordInterface) {
+            throw new \RuntimeException('User not found');
+        }
+
+        return $user;
+    }
+
     public function enable2faAction(
         Request $request,
         TotpAuthenticatorInterface $totpAuthenticator,
         QrCodeGenerator $qrCodeGenerator
     ): Response {
-        /** @var ByTimeBaseOneTimePasswordInterface $user */
-        $user = $this->admin->getSubject();
+        $user = $this->loadUser($request);
 
         $this->admin->checkAccess('enable-2fa', $user);
 
@@ -85,8 +94,7 @@ class TwoFactorAuthenticationController extends CRUDController
 
     public function disable2faAction(Request $request): RedirectResponse
     {
-        /** @var ByTimeBaseOneTimePasswordInterface $user */
-        $user = $this->admin->getSubject();
+        $user = $this->loadUser($request);
 
         $this->admin->checkAccess('disable-2fa', $user);
 
