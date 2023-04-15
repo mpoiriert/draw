@@ -15,8 +15,7 @@ class RequestPasswordChangeAction extends AbstractController
         $user = $admin->getSubject();
         $admin->checkAccess('request_password_change', $user);
 
-        $user->setNeedChangePassword(false);
-        $user->setNeedChangePassword(true);
+        $user->requestPasswordChange();
 
         try {
             $admin->update($user);
