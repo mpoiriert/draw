@@ -23,6 +23,10 @@ trait ConfigurationTrait
     public function setTwoFactorAuthenticationEnabledProviders(array $providers): void
     {
         $this->twoFactorAuthenticationEnabledProviders = array_values(array_unique($providers));
+
+        if (!\in_array('totp', $this->twoFactorAuthenticationEnabledProviders) && $this instanceof ByTimeBaseOneTimePasswordInterface) {
+            $this->setTotpSecret(null);
+        }
     }
 
     public function enableTwoFActorAuthenticationProvider(string $provider): void
