@@ -4,6 +4,7 @@ namespace Draw\Component\OpenApi\Schema;
 
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Root implements VendorExtensionSupportInterface
 {
@@ -185,5 +186,28 @@ class Root implements VendorExtensionSupportInterface
     public function sanitizeReferenceName(string $name): string
     {
         return trim(str_replace('\\', '.', $name), '.');
+    }
+
+    #[Assert\Callback]
+    public function validateDuplicateOperationId(ExecutionContextInterface $context): void
+    {
+        $operationsIds = [];
+        foreach ($this->paths ?? [] as $path => $pathItem) {
+            foreach ($pathItem->getOperations() as $method => $operation) {
+                if (!$operation->operationId) {
+                    continue;
+                }
+
+                $operationId = $operation->operationId;
+                if (\in_array($operationId, $operationsIds, true)) {
+                    $context->buildViolation('Duplicate operationId: '.$operationId)
+                        ->atPath('paths.'.$path.'.'.$method.'.operationId')
+                        ->setInvalidValue($operationId)
+                        ->addViolation();
+                }
+
+                $operationsIds[] = $operationId;
+            }
+        }
     }
 }
