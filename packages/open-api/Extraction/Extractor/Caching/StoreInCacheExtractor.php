@@ -59,7 +59,7 @@ class StoreInCacheExtractor implements ExtractorInterface
             $metadata[] = new FileResource($file);
         }
 
-        $target->setVendorDataKey('X-DrawOpenApi-CachedAt', gmdate('Y-m-d H:i:'));
+        $target->setVendorDataKey('X-DrawOpenApi-CachedAt', gmdate('Y-m-d H:i:s'));
 
         $configCache->write(
             '<?php return unserialize('.var_export(serialize($target), true).');',
