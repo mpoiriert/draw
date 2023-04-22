@@ -11,6 +11,7 @@ use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
 use Draw\Component\OpenApi\EventListener\ResponseSerializerListener;
 use Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener;
+use Draw\Component\OpenApi\EventListener\SchemaCleanRequiredReadOnlyListener;
 use Draw\Component\OpenApi\EventListener\SerializationControllerListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Extraction\Extractor\Caching\FileTrackingExtractor;
@@ -393,6 +394,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.event_listener.schema_add_default_headers_listener',
                     [SchemaAddDefaultHeadersListener::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.schema_clean_required_read_only_listener',
+                    [SchemaCleanRequiredReadOnlyListener::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.event_listener.serialization_controller_listener',
