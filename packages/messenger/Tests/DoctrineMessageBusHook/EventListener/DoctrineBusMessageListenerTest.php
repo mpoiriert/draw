@@ -211,7 +211,7 @@ class DoctrineBusMessageListenerTest extends TestCase
     {
         $this->addMessageHolder(
             new class() implements Proxy,
-            MessageHolderInterface {
+                MessageHolderInterface {
                 public function getOnHoldMessages(bool $clear): array
                 {
                     return [];

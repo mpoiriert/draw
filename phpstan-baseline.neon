@@ -6,7 +6,7 @@ parameters:
 			path: packages/framework-extra-bundle/DependencyInjection/Integration/LoggerIntegration.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEmpty\\(\\) with array\\{stdClass, stdClass\\} will always evaluate to false\\.$#"
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEmpty\\(\\) with array\\{object\\{\\}&stdClass, object\\{\\}&stdClass\\} will always evaluate to false\\.$#"
 			count: 1
 			path: packages/messenger/Tests/DoctrineMessageBusHook/Entity/MessageHolderTraitTest.php
 
