@@ -14,7 +14,7 @@ class NotNullConstraintExtractor extends BaseConstraintExtractor
     }
 
     /**
-     * @param NotNull|Constraint $constraint
+     * @param NotNull&Constraint $constraint
      */
     public function extractConstraint(Constraint $constraint, ConstraintExtractionContext $context): void
     {

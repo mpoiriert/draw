@@ -72,9 +72,7 @@ class OpenApi
 
     public function dump(Schema $schema, bool $validate = true): string
     {
-        if ($this->eventDispatcher) {
-            $this->eventDispatcher->dispatch(new PreDumpRootSchemaEvent($schema));
-        }
+        $this->eventDispatcher?->dispatch(new PreDumpRootSchemaEvent($schema));
 
         if ($this->getCleanOnDump()) {
             $schema = $this->schemaCleaner->clean($schema);

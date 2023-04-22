@@ -10,7 +10,7 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
  * @author Martin Poirier Theoret <mpoiriert@gmail.com>
  */
 #[Assert\GroupSequenceProvider]
-class Schema implements GroupSequenceProviderInterface, ValidationConfigurationInterface, VendorExtensionSupportInterface
+class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportInterface
 {
     use VendorExtensionSupportTrait;
 
@@ -76,6 +76,9 @@ class Schema implements GroupSequenceProviderInterface, ValidationConfigurationI
     #[JMS\SerializedName('allOf')]
     public ?array $allOf = null;
 
+    /**
+     * @var Schema[]
+     */
     #[Assert\Valid]
     #[JMS\Type('array<string,'.self::class.'>')]
     public ?array $properties = null;
