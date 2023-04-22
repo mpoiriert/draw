@@ -295,40 +295,12 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
     }
 
-    public function testOnKernelExceptionDoNotIgnoreConstraintInvalidValue(): void
-    {
-        $this->createConstraintListExceptionEvent();
-
-        $value = json_decode(
-            $this->onKernelException(new ResponseApiExceptionListener())->getContent(),
-            null,
-            512,
-            \JSON_THROW_ON_ERROR
-        );
-
-        static::assertSame('invalid-value', $value->errors[0]->invalidValue);
-    }
-
-    public function testOnKernelExceptionIgnoreConstraintInvalidValue(): void
-    {
-        $this->createConstraintListExceptionEvent();
-
-        $value = json_decode(
-            $this->onKernelException(new ResponseApiExceptionListener(false, [], 'errors', true))->getContent(),
-            null,
-            512,
-            \JSON_THROW_ON_ERROR
-        );
-
-        static::assertFalse(isset($value->errors[0]->invalidValue));
-    }
-
     public function testOnKernelExceptionPayload(): void
     {
         $this->createConstraintListExceptionEvent($constraint = new NotNull(['payload' => uniqid('payload-')]));
 
         $value = json_decode(
-            $this->onKernelException(new ResponseApiExceptionListener(false, [], 'errors', true))->getContent(),
+            $this->onKernelException(new ResponseApiExceptionListener(false, [], 'errors'))->getContent(),
             null,
             512,
             \JSON_THROW_ON_ERROR

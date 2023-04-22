@@ -35,7 +35,6 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         private bool $debug = false,
         array $errorCodes = [],
         private string $violationKey = 'errors',
-        private bool $omitConstraintInvalidValue = false
     ) {
         $this->errorCodes = array_filter($errorCodes);
     }
@@ -63,16 +62,14 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         $violationSchema->properties = [
             'propertyPath' => $propertyPath = new Schema(),
             'message' => $messageSchema = new Schema(),
-            'invalidValue' => $invalidValueSchema = new Schema(),
             'code' => $codeSchema = new Schema(),
             'payload' => $payloadSchema = new Schema(),
         ];
 
         $propertyPath->type = 'string';
-        $invalidValueSchema->type = 'mixed';
         $messageSchema->type = 'string';
         $codeSchema->type = 'string';
-        $payloadSchema->type = 'mixed';
+        $payloadSchema->type = 'object';
 
         foreach ($root->paths as $pathItem) {
             foreach ($pathItem->getOperations() as $operation) {
@@ -130,13 +127,8 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
             $errorData = [
                 'propertyPath' => $constraintViolation->getPropertyPath(),
                 'message' => $constraintViolation->getMessage(),
-                'invalidValue' => $constraintViolation->getInvalidValue(),
                 'code' => $constraintViolation->getCode(),
             ];
-
-            if ($this->omitConstraintInvalidValue) {
-                unset($errorData['invalidValue']);
-            }
 
             if (null !== $payload = $this->getConstraintPayload($constraintViolation)) {
                 $errorData['payload'] = $payload;

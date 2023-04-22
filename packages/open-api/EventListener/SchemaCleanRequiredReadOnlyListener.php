@@ -35,6 +35,10 @@ final class SchemaCleanRequiredReadOnlyListener implements EventSubscriberInterf
                     )
                 );
             }
+
+            if (!$definition->required) {
+                $definition->required = null;
+            }
         }
     }
 }
