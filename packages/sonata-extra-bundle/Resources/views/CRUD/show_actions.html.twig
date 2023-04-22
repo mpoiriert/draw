@@ -11,7 +11,7 @@
                 {% else %}
                     {% set href = action.href %}
                 {% endif %}
-                <a href="{{ href }}" class="btn btn-sm btn-default">
+                <a href="{{ href }}" class="{{ action.attr.class|default('btn btn-sm btn-default') }}">
                     {% if action.icon is defined %}<i class="fa {{ action.icon }}"></i> {% endif %}
                     {{ (action.label|default('action_' ~ action_name))|trans({}, admin.translationDomain) }}
                 </a>
