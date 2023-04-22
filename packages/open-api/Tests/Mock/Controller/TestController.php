@@ -54,7 +54,8 @@ class TestController
             collectionFormat: 'csv',
             constraints: [
                 new Assert\NotNull(),
-            ]
+            ],
+            items: new OpenApi\Items(type: 'string')
         )]
         ?array $param1
     ): ?array {

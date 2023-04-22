@@ -4,11 +4,14 @@ namespace Draw\Component\OpenApi\Schema;
 
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\GroupSequence;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
  * @author Martin Poirier Théoret <mpoiriert@gmail.com>
  */
-class Items
+#[Assert\GroupSequenceProvider]
+class Items implements GroupSequenceProviderInterface
 {
     /**
      * The internal type of the array. The value MUST be one of "string", "number", "integer", "boolean", or "array".
@@ -26,6 +29,7 @@ class Items
     /**
      * Required if type is "array". Describes the type of items in the array.
      */
+    #[Assert\Valid]
     public ?Items $items = null;
 
     /**
@@ -119,10 +123,59 @@ class Items
     #[JMS\SerializedName('multipleOf')]
     public ?int $multipleOf = null;
 
+    public function __construct(
+        ?string $type = null,
+        ?string $format = null,
+        ?self $items = null,
+        ?string $collectionFormat = null,
+        mixed $default = null,
+        ?int $maximum = null,
+        ?bool $exclusiveMaximum = null,
+        ?int $minimum = null,
+        ?bool $exclusiveMinimum = null,
+        ?int $maxLength = null,
+        ?int $minLength = null,
+        ?string $pattern = null,
+        ?int $maxItems = null,
+        ?int $minItems = null,
+        ?bool $uniqueItems = null,
+        ?array $enum = null,
+        ?int $multipleOf = null,
+    ) {
+        $this->type = $type;
+        $this->format = $format;
+        $this->items = $items;
+        $this->collectionFormat = $collectionFormat;
+        $this->default = $default;
+        $this->maximum = $maximum;
+        $this->exclusiveMaximum = $exclusiveMaximum;
+        $this->minimum = $minimum;
+        $this->exclusiveMinimum = $exclusiveMinimum;
+        $this->maxLength = $maxLength;
+        $this->minLength = $minLength;
+        $this->pattern = $pattern;
+        $this->maxItems = $maxItems;
+        $this->minItems = $minItems;
+        $this->uniqueItems = $uniqueItems;
+        $this->enum = $enum;
+        $this->multipleOf = $multipleOf;
+    }
+
     #[JMS\PreSerialize]
     public function preSerialize(): void
     {
         $this->default = MixedData::convert($this->default);
         $this->enum = MixedData::convert($this->enum, true);
+    }
+
+    public function getGroupSequence(): array|GroupSequence
+    {
+        $groups = ['Items'];
+
+        if ($this->type) {
+            $groups[] = $this->type;
+        }
+
+        return $groups;
     }
 }

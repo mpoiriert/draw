@@ -4,8 +4,11 @@ namespace Draw\Component\OpenApi\Schema;
 
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\GroupSequence;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
-class Parameter extends BaseParameter
+#[Assert\GroupSequenceProvider]
+class Parameter extends BaseParameter implements GroupSequenceProviderInterface
 {
     /**
      * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types
@@ -25,6 +28,8 @@ class Parameter extends BaseParameter
     /**
      * Required if type is "array". Describes the type of items in the array.
      */
+    #[Assert\NotNull(groups: ['array'])]
+    #[Assert\Valid]
     public ?Items $items = null;
 
     /**
@@ -120,10 +125,68 @@ class Parameter extends BaseParameter
     #[JMS\SerializedName('multipleOf')]
     public ?int $multipleOf = null;
 
+    public function __construct(
+        ?string $name = null,
+        ?string $description = null,
+        ?bool $required = null,
+        ?string $type = null,
+        ?string $format = null,
+        ?Items $items = null,
+        ?string $collectionFormat = null,
+        mixed $default = null,
+        ?int $maximum = null,
+        ?bool $exclusiveMaximum = null,
+        ?int $minimum = null,
+        ?bool $exclusiveMinimum = null,
+        ?int $maxLength = null,
+        ?int $minLength = null,
+        ?string $pattern = null,
+        ?int $maxItems = null,
+        ?int $minItems = null,
+        ?bool $uniqueItems = null,
+        ?array $enum = null,
+        ?int $multipleOf = null,
+    ) {
+        $this->type = $type;
+        $this->format = $format;
+        $this->items = $items;
+        $this->collectionFormat = $collectionFormat;
+        $this->default = $default;
+        $this->maximum = $maximum;
+        $this->exclusiveMaximum = $exclusiveMaximum;
+        $this->minimum = $minimum;
+        $this->exclusiveMinimum = $exclusiveMinimum;
+        $this->maxLength = $maxLength;
+        $this->minLength = $minLength;
+        $this->pattern = $pattern;
+        $this->maxItems = $maxItems;
+        $this->minItems = $minItems;
+        $this->uniqueItems = $uniqueItems;
+        $this->enum = $enum;
+        $this->multipleOf = $multipleOf;
+
+        parent::__construct(
+            $name,
+            $description,
+            $required,
+        );
+    }
+
     #[JMS\PreSerialize]
     public function preSerialize(): void
     {
         $this->default = MixedData::convert($this->default);
         $this->enum = MixedData::convert($this->enum, true);
+    }
+
+    public function getGroupSequence(): array|GroupSequence
+    {
+        $groups = ['Parameter'];
+
+        if ($this->type) {
+            $groups[] = $this->type;
+        }
+
+        return $groups;
     }
 }
