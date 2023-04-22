@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -163,7 +164,7 @@ class RequestValidationListenerTest extends TestCase
         $request->attributes->set('_draw_query_parameters_validation', [$queryParameter = new QueryParameter()]);
         $queryParameter->name = $name = uniqid('name-');
         $request->attributes->set($name, $parameterObject = (object) []);
-        $queryParameter->constraints = [[(object) []]];
+        $queryParameter->constraints = [new NotNull()];
 
         $this->validator
             ->expects(static::exactly(2))

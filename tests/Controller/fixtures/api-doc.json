@@ -538,6 +538,9 @@
                         "name": "param1",
                         "description": "The parameter",
                         "required": true,
+                        "items": {
+                            "type": "string"
+                        },
                         "collectionFormat": "csv",
                         "in": "query"
                     },

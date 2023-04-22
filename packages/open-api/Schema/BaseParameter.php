@@ -46,6 +46,22 @@ abstract class BaseParameter
      */
     public ?bool $required = null;
 
+    public function __construct(
+        ?string $name = null,
+        ?string $description = null,
+        ?bool $required = null,
+    ) {
+        $this->name = $name;
+        $this->description = $description;
+        $this->required = $required;
+
+        $this->init();
+    }
+
+    protected function init(): void
+    {
+    }
+
     #[JMS\VirtualProperty]
     #[JMS\SerializedName('in')]
     public function getType(): string
