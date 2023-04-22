@@ -9,14 +9,13 @@ use Draw\Component\OpenApi\Schema\Schema;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Mapping\ClassMetadataInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
 {
     private ValidatorInterface $validator;
 
-    /**
-     * @required
-     */
+    #[Required]
     public function setValidator(ValidatorInterface $metadataFactoryInterface): void
     {
         $this->validator = $metadataFactoryInterface;

@@ -5,7 +5,7 @@ namespace Draw\Component\OpenApi\Schema;
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Parameter extends BaseParameter implements ValidationConfigurationInterface
+class Parameter extends BaseParameter
 {
     /**
      * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types
