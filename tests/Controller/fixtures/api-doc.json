@@ -866,14 +866,11 @@
                         "message": {
                             "type": "string"
                         },
-                        "invalidValue": {
-                            "type": "mixed"
-                        },
                         "code": {
                             "type": "string"
                         },
                         "payload": {
-                            "type": "mixed"
+                            "type": "object"
                         }
                     }
                 }

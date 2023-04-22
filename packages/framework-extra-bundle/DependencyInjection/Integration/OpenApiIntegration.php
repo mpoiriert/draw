@@ -333,10 +333,6 @@ class OpenApiIntegration implements IntegrationInterface
             ->setArgument(
                 '$violationKey',
                 $config['violationKey']
-            )
-            ->setArgument(
-                '$omitConstraintInvalidValue',
-                $config['omitConstraintInvalidValue']
             );
 
         $operationExtractorDefinition = $container->getDefinition(OperationExtractor::class);
@@ -462,7 +458,6 @@ class OpenApiIntegration implements IntegrationInterface
                     ->canBeDisabled()
                     ->children()
                         ->booleanNode('useDefaultExceptionsStatusCodes')->defaultTrue()->end()
-                        ->booleanNode('omitConstraintInvalidValue')->defaultFalse()->end()
                         ->arrayNode('exceptionsStatusCodes')
                             ->arrayPrototype()
                                 ->children()

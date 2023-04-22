@@ -114,7 +114,6 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 'exceptionHandler' => [
                     'enabled' => true,
                     'useDefaultExceptionsStatusCodes' => true,
-                    'omitConstraintInvalidValue' => false,
                     'exceptionsStatusCodes' => [],
                     'violationKey' => 'errors',
                 ],
@@ -166,7 +165,6 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                             ],
                             'useDefaultExceptionsStatusCodes' => true,
                             'violationKey' => 'errors',
-                            'omitConstraintInvalidValue' => false,
                         ],
                     ],
                     'request' => [
