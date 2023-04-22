@@ -21,6 +21,8 @@ App\Entity\User:
             type: 'string'
         roles:
             exclude: true
+        requiredReadOnly:
+            read_only: true
         userAddresses:
             type: 'ArrayCollection<App\Entity\UserAddress>'
             accessor:

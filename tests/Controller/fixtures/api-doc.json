@@ -750,6 +750,10 @@
                 "comment": {
                     "type": "string"
                 },
+                "requiredReadOnly": {
+                    "type": "string",
+                    "readOnly": true
+                },
                 "email": {
                     "format": "not empty",
                     "type": "string"

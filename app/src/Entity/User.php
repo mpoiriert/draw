@@ -98,6 +98,10 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?ChildObject2 $childObject2 = null;
 
+    #[Assert\NotNull]
+    #[Serializer\ReadOnlyProperty]
+    private string $requiredReadOnly = 'value';
+
     public function __construct()
     {
         $this->address = new Address();
@@ -245,5 +249,17 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public function setChildObject2(?ChildObject2 $childObject2): void
     {
         $this->childObject2 = $childObject2;
+    }
+
+    public function getRequiredReadOnly(): string
+    {
+        return $this->requiredReadOnly;
+    }
+
+    public function setRequiredReadOnly(string $requiredReadOnly): static
+    {
+        $this->requiredReadOnly = $requiredReadOnly;
+
+        return $this;
     }
 }
