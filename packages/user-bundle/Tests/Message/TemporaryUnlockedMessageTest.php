@@ -48,7 +48,7 @@ class TemporaryUnlockedMessageTest extends TestCase
 
         $this->object->preSend(
             new class() implements MessageHolderInterface,
-            LockableUserInterface {
+                LockableUserInterface {
                 use LockableUserTrait;
                 use MessageHolderTrait;
                 use SecurityUserTrait;

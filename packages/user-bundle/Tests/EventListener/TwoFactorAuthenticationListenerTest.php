@@ -91,7 +91,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         yield 'not-as-one-provider-enable' => [
             new UserRequestInterceptionEvent(
                 new class() implements SecurityUserInterface,
-                TwoFactorAuthenticationUserInterface {
+                    TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
                         asOneTwoFActorAuthenticationProviderEnabled as originalAsOneProviderEnabled;
                     }
@@ -117,7 +117,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         yield 'not-force-enabling-two-factor-authentication' => [
             new UserRequestInterceptionEvent(
                 new class() implements SecurityUserInterface,
-                TwoFactorAuthenticationUserInterface {
+                    TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait;
                     use SecurityUserTrait;
 
@@ -135,7 +135,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         yield 'not-by-time-base-one-time-password' => [
             new UserRequestInterceptionEvent(
                 new class() implements SecurityUserInterface,
-                TwoFactorAuthenticationUserInterface {
+                    TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
                         isForceEnablingTwoFactorAuthentication as originalIsForceEnablingTwoFactorAuthentication;
                     }
@@ -161,8 +161,8 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         yield 'enabled-route' => [
             new UserRequestInterceptionEvent(
                 new class() implements SecurityUserInterface,
-                TwoFactorAuthenticationUserInterface,
-                ByTimeBaseOneTimePasswordInterface {
+                    TwoFactorAuthenticationUserInterface,
+                    ByTimeBaseOneTimePasswordInterface {
                     use ByTimeBaseOneTimePasswordTrait {
                         isForceEnablingTwoFactorAuthentication as originalIsForceEnablingTwoFactorAuthentication;
                     }
@@ -188,8 +188,8 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         yield 'not-enabled-route' => [
             new UserRequestInterceptionEvent(
                 new class() implements SecurityUserInterface,
-                TwoFactorAuthenticationUserInterface,
-                ByTimeBaseOneTimePasswordInterface {
+                    TwoFactorAuthenticationUserInterface,
+                    ByTimeBaseOneTimePasswordInterface {
                     use ByTimeBaseOneTimePasswordTrait {
                         isForceEnablingTwoFactorAuthentication as originalIsForceEnablingTwoFactorAuthentication;
                     }

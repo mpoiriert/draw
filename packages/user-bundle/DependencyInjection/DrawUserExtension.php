@@ -116,7 +116,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
         $this->configureAccountLocker($config['account_locker'], $loader, $container);
         $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
-        $this->configureOnboarding($config['onboarding'], $loader, $container);
+        $this->configureOnBoarding($config['onboarding'], $loader, $container);
         $this->configureNeedPasswordChangeEnforcer($config['password_change_enforcer'], $loader, $container);
 
         $userClass = $container->getParameter('draw_user.user_entity_class');
