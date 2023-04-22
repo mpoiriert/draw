@@ -48,6 +48,22 @@ class SymfonySchemaBuilder implements SchemaBuilderInterface
             $this->openApi->extract($this->router, $schema, $extractionContext);
         }
 
+        if ($schema->getVendorData()) {
+            $data = [
+                ['', 'Metadata', '', ''],
+                ['', '---', '---', ''],
+            ];
+            foreach ($schema->getVendorData() as $key => $value) {
+                $data[] = ['', $key, $value, ''];
+            }
+
+            foreach ($data as $row) {
+                $schema->info->description = $schema->info->description."\n".implode('|', $row);
+            }
+        }
+
+        $schema->vendor = [];
+
         return $schema;
     }
 }
