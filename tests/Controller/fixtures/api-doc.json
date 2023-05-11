@@ -380,7 +380,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Empty response mean success"
+                        "description": "When the operation succeed, not content is returned."
                     },
                     "400": {
                         "description": "Request Validation error",
