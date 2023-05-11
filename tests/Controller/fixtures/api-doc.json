@@ -5,6 +5,133 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/connection-tokens": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "summary": "Create a token base on the username/password of a user.",
+                "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp** attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
+                "operationId": "drawUserBundleCreateConnectionToken",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.Credential"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The newly created token",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "connection_token_create"
+            }
+        },
+        "/api/connection-tokens/current": {
+            "delete": {
+                "tags": [
+                    "Security"
+                ],
+                "operationId": "drawUserBundleDeleteConnectionToken",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Nothing to be returned"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "drawUserBundle_connection_clear"
+            }
+        },
+        "/api/connection-tokens/refresh": {
+            "post": {
+                "tags": [
+                    "Security"
+                ],
+                "operationId": "drawUserBundleRefreshConnectionToken",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The refreshed token",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "drawUserBundle_connection_token_refresh"
+            }
+        },
+        "/api/me": {
+            "get": {
+                "operationId": "me",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The currently connected user",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "me"
+            }
+        },
         "/api/tags": {
             "get": {
                 "operationId": "tagList",
@@ -72,6 +199,31 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_tags_create"
+            }
+        },
+        "/api/tags/activate-all": {
+            "post": {
+                "operationId": "tagActivateAll",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Empty return value mean success"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_activateall"
             }
         },
         "/api/tags/{id}": {
@@ -176,31 +328,6 @@
                 "x-draw-open-api-symfony-route": "app_api_tags_delete"
             }
         },
-        "/api/tags/activate-all": {
-            "post": {
-                "operationId": "tagActivateAll",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Empty return value mean success"
-                    },
-                    "400": {
-                        "description": "Request Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
-                        }
-                    }
-                },
-                "x-draw-open-api-symfony-route": "app_api_tags_activateall"
-            }
-        },
         "/api/users": {
             "get": {
                 "summary": "Return a paginator list of users.",
@@ -264,34 +391,6 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_users_create"
-            }
-        },
-        "/api/me": {
-            "get": {
-                "operationId": "me",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The currently connected user",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    },
-                    "400": {
-                        "description": "Request Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
-                        }
-                    }
-                },
-                "x-draw-open-api-symfony-route": "me"
             }
         },
         "/api/users/{id}": {
@@ -397,6 +496,38 @@
                 "x-draw-open-api-symfony-route": "user_delete"
             }
         },
+        "/api/users/{id}/reset-password-email": {
+            "post": {
+                "summary": "Send a reset password email to the user.",
+                "operationId": "userSendResetPasswordEmail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    },
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No return value mean email has been sent"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_users_sendresetpasswordemail"
+            }
+        },
         "/api/users/{id}/tags": {
             "put": {
                 "operationId": "userSetTags",
@@ -442,38 +573,6 @@
                     }
                 },
                 "x-draw-open-api-symfony-route": "app_api_users_settags"
-            }
-        },
-        "/api/users/{id}/reset-password-email": {
-            "post": {
-                "summary": "Send a reset password email to the user.",
-                "operationId": "userSendResetPasswordEmail",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "id",
-                        "required": true,
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "No return value mean email has been sent"
-                    },
-                    "400": {
-                        "description": "Request Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
-                        }
-                    }
-                },
-                "x-draw-open-api-symfony-route": "app_api_users_sendresetpasswordemail"
             }
         },
         "/tests": {
@@ -602,214 +701,48 @@
                 },
                 "x-draw-open-api-symfony-route": "draw_component_openapi_tests_mock_test_version2"
             }
-        },
-        "/api/connection-tokens": {
-            "post": {
-                "tags": [
-                    "Security"
-                ],
-                "summary": "Create a token base on the username/password of a user.",
-                "description": "The token returned is a JWT token (https://jwt.io/).\nOnce you have a token you can pass it as a Authorization Bearer request header: (Authorization: Bearer **token**).\nIf you decode the token you can read the **exp** attribute and see until when it's valid. Before the expiration\nis reach you should call the POST /api/connection-tokens endpoint to get a new one.",
-                "operationId": "drawUserBundleCreateConnectionToken",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.Credential"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "The newly created token",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
-                        }
-                    },
-                    "400": {
-                        "description": "Request Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
-                        }
-                    }
-                },
-                "x-draw-open-api-symfony-route": "connection_token_create"
-            }
-        },
-        "/api/connection-tokens/refresh": {
-            "post": {
-                "tags": [
-                    "Security"
-                ],
-                "operationId": "drawUserBundleRefreshConnectionToken",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "The refreshed token",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.ConnectionToken"
-                        }
-                    },
-                    "400": {
-                        "description": "Request Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
-                        }
-                    }
-                },
-                "x-draw-open-api-symfony-route": "drawUserBundle_connection_token_refresh"
-            }
-        },
-        "/api/connection-tokens/current": {
-            "delete": {
-                "tags": [
-                    "Security"
-                ],
-                "operationId": "drawUserBundleDeleteConnectionToken",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Nothing to be returned"
-                    },
-                    "400": {
-                        "description": "Request Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
-                        }
-                    }
-                },
-                "x-draw-open-api-symfony-route": "drawUserBundle_connection_clear"
-            }
         }
     },
     "definitions": {
-        "Tag": {
-            "required": [
-                "label"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "format": "int32",
-                    "type": "integer"
-                },
-                "active": {
-                    "type": "boolean"
-                },
-                "label": {
-                    "maxLength": 255,
-                    "minLength": 3,
-                    "type": "string"
-                }
-            }
-        },
-        "User": {
-            "required": [
-                "email"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "tags": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Tag"
-                    }
-                },
-                "level": {
-                    "type": "string"
-                },
-                "address": {
-                    "$ref": "#/definitions/Address"
-                },
-                "userAddresses": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/UserAddress"
-                    }
-                },
-                "dateOfBirth": {
-                    "format": "date-time",
-                    "description": "User date of birth.",
-                    "type": "string"
-                },
-                "comment": {
-                    "type": "string"
-                },
-                "requiredReadOnly": {
-                    "type": "string",
-                    "readOnly": true
-                },
-                "email": {
-                    "format": "not empty",
-                    "type": "string"
-                },
-                "plainPassword": {
-                    "description": "The plain password to update the password itself.",
-                    "type": "string"
-                },
-                "passwordUpdatedAt": {
-                    "format": "date-time",
-                    "type": "string"
-                }
-            }
-        },
         "Address": {
             "type": "object",
             "properties": {
-                "street": {
-                    "type": "string"
-                },
-                "postalCode": {
-                    "type": "string"
-                },
                 "city": {
                     "type": "string"
                 },
                 "country": {
                     "type": "string"
+                },
+                "postalCode": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
                 }
             }
         },
-        "UserAddress": {
+        "Draw.Bundle.UserBundle.DTO.ConnectionToken": {
             "type": "object",
             "properties": {
-                "id": {
-                    "format": "int32",
-                    "type": "integer"
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "Draw.Bundle.UserBundle.DTO.Credential": {
+            "required": [
+                "username",
+                "password"
+            ],
+            "type": "object",
+            "properties": {
+                "password": {
+                    "format": "not empty",
+                    "type": "string"
                 },
-                "user": {
-                    "$ref": "#/definitions/User"
-                },
-                "address": {
-                    "$ref": "#/definitions/Address"
-                },
-                "position": {
-                    "format": "int32",
-                    "type": "integer"
+                "username": {
+                    "format": "not empty",
+                    "type": "string"
                 }
             }
         },
@@ -826,31 +759,6 @@
                 }
             }
         },
-        "Draw.Bundle.UserBundle.DTO.Credential": {
-            "required": [
-                "username",
-                "password"
-            ],
-            "type": "object",
-            "properties": {
-                "username": {
-                    "format": "not empty",
-                    "type": "string"
-                },
-                "password": {
-                    "format": "not empty",
-                    "type": "string"
-                }
-            }
-        },
-        "Draw.Bundle.UserBundle.DTO.ConnectionToken": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
         "Draw.OpenApi.Error.Validation": {
             "required": [
                 "code"
@@ -859,9 +767,6 @@
             "properties": {
                 "code": {
                     "type": "integer"
-                },
-                "message": {
-                    "type": "string"
                 },
                 "errors": {
                     "type": "object",
@@ -879,6 +784,101 @@
                             "type": "object"
                         }
                     }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Tag": {
+            "required": [
+                "label"
+            ],
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "label": {
+                    "maxLength": 255,
+                    "minLength": 3,
+                    "type": "string"
+                }
+            }
+        },
+        "User": {
+            "required": [
+                "email"
+            ],
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/Address"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "dateOfBirth": {
+                    "format": "date-time",
+                    "description": "User date of birth.",
+                    "type": "string"
+                },
+                "email": {
+                    "format": "not empty",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "string"
+                },
+                "passwordUpdatedAt": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "plainPassword": {
+                    "description": "The plain password to update the password itself.",
+                    "type": "string"
+                },
+                "requiredReadOnly": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Tag"
+                    }
+                },
+                "userAddresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserAddress"
+                    }
+                }
+            }
+        },
+        "UserAddress": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/Address"
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "position": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "user": {
+                    "$ref": "#/definitions/User"
                 }
             }
         }

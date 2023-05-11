@@ -9,6 +9,7 @@ use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
 use Draw\Component\OpenApi\EventListener\ResponseSerializerListener;
 use Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener;
+use Draw\Component\OpenApi\EventListener\SchemaSorterListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\Extractor\Caching\LoadFromCacheExtractor;
@@ -238,6 +239,10 @@ class OpenApiIntegration implements IntegrationInterface
                 ->setArgument('$headers', $config['headers']);
         }
 
+        if (!$config['sort_schema']) {
+            $container->removeDefinition(SchemaSorterListener::class);
+        }
+
         if (!$config['definitionAliases']) {
             $container->removeDefinition(AliasesClassNamingFilter::class);
         } else {
@@ -401,6 +406,7 @@ class OpenApiIntegration implements IntegrationInterface
                 ->scalarNode('sandbox_url')->defaultValue('/open-api/sandbox')->end()
                 ->booleanNode('caching_enabled')->defaultTrue()->end()
                 ->booleanNode('cleanOnDump')->defaultTrue()->end()
+                ->booleanNode('sort_schema')->defaultFalse()->end()
                 ->append($this->createVersioningNode())
                 ->append($this->createSchemaNode())
                 ->append($this->createHeadersNode())
