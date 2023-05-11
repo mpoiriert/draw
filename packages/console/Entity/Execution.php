@@ -27,6 +27,8 @@ class Execution implements \Stringable
 
     final public const STATE_TERMINATED = 'terminated';
 
+    final public const STATE_DISABLED = 'disabled';
+
     final public const STATE_ACKNOWLEDGE = 'acknowledge';
 
     final public const STATE_AUTO_ACKNOWLEDGE = 'auto_acknowledge';
@@ -34,6 +36,7 @@ class Execution implements \Stringable
     final public const STATES = [
         self::STATE_INITIALIZED,
         self::STATE_STARTED,
+        self::STATE_DISABLED,
         self::STATE_ERROR,
         self::STATE_TERMINATED,
         self::STATE_ACKNOWLEDGE,

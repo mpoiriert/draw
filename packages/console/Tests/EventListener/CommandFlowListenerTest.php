@@ -13,6 +13,7 @@ use Draw\Component\Console\Event\CommandErrorEvent;
 use Draw\Component\Console\Event\LoadExecutionIdEvent;
 use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Console\Output\BufferedConsoleOutput;
+use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -22,6 +23,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -42,15 +44,9 @@ class CommandFlowListenerTest extends TestCase
 
     private CommandFlowListener $object;
 
-    /**
-     * @var EventDispatcherInterface&MockObject
-     */
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private LoggerInterface $logger;
+    private LoggerInterface&MockObject $logger;
 
     private ?Execution $execution = null;
 
@@ -783,6 +779,57 @@ class CommandFlowListenerTest extends TestCase
 
         static::assertSame(Execution::STATE_AUTO_ACKNOWLEDGE, $execution->getState());
         static::assertSame($reason, $execution->getAutoAcknowledgeReason());
+    }
+
+    /**
+     * @depends testGenerateFromDatabaseReal
+     */
+    public function testLogCommandTerminateDisabled(Execution $execution): void
+    {
+        $event = new Event\ConsoleTerminateEvent(
+            $this->createMock(Command::class),
+            $this->createOptionExecutionIdInput($execution->getId()),
+            $output = $this->createMock(BufferedConsoleOutput::class),
+            ConsoleCommandEvent::RETURN_CODE_DISABLED
+        );
+
+        $output
+            ->expects(static::once())
+            ->method('fetch')
+            ->willReturn(uniqid('output-'));
+
+        $this->object->logCommandTerminate($event);
+
+        self::$entityManager->refresh($execution);
+
+        static::assertSame(Execution::STATE_DISABLED, $execution->getState());
+    }
+
+    /**
+     * @depends testGenerateFromDatabaseReal
+     */
+    public function testLogCommandTerminateDisabledIgnored(Execution $execution): void
+    {
+        $event = new Event\ConsoleTerminateEvent(
+            $this->createMock(Command::class),
+            $this->createOptionExecutionIdInput($execution->getId()),
+            $output = $this->createMock(BufferedConsoleOutput::class),
+            ConsoleCommandEvent::RETURN_CODE_DISABLED
+        );
+
+        $output
+            ->expects(static::once())
+            ->method('fetch')
+            ->willReturn(uniqid('output-'));
+
+        ReflectionAccessor::setPropertyValue($this->object, 'ignoreDisabledCommand', true);
+
+        $this->object->logCommandTerminate($event);
+
+        $execution = self::$entityManager->getRepository(Execution::class)
+            ->findOneBy(['id' => $execution->getId()]);
+
+        static::assertNull($execution);
     }
 
     private function createOptionExecutionIdInput(string $id): InputInterface

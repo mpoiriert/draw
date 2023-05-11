@@ -9,6 +9,7 @@ use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration
@@ -29,7 +30,9 @@ class ConsoleIntegrationTest extends IntegrationTestCase
 
     public function getDefaultConfiguration(): array
     {
-        return [];
+        return [
+            'ignore_disabled_command' => false,
+        ];
     }
 
     public function testPrependNoDoctrineExtension(): void
@@ -80,7 +83,11 @@ class ConsoleIntegrationTest extends IntegrationTestCase
     public function provideTestLoad(): iterable
     {
         yield [
-            [],
+            [
+                [
+                    'ignore_disabled_command' => true,
+                ],
+            ],
             [
                 new ServiceConfiguration(
                     'draw.console.command.purge_execution_command',
@@ -92,7 +99,12 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                     'draw.console.event_listener.command_flow_listener',
                     [
                         CommandFlowListener::class,
-                    ]
+                    ],
+                    function (Definition $definition): void {
+                        static::assertTrue(
+                            $definition->getArgument('$ignoreDisabledCommand')
+                        );
+                    }
                 ),
             ],
         ];
