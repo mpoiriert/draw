@@ -51,6 +51,7 @@ class UsersController extends AbstractController
     #[Route(path: '/users/{id}', methods: ['PUT'])]
     #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userEdit')]
+    #[OpenApi\PathParameter(name: 'id', description: 'The user id to edit', type: 'integer')]
     public function editAction(
         #[RequestBody(propertiesMap: ['id' => 'id'])] User $target,
         EntityManagerInterface $entityManager
