@@ -40,6 +40,7 @@ use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VendorAttributeExtractor
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VersioningRootSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VersionLinkDocumentationExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\PhpDoc\OperationExtractor;
+use Draw\Component\OpenApi\Extraction\Extractor\PhpReflection\OperationResponseExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\Symfony\RouteOperationExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\Symfony\RouterRootSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
@@ -320,6 +321,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                             $definition->getMethodCalls()
                         );
                     }
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.php_reflection.operation_response_extractor',
+                    [OperationResponseExtractor::class],
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.extractor.symfony.route_operation_extractor',

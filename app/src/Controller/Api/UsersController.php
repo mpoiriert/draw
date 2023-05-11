@@ -92,9 +92,6 @@ class UsersController extends AbstractController
         return $target;
     }
 
-    /**
-     * @return void Empty response mean success
-     */
     #[Route(path: '/users/{id}', name: 'user_delete', methods: ['DELETE'])]
     #[Entity('target', class: User::class)]
     #[IsGranted('ROLE_ADMIN')]
