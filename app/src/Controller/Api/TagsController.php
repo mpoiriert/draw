@@ -68,8 +68,14 @@ class TagsController
      */
     #[Route(path: '/tags', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'tagList')]
-    public function listAction(EntityHandler $entityHandler): array
-    {
+    public function listAction(
+        EntityHandler $entityHandler,
+        #[OpenApi\QueryParameter] ?bool $active = null
+    ): array {
+        if (null !== $active) {
+            $entityHandler->findBy(Tag::class, ['active' => $active]);
+        }
+
         return $entityHandler->findAll(Tag::class);
     }
 

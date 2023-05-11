@@ -10,6 +10,11 @@
                 "operationId": "tagList",
                 "parameters": [
                     {
+                        "type": "boolean",
+                        "name": "active",
+                        "in": "query"
+                    },
+                    {
                         "type": "string",
                         "name": "X-Draw-Language",
                         "default": "en",
