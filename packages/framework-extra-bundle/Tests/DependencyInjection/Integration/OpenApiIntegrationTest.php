@@ -12,6 +12,7 @@ use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
 use Draw\Component\OpenApi\EventListener\ResponseSerializerListener;
 use Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener;
 use Draw\Component\OpenApi\EventListener\SchemaCleanRequiredReadOnlyListener;
+use Draw\Component\OpenApi\EventListener\SchemaSorterListener;
 use Draw\Component\OpenApi\EventListener\SerializationControllerListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Extraction\Extractor\Caching\FileTrackingExtractor;
@@ -83,6 +84,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 'enabled' => true,
                 'caching_enabled' => true,
                 'sandbox_url' => '/open-api/sandbox',
+                'sort_schema' => false,
                 'cleanOnDump' => true,
                 'versioning' => [
                     'enabled' => false,
@@ -129,6 +131,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     'openApi' => [
                         'enabled' => true,
                         'caching_enabled' => true,
+                        'sort_schema' => true,
                         'sandbox_url' => '/test/sandbox',
                         'schema' => [
                             'info' => [
@@ -392,6 +395,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.event_listener.schema_add_default_headers_listener',
                     [SchemaAddDefaultHeadersListener::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.schema_sorter_listener',
+                    [SchemaSorterListener::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.event_listener.schema_clean_required_read_only_listener',
