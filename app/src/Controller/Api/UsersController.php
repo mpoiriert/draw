@@ -80,9 +80,6 @@ class UsersController extends AbstractController
         return $target->getTags()->toArray();
     }
 
-    /**
-     * @return User The user
-     */
     #[Route(path: '/users/{id}', name: 'user_get', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     #[Entity('target', class: User::class)]

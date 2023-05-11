@@ -7,6 +7,7 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Response;
+use Draw\Component\OpenApi\Schema\Schema;
 
 class OperationResponseExtractor implements ExtractorInterface
 {
@@ -44,16 +45,39 @@ class OperationResponseExtractor implements ExtractorInterface
             return;
         }
 
-        if (!\in_array($returnType->getName(), ['void', 'null'])) {
-            return;
-        }
+        if (\in_array($returnType->getName(), ['void', 'null'])) {
+            if (\array_key_exists(204, $target->responses)) {
+                return;
+            }
 
-        if (\array_key_exists(204, $target->responses)) {
+            $response = new Response();
+            $response->description = 'When the operation succeed, not content is returned.';
+            $target->responses[204] = $response;
+
             return;
         }
 
         $response = new Response();
-        $response->description = 'When the operation succeed, not content is returned.';
-        $target->responses[204] = $response;
+        $statusCode = $this->extractStatusCode($returnType->getName(), $response, $extractionContext, $source);
+
+        if (!\array_key_exists($statusCode, $target->responses)) {
+            $response->description = 'Operation is successful.';
+            $target->responses[$statusCode] = $response;
+        }
+    }
+
+    private function extractStatusCode(
+        string $type,
+        Response $response,
+        ExtractionContextInterface $extractionContext,
+        \ReflectionMethod $source
+    ): int {
+        $response->schema = $responseSchema = new Schema();
+        $subContext = $extractionContext->createSubContext();
+        $subContext->setParameter('controller-reflection-method', $source);
+        $subContext->setParameter('response', $response);
+        $extractionContext->getOpenApi()->extract($type, $responseSchema, $subContext);
+
+        return $subContext->getParameter('response-status-code', 200);
     }
 }
