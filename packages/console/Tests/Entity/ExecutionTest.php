@@ -42,6 +42,11 @@ class ExecutionTest extends TestCase
         );
 
         static::assertSame(
+            'disabled',
+            $this->entity::STATE_DISABLED
+        );
+
+        static::assertSame(
             'acknowledge',
             $this->entity::STATE_ACKNOWLEDGE
         );
@@ -55,6 +60,7 @@ class ExecutionTest extends TestCase
             [
                 $this->entity::STATE_INITIALIZED,
                 $this->entity::STATE_STARTED,
+                $this->entity::STATE_DISABLED,
                 $this->entity::STATE_ERROR,
                 $this->entity::STATE_TERMINATED,
                 $this->entity::STATE_ACKNOWLEDGE,

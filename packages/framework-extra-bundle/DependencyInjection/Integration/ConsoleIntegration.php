@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
+use Draw\Component\Console\EventListener\CommandFlowListener;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -31,6 +32,10 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
             ]
         );
 
+        $container
+            ->getDefinition(CommandFlowListener::class)
+            ->setArgument('$ignoreDisabledCommand', $config['ignore_disabled_command']);
+
         $this->renameDefinitions(
             $container,
             $namespace,
@@ -40,7 +45,10 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
 
     public function addConfiguration(ArrayNodeDefinition $node): void
     {
-        // nothing to do
+        $node
+            ->children()
+                ->booleanNode('ignore_disabled_command')->defaultFalse()->end()
+            ->end();
     }
 
     public function prepend(ContainerBuilder $container, array $config): void

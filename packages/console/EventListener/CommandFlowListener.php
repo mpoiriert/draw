@@ -11,6 +11,7 @@ use Draw\Component\Console\Event\LoadExecutionIdEvent;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Event;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,7 +53,8 @@ class CommandFlowListener implements EventSubscriberInterface
     public function __construct(
         private Connection $connection,
         private EventDispatcherInterface $eventDispatcher,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private bool $ignoreDisabledCommand = false
     ) {
     }
 
@@ -195,7 +197,11 @@ class CommandFlowListener implements EventSubscriberInterface
             $outputString = $output->fetch();
         }
 
-        $this->updateState($executionId, Execution::STATE_TERMINATED, $outputString);
+        $state = ConsoleCommandEvent::RETURN_CODE_DISABLED === $event->getExitCode()
+            ? Execution::STATE_DISABLED
+            : Execution::STATE_TERMINATED;
+
+        $this->updateState($executionId, $state, $outputString);
     }
 
     public function logCommandError(Event\ConsoleErrorEvent $event): void
@@ -249,6 +255,20 @@ class CommandFlowListener implements EventSubscriberInterface
         ?string $outputString = null,
         ?string $autoAcknowledgeReason = null
     ): void {
+        $reconnectToSlave = $this->mustReconnectToSlave();
+
+        if ($this->ignoreDisabledCommand && Execution::STATE_DISABLED === $state) {
+            $this->connection
+                ->prepare('DELETE FROM command__execution WHERE id = :id')
+                ->executeStatement(['id' => $executionId]);
+
+            if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
+                $this->connection->ensureConnectedToReplica();
+            }
+
+            return;
+        }
+
         if (mb_strlen((string) $outputString) > 50000) {
             $outputString = sprintf(
                 "%s\n\n[OUTPUT WAS TOO BIG]\n\nTail of log:\n\n%s",
@@ -256,8 +276,6 @@ class CommandFlowListener implements EventSubscriberInterface
                 mb_substr($outputString, -10000)
             );
         }
-
-        $reconnectToSlave = $this->mustReconnectToSlave();
 
         $date = date('Y-m-d H:i:s');
         $parameters = [
