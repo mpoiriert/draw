@@ -5,14 +5,15 @@ namespace Draw\Component\AwsToolKit\EventListener;
 use Aws\Ec2\Ec2Client;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * This command listener is use to check if a command can be executed or not base on the fact it's the newest
+ * This command listener is used to check if a command can be executed or not base on the fact it's the newest
  * instance in a specific role. This is useful when you want a cron to be executed only on one running instance in a pool
- * of instance and that all your server have the same cron configuration. This is check every time at runtime.
+ * of instance and that all your server have the same cron configuration. This is checked every time at runtime.
  *
  * Example:
  *   console/bin acme:purge-database --aws-newest-instance-role=prod
@@ -56,14 +57,14 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
 
         try {
             $currentInstanceId = $this->imdsClient->getCurrentInstanceId();
-        } catch (\Throwable $throwable) {
-            $this->disableCommand($consoleCommandEvent, 'Cannot reach 169.254.169.254');
+        } catch (\Throwable) {
+            $this->disableCommand($consoleCommandEvent, 'Cannot reach 169.254.169.254', LogLevel::ERROR);
 
             return;
         }
 
         if (!$currentInstanceId) {
-            $this->disableCommand($consoleCommandEvent, 'Current instance id not found');
+            $this->disableCommand($consoleCommandEvent, 'Current instance id not found', LogLevel::ERROR);
 
             return;
         }
@@ -75,16 +76,23 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
                 return;
             }
         } catch (\Throwable $throwable) {
-            $this->disableCommand($consoleCommandEvent, $throwable->getMessage());
+            $this->disableCommand($consoleCommandEvent, $throwable->getMessage(), LogLevel::ERROR);
 
             return;
         }
     }
 
-    private function disableCommand(ConsoleCommandEvent $event, string $reason): void
+    private function disableCommand(ConsoleCommandEvent $event, string $reason, string $level = LogLevel::INFO): void
     {
         $event->disableCommand();
-        $this->logger->info('Command disabled', ['reason' => $reason, 'service' => 'NewestInstanceRoleListener']);
+        $this->logger->log(
+            $level,
+            'Command disabled',
+            [
+                'reason' => $reason,
+                'service' => 'NewestInstanceRoleListener',
+            ]
+        );
     }
 
     /**
