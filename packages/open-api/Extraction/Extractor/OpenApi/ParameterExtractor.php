@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
 
-use Doctrine\Common\Annotations\Reader;
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
@@ -11,10 +10,6 @@ use Draw\Component\OpenApi\Schema\Operation;
 
 class ParameterExtractor implements ExtractorInterface
 {
-    public function __construct(private Reader $reader)
-    {
-    }
-
     public function canExtract($source, $target, ExtractionContextInterface $extractionContext): bool
     {
         if (!$source instanceof \ReflectionMethod) {
@@ -40,15 +35,28 @@ class ParameterExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        foreach ($this->reader->getMethodAnnotations($source) as $annotation) {
-            if ($annotation instanceof BaseParameter) {
-                $target->parameters[] = $annotation;
-                $extractionContext->getOpenApi()->extract(
-                    $annotation,
-                    $annotation,
-                    $extractionContext
-                );
+        foreach ($source->getAttributes(BaseParameter::class, \ReflectionAttribute::IS_INSTANCEOF) as $attribute) {
+            $attribute = $attribute->newInstance();
+
+            $exists = false;
+            foreach ($target->parameters as $index => $parameter) {
+                if ($parameter->name == $attribute->name) {
+                    $exists = true;
+                    $target->parameters[$index] = $attribute;
+
+                    break;
+                }
             }
+
+            if (!$exists) {
+                $target->parameters[] = $attribute;
+            }
+
+            $extractionContext->getOpenApi()->extract(
+                $attribute,
+                $attribute,
+                $extractionContext
+            );
         }
     }
 }

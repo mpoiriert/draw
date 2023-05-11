@@ -326,8 +326,9 @@
                 "operationId": "userEdit",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "name": "id",
+                        "description": "The user id to edit",
                         "required": true,
                         "in": "path"
                     },
