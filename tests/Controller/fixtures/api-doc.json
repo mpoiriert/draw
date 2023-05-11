@@ -308,7 +308,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "The user",
+                        "description": "Operation is successful.",
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
