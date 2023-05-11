@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Exception\ExtractionCompletedException;
@@ -87,10 +86,8 @@ class OpenApi
 
     public function validate(Schema $schema): void
     {
-        $annotationReader = new AnnotationReader();
         $result = Validation::createValidatorBuilder()
             ->enableAnnotationMapping(true)
-            ->setDoctrineAnnotationReader($annotationReader)
             ->getValidator()
             ->validate($schema, null, [Constraint::DEFAULT_GROUP]);
 
