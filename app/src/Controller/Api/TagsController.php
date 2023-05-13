@@ -10,13 +10,15 @@ use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[OpenApi\Tag(name: 'Tags')]
+#[OpenApi\Tag(name: 'Tag2s')]
 class TagsController
 {
     /**
      * @return Tag The newly created tag
      */
     #[Route(path: '/tags', methods: ['POST'])]
-    #[OpenApi\Operation(operationId: 'tagCreate', tags: ['Tags'])]
+    #[OpenApi\Operation(operationId: 'tagCreate')]
     #[Serialization(statusCode: 201)]
     public function createAction(
         #[RequestBody] Tag $target,
@@ -32,7 +34,7 @@ class TagsController
      * @return Tag The update tag
      */
     #[Route(path: '/tags/{id}', methods: ['PUT'])]
-    #[OpenApi\Operation(operationId: 'tagEdit', tags: ['Tags'])]
+    #[OpenApi\Operation(operationId: 'tagEdit')]
     public function editAction(
         #[RequestBody(propertiesMap: ['id' => 'id'])] Tag $target,
         EntityManagerInterface $entityManager
@@ -46,7 +48,7 @@ class TagsController
      * @return Tag The tag
      */
     #[Route(path: '/tags/{id}', name: 'tag_get', methods: ['GET'])]
-    #[OpenApi\Operation(operationId: 'tagGet', tags: ['Tags'])]
+    #[OpenApi\Operation(operationId: 'tagGet')]
     public function getAction(Tag $target): Tag
     {
         return $target;
@@ -56,7 +58,7 @@ class TagsController
      * @return void Empty response mean success
      */
     #[Route(path: '/tags/{id}', methods: ['DELETE'])]
-    #[OpenApi\Operation(operationId: 'tagDelete', tags: ['Tags'])]
+    #[OpenApi\Operation(operationId: 'tagDelete')]
     public function deleteAction(Tag $target, EntityManagerInterface $entityManager): void
     {
         $entityManager->remove($target);
@@ -67,7 +69,7 @@ class TagsController
      * @return Tag[] All tags
      */
     #[Route(path: '/tags', methods: ['GET'])]
-    #[OpenApi\Operation(operationId: 'tagList', tags: ['Tags'])]
+    #[OpenApi\Operation(operationId: 'tagList')]
     public function listAction(
         EntityHandler $entityHandler,
         #[OpenApi\QueryParameter] int $amountPerPage,// Keep query parameter as is for integration test
@@ -90,7 +92,7 @@ class TagsController
      * @return void Empty return value mean success
      */
     #[Route(path: '/tags/activate-all', methods: ['POST'])]
-    #[OpenApi\Operation(operationId: 'tagActivateAll', tags: ['Tags'])]
+    #[OpenApi\Operation(operationId: 'tagActivateAll')]
     #[Serialization(statusCode: 204)]
     public function activateAllAction(EntityHandler $entityHandler): void
     {
