@@ -15,17 +15,17 @@
                 "operationId": "drawUserBundleCreateConnectionToken",
                 "parameters": [
                     {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
                         "in": "body",
                         "name": "body",
                         "schema": {
                             "$ref": "#/definitions/Draw.Bundle.UserBundle.DTO.Credential"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -137,11 +137,10 @@
                 "operationId": "tagList",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "name": "amountPerPage",
-                        "required": true,
-                        "format": "int32",
-                        "in": "query"
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
                     },
                     {
                         "type": "boolean",
@@ -151,16 +150,17 @@
                     },
                     {
                         "type": "integer",
-                        "name": "pageNumber",
-                        "required": false,
+                        "name": "amountPerPage",
+                        "required": true,
                         "format": "int32",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
+                        "type": "integer",
+                        "name": "pageNumber",
+                        "required": false,
+                        "format": "int32",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -186,17 +186,17 @@
                 "operationId": "tagCreate",
                 "parameters": [
                     {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
                         "in": "body",
                         "name": "body",
                         "schema": {
                             "$ref": "#/definitions/Tag"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -247,15 +247,15 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "name": "id",
-                        "required": true,
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "name": "X-Draw-Language",
                         "default": "en",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -279,6 +279,12 @@
                 "parameters": [
                     {
                         "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
                         "name": "id",
                         "required": true,
                         "in": "path"
@@ -289,12 +295,6 @@
                         "schema": {
                             "$ref": "#/definitions/Tag"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -318,15 +318,15 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "name": "id",
-                        "required": true,
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "name": "X-Draw-Language",
                         "default": "en",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -378,17 +378,17 @@
                 "operationId": "userCreate",
                 "parameters": [
                     {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
                         "in": "body",
                         "name": "body",
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -414,15 +414,15 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "name": "id",
-                        "required": true,
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "name": "X-Draw-Language",
                         "default": "en",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -445,6 +445,12 @@
                 "operationId": "userEdit",
                 "parameters": [
                     {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
                         "type": "integer",
                         "name": "id",
                         "description": "The user id to edit",
@@ -457,12 +463,6 @@
                         "schema": {
                             "$ref": "#/definitions/User"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -486,15 +486,15 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "name": "id",
-                        "required": true,
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "name": "X-Draw-Language",
                         "default": "en",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -518,15 +518,15 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "name": "id",
-                        "required": true,
-                        "in": "path"
-                    },
-                    {
-                        "type": "string",
                         "name": "X-Draw-Language",
                         "default": "en",
                         "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -549,6 +549,12 @@
                 "parameters": [
                     {
                         "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
                         "name": "id",
                         "required": true,
                         "in": "path"
@@ -562,12 +568,6 @@
                                 "$ref": "#/definitions/Tag"
                             }
                         }
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -599,6 +599,12 @@
                 "parameters": [
                     {
                         "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
                         "name": "param1",
                         "description": "param1 description",
                         "required": false,
@@ -610,12 +616,6 @@
                         "schema": {
                             "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Mock.Model.Test"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -655,6 +655,12 @@
                 "operationId": "arrayTest",
                 "parameters": [
                     {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
                         "type": "array",
                         "name": "param1",
                         "description": "The parameter",
@@ -664,12 +670,6 @@
                         },
                         "collectionFormat": "csv",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "name": "X-Draw-Language",
-                        "default": "en",
-                        "in": "header"
                     }
                 ],
                 "responses": {
