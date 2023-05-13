@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Api;
 use App\Entity\User;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersControllerTest extends TestCase
@@ -34,7 +35,7 @@ class UsersControllerTest extends TestCase
 
     public function testUsersCreateAction(): object
     {
-        return $this->connect($this->httpTester())
+        $data = $this->connect($this->httpTester())
             ->post(
                 '/api/users',
                 json_encode([
@@ -48,6 +49,14 @@ class UsersControllerTest extends TestCase
             ->assertStatus(200)
             ->toJsonDataTester()
             ->getData();
+
+        $handler = static::getContainer()->get('monolog.handler.testing');
+
+        static::assertTrue(
+            $handler->hasRecord('[UsersController] Create new user', LogLevel::INFO)
+        );
+
+        return $data;
     }
 
     /**

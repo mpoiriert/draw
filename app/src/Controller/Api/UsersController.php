@@ -9,16 +9,29 @@ use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\DoctrineExtra\ORM\EntityHandler;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @method user getUser()
  */
+#[AutoconfigureTag(
+    'logger.decorate',
+    attributes: [
+        'message' => '[UsersController] {message}',
+        'service' => 'UsersController',
+    ]
+)]
 class UsersController extends AbstractController
 {
+    public function __construct(private LoggerInterface $logger)
+    {
+    }
+
     /**
      * @return User The newly created user
      */
@@ -29,6 +42,8 @@ class UsersController extends AbstractController
         #[RequestBody] User $target,
         EntityManagerInterface $entityManager
     ): User {
+        $this->logger->info('Create new user');
+
         $entityManager->persist($target);
         $entityManager->flush();
 
