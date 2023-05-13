@@ -19,19 +19,24 @@ final class SchemaSorterListener implements EventSubscriberInterface
     {
         $root = $event->getSchema();
 
-        ksort($root->paths);
-        ksort($root->definitions);
-        foreach ($root->definitions as $definition) {
-            if ($definition->properties) {
-                ksort($definition->properties);
+        if ($root->paths) {
+            ksort($root->paths);
+
+            foreach ($root->paths as $path) {
+                foreach ($path->getOperations() as $operation) {
+                    ksort($operation->responses);
+
+                    usort($operation->parameters, fn (BaseParameter $a, BaseParameter $b) => $a->compareTo($b));
+                }
             }
         }
 
-        foreach ($root->paths as $path) {
-            foreach ($path->getOperations() as $operation) {
-                ksort($operation->responses);
-
-                usort($operation->parameters, fn (BaseParameter $a, BaseParameter $b) => $a->compareTo($b));
+        if ($root->definitions) {
+            ksort($root->definitions);
+            foreach ($root->definitions as $definition) {
+                if ($definition->properties) {
+                    ksort($definition->properties);
+                }
             }
         }
     }

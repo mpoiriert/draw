@@ -56,6 +56,13 @@ draw_framework_extra:
           type: 'string'
           default: 'en'
 
+      scoped:
+        scopes:
+          all:
+            tags: ~
+          tag:
+            tags: ['Tags']
+
       sort_schema: true
 
   process: ~

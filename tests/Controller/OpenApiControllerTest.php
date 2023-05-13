@@ -8,13 +8,23 @@ class OpenApiControllerTest extends WebTestCase
 {
     private bool $writeFile = false;
 
-    public function testApiDoc(): void
+    public function testApiDocScopeAll(): void
     {
-        $file = __DIR__.'/fixtures/api-doc.json';
+        $this->assertApiDocIsTheSame('all');
+    }
 
-        $client = static::createJsonClient();
+    public function testApiDocScopeTag(): void
+    {
+        $this->assertApiDocIsTheSame('tag');
+    }
 
-        $client->request('get', '/api-doc.json');
+    public function assertApiDocIsTheSame(string $scope): void
+    {
+        $file = __DIR__.sprintf('/fixtures/api-doc-scope-%s.json', $scope);
+
+        $client = static::createClient();
+
+        $client->request('get', '/api-doc.json?scope='.$scope);
 
         static::assertResponseIsSuccessful();
         static::assertResponseIsJson();

@@ -9,6 +9,7 @@ use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
+use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Root as Schema;
 use Draw\Component\OpenApi\Serializer\Handler\OpenApiHandler;
 use Draw\Component\OpenApi\Serializer\Subscriber\OpenApiSubscriber;
@@ -33,11 +34,15 @@ class OpenApi
 
     private SchemaCleaner $schemaCleaner;
 
+    /**
+     * @param array<Scope>|null $scopes
+     */
     public function __construct(
         ?iterable $extractors = null,
         ?SerializerInterface $serializer = null,
         ?SchemaCleaner $schemaCleaner = null,
-        private ?EventDispatcherInterface $eventDispatcher = null
+        private ?EventDispatcherInterface $eventDispatcher = null,
+        private ?array $scopes = null,
     ) {
         if (null === $serializer) {
             $serializer = SerializerBuilder::create()
@@ -57,6 +62,35 @@ class OpenApi
         $this->serializer = $serializer;
         $this->schemaCleaner = $schemaCleaner ?: new SchemaCleaner();
         $this->extractors = $extractors ?: [new JsonRootSchemaExtractor($this->serializer)];
+    }
+
+    public function matchScope(ExtractionContextInterface $extractionContext, Operation $operation): bool
+    {
+        if (null === $this->scopes) {
+            return true;
+        }
+
+        $scopeName = $extractionContext->getParameter('api.scope');
+
+        if (null === $scopeName) {
+            return false;
+        }
+
+        foreach ($this->scopes as $scope) {
+            if ($scope->getName() !== $scopeName) {
+                continue;
+            }
+
+            if (null === $scope->getTags()) {
+                return true;
+            }
+
+            if (array_intersect($operation->tags ?? [], $scope->getTags())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getCleanOnDump(): bool

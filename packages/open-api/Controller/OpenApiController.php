@@ -22,11 +22,18 @@ class OpenApiController
 
     public function apiDocAction(Request $request, ?string $version = null): Response
     {
+        $scope = $request->query->get('scope');
+
         if ('json' != $request->getRequestFormat()) {
             $parameters = ['_format' => 'json'];
             if ($version) {
                 $parameters['version'] = $version;
             }
+
+            if ($scope) {
+                $parameters['scope'] = $version;
+            }
+
             $currentRoute = $request->attributes->get('_route');
             $currentUrl = $this->urlGenerator
                 ->generate(
@@ -39,7 +46,7 @@ class OpenApiController
         }
 
         return new JsonResponse(
-            $this->openApi->dump($this->schemaBuilder->build($version)),
+            $this->openApi->dump($this->schemaBuilder->build($version, $scope)),
             200,
             [],
             true

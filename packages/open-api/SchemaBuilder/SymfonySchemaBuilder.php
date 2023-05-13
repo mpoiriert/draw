@@ -22,21 +22,23 @@ class SymfonySchemaBuilder implements SchemaBuilderInterface
     ) {
     }
 
-    public function build(?string $version = null): Root
+    public function build(?string $version = null, ?string $scope = null): Root
     {
-        $versionKey = $version ?: '~';
-        if (!isset($this->openApiSchemas[$versionKey])) {
-            $this->openApiSchemas[$versionKey] = $this->doBuild($version);
+        $key = ($version ?: '~').($scope ?: '@');
+
+        if (!isset($this->openApiSchemas[$key])) {
+            $this->openApiSchemas[$key] = $this->doBuild($version, $scope);
         }
 
-        return $this->openApiSchemas[$versionKey];
+        return $this->openApiSchemas[$key];
     }
 
-    private function doBuild(?string $version = null): Root
+    private function doBuild(?string $version = null, ?string $scope = null): Root
     {
         $extractionContext = new ExtractionContext($this->openApi, $schema = new Root());
         $extractionContext->setParameter('api.cacheable', false);
         $extractionContext->setParameter('api.version', $version);
+        $extractionContext->setParameter('api.scope', $scope);
 
         $this->openApi->extract(
             json_encode($this->parameterBag->get('draw_open_api.root_schema'), \JSON_THROW_ON_ERROR),
