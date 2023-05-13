@@ -2,6 +2,7 @@
 
 namespace Draw\Component\OpenApi\Schema;
 
+use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraint;
 
@@ -60,5 +61,46 @@ class QueryParameter extends Parameter
             $enum,
             $multipleOf,
         );
+    }
+
+    /**
+     * @return array<QueryParameter>
+     */
+    public static function fromReflectionMethod(\ReflectionMethod $reflectionMethod): array
+    {
+        $parameters = [];
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+            $attributes = $reflectionParameter
+                ->getAttributes(self::class, \ReflectionAttribute::IS_INSTANCEOF);
+
+            foreach ($attributes as $attribute) {
+                $attribute = $attribute->newInstance();
+
+                \assert($attribute instanceof self);
+
+                $attribute->name ??= $reflectionParameter->getName();
+
+                $baseType = $attribute->type;
+
+                $type = $reflectionParameter->getType();
+
+                if ($type instanceof \ReflectionNamedType) {
+                    $baseType ??= $type->getName();
+
+                    if (null === $attribute->required) {
+                        $attribute->required = !$type->allowsNull() && !$reflectionParameter->isDefaultValueAvailable();
+                    }
+                }
+
+                if ($types = TypeSchemaExtractor::getPrimitiveType($baseType)) {
+                    $attribute->type = $types['type'];
+                    $attribute->format = $types['format'] ?? null;
+                }
+
+                $parameters[] = $attribute;
+            }
+        }
+
+        return $parameters;
     }
 }

@@ -70,10 +70,17 @@ class TagsController
     #[OpenApi\Operation(operationId: 'tagList')]
     public function listAction(
         EntityHandler $entityHandler,
-        #[OpenApi\QueryParameter] ?bool $active = null
+        #[OpenApi\QueryParameter] int $amountPerPage,// Keep query parameter as is for integration test
+        #[OpenApi\QueryParameter] ?bool $active = null, // Keep query parameter as is for integration test
+        #[OpenApi\QueryParameter(type: 'int')] int $pageNumber = 0 // Keep query parameter as is for integration test
     ): array {
         if (null !== $active) {
-            $entityHandler->findBy(Tag::class, ['active' => $active]);
+            $entityHandler->findBy(
+                Tag::class,
+                ['active' => $active],
+                limit: $amountPerPage,
+                offset: $pageNumber * $amountPerPage
+            );
         }
 
         return $entityHandler->findAll(Tag::class);

@@ -137,8 +137,23 @@
                 "operationId": "tagList",
                 "parameters": [
                     {
+                        "type": "integer",
+                        "name": "amountPerPage",
+                        "required": true,
+                        "format": "int32",
+                        "in": "query"
+                    },
+                    {
                         "type": "boolean",
                         "name": "active",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageNumber",
+                        "required": false,
+                        "format": "int32",
                         "in": "query"
                     },
                     {
@@ -586,6 +601,7 @@
                         "type": "string",
                         "name": "param1",
                         "description": "param1 description",
+                        "required": false,
                         "in": "query"
                     },
                     {

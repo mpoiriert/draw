@@ -4,7 +4,6 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\OpenApi;
 
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
-use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\QueryParameter;
@@ -21,7 +20,7 @@ class QueryParameterAttributeExtractor implements ExtractorInterface
             return false;
         }
 
-        if (!$this->getQueryParametersAttributes($source, $extractionContext)) {
+        if (!QueryParameter::fromReflectionMethod($source)) {
             return false;
         }
 
@@ -38,7 +37,7 @@ class QueryParameterAttributeExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        foreach ($this->getQueryParametersAttributes($source, $extractionContext) as $queryParameter) {
+        foreach (QueryParameter::fromReflectionMethod($source) as $queryParameter) {
             $target->parameters[] = $queryParameter;
             $extractionContext->getOpenApi()->extract(
                 $queryParameter,
@@ -46,46 +45,5 @@ class QueryParameterAttributeExtractor implements ExtractorInterface
                 $extractionContext
             );
         }
-    }
-
-    /**
-     * @return QueryParameter[]
-     */
-    private function getQueryParametersAttributes(
-        \ReflectionMethod $reflectionMethod,
-        ExtractionContextInterface $extractionContext
-    ): array {
-        $result = [];
-        foreach ($reflectionMethod->getParameters() as $parameter) {
-            $attribute = $parameter->getAttributes(QueryParameter::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null;
-
-            if (!$attribute) {
-                continue;
-            }
-
-            $result[] = $attribute = $attribute->newInstance();
-
-            \assert($attribute instanceof QueryParameter);
-
-            $attribute->name ??= $parameter->getName();
-
-            if (null !== $attribute->type) {
-                continue;
-            }
-
-            $type = $parameter->getType();
-
-            if (!$type instanceof \ReflectionNamedType) {
-                continue;
-            }
-
-            $types = TypeSchemaExtractor::getPrimitiveType($type->getName(), $extractionContext);
-            if ($types) {
-                $attribute->type = $types['type'];
-                $attribute->format = $types['format'] ?? null;
-            }
-        }
-
-        return $result;
     }
 }
