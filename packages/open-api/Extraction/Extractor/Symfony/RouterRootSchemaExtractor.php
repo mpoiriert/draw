@@ -90,6 +90,10 @@ class RouterRootSchemaExtractor implements ExtractorInterface
             $extractionContext->getOpenApi()->extract($route, $operation, $subContext);
             $extractionContext->getOpenApi()->extract($reflectionMethod, $operation, $subContext);
 
+            if (!$extractionContext->getOpenApi()->matchScope($extractionContext, $operation)) {
+                continue;
+            }
+
             if (!isset($target->paths[$path])) {
                 $target->paths[$path] = new PathItem();
             }

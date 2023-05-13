@@ -31,6 +31,7 @@ use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
 use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
+use Draw\Component\OpenApi\Scope;
 use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
@@ -80,6 +81,7 @@ class OpenApiIntegration implements IntegrationInterface
                 ExtractionContext::class,
                 ConstraintExtractionContext::class,
                 PropertyExtractedEvent::class,
+                Scope::class,
             ]
         );
 
@@ -183,6 +185,19 @@ class OpenApiIntegration implements IntegrationInterface
         } else {
             $container->removeDefinition(VersionLinkDocumentationExtractor::class);
             $container->removeDefinition(RouteDefaultApiRouteVersionMatcher::class);
+        }
+
+        if ($this->isConfigEnabled($container, $config['scoped'])) {
+            $scopes = [];
+            foreach ($config['scoped']['scopes'] as $scope) {
+                $scopes[] = (new Definition(Scope::class))
+                    ->setArgument('$name', $scope['name'])
+                    ->setArgument('$tags', $scope['tags'] ?: null);
+            }
+
+            $container
+                ->getDefinition(OpenApi::class)
+                ->setArgument('$scopes', $scopes);
         }
 
         if (!class_exists(DoctrineBundle::class)) {
@@ -408,6 +423,7 @@ class OpenApiIntegration implements IntegrationInterface
                 ->booleanNode('cleanOnDump')->defaultTrue()->end()
                 ->booleanNode('sort_schema')->defaultFalse()->end()
                 ->append($this->createVersioningNode())
+                ->append($this->createScopedNode())
                 ->append($this->createSchemaNode())
                 ->append($this->createHeadersNode())
                 ->append($this->createDefinitionAliasesNode())
@@ -423,6 +439,43 @@ class OpenApiIntegration implements IntegrationInterface
                 ->arrayNode('versions')
                     ->defaultValue([])
                     ->scalarPrototype()->end()
+                ->end()
+            ->end();
+    }
+
+    private function createScopedNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('scoped'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('scopes')
+                    ->requiresAtLeastOneElement()
+                    ->beforeNormalization()
+                    ->always(function ($config) {
+                        foreach ($config as $name => $configuration) {
+                            if (!isset($configuration['name'])) {
+                                $config[$name]['name'] = $name;
+                            }
+                        }
+
+                        return $config;
+                    })
+                    ->end()
+                    ->useAttributeAsKey('name', false)
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('name')
+                                ->validate()
+                                    ->ifTrue(fn ($value) => \is_int($value))
+                                    ->thenInvalid('You must specify a name for the scope. Can be via the attribute or the key.')
+                                ->end()
+                                ->isRequired()
+                            ->end()
+                            ->arrayNode('tags')
+                                ->scalarPrototype()->end()
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end();
     }

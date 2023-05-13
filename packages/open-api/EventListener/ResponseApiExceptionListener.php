@@ -43,6 +43,10 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
     {
         $root = $event->getSchema();
 
+        if (!$root->paths) {
+            return;
+        }
+
         $exception = new ConstraintViolationListException(new ConstraintViolationList());
         $code = (string) $this->getStatusCode($exception);
 

@@ -16,7 +16,7 @@ class TagsController
      * @return Tag The newly created tag
      */
     #[Route(path: '/tags', methods: ['POST'])]
-    #[OpenApi\Operation(operationId: 'tagCreate')]
+    #[OpenApi\Operation(operationId: 'tagCreate', tags: ['Tags'])]
     #[Serialization(statusCode: 201)]
     public function createAction(
         #[RequestBody] Tag $target,
@@ -32,7 +32,7 @@ class TagsController
      * @return Tag The update tag
      */
     #[Route(path: '/tags/{id}', methods: ['PUT'])]
-    #[OpenApi\Operation(operationId: 'tagEdit')]
+    #[OpenApi\Operation(operationId: 'tagEdit', tags: ['Tags'])]
     public function editAction(
         #[RequestBody(propertiesMap: ['id' => 'id'])] Tag $target,
         EntityManagerInterface $entityManager
@@ -46,7 +46,7 @@ class TagsController
      * @return Tag The tag
      */
     #[Route(path: '/tags/{id}', name: 'tag_get', methods: ['GET'])]
-    #[OpenApi\Operation(operationId: 'tagGet')]
+    #[OpenApi\Operation(operationId: 'tagGet', tags: ['Tags'])]
     public function getAction(Tag $target): Tag
     {
         return $target;
@@ -56,7 +56,7 @@ class TagsController
      * @return void Empty response mean success
      */
     #[Route(path: '/tags/{id}', methods: ['DELETE'])]
-    #[OpenApi\Operation(operationId: 'tagDelete')]
+    #[OpenApi\Operation(operationId: 'tagDelete', tags: ['Tags'])]
     public function deleteAction(Tag $target, EntityManagerInterface $entityManager): void
     {
         $entityManager->remove($target);
@@ -67,7 +67,7 @@ class TagsController
      * @return Tag[] All tags
      */
     #[Route(path: '/tags', methods: ['GET'])]
-    #[OpenApi\Operation(operationId: 'tagList')]
+    #[OpenApi\Operation(operationId: 'tagList', tags: ['Tags'])]
     public function listAction(
         EntityHandler $entityHandler,
         #[OpenApi\QueryParameter] int $amountPerPage,// Keep query parameter as is for integration test
@@ -90,7 +90,7 @@ class TagsController
      * @return void Empty return value mean success
      */
     #[Route(path: '/tags/activate-all', methods: ['POST'])]
-    #[OpenApi\Operation(operationId: 'tagActivateAll')]
+    #[OpenApi\Operation(operationId: 'tagActivateAll', tags: ['Tags'])]
     #[Serialization(statusCode: 204)]
     public function activateAllAction(EntityHandler $entityHandler): void
     {

@@ -1,0 +1,380 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "test",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/tags": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "operationId": "tagList",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
+                        "type": "boolean",
+                        "name": "active",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "amountPerPage",
+                        "required": true,
+                        "format": "int32",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "pageNumber",
+                        "required": false,
+                        "format": "int32",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All tags",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Tag"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_list"
+            },
+            "post": {
+                "tags": [
+                    "Tags"
+                ],
+                "operationId": "tagCreate",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The newly created tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_create"
+            }
+        },
+        "/api/tags/activate-all": {
+            "post": {
+                "tags": [
+                    "Tags"
+                ],
+                "operationId": "tagActivateAll",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Empty return value mean success"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_activateall"
+            }
+        },
+        "/api/tags/{id}": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "operationId": "tagGet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "tag_get"
+            },
+            "put": {
+                "tags": [
+                    "Tags"
+                ],
+                "operationId": "tagEdit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The update tag",
+                        "schema": {
+                            "$ref": "#/definitions/Tag"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_edit"
+            },
+            "delete": {
+                "tags": [
+                    "Tags"
+                ],
+                "operationId": "tagDelete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "name": "id",
+                        "required": true,
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Empty response mean success"
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_tags_delete"
+            }
+        }
+    },
+    "definitions": {
+        "Address": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "postalCode": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                }
+            }
+        },
+        "Draw.OpenApi.Error.Validation": {
+            "required": [
+                "code"
+            ],
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "errors": {
+                    "type": "object",
+                    "properties": {
+                        "propertyPath": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
+                        "code": {
+                            "type": "string"
+                        },
+                        "payload": {
+                            "type": "object"
+                        }
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "Tag": {
+            "required": [
+                "label"
+            ],
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "label": {
+                    "maxLength": 255,
+                    "minLength": 3,
+                    "type": "string"
+                }
+            }
+        },
+        "User": {
+            "required": [
+                "email"
+            ],
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/Address"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "dateOfBirth": {
+                    "format": "date-time",
+                    "description": "User date of birth.",
+                    "type": "string"
+                },
+                "email": {
+                    "format": "not empty",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "string"
+                },
+                "passwordUpdatedAt": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "plainPassword": {
+                    "description": "The plain password to update the password itself.",
+                    "type": "string"
+                },
+                "requiredReadOnly": {
+                    "type": "string",
+                    "readOnly": true
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Tag"
+                    }
+                },
+                "userAddresses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/UserAddress"
+                    }
+                }
+            }
+        },
+        "UserAddress": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/Address"
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "position": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "user": {
+                    "$ref": "#/definitions/User"
+                }
+            }
+        }
+    }
+}

@@ -86,6 +86,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 'sandbox_url' => '/open-api/sandbox',
                 'sort_schema' => false,
                 'cleanOnDump' => true,
+                'scoped' => [
+                    'enabled' => false,
+                    'scopes' => [],
+                ],
                 'versioning' => [
                     'enabled' => false,
                     'versions' => [

@@ -26,6 +26,10 @@ final class SchemaAddDefaultHeadersListener implements EventSubscriberInterface
     {
         $root = $event->getSchema();
 
+        if (!$root->paths) {
+            return;
+        }
+
         $headers = [];
         foreach ($this->headers as $data) {
             $headers[] = $this->arrayTransformer->fromArray($data, HeaderParameter::class);
