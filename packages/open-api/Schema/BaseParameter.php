@@ -74,4 +74,32 @@ abstract class BaseParameter
 
         return lcfirst($striped);
     }
+
+    public function compareTo(self $parameter): int
+    {
+        static $priorities = [
+            HeaderParameter::class,
+            PathParameter::class,
+            QueryParameter::class,
+            BodyParameter::class,
+            FormDataParameter::class,
+            Parameter::class,
+        ];
+
+        foreach ($priorities as $priority) {
+            if ($this instanceof $priority && $parameter instanceof $priority) {
+                break;
+            }
+
+            if ($this instanceof $priority) {
+                return -1;
+            }
+
+            if ($parameter instanceof $priority) {
+                return 1;
+            }
+        }
+
+        return strcasecmp($this->name, $parameter->name);
+    }
 }
