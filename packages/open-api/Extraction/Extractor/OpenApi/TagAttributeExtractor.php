@@ -41,5 +41,13 @@ class TagAttributeExtractor implements ExtractorInterface
         foreach ($source->getAttributes(Tag::class, \ReflectionAttribute::IS_INSTANCEOF) as $tag) {
             $target->tags[] = $tag->newInstance()->name;
         }
+
+        foreach ($source->getDeclaringClass()->getAttributes(Tag::class, \ReflectionAttribute::IS_INSTANCEOF) as $tag) {
+            $target->tags[] = $tag->newInstance()->name;
+        }
+
+        if ($target->tags) {
+            $target->tags = array_values(array_unique($target->tags));
+        }
     }
 }

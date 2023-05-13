@@ -8,6 +8,7 @@
         "/api/tags": {
             "get": {
                 "tags": [
+                    "Tag2s",
                     "Tags"
                 ],
                 "operationId": "tagList",
@@ -60,6 +61,7 @@
             },
             "post": {
                 "tags": [
+                    "Tag2s",
                     "Tags"
                 ],
                 "operationId": "tagCreate",
@@ -98,6 +100,7 @@
         "/api/tags/activate-all": {
             "post": {
                 "tags": [
+                    "Tag2s",
                     "Tags"
                 ],
                 "operationId": "tagActivateAll",
@@ -126,6 +129,7 @@
         "/api/tags/{id}": {
             "get": {
                 "tags": [
+                    "Tag2s",
                     "Tags"
                 ],
                 "operationId": "tagGet",
@@ -161,6 +165,7 @@
             },
             "put": {
                 "tags": [
+                    "Tag2s",
                     "Tags"
                 ],
                 "operationId": "tagEdit",
@@ -203,6 +208,7 @@
             },
             "delete": {
                 "tags": [
+                    "Tag2s",
                     "Tags"
                 ],
                 "operationId": "tagDelete",
