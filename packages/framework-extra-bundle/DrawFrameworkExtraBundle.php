@@ -6,6 +6,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExec
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\LoggerDecoratorPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\TagIfExpressionCompilerPass;
@@ -30,6 +31,9 @@ class DrawFrameworkExtraBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new TagIfExpressionCompilerPass());
+
+        // It needs to run after the LoggerChannelPass
+        $container->addCompilerPass(new LoggerDecoratorPass(), priority: -1);
 
         if (class_exists(EventDrivenUserChecker::class)) {
             $container->addCompilerPass(new UserCheckerDecoratorPass());
