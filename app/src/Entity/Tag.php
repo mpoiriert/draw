@@ -68,6 +68,16 @@ class Tag implements \Stringable
         return 'Virtual property';
     }
 
+    /**
+     * @return array<int>
+     */
+    #[Serializer\VirtualProperty]
+    #[Serializer\SerializedName('virtualPropertyArray')]
+    public function getVirtualPropertyArray(): array
+    {
+        return [1];
+    }
+
     public function __toString(): string
     {
         return (string) $this->getLabel();

@@ -311,6 +311,14 @@
                 "virtualProperty": {
                     "type": "string",
                     "readOnly": true
+                },
+                "virtualPropertyArray": {
+                    "type": "array",
+                    "items": {
+                        "format": "int32",
+                        "type": "integer"
+                    },
+                    "readOnly": true
                 }
             }
         },
