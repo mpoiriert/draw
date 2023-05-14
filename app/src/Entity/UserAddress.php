@@ -21,7 +21,6 @@ class UserAddress
 
     #[ORM\Embedded(class: Address::class)]
     #[Assert\Valid]
-    #[Serializer\Type(name: Address::class)]
     private ?Address $address;
 
     #[ORM\Column(name: 'position', type: 'integer', nullable: false, options: ['default' => 0])]
