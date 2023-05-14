@@ -113,7 +113,8 @@
         "phpstan/phpstan-symfony": "^1.2",
         "phpstan/phpstan-phpunit": "^1.1",
         "scheb/2fa-email": "^5.12",
-        "colinodell/psr-testlogger": "^1.1"
+        "colinodell/psr-testlogger": "^1.1",
+        "cweagans/composer-patches": "^1.7"
     },
     "replace": {
         "draw/application": "self.version",
@@ -195,7 +196,8 @@
             "bamarni/composer-bin-plugin": true,
             "symfony/flex": true,
             "symfony/runtime": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "cweagans/composer-patches": true
         },
         "symfony": {
             "id": "01CAD2CSWYZBBNJDXQR6BP23MR",
@@ -212,6 +214,11 @@
             "bin-links": false,
             "forward-command": true,
             "target-directory": "vendor-bin"
+        },
+        "patches": {
+            "jms/serializer": {
+                "auto guest type virtual property": "https://gist.githubusercontent.com/mpoiriert/500cce434305f00477bb993d83518484/raw/c3db810b7b9800abb375b186d6a0cdb514a64fdf/jms_serializer_virtual_property_type.patch"
+            }
         }
     },
     "scripts": {
