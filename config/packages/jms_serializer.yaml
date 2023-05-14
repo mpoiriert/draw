@@ -13,6 +13,8 @@ jms_serializer:
         json_serialization:
             options: '%jms_serializer.json.visitors.options%'
     metadata:
+        infer_types_from_doc_block: true
+
         directories:
             app-entity:
                 namespace_prefix: "App\\Entity"
