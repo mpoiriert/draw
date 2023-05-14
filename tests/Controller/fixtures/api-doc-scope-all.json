@@ -132,6 +132,35 @@
                 "x-draw-open-api-symfony-route": "me"
             }
         },
+        "/api/me-simple": {
+            "get": {
+                "summary": "Get a simple representation of the currently connected user.",
+                "operationId": "meSimple",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation is successful.",
+                        "schema": {
+                            "$ref": "#/definitions/SimpleUser"
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "meSimple"
+            }
+        },
         "/api/tags": {
             "get": {
                 "tags": [
@@ -827,6 +856,20 @@
                 },
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "SimpleUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "needChangePassword": {
+                    "type": "boolean"
                 }
             }
         },

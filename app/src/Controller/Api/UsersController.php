@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\DTO\SimpleUser;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,6 +59,16 @@ class UsersController extends AbstractController
     public function meAction(): User
     {
         return $this->getUser();
+    }
+
+    /**
+     * Get a simple representation of the currently connected user.
+     */
+    #[Route(path: '/me-simple', name: 'meSimple', methods: ['GET'])]
+    #[OpenApi\Operation(operationId: 'meSimple')]
+    public function meSimpleAction(): SimpleUser
+    {
+        return new SimpleUser($this->getUser());
     }
 
     /**
