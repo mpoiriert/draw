@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -58,6 +59,13 @@ class Tag implements \Stringable
     public function setActive(bool $active): void
     {
         $this->active = $active;
+    }
+
+    #[Serializer\VirtualProperty]
+    #[Serializer\SerializedName('virtualProperty')]
+    public function getVirtualProperty(): string
+    {
+        return 'Virtual property';
     }
 
     public function __toString(): string

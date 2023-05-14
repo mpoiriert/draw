@@ -890,6 +890,10 @@
                     "maxLength": 255,
                     "minLength": 3,
                     "type": "string"
+                },
+                "virtualProperty": {
+                    "type": "string",
+                    "readOnly": true
                 }
             }
         },
