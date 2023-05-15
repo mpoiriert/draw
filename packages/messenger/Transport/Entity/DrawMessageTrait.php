@@ -14,6 +14,9 @@ trait DrawMessageTrait
     #[ORM\Column(name: 'id', type: 'guid')]
     private ?string $id = null;
 
+    #[ORM\Column(name: 'message_class', type: 'string')]
+    private ?string $messageClass = null;
+
     #[ORM\Column(name: 'body', type: 'text')]
     private ?string $body = null;
 
@@ -178,6 +181,11 @@ trait DrawMessageTrait
         $this->expiresAt = $expiresAt;
 
         return $this;
+    }
+
+    public function getMessageClass(): ?string
+    {
+        return $this->messageClass;
     }
 
     public function __toString(): string
