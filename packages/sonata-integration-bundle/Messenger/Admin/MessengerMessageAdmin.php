@@ -72,6 +72,12 @@ class MessengerMessageAdmin extends AbstractAdmin
                 ]
             )
             ->add(
+                'messageClass'
+            )
+            ->add(
+                'body'
+            )
+            ->add(
                 'deliveredAt',
                 RelativeDateTimeFilter::class,
             )
@@ -85,6 +91,7 @@ class MessengerMessageAdmin extends AbstractAdmin
     {
         $list
             ->addIdentifier('id', null, ['route' => ['name' => 'show']])
+            ->add('messageClass')
             ->add('queueName')
             ->add('createdAt')
             ->add('availableAt')

@@ -56,7 +56,8 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
                 $encodedMessage['headers'] ?? [],
                 $delay,
                 $expiresAt,
-                $this->getTags($envelope)
+                $this->getTags($envelope),
+                \get_class($envelope->getMessage())
             );
         } catch (\Exception $exception) {
             throw new TransportException($exception->getMessage(), 0, $exception);
@@ -132,7 +133,8 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         array $headers,
         ?int $delay = null,
         ?\DateTimeInterface $expiresAt = null,
-        array $tags = []
+        array $tags = [],
+        ?string $messageClass = null,
     ): string {
         $id = Uuid::uuid6()->toString();
         $now = new \DateTime();
@@ -145,6 +147,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->insert($this->connection->getConfiguration()['table_name'])
             ->values([
                 'id' => '?',
+                'message_class' => '?',
                 'body' => '?',
                 'headers' => '?',
                 'queue_name' => '?',
@@ -156,6 +159,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->prepare($queryBuilder->getSQL())
             ->executeStatement([
                 $id,
+                $messageClass ? substr($messageClass, -255) : null,
                 $body,
                 json_encode($headers, \JSON_THROW_ON_ERROR),
                 $this->connection->getConfiguration()['queue_name'],
@@ -296,6 +300,8 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->addColumn('id', Types::GUID)
             ->setNotnull(true);
         $messageTable
+            ->addColumn('message_class', Types::STRING);
+        $messageTable
             ->addColumn('body', Types::TEXT)
             ->setNotnull(true);
         $messageTable
@@ -317,6 +323,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->addColumn('expires_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(false);
         $messageTable->setPrimaryKey(['id']);
+        $messageTable->addIndex(['message_class', 'available_at']);
         $messageTable->addIndex(['queue_name', 'available_at']);
         $messageTable->addIndex(['available_at']);
         $messageTable->addIndex(['delivered_at']);
