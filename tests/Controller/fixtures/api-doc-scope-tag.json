@@ -239,6 +239,34 @@
                 },
                 "x-draw-open-api-symfony-route": "app_api_tags_delete"
             }
+        },
+        "/api/test": {
+            "get": {
+                "tags": [
+                    "Tags"
+                ],
+                "operationId": "app_api_test_test",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "When the operation succeed, not content is returned."
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "app_api_test_test"
+            }
         }
     },
     "definitions": {

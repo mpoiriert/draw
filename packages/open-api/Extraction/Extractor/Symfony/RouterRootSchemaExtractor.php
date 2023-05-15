@@ -125,6 +125,10 @@ class RouterRootSchemaExtractor implements ExtractorInterface
             return new Operation();
         }
 
+        if ($method->getDeclaringClass()->getAttributes(Tag::class, \ReflectionAttribute::IS_INSTANCEOF)) {
+            return new Operation();
+        }
+
         return null;
     }
 }
