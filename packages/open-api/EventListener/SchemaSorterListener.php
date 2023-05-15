@@ -26,9 +26,6 @@ final class SchemaSorterListener implements EventSubscriberInterface
                 foreach ($path->getOperations() as $operation) {
                     ksort($operation->responses);
                     usort($operation->parameters, fn (BaseParameter $a, BaseParameter $b) => $a->compareTo($b));
-                    if ($operation->tags) {
-                        sort($operation->tags);
-                    }
                 }
             }
         }
