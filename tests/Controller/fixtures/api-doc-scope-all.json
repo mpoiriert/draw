@@ -164,8 +164,8 @@
         "/api/tags": {
             "get": {
                 "tags": [
-                    "Tag2s",
-                    "Tags"
+                    "Tags",
+                    "Tag2s"
                 ],
                 "operationId": "tagList",
                 "parameters": [
@@ -217,8 +217,8 @@
             },
             "post": {
                 "tags": [
-                    "Tag2s",
-                    "Tags"
+                    "Tags",
+                    "Tag2s"
                 ],
                 "operationId": "tagCreate",
                 "parameters": [
@@ -256,8 +256,8 @@
         "/api/tags/activate-all": {
             "post": {
                 "tags": [
-                    "Tag2s",
-                    "Tags"
+                    "Tags",
+                    "Tag2s"
                 ],
                 "operationId": "tagActivateAll",
                 "parameters": [
@@ -285,8 +285,8 @@
         "/api/tags/{id}": {
             "get": {
                 "tags": [
-                    "Tag2s",
-                    "Tags"
+                    "Tags",
+                    "Tag2s"
                 ],
                 "operationId": "tagGet",
                 "parameters": [
@@ -321,8 +321,8 @@
             },
             "put": {
                 "tags": [
-                    "Tag2s",
-                    "Tags"
+                    "Tags",
+                    "Tag2s"
                 ],
                 "operationId": "tagEdit",
                 "parameters": [
@@ -364,8 +364,8 @@
             },
             "delete": {
                 "tags": [
-                    "Tag2s",
-                    "Tags"
+                    "Tags",
+                    "Tag2s"
                 ],
                 "operationId": "tagDelete",
                 "parameters": [
