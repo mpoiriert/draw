@@ -1,6 +1,6 @@
 doctrine:
     dbal:
-        server_version: '5.7'
+        server_version: '8.0.23'
 
         # only needed for MySQL
         charset: utf8mb4
