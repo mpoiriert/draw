@@ -4,10 +4,10 @@ namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnClearEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Proxy;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;

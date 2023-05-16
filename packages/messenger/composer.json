@@ -14,7 +14,7 @@
         "php": ">=8.1",
         "ext-json": "*",
         "doctrine/dbal": "^3.3",
-        "doctrine/persistence": "^2.2",
+        "doctrine/persistence": "^2.2 || ^3.0",
         "draw/contracts": "^0.10",
         "draw/core": "^0.10",
         "symfony/doctrine-bridge": "^5.4.3",
