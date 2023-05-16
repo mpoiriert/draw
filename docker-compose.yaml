@@ -12,7 +12,7 @@ services:
             - php
 
     mysql:
-        image: mysql:5.7.12
+        image: "mysql:8.0.23"
         container_name: draw_mysql
         command: mysqld --sql_mode=""
         volumes:
