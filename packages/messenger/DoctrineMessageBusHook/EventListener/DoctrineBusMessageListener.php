@@ -3,9 +3,10 @@
 namespace Draw\Component\Messenger\DoctrineMessageBusHook\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnClearEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Proxy;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;
@@ -48,13 +49,13 @@ class DoctrineBusMessageListener implements EventSubscriber, ResetInterface
 
     public function onClear(OnClearEventArgs $args): void
     {
-        if ($args->clearsAllEntities()) {
-            $this->messageHolders = [];
+        if (method_exists($args, 'getEntityClass') && null !== $args->getEntityClass()) {
+            $this->messageHolders[$args->getEntityClass()] = [];
 
             return;
         }
 
-        $this->messageHolders[$args->getEntityClass()] = [];
+        $this->messageHolders = [];
     }
 
     public function postFlush(): void
@@ -83,6 +84,9 @@ class DoctrineBusMessageListener implements EventSubscriber, ResetInterface
         }
     }
 
+    /**
+     * @param LifecycleEventArgs<EntityManagerInterface> $event
+     */
     private function trackMessageHolder(LifecycleEventArgs $event): void
     {
         $entity = $event->getObject();
