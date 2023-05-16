@@ -300,7 +300,8 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->addColumn('id', Types::GUID)
             ->setNotnull(true);
         $messageTable
-            ->addColumn('message_class', Types::STRING);
+            ->addColumn('message_class', Types::STRING)
+            ->setNotnull(false);
         $messageTable
             ->addColumn('body', Types::TEXT)
             ->setNotnull(true);
