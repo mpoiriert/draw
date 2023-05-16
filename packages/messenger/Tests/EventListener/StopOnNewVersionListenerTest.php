@@ -6,6 +6,7 @@ use ColinODell\PsrTestLogger\TestLogger;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
 use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
+use Draw\Contracts\Application\Exception\VersionInformationIsNotAccessibleException;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,9 +26,12 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
     private ?string $runningVersion = null;
     private ?string $deployedVersion = null;
     private bool $isUpToDate = true;
+    private ?\Throwable $throwable = null;
 
     protected function setUp(): void
     {
+        $this->throwable = null;
+
         $this->service = new StopOnNewVersionListener(
             $this,
             $this->logger = new TestLogger()
@@ -36,16 +40,22 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
 
     public function getRunningVersion(): ?string
     {
+        $this->throwable && throw $this->throwable;
+
         return $this->runningVersion;
     }
 
     public function getDeployedVersion(): ?string
     {
+        $this->throwable && throw $this->throwable;
+
         return $this->deployedVersion;
     }
 
     public function isUpToDate(): bool
     {
+        $this->throwable && throw $this->throwable;
+
         return $this->isUpToDate;
     }
 
@@ -156,5 +166,25 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $broker->expects(static::never())->method('stop');
 
         $this->service->onBrokerRunningEvent(new BrokerRunningEvent($broker));
+    }
+
+    public function testOnBrokerRunningEventVersionInformationIsNotAccessibleException(): void
+    {
+        $this->throwable = new VersionInformationIsNotAccessibleException();
+
+        $broker = $this->createMock(Broker::class);
+
+        $broker->expects(static::once())->method('stop');
+
+        $this->service->onBrokerRunningEvent(new BrokerRunningEvent($broker));
+    }
+
+    public function testOnBrokerRunningEventException(): void
+    {
+        $this->throwable = new \RuntimeException();
+
+        $this->expectExceptionObject($this->throwable);
+
+        $this->service->onBrokerRunningEvent(new BrokerRunningEvent($this->createMock(Broker::class)));
     }
 }

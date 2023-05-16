@@ -3,6 +3,7 @@
 namespace Draw\Component\Messenger\Versioning\EventListener;
 
 use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
+use Draw\Contracts\Application\Exception\VersionInformationIsNotAccessibleException;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -45,25 +46,37 @@ class StopOnNewVersionListener implements EventSubscriberInterface
 
         $event->getBroker()->stop();
 
-        if (null !== $this->logger) {
-            $this->logger->info(
+        try {
+            $this->logger?->info(
                 'Broker stopped due to version out of sync. Running version {runningVersion}, deployed version {deployedVersion}',
                 [
                     'deployedVersion' => $this->versionVerification->getDeployedVersion(),
                     'runningVersion' => $this->versionVerification->getRunningVersion(),
                 ]
             );
+        } catch (\Throwable) {
         }
     }
 
     private function applicationVersionIsSync(): bool
     {
-        if (null === $this->versionVerification->getRunningVersion()) {
-            return true;
-        }
+        try {
+            if (null === $this->versionVerification->getRunningVersion()) {
+                return true;
+            }
 
-        if ($this->versionVerification->isUpToDate()) {
-            return true;
+            if ($this->versionVerification->isUpToDate()) {
+                return true;
+            }
+        } catch (VersionInformationIsNotAccessibleException $exception) {
+            $this->logger?->error(
+                'Worker stopped due to version information not being accessible',
+                [
+                    'error' => $exception,
+                ]
+            );
+
+            return false;
         }
 
         return false;
@@ -77,14 +90,15 @@ class StopOnNewVersionListener implements EventSubscriberInterface
 
         $worker->stop();
 
-        if (null !== $this->logger) {
-            $this->logger->info(
+        try {
+            $this->logger?->info(
                 'Worker stopped due to version out of sync. Running version {runningVersion}, deployed version {deployedVersion}',
                 [
                     'deployedVersion' => $this->versionVerification->getDeployedVersion(),
                     'runningVersion' => $this->versionVerification->getRunningVersion(),
                 ]
             );
+        } catch (\Throwable) {
         }
     }
 }
