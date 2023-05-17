@@ -51,7 +51,7 @@ class OperationResponseExtractor implements ExtractorInterface
             }
 
             $response = new Response();
-            $response->description = 'When the operation succeed, not content is returned.';
+            $response->description = 'When the operation succeed, no content is returned.';
             $target->responses[204] = $response;
 
             return;

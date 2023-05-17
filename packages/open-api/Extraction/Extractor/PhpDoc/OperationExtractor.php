@@ -288,7 +288,7 @@ class OperationExtractor implements ExtractorInterface
 
         foreach ($types as $type) {
             $response = new Response();
-            $response->description = (string) $returnTag->getDescription() ?: null;
+            $response->description = (string) $returnTag->getDescription() ?: 'Operation is successful.';
             $statusCode = $this->extractStatusCode($type, $response, $extractionContext, $source);
 
             $target->responses[$statusCode] = $response;
