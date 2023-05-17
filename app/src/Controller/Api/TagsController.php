@@ -66,7 +66,9 @@ class TagsController
     }
 
     /**
-     * @return Tag[] All tags
+     * Get a list of tags.
+     *
+     * @return Tag[]
      */
     #[Route(path: '/tags', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'tagList')]

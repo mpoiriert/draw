@@ -11,6 +11,7 @@
                     "Tags",
                     "Tag2s"
                 ],
+                "summary": "Get a list of tags.",
                 "operationId": "tagList",
                 "parameters": [
                     {
@@ -42,7 +43,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "All tags",
+                        "description": "Operation is successful.",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -256,7 +257,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "When the operation succeed, not content is returned."
+                        "description": "When the operation succeed, no content is returned."
                     },
                     "400": {
                         "description": "Request Validation error",

@@ -6,6 +6,7 @@
         "parameters": [],
         "responses": {
           "200": {
+            "description": "Operation is successful.",
             "schema": {
               "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Extraction.Extractor.PhpDoc.PhpDocOperationExtractorStubService"
             }
