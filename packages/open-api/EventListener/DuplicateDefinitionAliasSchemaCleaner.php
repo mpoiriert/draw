@@ -1,10 +1,12 @@
 <?php
 
-namespace Draw\Component\OpenApi;
+namespace Draw\Component\OpenApi\EventListener;
 
+use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * This class is to clean up the schema before dumping it.
@@ -12,14 +14,28 @@ use Draw\Component\OpenApi\Schema\Schema;
  *
  * @internal
  */
-class SchemaCleaner
+class DuplicateDefinitionAliasSchemaCleaner implements EventSubscriberInterface
 {
     final public const VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            CleanEvent::class => 'onClean',
+        ];
+    }
+
+    public function onClean(CleanEvent $event): void
+    {
+        $event->setRootSchema(
+            $this->clean($event->getRootSchema())
+        );
+    }
 
     /**
      * @return Root The cleaned schema
      */
-    public function clean(Root $rootSchema)
+    private function clean(Root $rootSchema): Root
     {
         // This is to "clone" the object recursively
         /** @var Root $rootSchema */

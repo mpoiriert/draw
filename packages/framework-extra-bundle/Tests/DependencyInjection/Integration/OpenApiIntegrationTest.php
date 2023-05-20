@@ -6,6 +6,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\OpenApi\Controller\OpenApiController;
+use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleaner;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
@@ -51,7 +52,6 @@ use Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
 use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
-use Draw\Component\OpenApi\SchemaCleaner;
 use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
 use Draw\Component\OpenApi\Serializer\Construction\SimpleObjectConstructor;
 use Draw\Component\OpenApi\Serializer\Handler\GenericSerializerHandler;
@@ -85,7 +85,6 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 'caching_enabled' => true,
                 'sandbox_url' => '/open-api/sandbox',
                 'sort_schema' => false,
-                'cleanOnDump' => true,
                 'scoped' => [
                     'enabled' => false,
                     'scopes' => [],
@@ -153,7 +152,6 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                                 'default' => 'en',
                             ],
                         ],
-                        'cleanOnDump' => true,
                         'definitionAliases' => [
                             ['class' => 'App\\Entity\\', 'alias' => ''],
                             ['class' => 'App\\DTO\\', 'alias' => ''],
@@ -426,8 +424,8 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     }
                 ),
                 new ServiceConfiguration(
-                    'draw.open_api.schema_cleaner',
-                    [SchemaCleaner::class]
+                    'draw.open_api.event_listener.duplicate_definition_alias_schema_cleaner',
+                    [DuplicateDefinitionAliasSchemaCleaner::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.versioning.route_default_api_route_version_matcher',

@@ -4,11 +4,11 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Doctrine;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleaner;
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Schema;
-use Draw\Component\OpenApi\SchemaCleaner;
 
 class InheritanceExtractor implements ExtractorInterface
 {
@@ -61,7 +61,7 @@ class InheritanceExtractor implements ExtractorInterface
             $target->required[] = $target->discriminator;
             foreach ($metaData->discriminatorMap as $class) {
                 $schema = new Schema();
-                $schema->setVendorDataKey(SchemaCleaner::VENDOR_DATA_KEEP, true);
+                $schema->setVendorDataKey(DuplicateDefinitionAliasSchemaCleaner::VENDOR_DATA_KEEP, true);
                 $openApi->extract($class, $schema, $extractionContext);
             }
             $target->properties[$metaData->discriminatorColumn['name']] = $property = new Schema();

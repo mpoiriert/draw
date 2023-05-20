@@ -2,6 +2,7 @@
 
 namespace Draw\Component\OpenApi;
 
+use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Exception\ExtractionCompletedException;
@@ -17,6 +18,7 @@ use JMS\Serializer\EventDispatcher\EventDispatcher;
 use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validation;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -30,17 +32,12 @@ class OpenApi
      */
     private iterable $extractors;
 
-    private bool $cleanOnDump = false;
-
-    private SchemaCleaner $schemaCleaner;
-
     /**
      * @param array<Scope>|null $scopes
      */
     public function __construct(
         ?iterable $extractors = null,
         ?SerializerInterface $serializer = null,
-        ?SchemaCleaner $schemaCleaner = null,
         private ?EventDispatcherInterface $eventDispatcher = null,
         private ?array $scopes = null,
     ) {
@@ -59,8 +56,8 @@ class OpenApi
                 ->build();
         }
 
+        $this->eventDispatcher ??= new SymfonyEventDispatcher();
         $this->serializer = $serializer;
-        $this->schemaCleaner = $schemaCleaner ?: new SchemaCleaner();
         $this->extractors = $extractors ?: [new JsonRootSchemaExtractor($this->serializer)];
     }
 
@@ -93,23 +90,11 @@ class OpenApi
         return false;
     }
 
-    public function getCleanOnDump(): bool
-    {
-        return $this->cleanOnDump;
-    }
-
-    public function setCleanOnDump(bool $cleanOnDump): void
-    {
-        $this->cleanOnDump = $cleanOnDump;
-    }
-
     public function dump(Schema $schema, bool $validate = true): string
     {
-        $this->eventDispatcher?->dispatch(new PreDumpRootSchemaEvent($schema));
+        $this->eventDispatcher->dispatch(new PreDumpRootSchemaEvent($schema));
 
-        if ($this->getCleanOnDump()) {
-            $schema = $this->schemaCleaner->clean($schema);
-        }
+        $schema = $this->eventDispatcher->dispatch(new CleanEvent($schema))->getRootSchema();
 
         if ($validate) {
             $this->validate($schema);

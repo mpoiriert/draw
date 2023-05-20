@@ -1,22 +1,23 @@
 <?php
 
-namespace Draw\Component\OpenApi\Tests;
+namespace Draw\Component\OpenApi\Tests\EventListener;
 
+use Draw\Component\OpenApi\Event\CleanEvent;
+use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleaner;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
-use Draw\Component\OpenApi\SchemaCleaner;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Draw\Component\OpenApi\SchemaCleaner
+ * @covers \Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleaner
  */
-class SchemaCleanerTest extends TestCase
+class DuplicateDefinitionAliasSchemaCleanerTest extends TestCase
 {
-    private SchemaCleaner $object;
+    private DuplicateDefinitionAliasSchemaCleaner $object;
 
     protected function setUp(): void
     {
-        $this->object = new SchemaCleaner();
+        $this->object = new DuplicateDefinitionAliasSchemaCleaner();
     }
 
     public function provideTestClean(): iterable
@@ -35,7 +36,9 @@ class SchemaCleanerTest extends TestCase
         $schema = $openApi->extract(file_get_contents($dirty));
         static::assertInstanceOf(Root::class, $schema);
 
-        $cleanedSchema = $this->object->clean($schema);
+        $this->object->onClean($event = new CleanEvent($schema));
+
+        $cleanedSchema = $event->getRootSchema();
 
         static::assertEquals(
             json_decode(file_get_contents($clean), true, 512, \JSON_THROW_ON_ERROR),
