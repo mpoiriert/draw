@@ -235,8 +235,7 @@ class OpenApiIntegration implements IntegrationInterface
 
         $container
             ->getDefinition(OpenApi::class)
-            ->setArgument('$extractors', new TaggedIteratorArgument(ExtractorInterface::class))
-            ->addMethodCall('setCleanOnDump', [$config['cleanOnDump']]);
+            ->setArgument('$extractors', new TaggedIteratorArgument(ExtractorInterface::class));
 
         $container
             ->getDefinition(OpenApiController::class)
@@ -420,7 +419,6 @@ class OpenApiIntegration implements IntegrationInterface
             ->children()
                 ->scalarNode('sandbox_url')->defaultValue('/open-api/sandbox')->end()
                 ->booleanNode('caching_enabled')->defaultTrue()->end()
-                ->booleanNode('cleanOnDump')->defaultTrue()->end()
                 ->booleanNode('sort_schema')->defaultFalse()->end()
                 ->append($this->createVersioningNode())
                 ->append($this->createScopedNode())
