@@ -3,6 +3,7 @@
 namespace Draw\Component\OpenApi\Tests\Controller;
 
 use Draw\Component\OpenApi\Controller\OpenApiController;
+use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
@@ -108,7 +109,9 @@ class OpenApiControllerTest extends TestCase
         $this->schemaBuilder
             ->expects(static::once())
             ->method('build')
-            ->with($version)
+            ->with(
+                static::isInstanceOf(ExtractionContextInterface::class)
+            )
             ->willReturn($rootSchema = new Root());
 
         $this->openApi

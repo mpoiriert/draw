@@ -4,6 +4,7 @@ namespace Draw\Component\OpenApi\Tests\EventListener;
 
 use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
+use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +37,7 @@ class DuplicateDefinitionAliasSchemaCleanerListenerTest extends TestCase
         $schema = $openApi->extract(file_get_contents($dirty));
         static::assertInstanceOf(Root::class, $schema);
 
-        $this->object->onClean($event = new CleanEvent($schema));
+        $this->object->onClean($event = new CleanEvent($schema, new ExtractionContext($openApi)));
 
         $cleanedSchema = $event->getRootSchema();
 
