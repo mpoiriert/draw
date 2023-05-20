@@ -4,6 +4,8 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
+use Draw\Component\OpenApi\Cleaner\DoctrineInheritanceCleaner;
+use Draw\Component\OpenApi\Cleaner\UnreferencedCleaner;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\OpenApi\Controller\OpenApiController;
 use Draw\Component\OpenApi\EventListener\DoctrineInheritanceSchemaCleanerListener;
@@ -206,6 +208,14 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.request.value_resolver.request_body_value_resolver',
                     [RequestBodyValueResolver::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.cleaner.unreferenced_cleaner',
+                    [UnreferencedCleaner::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.cleaner.doctrine_inheritance_cleaner',
+                    [DoctrineInheritanceCleaner::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.extractor.constraint.choice_constraint_extractor',

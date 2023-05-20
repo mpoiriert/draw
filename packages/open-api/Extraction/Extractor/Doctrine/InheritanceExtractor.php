@@ -4,6 +4,7 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Doctrine;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Component\OpenApi\Cleaner\UnreferencedCleaner;
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
@@ -69,6 +70,7 @@ class InheritanceExtractor implements ExtractorInterface
             $target->required[] = $target->discriminator;
             foreach ($metaData->discriminatorMap as $class) {
                 $schema = new Schema();
+                $schema->setVendorDataKey(UnreferencedCleaner::VENDOR_DATA_KEEP, true);
                 $schema->setVendorDataKey(self::VENDOR_DATA_DOCTRINE_ROOT_ENTITY_CLASS, $source->name);
                 $openApi->extract($class, $schema, $extractionContext);
             }
