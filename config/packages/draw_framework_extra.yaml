@@ -56,6 +56,9 @@ draw_framework_extra:
           type: 'string'
           default: 'en'
 
+      tags_to_clean:
+        - 'WillBeCleaned'
+
       scoped:
         scopes:
           all:

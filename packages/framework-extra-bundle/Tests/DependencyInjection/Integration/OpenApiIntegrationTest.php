@@ -16,6 +16,7 @@ use Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener;
 use Draw\Component\OpenApi\EventListener\SchemaCleanRequiredReadOnlyListener;
 use Draw\Component\OpenApi\EventListener\SchemaSorterListener;
 use Draw\Component\OpenApi\EventListener\SerializationControllerListener;
+use Draw\Component\OpenApi\EventListener\TagCleanerListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Extraction\Extractor\Caching\FileTrackingExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\Caching\LoadFromCacheExtractor;
@@ -101,6 +102,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     0 => AliasesClassNamingFilter::class,
                 ],
                 'headers' => [],
+                'tags_to_clean' => [],
             ],
             'request' => [
                 'enabled' => true,
@@ -436,6 +438,11 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     'draw.open_api.event_listener.duplicate_definition_alias_schema_cleaner_listener',
                     [DuplicateDefinitionAliasSchemaCleanerListener::class]
                 ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.tag_cleaner_listener',
+                    [TagCleanerListener::class]
+                ),
+
                 new ServiceConfiguration(
                     'draw.open_api.event_listener.response_api_exception_listener',
                     [ResponseApiExceptionListener::class]

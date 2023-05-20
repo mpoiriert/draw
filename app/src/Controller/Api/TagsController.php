@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[OpenApi\Tag(name: 'Tags')]
 #[OpenApi\Tag(name: 'Tag2s')]
+#[OpenApi\Tag(name: 'WillBeCleaned')]
 class TagsController
 {
     /**
