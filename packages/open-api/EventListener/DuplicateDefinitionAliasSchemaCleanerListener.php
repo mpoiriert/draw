@@ -2,6 +2,7 @@
 
 namespace Draw\Component\OpenApi\EventListener;
 
+use Draw\Component\OpenApi\Cleaner\ReferenceCleanerInterface;
 use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Root;
@@ -11,8 +12,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * This class is to clean up the schema before dumping it.
  * It will remove duplicate definition alias.
- *
- * @internal
  */
 class DuplicateDefinitionAliasSchemaCleanerListener implements EventSubscriberInterface
 {
@@ -23,6 +22,15 @@ class DuplicateDefinitionAliasSchemaCleanerListener implements EventSubscriberIn
         return [
             CleanEvent::class => 'onClean',
         ];
+    }
+
+    public function __construct(
+        /**
+         * @var iterable<ReferenceCleanerInterface>
+         */
+        private iterable $referenceCleaners = []
+    ) {
+
     }
 
     public function onClean(CleanEvent $event): void
@@ -74,17 +82,13 @@ class DuplicateDefinitionAliasSchemaCleanerListener implements EventSubscriberIn
         } while (\count($replaceSchemas));
 
         do {
-            $suppressionOccurred = false;
-            foreach ($rootSchema->definitions as $name => $definitionSchema) {
-                if ($definitionSchema->getVendorDataKey(static::VENDOR_DATA_KEEP)) {
-                    continue;
-                }
-                if (!$rootSchema->hasSchemaReference($rootSchema, '#/definitions/'.$name)) {
-                    unset($rootSchema->definitions[$name]);
-                    $suppressionOccurred = true;
+            $cleaningOccurred = false;
+            foreach ($this->referenceCleaners as $referenceCleaner) {
+                if ($referenceCleaner->cleanReferences($rootSchema)) {
+                    $cleaningOccurred = true;
                 }
             }
-        } while ($suppressionOccurred);
+        } while ($cleaningOccurred);
 
         // Rename aliases in case of skip to be cleaner (e.g.: [User?3, User?6] => [User, User?1])
         $definitionsToRename = [];
