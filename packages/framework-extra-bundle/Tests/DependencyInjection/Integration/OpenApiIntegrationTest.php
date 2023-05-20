@@ -8,6 +8,7 @@ use Draw\Component\OpenApi\Cleaner\DoctrineInheritanceCleaner;
 use Draw\Component\OpenApi\Cleaner\UnreferencedCleaner;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\OpenApi\Controller\OpenApiController;
+use Draw\Component\OpenApi\EventListener\DefinitionAliasCleanerListener;
 use Draw\Component\OpenApi\EventListener\DoctrineInheritanceSchemaCleanerListener;
 use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
@@ -20,6 +21,7 @@ use Draw\Component\OpenApi\EventListener\SchemaSorterListener;
 use Draw\Component\OpenApi\EventListener\ScopeCleanerListener;
 use Draw\Component\OpenApi\EventListener\SerializationControllerListener;
 use Draw\Component\OpenApi\EventListener\TagCleanerListener;
+use Draw\Component\OpenApi\EventListener\UnReferenceCleanerListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Extraction\Extractor\Caching\FileTrackingExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\Caching\LoadFromCacheExtractor;
@@ -442,6 +444,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     [RouteDefaultApiRouteVersionMatcher::class]
                 ),
                 new ServiceConfiguration(
+                    'draw.open_api.event_listener.definition_alias_cleaner_listener',
+                    [DefinitionAliasCleanerListener::class]
+                ),
+                new ServiceConfiguration(
                     'draw.open_api.event_listener.doctrine_inheritance_schema_cleaner_listener',
                     [DoctrineInheritanceSchemaCleanerListener::class]
                 ),
@@ -458,7 +464,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     'draw.open_api.event_listener.tag_cleaner_listener',
                     [TagCleanerListener::class]
                 ),
-
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.un_reference_cleaner_listener',
+                    [UnReferenceCleanerListener::class]
+                ),
                 new ServiceConfiguration(
                     'draw.open_api.event_listener.response_api_exception_listener',
                     [ResponseApiExceptionListener::class]

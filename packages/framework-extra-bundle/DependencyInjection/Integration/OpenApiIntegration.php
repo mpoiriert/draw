@@ -5,7 +5,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Draw\Component\OpenApi\Cleaner\ReferenceCleanerInterface;
 use Draw\Component\OpenApi\Controller\OpenApiController;
-use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
@@ -13,6 +12,7 @@ use Draw\Component\OpenApi\EventListener\ResponseSerializerListener;
 use Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener;
 use Draw\Component\OpenApi\EventListener\SchemaSorterListener;
 use Draw\Component\OpenApi\EventListener\TagCleanerListener;
+use Draw\Component\OpenApi\EventListener\UnReferenceCleanerListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\Extraction\Extractor\Caching\LoadFromCacheExtractor;
@@ -187,7 +187,7 @@ class OpenApiIntegration implements IntegrationInterface
             ->setArgument('$tagsToClean', $config['tags_to_clean']);
 
         $container
-            ->getDefinition(DuplicateDefinitionAliasSchemaCleanerListener::class)
+            ->getDefinition(UnReferenceCleanerListener::class)
             ->setArgument('$referenceCleaners', new TaggedIteratorArgument('draw.open_api.reference_cleaner'));
 
         if ($this->isConfigEnabled($container, $config['versioning'])) {
