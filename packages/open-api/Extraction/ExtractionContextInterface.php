@@ -11,6 +11,8 @@ interface ExtractionContextInterface
 
     public function getRootSchema(): Root;
 
+    public function getCacheKey(): string;
+
     public function hasParameter(string $name): bool;
 
     public function getParameter(string $name, $default = null);

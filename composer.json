@@ -232,7 +232,7 @@
         ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "draw:open-api:install-sandbox %PUBLIC_DIR%/open-api/sandbox": "symfony-cmd",
+            "draw:open-api:install-sandbox %PUBLIC_DIR%/open-api/sandbox --tag v3.52.5": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
         },
         "test": [
