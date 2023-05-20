@@ -39,9 +39,9 @@ class LoadFromCacheExtractor implements ExtractorInterface
             throw new ExtractionImpossibleException();
         }
 
-        $version = $extractionContext->getParameter('api.version');
+        $cacheKey = $extractionContext->getCacheKey();
 
-        $path = $this->cacheDirectory.'/openApi-'.$version.'.php';
+        $path = $this->cacheDirectory.'/openApi-'.$cacheKey.'.php';
 
         $cache = new ConfigCache($path, $this->debug);
 

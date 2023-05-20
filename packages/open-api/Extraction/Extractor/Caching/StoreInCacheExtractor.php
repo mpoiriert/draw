@@ -48,9 +48,9 @@ class StoreInCacheExtractor implements ExtractorInterface
             return;
         }
 
-        $version = $extractionContext->getParameter('api.version');
+        $cacheKey = $extractionContext->getCacheKey();
 
-        $path = $this->cacheDirectory.'/openApi-'.$version.'.php';
+        $path = $this->cacheDirectory.'/openApi-'.$cacheKey.'.php';
 
         $configCache = new ConfigCache($path, $this->debug);
 

@@ -23,6 +23,11 @@ class ExtractionContext implements ExtractionContextInterface
         return $this->openApi;
     }
 
+    public function getCacheKey(): string
+    {
+        return $this->getParameter('api.version').'@'.$this->getParameter('api.scope');
+    }
+
     public function hasParameter(string $name): bool
     {
         return \array_key_exists($name, $this->parameters);

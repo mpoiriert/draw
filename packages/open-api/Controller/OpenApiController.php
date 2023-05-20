@@ -31,7 +31,7 @@ class OpenApiController
             }
 
             if ($scope) {
-                $parameters['scope'] = $version;
+                $parameters['scope'] = $scope;
             }
 
             $currentRoute = $request->attributes->get('_route');
@@ -42,7 +42,7 @@ class OpenApiController
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );
 
-            return new RedirectResponse($this->sandboxUrl.'/index.html?url='.$currentUrl);
+            return new RedirectResponse($this->sandboxUrl.'/index.html?url='.urlencode($currentUrl));
         }
 
         return new JsonResponse(
