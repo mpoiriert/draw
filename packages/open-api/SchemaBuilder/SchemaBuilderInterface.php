@@ -2,9 +2,10 @@
 
 namespace Draw\Component\OpenApi\SchemaBuilder;
 
+use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Schema\Root;
 
 interface SchemaBuilderInterface
 {
-    public function build(?string $version = null, ?string $scope = null): Root;
+    public function build(ExtractionContextInterface $extractionContext): Root;
 }

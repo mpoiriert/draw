@@ -9,8 +9,9 @@ class ExtractionContext implements ExtractionContextInterface
 {
     private array $parameters = [];
 
-    public function __construct(private OpenApi $openApi, private Root $rootSchema)
+    public function __construct(private OpenApi $openApi, private ?Root $rootSchema = null)
     {
+        $this->rootSchema ??= new Root();
     }
 
     public function getRootSchema(): Root

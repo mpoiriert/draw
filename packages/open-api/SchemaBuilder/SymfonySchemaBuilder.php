@@ -2,7 +2,7 @@
 
 namespace Draw\Component\OpenApi\SchemaBuilder;
 
-use Draw\Component\OpenApi\Extraction\ExtractionContext;
+use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -22,12 +22,8 @@ class SymfonySchemaBuilder implements SchemaBuilderInterface
     ) {
     }
 
-    public function build(?string $version = null, ?string $scope = null): Root
+    public function build(ExtractionContextInterface $extractionContext): Root
     {
-        $extractionContext = new ExtractionContext($this->openApi, new Root());
-        $extractionContext->setParameter('api.version', $version);
-        $extractionContext->setParameter('api.scope', $scope);
-
         $key = $extractionContext->getCacheKey();
 
         if (!isset($this->openApiSchemas[$key])) {
@@ -37,7 +33,7 @@ class SymfonySchemaBuilder implements SchemaBuilderInterface
         return $this->openApiSchemas[$key];
     }
 
-    private function doBuild(ExtractionContext $extractionContext): Root
+    private function doBuild(ExtractionContextInterface $extractionContext): Root
     {
         $schema = $extractionContext->getRootSchema();
         $extractionContext->setParameter('api.cacheable', false);

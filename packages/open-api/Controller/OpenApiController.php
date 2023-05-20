@@ -2,6 +2,7 @@
 
 namespace Draw\Component\OpenApi\Controller;
 
+use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,8 +46,17 @@ class OpenApiController
             return new RedirectResponse($this->sandboxUrl.'/index.html?url='.urlencode($currentUrl));
         }
 
+        $extractionContext = new ExtractionContext($this->openApi);
+
+        $extractionContext->setParameter('api.version', $version);
+        $extractionContext->setParameter('api.scope', $scope);
+
         return new JsonResponse(
-            $this->openApi->dump($this->schemaBuilder->build($version, $scope)),
+            $this->openApi->dump(
+                $this->schemaBuilder->build($extractionContext),
+                true,
+                $extractionContext
+            ),
             200,
             [],
             true

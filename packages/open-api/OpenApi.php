@@ -90,11 +90,12 @@ class OpenApi
         return false;
     }
 
-    public function dump(Schema $schema, bool $validate = true): string
+    public function dump(Schema $schema, bool $validate = true, ?ExtractionContextInterface $extractionContext = null): string
     {
+        $extractionContext ??= new ExtractionContext($this, $schema);
         $this->eventDispatcher->dispatch(new PreDumpRootSchemaEvent($schema));
 
-        $schema = $this->eventDispatcher->dispatch(new CleanEvent($schema))->getRootSchema();
+        $schema = $this->eventDispatcher->dispatch(new CleanEvent($schema, $extractionContext))->getRootSchema();
 
         if ($validate) {
             $this->validate($schema);
