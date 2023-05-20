@@ -2,35 +2,19 @@
 
 namespace Draw\Component\OpenApi\EventListener;
 
-use Draw\Component\OpenApi\Cleaner\ReferenceCleanerInterface;
 use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * This class is to clean up the schema before dumping it.
- * It will remove duplicate definition alias.
- */
 class DuplicateDefinitionAliasSchemaCleanerListener implements EventSubscriberInterface
 {
-    final public const VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
-
     public static function getSubscribedEvents(): array
     {
         return [
             CleanEvent::class => 'onClean',
         ];
-    }
-
-    public function __construct(
-        /**
-         * @var iterable<ReferenceCleanerInterface>
-         */
-        private iterable $referenceCleaners = []
-    ) {
-
     }
 
     public function onClean(CleanEvent $event): void
@@ -40,9 +24,6 @@ class DuplicateDefinitionAliasSchemaCleanerListener implements EventSubscriberIn
         );
     }
 
-    /**
-     * @return Root The cleaned schema
-     */
     private function clean(Root $rootSchema): Root
     {
         do {
@@ -80,41 +61,6 @@ class DuplicateDefinitionAliasSchemaCleanerListener implements EventSubscriberIn
                 unset($rootSchema->definitions[$toReplace]);
             }
         } while (\count($replaceSchemas));
-
-        do {
-            $cleaningOccurred = false;
-            foreach ($this->referenceCleaners as $referenceCleaner) {
-                if ($referenceCleaner->cleanReferences($rootSchema)) {
-                    $cleaningOccurred = true;
-                }
-            }
-        } while ($cleaningOccurred);
-
-        // Rename aliases in case of skip to be cleaner (e.g.: [User?3, User?6] => [User, User?1])
-        $definitionsToRename = [];
-        foreach ($rootSchema->definitions as $name => $definitionSchema) {
-            $definitionsToRename[parse_url($name)['path']][] = $name;
-        }
-
-        foreach ($definitionsToRename as $objectName => $names) {
-            array_walk(
-                $names,
-                function ($name, $index) use ($objectName, $rootSchema): void {
-                    $replaceWith = $objectName.($index ? '?'.$index : '');
-                    // If the replace name is the same as the current index we do not do anything
-                    if ($replaceWith == $name) {
-                        return;
-                    }
-                    $rootSchema->definitions[$replaceWith] = $rootSchema->definitions[$name];
-                    unset($rootSchema->definitions[$name]);
-                    $this->replaceSchemaReference(
-                        $rootSchema,
-                        '#/definitions/'.$name,
-                        '#/definitions/'.$replaceWith
-                    );
-                }
-            );
-        }
 
         return $rootSchema;
     }

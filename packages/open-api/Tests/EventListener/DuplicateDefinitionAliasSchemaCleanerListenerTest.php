@@ -4,15 +4,11 @@ namespace Draw\Component\OpenApi\Tests\EventListener;
 
 use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
-use Draw\Component\OpenApi\Extraction\ExtractionContext;
-use Draw\Component\OpenApi\OpenApi;
-use Draw\Component\OpenApi\Schema\Root;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener
  */
-class DuplicateDefinitionAliasSchemaCleanerListenerTest extends TestCase
+class DuplicateDefinitionAliasSchemaCleanerListenerTest extends BaseCleanerTestCase
 {
     private DuplicateDefinitionAliasSchemaCleanerListener $object;
 
@@ -21,29 +17,13 @@ class DuplicateDefinitionAliasSchemaCleanerListenerTest extends TestCase
         $this->object = new DuplicateDefinitionAliasSchemaCleanerListener();
     }
 
-    public function provideTestClean(): iterable
+    public function getFixtureDir(): string
     {
-        foreach (glob(__DIR__.'/fixture/cleaner/*-dirty.json') as $file) {
-            yield str_replace('-dirty.json', '', basename($file)) => [$file, str_replace('dirty.json', 'clean.json', $file)];
-        }
+        return 'DuplicateDefinitionAliasSchemaCleanerListener';
     }
 
-    /**
-     * @dataProvider provideTestClean
-     */
-    public function testClean(string $dirty, string $clean): void
+    public function clean(CleanEvent $cleanEvent): void
     {
-        $openApi = new OpenApi();
-        $schema = $openApi->extract(file_get_contents($dirty));
-        static::assertInstanceOf(Root::class, $schema);
-
-        $this->object->onClean($event = new CleanEvent($schema, new ExtractionContext($openApi)));
-
-        $cleanedSchema = $event->getRootSchema();
-
-        static::assertEquals(
-            json_decode(file_get_contents($clean), true, 512, \JSON_THROW_ON_ERROR),
-            json_decode($openApi->dump($cleanedSchema, false), true, 512, \JSON_THROW_ON_ERROR)
-        );
+        $this->object->onClean($cleanEvent);
     }
 }
