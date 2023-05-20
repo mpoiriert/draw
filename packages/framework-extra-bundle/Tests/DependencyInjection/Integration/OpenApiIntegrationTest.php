@@ -6,7 +6,8 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\OpenApi\Controller\OpenApiController;
-use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleaner;
+use Draw\Component\OpenApi\EventListener\DoctrineInheritanceSchemaCleanerListener;
+use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
@@ -424,12 +425,16 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     }
                 ),
                 new ServiceConfiguration(
-                    'draw.open_api.event_listener.duplicate_definition_alias_schema_cleaner',
-                    [DuplicateDefinitionAliasSchemaCleaner::class]
-                ),
-                new ServiceConfiguration(
                     'draw.open_api.versioning.route_default_api_route_version_matcher',
                     [RouteDefaultApiRouteVersionMatcher::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.doctrine_inheritance_schema_cleaner_listener',
+                    [DoctrineInheritanceSchemaCleanerListener::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.event_listener.duplicate_definition_alias_schema_cleaner_listener',
+                    [DuplicateDefinitionAliasSchemaCleanerListener::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.event_listener.response_api_exception_listener',

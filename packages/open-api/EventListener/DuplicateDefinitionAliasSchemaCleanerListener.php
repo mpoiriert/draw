@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @internal
  */
-class DuplicateDefinitionAliasSchemaCleaner implements EventSubscriberInterface
+class DuplicateDefinitionAliasSchemaCleanerListener implements EventSubscriberInterface
 {
     final public const VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
 
@@ -37,10 +37,6 @@ class DuplicateDefinitionAliasSchemaCleaner implements EventSubscriberInterface
      */
     private function clean(Root $rootSchema): Root
     {
-        // This is to "clone" the object recursively
-        /** @var Root $rootSchema */
-        $rootSchema = unserialize(serialize($rootSchema));
-
         do {
             $definitionSchemasByObject = [];
             foreach ($rootSchema->definitions as $name => $definitionSchema) {
@@ -80,10 +76,10 @@ class DuplicateDefinitionAliasSchemaCleaner implements EventSubscriberInterface
         do {
             $suppressionOccurred = false;
             foreach ($rootSchema->definitions as $name => $definitionSchema) {
-                if ($definitionSchema->getVendorData()[static::VENDOR_DATA_KEEP] ?? false) {
+                if ($definitionSchema->getVendorDataKey(static::VENDOR_DATA_KEEP)) {
                     continue;
                 }
-                if (!$this->hasSchemaReference($rootSchema, '#/definitions/'.$name)) {
+                if (!$rootSchema->hasSchemaReference($rootSchema, '#/definitions/'.$name)) {
                     unset($rootSchema->definitions[$name]);
                     $suppressionOccurred = true;
                 }
@@ -117,29 +113,6 @@ class DuplicateDefinitionAliasSchemaCleaner implements EventSubscriberInterface
         }
 
         return $rootSchema;
-    }
-
-    private function hasSchemaReference(mixed $data, string $reference): bool
-    {
-        if (!\is_object($data) && !\is_array($data)) {
-            return false;
-        }
-
-        if (!\is_array($data)) {
-            if ($data instanceof Schema || $data instanceof PathItem) {
-                if ($data->ref == $reference) {
-                    return true;
-                }
-            }
-        }
-
-        foreach ($data as $value) {
-            if ($this->hasSchemaReference($value, $reference)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private function replaceSchemaReference(
