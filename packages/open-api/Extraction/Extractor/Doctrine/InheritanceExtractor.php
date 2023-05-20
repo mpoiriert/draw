@@ -4,7 +4,6 @@ namespace Draw\Component\OpenApi\Extraction\Extractor\Doctrine;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
-use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleaner;
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
@@ -12,6 +11,10 @@ use Draw\Component\OpenApi\Schema\Schema;
 
 class InheritanceExtractor implements ExtractorInterface
 {
+    public const VENDOR_DATA_DOCTRINE_ROOT_ENTITY_CLASS = 'X-DrawOpenApi-DoctrineRootEntityClass';
+    public const VENDOR_DATA_DOCTRINE_ENTITY_CLASS = 'X-DrawOpenApi-DoctrineEntityClass';
+    public const VENDOR_DATA_DOCTRINE_IS_ROOT_ENTITY = 'X-DrawOpenApi-DoctrineIsRootEntity';
+
     public function __construct(private ManagerRegistry $managerRegistry)
     {
     }
@@ -50,18 +53,23 @@ class InheritanceExtractor implements ExtractorInterface
             return;
         }
 
+        $target->setVendorDataKey(self::VENDOR_DATA_DOCTRINE_ENTITY_CLASS, $source->name);
+
         if ($metaData->isInheritanceTypeNone()) {
             return;
         }
 
+        $target->setVendorDataKey(self::VENDOR_DATA_DOCTRINE_ENTITY_CLASS, $source->name);
+
         $openApi = $extractionContext->getOpenApi();
 
         if ($metaData->isRootEntity()) {
+            $target->setVendorDataKey(self::VENDOR_DATA_DOCTRINE_IS_ROOT_ENTITY, true);
             $target->discriminator = $metaData->discriminatorColumn['name'];
             $target->required[] = $target->discriminator;
             foreach ($metaData->discriminatorMap as $class) {
                 $schema = new Schema();
-                $schema->setVendorDataKey(DuplicateDefinitionAliasSchemaCleaner::VENDOR_DATA_KEEP, true);
+                $schema->setVendorDataKey(self::VENDOR_DATA_DOCTRINE_ROOT_ENTITY_CLASS, $source->name);
                 $openApi->extract($class, $schema, $extractionContext);
             }
             $target->properties[$metaData->discriminatorColumn['name']] = $property = new Schema();

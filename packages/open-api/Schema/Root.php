@@ -210,4 +210,27 @@ class Root implements VendorExtensionSupportInterface
             }
         }
     }
+
+    public function hasSchemaReference(mixed $data, string $reference): bool
+    {
+        if (!\is_object($data) && !\is_array($data)) {
+            return false;
+        }
+
+        if (!\is_array($data)) {
+            if ($data instanceof Schema || $data instanceof PathItem) {
+                if ($data->ref == $reference) {
+                    return true;
+                }
+            }
+        }
+
+        foreach ($data as $value) {
+            if ($this->hasSchemaReference($value, $reference)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

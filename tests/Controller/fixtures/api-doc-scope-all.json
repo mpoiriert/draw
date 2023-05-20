@@ -5,6 +5,41 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/base-objects": {
+            "get": {
+                "tags": [
+                    "BaseObject"
+                ],
+                "summary": "Get all base objects.",
+                "operationId": "getAllBaseObjects",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "X-Draw-Language",
+                        "default": "en",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operation is successful.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BaseObject"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Request Validation error",
+                        "schema": {
+                            "$ref": "#/definitions/Draw.OpenApi.Error.Validation"
+                        }
+                    }
+                },
+                "x-draw-open-api-symfony-route": "get_all_base_objects"
+            }
+        },
         "/api/connection-tokens": {
             "post": {
                 "tags": [
@@ -818,6 +853,69 @@
                     "type": "string"
                 }
             }
+        },
+        "BaseObject": {
+            "required": [
+                "discriminator_type"
+            ],
+            "type": "object",
+            "properties": {
+                "discriminator_type": {
+                    "description": "The concrete class of the inheritance.",
+                    "enum": [
+                        "child-1",
+                        "child-2"
+                    ],
+                    "type": "string"
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "discriminator": "discriminator_type"
+        },
+        "ChildObject1": {
+            "type": "object",
+            "properties": {
+                "attribute1": {
+                    "type": "string"
+                },
+                "discriminator_type": {
+                    "description": "Discriminator property. Value will be ",
+                    "enum": [
+                        "child-1"
+                    ],
+                    "type": "string",
+                    "readOnly": true
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "x-draw-open-api-keep": true
+        },
+        "ChildObject2": {
+            "type": "object",
+            "properties": {
+                "attribute2": {
+                    "type": "string"
+                },
+                "discriminator_type": {
+                    "description": "Discriminator property. Value will be ",
+                    "enum": [
+                        "child-2"
+                    ],
+                    "type": "string",
+                    "readOnly": true
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "x-draw-open-api-keep": true
         },
         "Draw.Bundle.UserBundle.DTO.ConnectionToken": {
             "type": "object",

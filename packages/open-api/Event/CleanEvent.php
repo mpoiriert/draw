@@ -6,8 +6,11 @@ use Draw\Component\OpenApi\Schema\Root;
 
 class CleanEvent
 {
-    public function __construct(private Root $rootSchema)
+    private Root $rootSchema;
+
+    public function __construct(Root $rootSchema)
     {
+        $this->setRootSchema($rootSchema);
     }
 
     public function getRootSchema(): Root
@@ -17,6 +20,7 @@ class CleanEvent
 
     public function setRootSchema(Root $rootSchema): void
     {
-        $this->rootSchema = $rootSchema;
+        // This is to "clone" the object recursively
+        $this->rootSchema = unserialize(serialize($rootSchema));
     }
 }

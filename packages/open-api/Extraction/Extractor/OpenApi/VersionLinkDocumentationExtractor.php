@@ -22,7 +22,7 @@ class VersionLinkDocumentationExtractor implements ExtractorInterface
             return false;
         }
 
-        if ($target->getVendorData()[self::VENDOR_DATA_FLAG] ?? false) {
+        if ($target->getVendorDataKey(self::VENDOR_DATA_FLAG)) {
             return false;
         }
 

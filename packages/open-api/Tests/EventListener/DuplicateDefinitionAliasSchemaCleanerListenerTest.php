@@ -3,21 +3,21 @@
 namespace Draw\Component\OpenApi\Tests\EventListener;
 
 use Draw\Component\OpenApi\Event\CleanEvent;
-use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleaner;
+use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleaner
+ * @covers \Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener
  */
-class DuplicateDefinitionAliasSchemaCleanerTest extends TestCase
+class DuplicateDefinitionAliasSchemaCleanerListenerTest extends TestCase
 {
-    private DuplicateDefinitionAliasSchemaCleaner $object;
+    private DuplicateDefinitionAliasSchemaCleanerListener $object;
 
     protected function setUp(): void
     {
-        $this->object = new DuplicateDefinitionAliasSchemaCleaner();
+        $this->object = new DuplicateDefinitionAliasSchemaCleanerListener();
     }
 
     public function provideTestClean(): iterable

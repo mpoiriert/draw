@@ -20,6 +20,11 @@ trait VendorExtensionSupportTrait
         return $this->vendor;
     }
 
+    public function getVendorDataKey($key, $default = null)
+    {
+        return $this->vendor[$key] ?? $default;
+    }
+
     public function setVendorData(?array $data = null): void
     {
         $this->vendor = $data;
@@ -28,5 +33,10 @@ trait VendorExtensionSupportTrait
     public function setVendorDataKey($key, $data): void
     {
         $this->vendor[$key] = $data;
+    }
+
+    public function removeVendorDataKey($key): void
+    {
+        unset($this->vendor[$key]);
     }
 }
