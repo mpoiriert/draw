@@ -10,6 +10,9 @@ doctrine:
 
         url: '%env(resolve:DATABASE_URL)%'
         schema_filter: '~^(?!messenger_messages|draw_messenger__message|draw_messenger__message_tag)~'
+
+        types:
+            bigint: Draw\DoctrineExtra\DBAL\Types\BigIntType
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware

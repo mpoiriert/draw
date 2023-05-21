@@ -17,7 +17,7 @@ class Tag implements \Stringable
     #[
         ORM\Id,
         ORM\GeneratedValue,
-        ORM\Column(name: 'id', type: 'integer')
+        ORM\Column(name: 'id', type: 'bigint')
     ]
     private ?int $id = null;
 
