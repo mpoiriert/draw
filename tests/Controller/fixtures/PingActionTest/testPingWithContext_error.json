@@ -1,0 +1,74 @@
+{
+    "context": "error",
+    "services": [
+        {
+            "name": "doctrine_connection",
+            "subSystems": [
+                {
+                    "name": "Doctrine Connection [default] Primary Connection",
+                    "status": "OK"
+                },
+                {
+                    "name": "Doctrine Connection [default] Primary Connection",
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "name": "messenger",
+            "subSystems": [
+                {
+                    "name": "Messenger transport [async]",
+                    "status": "OK"
+                },
+                {
+                    "name": "Messenger transport [async_high_priority]",
+                    "status": "OK"
+                },
+                {
+                    "name": "Messenger transport [async_low_priority]",
+                    "status": "OK"
+                },
+                {
+                    "name": "Messenger transport [failed]",
+                    "status": "OK"
+                },
+                {
+                    "name": "Messenger transport [sync]",
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "name": "predefined_ok",
+            "subSystems": [
+                {
+                    "name": "predefined",
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "name": "predefined_error",
+            "subSystems": [
+                {
+                    "name": "predefined",
+                    "status": "ERROR",
+                    "errors": []
+                }
+            ]
+        },
+        {
+            "name": "throwable",
+            "subSystems": [
+                {
+                    "name": "throwable",
+                    "status": "ERROR",
+                    "errors": [
+                        "Exception(code: 0): From an exception"
+                    ]
+                }
+            ]
+        }
+    ]
+}

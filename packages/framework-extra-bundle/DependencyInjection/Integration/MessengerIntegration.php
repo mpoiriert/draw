@@ -22,6 +22,7 @@ use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
 use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
+use Draw\Contracts\Messenger\TransportRepositoryInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -96,6 +97,9 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
                     '$transportNames' => new Parameter('draw.messenger.transport_names'),
                 ]
             );
+
+        $container
+            ->setAlias(TransportRepositoryInterface::class, TransportRepository::class);
 
         $container
             ->setAlias(EnvelopeFinderInterface::class, EnvelopeFinder::class);

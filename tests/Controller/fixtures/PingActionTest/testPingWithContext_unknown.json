@@ -1,0 +1,61 @@
+{
+    "context": "unknown",
+    "services": [
+        {
+            "name": "doctrine_connection",
+            "subSystems": [
+                {
+                    "name": "Doctrine Connection [default] Primary Connection",
+                    "status": "OK"
+                },
+                {
+                    "name": "Doctrine Connection [default] Primary Connection",
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "name": "messenger",
+            "subSystems": [
+                {
+                    "name": "Messenger transport [async]",
+                    "status": "OK"
+                },
+                {
+                    "name": "Messenger transport [async_high_priority]",
+                    "status": "OK"
+                },
+                {
+                    "name": "Messenger transport [async_low_priority]",
+                    "status": "OK"
+                },
+                {
+                    "name": "Messenger transport [failed]",
+                    "status": "OK"
+                },
+                {
+                    "name": "Messenger transport [sync]",
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "name": "predefined_ok",
+            "subSystems": [
+                {
+                    "name": "predefined",
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "name": "predefined_unknown",
+            "subSystems": [
+                {
+                    "name": "predefined",
+                    "status": "UNKNOWN"
+                }
+            ]
+        }
+    ]
+}
