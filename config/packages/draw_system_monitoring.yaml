@@ -1,0 +1,44 @@
+services:
+  app.system_monitoring.predefined_service_status_provider.ok:
+    class: 'App\SystemMonitoring\PredefinedServiceStatusProvider'
+    arguments:
+      $status: 'OK'
+
+  app.system_monitoring.predefined_service_status_provider.error:
+    class: 'App\SystemMonitoring\PredefinedServiceStatusProvider'
+    arguments:
+      $status: 'ERROR'
+
+  app.system_monitoring.predefined_service_status_provider.unknown:
+    class: 'App\SystemMonitoring\PredefinedServiceStatusProvider'
+    arguments:
+      $status: 'UNKNOWN'
+
+  app.system_monitoring.throwable_service_status_provider:
+    class: 'App\SystemMonitoring\PredefinedServiceStatusProvider'
+    arguments:
+      $status: 'UNKNOWN'
+
+
+draw_framework_extra:
+  system_monitoring:
+    service_status_providers:
+      predefined_ok:
+        enabled: true
+        service: 'app.system_monitoring.predefined_service_status_provider.ok'
+        any_contexts: true
+      predefined_error:
+        enabled: true
+        service: 'app.system_monitoring.predefined_service_status_provider.error'
+        any_contexts: false
+        contexts: [ 'error' ]
+      predefined_unknown:
+        enabled: true
+        service: 'app.system_monitoring.predefined_service_status_provider.unknown'
+        any_contexts: false
+        contexts: [ 'unknown' ]
+      throwable:
+        enabled: true
+        service: 'App\SystemMonitoring\ThrowableServiceStatusProvider'
+        any_contexts: false
+        contexts: [ 'error' ]

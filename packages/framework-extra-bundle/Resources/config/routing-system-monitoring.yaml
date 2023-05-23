@@ -1,0 +1,6 @@
+draw_messenger.message_click:
+  path: '/ping/{context}'
+  defaults:
+    context: 'ping'
+  methods: ['GET']
+  controller: 'draw.system_monitoring.action.ping_action'

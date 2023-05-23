@@ -16,6 +16,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SystemMonitoringIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration;
@@ -56,6 +57,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new MessengerIntegration();
         $this->integrations[] = new ProcessIntegration();
         $this->integrations[] = new SecurityIntegration();
+        $this->integrations[] = new SystemMonitoringIntegration();
         $this->integrations[] = new TesterIntegration();
         $this->integrations[] = new VersioningIntegration();
         $this->integrations[] = new WorkflowIntegration();

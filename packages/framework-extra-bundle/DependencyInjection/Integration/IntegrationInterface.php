@@ -8,9 +8,9 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 interface IntegrationInterface
 {
-    public function addConfiguration(ArrayNodeDefinition $node): void;
+    public function getConfigSectionName(): string;
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void;
 
-    public function getConfigSectionName(): string;
+    public function addConfiguration(ArrayNodeDefinition $node): void;
 }
