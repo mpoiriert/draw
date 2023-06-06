@@ -33,6 +33,7 @@ use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
 use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
+use Draw\Contracts\Messenger\TransportRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -158,6 +159,9 @@ class MessengerIntegrationTest extends IntegrationTestCase
         $defaultAliases = [
             EnvelopeFinder::class => [
                 EnvelopeFinderInterface::class,
+            ],
+            TransportRepository::class => [
+                TransportRepositoryInterface::class,
             ],
         ];
 
