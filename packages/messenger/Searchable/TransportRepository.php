@@ -2,11 +2,12 @@
 
 namespace Draw\Component\Messenger\Searchable;
 
+use Draw\Contracts\Messenger\TransportRepositoryInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
-class TransportRepository
+class TransportRepository implements TransportRepositoryInterface
 {
     public function __construct(private ContainerInterface $transportLocator, private array $transportNames = [])
     {
