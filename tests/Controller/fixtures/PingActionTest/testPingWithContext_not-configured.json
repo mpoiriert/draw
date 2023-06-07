@@ -9,7 +9,7 @@
                     "status": "OK"
                 },
                 {
-                    "name": "Doctrine Connection [default] Primary Connection",
+                    "name": "Doctrine Connection [default] Replica Connection",
                     "status": "OK"
                 }
             ]
