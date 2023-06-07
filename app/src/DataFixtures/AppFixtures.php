@@ -21,6 +21,10 @@ class AppFixtures extends Fixture
         $tag->setActive(false);
         $manager->persist($tag);
 
+        $tag = new Tag();
+        $tag->setLabel('NotUse');
+        $manager->persist($tag);
+
         $user = new User();
         $user->setEmail('admin@example.com');
         $user->setPlainPassword('admin');

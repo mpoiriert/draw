@@ -22,6 +22,10 @@ class ConfigurationTest extends ConfigurationTestCase
             'can_security_handler' => [
                 'enabled' => false,
                 'grant_by_default' => true,
+                'prevent_delete_by_relation' => [
+                    'enabled' => false,
+                    'relations' => [],
+                ],
             ],
             'fix_menu_depth' => [
                 'enabled' => false,
