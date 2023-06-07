@@ -1,4 +1,4 @@
-draw_messenger.message_click:
+draw_application.ping:
   path: '/ping/{context}'
   defaults:
     context: 'ping'
