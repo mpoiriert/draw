@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[
     ORM\Entity(repositoryClass: 'App\Repository\TagRepository'),
     ORM\Table(name: 'draw_acme__tag'),
-    UniqueEntity(fields: ['label'])
 ]
+#[UniqueEntity(fields: ['label'])]
 class Tag implements \Stringable
 {
     #[
@@ -25,8 +25,10 @@ class Tag implements \Stringable
     private bool $active = true;
 
     #[ORM\Column(name: 'label', type: 'string', length: 255, nullable: false)]
-    #[Assert\NotNull]
-    #[Assert\Length(min: 3, max: 255)]
+    #[
+        Assert\NotNull,
+        Assert\Length(min: 3, max: 255)
+    ]
     private ?string $label = null;
 
     public function getId(): ?int
@@ -61,8 +63,10 @@ class Tag implements \Stringable
         $this->active = $active;
     }
 
-    #[Serializer\VirtualProperty]
-    #[Serializer\SerializedName('virtualProperty')]
+    #[
+        Serializer\VirtualProperty,
+        Serializer\SerializedName('virtualProperty')
+    ]
     public function getVirtualProperty(): string
     {
         return 'Virtual property';
@@ -71,8 +75,10 @@ class Tag implements \Stringable
     /**
      * @return array<int>
      */
-    #[Serializer\VirtualProperty]
-    #[Serializer\SerializedName('virtualPropertyArray')]
+    #[
+        Serializer\VirtualProperty,
+        Serializer\SerializedName('virtualPropertyArray')
+    ]
     public function getVirtualPropertyArray(): array
     {
         return [1];

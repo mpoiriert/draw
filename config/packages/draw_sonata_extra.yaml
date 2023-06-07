@@ -1,6 +1,15 @@
 draw_sonata_extra:
   auto_help: true
-  can_security_handler: true
+
+  can_security_handler:
+    prevent_delete_by_relation:
+      relations:
+        user_tag:
+          class: 'App\Entity\Tag'
+          related_class: 'App\Entity\User'
+          path: 'tags'
+
   fix_menu_depth: true
+
   session_timeout:
     delay: 900

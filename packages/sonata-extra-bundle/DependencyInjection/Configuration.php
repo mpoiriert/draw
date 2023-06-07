@@ -36,6 +36,21 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->children()
                 ->booleanNode('grant_by_default')->defaultValue(true)->end()
+                ->arrayNode('prevent_delete_by_relation')
+                    ->canBeEnabled()
+                    ->children()
+                        ->arrayNode('relations')
+                            ->useAttributeAsKey('name', false)
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('class')->isRequired()->end()
+                                    ->scalarNode('related_class')->isRequired()->end()
+                                    ->scalarNode('path')->isRequired()->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 
