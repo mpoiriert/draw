@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\DoctrineExtra\ORM\EntityHandler;
+use Draw\DoctrineExtra\ORM\Query\CommentSqlWalker;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -33,6 +34,8 @@ class DoctrineExtraIntegration implements IntegrationInterface
         if (!interface_exists(ManagerRegistry::class)) {
             $container->removeDefinition(EntityHandler::class);
         }
+
+        $container->removeDefinition(CommentSqlWalker::class);
 
         $this->renameDefinitions(
             $container,
