@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataExtraBundle\Security\Voter;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\DoctrineExtra\ORM\Query\CommentSqlWalker;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -59,10 +60,23 @@ class RelationPreventDeleteCanVoter implements VoterInterface
                     $queryBuilder->addSelect('root.'.$identifier);
                 }
 
-                $result = $queryBuilder
+                $query = $queryBuilder
                     ->setMaxResults(1)
-                    ->getQuery()
-                    ->getResult();
+                    ->getQuery();
+
+                if (class_exists(CommentSqlWalker::class)) {
+                    CommentSqlWalker::addComment(
+                        $query,
+                        'From Draw\Bundle\SonataExtraBundle\Security\Voter\RelationPreventDeleteCanVoter'
+                    );
+
+                    CommentSqlWalker::addComment(
+                        $query,
+                        $relation->getRelatedClass().'.'.$relation->getPath()
+                    );
+                }
+
+                $result = $query->getResult();
 
                 if (\count($result) > 0) {
                     return VoterInterface::ACCESS_DENIED;
