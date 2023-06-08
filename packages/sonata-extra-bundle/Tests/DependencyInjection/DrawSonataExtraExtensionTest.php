@@ -14,6 +14,7 @@ use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Bundle\SonataExtraBundle\Extension\BatchActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\DoctrineInheritanceExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\GridExtension;
+use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
 use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
@@ -49,6 +50,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         yield [ConfigureAdminControllerListener::class];
         yield [KeepAliveController::class];
         yield [RelativeDateTimeFilter::class];
+        yield [ListFieldPriorityExtension::class];
         yield [SingleLineDateTimeType::class];
     }
 

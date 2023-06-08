@@ -30,6 +30,11 @@ class ConfigurationTest extends ConfigurationTestCase
             'fix_menu_depth' => [
                 'enabled' => false,
             ],
+            'list_field_priority' => [
+                'enabled' => true,
+                'default_max_field' => null,
+                'default_field_priorities' => [],
+            ],
             'session_timeout' => [
                 'enabled' => false,
                 'delay' => 3600,

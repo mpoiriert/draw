@@ -18,6 +18,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createAutoHelpNode())
                 ->append($this->createCanSecurityHandlerNode())
                 ->append($this->createFixMenuDepthNode())
+                ->append($this->createListFieldPriorityNode())
                 ->append($this->createSessionTimeoutNode())
             ->end();
 
@@ -58,6 +59,40 @@ class Configuration implements ConfigurationInterface
     {
         return (new ArrayNodeDefinition('fix_menu_depth'))
             ->canBeEnabled();
+    }
+
+    private function createListFieldPriorityNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('list_field_priority'))
+            ->canBeDisabled()
+            ->children()
+                ->integerNode('default_max_field')->defaultNull()->end()
+                ->arrayNode('default_field_priorities')
+                    ->beforeNormalization()
+                    ->always(function ($config) {
+                        foreach ($config as $name => $configuration) {
+                            if (!\is_array($configuration)) {
+                                $config[$name] = [
+                                    'field_name' => $name,
+                                    'priority' => $configuration,
+                                ];
+                            } if (!isset($configuration['field_name'])) {
+                                $config[$name]['field_name'] = $name;
+                            }
+                        }
+
+                        return $config;
+                    })
+                    ->end()
+                    ->useAttributeAsKey('field_name', false)
+                    ->arrayPrototype()
+                        ->children()
+                            ->scalarNode('field_name')->isRequired()->end()
+                            ->integerNode('priority')->isRequired()->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
     }
 
     private function createSessionTimeoutNode(): ArrayNodeDefinition

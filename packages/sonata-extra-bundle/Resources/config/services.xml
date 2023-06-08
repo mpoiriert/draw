@@ -36,7 +36,11 @@
         </service>
 
         <service id="Draw\Bundle\SonataExtraBundle\Extension\DoctrineInheritanceExtension">
-            <tag name="sonata.admin.extension" global="true"/>
+            <tag name="sonata.admin.extension" global="true" />
+        </service>
+
+        <service id="Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension">
+            <tag name="sonata.admin.extension" global="true" priority="-999" />
         </service>
 
     </services>

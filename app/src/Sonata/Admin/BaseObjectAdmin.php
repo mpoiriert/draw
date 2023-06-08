@@ -76,9 +76,25 @@ class BaseObjectAdmin extends AbstractAdmin
     {
         $list
             ->addIdentifier('id')
-            ->add('attribute1')
+            ->add(
+                'attribute1',
+                fieldDescriptionOptions: [
+                    'priority' => 0,
+                ]
+            )
             ->add('dateTimeImmutable')
-            ->add('attribute2');
+            ->add('attribute2')
+            ->add(
+                ListMapper::NAME_ACTIONS,
+                ListMapper::TYPE_ACTIONS,
+                [
+                    'actions' => [
+                        'show' => [],
+                        'edit' => [],
+                        'delete' => [],
+                    ],
+                ]
+            );
     }
 
     protected function configureFormFields(FormMapper $form): void

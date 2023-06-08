@@ -6,6 +6,7 @@ use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Draw\Bundle\SonataExtraBundle\EventListener\AutoHelpListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
+use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
 use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescriptionFactory;
 use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
@@ -69,6 +70,23 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 $container->getDefinition(RelationPreventDeleteCanVoter::class)
                     ->setArgument('$relations', new IteratorArgument($references));
             }
+        }
+
+        if (!($config['list_field_priority']['enabled'] ?? false)) {
+            $container->removeDefinition(ListFieldPriorityExtension::class);
+        } else {
+            $defaultFieldPriorities = [];
+
+            foreach ($config['list_field_priority']['default_field_priorities'] as $key => $priority) {
+                $defaultFieldPriorities[$key] = $priority;
+            }
+
+            $container
+                ->getDefinition(ListFieldPriorityExtension::class)
+                ->setArguments([
+                    '$defaultMaxField' => $config['list_field_priority']['default_max_field'],
+                    '$defaultFieldPriorities' => $defaultFieldPriorities,
+                ]);
         }
 
         if (!($config['session_timeout']['enabled'] ?? false)) {

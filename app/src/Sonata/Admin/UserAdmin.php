@@ -6,6 +6,7 @@ use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
+use Draw\Bundle\SonataExtraBundle\ListPriorityAwareAdminInterface;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -30,8 +31,19 @@ use Symfony\Component\Translation\TranslatableMessage;
         'pager_type' => 'simple',
     ]
 )]
-class UserAdmin extends AbstractAdmin
+class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
 {
+    public function getListFieldPriorityOptions(): array
+    {
+        return [
+            'defaultMaxField' => 8,
+            'defaultFieldPriorities' => [
+                'childObject1' => 0,
+                'childObject2' => -1,
+            ],
+        ];
+    }
+
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
