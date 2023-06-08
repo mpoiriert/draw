@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
         value: [
             'child-1' => ChildObject1::class,
             'child-2' => ChildObject2::class,
+            'child-3' => ChildObject3::class,
         ]
     )
 ]

@@ -5,9 +5,12 @@ namespace App\Sonata\Admin;
 use App\Entity\BaseObject;
 use App\Entity\ChildObject1;
 use App\Entity\ChildObject2;
+use App\Entity\ChildObject3;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\DoctrineORMAdminBundle\Filter\ClassFilter;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag(
@@ -41,12 +44,41 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
         'ifExpression' => 'true',
     ]
 )]
+#[AutoconfigureTag(
+    name: 'sonata.admin.sub_class',
+    attributes: [
+        'sub_class' => ChildObject3::class,
+        'label' => 'Child Object 3',
+    ]
+)]
 class BaseObjectAdmin extends AbstractAdmin
 {
+    protected function configureDatagridFilters(DatagridMapper $filter): void
+    {
+        $filter
+            ->add(
+                'type',
+                ClassFilter::class,
+                [
+                    'sub_classes' => $this->getSubClasses(),
+                    'show_filter' => true,
+                ]
+            )
+            ->add(
+                'attribute1',
+                filterOptions: [
+                    'show_filter' => true,
+                ]
+            );
+    }
+
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id');
+            ->addIdentifier('id')
+            ->add('attribute1')
+            ->add('dateTimeImmutable')
+            ->add('attribute2');
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -56,6 +88,7 @@ class BaseObjectAdmin extends AbstractAdmin
         $form
             ->ifTrue($subject instanceof ChildObject1)
                 ->add('attribute1')
+                ->add('dateTimeImmutable')
             ->ifEnd()
             ->ifTrue($subject instanceof ChildObject2)
                 ->add('attribute2')

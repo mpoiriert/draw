@@ -864,7 +864,8 @@
                     "description": "The concrete class of the inheritance.",
                     "enum": [
                         "child-1",
-                        "child-2"
+                        "child-2",
+                        "child-3"
                     ],
                     "type": "string"
                 },
@@ -879,6 +880,10 @@
             "type": "object",
             "properties": {
                 "attribute1": {
+                    "type": "string"
+                },
+                "dateTimeImmutable": {
+                    "format": "date-time",
                     "type": "string"
                 },
                 "discriminator_type": {
@@ -906,6 +911,28 @@
                     "description": "Discriminator property. Value will be ",
                     "enum": [
                         "child-2"
+                    ],
+                    "type": "string",
+                    "readOnly": true
+                },
+                "id": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "x-draw-open-api-keep": true
+        },
+        "ChildObject3": {
+            "type": "object",
+            "properties": {
+                "dateTimeImmutable": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "discriminator_type": {
+                    "description": "Discriminator property. Value will be ",
+                    "enum": [
+                        "child-3"
                     ],
                     "type": "string",
                     "readOnly": true
