@@ -6,6 +6,7 @@ use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Draw\Bundle\SonataExtraBundle\EventListener\AutoHelpListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
+use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescriptionFactory;
 use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\Relation;
@@ -79,6 +80,8 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         }
 
         $container->removeDefinition(Relation::class);
+        $container->removeDefinition(SubClassFieldDescriptionFactory::class);
+
         $container->removeAlias(AdminControllerInterface::class);
     }
 
