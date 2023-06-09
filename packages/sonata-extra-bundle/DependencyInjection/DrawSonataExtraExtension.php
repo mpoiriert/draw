@@ -145,19 +145,22 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         }
 
         if ($container->hasExtension('sonata_admin')) {
-            $container->prependExtensionConfig(
-                'sonata_admin',
-                [
-                    'assets' => [
-                        'extra_javascripts' => [
-                            'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.js',
+            if ($config['install_assets']) {
+                $container->prependExtensionConfig(
+                    'sonata_admin',
+                    [
+                        'assets' => [
+                            'extra_javascripts' => [
+                                'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.js',
+                                'bundles/drawsonataextra/js/json_viewer.js',
+                            ],
+                            'extra_stylesheets' => [
+                                'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.css',
+                            ],
                         ],
-                        'extra_stylesheets' => [
-                            'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.css',
-                        ],
-                    ],
-                ]
-            );
+                    ]
+                );
+            }
 
             if ($this->isConfigEnabled($container, $config['session_timeout'])) {
                 $container->prependExtensionConfig(

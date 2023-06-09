@@ -110,6 +110,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
                     'assets' => [
                         'extra_javascripts' => [
                             'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.js',
+                            'bundles/drawsonataextra/js/json_viewer.js',
                         ],
                         'extra_stylesheets' => [
                             'https://cdn.jsdelivr.net/npm/jquery.json-viewer@1.2.0/json-viewer/jquery.json-viewer.css',

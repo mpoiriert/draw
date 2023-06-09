@@ -4,11 +4,5 @@
     {% if not value %}
         <i>No data</i>
     {% endif %}
-    <div id="jsonViewer_{{ field_description.fieldName }}"></div>
-    <script>
-        $(document).ready(function () {
-            $('#jsonViewer_{{ field_description.fieldName }}')
-                .jsonViewer({{ value|json_encode()|raw }}, {withLinks:false});
-        });
-    </script>
+    <div class="json-viewer" data-json={{ value|json_encode()|raw }}></div>
 {% endblock %}

@@ -30,6 +30,7 @@ class ConfigurationTest extends ConfigurationTestCase
             'fix_menu_depth' => [
                 'enabled' => false,
             ],
+            'install_assets' => true,
             'list_field_priority' => [
                 'enabled' => true,
                 'default_max_field' => null,

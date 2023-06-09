@@ -11,6 +11,8 @@ draw_sonata_extra:
 
   fix_menu_depth: true
 
+  install_assets: true
+
   list_field_priority:
     default_max_field: 2
     default_field_priorities:
