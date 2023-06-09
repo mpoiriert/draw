@@ -61,3 +61,28 @@ Enable this feature in config:
 draw_sonata_extra:
   fix_menu_depth: true
 ```
+
+## New Template types
+
+Some templates type are added to the default Sonata templates.
+
+By default, all the js and css files are added to the `sonata_admin.assets.extra_javascripts` 
+and `sonata_admin.assets.extra_stylesheets section.
+
+If you want to install them manually you can set the `draw_sonata_extra.install_assets` to false.
+
+### Show
+
+#### json
+
+Allow to display a json data based on the <https://github.com/abodelot/jquery.json-viewer>.
+
+If you want to import the assets via webpack you must import this:
+
+```javascript
+import 'jquery.json-viewer/json-viewer/jquery.json-viewer.js';
+import 'jquery.json-viewer/json-viewer/jquery.json-viewer.css';
+import '../public/bundles/drawsonataextra/js/json_viewer.js';
+```
+
+> **Note**: Don't forget to install the [jquery.json-viewer](https://www.npmjs.com/package/jquery.json-viewer) package.

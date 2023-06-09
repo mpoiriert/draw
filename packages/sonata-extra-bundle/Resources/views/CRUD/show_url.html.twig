@@ -1,0 +1,8 @@
+{% extends "@!SonataAdmin/CRUD/show_url.html.twig" %}
+
+{% block field %}
+    {% if value is empty %}
+        {% set value = field_description.option('url') %}
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

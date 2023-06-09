@@ -15,6 +15,7 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->booleanNode('install_assets')->defaultTrue()->end()
                 ->append($this->createAutoHelpNode())
                 ->append($this->createCanSecurityHandlerNode())
                 ->append($this->createFixMenuDepthNode())
