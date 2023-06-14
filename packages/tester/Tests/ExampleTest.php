@@ -1,6 +1,5 @@
 <?php
 
-// example-start: TestClass
 
 namespace Your\Project\Name;
 

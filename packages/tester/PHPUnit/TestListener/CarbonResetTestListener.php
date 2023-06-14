@@ -1,14 +1,5 @@
 <?php
 
-/*
- * (c)Copyright UGroupMedia Inc. <dev@ugroupmedia.com>
- * This source file is part of PNP Project and is subject to
- * copyright. It can not be copied and/or distributed without
- * the express permission of UGroupMedia Inc.
- * If you get a copy of this file without explicit authorization,
- * please contact us to the email above.
- */
-
 namespace Draw\Component\Tester\PHPUnit\TestListener;
 
 use Carbon\Carbon;

@@ -1,8 +1,4 @@
 <?php
-/**
- * This file is auto generated via the draw/php-data-tester/bin/generate-trait.php script.
- * Do not modify manually.
- */
 
 namespace Draw\Component\Tester;
 

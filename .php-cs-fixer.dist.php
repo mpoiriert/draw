@@ -23,7 +23,9 @@ $config = (new \PhpCsFixer\Config())
         'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
         'php_unit_test_case_static_method_calls' => true,
         'phpdoc_order' => true,
-
+        'header_comment' => [
+            'header' => '',
+        ],
         'logical_operators' => true,
         'no_useless_return' => true,
         'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
@@ -40,7 +42,7 @@ $config = (new \PhpCsFixer\Config())
         'declare_strict_types' => false,
         'phpdoc_separation' => false,
     ])
-    ->setFinder($finder)
+    ->setFinder($finder);
 ;
 
 return \Draw\Fixer\RuleSet::adjust($config);
