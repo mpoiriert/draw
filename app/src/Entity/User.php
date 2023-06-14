@@ -6,6 +6,7 @@ use App\Message\NewUserMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\Entity\LockableUserTrait;
 use Draw\Bundle\UserBundle\Entity\OnBoardingLifeCycleHookUserTrait;
@@ -52,8 +53,10 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         self::LEVEL_ADMIN,
     ];
 
-    #[ORM\Id]
-    #[ORM\Column(name: 'id', type: 'guid')]
+    #[
+        ORM\Id,
+        ORM\Column(name: 'id', type: 'guid')
+    ]
     #[Serializer\ReadOnlyProperty]
     private ?string $id = null;
 
@@ -76,8 +79,10 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * @var Collection<UserAddress>
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: UserAddress::class, cascade: ['persist'], orphanRemoval: true)]
-    #[ORM\OrderBy(['position' => 'ASC'])]
+    #[
+        ORM\OneToMany(mappedBy: 'user', targetEntity: UserAddress::class, cascade: ['persist'], orphanRemoval: true),
+        ORM\OrderBy(['position' => 'ASC'])
+    ]
     #[Assert\Valid]
     private Collection $userAddresses;
 
@@ -90,13 +95,54 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     #[ORM\Column(type: 'text')]
     private string $comment = '';
 
-    #[ORM\ManyToOne(targetEntity: ChildObject1::class)]
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[
+        ORM\ManyToOne(targetEntity: ChildObject1::class),
+        ORM\JoinColumn(onDelete: 'SET NULL')
+    ]
     private ?ChildObject1 $childObject1 = null;
 
-    #[ORM\ManyToOne(targetEntity: ChildObject2::class)]
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[
+        ORM\ManyToOne(targetEntity: ChildObject2::class),
+        ORM\JoinColumn(onDelete: 'SET NULL')
+    ]
     private ?ChildObject2 $childObject2 = null;
+
+    #[
+        ORM\ManyToOne(targetEntity: ChildObject2::class),
+        ORM\JoinColumn(onDelete: 'RESTRICT')
+    ]
+    private ?ChildObject2 $onDeleteRestrict = null;
+
+    #[
+        ORM\ManyToOne(targetEntity: ChildObject2::class),
+        ORM\JoinColumn(onDelete: 'CASCADE')
+    ]
+    private ?ChildObject2 $onDeleteCascade = null;
+
+    #[
+        ORM\ManyToOne(targetEntity: ChildObject2::class),
+        ORM\JoinColumn(onDelete: 'SET NULL')
+    ]
+    private ?ChildObject2 $onDeleteSetNull = null;
+
+    #[
+        ORM\ManyToOne(targetEntity: ChildObject2::class),
+        ORM\JoinColumn(onDelete: 'CASCADE')
+    ]
+    private ?ChildObject2 $onDeleteCascadeConfigOverridden = null;
+
+    #[
+        ORM\ManyToOne(targetEntity: ChildObject2::class),
+        ORM\JoinColumn(onDelete: 'CASCADE')
+    ]
+    #[PreventDelete]
+    private ?ChildObject2 $onDeleteCascadeAttributeOverridden = null;
+
+    #[
+        ORM\ManyToOne(targetEntity: ChildObject2::class),
+        ORM\JoinColumn(onDelete: 'CASCADE')
+    ]
+    private ?ChildObject2 $onDeleteCascadeConfigPriority = null;
 
     #[Assert\NotNull]
     #[Serializer\ReadOnlyProperty]
@@ -249,6 +295,78 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public function setChildObject2(?ChildObject2 $childObject2): void
     {
         $this->childObject2 = $childObject2;
+    }
+
+    public function getOnDeleteRestrict(): ?ChildObject2
+    {
+        return $this->onDeleteRestrict;
+    }
+
+    public function setOnDeleteRestrict(?ChildObject2 $onDeleteRestrict): static
+    {
+        $this->onDeleteRestrict = $onDeleteRestrict;
+
+        return $this;
+    }
+
+    public function getOnDeleteCascade(): ?ChildObject2
+    {
+        return $this->onDeleteCascade;
+    }
+
+    public function setOnDeleteCascade(?ChildObject2 $onDeleteCascade): static
+    {
+        $this->onDeleteCascade = $onDeleteCascade;
+
+        return $this;
+    }
+
+    public function getOnDeleteSetNull(): ?ChildObject2
+    {
+        return $this->onDeleteSetNull;
+    }
+
+    public function setOnDeleteSetNull(?ChildObject2 $onDeleteSetNull): static
+    {
+        $this->onDeleteSetNull = $onDeleteSetNull;
+
+        return $this;
+    }
+
+    public function getOnDeleteCascadeConfigOverridden(): ?ChildObject2
+    {
+        return $this->onDeleteCascadeConfigOverridden;
+    }
+
+    public function setOnDeleteCascadeConfigOverridden(?ChildObject2 $onDeleteCascadeConfigOverridden): static
+    {
+        $this->onDeleteCascadeConfigOverridden = $onDeleteCascadeConfigOverridden;
+
+        return $this;
+    }
+
+    public function getOnDeleteCascadeAttributeOverridden(): ?ChildObject2
+    {
+        return $this->onDeleteCascadeAttributeOverridden;
+    }
+
+    public function setOnDeleteCascadeAttributeOverridden(?ChildObject2 $onDeleteCascadeAttributeOverridden): static
+    {
+        $this->onDeleteCascadeAttributeOverridden = $onDeleteCascadeAttributeOverridden;
+
+        return $this;
+    }
+
+    public function getOnDeleteCascadeConfigPriority(): ?ChildObject2
+    {
+        return $this->onDeleteCascadeConfigPriority;
+    }
+
+    public function setOnDeleteCascadeConfigPriority(?ChildObject2 $onDeleteCascadeConfigPriority): static
+    {
+        $this->onDeleteCascadeConfigPriority = $onDeleteCascadeConfigPriority;
+
+        return $this;
     }
 
     public function getRequiredReadOnly(): string

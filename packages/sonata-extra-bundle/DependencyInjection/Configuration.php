@@ -41,13 +41,31 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('prevent_delete_by_relation')
                     ->canBeEnabled()
                     ->children()
-                        ->arrayNode('relations')
-                            ->useAttributeAsKey('name', false)
+                        ->arrayNode('entities')
+                            ->beforeNormalization()
+                            ->always(function ($config) {
+                                foreach (array_keys($config) as $class) {
+                                    $config[$class]['class'] = $class;
+                                }
+
+                                return $config;
+                            })
+                            ->end()
+                            ->useAttributeAsKey('class', false)
                             ->arrayPrototype()
                                 ->children()
+                                    ->booleanNode('prevent_delete')->defaultNull()->end()
                                     ->scalarNode('class')->isRequired()->end()
-                                    ->scalarNode('related_class')->isRequired()->end()
-                                    ->scalarNode('path')->isRequired()->end()
+                                    ->arrayNode('relations')
+                                        ->arrayPrototype()
+                                            ->children()
+                                                ->scalarNode('related_class')->isRequired()->end()
+                                                ->scalarNode('path')->isRequired()->end()
+                                                ->scalarNode('info')->defaultNull()->end()
+                                                ->booleanNode('prevent_delete')->defaultTrue()->end()
+                                            ->end()
+                                        ->end()
+                                    ->end()
                                 ->end()
                             ->end()
                         ->end()

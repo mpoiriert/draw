@@ -2,14 +2,18 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ChildObject2;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\UserAddress;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Draw\DoctrineExtra\Common\DataFixtures\ObjectReferenceTrait;
 
 class AppFixtures extends Fixture
 {
+    use ObjectReferenceTrait;
+
     public function load(ObjectManager $manager): void
     {
         $tag = $adminTag = new Tag();
@@ -38,6 +42,8 @@ class AppFixtures extends Fixture
         $userAddress->getAddress()->setStreet('201 Secondary Acme');
 
         $manager->persist($user);
+
+        $this->assignOnDeleteObject($manager, $user);
 
         $user = new User();
         $user->setEmail('2fa-admin@example.com');
@@ -76,5 +82,56 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    private function assignOnDeleteObject(ObjectManager $manager, User $user): void
+    {
+        $objects = [];
+
+        $user
+            ->setOnDeleteRestrict(
+                $object = (new ChildObject2())->setAttribute2('on-delete-restrict')
+            );
+
+        $objects[] = $object;
+
+        $user
+            ->setOnDeleteCascade(
+                $object = (new ChildObject2())->setAttribute2('on-delete-cascade')
+            );
+
+        $objects[] = $object;
+
+        $user
+            ->setOnDeleteSetNull(
+                $object = (new ChildObject2())->setAttribute2('on-delete-set-null')
+            );
+
+        $objects[] = $object;
+
+        $user
+            ->setOnDeleteCascadeConfigOverridden(
+                $object = (new ChildObject2())->setAttribute2('on-delete-cascade-config-overridden')
+            );
+
+        $objects[] = $object;
+
+        $user
+            ->setOnDeleteCascadeAttributeOverridden(
+                $object = (new ChildObject2())->setAttribute2('on-delete-cascade-attribute-overridden')
+            );
+
+        $objects[] = $object;
+
+        $user
+            ->setOnDeleteCascadeConfigPriority(
+                $object = (new ChildObject2())->setAttribute2('on-delete-cascade-config-priority')
+            );
+
+        $objects[] = $object;
+
+        foreach ($objects as $object) {
+            $manager->persist($object);
+        }
     }
 }

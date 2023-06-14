@@ -15,8 +15,10 @@ class ChildObject2 extends BaseObject
         return $this->attribute2;
     }
 
-    public function setAttribute2(?string $attribute2): void
+    public function setAttribute2(?string $attribute2): static
     {
         $this->attribute2 = $attribute2;
+
+        return $this;
     }
 }
