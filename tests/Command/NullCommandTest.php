@@ -55,6 +55,9 @@ class NullCommandTest extends TestCase
     public function testExecute(): void
     {
         $this->execute([])
-            ->test(CommandDataTester::create()->setExpectedDisplay('This does nothing.'));
+            ->test(
+                CommandDataTester::create()
+                    ->setExpectedDisplay('This does nothing.')
+            );
     }
 }
