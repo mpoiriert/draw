@@ -19,6 +19,7 @@
         "symfony/property-access": "^5.4.3"
     },
     "require-dev": {
+        "nesbot/carbon": "^2.0",
         "doctrine/orm": "^2.11",
         "pdeans/http": "^1.1",
         "symfony/console": "^5.4.3",

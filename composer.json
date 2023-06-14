@@ -56,7 +56,8 @@
         "symfony/workflow": "5.4.*",
         "symfony/yaml": "5.4.*",
         "twig/twig": "^3.3",
-        "friendsofphp/php-cs-fixer": "^3.13"
+        "friendsofphp/php-cs-fixer": "^3.13",
+        "nesbot/carbon": "^2.0"
     },
     "require-dev": {
         "ext-pcntl": "*",
@@ -216,10 +217,6 @@
             "target-directory": "vendor-bin"
         },
         "patches": {
-            "jms/serializer": {
-                "auto guest type virtual property": "https://gist.githubusercontent.com/mpoiriert/500cce434305f00477bb993d83518484/raw/c3db810b7b9800abb375b186d6a0cdb514a64fdf/jms_serializer_virtual_property_type.patch",
-                "php doc virtual property type": "https://gist.githubusercontent.com/mpoiriert/9bc89b478d819554cac37b750bb71e95/raw/b52748ac77740afd5f3b765387086c148353ff6a/jms_serializer_virtual_property_doc_block_type.patch"
-            }
         }
     },
     "scripts": {
