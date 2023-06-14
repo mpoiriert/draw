@@ -2,16 +2,16 @@
 
 namespace Draw\Bundle\TesterBundle\Messenger;
 
-use Draw\Bundle\TesterBundle\DependencyInjection\ServiceTesterTrait;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait MessageHandlerAssertionTrait
 {
-    use ServiceTesterTrait;
+    abstract public static function getContainer(): ContainerInterface;
 
     public function assertHandlerMessageConfiguration(string $handlerClass, array $configuration): void
     {
-        $handleMessagesMappingProvider = static::getService(HandleMessagesMappingProvider::class);
+        $handleMessagesMappingProvider = static::getContainer()->get(HandleMessagesMappingProvider::class);
         $handlerConfiguration = $handleMessagesMappingProvider->getHandlerConfiguration($handlerClass);
 
         TestCase::assertNotNull(
