@@ -3,6 +3,7 @@
 namespace Draw\Bundle\TesterBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -11,8 +12,8 @@ use Symfony\Contracts\Service\ResetInterface;
  */
 trait ServiceTesterTrait
 {
-    protected static $mainTestKernel = null;
-    protected static $mainTestContainer = null;
+    protected static ?KernelInterface $mainTestKernel = null;
+    protected static ?ContainerInterface $mainTestContainer = null;
 
     public static function getMainTestContainer(): Container
     {
@@ -36,9 +37,7 @@ trait ServiceTesterTrait
      */
     public static function shutdownMainTestContainer(): void
     {
-        if (null !== self::$mainTestKernel) {
-            self::$mainTestKernel->shutdown();
-        }
+        self::$mainTestKernel?->shutdown();
 
         if (self::$mainTestContainer instanceof ResetInterface) {
             self::$mainTestContainer->reset();

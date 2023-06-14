@@ -26,9 +26,10 @@ class OpenApiSubscriber implements EventSubscriberInterface
     public function onPreSerialize(PreSerializeEvent $event): void
     {
         $object = $event->getObject();
-        if (\is_object($object) &&
-            is_subclass_of($object, BaseParameter::class) &&
-            $object::class !== $event->getType()['name']
+        if (
+            \is_object($object)
+            && is_subclass_of($object, BaseParameter::class)
+            && $object::class !== $event->getType()['name']
         ) {
             $event->setType($event->getObject()::class);
         }

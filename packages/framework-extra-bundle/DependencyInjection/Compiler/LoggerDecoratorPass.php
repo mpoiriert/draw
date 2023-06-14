@@ -80,9 +80,9 @@ class LoggerDecoratorPass implements CompilerPassInterface
 
     private function isLoggerReference($argument): bool
     {
-        return $argument instanceof Reference
-            &&
-            (
+        return
+            $argument instanceof Reference
+            && (
                 'logger' === (string) $argument
                 || str_starts_with((string) $argument, 'monolog.logger.')
             );
