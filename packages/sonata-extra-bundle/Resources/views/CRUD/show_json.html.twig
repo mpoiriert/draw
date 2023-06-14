@@ -4,5 +4,5 @@
     {% if not value %}
         <i>No data</i>
     {% endif %}
-    <div class="json-viewer" data-json={{ value|json_encode()|raw }}></div>
+    <div class="json-viewer" data-json='{{ value|json_encode()|raw }}'></div>
 {% endblock %}
