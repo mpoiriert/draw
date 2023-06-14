@@ -24,7 +24,7 @@ class PhpCallable extends Constraint
      *
      * @var callable
      */
-    public $callable = null;
+    public $callable;
 
     /**
      * If we must validate null value or not.

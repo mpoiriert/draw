@@ -36,7 +36,7 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
         }
 
         $queryParameters = QueryParameter::fromReflectionMethod(
-            new \ReflectionMethod(\get_class($controllerObject), $controller[1])
+            new \ReflectionMethod($controllerObject::class, $controller[1])
         );
 
         foreach ($queryParameters as $queryParameter) {
