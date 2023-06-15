@@ -14,6 +14,7 @@ class PreventDeleteRelationLoader
         private ManagerRegistry $managerRegistry,
         private array $configuration,
         private bool $useManager = true,
+        private bool $preventDeleteFromAllRelations = false,
         private ?string $cacheDirectory = null
     ) {
     }
@@ -175,6 +176,10 @@ class PreventDeleteRelationLoader
     {
         if (!$this->useManager) {
             return false;
+        }
+
+        if ($this->preventDeleteFromAllRelations) {
+            return true;
         }
 
         if ($associationMapping['isOnDeleteCascade'] ?? false) {

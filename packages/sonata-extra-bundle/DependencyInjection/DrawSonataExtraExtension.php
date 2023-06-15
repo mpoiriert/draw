@@ -58,8 +58,11 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                     ->setArgument(
                         '$useManager',
                         $config['can_security_handler']['prevent_delete_voter']['use_manager']
+                    )
+                    ->setArgument(
+                        '$preventDeleteFromAllRelations',
+                        $config['can_security_handler']['prevent_delete_voter']['prevent_delete_from_all_relations']
                     );
-
                 if (!$config['can_security_handler']['prevent_delete_voter']['use_cache']) {
                     $container->getDefinition(PreventDeleteRelationLoader::class)
                         ->setArgument('$cacheDirectory', null);

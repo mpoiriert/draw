@@ -43,6 +43,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->booleanNode('use_cache')->defaultTrue()->end()
                         ->booleanNode('use_manager')->defaultTrue()->end()
+                        ->booleanNode('prevent_delete_from_all_relations')->defaultFalse()->end()
                         ->arrayNode('entities')
                             ->beforeNormalization()
                             ->always(function ($config) {
