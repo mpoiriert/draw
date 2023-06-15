@@ -42,6 +42,7 @@ class Configuration implements ConfigurationInterface
                     ->canBeEnabled()
                     ->children()
                         ->booleanNode('use_cache')->defaultTrue()->end()
+                        ->booleanNode('use_manager')->defaultTrue()->end()
                         ->arrayNode('entities')
                             ->beforeNormalization()
                             ->always(function ($config) {

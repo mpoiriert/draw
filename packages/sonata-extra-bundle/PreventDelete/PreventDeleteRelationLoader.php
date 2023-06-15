@@ -13,6 +13,7 @@ class PreventDeleteRelationLoader
     public function __construct(
         private ManagerRegistry $managerRegistry,
         private array $configuration,
+        private bool $useManager = true,
         private ?string $cacheDirectory = null
     ) {
     }
@@ -165,11 +166,19 @@ class PreventDeleteRelationLoader
 
     private function preventDelete(array $associationMapping): bool
     {
+        if (!$this->useManager) {
+            return false;
+        }
+
         if ($associationMapping['isOnDeleteCascade'] ?? false) {
             return false;
         }
 
         foreach ($associationMapping['joinColumns'] ?? [] as $joinColumn) {
+            if (!isset($joinColumn['onDelete'])) {
+                continue;
+            }
+
             if ('SET NULL' === $joinColumn['onDelete']) {
                 return false;
             }
