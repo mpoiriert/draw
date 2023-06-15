@@ -54,6 +54,10 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                     ->setArgument(
                         '$configuration',
                         $config['can_security_handler']['prevent_delete_voter']['entities']
+                    )
+                    ->setArgument(
+                        '$useManager',
+                        $config['can_security_handler']['prevent_delete_voter']['use_manager']
                     );
 
                 if (!$config['can_security_handler']['prevent_delete_voter']['use_cache']) {
