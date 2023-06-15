@@ -12,6 +12,16 @@ App\Entity\User:
             exclude: true
         needChangePassword:
             exclude: true
+        onDeleteCascade:
+            exclude: true
+        onDeleteCascadeAttributeOverridden:
+            exclude: true
+        onDeleteCascadeConfigOverridden:
+            exclude: true
+        onDeleteRestrict:
+            exclude: true
+        onDeleteSetNull:
+            exclude: true
         onHoldMessages:
             exclude: true
         password:

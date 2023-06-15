@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Your\Project\Name;
 
 use Draw\Component\Tester\DataTester;

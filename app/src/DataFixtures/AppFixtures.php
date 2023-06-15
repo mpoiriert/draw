@@ -123,13 +123,6 @@ class AppFixtures extends Fixture
 
         $objects[] = $object;
 
-        $user
-            ->setOnDeleteCascadeConfigPriority(
-                $object = (new ChildObject2())->setAttribute2('on-delete-cascade-config-priority')
-            );
-
-        $objects[] = $object;
-
         foreach ($objects as $object) {
             $manager->persist($object);
         }

@@ -31,9 +31,7 @@ final class Version20230615111619 extends AbstractMigration
         ADD
           on_delete_cascade_config_overridden_id INT DEFAULT NULL,
         ADD
-          on_delete_cascade_attribute_overridden_id INT DEFAULT NULL,
-        ADD
-          on_delete_cascade_config_priority_id INT DEFAULT NULL');
+          on_delete_cascade_attribute_overridden_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE
           draw_acme__user
         ADD
@@ -60,12 +58,6 @@ final class Version20230615111619 extends AbstractMigration
           CONSTRAINT FK_5E86F9A79A3CF4B7 FOREIGN KEY (
             on_delete_cascade_attribute_overridden_id
           ) REFERENCES draw_acme__base_object (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE
-          draw_acme__user
-        ADD
-          CONSTRAINT FK_5E86F9A7E693CEFF FOREIGN KEY (
-            on_delete_cascade_config_priority_id
-          ) REFERENCES draw_acme__base_object (id) ON DELETE CASCADE');
         $this->addSql('CREATE INDEX IDX_5E86F9A7E864B41F ON draw_acme__user (on_delete_restrict_id)');
         $this->addSql('CREATE INDEX IDX_5E86F9A77FFFEA0E ON draw_acme__user (on_delete_cascade_id)');
         $this->addSql('CREATE INDEX IDX_5E86F9A72A00A4ED ON draw_acme__user (on_delete_set_null_id)');
@@ -73,7 +65,6 @@ final class Version20230615111619 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_5E86F9A79A3CF4B7 ON draw_acme__user (
           on_delete_cascade_attribute_overridden_id
         )');
-        $this->addSql('CREATE INDEX IDX_5E86F9A7E693CEFF ON draw_acme__user (on_delete_cascade_config_priority_id)');
     }
 
     public function down(Schema $schema): void

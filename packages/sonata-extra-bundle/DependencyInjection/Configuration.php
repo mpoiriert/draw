@@ -38,9 +38,10 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->children()
                 ->booleanNode('grant_by_default')->defaultValue(true)->end()
-                ->arrayNode('prevent_delete_by_relation')
+                ->arrayNode('prevent_delete_voter')
                     ->canBeEnabled()
                     ->children()
+                        ->booleanNode('use_cache')->defaultTrue()->end()
                         ->arrayNode('entities')
                             ->beforeNormalization()
                             ->always(function ($config) {

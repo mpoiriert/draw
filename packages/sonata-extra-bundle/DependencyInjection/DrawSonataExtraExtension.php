@@ -40,20 +40,26 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             $container->removeDefinition(CanSecurityHandler::class);
             $container->removeDefinition(DefaultCanVoter::class);
             $container->removeDefinition(PreventDeleteVoter::class);
+            $container->removeDefinition(PreventDeleteRelationLoader::class);
         } else {
             if (!$config['can_security_handler']['grant_by_default']) {
                 $container->removeDefinition(DefaultCanVoter::class);
             }
 
-            if (!$config['can_security_handler']['prevent_delete_by_relation']) {
+            if (!$config['can_security_handler']['prevent_delete_voter']['enabled']) {
                 $container->removeDefinition(PreventDeleteVoter::class);
                 $container->removeDefinition(PreventDeleteRelationLoader::class);
             } else {
                 $container->getDefinition(PreventDeleteRelationLoader::class)
                     ->setArgument(
                         '$configuration',
-                        $config['can_security_handler']['prevent_delete_by_relation']['entities']
+                        $config['can_security_handler']['prevent_delete_voter']['entities']
                     );
+
+                if (!$config['can_security_handler']['prevent_delete_voter']['use_cache']) {
+                    $container->getDefinition(PreventDeleteRelationLoader::class)
+                        ->setArgument('$cacheDirectory', null);
+                }
             }
         }
 

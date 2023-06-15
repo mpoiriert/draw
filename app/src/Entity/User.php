@@ -138,12 +138,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     #[PreventDelete]
     private ?ChildObject2 $onDeleteCascadeAttributeOverridden = null;
 
-    #[
-        ORM\ManyToOne(targetEntity: ChildObject2::class),
-        ORM\JoinColumn(onDelete: 'CASCADE')
-    ]
-    private ?ChildObject2 $onDeleteCascadeConfigPriority = null;
-
     #[Assert\NotNull]
     #[Serializer\ReadOnlyProperty]
     private string $requiredReadOnly = 'value';
@@ -353,18 +347,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public function setOnDeleteCascadeAttributeOverridden(?ChildObject2 $onDeleteCascadeAttributeOverridden): static
     {
         $this->onDeleteCascadeAttributeOverridden = $onDeleteCascadeAttributeOverridden;
-
-        return $this;
-    }
-
-    public function getOnDeleteCascadeConfigPriority(): ?ChildObject2
-    {
-        return $this->onDeleteCascadeConfigPriority;
-    }
-
-    public function setOnDeleteCascadeConfigPriority(?ChildObject2 $onDeleteCascadeConfigPriority): static
-    {
-        $this->onDeleteCascadeConfigPriority = $onDeleteCascadeConfigPriority;
 
         return $this;
     }
