@@ -83,18 +83,7 @@ class BaseObjectAdmin extends AbstractAdmin
                 ]
             )
             ->add('dateTimeImmutable')
-            ->add('attribute2')
-            ->add(
-                ListMapper::NAME_ACTIONS,
-                ListMapper::TYPE_ACTIONS,
-                [
-                    'actions' => [
-                        'show' => [],
-                        'edit' => [],
-                        'delete' => [],
-                    ],
-                ]
-            );
+            ->add('attribute2');
     }
 
     protected function configureFormFields(FormMapper $form): void

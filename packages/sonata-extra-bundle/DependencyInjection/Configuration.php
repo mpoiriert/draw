@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 
+use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -16,6 +17,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('install_assets')->defaultTrue()->end()
+                ->append($this->createAutoActionNode())
                 ->append($this->createAutoHelpNode())
                 ->append($this->createCanSecurityHandlerNode())
                 ->append($this->createFixMenuDepthNode())
@@ -30,6 +32,24 @@ class Configuration implements ConfigurationInterface
     {
         return (new ArrayNodeDefinition('auto_help'))
             ->canBeEnabled();
+    }
+
+    private function createAutoActionNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('auto_action'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('ignore_admins')
+                    ->defaultValue([])
+                    ->scalarPrototype()->end()
+                ->end()
+                ->arrayNode('actions')
+                    ->defaultValue(AutoActionExtension::DEFAULT_ACTIONS)
+                    ->arrayPrototype()
+                        ->ignoreExtraKeys(false)
+                    ->end()
+                ->end()
+            ->end();
     }
 
     private function createCanSecurityHandlerNode(): ArrayNodeDefinition
