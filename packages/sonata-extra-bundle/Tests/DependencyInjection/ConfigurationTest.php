@@ -3,6 +3,7 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\Configuration;
+use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -16,6 +17,11 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'auto_action' => [
+                'enabled' => false,
+                'ignore_admins' => [],
+                'actions' => AutoActionExtension::DEFAULT_ACTIONS,
+            ],
             'auto_help' => [
                 'enabled' => false,
             ],

@@ -1,6 +1,8 @@
 draw_sonata_extra:
   auto_help: true
 
+  auto_action: true
+
   can_security_handler:
     prevent_delete_voter:
       use_cache: false

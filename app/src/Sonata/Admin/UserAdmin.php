@@ -67,19 +67,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->add('childObject1')
             ->add('childObject2')
             ->add('tags', 'list')
-            ->add('isLocked', 'boolean', ['inverse' => true])
-            ->add(
-                \constant(ListMapper::class.'::NAME_ACTIONS') ?: '_action',
-                null,
-                [
-                    'label' => 'Action',
-                    'actions' => [
-                        'show' => [],
-                        'edit' => [],
-                        'delete' => [],
-                    ],
-                ]
-            );
+            ->add('isLocked', 'boolean', ['inverse' => true]);
     }
 
     protected function configureShowFields(ShowMapper $show): void

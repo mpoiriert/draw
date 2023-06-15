@@ -26,6 +26,10 @@
             <tag name="sonata.block"/>
         </service>
 
+        <service id="Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension">
+            <tag name="sonata.admin.extension" global="true" priority="-999" />
+        </service>
+
         <service id="Draw\Bundle\SonataExtraBundle\Extension\BatchActionExtension">
             <tag name="sonata.admin.extension" global="true"/>
         </service>

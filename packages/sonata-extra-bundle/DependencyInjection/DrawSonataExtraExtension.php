@@ -6,6 +6,7 @@ use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Draw\Bundle\SonataExtraBundle\EventListener\AutoHelpListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
+use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
 use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescriptionFactory;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
@@ -28,12 +29,21 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
-        if (!($config['fix_menu_depth']['enabled'] ?? false)) {
-            $container->removeDefinition(FixDepthMenuBuilderListener::class);
+        if (!($config['auto_action']['enabled'] ?? false)) {
+            $container->removeDefinition(AutoActionExtension::class);
+        } else {
+            $container
+                ->getDefinition(AutoActionExtension::class)
+                ->setArgument('$ignoreAdmins', $config['auto_action']['ignore_admins'])
+                ->setArgument('$actions', $config['auto_action']['actions']);
         }
 
         if (!($config['auto_help']['enabled'] ?? false)) {
             $container->removeDefinition(AutoHelpListener::class);
+        }
+
+        if (!($config['fix_menu_depth']['enabled'] ?? false)) {
+            $container->removeDefinition(FixDepthMenuBuilderListener::class);
         }
 
         if (!($config['can_security_handler']['enabled'] ?? false)) {

@@ -25,19 +25,7 @@ class TagAdmin extends AbstractAdmin
         $list
             ->addIdentifier('id')
             ->add('label')
-            ->add('active')
-            ->add(
-                $list::NAME_ACTIONS,
-                null,
-                [
-                    'label' => 'Action',
-                    'actions' => [
-                        'show' => [],
-                        'edit' => [],
-                        'delete' => [],
-                    ],
-                ]
-            );
+            ->add('active');
     }
 
     protected function configureShowFields(ShowMapper $show): void
