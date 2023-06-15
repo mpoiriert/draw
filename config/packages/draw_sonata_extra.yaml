@@ -2,12 +2,19 @@ draw_sonata_extra:
   auto_help: true
 
   can_security_handler:
-    prevent_delete_by_relation:
-      relations:
-        user_tag:
-          class: 'App\Entity\Tag'
-          related_class: 'App\Entity\User'
-          path: 'tags'
+    prevent_delete_voter:
+      use_cache: false
+      entities:
+        App\Entity\ChildObject2:
+          relations:
+            App\Entity\User.onDeleteCascadeConfigOverridden:
+              related_class: 'App\Entity\User'
+              path: 'onDeleteCascadeConfigOverridden'
+        App\Entity\Tag:
+          relations:
+            App\Entity\User.tags:
+              related_class: 'App\Entity\User'
+              path: 'tags'
 
   fix_menu_depth: true
 

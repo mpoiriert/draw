@@ -43,5 +43,8 @@
             <tag name="sonata.admin.extension" global="true" priority="-999" />
         </service>
 
+        <service id="Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader">
+            <argument key="$cacheDirectory">%kernel.cache_dir%</argument>
+        </service>
     </services>
 </container>

@@ -8,24 +8,23 @@ use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
 use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescriptionFactory;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter\PreventDeleteVoter;
 use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
-use Draw\Bundle\SonataExtraBundle\Security\Voter\Relation;
-use Draw\Bundle\SonataExtraBundle\Security\Voter\RelationPreventDeleteCanVoter;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\DependencyInjection\Reference;
 
 class DrawSonataExtraExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
+
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
@@ -40,35 +39,27 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         if (!($config['can_security_handler']['enabled'] ?? false)) {
             $container->removeDefinition(CanSecurityHandler::class);
             $container->removeDefinition(DefaultCanVoter::class);
-            $container->removeDefinition(RelationPreventDeleteCanVoter::class);
+            $container->removeDefinition(PreventDeleteVoter::class);
+            $container->removeDefinition(PreventDeleteRelationLoader::class);
         } else {
             if (!$config['can_security_handler']['grant_by_default']) {
                 $container->removeDefinition(DefaultCanVoter::class);
             }
 
-            if (!$config['can_security_handler']['prevent_delete_by_relation']) {
-                $container->removeDefinition(RelationPreventDeleteCanVoter::class);
+            if (!$config['can_security_handler']['prevent_delete_voter']['enabled']) {
+                $container->removeDefinition(PreventDeleteVoter::class);
+                $container->removeDefinition(PreventDeleteRelationLoader::class);
             } else {
-                $references = [];
-
-                foreach ($config['can_security_handler']['prevent_delete_by_relation']['relations'] as $key => $relation) {
-                    $container->setDefinition(
-                        $id = 'draw.sonata_extra.security.voter.relation_'.$key,
-                        new Definition(
-                            Relation::class,
-                            [
-                                $relation['class'],
-                                $relation['related_class'],
-                                $relation['path'],
-                            ]
-                        )
+                $container->getDefinition(PreventDeleteRelationLoader::class)
+                    ->setArgument(
+                        '$configuration',
+                        $config['can_security_handler']['prevent_delete_voter']['entities']
                     );
 
-                    $references[] = new Reference($id);
+                if (!$config['can_security_handler']['prevent_delete_voter']['use_cache']) {
+                    $container->getDefinition(PreventDeleteRelationLoader::class)
+                        ->setArgument('$cacheDirectory', null);
                 }
-
-                $container->getDefinition(RelationPreventDeleteCanVoter::class)
-                    ->setArgument('$relations', new IteratorArgument($references));
             }
         }
 
@@ -97,7 +88,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 ->setArgument('$delay', $config['session_timeout']['delay']);
         }
 
-        $container->removeDefinition(Relation::class);
+        $container->removeDefinition(PreventDelete::class);
         $container->removeDefinition(SubClassFieldDescriptionFactory::class);
 
         $container->removeAlias(AdminControllerInterface::class);

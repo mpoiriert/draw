@@ -5,20 +5,20 @@ namespace App\Tests\SonataExtraBundle\Security\Voter;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Draw\Bundle\SonataExtraBundle\Security\Voter\RelationPreventDeleteCanVoter;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter\PreventDeleteVoter;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class RelationPreventDeleteCanVoterTest extends KernelTestCase
 {
-    private RelationPreventDeleteCanVoter $object;
+    private PreventDeleteVoter $object;
 
     private EntityManagerInterface $entityManager;
 
     protected function setUp(): void
     {
-        $this->object = static::getContainer()->get(RelationPreventDeleteCanVoter::class);
+        $this->object = static::getContainer()->get(PreventDeleteVoter::class);
 
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
     }

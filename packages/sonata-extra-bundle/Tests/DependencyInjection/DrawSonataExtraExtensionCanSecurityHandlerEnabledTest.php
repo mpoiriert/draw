@@ -3,9 +3,10 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter\PreventDeleteVoter;
 use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
-use Draw\Bundle\SonataExtraBundle\Security\Voter\RelationPreventDeleteCanVoter;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawSonataExtraExtensionCanSecurityHandlerEnabledTest extends DrawSonataExtraExtensionTest
@@ -20,6 +21,9 @@ class DrawSonataExtraExtensionCanSecurityHandlerEnabledTest extends DrawSonataEx
         return [
             'can_security_handler' => [
                 'enabled' => true,
+                'prevent_delete_voter' => [
+                    'enabled' => true,
+                ],
             ],
         ];
     }
@@ -29,7 +33,8 @@ class DrawSonataExtraExtensionCanSecurityHandlerEnabledTest extends DrawSonataEx
         yield from parent::provideTestHasServiceDefinition();
         yield [CanSecurityHandler::class];
         yield [DefaultCanVoter::class];
-        yield [RelationPreventDeleteCanVoter::class];
+        yield [PreventDeleteVoter::class];
+        yield [PreventDeleteRelationLoader::class];
     }
 
     public function testCanSecurityHandlerDefinition(): void
