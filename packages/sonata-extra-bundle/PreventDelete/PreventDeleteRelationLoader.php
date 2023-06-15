@@ -133,9 +133,16 @@ class PreventDeleteRelationLoader
                         continue;
                     }
 
+                    $preventDeleteFromAttribute = $this->preventDeleteFromAttribute($associationMapping);
+
+                    // Not preventing delete from attribute as precedence over preventing delete from association
+                    if ($preventDeleteFromAttribute && !$preventDeleteFromAttribute->getPreventDelete()) {
+                        continue;
+                    }
+
                     if (
-                        !$this->preventDelete($associationMapping)
-                        && !$this->preventDeleteFromAttribute($associationMapping)
+                        !$this->preventDeleteFromAssociation($associationMapping)
+                        && null === $preventDeleteFromAttribute
                     ) {
                         continue;
                     }
@@ -152,19 +159,19 @@ class PreventDeleteRelationLoader
         return $relations;
     }
 
-    private function preventDeleteFromAttribute(array $associationMapping): bool
+    private function preventDeleteFromAttribute(array $associationMapping): ?PreventDelete
     {
         try {
-            return (bool) \count(
-                (new \ReflectionProperty($associationMapping['sourceEntity'], $associationMapping['fieldName']))
-                        ->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF)
-            );
+            $attribute = (new \ReflectionProperty($associationMapping['sourceEntity'], $associationMapping['fieldName']))
+                    ->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null;
+
+            return $attribute?->newInstance();
         } catch (\ReflectionException) {
-            return false;
+            return null;
         }
     }
 
-    private function preventDelete(array $associationMapping): bool
+    private function preventDeleteFromAssociation(array $associationMapping): bool
     {
         if (!$this->useManager) {
             return false;

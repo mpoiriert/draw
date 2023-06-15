@@ -9,6 +9,7 @@ class PreventDelete
         private ?string $class = null,
         private ?string $relatedClass = null,
         private ?string $path = null,
+        private bool $preventDelete = true
     ) {
     }
 
@@ -44,6 +45,18 @@ class PreventDelete
     public function setPath(?string $path): static
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getPreventDelete(): bool
+    {
+        return $this->preventDelete;
+    }
+
+    public function setPreventDelete(bool $preventDelete): static
+    {
+        $this->preventDelete = $preventDelete;
 
         return $this;
     }
