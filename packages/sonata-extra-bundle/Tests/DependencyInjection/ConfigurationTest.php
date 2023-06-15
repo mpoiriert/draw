@@ -25,6 +25,7 @@ class ConfigurationTest extends ConfigurationTestCase
                 'prevent_delete_voter' => [
                     'use_cache' => true,
                     'use_manager' => true,
+                    'prevent_delete_from_all_relations' => false,
                     'enabled' => false,
                     'entities' => [],
                 ],
