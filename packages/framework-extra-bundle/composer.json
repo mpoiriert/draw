@@ -34,6 +34,7 @@
         "draw/tester": "^0.10",
         "draw/tester-bundle": "^0.10",
         "draw/user-bundle": "^0.10",
+        "draw/validator": "^0.10",
         "draw/workflow": "^0.10",
         "monolog/monolog": "^2.4.0",
         "pelago/emogrifier": "^6.0",

@@ -18,6 +18,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SystemMonitoringIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ValidatorIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -59,6 +60,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new SecurityIntegration();
         $this->integrations[] = new SystemMonitoringIntegration();
         $this->integrations[] = new TesterIntegration();
+        $this->integrations[] = new ValidatorIntegration();
         $this->integrations[] = new VersioningIntegration();
         $this->integrations[] = new WorkflowIntegration();
     }

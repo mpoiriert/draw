@@ -81,4 +81,6 @@ draw_framework_extra:
     voters:
       abstain_role_hierarchy: ~
 
+  validator: ~
+
   versioning: ~
