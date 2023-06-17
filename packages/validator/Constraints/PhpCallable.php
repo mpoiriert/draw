@@ -6,10 +6,6 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * A base class to do assertion base on php callable.
- *
- * @Annotation
- *
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD)]
 class PhpCallable extends Constraint
@@ -46,6 +42,11 @@ class PhpCallable extends Constraint
     public function getRequiredOptions(): array
     {
         return ['callable'];
+    }
+
+    public function getTargets(): string|array
+    {
+        return self::PROPERTY_CONSTRAINT;
     }
 
     final public function validatedBy(): string
