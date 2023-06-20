@@ -25,23 +25,27 @@
 {% block sonata_wrapper %}
     <div class="login-box">
         {% block login_box_header %}
-            <div class="login-logo">
-                {% if display_icon %}
-                    <div>
-                        <img style="width:64px;" src="{{ asset(logo) }}" alt="{{ title }}">
-                    </div>
-                {% endif %}
-                {% if display_text %}
-                    <span>{{ title }}</span>
-                {% endif %}
-            </div>
-            {% for label, flashes in app.session.flashbag.all %}
-                {% for flash in flashes %}
-                    <div class="alert alert-{{ label }}">
-                        {{ flash }}
-                    </div>
+            {% block login_box_header_logo %}
+                <div class="login-logo">
+                    {% if display_icon %}
+                        <div>
+                            <img style="width:64px;" src="{{ asset(logo) }}" alt="{{ title }}">
+                        </div>
+                    {% endif %}
+                    {% if display_text %}
+                        <span>{{ title }}</span>
+                    {% endif %}
+                </div>
+            {% endblock login_box_header_logo %}
+            {% block login_box_header_flash_message %}
+                {% for label, flashes in app.session.flashbag.all %}
+                    {% for flash in flashes %}
+                        <div class="alert alert-{{ label }}">
+                            {{ flash }}
+                        </div>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            {% endblock login_box_header_flash_message %}
         {% endblock login_box_header %}
         <div class="login-box-body">
             {% block login_box_body %}
