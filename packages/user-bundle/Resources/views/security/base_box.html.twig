@@ -26,16 +26,14 @@
     <div class="login-box">
         {% block login_box_header %}
             <div class="login-logo">
-                <a href="{{ path('sonata_admin_dashboard') }}">
-                    {% if display_icon %}
-                        <div>
-                            <img style="width:64px;" src="{{ asset(logo) }}" alt="{{ title }}">
-                        </div>
-                    {% endif %}
-                    {% if display_text %}
-                        <span>{{ title }}</span>
-                    {% endif %}
-                </a>
+                {% if display_icon %}
+                    <div>
+                        <img style="width:64px;" src="{{ asset(logo) }}" alt="{{ title }}">
+                    </div>
+                {% endif %}
+                {% if display_text %}
+                    <span>{{ title }}</span>
+                {% endif %}
             </div>
             {% for label, flashes in app.session.flashbag.all %}
                 {% for flash in flashes %}
