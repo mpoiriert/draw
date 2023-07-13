@@ -27,4 +27,5 @@ return [
     Aws\Symfony\AwsBundle::class => ['all' => true],
     Draw\Bundle\SonataIntegrationBundle\DrawSonataIntegrationBundle::class => ['all' => true],
     Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle::class => ['all' => true],
+    Symfony\Bundle\MercureBundle\MercureBundle::class => ['all' => true],
 ];
