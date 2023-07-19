@@ -11,6 +11,7 @@ use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\Stamp\SentToFailureTransportStamp;
 
 class PropertyReferenceEncodingListener implements EventSubscriberInterface
 {
@@ -29,11 +30,19 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
 
     public function createPropertyReferenceStamps(PreEncodeEvent $event): void
     {
-        $message = $event->getEnvelope()->getMessage();
+        $envelope = $event->getEnvelope();
+        $message = $envelope->getMessage();
 
         if (!$message instanceof DoctrineReferenceAwareInterface) {
             return;
         }
+
+        if ($envelope->last(SentToFailureTransportStamp::class)) {
+            // This will prevent removing original stamps from the message
+            return;
+        }
+
+        $envelope = $envelope->withoutAll(PropertyReferenceStamp::class);
 
         $stamps = [];
 
@@ -42,6 +51,10 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
                 $message,
                 $propertyName
             );
+
+            if (!$object) {
+                continue;
+            }
 
             ReflectionAccessor::setPropertyValue(
                 $message,
@@ -53,9 +66,6 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
                 ->getManagerForClass($object::class)
                 ->getClassMetadata($object::class);
 
-            $metadata->getName();
-            $metadata->getIdentifierValues($object);
-
             $stamps[] = new PropertyReferenceStamp(
                 $propertyName,
                 $metadata->getName(),
@@ -63,9 +73,7 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
             );
         }
 
-        $envelope = $event->getEnvelope()->with(...$stamps);
-
-        $event->setEnvelope($envelope);
+        $event->setEnvelope($envelope->with(...$stamps));
     }
 
     public function restoreDoctrineObjects(BaseSerializerEvent $event): void
