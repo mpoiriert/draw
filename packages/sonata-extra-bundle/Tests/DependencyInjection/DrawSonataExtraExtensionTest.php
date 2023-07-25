@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\ArgumentResolver\AdminValueResolver;
 use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
+use Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Controller\BatchAdminController;
 use Draw\Bundle\SonataExtraBundle\Controller\KeepAliveController;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
@@ -40,6 +41,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [AdminValueResolver::class];
+        yield [MonitoringBlockService::class];
         yield [AdminMonitoringBlockService::class];
         yield [BatchAdminController::class];
         yield [BatchActionExtension::class];

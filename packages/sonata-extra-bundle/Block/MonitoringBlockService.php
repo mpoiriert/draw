@@ -2,23 +2,23 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Block;
 
+use Draw\Bundle\SonataExtraBundle\Block\Event\FinalizeContextEvent;
 use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 
-class AdminMonitoringBlockService implements BlockServiceInterface
+class MonitoringBlockService implements BlockServiceInterface
 {
-    use BlockFilterTrait;
     use BlockTrait;
 
     public function __construct(
-        private Pool $pool,
         private Environment $twig,
-        private ExpressionLanguage $expressionLanguage
+        private ExpressionLanguage $expressionLanguage,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -31,9 +31,10 @@ class AdminMonitoringBlockService implements BlockServiceInterface
                     'text' => 'Monitoring',
                     'translation_domain' => null,
                     'css_class' => 'bg-aqua',
-                    'code' => false,
-                    'filters' => [],
-                    'limit' => 256,
+                    'extra_data' => [],
+                    'count' => null,
+                    'link' => null,
+                    'link_label' => null,
                     'template' => '@DrawSonataExtra/Block/block_monitoring.html.twig',
                     'thresholds' => [
                         'success' => [
@@ -55,10 +56,11 @@ class AdminMonitoringBlockService implements BlockServiceInterface
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
-        $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
+        $this->eventDispatcher->dispatch(
+            new FinalizeContextEvent($blockContext),
+        );
 
-        $dataGrid = $this->buildFilter($admin, $blockContext);
-        $count = $dataGrid->getPager()->countResults();
+        $count = $blockContext->getSetting('count');
 
         $settings = array_merge(
             $blockContext->getSettings(),
@@ -75,9 +77,9 @@ class AdminMonitoringBlockService implements BlockServiceInterface
                         'block' => $blockContext->getBlock(),
                         'settings' => $settings,
                         'count' => $count,
-                        'link_label' => 'stats_view_more',
-                        'link' => $admin->generateUrl('list', ['filter' => $blockContext->getSetting('filters')]),
-                        'translation_domain' => $blockContext->getSetting('translation_domain') ?? $admin->getTranslationDomain(),
+                        'link' => $blockContext->getSetting('link'),
+                        'link_label' => $blockContext->getSetting('link_label'),
+                        'translation_domain' => $blockContext->getSetting('translation_domain'),
                     ]
                 )
             )
