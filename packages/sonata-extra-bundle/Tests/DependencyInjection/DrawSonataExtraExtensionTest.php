@@ -3,13 +3,13 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\ArgumentResolver\AdminValueResolver;
-use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Controller\BatchAdminController;
 use Draw\Bundle\SonataExtraBundle\Controller\KeepAliveController;
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
+use Draw\Bundle\SonataExtraBundle\EventListener\AdminMonitoringListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\ConfigureAdminControllerListener;
 use Draw\Bundle\SonataExtraBundle\ExpressionLanguage\ExpressionLanguage;
 use Draw\Bundle\SonataExtraBundle\Extension\BatchActionExtension;
@@ -42,7 +42,6 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
     {
         yield [AdminValueResolver::class];
         yield [MonitoringBlockService::class];
-        yield [AdminMonitoringBlockService::class];
         yield [BatchAdminController::class];
         yield [BatchActionExtension::class];
         yield [ExpressionLanguage::class];
@@ -50,6 +49,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         yield [DoctrineInheritanceExtension::class];
         yield [InFilter::class];
         yield [ConfigureAdminControllerListener::class];
+        yield [AdminMonitoringListener::class];
         yield [KeepAliveController::class];
         yield [RelativeDateTimeFilter::class];
         yield [ListFieldPriorityExtension::class];

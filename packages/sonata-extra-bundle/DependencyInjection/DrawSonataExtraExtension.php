@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 
-use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Block\Event\FinalizeContextEvent;
 use Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
@@ -161,7 +160,6 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 'sonata_block',
                 [
                     'blocks' => [
-                        AdminMonitoringBlockService::class => null,
                         MonitoringBlockService::class => null,
                     ],
                 ]
