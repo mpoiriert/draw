@@ -1,7 +1,5 @@
 {% extends sonata_block.templates.block_base %}
 
-{% set translation_domain = settings.translation_domain ?? admin.translationDomain %}
-
 {% block block %}
     <!-- small box -->
     <div class="small-box {{ settings.css_class }}">
@@ -18,8 +16,10 @@
         <div class="icon">
             {{ settings.icon|parse_icon }}
         </div>
-        <a href="{{ admin.generateUrl('list', {filter: settings.filters}) }}" class="small-box-footer">
-            {{ 'stats_view_more'|trans({}, 'SonataAdminBundle') }} <i class="fas fa-arrow-circle-right" aria-hidden="true"></i>
-        </a>
+        {% if link %}
+            <a href="{{ link }}" class="small-box-footer">
+                {{ link_label|trans({}, 'SonataAdminBundle') }} <i class="fas fa-arrow-circle-right" aria-hidden="true"></i>
+            </a>
+        {% endif %}
     </div>
 {% endblock %}

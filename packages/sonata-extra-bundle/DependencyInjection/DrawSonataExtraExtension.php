@@ -2,6 +2,9 @@
 
 namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 
+use Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService;
+use Draw\Bundle\SonataExtraBundle\Block\Event\FinalizeContextEvent;
+use Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Draw\Bundle\SonataExtraBundle\EventListener\AutoHelpListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
@@ -105,6 +108,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 ->setArgument('$delay', $config['session_timeout']['delay']);
         }
 
+        $container->removeDefinition(FinalizeContextEvent::class);
         $container->removeDefinition(PreventDelete::class);
         $container->removeDefinition(SubClassFieldDescriptionFactory::class);
 
@@ -147,6 +151,18 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                                 'list' => '@DrawSonataExtra/CRUD/list_list.html.twig',
                             ],
                         ],
+                    ],
+                ]
+            );
+        }
+
+        if ($container->hasExtension('sonata_block')) {
+            $container->prependExtensionConfig(
+                'sonata_block',
+                [
+                    'blocks' => [
+                        AdminMonitoringBlockService::class => null,
+                        MonitoringBlockService::class => null,
                     ],
                 ]
             );
