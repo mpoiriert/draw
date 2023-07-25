@@ -15,9 +15,12 @@ sonata_admin:
                         transport_name: 'failed'
             -   class: 'col-lg-3 col-xs-6'          # twitter bootstrap responsive code
                 position: 'top'                        # zone in the dashboard
-                type: 'Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService'  # block id
+                type: 'Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService'  # block id
                 settings:
-                    code: 'App\Sonata\Admin\UserAdmin'
+                    text: 'Users'
+                    extra_data:
+                        admin:
+                            code: 'App\Sonata\Admin\UserAdmin'
                     thresholds:
                         ok:
                             if: 'count == 50'
@@ -26,24 +29,29 @@ sonata_admin:
 
             -   class: 'col-lg-3 col-xs-6'
                 position: 'top'
-                type: 'Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService'
+                type: 'Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService'
                 settings:
-                    code: 'Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin'
+                    extra_data:
+                        admin:
+                            code: 'Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin'
+                            filters:
+                                queueName: { value: [ 'failed' ] }
+                                availableAt: { value: 'now' }
                     icon: 'fa fa-rss'
                     text: 'Failed messages'
-                    filters:
-                        queueName: { value: [ 'failed' ] }
-                        availableAt: { value: 'now' }
+
             - class: 'col-lg-3 col-xs-6'
               position: 'top'
-              type: 'Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService'
+              type: 'Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService'
               settings:
-                  code: 'Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin'
+                  extra_data:
+                      admin:
+                          code: 'Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin'
+                          filters:
+                              queueName: { value: [ 'failed' ], type: 2 }
+                              availableAt: { value: 'now' }
                   icon: 'fa fa-rss'
                   text: 'Available messages'
-                  filters:
-                      queueName: { value: [ 'failed' ], type: 2 }
-                      availableAt: { value: 'now' }
                   thresholds:
                       ok:
                           if: 'count <= 10'

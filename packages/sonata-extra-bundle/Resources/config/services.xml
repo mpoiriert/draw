@@ -22,10 +22,6 @@
             <tag name="sonata.admin.filter.type"/>
         </service>
 
-        <service id="Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService">
-            <tag name="sonata.block"/>
-        </service>
-
         <service id="Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService">
             <tag name="sonata.block"/>
         </service>
