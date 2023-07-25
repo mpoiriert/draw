@@ -8,6 +8,7 @@ use Draw\Bundle\SonataIntegrationBundle\Console\Admin\ExecutionAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Command;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
+use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\RequestPasswordChangeAction;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\TwoFactorAuthenticationResendCodeAction;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\UnlockUserAction;
@@ -120,23 +121,35 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             return;
         }
 
-        $container
-            ->setDefinition(
-                MessengerMessageAdmin::class,
-                SonataAdminNodeConfiguration::configureFromConfiguration(
-                    new Definition(MessengerMessageAdmin::class),
-                    $config['admin']
+        if ($config['monitoring_block']['enabled']) {
+            $container
+                ->setDefinition(
+                    FinalizeContextQueueCountEventListener::class,
+                    (new Definition(FinalizeContextQueueCountEventListener::class))
+                        ->setAutowired(true)
+                        ->setAutoconfigured(true)
+                );
+        }
+
+        if ($config['admin']['enabled']) {
+            $container
+                ->setDefinition(
+                    MessengerMessageAdmin::class,
+                    SonataAdminNodeConfiguration::configureFromConfiguration(
+                        new Definition(MessengerMessageAdmin::class),
+                        $config['admin']
+                    )
                 )
-            )
-            ->setAutowired(true)
-            ->setAutoconfigured(true)
-            ->addMethodCall(
-                'setTemplate',
-                ['show', '@DrawSonataIntegration/Messenger/Message/show.html.twig']
-            )
-            ->setBindings([
-                '$queueNames' => $config['queue_names'],
-            ]);
+                ->setAutowired(true)
+                ->setAutoconfigured(true)
+                ->addMethodCall(
+                    'setTemplate',
+                    ['show', '@DrawSonataIntegration/Messenger/Message/show.html.twig']
+                )
+                ->setBindings([
+                    '$queueNames' => $config['queue_names'],
+                ]);
+        }
     }
 
     private function configureUser(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void

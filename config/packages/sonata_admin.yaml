@@ -8,6 +8,13 @@ sonata_admin:
                 type: 'Draw\Bundle\SonataIntegrationBundle\User\Block\UserCountBlock'  # block id
             -   class: 'col-lg-3 col-xs-6'          # twitter bootstrap responsive code
                 position: 'top'                        # zone in the dashboard
+                type: 'Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService'
+                settings:
+                    text: 'Failed queue messages'
+                    extra_data:
+                        transport_name: 'failed'
+            -   class: 'col-lg-3 col-xs-6'          # twitter bootstrap responsive code
+                position: 'top'                        # zone in the dashboard
                 type: 'Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService'  # block id
                 settings:
                     code: 'App\Sonata\Admin\UserAdmin'
@@ -64,5 +71,3 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [ 'admin' ]
-
-        Draw\Bundle\SonataExtraBundle\Block\AdminMonitoringBlockService: ~

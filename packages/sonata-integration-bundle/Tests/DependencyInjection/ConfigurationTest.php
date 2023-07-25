@@ -52,6 +52,9 @@ class ConfigurationTest extends ConfigurationTestCase
             'messenger' => [
                 'enabled' => true,
                 'queue_names' => [],
+                'monitoring_block' => [
+                    'enabled' => true,
+                ],
                 'admin' => [
                     'group' => 'Messenger',
                     'entity_class' => MessengerMessage::class,
@@ -60,6 +63,7 @@ class ConfigurationTest extends ConfigurationTestCase
                     'label' => 'Message',
                     'pager_type' => 'simple',
                     'show_in_dashboard' => true,
+                    'enabled' => true,
                 ],
             ],
             'user' => [

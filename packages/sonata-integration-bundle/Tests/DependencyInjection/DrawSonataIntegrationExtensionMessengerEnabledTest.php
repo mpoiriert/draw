@@ -3,6 +3,7 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
+use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
 
 /**
  * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
@@ -26,6 +27,7 @@ class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataInteg
     public function provideTestHasServiceDefinition(): iterable
     {
         yield [MessengerMessageAdmin::class];
+        yield [FinalizeContextQueueCountEventListener::class];
     }
 
     public function testMessengerMessageAdminDefinition(): void

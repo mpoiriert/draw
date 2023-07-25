@@ -85,6 +85,9 @@ class Configuration implements ConfigurationInterface
     {
         return $this->canBe(Broker::class, new ArrayNodeDefinition('messenger'))
             ->children()
+                ->arrayNode('monitoring_block')
+                    ->canBeDisabled()
+                ->end()
                 ->arrayNode('queue_names')
                    ->scalarPrototype()->end()
                 ->end()
@@ -94,6 +97,7 @@ class Configuration implements ConfigurationInterface
                         ->pagerTypeDefaultValue('simple')
                         ->iconDefaultValue('fas fa-rss')
                         ->labelDefaultValue('Message')
+                        ->canBeDisabled()
                 )
             ->end();
     }
