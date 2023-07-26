@@ -14,6 +14,7 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\EnvelopeFactor
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
+use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
@@ -26,6 +27,7 @@ use Draw\Contracts\Messenger\TransportRepositoryInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
@@ -82,6 +84,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
 
         $this->loadBroker($config['broker'], $loader, $container);
         $this->loadDoctrineMessageBusHook($config['doctrine_message_bus_hook'], $loader, $container);
+        $this->loadRetry($config['retry'], $loader, $container);
         $this->loadSerializerEventDispatcher($config['serializer_event_dispatcher'], $loader, $container);
         $this->loadVersioning($config['versioning'], $loader, $container);
 
@@ -181,6 +184,27 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         }
     }
 
+    private function loadRetry(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        if ($this->isConfigEnabled($container, $config['event_driven'])) {
+            foreach ($config['event_driven']['transports'] as $transportName) {
+                $retryServiceId = sprintf('messenger.retry.multiplier_retry_strategy.%s', $transportName);
+                $decoratorServiceId = 'draw.'.$retryServiceId.'.event_driven.decorated';
+                $container->setDefinition(
+                    $decoratorServiceId,
+                    (new Definition(EventDrivenRetryStrategy::class))
+                        ->setDecoratedService($retryServiceId)
+                        ->setAutowired(true)
+                        ->setArgument('$fallbackRetryStrategy', new Reference($decoratorServiceId.'.inner'))
+                );
+            }
+        }
+    }
+
     private function loadSerializerEventDispatcher(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
@@ -242,6 +266,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
                 ->append($this->createVersioningNode())
                 ->append($this->createBrokerNode())
                 ->append($this->createDoctrineMessageBusHookNode())
+                ->append($this->createRetryNode())
                 ->append($this->createSerializerEventDispatcherNode())
             ->end();
     }
@@ -338,6 +363,22 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
             ->canBeEnabled()
             ->children()
                 ->arrayNode('stop_on_new_version')->canBeDisabled()->end()
+            ->end();
+    }
+
+    private function createRetryNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('retry'))
+            ->canBeEnabled()
+            ->children()
+                ->arrayNode('event_driven')
+                    ->canBeEnabled()
+                    ->children()
+                        ->arrayNode('transports')
+                            ->scalarPrototype()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 
