@@ -245,7 +245,8 @@
             "php bin/console doctrine:database:create --no-interaction",
             "php bin/console messenger:setup-transports --no-interaction",
             "php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --quiet",
-            "php bin/console doctrine:fixtures:load --no-interaction"
+            "php bin/console doctrine:fixtures:load --no-interaction",
+            "php bin/console draw:application:update-deployed-version --no-interaction"
         ],
         "linter": [
             "@linter:php-cs-fixer",

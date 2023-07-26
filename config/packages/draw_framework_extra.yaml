@@ -32,8 +32,12 @@ draw_framework_extra:
         default:
           receivers: [ 'async' ]
     doctrine_message_bus_hook: ~
-    versioning: ~
+    retry:
+      event_driven:
+        transports: ['async']
+
     serializer_event_dispatcher: ~
+    versioning: ~
 
   open_api:
 

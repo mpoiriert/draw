@@ -25,6 +25,7 @@ use Draw\Component\Messenger\ManualTrigger\MessageHandler\RedirectToRouteMessage
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
+use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
@@ -78,6 +79,13 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         'enabled' => false,
                         'delay_in_milliseconds' => 2500,
                     ],
+                ],
+            ],
+            'retry' => [
+                'enabled' => false,
+                'event_driven' => [
+                    'enabled' => false,
+                    'transports' => [],
                 ],
             ],
             'serializer_event_dispatcher' => [
@@ -136,6 +144,12 @@ class MessengerIntegrationTest extends IntegrationTestCase
                 'draw.messenger.manual_trigger.manually_triggered_message_url_generator',
                 [
                     ManuallyTriggeredMessageUrlGenerator::class,
+                ]
+            ),
+            new ServiceConfiguration(
+                'draw.messenger.retry.event_driven_retry_strategy',
+                [
+                    EventDrivenRetryStrategy::class,
                 ]
             ),
             new ServiceConfiguration(
