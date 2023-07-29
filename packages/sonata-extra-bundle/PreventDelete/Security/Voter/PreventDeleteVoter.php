@@ -46,15 +46,10 @@ class PreventDeleteVoter implements VoterInterface
                 $queryBuilder->innerJoin('root.'.$path, 'path_'.$index);
             }
 
-            $identifiers = $manager->getClassMetadata($relation->getRelatedClass())->getIdentifier();
-
             $queryBuilder
-               ->andWhere('path_'.(\count($paths) - 1).' = :subject')
-               ->setParameter('subject', $subject);
-
-            foreach ($identifiers as $identifier) {
-                $queryBuilder->addSelect('root.'.$identifier);
-            }
+                ->andWhere('path_'.(\count($paths) - 1).' = :subject')
+                ->setParameter('subject', $subject)
+                ->select('1');
 
             $query = $queryBuilder
                 ->setMaxResults(1)
