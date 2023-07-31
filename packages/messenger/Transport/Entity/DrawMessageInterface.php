@@ -7,4 +7,6 @@ interface DrawMessageInterface
     public function getMessageId(): ?string;
 
     public function getQueueName(): ?string;
+
+    public function getDeliveredAt(): ?\DateTimeImmutable;
 }

@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
+use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -102,7 +103,11 @@ class MessengerMessageAdmin extends AbstractAdmin
 
     public function dumpMessage(DrawMessageInterface $message): string
     {
-        $envelope = $this->envelopeFinder->findById($message->getMessageId());
+        try {
+            $envelope = $this->envelopeFinder->findById($message->getMessageId());
+        } catch (MessageNotFoundException) {
+            $envelope = null;
+        }
 
         $dumper = new HtmlDumper();
         $dumper->setTheme('light');

@@ -9,6 +9,7 @@ use Draw\Bundle\SonataIntegrationBundle\Console\Command;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
+use Draw\Bundle\SonataIntegrationBundle\Messenger\Security\CanShowMessageVoter;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\RequestPasswordChangeAction;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\TwoFactorAuthenticationResendCodeAction;
 use Draw\Bundle\SonataIntegrationBundle\User\Action\UnlockUserAction;
@@ -149,6 +150,14 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 ->setBindings([
                     '$queueNames' => $config['queue_names'],
                 ]);
+
+            $container
+                ->setDefinition(
+                    CanShowMessageVoter::class,
+                    (new Definition(CanShowMessageVoter::class))
+                        ->setAutowired(true)
+                        ->setAutoconfigured(true)
+                );
         }
     }
 
