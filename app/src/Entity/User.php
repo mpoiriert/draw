@@ -67,6 +67,9 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
      * @var Collection<Tag>
      */
     #[ORM\ManyToMany(targetEntity: Tag::class)]
+    #[PreventDelete(
+        metadata: ['max_results' => 1]
+    )]
     private Collection $tags;
 
     #[ORM\Column(type: 'string', nullable: false, options: ['default' => 'user'])]
@@ -138,6 +141,11 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     #[PreventDelete]
     private ?ChildObject2 $onDeleteCascadeAttributeOverridden = null;
 
+    #[
+        ORM\OneToMany(mappedBy: 'user', targetEntity: UserTag::class, cascade: ['persist'], orphanRemoval: true),
+    ]
+    private Collection $userTags;
+
     #[Assert\NotNull]
     #[Serializer\ReadOnlyProperty]
     private string $requiredReadOnly = 'value';
@@ -146,6 +154,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     {
         $this->address = new Address();
         $this->tags = new ArrayCollection();
+        $this->userTags = new ArrayCollection();
         $this->userAddresses = new ArrayCollection();
         $this->setNeedChangePassword(true);
         $this->onHoldMessages[NewUserMessage::class] = new NewUserMessage($this);
@@ -200,6 +209,33 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         foreach ($tags as $tag) {
             $this->tags->add($tag);
         }
+    }
+
+    /**
+     * @return Collection<UserTag>
+     */
+    public function getUserTags(): Collection
+    {
+        return $this->userTags;
+    }
+
+    public function addUserTag(UserTag $userTag): self
+    {
+        if (!$this->userTags->contains($userTag)) {
+            $this->userTags->add($userTag);
+            $userTag->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserTag(UserTag $userTag): self
+    {
+        if ($this->userTags->contains($userTag)) {
+            $this->userTags->removeElement($userTag);
+        }
+
+        return $this;
     }
 
     public function getAddress(): Address

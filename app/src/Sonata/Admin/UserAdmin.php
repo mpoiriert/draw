@@ -56,7 +56,19 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
                     'label' => 'Ids (separated by comma)',
                 ]
             )
-            ->add('email');
+            ->add('email')
+            ->add(
+                'tags',
+                null,
+                [
+                    'field_options' => [
+                        'multiple' => true,
+                    ],
+                ]
+            )
+            ->add(
+                'userTags.tag'
+            );
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -116,6 +128,19 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->tab('User')
                 ->with('General', ['class' => 'col-sm-6'])
                     ->add('email')
+                    ->add('tags')
+                    ->add(
+                        'userTags',
+                        CollectionType::class,
+                        [
+                            'required' => false,
+                            'by_reference' => false,
+                        ],
+                        [
+                            'edit' => 'inline',
+                            'inline' => 'table',
+                        ]
+                    )
                     ->add('childObject1')
                     ->add('childObject2')
                     ->add('plainPassword', TextType::class, ['required' => false])

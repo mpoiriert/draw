@@ -45,6 +45,9 @@ class ConfigurationTest extends ConfigurationTestCase
                 'default_max_field' => null,
                 'default_field_priorities' => [],
             ],
+            'prevent_delete_extension' => [
+                'enabled' => false,
+            ],
             'session_timeout' => [
                 'enabled' => false,
                 'delay' => 3600,

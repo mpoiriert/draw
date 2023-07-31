@@ -22,6 +22,21 @@ class PreventDeleteRelationLoader
     /**
      * @return array<PreventDelete>
      */
+    public function getRelationsForObject(object $object): array
+    {
+        $relations = [];
+        foreach ($this->getRelations() as $relation) {
+            if ($relation->getClass() === $object::class) {
+                $relations[] = $relation;
+            }
+        }
+
+        return $relations;
+    }
+
+    /**
+     * @return array<PreventDelete>
+     */
     public function getRelations(): array
     {
         if (null === $this->relations) {
@@ -83,19 +98,25 @@ class PreventDeleteRelationLoader
                     continue;
                 }
 
-                if (null !== $index && isset($relations[$index])) {
-                    continue;
+                $metadata = null;
+                if (null !== $index) {
+                    $metadata = $relations[$index]->getMetadata();
+                    unset($relations[$index]);
                 }
 
                 $relations[] = new PreventDelete(
                     $entity['class'],
                     $relation['related_class'],
                     $relation['path'],
+                    metadata: [
+                        ...$metadata ?? [],
+                        ...$relation['metadata'] ?? [],
+                    ]
                 );
             }
         }
 
-        return $relations;
+        return array_values($relations);
     }
 
     /**
@@ -152,6 +173,7 @@ class PreventDeleteRelationLoader
                         $associationMapping['targetEntity'],
                         $metadata->getName(),
                         $associationMapping['fieldName'],
+                        metadata: $preventDeleteFromAttribute?->getMetadata() ?? []
                     );
                 }
             }

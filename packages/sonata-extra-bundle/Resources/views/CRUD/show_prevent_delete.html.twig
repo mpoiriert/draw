@@ -1,0 +1,46 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% set related_admin = field_description.option('related_admin') %}
+{% set related_entities = field_description.option('related_entities') %}
+{% set filter_url = field_description.option('filter_url') %}
+
+{% block field %}
+    <table class="table table-bordered table-striped table-hover sonata-ba-list">
+        {% for related_entity in related_entities %}
+            <tr>
+                <td>{{ related_entity }}</td>
+                {% if related_admin %}
+                    <td>
+                        <div class="btn-group">
+                            {% if related_admin.hasRoute('show') and related_admin.hasAccess('show', related_entity) %}
+                                <a href="{{ related_admin.generateObjectUrl('show', related_entity) }}"
+                                   class="btn btn-sm btn-default">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
+                                    {{ 'link_action_show'|trans({}, 'SonataAdminBundle') }}
+                                </a>
+                            {% endif %}
+                            {% if related_admin.hasRoute('edit') and related_admin.hasAccess('edit', related_entity) %}
+                                <a href="{{ related_admin.generateObjectUrl('edit', related_entity) }}"
+                                   class="btn btn-sm btn-default">
+                                    <i class="fas fa-edit" aria-hidden="true"></i>
+                                    {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}
+                                </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        {% if filter_url %}
+            <tr>
+                <td>...</td>
+                <td>
+                    <a href="{{ filter_url }}" class="btn btn-sm btn-default">
+                      <i class="fas fa-list" aria-hidden="true"></i>
+                      List
+                    </a>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock %}
