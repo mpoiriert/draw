@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
+use Draw\Bundle\SonataIntegrationBundle\Messenger\Security\CanShowMessageVoter;
 
 /**
  * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
@@ -28,6 +29,7 @@ class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataInteg
     {
         yield [MessengerMessageAdmin::class];
         yield [FinalizeContextQueueCountEventListener::class];
+        yield [CanShowMessageVoter::class];
     }
 
     public function testMessengerMessageAdminDefinition(): void
