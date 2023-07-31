@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createCanSecurityHandlerNode())
                 ->append($this->createFixMenuDepthNode())
                 ->append($this->createListFieldPriorityNode())
+                ->append($this->createPreventDeleteExtensionNode())
                 ->append($this->createSessionTimeoutNode())
             ->end();
 
@@ -31,6 +32,12 @@ class Configuration implements ConfigurationInterface
     private function createAutoHelpNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('auto_help'))
+            ->canBeEnabled();
+    }
+
+    private function createPreventDeleteExtensionNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('prevent_delete_extension'))
             ->canBeEnabled();
     }
 
@@ -86,6 +93,9 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('path')->isRequired()->end()
                                                 ->scalarNode('info')->defaultNull()->end()
                                                 ->booleanNode('prevent_delete')->defaultTrue()->end()
+                                                ->arrayNode('metadata')
+                                                    ->variablePrototype()->end()
+                                                ->end()
                                             ->end()
                                         ->end()
                                     ->end()

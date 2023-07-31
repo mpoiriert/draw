@@ -17,6 +17,12 @@ draw_sonata_extra:
             App\Entity\User.tags:
               related_class: 'App\Entity\User'
               path: 'tags'
+            App\Entity\User.userTags.tag:
+              related_class: 'App\Entity\User'
+              path: 'userTags.tag'
+              metadata:
+                max_results: 1
+                path_label: 'User Tags'
 
   fix_menu_depth: true
 
@@ -26,6 +32,8 @@ draw_sonata_extra:
     default_max_field: 2
     default_field_priorities:
       createdAt: 0
+
+  prevent_delete_extension: true
 
   session_timeout:
     delay: 900

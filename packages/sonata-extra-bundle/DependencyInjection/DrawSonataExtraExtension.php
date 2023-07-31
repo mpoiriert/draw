@@ -11,6 +11,7 @@ use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
 use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescriptionFactory;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\Extension\PreventDeleteExtension;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter\PreventDeleteVoter;
@@ -48,6 +49,10 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             $container->removeDefinition(FixDepthMenuBuilderListener::class);
         }
 
+        if (!$config['prevent_delete_extension']['enabled']) {
+            $container->removeDefinition(PreventDeleteExtension::class);
+        }
+
         if (!($config['can_security_handler']['enabled'] ?? false)) {
             $container->removeDefinition(CanSecurityHandler::class);
             $container->removeDefinition(DefaultCanVoter::class);
@@ -61,6 +66,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             if (!$config['can_security_handler']['prevent_delete_voter']['enabled']) {
                 $container->removeDefinition(PreventDeleteVoter::class);
                 $container->removeDefinition(PreventDeleteRelationLoader::class);
+                $container->removeDefinition(PreventDeleteExtension::class);
             } else {
                 $container->getDefinition(PreventDeleteRelationLoader::class)
                     ->setArgument(

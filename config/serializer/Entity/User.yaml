@@ -39,6 +39,8 @@ App\Entity\User:
                 setter: 'setUserAddresses'
         userLocks:
             exclude: true
+        userTags:
+            exclude: true
         totpSecret:
             exclude: true
         forceEnablingTwoFactorAuthentication:
