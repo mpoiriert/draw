@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,6 +13,14 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Table(name: 'draw_acme__tag'),
 ]
 #[UniqueEntity(fields: ['label'])]
+#[PreventDelete(
+    relatedClass: User::class,
+    path: 'userTags.tag',
+    metadata: [
+        'max_results' => 1,
+        'path_label' => 'User tags',
+    ]
+)]
 class Tag implements \Stringable
 {
     #[

@@ -150,13 +150,18 @@ class PreventDeleteRelationLoader
                     continue;
                 }
 
+                $relations = array_merge(
+                    $relations,
+                    $this->preventDeleteFromClassAttributes($metadata->getReflectionClass())
+                );
+
                 foreach ($metadata->associationMappings as $associationMapping) {
                     // We want foreign key only
                     if (!$associationMapping['isOwningSide']) {
                         continue;
                     }
 
-                    $preventDeleteFromAttribute = $this->preventDeleteFromAttribute($associationMapping);
+                    $preventDeleteFromAttribute = $this->preventDeleteFromPropertyAttribute($associationMapping);
 
                     // Not preventing delete from attribute as precedence over preventing delete from association
                     if ($preventDeleteFromAttribute && !$preventDeleteFromAttribute->getPreventDelete()) {
@@ -183,16 +188,47 @@ class PreventDeleteRelationLoader
         return $relations;
     }
 
-    private function preventDeleteFromAttribute(array $associationMapping): ?PreventDelete
+    private function preventDeleteFromPropertyAttribute(array $associationMapping): ?PreventDelete
     {
         try {
-            $attribute = (new \ReflectionProperty($associationMapping['sourceEntity'], $associationMapping['fieldName']))
-                    ->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null;
+            $attributes = (new \ReflectionProperty(
+                $associationMapping['sourceEntity'],
+                $associationMapping['fieldName']
+            ))
+                ->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF);
 
-            return $attribute?->newInstance();
+            if (\count($attributes) > 1) {
+                throw new \LogicException('Only one PreventDelete attribute is allowed per property. Repeatable is only allowed on class.');
+            }
+
+            return ($attributes[0] ?? null)?->newInstance();
         } catch (\ReflectionException) {
             return null;
         }
+    }
+
+    /**
+     * @return array<PreventDelete>
+     */
+    private function preventDeleteFromClassAttributes(\ReflectionClass $reflectionClass): array
+    {
+        $preventDeletes = [];
+        $attributes = $reflectionClass->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF);
+        foreach ($attributes as $attribute) {
+            $preventDelete = $attribute->newInstance();
+
+            \assert($preventDelete instanceof PreventDelete);
+
+            if (!$preventDelete->getPreventDelete()) {
+                continue;
+            }
+
+            $preventDelete->setClass($reflectionClass->getName());
+
+            $preventDeletes[] = $preventDelete;
+        }
+
+        return $preventDeletes;
     }
 
     private function preventDeleteFromAssociation(array $associationMapping): bool
