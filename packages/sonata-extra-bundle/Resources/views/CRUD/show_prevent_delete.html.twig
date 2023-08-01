@@ -3,6 +3,7 @@
 {% set related_admin = field_description.option('related_admin') %}
 {% set related_entities = field_description.option('related_entities') %}
 {% set filter_url = field_description.option('filter_url') %}
+{% set has_more = field_description.option('has_more') %}
 
 {% block field %}
     <table class="table table-bordered table-striped table-hover sonata-ba-list">
@@ -31,14 +32,16 @@
                 {% endif %}
             </tr>
         {% endfor %}
-        {% if filter_url %}
+        {% if has_more %}
             <tr>
                 <td>...</td>
                 <td>
-                    <a href="{{ filter_url }}" class="btn btn-sm btn-default">
-                      <i class="fas fa-list" aria-hidden="true"></i>
-                      List
-                    </a>
+                    {% if filter_url %}
+                        <a href="{{ filter_url }}" class="btn btn-sm btn-default">
+                            <i class="fas fa-list" aria-hidden="true"></i>
+                            List
+                        </a>
+                    {% endif %}
                 </td>
             </tr>
         {% endif %}

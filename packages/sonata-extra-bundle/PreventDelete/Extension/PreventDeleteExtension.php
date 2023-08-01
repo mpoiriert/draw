@@ -26,7 +26,15 @@ class PreventDeleteExtension extends AbstractAdminExtension
 
     public function configureShowFields(ShowMapper $show): void
     {
-        $relations = $this->preventDeleteRelationLoader->getRelationsForObject($show->getAdmin()->getSubject());
+        $admin = $show->getAdmin();
+
+        if (!$admin->hasRoute('delete')) {
+            return;
+        }
+
+        $subject = $admin->getSubject();
+
+        $relations = $this->preventDeleteRelationLoader->getRelationsForObject($subject);
 
         if (empty($relations)) {
             return;
@@ -39,7 +47,7 @@ class PreventDeleteExtension extends AbstractAdminExtension
         }
 
         $show
-            ->tab('prevent_delete');
+            ->tab('prevent_deletions');
 
         $configurationPool = $admin->getConfigurationPool();
 
@@ -63,22 +71,26 @@ class PreventDeleteExtension extends AbstractAdminExtension
                 : null;
 
             $filterUrl = null;
-            if (\count($relatedEntities) > $maxResult) {
+            $hasMore = \count($relatedEntities) > $maxResult;
+            if ($hasMore) {
                 $relatedEntities = \array_slice($relatedEntities, 0, $maxResult);
-                $filterUrl = $this->getFilterParameters(
-                    $relatedAdmin,
-                    $relation,
-                    $subject,
-                );
+
+                if ($relatedAdmin) {
+                    $filterUrl = $this->getFilterParameters(
+                        $relatedAdmin,
+                        $relation,
+                        $subject,
+                    );
+                }
             }
 
             $show
                 ->with(
                     'prevent_delete_'.$relation->getRelatedClass(),
-                    [
+                    array_filter([
                         'class' => 'col-sm-6',
-                        'label' => $relatedAdmin->getClassnameLabel(),
-                    ]
+                        'label' => $relatedAdmin?->getClassnameLabel() ?? null,
+                    ])
                 )
                     ->add(
                         'prevent_delete_'.$relation->getRelatedClass().'_path'.$relation->getPath(),
@@ -91,6 +103,7 @@ class PreventDeleteExtension extends AbstractAdminExtension
                             'related_admin' => $relatedAdmin,
                             'related_entities' => $relatedEntities,
                             'filter_url' => $filterUrl,
+                            'has_more' => $hasMore,
                         ]
                     )
                 ->end();
