@@ -98,7 +98,7 @@ class PreventDelete
     {
         $ids = $this->createQueryBuilder($managerRegistry, $subject)
             ->select('DISTINCT(root)')
-            ->setMaxResults(4)
+            ->setMaxResults($limit)
             ->getQuery()
             ->execute();
 
