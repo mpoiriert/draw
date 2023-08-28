@@ -29,6 +29,7 @@ trait IntegrationTrait
             array_merge(
                 $exclude,
                 [
+                    $directory.'/Attribute/',
                     $directory.'/Email/',
                     $directory.'/Entity/',
                     $directory.'/Event/',
