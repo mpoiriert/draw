@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\UserAddress;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\DoctrineExtra\Common\DataFixtures\ObjectReferenceTrait;
 
 class AppFixtures extends Fixture
@@ -80,6 +81,12 @@ class AppFixtures extends Fixture
             }
             $manager->persist($user);
         }
+
+        $manager->persist(
+            (new Config())
+                ->setId('acme_demo')
+                ->setValue(['enabled' => false, 'limit' => 10])
+        );
 
         $manager->flush();
     }

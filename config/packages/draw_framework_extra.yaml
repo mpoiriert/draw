@@ -9,6 +9,8 @@ draw_framework_extra:
 
   doctrine_extra: ~
 
+  feature: ~
+
   log:
     enable_all_processors: true
 
