@@ -8,6 +8,7 @@ use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
@@ -119,12 +120,7 @@ class EmailWriterListenerTest extends TestCase
 
     public function testComposeMessage(): void
     {
-        $message = $this->createMock(Email::class);
-
-        $message
-            ->expects(static::once())
-            ->method('getHeaders')
-            ->willReturn($headers = new Headers());
+        $message = new TemplatedEmail();
 
         $event = $this->createMessageEvent($message);
 
@@ -155,13 +151,47 @@ class EmailWriterListenerTest extends TestCase
             ->expects(static::once())
             ->method('method2')
             ->with(
-                $message,
+                static::callback(
+                    function (TemplatedEmail $templatedEmail) use ($message): bool {
+                        static::assertSame($message, $templatedEmail);
+
+                        $templatedEmail->htmlTemplate('html-template');
+                        $templatedEmail->textTemplate('text-template');
+
+                        return true;
+                    },
+                ),
                 $event->getEnvelope()
             );
 
         $this->object->composeMessage($event);
 
+        $headers = $message->getHeaders();
+
         static::assertTrue($headers->has('X-DrawEmail'));
+        static::assertSame(
+            'html-template',
+            $headers->get('X-DrawEmail-HtmlTemplate')->getBodyAsString()
+        );
+        static::assertSame(
+            'text-template',
+            $headers->get('X-DrawEmail-TextTemplate')->getBodyAsString()
+        );
+    }
+
+    public function testComposeMessageQueued(): void
+    {
+        $this->serviceLocator
+            ->expects(static::never())
+            ->method('get');
+
+        $message = $this->createMock(Message::class);
+
+        $message
+            ->expects(static::never())
+            ->method('getHeaders');
+
+        $this->object->composeMessage($this->createMessageEvent($message, true));
     }
 
     public function testRegisterEmailWriter(): void
@@ -225,12 +255,13 @@ class EmailWriterListenerTest extends TestCase
         static::assertSame(1, $emailWriter->compose2CallCounter);
     }
 
-    private function createMessageEvent(RawMessage $message): MessageEvent
+    private function createMessageEvent(RawMessage $message, bool $queue = false): MessageEvent
     {
         return new MessageEvent(
             $message,
             new Envelope(new Address('test@example.com'), [new Address('test@example.com')]),
-            uniqid('transport-')
+            uniqid('transport-'),
+            $queue
         );
     }
 }
