@@ -6,6 +6,7 @@ use App\DTO\SimpleUser;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
@@ -15,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -144,8 +146,10 @@ class UsersController extends AbstractController
      * @return void No return value mean email has been sent
      */
     #[Route(path: '/users/{id}/reset-password-email', methods: ['POST'])]
+    #[Entity('target', class: User::class)]
     #[OpenApi\Operation(operationId: 'userSendResetPasswordEmail')]
-    public function sendResetPasswordEmail(User $target): void
+    public function sendResetPasswordEmail(User $target, MailerInterface $mailer): void
     {
+        $mailer->send(new ForgotPasswordEmail($target->getEmail()));
     }
 }
