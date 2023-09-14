@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Api;
 use App\Entity\User;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -93,6 +94,33 @@ class UsersControllerTest extends TestCase
             ->assertCount(1)
             ->path('[0].id')
             ->assertSame(1);
+    }
+
+    /**
+     * @depends testUsersCreateAction
+     */
+    public function testSendResetPasswordEmail(object $user): void
+    {
+        $this->httpTester()
+            ->post(
+                '/api/users/'.$user->id.'/reset-password-email',
+                ''
+            )
+            ->assertSuccessful();
+
+        static::assertEmailCount(1);
+
+        static::assertHtmlTemplatedEmailCount(1, '@DrawUser/Email/reset_password_email.html.twig');
+        static::assertTextTemplatedEmailCount(0, 'toto');
+
+        static::assertInstanceOf(
+            ForgotPasswordEmail::class,
+            static::getHtmlTemplatedMailerEvent()->getMessage()
+        );
+
+        static::assertNull(
+            static::getTextTemplatedMailerEvent()
+        );
     }
 
     /**
