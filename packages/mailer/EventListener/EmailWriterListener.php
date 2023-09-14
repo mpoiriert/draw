@@ -5,6 +5,7 @@ namespace Draw\Component\Mailer\EventListener;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Psr\Container\ContainerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Header\UnstructuredHeader;
@@ -79,6 +80,10 @@ class EmailWriterListener implements EventSubscriberInterface
 
     public function composeMessage(MessageEvent $event): void
     {
+        if ($event->isQueued()) {
+            return;
+        }
+
         $message = $event->getMessage();
         if (!$message instanceof Message) {
             return;
@@ -100,6 +105,15 @@ class EmailWriterListener implements EventSubscriberInterface
                 [$writer, $writerMethod] = $writerConfiguration;
                 $writer = $writer instanceof EmailWriterInterface ? $writer : $this->serviceLocator->get($writer);
                 \call_user_func([$writer, $writerMethod], $message, $envelope);
+            }
+        }
+
+        if ($message instanceof TemplatedEmail) {
+            if ($template = $message->getHtmlTemplate()) {
+                $headers->add(new UnstructuredHeader('X-DrawEmail-HtmlTemplate', $template));
+            }
+            if ($template = $message->getTextTemplate()) {
+                $headers->add(new UnstructuredHeader('X-DrawEmail-TextTemplate', $template));
             }
         }
     }
