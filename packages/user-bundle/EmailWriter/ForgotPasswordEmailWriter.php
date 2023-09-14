@@ -31,11 +31,18 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
 
     public function compose(ForgotPasswordEmail $forgotPasswordEmail): void
     {
-        $forgotPasswordEmail
-            ->to($email = $forgotPasswordEmail->getEmailAddress());
+        $email = $forgotPasswordEmail->getEmailAddress();
 
         /** @var ?SecurityUserInterface $user */
         $user = $this->drawUserEntityRepository->findOneBy(['email' => $email]);
+
+        $this->completeEmail($forgotPasswordEmail, $user);
+    }
+
+    public function completeEmail(ForgotPasswordEmail $forgotPasswordEmail, ?SecurityUserInterface $user): void
+    {
+        $forgotPasswordEmail
+            ->to($forgotPasswordEmail->getEmailAddress());
 
         if (null === $user) {
             $forgotPasswordEmail
