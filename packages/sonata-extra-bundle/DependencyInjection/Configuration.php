@@ -38,7 +38,10 @@ class Configuration implements ConfigurationInterface
     private function createPreventDeleteExtensionNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('prevent_delete_extension'))
-            ->canBeEnabled();
+            ->canBeEnabled()
+            ->children()
+                ->scalarNode('restrict_to_role')->defaultNull()->end()
+            ->end();
     }
 
     private function createAutoActionNode(): ArrayNodeDefinition

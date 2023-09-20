@@ -51,6 +51,10 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
 
         if (!$config['prevent_delete_extension']['enabled']) {
             $container->removeDefinition(PreventDeleteExtension::class);
+        } else {
+            $container
+                ->getDefinition(PreventDeleteExtension::class)
+                ->setArgument('$restrictToRole', $config['prevent_delete_extension']['restrict_to_role']);
         }
 
         if (!($config['can_security_handler']['enabled'] ?? false)) {

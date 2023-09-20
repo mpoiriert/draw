@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\Security\Core\Security;
 
 #[AutoconfigureTag(
     'sonata.admin.extension',
@@ -20,12 +21,18 @@ class PreventDeleteExtension extends AbstractAdminExtension
 {
     public function __construct(
         private PreventDeleteRelationLoader $preventDeleteRelationLoader,
-        private ManagerRegistry $managerRegistry
+        private ManagerRegistry $managerRegistry,
+        private Security $security,
+        private ?string $restrictToRole = null
     ) {
     }
 
     public function configureShowFields(ShowMapper $show): void
     {
+        if ($this->restrictToRole && !$this->security->isGranted($this->restrictToRole)) {
+            return;
+        }
+
         $admin = $show->getAdmin();
 
         if (!$admin->hasRoute('delete')) {
