@@ -47,6 +47,7 @@ class ConfigurationTest extends ConfigurationTestCase
             ],
             'prevent_delete_extension' => [
                 'enabled' => false,
+                'restrict_to_role' => null,
             ],
             'session_timeout' => [
                 'enabled' => false,

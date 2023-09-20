@@ -27,7 +27,8 @@ draw_sonata_extra:
     default_field_priorities:
       createdAt: 0
 
-  prevent_delete_extension: true
+  prevent_delete_extension:
+    restrict_to_role: 'ROLE_SUPER_ADMIN'
 
   session_timeout:
     delay: 900
