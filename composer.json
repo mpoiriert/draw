@@ -15,7 +15,7 @@
         "doctrine/dbal": "^3.3",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.11",
-        "doctrine/persistence": "^2.2",
+        "doctrine/persistence": "^3.2",
         "guzzlehttp/psr7": "^1.8 || ^2.0",
         "jms/serializer": "^3.11",
         "jms/serializer-bundle": "^4.2",

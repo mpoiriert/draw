@@ -22,7 +22,8 @@ class TagsController
     #[OpenApi\Operation(operationId: 'tagCreate')]
     #[Serialization(statusCode: 201)]
     public function createAction(
-        #[RequestBody] Tag $target,
+        #[RequestBody]
+        Tag $target,
         EntityManagerInterface $entityManager
     ): Tag {
         $entityManager->persist($target);
@@ -37,7 +38,8 @@ class TagsController
     #[Route(path: '/tags/{id}', methods: ['PUT'])]
     #[OpenApi\Operation(operationId: 'tagEdit')]
     public function editAction(
-        #[RequestBody(propertiesMap: ['id' => 'id'])] Tag $target,
+        #[RequestBody(propertiesMap: ['id' => 'id'])]
+        Tag $target,
         EntityManagerInterface $entityManager
     ): Tag {
         $entityManager->flush();
@@ -75,9 +77,12 @@ class TagsController
     #[OpenApi\Operation(operationId: 'tagList')]
     public function listAction(
         EntityHandler $entityHandler,
-        #[OpenApi\QueryParameter] int $amountPerPage,// Keep query parameter as is for integration test
-        #[OpenApi\QueryParameter] ?bool $active = null, // Keep query parameter as is for integration test
-        #[OpenApi\QueryParameter(type: 'int')] int $pageNumber = 0 // Keep query parameter as is for integration test
+        #[OpenApi\QueryParameter]
+        int $amountPerPage,// Keep query parameter as is for integration test
+        #[OpenApi\QueryParameter]
+        ?bool $active = null, // Keep query parameter as is for integration test
+        #[OpenApi\QueryParameter(type: 'int')]
+        int $pageNumber = 0 // Keep query parameter as is for integration test
     ): array {
         if (null !== $active) {
             $entityHandler->findBy(

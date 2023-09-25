@@ -33,8 +33,10 @@ class TestController
     )]
     #[OpenApi\Header(name: 'X-Draw', description: 'Description of the header', type: 'string')]
     public function createAction(
-        #[RequestBody(deserializationGroups: ['Included'])] Test $test,
-        #[OpenApi\QueryParameter] string $param1 = 'default'
+        #[RequestBody(deserializationGroups: ['Included'])]
+        Test $test,
+        #[OpenApi\QueryParameter]
+        string $param1 = 'default'
     ): Test {
         $test->setProperty($param1);
 

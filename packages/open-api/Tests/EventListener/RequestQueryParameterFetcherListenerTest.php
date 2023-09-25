@@ -118,73 +118,85 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public function actionTestDefault(
         mixed $value = 'expected-value',
-        #[QueryParameter] mixed $expectedValue = 'expected-value',
+        #[QueryParameter]
+        mixed $expectedValue = 'expected-value',
     ): void {
     }
 
     public function actionTestString(
         mixed $value = 'expected-value',
-        #[QueryParameter(type: 'string')] mixed $expectedValue = 'expected-value',
+        #[QueryParameter(type: 'string')]
+        mixed $expectedValue = 'expected-value',
     ): void {
     }
 
     public function actionTestInt(
         mixed $value = '10',
-        #[QueryParameter(type: 'integer')] mixed $expectedValue = 10,
+        #[QueryParameter(type: 'integer')]
+        mixed $expectedValue = 10,
     ): void {
     }
 
     public function actionTestNumber(
         mixed $value = '10.12',
-        #[QueryParameter(type: 'number')] mixed $expectedValue = 10.12,
+        #[QueryParameter(type: 'number')]
+        mixed $expectedValue = 10.12,
     ): void {
     }
 
     public function actionTestArrayCsv(
         mixed $value = 'test,toto',
-        #[QueryParameter(type: 'array', collectionFormat: 'csv')] mixed $expectedValue = ['test', 'toto'],
+        #[QueryParameter(type: 'array', collectionFormat: 'csv')]
+        mixed $expectedValue = ['test', 'toto'],
     ): void {
     }
 
     public function actionTestArraySsv(
         mixed $value = 'test toto',
-        #[QueryParameter(type: 'array', collectionFormat: 'ssv')] mixed $expectedValue = ['test', 'toto'],
+        #[QueryParameter(type: 'array', collectionFormat: 'ssv')]
+        mixed $expectedValue = ['test', 'toto'],
     ): void {
     }
 
     public function actionTestArrayTsv(
         mixed $value = "test\ttoto",
-        #[QueryParameter(type: 'array', collectionFormat: 'tsv')] mixed $expectedValue = ['test', 'toto'],
+        #[QueryParameter(type: 'array', collectionFormat: 'tsv')]
+        mixed $expectedValue = ['test', 'toto'],
     ): void {
     }
 
     public function actionTestArrayPipes(
         mixed $value = 'test|toto',
-        #[QueryParameter(type: 'array', collectionFormat: 'pipes')] mixed $expectedValue = ['test', 'toto'],
+        #[QueryParameter(type: 'array', collectionFormat: 'pipes')]
+        mixed $expectedValue = ['test', 'toto'],
     ): void {
     }
 
     public function actionTestBoolean0False(
         mixed $value = '0',
-        #[QueryParameter(type: 'boolean')] mixed $expectedValue = false,
+        #[QueryParameter(type: 'boolean')]
+        mixed $expectedValue = false,
     ): void {
     }
 
     public function actionTestBoolean1True(
         mixed $value = '1',
-        #[QueryParameter(type: 'boolean')] mixed $expectedValue = true,
+        #[QueryParameter(type: 'boolean')]
+        mixed $expectedValue = true,
     ): void {
     }
 
     public function actionTestBooleanTrueTrue(
         mixed $value = 'true',
-        #[QueryParameter(type: 'boolean')] mixed $expectedValue = true,
+        #[QueryParameter(type: 'boolean')]
+        mixed $expectedValue = true,
     ): void {
     }
 
     public function actionTestBooleanFalseFalse(
         mixed $value = 'false',
-        #[QueryParameter(type: 'boolean')] mixed $expectedValue = false,
+        #[QueryParameter(type: 'boolean')]
+        mixed $expectedValue = false,
     ): void {
     }
 
@@ -230,12 +242,14 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     }
 
     public function __invoke(
-        #[QueryParameter] string $test
+        #[QueryParameter]
+        string $test
     ): void {
     }
 
     public function multiAction(
-        #[QueryParameter(type: 'array', collectionFormat: 'multi')] string $test
+        #[QueryParameter(type: 'array', collectionFormat: 'multi')]
+        string $test
     ): void {
     }
 }

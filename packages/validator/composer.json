@@ -14,7 +14,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0 || ^9.0",
-        "doctrine/persistence": "^2.2"
+        "doctrine/persistence": "^2.2 || ^3.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
