@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class BodyParserTest extends TestCase
 {
-    private BodyParser$bodyParser;
+    private BodyParser $bodyParser;
 
     private string $boundary = 'V2ymHFg03ehbqgZCaKO6jy';
 

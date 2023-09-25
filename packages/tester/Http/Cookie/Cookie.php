@@ -312,6 +312,7 @@ class Cookie implements \Stringable
         if (str_ends_with($cookiePath, '/')) {
             return true;
         }
+
         // Match if the first character not included in cookie path is "/"
         return '/' === substr($requestPath, \strlen($cookiePath), 1);
     }

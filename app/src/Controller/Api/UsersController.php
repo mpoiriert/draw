@@ -42,7 +42,8 @@ class UsersController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userCreate')]
     public function createAction(
-        #[RequestBody] User $target,
+        #[RequestBody]
+        User $target,
         EntityManagerInterface $entityManager
     ): User {
         $this->logger->info('Create new user');
@@ -81,7 +82,8 @@ class UsersController extends AbstractController
     #[OpenApi\Operation(operationId: 'userEdit')]
     #[OpenApi\PathParameter(name: 'id', description: 'The user id to edit', type: 'integer')]
     public function editAction(
-        #[RequestBody(propertiesMap: ['id' => 'id'])] User $target,
+        #[RequestBody(propertiesMap: ['id' => 'id'])]
+        User $target,
         EntityManagerInterface $entityManager
     ): User {
         $entityManager->flush();
@@ -98,7 +100,8 @@ class UsersController extends AbstractController
     #[Entity('target', class: User::class)]
     public function setTagsAction(
         User $target,
-        #[RequestBody(type: 'array<App\Entity\Tag>')] array $tags,
+        #[RequestBody(type: 'array<App\Entity\Tag>')]
+        array $tags,
         EntityManagerInterface $entityManager
     ): array {
         $target->setTags($tags);

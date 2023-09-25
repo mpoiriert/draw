@@ -36,7 +36,8 @@ class ConnectionTokensController extends AbstractController
     #[OpenApi\Operation(operationId: 'drawUserBundleCreateConnectionToken', tags: ['Security'])]
     #[Serialization(statusCode: 201)]
     public function createAction(
-        #[RequestBody] Credential $credential,
+        #[RequestBody]
+        Credential $credential,
         UserProviderInterface $userProvider,
         JwtAuthenticator $authenticator,
         UserPasswordHasherInterface $passwordEncoder

@@ -44,6 +44,6 @@ class TestCase extends BaseTestCase implements ConnectionRegistry
 
     public function getConnectionNames(): array
     {
-        return ['default'];
+        return ['default' => 'default'];
     }
 }
