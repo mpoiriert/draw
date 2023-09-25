@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "draw/contracts": "^0.9.77",
+        "draw/contracts": "^0.10",
         "symfony/process": "^5.4.3"
     },
     "require-dev": {
