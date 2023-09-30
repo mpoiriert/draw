@@ -58,6 +58,7 @@ class SystemMonitoringIntegration implements IntegrationInterface, PrependIntegr
                     ->setArgument('$serviceStatusProvider', new Reference($serviceStatusProvider['service']))
                     ->setArgument('$contexts', $serviceStatusProvider['contexts'])
                     ->setArgument('$anyContexts', $serviceStatusProvider['any_contexts'])
+                    ->setArgument('$options', $serviceStatusProvider['options'])
             );
 
             $monitoredServices[] = new Reference($serviceId);
@@ -157,6 +158,10 @@ class SystemMonitoringIntegration implements IntegrationInterface, PrependIntegr
                                 ->isRequired()
                             ->end()
                             ->scalarNode('service')->end()
+                            ->arrayNode('options')
+                                ->variablePrototype()->end()
+                                ->defaultValue([])
+                            ->end()
                             ->booleanNode('any_contexts')->defaultFalse()->end()
                             ->arrayNode('contexts')
                                 ->validate()

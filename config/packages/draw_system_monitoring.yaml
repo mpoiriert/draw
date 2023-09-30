@@ -23,6 +23,9 @@ services:
 draw_framework_extra:
   system_monitoring:
     service_status_providers:
+      messenger:
+        options:
+          transportNames: ['async']
       predefined_ok:
         enabled: true
         service: 'app.system_monitoring.predefined_service_status_provider.ok'

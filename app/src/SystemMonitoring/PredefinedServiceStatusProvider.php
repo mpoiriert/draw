@@ -15,7 +15,7 @@ class PredefinedServiceStatusProvider implements ServiceStatusProviderInterface
         $this->status = Status::from($status);
     }
 
-    public function getServiceStatuses(): iterable
+    public function getServiceStatuses(array $options = []): iterable
     {
         yield new ServiceStatus(
             'predefined',
