@@ -8,7 +8,7 @@ use Draw\Component\Application\SystemMonitoring\Status;
 
 class ThrowableServiceStatusProvider implements ServiceStatusProviderInterface
 {
-    public function getServiceStatuses(): iterable
+    public function getServiceStatuses(array $options = []): iterable
     {
         yield new ServiceStatus(
             'throwable',
