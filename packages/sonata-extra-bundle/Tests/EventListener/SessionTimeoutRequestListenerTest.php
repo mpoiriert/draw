@@ -3,6 +3,10 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\EventListener;
 
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
+use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,22 +23,16 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @covers \Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener
- */
+#[CoversClass(SessionTimeoutRequestListener::class)]
 class SessionTimeoutRequestListenerTest extends TestCase
 {
+    use MockTrait;
+
     private SessionTimeoutRequestListener $object;
 
-    /**
-     * @var MockObject|UrlGeneratorInterface
-     */
-    private UrlGeneratorInterface $urlGenerator;
+    private MockObject&UrlGeneratorInterface $urlGenerator;
 
-    /**
-     * @var MockObject|Security
-     */
-    private Security $security;
+    private MockObject&Security $security;
 
     protected function setUp(): void
     {
@@ -89,63 +87,67 @@ class SessionTimeoutRequestListenerTest extends TestCase
         $this->object->onKernelRequestInvalidate($requestEvent);
     }
 
-    public function provideTestOnKernelRequestInvalidateNotInvalidate(): iterable
+    public static function provideTestOnKernelRequestInvalidateNotInvalidate(): iterable
     {
-        $request = $this->createMock(Request::class);
+        $request = new class() extends Request {
+            public function hasSession($skipIfUninitialized = false): bool
+            {
+                return true;
+            }
 
-        $request
-            ->expects(static::any())
-            ->method('hasSession')
-            ->willReturn(true);
-
-        $request
-            ->expects(static::never())
-            ->method('getSession');
+            public function getSession(): SessionInterface
+            {
+                throw new \RuntimeException('Should not be called');
+            }
+        };
 
         yield 'sub-request' => [
             $request,
             HttpKernelInterface::SUB_REQUEST,
         ];
 
-        $session = $this->createMock(SessionInterface::class);
+        $request = new class() extends Request {
+            public function hasSession($skipIfUninitialized = false): bool
+            {
+                return true;
+            }
 
-        $session
-            ->expects(static::once())
-            ->method('get')
-            ->with('draw_sonata_integration_last_used')
-            ->willReturn(time() - 60);
+            public function getSession(): SessionInterface
+            {
+                return new class() extends Session {
+                    public function get($name, $default = null): mixed
+                    {
+                        if ('draw_sonata_integration_last_used' === $name) {
+                            return time() - 60;
+                        }
 
-        $session
-            ->expects(static::never())
-            ->method('invalidate');
+                        throw new \RuntimeException('Should not be called');
+                    }
 
-        $request = $this->createMock(Request::class);
-
-        $request
-            ->expects(static::once())
-            ->method('hasSession')
-            ->willReturn(true);
-
-        $request
-            ->expects(static::once())
-            ->method('getSession')
-            ->willReturn($session);
+                    public function invalidate(?int $lifetime = null): bool
+                    {
+                        throw new \RuntimeException('Should not be called');
+                    }
+                };
+            }
+        };
 
         yield 'no-expired' => [
             $request,
             HttpKernelInterface::MAIN_REQUEST,
         ];
 
-        $request = $this->createMock(Request::class);
+        $request = new class() extends Request {
+            public function hasSession($skipIfUninitialized = false): bool
+            {
+                return false;
+            }
 
-        $request
-            ->expects(static::once())
-            ->method('hasSession')
-            ->willReturn(false);
-
-        $request
-            ->expects(static::never())
-            ->method('getSession');
+            public function getSession(): SessionInterface
+            {
+                throw new \RuntimeException('Should not be called');
+            }
+        };
 
         yield 'no-session' => [
             $request,
@@ -153,9 +155,8 @@ class SessionTimeoutRequestListenerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestOnKernelRequestInvalidateNotInvalidate
-     */
+    #[DoesNotPerformAssertions]
+    #[DataProvider('provideTestOnKernelRequestInvalidateNotInvalidate')]
     public function testOnKernelRequestInvalidateNotInvalidate(Request $request, int $requestType): void
     {
         $requestEvent = new RequestEvent(
@@ -187,43 +188,44 @@ class SessionTimeoutRequestListenerTest extends TestCase
         );
     }
 
-    public function provideTestOnKernelResponseSetLastUsedNoSet(): iterable
+    public static function provideTestOnKernelResponseSetLastUsedNoSet(): iterable
     {
-        $request = $this->createMock(Request::class);
+        $request = new class() extends Request {
+            public function hasSession($skipIfUninitialized = false): bool
+            {
+                return true;
+            }
 
-        $request
-            ->expects(static::any())
-            ->method('hasSession')
-            ->willReturn(true);
-
-        $request
-            ->expects(static::never())
-            ->method('getSession');
+            public function getSession(): SessionInterface
+            {
+                throw new \RuntimeException('Should not be called');
+            }
+        };
 
         yield 'sub-request' => [
             $request,
             HttpKernelInterface::SUB_REQUEST,
         ];
 
-        $request = $this->createMock(Request::class);
+        $request = new class() extends Request {
+            public function hasSession($skipIfUninitialized = false): bool
+            {
+                return false;
+            }
 
-        $request
-            ->expects(static::once())
-            ->method('hasSession')
-            ->willReturn(false);
-
-        $request
-            ->expects(static::never())
-            ->method('getSession');
+            public function getSession(): SessionInterface
+            {
+                throw new \RuntimeException('Should not be called');
+            }
+        };
 
         yield 'no-session' => [
             $request,
         ];
     }
 
-    /**
-     * @dataProvider provideTestOnKernelResponseSetLastUsedNoSet
-     */
+    #[DoesNotPerformAssertions]
+    #[DataProvider('provideTestOnKernelResponseSetLastUsedNoSet')]
     public function testOnKernelResponseSetLastUsedNoSet(
         Request $request,
         int $requestType = HttpKernelInterface::MAIN_REQUEST
@@ -257,9 +259,11 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $this->urlGenerator->expects(static::exactly(2))
             ->method('generate')
-            ->withConsecutive(
-                ['keep_alive'],
-                ['admin_login']
+            ->with(
+                ...static::withConsecutive(
+                    ['keep_alive'],
+                    ['admin_login']
+                )
             )
             ->willReturnOnConsecutiveCalls(
                 '/admin/keep-alive',
@@ -279,13 +283,42 @@ class SessionTimeoutRequestListenerTest extends TestCase
         );
     }
 
-    public function provideTestOnKernelResponseAddDialogNoInjection(): iterable
+    public static function provideTestOnKernelResponseAddDialogNoInjection(): iterable
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'text/html');
         $response->setContent('<meta data-sonata-admin/><title>value</title>');
 
-        $user = $this->createMock(UserInterface::class);
+        $user = new class() implements UserInterface {
+            public function getRoles(): array
+            {
+                return [];
+            }
+
+            public function getPassword(): ?string
+            {
+                return null;
+            }
+
+            public function getSalt(): ?string
+            {
+                return null;
+            }
+
+            public function eraseCredentials(): void
+            {
+            }
+
+            public function getUsername(): ?string
+            {
+                return null;
+            }
+
+            public function getUserIdentifier(): string
+            {
+                return '';
+            }
+        };
 
         yield 'no-user' => [
             $response,

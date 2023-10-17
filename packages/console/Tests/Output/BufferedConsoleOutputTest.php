@@ -4,14 +4,13 @@ namespace Draw\Component\Console\Tests\Output;
 
 use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * @covers \Draw\Component\Console\Output\BufferedConsoleOutput
- */
+#[CoversClass(BufferedConsoleOutput::class)]
 class BufferedConsoleOutputTest extends TestCase
 {
     use MockTrait;

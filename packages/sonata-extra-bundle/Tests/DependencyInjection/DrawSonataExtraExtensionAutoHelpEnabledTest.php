@@ -22,7 +22,7 @@ class DrawSonataExtraExtensionAutoHelpEnabledTest extends DrawSonataExtraExtensi
         ];
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
         yield [AutoHelpListener::class];

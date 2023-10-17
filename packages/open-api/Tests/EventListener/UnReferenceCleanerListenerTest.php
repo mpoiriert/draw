@@ -17,7 +17,7 @@ class UnReferenceCleanerListenerTest extends BaseCleanerTestCase
         ]);
     }
 
-    public function getFixtureDir(): string
+    public static function getFixtureDir(): string
     {
         return 'UnReferenceCleanerListener';
     }

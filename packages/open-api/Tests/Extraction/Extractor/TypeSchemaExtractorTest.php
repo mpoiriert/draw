@@ -20,7 +20,7 @@ class TypeSchemaExtractorTest extends TestCase
         $this->object = new TypeSchemaExtractor();
     }
 
-    public function provideTestCanExtract(): iterable
+    public static function provideTestCanExtract(): iterable
     {
         yield 'invalid-target' => [
             'string',

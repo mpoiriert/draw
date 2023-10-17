@@ -5,12 +5,12 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Component\Tester\Command\TestsCoverageCheckCommand;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration
- *
  * @property TesterIntegration $integration
  */
+#[CoversClass(TesterIntegration::class)]
 class TesterIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -28,7 +28,7 @@ class TesterIntegrationTest extends IntegrationTestCase
         return [];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [],

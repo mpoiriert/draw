@@ -35,16 +35,16 @@ use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
 use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use Draw\Contracts\Messenger\TransportRepositoryInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MessengerIntegration
- *
  * @property MessengerIntegration $integration
  */
+#[CoversClass(MessengerIntegration::class)]
 class MessengerIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -101,7 +101,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
         ];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         $defaultServices = [
             new ServiceConfiguration(

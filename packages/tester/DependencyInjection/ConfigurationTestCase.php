@@ -15,7 +15,7 @@ abstract class ConfigurationTestCase extends TestCase
 
     abstract public function getDefaultConfiguration(): array;
 
-    abstract public function provideTestInvalidConfiguration(): iterable;
+    abstract public static function provideTestInvalidConfiguration(): iterable;
 
     protected function setUp(): void
     {

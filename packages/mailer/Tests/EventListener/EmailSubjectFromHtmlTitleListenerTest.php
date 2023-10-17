@@ -3,6 +3,7 @@
 namespace Draw\Component\Mailer\Tests\EventListener;
 
 use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Envelope;
@@ -11,9 +12,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 
-/**
- * @covers \Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener
- */
+#[CoversClass(EmailSubjectFromHtmlTitleListener::class)]
 class EmailSubjectFromHtmlTitleListenerTest extends TestCase
 {
     private EmailSubjectFromHtmlTitleListener $object;

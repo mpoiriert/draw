@@ -8,15 +8,14 @@ use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
 use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Application\Exception\VersionInformationIsNotAccessibleException;
 use Draw\Contracts\Application\VersionVerificationInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 use Symfony\Component\Messenger\Worker;
 
-/**
- * @covers \Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener
- */
+#[CoversClass(StopOnNewVersionListener::class)]
 class StopOnNewVersionListenerTest extends TestCase implements VersionVerificationInterface
 {
     private StopOnNewVersionListener $service;

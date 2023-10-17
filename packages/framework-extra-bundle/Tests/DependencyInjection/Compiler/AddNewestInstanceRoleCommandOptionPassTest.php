@@ -4,14 +4,13 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass
- */
+#[CoversClass(AddNewestInstanceRoleCommandOptionPass::class)]
 class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
 {
     private AddNewestInstanceRoleCommandOptionPass $compilerPass;

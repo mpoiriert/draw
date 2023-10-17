@@ -5,14 +5,13 @@ namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\EventListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\EnvelopeFactoryDelayStampListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
-/**
- * @covers \Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\EnvelopeFactoryDelayStampListener
- */
+#[CoversClass(EnvelopeFactoryDelayStampListener::class)]
 class EnvelopeFactoryDelayStampListenerTest extends TestCase
 {
     private EnvelopeFactoryDelayStampListener $object;

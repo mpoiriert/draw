@@ -68,7 +68,7 @@ class ConfigurationTest extends ConfigurationTestCase
         ];
     }
 
-    public function provideTestInvalidConfiguration(): iterable
+    public static function provideTestInvalidConfiguration(): iterable
     {
         yield [
             ['encrypt_password_listener' => 'string-not-supported'],

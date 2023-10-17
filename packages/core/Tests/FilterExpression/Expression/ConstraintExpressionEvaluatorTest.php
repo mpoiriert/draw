@@ -5,11 +5,10 @@ namespace Draw\Component\Core\Tests\FilterExpression\Expression;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpression;
 use Draw\Component\Core\FilterExpression\Expression\ConstraintExpressionEvaluator;
 use Draw\Component\Core\FilterExpression\Expression\ExpressionEvaluator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Core\FilterExpression\Expression\ConstraintExpressionEvaluator
- */
+#[CoversClass(ConstraintExpressionEvaluator::class)]
 class ConstraintExpressionEvaluatorTest extends TestCase
 {
     private ConstraintExpressionEvaluator $object;

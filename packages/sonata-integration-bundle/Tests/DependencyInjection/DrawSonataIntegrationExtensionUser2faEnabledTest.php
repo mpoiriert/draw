@@ -2,15 +2,15 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\TwoFactorAuthenticationController;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Scheb\TwoFactorBundle\SchebTwoFactorBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
- */
+#[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionUser2faEnabledTest extends DrawSonataIntegrationExtensionUserEnabledTest
 {
     public function getConfiguration(): array
@@ -24,7 +24,7 @@ class DrawSonataIntegrationExtensionUser2faEnabledTest extends DrawSonataIntegra
         return $configuration;
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
 

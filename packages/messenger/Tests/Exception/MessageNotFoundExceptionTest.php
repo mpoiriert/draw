@@ -3,11 +3,10 @@
 namespace Draw\Component\Messenger\Tests\Exception;
 
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Contracts\Messenger\Exception\MessageNotFoundException
- */
+#[CoversClass(MessageNotFoundException::class)]
 class MessageNotFoundExceptionTest extends TestCase
 {
     private MessageNotFoundException $exception;

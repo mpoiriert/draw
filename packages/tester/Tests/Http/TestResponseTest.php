@@ -20,7 +20,7 @@ class TestResponseTest extends TestCase
         return new TestResponse(new Request('GET', '/test'), $response);
     }
 
-    public function provideAssertSuccessful(): array
+    public static function provideAssertSuccessful(): array
     {
         return [
             // 2xx
@@ -109,7 +109,7 @@ class TestResponseTest extends TestCase
         $testResponse->assertStatus(666);
     }
 
-    public function provideAssertRedirectStatusCode(): array
+    public static function provideAssertRedirectStatusCode(): array
     {
         return [
             // 2xx
@@ -201,7 +201,7 @@ class TestResponseTest extends TestCase
         $testResponse->assertRedirect('/redirect-to');
     }
 
-    public function provideAssertHeader(): array
+    public static function provideAssertHeader(): array
     {
         return [
             'pass-one-value' => ['header', 'value', ['header' => ['value']], true],

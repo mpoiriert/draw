@@ -22,9 +22,9 @@ trait CommandTestTrait
 
     abstract public function getCommandName(): string;
 
-    abstract public function provideTestArgument(): iterable;
+    abstract public static function provideTestArgument(): iterable;
 
-    abstract public function provideTestOption(): iterable;
+    abstract public static function provideTestOption(): iterable;
 
     public static function setUpBeforeClass(): void
     {

@@ -6,12 +6,12 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Configurati
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\FeatureIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Application\Feature\FeatureInitializer;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\FeatureIntegration
- *
  * @property ConfigurationIntegration $integration
  */
+#[CoversClass(FeatureIntegration::class)]
 class FeatureIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -29,7 +29,7 @@ class FeatureIntegrationTest extends IntegrationTestCase
         return [];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [],

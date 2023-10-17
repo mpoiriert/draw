@@ -5,11 +5,10 @@ namespace Draw\Component\OpenApi\Tests\Event;
 use Draw\Component\OpenApi\Event\PreSerializerResponseEvent;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use JMS\Serializer\SerializationContext;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\OpenApi\Event\PreSerializerResponseEvent
- */
+#[CoversClass(PreSerializerResponseEvent::class)]
 class PreSerializerResponseEventTest extends TestCase
 {
     private PreSerializerResponseEvent $object;

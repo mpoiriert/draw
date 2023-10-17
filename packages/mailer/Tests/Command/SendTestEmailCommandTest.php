@@ -5,6 +5,7 @@ namespace Draw\Component\Mailer\Tests\Command;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
@@ -12,17 +13,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
-/**
- * @covers \Draw\Component\Mailer\Command\SendTestEmailCommand
- */
+#[CoversClass(SendTestEmailCommand::class)]
 class SendTestEmailCommandTest extends TestCase
 {
     use CommandTestTrait;
 
-    /**
-     * @var MailerInterface&MockObject
-     */
-    private MailerInterface $mailer;
+    private MailerInterface&MockObject $mailer;
 
     public function createCommand(): Command
     {
@@ -36,7 +32,7 @@ class SendTestEmailCommandTest extends TestCase
         return 'draw:mailer:send-test-email';
     }
 
-    public function provideTestArgument(): iterable
+    public static function provideTestArgument(): iterable
     {
         yield [
             'to',
@@ -44,7 +40,7 @@ class SendTestEmailCommandTest extends TestCase
         ];
     }
 
-    public function provideTestOption(): iterable
+    public static function provideTestOption(): iterable
     {
         return [];
     }

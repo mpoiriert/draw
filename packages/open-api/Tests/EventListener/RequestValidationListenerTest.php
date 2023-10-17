@@ -6,6 +6,8 @@ use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema\QueryParameter;
+use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,17 +22,14 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-/**
- * @covers \Draw\Component\OpenApi\EventListener\RequestValidationListener
- */
+#[CoversClass(RequestValidationListener::class)]
 class RequestValidationListenerTest extends TestCase
 {
+    use MockTrait;
+
     private RequestValidationListener $object;
 
-    /**
-     * @var ValidatorInterface&MockObject
-     */
-    private ValidatorInterface $validator;
+    private ValidatorInterface&MockObject $validator;
 
     protected function setUp(): void
     {
@@ -169,9 +168,11 @@ class RequestValidationListenerTest extends TestCase
         $this->validator
             ->expects(static::exactly(2))
             ->method('validate')
-            ->withConsecutive(
-                [$bodyObject, null, $groups],
-                [$parameterObject, $queryParameter->constraints]
+            ->with(
+                ...static::withConsecutive(
+                    [$bodyObject, null, $groups],
+                    [$parameterObject, $queryParameter->constraints, null]
+                )
             )
             ->willReturnOnConsecutiveCalls(
                 $bodyViolationList = new ConstraintViolationList(),

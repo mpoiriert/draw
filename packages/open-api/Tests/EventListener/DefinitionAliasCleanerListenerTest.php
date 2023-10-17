@@ -14,7 +14,7 @@ class DefinitionAliasCleanerListenerTest extends BaseCleanerTestCase
         $this->object = new DefinitionAliasCleanerListener();
     }
 
-    public function getFixtureDir(): string
+    public static function getFixtureDir(): string
     {
         return 'DefinitionAliasCleanerListener';
     }

@@ -6,6 +6,7 @@ use Aws\Ec2\Ec2Client;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -13,22 +14,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @covers \Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener
- */
+#[CoversClass(NewestInstanceRoleCheckListener::class)]
 class NewestInstanceRoleListenerCheckTest extends TestCase
 {
     private NewestInstanceRoleCheckListener $service;
 
-    /**
-     * @var Ec2Client&MockObject
-     */
-    private Ec2Client $ec2Client;
-
-    /**
-     * @var ImdsClientInterface&MockObject
-     */
-    private ImdsClientInterface $imdsClient;
+    private ImdsClientInterface&MockObject $imdsClient;
 
     protected function setUp(): void
     {
@@ -262,10 +253,10 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         ReflectionAccessor::setPropertyValue(
             $this->service,
             'ec2Client',
-            $this->ec2Client = $ec2Client
+            $ec2Client
         );
 
-        $invocationMocker = $this->ec2Client
+        $invocationMocker = $ec2Client
             ->expects(static::once())
             ->method('describeInstances')
             ->with(

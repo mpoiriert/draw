@@ -3,22 +3,21 @@
 namespace Draw\Component\AwsToolKit\Tests\Imds;
 
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
+use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
-/**
- * @covers \Draw\Component\AwsToolKit\Imds\ImdsClientV2
- */
+#[CoversClass(ImdsClientV2::class)]
 class ImdsClientV2Test extends TestCase
 {
+    use MockTrait;
+
     private ImdsClientV2 $imdsClientV1;
 
-    /**
-     * @var HttpClientInterface&MockObject
-     */
-    private HttpClientInterface $httpClient;
+    private HttpClientInterface&MockObject $httpClient;
 
     protected function setUp(): void
     {
@@ -46,25 +45,27 @@ class ImdsClientV2Test extends TestCase
         $this->httpClient
             ->expects(static::exactly(2))
             ->method('request')
-            ->withConsecutive(
-                [
-                    'PUT',
-                    'http://169.254.169.254/latest/api/token',
+            ->with(
+                ...static::withConsecutive(
                     [
-                        'headers' => [
-                            'X-aws-ec2-metadata-token-ttl-seconds' => 3600,
+                        'PUT',
+                        'http://169.254.169.254/latest/api/token',
+                        [
+                            'headers' => [
+                                'X-aws-ec2-metadata-token-ttl-seconds' => 3600,
+                            ],
                         ],
                     ],
-                ],
-                [
-                    'GET',
-                    'http://169.254.169.254/latest/meta-data/instance-id',
                     [
-                        'headers' => [
-                            'X-aws-ec2-metadata-token' => $token,
+                        'GET',
+                        'http://169.254.169.254/latest/meta-data/instance-id',
+                        [
+                            'headers' => [
+                                'X-aws-ec2-metadata-token' => $token,
+                            ],
                         ],
-                    ],
-                ]
+                    ]
+                )
             )
             ->willReturnOnConsecutiveCalls(
                 $tokenResponse,

@@ -4,14 +4,13 @@ namespace Draw\Component\Tester\Tests\Command;
 
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\Command\TestsCoverageCheckCommand;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Tester\CommandTester;
 
-/**
- * @covers \Draw\Component\Tester\Command\TestsCoverageCheckCommand
- */
+#[CoversClass(TestsCoverageCheckCommand::class)]
 class TestsCoverageCheckCommandTest extends TestCase
 {
     use CommandTestTrait;
@@ -33,7 +32,7 @@ class TestsCoverageCheckCommandTest extends TestCase
         return 'draw:tester:coverage-check';
     }
 
-    public function provideTestArgument(): iterable
+    public static function provideTestArgument(): iterable
     {
         yield [
             'clover-xlm-file-path',
@@ -46,7 +45,7 @@ class TestsCoverageCheckCommandTest extends TestCase
         ];
     }
 
-    public function provideTestOption(): iterable
+    public static function provideTestOption(): iterable
     {
         return [];
     }

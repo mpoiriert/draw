@@ -4,10 +4,9 @@ namespace Draw\Component\OpenApi\Tests\EventListener;
 
 use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener
- */
+#[CoversClass(DuplicateDefinitionAliasSchemaCleanerListener::class)]
 class DuplicateDefinitionAliasSchemaCleanerListenerTest extends BaseCleanerTestCase
 {
     private DuplicateDefinitionAliasSchemaCleanerListener $object;
@@ -17,7 +16,7 @@ class DuplicateDefinitionAliasSchemaCleanerListenerTest extends BaseCleanerTestC
         $this->object = new DuplicateDefinitionAliasSchemaCleanerListener();
     }
 
-    public function getFixtureDir(): string
+    public static function getFixtureDir(): string
     {
         return 'DuplicateDefinitionAliasSchemaCleanerListener';
     }

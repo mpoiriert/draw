@@ -13,7 +13,7 @@ class Client implements ClientInterface
     private RequestExecutionerInterface $requestExecutioner;
 
     /**
-     * @var array<array<ClientObserver>>
+     * @var array<array<ClientObserverInterface>>
      */
     private array $clientObservers = [];
 
@@ -36,7 +36,7 @@ class Client implements ClientInterface
         $this->requestExecutioner = $requestExecutioner;
     }
 
-    public function registerObserver(ClientObserver $clientObserver, int $position = 0): void
+    public function registerObserver(ClientObserverInterface $clientObserver, int $position = 0): void
     {
         $this->clientObservers[$position][] = $clientObserver;
     }

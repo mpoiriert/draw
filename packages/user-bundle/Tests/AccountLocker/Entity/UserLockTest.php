@@ -3,11 +3,11 @@
 namespace Draw\Bundle\UserBundle\Tests\AccountLocker\Entity;
 
 use Draw\Bundle\UserBundle\Entity\UserLock;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Bundle\UserBundle\Entity\UserLock
- */
+#[CoversClass(UserLock::class)]
 class UserLockTest extends TestCase
 {
     private UserLock $entity;
@@ -32,7 +32,7 @@ class UserLockTest extends TestCase
         static::assertNull($this->entity->getUnlockUntil(), 'Unlock until must be null');
     }
 
-    public function provideTestIsActive(): array
+    public static function provideTestIsActive(): array
     {
         return [
             'default' => [
@@ -66,9 +66,7 @@ class UserLockTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestIsActive
-     */
+    #[DataProvider('provideTestIsActive')]
     public function testIsActive(UserLock $userLock, bool $expected): void
     {
         static::assertSame($expected, $userLock->isActive());

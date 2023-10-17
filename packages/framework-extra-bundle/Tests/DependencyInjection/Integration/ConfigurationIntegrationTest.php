@@ -8,13 +8,13 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Component\Application\Configuration\DoctrineConfigurationRegistry;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration
- *
  * @property ConfigurationIntegration $integration
  */
+#[CoversClass(ConfigurationIntegration::class)]
 class ConfigurationIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -77,7 +77,7 @@ class ConfigurationIntegrationTest extends IntegrationTestCase
         );
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [],

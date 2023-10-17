@@ -11,13 +11,13 @@ use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListene
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use Draw\Component\Security\Jwt\JwtEncoder;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration
- *
  * @property SecurityIntegration $integration
  */
+#[CoversClass(SecurityIntegration::class)]
 class SecurityIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -59,7 +59,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
         ];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         $defaultServices = [
             new ServiceConfiguration(

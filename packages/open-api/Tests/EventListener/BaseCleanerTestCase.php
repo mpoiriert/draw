@@ -10,13 +10,13 @@ use PHPUnit\Framework\TestCase;
 
 abstract class BaseCleanerTestCase extends TestCase
 {
-    abstract public function getFixtureDir(): string;
+    abstract public static function getFixtureDir(): string;
 
     abstract public function clean(CleanEvent $cleanEvent): void;
 
-    public function provideTestClean(): iterable
+    public static function provideTestClean(): iterable
     {
-        foreach (glob(__DIR__.'/fixture/cleaner/'.$this->getFixtureDir().'/*-dirty.json') as $file) {
+        foreach (glob(__DIR__.'/fixture/cleaner/'.static::getFixtureDir().'/*-dirty.json') as $file) {
             yield str_replace('-dirty.json', '', basename($file)) => [$file, str_replace('dirty.json', 'clean.json', $file)];
         }
     }

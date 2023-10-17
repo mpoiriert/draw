@@ -15,7 +15,7 @@ class ClassStaticCallFixerTest extends TestCase
         $this->object = new ClassStaticCallFixer();
     }
 
-    public function provideTestFix(): iterable
+    public static function provideTestFix(): iterable
     {
         foreach (glob(__DIR__.'/fixtures/ClassStaticCallFixerTest/in/*.php') as $inFile) {
             $outFile = str_replace('/in/', '/out/', $inFile);

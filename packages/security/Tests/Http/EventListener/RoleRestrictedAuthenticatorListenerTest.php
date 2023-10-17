@@ -4,6 +4,7 @@ namespace Draw\Component\Security\Tests\Http\EventListener;
 
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\RoleRestrictedBadge;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -15,22 +16,14 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 
-/**
- * @covers \Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener
- */
+#[CoversClass(RoleRestrictedAuthenticatorListener::class)]
 class RoleRestrictedAuthenticatorListenerTest extends TestCase
 {
     private RoleRestrictedAuthenticatorListener $service;
 
-    /**
-     * @var RoleHierarchyInterface&MockObject
-     */
-    private RoleHierarchyInterface $roleHierarchy;
+    private RoleHierarchyInterface&MockObject $roleHierarchy;
 
-    /**
-     * @var UserInterface&MockObject
-     */
-    private UserInterface $user;
+    private UserInterface&MockObject $user;
 
     protected function setUp(): void
     {

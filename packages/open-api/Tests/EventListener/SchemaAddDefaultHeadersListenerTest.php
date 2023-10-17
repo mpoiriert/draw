@@ -5,12 +5,11 @@ namespace Draw\Component\OpenApi\Tests\EventListener;
 use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
 use Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener;
 use JMS\Serializer\ArrayTransformerInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @covers \Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener
- */
+#[CoversClass(SchemaAddDefaultHeadersListener::class)]
 class SchemaAddDefaultHeadersListenerTest extends TestCase
 {
     private SchemaAddDefaultHeadersListener $object;

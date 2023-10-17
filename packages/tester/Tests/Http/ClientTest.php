@@ -5,6 +5,7 @@ namespace Draw\Component\Tester\Tests\Http;
 use Draw\Component\Tester\Http\Client;
 use Draw\Component\Tester\Http\ClientInterface;
 use Draw\Component\Tester\Http\ClientObserver;
+use Draw\Component\Tester\Http\ClientObserverInterface;
 use Draw\Component\Tester\Http\RequestExecutionerInterface;
 use Draw\Component\Tester\Http\TestResponse;
 use GuzzleHttp\Psr7\Request;
@@ -247,9 +248,7 @@ class ClientTest extends TestCase
      */
     public function testRegisterObserver(Client $client): void
     {
-        $mockClientObserver = $this->getMockBuilder(ClientObserver::class)
-            ->setMethodsExcept([])
-            ->getMockForAbstractClass();
+        $mockClientObserver = $this->createMock(ClientObserverInterface::class);
 
         $mockClientObserver
             ->expects(static::once())

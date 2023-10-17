@@ -7,20 +7,16 @@ use Draw\Component\Core\FilterExpression\Expression\CompositeExpression;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator;
 use Draw\Component\Core\FilterExpression\Expression\ConstraintExpression;
 use Draw\Component\Core\FilterExpression\Expression\ExpressionEvaluator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator
- */
+#[CoversClass(CompositeExpressionEvaluator::class)]
 class CompositeExpressionEvaluatorTest extends TestCase
 {
     private CompositeExpressionEvaluator $object;
 
-    /**
-     * @var Evaluator&MockObject
-     */
-    private Evaluator $evaluator;
+    private Evaluator&MockObject $evaluator;
 
     protected function setUp(): void
     {

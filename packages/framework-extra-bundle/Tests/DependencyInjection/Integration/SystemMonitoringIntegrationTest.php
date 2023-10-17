@@ -12,13 +12,13 @@ use Draw\Component\Application\SystemMonitoring\Bridge\Doctrine\DoctrineConnecti
 use Draw\Component\Application\SystemMonitoring\Bridge\Symfony\Messenger\MessengerStatusProvider;
 use Draw\Component\Application\SystemMonitoring\Command\SystemStatusesCommand;
 use Draw\Component\Application\SystemMonitoring\System;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration
- *
  * @property SystemMonitoringIntegration $integration
  */
+#[CoversClass(SystemMonitoringIntegration::class)]
 class SystemMonitoringIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -75,7 +75,7 @@ class SystemMonitoringIntegrationTest extends IntegrationTestCase
         );
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [

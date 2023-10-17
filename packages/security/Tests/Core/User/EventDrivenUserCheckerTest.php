@@ -5,28 +5,21 @@ namespace Draw\Component\Security\Tests\Core\User;
 use Draw\Component\Security\Core\Event\CheckPostAuthEvent;
 use Draw\Component\Security\Core\Event\CheckPreAuthEvent;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @covers \Draw\Component\Security\Core\User\EventDrivenUserChecker
- */
+#[CoversClass(EventDrivenUserChecker::class)]
 class EventDrivenUserCheckerTest extends TestCase
 {
     private EventDrivenUserChecker $object;
 
-    /**
-     * @var UserCheckerInterface&MockObject
-     */
-    private UserCheckerInterface $decoratedUserChecker;
+    private UserCheckerInterface&MockObject $decoratedUserChecker;
 
-    /**
-     * @var EventDispatcherInterface&MockObject
-     */
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
     protected function setUp(): void
     {

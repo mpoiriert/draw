@@ -134,7 +134,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
         ];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [
@@ -200,7 +200,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     'draw.open_api.schema_builder',
                     [SchemaBuilderInterface::class],
                     function (Definition $definition): void {
-                        $this->assertSame(SymfonySchemaBuilder::class, $definition->getClass());
+                        static::assertSame(SymfonySchemaBuilder::class, $definition->getClass());
                     }
                 ),
                 new ServiceConfiguration(
@@ -397,14 +397,14 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     'draw.open_api.controller.open_api_controller',
                     [OpenApiController::class],
                     function (Definition $definition): void {
-                        $this->assertSame(
+                        static::assertSame(
                             [
                                 'controller.service_arguments' => [[]],
                             ],
                             $definition->getTags()
                         );
 
-                        $this->assertSame(
+                        static::assertSame(
                             '/test/sandbox',
                             $definition->getArgument('$sandboxUrl')
                         );
@@ -430,7 +430,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     'draw.open_api.naming.aliases_class_naming_filter',
                     [AliasesClassNamingFilter::class],
                     function (Definition $definition): void {
-                        $this->assertSame(
+                        static::assertSame(
                             [
                                 ['class' => 'App\\Entity\\', 'alias' => ''],
                                 ['class' => 'App\\DTO\\', 'alias' => ''],

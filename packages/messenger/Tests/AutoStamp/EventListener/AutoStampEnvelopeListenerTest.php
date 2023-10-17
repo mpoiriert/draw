@@ -4,14 +4,13 @@ namespace Draw\Component\Messenger\Tests\AutoStamp\EventListener;
 
 use Draw\Component\Messenger\AutoStamp\EventListener\AutoStampEnvelopeListener;
 use Draw\Component\Messenger\AutoStamp\Message\StampingAwareInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
-/**
- * @covers \Draw\Component\Messenger\AutoStamp\EventListener\AutoStampEnvelopeListener
- */
+#[CoversClass(AutoStampEnvelopeListener::class)]
 class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInterface
 {
     private AutoStampEnvelopeListener $object;

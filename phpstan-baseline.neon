@@ -16,14 +16,14 @@ parameters:
 			path: packages/open-api/Tests/Extraction/Extractor/PhpDoc/OperationExtractorTest.php
 
 		-
-			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\Test\\:\\:\\$propertyFromBody is unused\\.$#"
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\TestClass\\:\\:\\$propertyFromBody is unused\\.$#"
 			count: 1
-			path: packages/open-api/Tests/Mock/Model/Test.php
+			path: packages/open-api/Tests/Mock/Model/TestClass.php
 
 		-
-			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\Test\\:\\:\\$propertyGroupExclusion is unused\\.$#"
+			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\TestClass\\:\\:\\$propertyGroupExclusion is unused\\.$#"
 			count: 1
-			path: packages/open-api/Tests/Mock/Model/Test.php
+			path: packages/open-api/Tests/Mock/Model/TestClass.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#"

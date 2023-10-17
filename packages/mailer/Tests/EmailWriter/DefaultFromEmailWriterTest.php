@@ -4,13 +4,12 @@ namespace Draw\Component\Mailer\Tests\EmailWriter;
 
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-/**
- * @covers \Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter
- */
+#[CoversClass(DefaultFromEmailWriter::class)]
 class DefaultFromEmailWriterTest extends TestCase
 {
     private DefaultFromEmailWriter $object;

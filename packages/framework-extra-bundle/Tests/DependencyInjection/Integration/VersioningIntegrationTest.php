@@ -8,14 +8,14 @@ use Draw\Component\Application\Versioning\Command\UpdateDeployedVersionCommand;
 use Draw\Component\Application\Versioning\EventListener\FetchRunningVersionListener;
 use Draw\Component\Application\Versioning\VersionManager;
 use Draw\Contracts\Application\VersionVerificationInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Parameter;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration
- *
  * @property VersioningIntegration $integration
  */
+#[CoversClass(VersioningIntegration::class)]
 class VersioningIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -33,7 +33,7 @@ class VersioningIntegrationTest extends IntegrationTestCase
         return [];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [],

@@ -7,13 +7,13 @@ use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration
- *
  * @property LogIntegration $integration
  */
+#[CoversClass(LogIntegration::class)]
 class LogIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -54,7 +54,7 @@ class LogIntegrationTest extends IntegrationTestCase
         ];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield 'all' => [
             [

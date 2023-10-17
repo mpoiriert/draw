@@ -4,12 +4,11 @@ namespace Draw\Component\OpenApi\Tests\Event;
 
 use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
 use Draw\Component\OpenApi\Schema\Root;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * @covers \Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent
- */
+#[CoversClass(PreDumpRootSchemaEvent::class)]
 class PreDumpRootSchemaEventTest extends TestCase
 {
     private PreDumpRootSchemaEvent $object;

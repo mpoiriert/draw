@@ -5,7 +5,7 @@ namespace Draw\Component\Tester\Http;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class ClientObserver
+abstract class ClientObserver implements ClientObserverInterface
 {
     public function preSendRequest(RequestInterface $request): RequestInterface
     {

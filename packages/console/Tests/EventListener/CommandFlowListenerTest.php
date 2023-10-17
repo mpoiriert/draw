@@ -16,6 +16,8 @@ use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -32,9 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @covers \Draw\Component\Console\EventListener\CommandFlowListener
- */
+#[CoversClass(CommandFlowListener::class)]
 class CommandFlowListenerTest extends TestCase
 {
     use DoctrineOrmTrait;
@@ -534,9 +534,7 @@ class CommandFlowListenerTest extends TestCase
         $this->object->logCommandStart($event);
     }
 
-    /**
-     * @depends testGenerateFromDatabaseReal
-     */
+    #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandStart(Execution $execution): void
     {
         $this->eventDispatcher
@@ -621,9 +619,7 @@ class CommandFlowListenerTest extends TestCase
         $this->object->logCommandTerminate($event);
     }
 
-    /**
-     * @depends testGenerateFromDatabaseReal
-     */
+    #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandTerminate(Execution $execution): void
     {
         $event = new Event\ConsoleTerminateEvent(
@@ -646,9 +642,7 @@ class CommandFlowListenerTest extends TestCase
         static::assertSame($output, $execution->getOutput());
     }
 
-    /**
-     * @depends testGenerateFromDatabaseReal
-     */
+    #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandTerminateLongOutput(Execution $execution): void
     {
         $event = new Event\ConsoleTerminateEvent(
@@ -692,9 +686,7 @@ class CommandFlowListenerTest extends TestCase
         $this->object->logCommandError($event);
     }
 
-    /**
-     * @depends testGenerateFromDatabaseReal
-     */
+    #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandError(Execution $execution): void
     {
         $event = new Event\ConsoleErrorEvent(
@@ -745,9 +737,7 @@ class CommandFlowListenerTest extends TestCase
         static::assertNull($execution->getAutoAcknowledgeReason());
     }
 
-    /**
-     * @depends testGenerateFromDatabaseReal
-     */
+    #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandErrorAutoAcknowledge(Execution $execution): void
     {
         $event = new Event\ConsoleErrorEvent(
@@ -781,9 +771,7 @@ class CommandFlowListenerTest extends TestCase
         static::assertSame($reason, $execution->getAutoAcknowledgeReason());
     }
 
-    /**
-     * @depends testGenerateFromDatabaseReal
-     */
+    #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandTerminateDisabled(Execution $execution): void
     {
         $event = new Event\ConsoleTerminateEvent(
@@ -805,9 +793,7 @@ class CommandFlowListenerTest extends TestCase
         static::assertSame(Execution::STATE_DISABLED, $execution->getState());
     }
 
-    /**
-     * @depends testGenerateFromDatabaseReal
-     */
+    #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandTerminateDisabledIgnored(Execution $execution): void
     {
         $event = new Event\ConsoleTerminateEvent(

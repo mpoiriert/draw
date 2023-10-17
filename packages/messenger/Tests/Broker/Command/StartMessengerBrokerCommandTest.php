@@ -8,15 +8,14 @@ use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-/**
- * @covers \Draw\Component\Messenger\Broker\Command\StartMessengerBrokerCommand
- */
+#[CoversClass(StartMessengerBrokerCommand::class)]
 class StartMessengerBrokerCommandTest extends TestCase
 {
     use CommandTestTrait;
@@ -41,12 +40,12 @@ class StartMessengerBrokerCommandTest extends TestCase
         return 'draw:messenger:start-broker';
     }
 
-    public function provideTestArgument(): iterable
+    public static function provideTestArgument(): iterable
     {
         return [];
     }
 
-    public function provideTestOption(): iterable
+    public static function provideTestOption(): iterable
     {
         yield [
             'context',

@@ -4,15 +4,15 @@ namespace Draw\Component\Validator\Tests\Constraints;
 
 use Draw\Component\Validator\Constraints\RemoteFileExists;
 use Draw\Component\Validator\Constraints\RemoteFileExistsValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
-/**
- * @covers \Draw\Component\Validator\Constraints\RemoteFileExistsValidator
- */
+#[CoversClass(RemoteFileExistsValidator::class)]
 class RemoteFileExistsValidatorTest extends TestCase
 {
     private RemoteFileExistsValidator $object;
@@ -47,7 +47,7 @@ class RemoteFileExistsValidatorTest extends TestCase
     /**
      * @return array<string, array{0: string, 1: int}>
      */
-    public function provideFiles(): array
+    public static function provideFiles(): array
     {
         return [
             'url' => ['https://github.com', 0],
@@ -57,9 +57,7 @@ class RemoteFileExistsValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideFiles
-     */
+    #[DataProvider('provideFiles')]
     public function testValidate(string $file, int $violationsCount): void
     {
         $validator = Validation::createValidator();

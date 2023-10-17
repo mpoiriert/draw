@@ -3,12 +3,11 @@
 namespace Draw\Component\Messenger\Tests\Searchable\Stamp;
 
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Stamp\StampInterface;
 
-/**
- * @covers \Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp
- */
+#[CoversClass(FoundFromTransportStamp::class)]
 class FindFromTransportStampTest extends TestCase
 {
     private FoundFromTransportStamp $entity;

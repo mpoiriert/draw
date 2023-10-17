@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Envelope;
 
 class BaseSerializerEventTest extends TestCase
 {
-    public function provideTestConstruct(): iterable
+    public static function provideTestConstruct(): iterable
     {
         yield [PostDecodeEvent::class];
         yield [PostEncodeEvent::class];

@@ -4,6 +4,8 @@ namespace Draw\Component\OpenApi\Tests\EventListener;
 
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\Schema\QueryParameter;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,9 +14,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-/**
- * @covers \Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener
- */
+#[CoversClass(RequestQueryParameterFetcherListener::class)]
 class RequestQueryParameterFetcherListenerTest extends TestCase
 {
     private RequestQueryParameterFetcherListener $object;
@@ -101,9 +101,9 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         $this->object->onKernelController($event);
     }
 
-    public function provideOnKernelController(): iterable
+    public static function provideOnKernelController(): iterable
     {
-        foreach ((new \ReflectionObject($this))->getMethods() as $reflectionMethod) {
+        foreach ((new \ReflectionClass(static::class))->getMethods() as $reflectionMethod) {
             if (str_starts_with($reflectionMethod->getName(), 'actionTest')) {
                 $parameters = $reflectionMethod->getParameters();
 
@@ -200,9 +200,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     ): void {
     }
 
-    /**
-     * @dataProvider provideOnKernelController
-     */
+    #[DataProvider('provideOnKernelController')]
     public function testOnKernelController(string $methodName, mixed $value, mixed $expectedValue): void
     {
         $controllerEvent = new ControllerEvent(

@@ -22,7 +22,7 @@ class OperationExtractorTest extends TestCase
         $this->phpDocOperationExtractor = new OperationExtractor();
     }
 
-    public function provideTestCanExtract(): iterable
+    public static function provideTestCanExtract(): iterable
     {
         $reflectionMethod = new \ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', 'operation');
 

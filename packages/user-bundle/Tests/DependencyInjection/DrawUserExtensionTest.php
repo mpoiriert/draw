@@ -41,7 +41,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
         ];
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield [ConnectionTokensController::class];
         yield [UserRequestInterceptedListener::class];

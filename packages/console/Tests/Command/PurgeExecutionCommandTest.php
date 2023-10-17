@@ -6,28 +6,23 @@ use Doctrine\DBAL\Connection;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
+use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 
-/**
- * @covers \Draw\Component\Console\Command\PurgeExecutionCommand
- */
+#[CoversClass(PurgeExecutionCommand::class)]
 class PurgeExecutionCommandTest extends TestCase
 {
     use CommandTestTrait;
+    use MockTrait;
 
-    /**
-     * @var Connection&MockObject
-     */
-    private Connection $connection;
+    private Connection&MockObject $connection;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private LoggerInterface $logger;
+    private LoggerInterface&MockObject $logger;
 
     public function createCommand(): Command
     {
@@ -42,12 +37,12 @@ class PurgeExecutionCommandTest extends TestCase
         return 'draw:console:purge-execution';
     }
 
-    public function provideTestArgument(): iterable
+    public static function provideTestArgument(): iterable
     {
         return [];
     }
 
-    public function provideTestOption(): iterable
+    public static function provideTestOption(): iterable
     {
         yield [
             'delay',
@@ -95,34 +90,38 @@ class PurgeExecutionCommandTest extends TestCase
             static::exactly(3)
         )
             ->method('debug')
-            ->withConsecutive(
-                [
-                    'Purging all records before {delay}, {batch_size} at the time, sleeping {seconds} per batch.',
-                    ['delay' => $date, 'batch_size' => 1000, 'seconds' => 0],
-                ],
-                [
-                    'Sleeping for {seconds} seconds during purge.',
-                    ['seconds' => 0],
-                ],
-                [
-                    'Successfully purged {record_count} records.',
-                    ['record_count' => 1002],
-                ]
+            ->with(
+                ...static::withConsecutive(
+                    [
+                        'Purging all records before {delay}, {batch_size} at the time, sleeping {seconds} per batch.',
+                        ['delay' => $date, 'batch_size' => 1000, 'seconds' => 0],
+                    ],
+                    [
+                        'Sleeping for {seconds} seconds during purge.',
+                        ['seconds' => 0],
+                    ],
+                    [
+                        'Successfully purged {record_count} records.',
+                        ['record_count' => 1002],
+                    ]
+                )
             );
 
         $this->connection->expects(static::exactly(2))
             ->method('executeStatement')
-            ->withConsecutive(
-                [
-                    'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
-                    ['terminated', new \DateTime($date), 1000],
-                    ['string', 'datetime', 'integer'],
-                ],
-                [
-                    'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
-                    ['terminated', new \DateTime($date), 1000],
-                    ['string', 'datetime', 'integer'],
-                ]
+            ->with(
+                ...static::withConsecutive(
+                    [
+                        'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
+                        ['terminated', new \DateTime($date), 1000],
+                        ['string', 'datetime', 'integer'],
+                    ],
+                    [
+                        'DELETE FROM command__execution WHERE state = ? AND updated_at < ? LIMIT ?',
+                        ['terminated', new \DateTime($date), 1000],
+                        ['string', 'datetime', 'integer'],
+                    ]
+                )
             )
             ->willReturnOnConsecutiveCalls(1000, 2);
 

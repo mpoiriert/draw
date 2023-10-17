@@ -15,9 +15,9 @@ class DrawUserExtensionWithEnforce2faWithEnforcingRolesTest extends DrawUserExte
         return $configuration;
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
-        yield from $this->removeProvidedService(
+        yield from static::removeProvidedService(
             [TwoFactorAuthenticationEnforcerInterface::class],
             parent::provideTestHasServiceDefinition()
         );

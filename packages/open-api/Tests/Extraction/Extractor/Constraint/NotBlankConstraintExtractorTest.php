@@ -6,14 +6,14 @@ use Draw\Component\OpenApi\Extraction\Extractor\Constraint\ConstraintExtractionC
 use Draw\Component\OpenApi\Extraction\Extractor\Constraint\NotBlankConstraintExtractor;
 use Draw\Component\OpenApi\Schema\QueryParameter;
 use Draw\Component\OpenApi\Schema\Schema;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * @covers \Draw\Component\OpenApi\Extraction\Extractor\Constraint\NotBlankConstraintExtractor
- */
+#[CoversClass(NotBlankConstraintExtractor::class)]
 class NotBlankConstraintExtractorTest extends TestCase
 {
     private NotBlankConstraintExtractor $object;
@@ -23,7 +23,7 @@ class NotBlankConstraintExtractorTest extends TestCase
         $this->object = new NotBlankConstraintExtractor();
     }
 
-    public function provideTestSupport(): iterable
+    public static function provideTestSupport(): iterable
     {
         yield 'other-constraint' => [
             new IsNull(),
@@ -36,9 +36,7 @@ class NotBlankConstraintExtractorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestSupport
-     */
+    #[DataProvider('provideTestSupport')]
     public function testSupport(Constraint $constraint, bool $expected): void
     {
         static::assertSame($expected, $this->object->supportConstraint($constraint));

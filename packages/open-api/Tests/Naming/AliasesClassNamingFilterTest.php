@@ -4,11 +4,10 @@ namespace Draw\Component\OpenApi\Tests\Naming;
 
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\Naming\ClassNamingFilterInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\OpenApi\Naming\AliasesClassNamingFilter
- */
+#[CoversClass(AliasesClassNamingFilter::class)]
 class AliasesClassNamingFilterTest extends TestCase
 {
     private AliasesClassNamingFilter $object;

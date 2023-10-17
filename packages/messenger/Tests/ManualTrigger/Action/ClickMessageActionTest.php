@@ -9,6 +9,7 @@ use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,37 +28,20 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @covers \Draw\Component\Messenger\ManualTrigger\Action\ClickMessageAction
- */
+#[CoversClass(ClickMessageAction::class)]
 class ClickMessageActionTest extends TestCase
 {
     private ClickMessageAction $object;
 
-    /**
-     * @var MessageBusInterface&MockObject
-     */
-    private MessageBusInterface $messageBus;
+    private MessageBusInterface&MockObject $messageBus;
 
-    /**
-     * @var EnvelopeFinder&MockObject
-     */
-    private EnvelopeFinder $envelopeFinder;
+    private EnvelopeFinder&MockObject $envelopeFinder;
 
-    /**
-     * @var EventDispatcherInterface&MockObject
-     */
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
-    /**
-     * @var TranslatorInterface&MockObject
-     */
-    private TranslatorInterface $translator;
+    private TranslatorInterface&MockObject $translator;
 
-    /**
-     * @var TransportRepository&MockObject
-     */
-    private TransportRepository $transportRepository;
+    private TransportRepository&MockObject $transportRepository;
 
     private Request $request;
 
@@ -87,7 +71,7 @@ class ClickMessageActionTest extends TestCase
         );
     }
 
-    public function provideTestClickEnvelopeError(): iterable
+    public static function provideTestClickEnvelopeError(): iterable
     {
         yield 'not-found' => [
             null,

@@ -15,35 +15,25 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFact
 use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMessageListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
-/**
- * @covers \Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMessageListener
- */
+#[CoversClass(DoctrineBusMessageListener::class)]
 class DoctrineBusMessageListenerTest extends TestCase
 {
     use MockTrait;
 
     private DoctrineBusMessageListener $object;
 
-    /**
-     * @var EnvelopeFactoryInterface&MockObject
-     */
-    private EnvelopeFactoryInterface $envelopeFactory;
+    private EnvelopeFactoryInterface&MockObject $envelopeFactory;
 
-    /**
-     * @var MessageBusInterface&MockObject
-     */
-    private MessageBusInterface $messageBus;
+    private MessageBusInterface&MockObject $messageBus;
 
-    /**
-     * @var EntityManagerInterface&MockObject
-     */
-    private EntityManagerInterface $entityManager;
+    private EntityManagerInterface&MockObject $entityManager;
 
     protected function setUp(): void
     {

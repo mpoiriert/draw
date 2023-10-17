@@ -23,7 +23,7 @@ class DrawUserExtensionWithEmailWritersEnabledTest extends DrawUserExtensionTest
         return $configuration;
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
         yield [ForgotPasswordEmailWriter::class];

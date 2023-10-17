@@ -3,14 +3,13 @@
 namespace Draw\Component\Messenger\Tests\ManualTrigger\Event;
 
 use Draw\Component\Messenger\ManualTrigger\Event\MessageLinkErrorEvent;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * @covers \Draw\Component\Messenger\ManualTrigger\Event\MessageLinkErrorEvent
- */
+#[CoversClass(MessageLinkErrorEvent::class)]
 class MessageLinkErrorEventTest extends TestCase
 {
     private MessageLinkErrorEvent $event;

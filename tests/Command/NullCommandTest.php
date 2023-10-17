@@ -26,12 +26,12 @@ class NullCommandTest extends TestCase
         return 'app:null';
     }
 
-    public function provideTestArgument(): iterable
+    public static function provideTestArgument(): iterable
     {
         return [];
     }
 
-    public function provideTestOption(): iterable
+    public static function provideTestOption(): iterable
     {
         yield [
             'draw-execution-id',

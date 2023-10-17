@@ -3,12 +3,11 @@
 namespace Draw\Component\Messenger\Tests\Broker\Event;
 
 use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * @covers \Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent
- */
+#[CoversClass(NewConsumerProcessEvent::class)]
 class NewConsumerProcessEventTest extends TestCase
 {
     private NewConsumerProcessEvent $event;

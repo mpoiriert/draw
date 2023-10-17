@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class RootSchemaExtractorTest extends TestCase
 {
-    public function provideTestCanExtract(): array
+    public static function provideTestCanExtract(): array
     {
         return [
             [[], new Root(), false],

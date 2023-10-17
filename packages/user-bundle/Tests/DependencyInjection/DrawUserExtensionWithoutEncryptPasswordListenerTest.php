@@ -15,9 +15,9 @@ class DrawUserExtensionWithoutEncryptPasswordListenerTest extends DrawUserExtens
         ];
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
-        yield from $this->removeProvidedService(
+        yield from static::removeProvidedService(
             [
                 EncryptPasswordUserEntityListener::class,
             ],

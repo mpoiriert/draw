@@ -56,7 +56,7 @@ class ConfigurationTest extends ConfigurationTestCase
         ];
     }
 
-    public function provideTestInvalidConfiguration(): iterable
+    public static function provideTestInvalidConfiguration(): iterable
     {
         yield [
             ['fix_menu_depth' => ['enabled' => []]],

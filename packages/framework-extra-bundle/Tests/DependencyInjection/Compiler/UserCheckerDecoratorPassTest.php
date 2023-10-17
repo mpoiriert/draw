@@ -4,14 +4,13 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass
- */
+#[CoversClass(UserCheckerDecoratorPass::class)]
 class UserCheckerDecoratorPassTest extends TestCase
 {
     private UserCheckerDecoratorPass $compilerPass;

@@ -14,17 +14,17 @@ use JMS\Serializer\Naming\CamelCaseNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-/**
- * @covers \Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtractor
- */
+#[CoversClass(PropertiesExtractor::class)]
 class PropertiesExtractorTest extends TestCase
 {
     private PropertiesExtractor $jmsExtractor;
 
-    public function provideTestCanExtract(): iterable
+    public static function provideTestCanExtract(): iterable
     {
         return [
             [null, null, false],
@@ -47,9 +47,7 @@ class PropertiesExtractorTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideTestCanExtract
-     */
+    #[DataProvider('provideTestCanExtract')]
     public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
         if (null !== $source) {

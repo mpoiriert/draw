@@ -7,10 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface SecurityUserInterface extends PasswordAuthenticatedUserInterface, UserInterface
 {
-    /**
-     * @return mixed
-     */
-    public function getId();
+    public function getId(): mixed;
 
     public function getUserIdentifier(): ?string;
 
@@ -19,7 +16,7 @@ interface SecurityUserInterface extends PasswordAuthenticatedUserInterface, User
     public function getPlainPassword(): ?string;
 
     /**
-     * Set the the plain (not encrypted) password to replace the current password upon save.
+     * Set the plain (not encrypted) password to replace the current password upon save.
      *
      * @param ?string $plainPassword The new password
      */

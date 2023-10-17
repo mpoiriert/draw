@@ -2,16 +2,16 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
+use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Security\CanShowMessageVoter;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
- */
+#[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataIntegrationExtensionTest
 {
-    private array $queueNames;
+    private static array $queueNames;
 
     public function getConfiguration(): array
     {
@@ -19,13 +19,13 @@ class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataInteg
 
         $configuration['messenger'] = [
             'enabled' => true,
-            'queue_names' => $this->queueNames = [uniqid('queue-name-')],
+            'queue_names' => self::$queueNames = [uniqid('queue-name-')],
         ];
 
         return $configuration;
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield [MessengerMessageAdmin::class];
         yield [FinalizeContextQueueCountEventListener::class];
@@ -44,7 +44,7 @@ class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataInteg
         $bindings = $definition->getBindings();
 
         static::assertSame(
-            $this->queueNames,
+            self::$queueNames,
             $bindings['$queueNames']->getValues()[0]
         );
     }

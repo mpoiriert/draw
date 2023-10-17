@@ -20,7 +20,7 @@
         "jms/serializer": "^3.11",
         "jms/serializer-bundle": "^4.2",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "phpunit/phpunit": "^8.0 || ^9.0",
+        "phpunit/phpunit": "^9.0 || ^10.0",
         "psr/http-message": "^1.0",
         "psr/log": "@stable",
         "ramsey/uuid": "^4.2",

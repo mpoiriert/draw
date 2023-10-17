@@ -20,7 +20,7 @@ class PingActionTest extends WebTestCase
         );
     }
 
-    public function provideTestPingWithContext(): iterable
+    public static function provideTestPingWithContext(): iterable
     {
         yield 'error' => ['error', Response::HTTP_BAD_GATEWAY];
 

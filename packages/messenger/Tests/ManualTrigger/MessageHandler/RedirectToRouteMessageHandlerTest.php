@@ -4,14 +4,13 @@ namespace Draw\Component\Messenger\Tests\ManualTrigger\MessageHandler;
 
 use Draw\Component\Messenger\ManualTrigger\Message\RedirectToRouteMessageInterface;
 use Draw\Component\Messenger\ManualTrigger\MessageHandler\RedirectToRouteMessageHandler;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @covers \Draw\Component\Messenger\ManualTrigger\MessageHandler\RedirectToRouteMessageHandler;
- */
+#[CoversClass(RedirectToRouteMessageHandler::class)]
 class RedirectToRouteMessageHandlerTest extends TestCase
 {
     private RedirectToRouteMessageHandler $service;
