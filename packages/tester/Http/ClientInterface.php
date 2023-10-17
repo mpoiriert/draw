@@ -12,11 +12,11 @@ interface ClientInterface
     public function setRequestExecutioner(RequestExecutionerInterface $requestExecutioner);
 
     /**
-     * Register a observer that can be hooked in different step of the request flow.
+     * Register an observer that can be hooked in different step of the request flow.
      *
      * @param int $position The position in which the observer must be registered. Lower number are executed first
      */
-    public function registerObserver(ClientObserver $clientObserver, int $position = 0): void;
+    public function registerObserver(ClientObserverInterface $clientObserver, int $position = 0): void;
 
     /**
      * This is a shortcut method that chain the ClientInterface::createRequest and the ClientInterface::send execution

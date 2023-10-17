@@ -4,6 +4,8 @@ namespace Draw\Component\Validator\Tests\Constraints;
 
 use Draw\Component\Validator\Constraints\PhpCallable;
 use Draw\Component\Validator\Constraints\PhpCallableValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -12,9 +14,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
-/**
- * @covers \Draw\Component\Validator\Constraints\PhpCallableValidator
- */
+#[CoversClass(PhpCallableValidator::class)]
 class PhpCallableValidatorTest extends TestCase
 {
     private PhpCallableValidator $object;
@@ -49,7 +49,7 @@ class PhpCallableValidatorTest extends TestCase
     /**
      * @return array<string, array{0: mixed, ?Constraint, int}>
      */
-    public function provideTestValidate(): array
+    public static function provideTestValidate(): array
     {
         return [
             'execution-only' => [null, null, 0],
@@ -60,9 +60,7 @@ class PhpCallableValidatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestValidate
-     */
+    #[DataProvider('provideTestValidate')]
     public function testValidate(mixed $value, ?Constraint $returnValueConstraint, int $violationsCount): void
     {
         $validator = Validation::createValidator();

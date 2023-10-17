@@ -18,8 +18,11 @@ class ConfigurationTest extends ConfigurationTestCase
         return ['profiling' => ['enabled' => true]];
     }
 
-    public function provideTestInvalidConfiguration(): iterable
+    public static function provideTestInvalidConfiguration(): iterable
     {
-        return [];
+        yield [
+            ['invalid' => true],
+            'Unrecognized option invalid under draw_tester. Available option is profiling.',
+        ];
     }
 }

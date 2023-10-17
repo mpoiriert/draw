@@ -4,11 +4,10 @@ namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
-/**
- * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
- */
+#[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionTest extends ExtensionTestCase
 {
     public function createExtension(): Extension
@@ -34,8 +33,8 @@ class DrawSonataIntegrationExtensionTest extends ExtensionTestCase
         ];
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
-        return [];
+        yield [null];
     }
 }

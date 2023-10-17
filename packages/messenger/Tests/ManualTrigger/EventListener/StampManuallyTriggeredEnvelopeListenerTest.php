@@ -5,14 +5,14 @@ namespace Draw\Component\Messenger\Tests\ManualTrigger\EventListener;
 use Draw\Component\Messenger\ManualTrigger\EventListener\StampManuallyTriggeredEnvelopeListener;
 use Draw\Component\Messenger\ManualTrigger\Message\ManuallyTriggeredInterface;
 use Draw\Component\Messenger\ManualTrigger\Stamp\ManualTriggerStamp;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
-/**
- * @covers \Draw\Component\Messenger\ManualTrigger\EventListener\StampManuallyTriggeredEnvelopeListener
- */
+#[CoversClass(StampManuallyTriggeredEnvelopeListener::class)]
 class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
 {
     private StampManuallyTriggeredEnvelopeListener $service;
@@ -42,7 +42,7 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
         );
     }
 
-    public function provideTestHandleManuallyTriggeredMessage(): iterable
+    public static function provideTestHandleManuallyTriggeredMessage(): iterable
     {
         yield 'no-stamp-message-object' => [
             new Envelope((object) []),
@@ -50,19 +50,17 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
         ];
 
         yield 'stamp-manually-triggered' => [
-            new Envelope($this->createMock(ManuallyTriggeredInterface::class)),
+            new Envelope(new class() implements ManuallyTriggeredInterface {}),
             1,
         ];
 
         yield 'already-stamp-manually-triggered' => [
-            new Envelope($this->createMock(ManuallyTriggeredInterface::class), [new ManualTriggerStamp()]),
+            new Envelope(new class() implements ManuallyTriggeredInterface {}, [new ManualTriggerStamp()]),
             1,
         ];
     }
 
-    /**
-     * @dataProvider provideTestHandleManuallyTriggeredMessage
-     */
+    #[DataProvider('provideTestHandleManuallyTriggeredMessage')]
     public function testHandleManuallyTriggeredMessage(Envelope $envelope, int $expectedCount): void
     {
         $this->service->handleManuallyTriggeredMessage($event = new SendMessageToTransportsEvent($envelope));

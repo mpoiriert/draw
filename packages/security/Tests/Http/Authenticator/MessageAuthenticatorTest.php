@@ -7,6 +7,7 @@ use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
 use Draw\Component\Tester\MockTrait;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,29 +24,18 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
-/**
- * @covers \Draw\Component\Security\Http\Authenticator\MessageAuthenticator
- */
+#[CoversClass(MessageAuthenticator::class)]
 class MessageAuthenticatorTest extends TestCase
 {
     use MockTrait;
 
     private MessageAuthenticator $service;
 
-    /**
-     * @var EnvelopeFinder&MockObject
-     */
-    private EnvelopeFinder $envelopeFinder;
+    private EnvelopeFinder&MockObject $envelopeFinder;
 
-    /**
-     * @var UserProviderInterface&MockObject
-     */
-    private UserProviderInterface $userProvider;
+    private UserProviderInterface&MockObject $userProvider;
 
-    /**
-     * @var Security&MockObject
-     */
-    private Security $security;
+    private Security&MockObject $security;
 
     protected function setUp(): void
     {
@@ -249,7 +239,7 @@ class MessageAuthenticatorTest extends TestCase
     }
 
     /**
-     * This is form the parent abstract class but we test it as part of a contract test.
+     * This is form the parent abstract class, but we test it as part of a contract test.
      *
      * @see AbstractAuthenticator
      */

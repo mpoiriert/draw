@@ -14,6 +14,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDec
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\JwtAuthenticatorFactory;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\MessengerMessageAuthenticatorFactory;
 use Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -21,6 +22,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DrawFrameworkExtraBundleTest extends TestCase
 {
+    use MockTrait;
+
     private DrawFrameworkExtraBundle $bundle;
 
     protected function setUp(): void
@@ -35,36 +38,54 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $containerBuilder
             ->expects(static::exactly(9))
             ->method('addCompilerPass')
-            ->withConsecutive(
-                [
-                    static::isInstanceOf(TagIfExpressionCompilerPass::class),
-                ],
-                [
-                    static::isInstanceOf(LoggerDecoratorPass::class),
-                ],
-                [
-                    static::isInstanceOf(UserCheckerDecoratorPass::class),
-                ],
-                [
-                    static::isInstanceOf(MessengerBrokerCompilerPass::class),
-                ],
-                [
-                    static::isInstanceOf(AddNewestInstanceRoleCommandOptionPass::class),
-                ],
-                [
-                    static::isInstanceOf(AddCommandExecutionOptionsCompilerPass::class),
-                ],
-                [
-                    static::isInstanceOf(EmailWriterCompilerPass::class),
-                ],
-                [
-                    static::isInstanceOf(MessengerTransportNamesCompilerPass::class),
-                    PassConfig::TYPE_BEFORE_OPTIMIZATION,
-                    -1,
-                ],
-                [
-                    static::isInstanceOf(JmsDoctrineObjectConstructionCompilerPass::class),
-                ],
+            ->with(
+                ...static::withConsecutive(
+                    [
+                        static::isInstanceOf(TagIfExpressionCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(LoggerDecoratorPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        -1,
+                    ],
+                    [
+                        static::isInstanceOf(UserCheckerDecoratorPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(MessengerBrokerCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(AddNewestInstanceRoleCommandOptionPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(AddCommandExecutionOptionsCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(EmailWriterCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(MessengerTransportNamesCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        -1,
+                    ],
+                    [
+                        static::isInstanceOf(JmsDoctrineObjectConstructionCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                )
             )
             ->willReturnSelf();
 
@@ -83,9 +104,11 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $extension
             ->expects(static::exactly(2))
             ->method('addAuthenticatorFactory')
-            ->withConsecutive(
-                [static::isInstanceOf(JwtAuthenticatorFactory::class)],
-                [static::isInstanceOf(MessengerMessageAuthenticatorFactory::class)],
+            ->with(
+                ...static::withConsecutive(
+                    [static::isInstanceOf(JwtAuthenticatorFactory::class)],
+                    [static::isInstanceOf(MessengerMessageAuthenticatorFactory::class)],
+                )
             );
 
         $this->bundle->build($containerBuilder);

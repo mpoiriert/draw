@@ -6,13 +6,13 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegra
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Application\Cron\Command\CronDumpToFileCommand;
 use Draw\Component\Application\Cron\CronManager;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration
- *
  * @property CronIntegration $integration
  */
+#[CoversClass(CronIntegration::class)]
 class CronIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -32,7 +32,7 @@ class CronIntegrationTest extends IntegrationTestCase
         ];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [

@@ -8,6 +8,7 @@ use Draw\Component\OpenApi\Serializer\Serialization;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,27 +22,16 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @covers \Draw\Component\OpenApi\EventListener\ResponseSerializerListener
- */
+#[CoversClass(ResponseSerializerListener::class)]
 class ResponseSerializerListenerTest extends TestCase
 {
     private ResponseSerializerListener $object;
 
-    /**
-     * @var SerializerInterface&MockObject
-     */
-    private SerializerInterface $serializer;
+    private SerializerInterface&MockObject $serializer;
 
-    /**
-     * @var SerializationContextFactoryInterface&MockObject
-     */
-    private SerializationContextFactoryInterface $serializationContextFactory;
+    private SerializationContextFactoryInterface&MockObject $serializationContextFactory;
 
-    /**
-     * @var EventDispatcherInterface&MockObject
-     */
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
     protected function setUp(): void
     {

@@ -38,7 +38,7 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         return [];
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield [AdminValueResolver::class];
         yield [MonitoringBlockService::class];

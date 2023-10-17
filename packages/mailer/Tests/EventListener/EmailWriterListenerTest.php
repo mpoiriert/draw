@@ -5,6 +5,7 @@ namespace Draw\Component\Mailer\Tests\EventListener;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailWriterListener;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -19,19 +20,14 @@ use Symfony\Component\Mime\Header\UnstructuredHeader;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\RawMessage;
 
-/**
- * @covers \Draw\Component\Mailer\EventListener\EmailWriterListener
- */
+#[CoversClass(EmailWriterListener::class)]
 class EmailWriterListenerTest extends TestCase
 {
     use MockTrait;
 
     private EmailWriterListener $object;
 
-    /**
-     * @var ContainerInterface&MockObject
-     */
-    private ContainerInterface $serviceLocator;
+    private ContainerInterface&MockObject $serviceLocator;
 
     protected function setUp(): void
     {
@@ -131,9 +127,11 @@ class EmailWriterListenerTest extends TestCase
         $this->serviceLocator
             ->expects(static::exactly(2))
             ->method('get')
-            ->withConsecutive(
-                [$writer2],
-                [$writer1]
+            ->with(
+                ...static::withConsecutive(
+                    [$writer2],
+                    [$writer1]
+                )
             )
             ->willReturn(
                 $emailWriter = $this->createMockWithExtraMethods(EmailWriterInterface::class, ['method1', 'method2'])

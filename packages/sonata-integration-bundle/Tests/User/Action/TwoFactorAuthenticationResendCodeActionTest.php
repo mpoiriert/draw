@@ -3,6 +3,7 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\User\Action;
 
 use Draw\Bundle\SonataIntegrationBundle\User\Action\TwoFactorAuthenticationResendCodeAction;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
@@ -12,22 +13,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @covers \Draw\Bundle\SonataIntegrationBundle\User\Action\TwoFactorAuthenticationResendCodeAction
- */
+#[CoversClass(TwoFactorAuthenticationResendCodeAction::class)]
 class TwoFactorAuthenticationResendCodeActionTest extends TestCase
 {
     private TwoFactorAuthenticationResendCodeAction $object;
 
-    /**
-     * @var CodeGeneratorInterface&MockObject
-     */
-    private CodeGeneratorInterface $codeGenerator;
+    private CodeGeneratorInterface&MockObject $codeGenerator;
 
-    /**
-     * @var UrlGeneratorInterface&MockObject
-     */
-    private UrlGeneratorInterface $urlGenerator;
+    private UrlGeneratorInterface&MockObject $urlGenerator;
 
     protected function setUp(): void
     {

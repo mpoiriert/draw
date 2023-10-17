@@ -5,11 +5,10 @@ namespace Draw\Component\Security\Tests\Jwt;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Security\Jwt\JwtEncoder
- */
+#[CoversClass(JwtEncoder::class)]
 class JwtEncoderTest extends TestCase
 {
     private JwtEncoder $service;

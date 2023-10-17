@@ -4,22 +4,18 @@ namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\Event;
 
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * @covers \Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent
- */
+#[CoversClass(EnvelopeCreatedEvent::class)]
 class EnvelopeCreatedEventTest extends TestCase
 {
     private EnvelopeCreatedEvent $object;
 
-    /**
-     * @var MessageHolderInterface&MockObject
-     */
-    private MessageHolderInterface $messageHolder;
+    private MessageHolderInterface&MockObject $messageHolder;
 
     private Envelope $envelope;
 

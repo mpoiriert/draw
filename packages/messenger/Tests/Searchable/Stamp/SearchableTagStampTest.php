@@ -3,12 +3,11 @@
 namespace Draw\Component\Messenger\Tests\Searchable\Stamp;
 
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Stamp\StampInterface;
 
-/**
- * @covers \Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp
- */
+#[CoversClass(SearchableTagStamp::class)]
 class SearchableTagStampTest extends TestCase
 {
     private SearchableTagStamp $entity;

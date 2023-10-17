@@ -5,7 +5,7 @@ namespace Draw\Component\OpenApi\Tests\Mock\Controller;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
-use Draw\Component\OpenApi\Tests\Mock\Model\Test;
+use Draw\Component\OpenApi\Tests\Mock\Model\TestClass;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -14,7 +14,7 @@ class TestController
     /**
      * @param string $param1 param1 description
      *
-     * @return Test The created test entity
+     * @return TestClass The created test entity
      */
     #[Route(path: '/tests', methods: ['POST'])]
     #[OpenApi\Operation(operationId: 'createTest', tags: ['test'])]
@@ -34,10 +34,10 @@ class TestController
     #[OpenApi\Header(name: 'X-Draw', description: 'Description of the header', type: 'string')]
     public function createAction(
         #[RequestBody(deserializationGroups: ['Included'])]
-        Test $test,
+        TestClass $test,
         #[OpenApi\QueryParameter]
         string $param1 = 'default'
-    ): Test {
+    ): TestClass {
         $test->setProperty($param1);
 
         return $test;

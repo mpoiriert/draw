@@ -3,11 +3,10 @@
 namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\Entity;
 
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait
- */
+#[CoversClass(MessageHolderTrait::class)]
 class MessageHolderTraitTest extends TestCase
 {
     use MessageHolderTrait;

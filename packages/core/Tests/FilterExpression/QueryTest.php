@@ -5,11 +5,10 @@ namespace Draw\Component\Core\Tests\FilterExpression;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpression;
 use Draw\Component\Core\FilterExpression\Expression\Expression;
 use Draw\Component\Core\FilterExpression\Query;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Core\FilterExpression\Query
- */
+#[CoversClass(Query::class)]
 class QueryTest extends TestCase
 {
     private Query $object;

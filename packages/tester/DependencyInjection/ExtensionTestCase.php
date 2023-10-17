@@ -22,9 +22,9 @@ abstract class ExtensionTestCase extends TestCase
      */
     abstract public function getConfiguration(): array;
 
-    abstract public function provideTestHasServiceDefinition(): iterable;
+    abstract public static function provideTestHasServiceDefinition(): iterable;
 
-    protected function removeProvidedService(array $idsToRemove, iterable $providedServices): iterable
+    protected static function removeProvidedService(array $idsToRemove, iterable $providedServices): iterable
     {
         foreach ($providedServices as $providedService) {
             if (!\in_array($providedService[0], $idsToRemove)) {
@@ -53,7 +53,16 @@ abstract class ExtensionTestCase extends TestCase
      *
      * @param ?string $aliasOf If the id is a alias it's a alias of which service ?
      */
-    public function testHasServiceDefinition(string $id, ?string $aliasOf = null): void
+    public function testServiceDefinition(?string $id, ?string $aliasOf = null): void
+    {
+        if (!$id) {
+            static::markTestSkipped('No service to test');
+        }
+
+        $this->assertServiceDefinition($id, $aliasOf);
+    }
+
+    private function assertServiceDefinition(string $id, ?string $aliasOf = null): void
     {
         if ($aliasOf) {
             self::$aliases[] = $id;

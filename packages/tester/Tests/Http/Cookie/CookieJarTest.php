@@ -227,7 +227,7 @@ class CookieJarTest extends TestCase
         static::assertCount(1, $this->jar);
     }
 
-    public function provideTestReturnsCookiesMatchingRequests(): array
+    public static function provideTestReturnsCookiesMatchingRequests(): array
     {
         return [
             ['https://example.com', 'foo=bar; baz=foobar'],
@@ -336,7 +336,7 @@ class CookieJarTest extends TestCase
         static::assertTrue($newRequest->hasHeader('Cookie'));
     }
 
-    public function provideTestCookiePathWithEmptyCookiePath(): array
+    public static function provideTestCookiePathWithEmptyCookiePath(): array
     {
         return [
             ['', '/'],

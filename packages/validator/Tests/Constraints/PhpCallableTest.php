@@ -4,12 +4,11 @@ namespace Draw\Component\Validator\Tests\Constraints;
 
 use Draw\Component\Validator\Constraints\PhpCallable;
 use Draw\Component\Validator\Constraints\PhpCallableValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @covers \Draw\Component\Validator\Constraints\PhpCallable
- */
+#[CoversClass(PhpCallable::class)]
 class PhpCallableTest extends TestCase
 {
     private PhpCallable $object;

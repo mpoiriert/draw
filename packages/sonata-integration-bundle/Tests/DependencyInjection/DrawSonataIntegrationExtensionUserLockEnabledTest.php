@@ -3,14 +3,14 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use App\Sonata\Admin\UserAdmin;
+use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\RefreshUserLockExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\Extension\UnlockUserLockExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\RefreshUserLockController;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
- */
+#[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionUserLockEnabledTest extends DrawSonataIntegrationExtensionUserEnabledTest
 {
     public function getConfiguration(): array
@@ -24,7 +24,7 @@ class DrawSonataIntegrationExtensionUserLockEnabledTest extends DrawSonataIntegr
         return $configuration;
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
         yield [UserLockAdmin::class];

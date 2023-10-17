@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class DateTimeUtilsTest extends TestCase
 {
-    public function provideTestIsSameTimestamp(): array
+    public static function provideTestIsSameTimestamp(): array
     {
         return [
             'both-null' => [
@@ -62,7 +62,7 @@ class DateTimeUtilsTest extends TestCase
         );
     }
 
-    public function provideTestToDateTimeX(): array
+    public static function provideTestToDateTimeX(): array
     {
         return [
             'null' => [null],
@@ -105,7 +105,7 @@ class DateTimeUtilsTest extends TestCase
         static::assertNotSame($dateTimeInterface, $dateTime);
     }
 
-    public function provideTestMillisecondDiff(): array
+    public static function provideTestMillisecondDiff(): array
     {
         return [
             'now compare' => ['now', null, 0],

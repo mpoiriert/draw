@@ -3,12 +3,11 @@
 namespace Draw\Component\Security\Tests\Core\Event;
 
 use Draw\Component\Security\Core\Event\CheckPostAuthEvent;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @covers \Draw\Component\Security\Core\Event\CheckPostAuthEvent
- */
+#[CoversClass(CheckPostAuthEvent::class)]
 class CheckPostAuthEventTest extends TestCase
 {
     private CheckPostAuthEvent $event;

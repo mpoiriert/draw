@@ -6,12 +6,12 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ValidatorIn
 use Draw\Component\Validator\Constraints\PhpCallableValidator;
 use Draw\Component\Validator\Constraints\RemoteFileExistsValidator;
 use Draw\Component\Validator\Constraints\ValueIsNotUsedValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ValidatorIntegration
- *
  * @property ValidatorIntegration $integration
  */
+#[CoversClass(ValidatorIntegration::class)]
 class ValidatorIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): ValidatorIntegration
@@ -29,7 +29,7 @@ class ValidatorIntegrationTest extends IntegrationTestCase
         return [];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [],

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
-         backupGlobals="false"
-         colors="true"
-         bootstrap="tests/bootstrap.php"
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd"
+        backupGlobals="false"
+        colors="true"
+        bootstrap="tests/bootstrap.php"
+        cacheDirectory=".phpunit.cache"
 >
     <php>
-        <ini name="memory_limit" value="4096M" />
-        <ini name="error_reporting" value="-1" />
+        <ini name="memory_limit" value="4096M"/>
+        <ini name="error_reporting" value="-1"/>
         <env name="APP_ENV" value="test" force="true"/>
-        <env name="SHELL_VERBOSITY" value="-1" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
-        <env name="DATABASE_URL" value="mysql://draw:draw@mysql:3306/draw" />
+        <env name="SHELL_VERBOSITY" value="-1"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+        <env name="DATABASE_URL" value="mysql://draw:draw@mysql:3306/draw"/>
     </php>
     <testsuites>
         <testsuite name="all">
@@ -19,8 +21,8 @@
             <directory>./packages/*/Tests</directory>
         </testsuite>
     </testsuites>
-
-    <coverage>
+    <coverage/>
+    <source>
         <include>
             <directory>./packages/*</directory>
             <directory>./src</directory>
@@ -34,9 +36,8 @@
             <directory>./packages/*/vendor</directory>
             <directory>tests</directory>
         </exclude>
-    </coverage>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
-    </listeners>
+    </source>
+    <extensions>
+        <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\CarbonResetExtension"/>
+    </extensions>
 </phpunit>

@@ -65,14 +65,38 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         );
     }
 
-    public function provideTestCheckNeedToEnableTwoFactorAuthentication(): iterable
+    public static function provideTestCheckNeedToEnableTwoFactorAuthentication(): iterable
     {
         $request = new Request();
         $request->attributes->set('_route', self::ENABLE_ROUTE);
 
         yield 'not-security-user' => [
             new UserRequestInterceptionEvent(
-                $this->createMock(UserInterface::class),
+                new class() implements UserInterface {
+                    public function getRoles(): array
+                    {
+                        return [];
+                    }
+
+                    public function getPassword(): ?string
+                    {
+                        return null;
+                    }
+
+                    public function getSalt(): ?string
+                    {
+                        return null;
+                    }
+
+                    public function getUsername(): string
+                    {
+                        return '';
+                    }
+
+                    public function eraseCredentials(): void
+                    {
+                    }
+                },
                 $request
             ),
             false,
@@ -81,7 +105,24 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-two-factor-authentication-user' => [
             new UserRequestInterceptionEvent(
-                $this->createMock(SecurityUserInterface::class),
+                new class() implements SecurityUserInterface,
+                    TwoFactorAuthenticationUserInterface {
+                    use ConfigurationTrait {
+                        asOneTwoFActorAuthenticationProviderEnabled as originalAsOneProviderEnabled;
+                    }
+
+                    use SecurityUserTrait;
+
+                    public function getId(): mixed
+                    {
+                        return 1;
+                    }
+
+                    public function asOneTwoFActorAuthenticationProviderEnabled(): bool
+                    {
+                        return false;
+                    }
+                },
                 $request
             ),
             false,
@@ -98,7 +139,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
                     use SecurityUserTrait;
 
-                    public function getId()
+                    public function getId(): mixed
                     {
                         return 1;
                     }
@@ -121,7 +162,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                     use ConfigurationTrait;
                     use SecurityUserTrait;
 
-                    public function getId()
+                    public function getId(): mixed
                     {
                         return 1;
                     }
@@ -142,7 +183,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
                     use SecurityUserTrait;
 
-                    public function getId()
+                    public function getId(): mixed
                     {
                         return 1;
                     }
@@ -169,7 +210,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
                     use SecurityUserTrait;
 
-                    public function getId()
+                    public function getId(): mixed
                     {
                         return 1;
                     }
@@ -195,7 +236,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                     }
                     use SecurityUserTrait;
 
-                    public function getId()
+                    public function getId(): mixed
                     {
                         return 1;
                     }

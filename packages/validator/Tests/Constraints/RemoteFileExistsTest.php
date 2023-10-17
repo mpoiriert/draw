@@ -3,12 +3,11 @@
 namespace Draw\Component\Validator\Tests\Constraints;
 
 use Draw\Component\Validator\Constraints\RemoteFileExists;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @covers \Draw\Component\Validator\Constraints\RemoteFileExists
- */
+#[CoversClass(RemoteFileExists::class)]
 class RemoteFileExistsTest extends TestCase
 {
     private RemoteFileExists $object;

@@ -4,12 +4,11 @@ namespace Draw\Component\Validator\Tests\Constraints;
 
 use Draw\Component\Validator\Constraints\PhpCallable;
 use Draw\Component\Validator\Constraints\Strtotime;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Type;
 
-/**
- * @covers \Draw\Component\Validator\Constraints\Strtotime
- */
+#[CoversClass(Strtotime::class)]
 class StrtotimeTest extends TestCase
 {
     private Strtotime $object;

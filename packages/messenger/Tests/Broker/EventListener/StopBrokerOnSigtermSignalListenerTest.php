@@ -5,11 +5,10 @@ namespace Draw\Component\Messenger\Tests\Broker\EventListener;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use Draw\Component\Messenger\Broker\EventListener\StopBrokerOnSigtermSignalListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Messenger\Broker\EventListener\StopBrokerOnSigtermSignalListener
- */
+#[CoversClass(StopBrokerOnSigtermSignalListener::class)]
 class StopBrokerOnSigtermSignalListenerTest extends TestCase
 {
     private StopBrokerOnSigtermSignalListener $service;

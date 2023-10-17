@@ -4,13 +4,12 @@ namespace Draw\Bundle\TesterBundle\Tests\DependencyInjection\Compiler;
 
 use Draw\Bundle\TesterBundle\DependencyInjection\Compiler\MessengerPass;
 use Draw\Bundle\TesterBundle\Messenger\HandleMessagesMappingProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/**
- * @covers \Draw\Bundle\TesterBundle\DependencyInjection\Compiler\MessengerPass
- */
+#[CoversClass(MessengerPass::class)]
 class MessengerPassTest extends TestCase
 {
     private MessengerPass $compilerPass;

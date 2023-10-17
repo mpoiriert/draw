@@ -4,14 +4,13 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Component\Console\EventListener\CommandFlowListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass
- */
+#[CoversClass(AddCommandExecutionOptionsCompilerPass::class)]
 class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 {
     private AddCommandExecutionOptionsCompilerPass $compilerPass;

@@ -6,12 +6,12 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration;
 use Draw\Component\Workflow\EventListener\AddTransitionNameToContextListener;
 use Draw\Component\Workflow\EventListener\AddUserToContextListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration
- *
  * @property WorkflowIntegration $integration
  */
+#[CoversClass(WorkflowIntegration::class)]
 class WorkflowIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -29,7 +29,7 @@ class WorkflowIntegrationTest extends IntegrationTestCase
         return [];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [],

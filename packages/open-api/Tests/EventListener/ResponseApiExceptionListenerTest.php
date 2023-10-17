@@ -9,6 +9,8 @@ use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Response as OpenResponse;
 use Draw\Component\OpenApi\Schema\Root;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,9 +22,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
-/**
- * @covers \Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener
- */
+#[CoversClass(ResponseApiExceptionListener::class)]
 class ResponseApiExceptionListenerTest extends TestCase
 {
     private ResponseApiExceptionListener $object;
@@ -210,7 +210,7 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
     }
 
-    public function provideOnKernelExceptionStatusCode(): iterable
+    public static function provideOnKernelExceptionStatusCode(): iterable
     {
         yield 'ChangeDefault' => [
             new \Exception(),
@@ -250,10 +250,9 @@ class ResponseApiExceptionListenerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideOnKernelExceptionStatusCode
-     *
      * @param array<string,int> $errorCodes
      */
+    #[DataProvider('provideOnKernelExceptionStatusCode')]
     public function testOnKernelExceptionErrorCode(\Throwable $throwable, array $errorCodes, int $errorCode): void
     {
         $this->exceptionEvent = new ExceptionEvent(

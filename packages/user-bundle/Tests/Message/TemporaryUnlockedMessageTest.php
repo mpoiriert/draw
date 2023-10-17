@@ -8,11 +8,10 @@ use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage
- */
+#[CoversClass(TemporaryUnlockedMessage::class)]
 class TemporaryUnlockedMessageTest extends TestCase
 {
     private TemporaryUnlockedMessage $object;

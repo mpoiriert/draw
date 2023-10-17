@@ -6,32 +6,28 @@ use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
 use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
+use Draw\Component\Tester\MockTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @covers \Draw\Component\Messenger\Broker\Broker
- */
+#[CoversClass(Broker::class)]
 class BrokerTest extends TestCase
 {
+    use MockTrait;
+
     private Broker $service;
 
     private string $context;
 
     private string $consolePath;
 
-    /**
-     * @var ProcessFactoryInterface&MockObject
-     */
-    private ProcessFactoryInterface $processFactory;
+    private ProcessFactoryInterface&MockObject $processFactory;
 
-    /**
-     * @var EventDispatcherInterface&MockObject
-     */
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
     protected function setUp(): void
     {
@@ -60,61 +56,63 @@ class BrokerTest extends TestCase
         $this->eventDispatcher
             ->expects(static::exactly($concurrent * 4))
             ->method('dispatch')
-            ->withConsecutive(
-                [
-                    static::callback(function (BrokerStartedEvent $event) use ($concurrent, $timeout) {
-                        $this->assertSame(
-                            $this->service,
-                            $event->getBroker()
-                        );
+            ->with(
+                ...static::withConsecutive(
+                    [
+                        static::callback(function (BrokerStartedEvent $event) use ($concurrent, $timeout) {
+                            $this->assertSame(
+                                $this->service,
+                                $event->getBroker()
+                            );
 
-                        $this->assertSame(
-                            $concurrent,
-                            $event->getConcurrent()
-                        );
+                            $this->assertSame(
+                                $concurrent,
+                                $event->getConcurrent()
+                            );
 
-                        $this->assertSame(
-                            $timeout,
-                            $event->getTimeout()
-                        );
+                            $this->assertSame(
+                                $timeout,
+                                $event->getTimeout()
+                            );
 
-                        return true;
-                    }),
-                ],
-                [
-                    static::callback(function (BrokerRunningEvent $event) {
-                        $this->assertSame(
-                            $this->service,
-                            $event->getBroker()
-                        );
+                            return true;
+                        }),
+                    ],
+                    [
+                        static::callback(function (BrokerRunningEvent $event) {
+                            $this->assertSame(
+                                $this->service,
+                                $event->getBroker()
+                            );
 
-                        return true;
-                    }),
-                ],
-                [
-                    static::callback(function (NewConsumerProcessEvent $event) use ($receiver) {
-                        static::assertSame(
-                            $this->context,
-                            $event->getContext()
-                        );
+                            return true;
+                        }),
+                    ],
+                    [
+                        static::callback(function (NewConsumerProcessEvent $event) use ($receiver) {
+                            static::assertSame(
+                                $this->context,
+                                $event->getContext()
+                            );
 
-                        $event->setReceivers([$receiver]);
+                            $event->setReceivers([$receiver]);
 
-                        return true;
-                    }),
-                ],
-                [
-                    static::callback(function (BrokerRunningEvent $event) {
-                        $this->assertSame(
-                            $this->service,
-                            $event->getBroker()
-                        );
+                            return true;
+                        }),
+                    ],
+                    [
+                        static::callback(function (BrokerRunningEvent $event) {
+                            $this->assertSame(
+                                $this->service,
+                                $event->getBroker()
+                            );
 
-                        $this->service->stop();
+                            $this->service->stop();
 
-                        return true;
-                    }),
-                ],
+                            return true;
+                        }),
+                    ],
+                )
             )
             ->willReturnArgument(0);
 

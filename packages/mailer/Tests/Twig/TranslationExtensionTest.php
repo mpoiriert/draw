@@ -3,23 +3,22 @@
 namespace Draw\Component\Mailer\Tests\Twig;
 
 use Draw\Component\Mailer\Twig\TranslationExtension;
+use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-/**
- * @covers \Draw\Component\Mailer\Twig\TranslationExtension
- */
+#[CoversClass(TranslationExtension::class)]
 class TranslationExtensionTest extends TestCase
 {
+    use MockTrait;
+
     private TranslationExtension $object;
 
-    /**
-     * @var TranslatorInterface&MockObject
-     */
-    private TranslatorInterface $translator;
+    private TranslatorInterface&MockObject $translator;
 
     protected function setUp(): void
     {
@@ -96,9 +95,11 @@ class TranslationExtensionTest extends TestCase
         $this->translator
             ->expects(static::exactly(2))
             ->method('trans')
-            ->withConsecutive(
-                [$message1],
-                [$message2]
+            ->with(
+                ...static::withConsecutive(
+                    [$message1],
+                    [$message2]
+                )
             )
             ->willReturnOnConsecutiveCalls(
                 $message1,

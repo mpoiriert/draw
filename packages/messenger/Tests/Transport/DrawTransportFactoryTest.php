@@ -5,13 +5,13 @@ namespace Draw\Component\Messenger\Tests\Transport;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Messenger\Exception\InvalidArgumentException;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 
-/**
- * @covers \Draw\Component\Messenger\Transport\DrawTransportFactory
- */
+#[CoversClass(DrawTransportFactory::class)]
 class DrawTransportFactoryTest extends TestCase
 {
     private DrawTransportFactory $service;
@@ -85,7 +85,7 @@ class DrawTransportFactoryTest extends TestCase
         $this->service::buildConfiguration($dsn, []);
     }
 
-    public function provideTestBuildConfiguration(): iterable
+    public static function provideTestBuildConfiguration(): iterable
     {
         yield 'default' => [
             'draw://default',
@@ -241,9 +241,7 @@ class DrawTransportFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestBuildConfiguration
-     */
+    #[DataProvider('provideTestBuildConfiguration')]
     public function testBuildConfiguration(string $dsn, array $options, array $expectedResult): void
     {
         $result = $this->service::buildConfiguration($dsn, $options);
@@ -257,7 +255,7 @@ class DrawTransportFactoryTest extends TestCase
         );
     }
 
-    public function provideTestSupports(): iterable
+    public static function provideTestSupports(): iterable
     {
         yield 'draw' => [
             'draw://',
@@ -280,9 +278,7 @@ class DrawTransportFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestSupports
-     */
+    #[DataProvider('provideTestSupports')]
     public function testSupports(string $dsn, bool $support): void
     {
         static::assertSame(

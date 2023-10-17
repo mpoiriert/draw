@@ -2,9 +2,10 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
-/**
- * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
- */
+use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionUser2faEnabledEmailEnabledTest extends DrawSonataIntegrationExtensionUser2faEnabledTest
 {
     public function getConfiguration(): array
@@ -18,7 +19,7 @@ class DrawSonataIntegrationExtensionUser2faEnabledEmailEnabledTest extends DrawS
         return $configuration;
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
 

@@ -3,11 +3,10 @@
 namespace Draw\Component\OpenApi\Tests\Exception;
 
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\OpenApi\Exception\ExtractionImpossibleException
- */
+#[CoversClass(ExtractionImpossibleException::class)]
 class ExtractionImpossibleExceptionTest extends TestCase
 {
     private ExtractionImpossibleException $object;

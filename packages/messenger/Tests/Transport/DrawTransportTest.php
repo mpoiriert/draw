@@ -11,6 +11,11 @@ use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -21,20 +26,17 @@ use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
-/**
- * @covers \Draw\Component\Messenger\Transport\DrawTransport
- */
+#[CoversClass(DrawTransport::class)]
 class DrawTransportTest extends TestCase
 {
     use MockTrait;
 
     private DrawTransport $service;
 
-    /**
-     * @beforeClass
-     *
-     * @afterClass
-     */
+    #[
+        BeforeClass,
+        AfterClass
+    ]
     public static function cleanUp(): void
     {
         try {
@@ -96,9 +98,7 @@ class DrawTransportTest extends TestCase
         static::assertTrue(true);
     }
 
-    /**
-     * @depends testSetup
-     */
+    #[Depends('testSetup')]
     public function testSendException(): void
     {
         $driverConnection = $this->mockProperty(
@@ -117,9 +117,7 @@ class DrawTransportTest extends TestCase
         $this->service->send(new Envelope(new \stdClass()));
     }
 
-    /**
-     * @depends testSetup
-     */
+    #[Depends('testSetup')]
     public function testSend(): Envelope
     {
         $envelope = $this->service->send(new Envelope(
@@ -132,9 +130,7 @@ class DrawTransportTest extends TestCase
         return $envelope;
     }
 
-    /**
-     * @depends testSend
-     */
+    #[Depends('testSend')]
     public function testFindByTag(Envelope $referencedEnvelope): void
     {
         $envelopes = $this->service->findByTag('tag1');
@@ -148,9 +144,7 @@ class DrawTransportTest extends TestCase
         );
     }
 
-    /**
-     * @depends testSend
-     */
+    #[Depends('testSend')]
     public function testFindByTags(Envelope $referencedEnvelope): void
     {
         $envelopes = $this->service->findByTags(['tag1', 'tag2']);
@@ -164,9 +158,7 @@ class DrawTransportTest extends TestCase
         );
     }
 
-    /**
-     * @depends testSetup
-     */
+    #[Depends('testSetup')]
     public function testFindByTagsNoTags(): void
     {
         $driverConnection = $this->mockProperty(
@@ -181,17 +173,13 @@ class DrawTransportTest extends TestCase
         static::assertEmpty($this->service->findByTags([]));
     }
 
-    /**
-     * @depends testSend
-     */
+    #[Depends('testSend')]
     public function testFindByTagsNotMatch(): void
     {
         static::assertCount(0, $this->service->findByTags(['tag3']));
     }
 
-    /**
-     * @depends testSend
-     */
+    #[Depends('testSend')]
     public function testFindAfterAcknowledge(Envelope $referencedEnvelope): void
     {
         $foundEnvelope = $this->service->find($referencedEnvelope->last(TransportMessageIdStamp::class)->getId());
@@ -202,7 +190,7 @@ class DrawTransportTest extends TestCase
         static::assertNull($this->service->find($foundEnvelope->last(TransportMessageIdStamp::class)->getId()));
     }
 
-    public function provideTestSendSearchableMessage(): iterable
+    public static function provideTestSendSearchableMessage(): iterable
     {
         yield 'uniqueness' => [
             [
@@ -274,13 +262,13 @@ class DrawTransportTest extends TestCase
     }
 
     /**
-     * @depends      testSetup
-     *
-     * @dataProvider provideTestSendSearchableMessage
-     *
      * @param array|Envelope[] $insertEnvelopes
      * @param array|string[]   $searchTags
      */
+    #[
+        Depends('testSetup'),
+        DataProvider('provideTestSendSearchableMessage')
+    ]
     public function testSendSearchableMessage(array $insertEnvelopes, array $searchTags, int $resultCount): void
     {
         static::cleanUp();
@@ -292,9 +280,7 @@ class DrawTransportTest extends TestCase
         static::assertCount($resultCount, $this->service->findByTags($searchTags));
     }
 
-    /**
-     * @depends testSetup
-     */
+    #[Depends('testSetup')]
     public function testPurgeObsoleteMessages(): void
     {
         static::cleanUp();

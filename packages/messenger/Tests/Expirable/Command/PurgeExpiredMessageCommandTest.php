@@ -8,6 +8,7 @@ use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
@@ -15,18 +16,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
-/**
- * @covers \Draw\Component\Messenger\Expirable\Command\PurgeExpiredMessageCommand
- */
+#[CoversClass(PurgeExpiredMessageCommand::class)]
 class PurgeExpiredMessageCommandTest extends TestCase
 {
     use CommandTestTrait;
     use MockTrait;
 
-    /**
-     * @var TransportRepository&MockObject
-     */
-    private TransportRepository $transportRepository;
+    private TransportRepository&MockObject $transportRepository;
 
     public function createCommand(): Command
     {
@@ -40,7 +36,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
         return 'draw:messenger:purge-obsolete-messages';
     }
 
-    public function provideTestArgument(): iterable
+    public static function provideTestArgument(): iterable
     {
         yield [
             'transport',
@@ -48,7 +44,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
         ];
     }
 
-    public function provideTestOption(): iterable
+    public static function provideTestOption(): iterable
     {
         yield [
             'delay',
@@ -82,9 +78,11 @@ class PurgeExpiredMessageCommandTest extends TestCase
         $this->transportRepository
             ->expects(static::exactly(2))
             ->method('get')
-            ->withConsecutive(
-                [$transportNames[0]],
-                [$transportNames[1]]
+            ->with(
+                ...static::withConsecutive(
+                    [$transportNames[0]],
+                    [$transportNames[1]]
+                )
             )
             ->willReturnOnConsecutiveCalls(
                 $transport1 = $this->createMock(PurgeableTransportInterface::class),

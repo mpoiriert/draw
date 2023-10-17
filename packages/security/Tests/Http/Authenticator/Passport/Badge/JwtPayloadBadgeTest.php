@@ -3,11 +3,10 @@
 namespace Draw\Component\Security\Tests\Http\Authenticator\Passport\Badge;
 
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge
- */
+#[CoversClass(JwtPayloadBadge::class)]
 class JwtPayloadBadgeTest extends TestCase
 {
     private JwtPayloadBadge $entity;

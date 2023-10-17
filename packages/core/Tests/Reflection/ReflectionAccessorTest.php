@@ -3,11 +3,10 @@
 namespace Draw\Component\Core\Tests\Reflection;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Core\Reflection\ReflectionAccessor
- */
+#[CoversClass(ReflectionAccessor::class)]
 class ReflectionAccessorTest extends TestCase
 {
     private static ?string $privateStaticProperty = null;

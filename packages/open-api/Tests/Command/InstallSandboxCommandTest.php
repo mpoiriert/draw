@@ -6,15 +6,14 @@ use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * @covers \Draw\Component\OpenApi\Command\InstallSandboxCommand
- */
+#[CoversClass(InstallSandboxCommand::class)]
 class InstallSandboxCommandTest extends TestCase
 {
     use CommandTestTrait;
@@ -30,7 +29,7 @@ class InstallSandboxCommandTest extends TestCase
         return 'draw:open-api:install-sandbox';
     }
 
-    public function provideTestArgument(): iterable
+    public static function provideTestArgument(): iterable
     {
         yield [
             'path',
@@ -38,7 +37,7 @@ class InstallSandboxCommandTest extends TestCase
         ];
     }
 
-    public function provideTestOption(): iterable
+    public static function provideTestOption(): iterable
     {
         yield [
             'tag',

@@ -3,13 +3,12 @@
 namespace Draw\Component\Messenger\Tests\ManualTrigger\Message;
 
 use Draw\Component\Messenger\ManualTrigger\Message\RedirectToRouteMessageTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/**
- * @covers \Draw\Component\Messenger\ManualTrigger\Message\RedirectToRouteMessageTrait
- */
+#[CoversClass(RedirectToRouteMessageTrait::class)]
 class RedirectToRouteMessageTraitTest extends TestCase
 {
     use RedirectToRouteMessageTrait;

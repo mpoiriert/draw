@@ -8,6 +8,8 @@ use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Exception\LogicException;
 use JMS\Serializer\Exception\UnsupportedFormatException;
 use JMS\Serializer\SerializerInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -16,17 +18,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 
-/**
- * @covers \Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter
- */
+#[CoversClass(DeserializeBodyParamConverter::class)]
 class DeserializeBodyParamConverterTest extends TestCase
 {
     private DeserializeBodyParamConverter $object;
 
-    /**
-     * @var SerializerInterface&MockObject
-     */
-    private SerializerInterface $serializer;
+    private SerializerInterface&MockObject $serializer;
 
     protected function setUp(): void
     {
@@ -169,7 +166,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         );
     }
 
-    public function provideTestApplyAssignPropertiesFromAttribute(): iterable
+    public static function provideTestApplyAssignPropertiesFromAttribute(): iterable
     {
         yield 'simple' => [
             ['id' => 'id'],
@@ -204,9 +201,7 @@ class DeserializeBodyParamConverterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestApplyAssignPropertiesFromAttribute
-     */
+    #[DataProvider('provideTestApplyAssignPropertiesFromAttribute')]
     public function testApplyAssignPropertiesFromAttribute(
         array $propertiesMap,
         array $requestAttributes,

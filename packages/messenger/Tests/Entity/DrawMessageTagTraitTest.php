@@ -4,23 +4,17 @@ namespace Draw\Component\Messenger\Tests\Entity;
 
 use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Messenger\Transport\Entity\DrawMessageTagTrait
- */
+#[CoversClass(DrawMessageTagTrait::class)]
 class DrawMessageTagTraitTest extends TestCase
 {
-    /**
-     * @var DrawMessageTagTrait|object
-     */
-    private object $entity;
+    private Tag $entity;
 
     protected function setUp(): void
     {
-        $this->entity = new class() {
-            use DrawMessageTagTrait;
-        };
+        $this->entity = new Tag();
     }
 
     public function testNameMutator(): void
@@ -64,4 +58,9 @@ class DrawMessageTagTraitTest extends TestCase
             (string) $this->entity
         );
     }
+}
+
+class Tag
+{
+    use DrawMessageTagTrait;
 }

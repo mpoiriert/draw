@@ -15,10 +15,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 abstract class IntegrationTestCase extends TestCase
 {
-    /**
-     * @var IntegrationInterface|PrependIntegrationInterface
-     */
-    protected IntegrationInterface $integration;
+    protected IntegrationInterface|PrependIntegrationInterface $integration;
 
     abstract public function createIntegration(): IntegrationInterface;
 
@@ -26,7 +23,7 @@ abstract class IntegrationTestCase extends TestCase
 
     abstract public function getDefaultConfiguration(): array;
 
-    abstract public function provideTestLoad(): iterable;
+    abstract public static function provideTestLoad(): iterable;
 
     protected function setUp(): void
     {

@@ -4,12 +4,11 @@ namespace Draw\Component\Messenger\Tests\Broker\EventListener;
 
 use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
 use Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @covers \Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener
- */
+#[CoversClass(BrokerDefaultValuesListener::class)]
 class BrokerDefaultValuesListenerTest extends TestCase
 {
     private BrokerDefaultValuesListener $service;

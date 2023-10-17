@@ -3,13 +3,12 @@
 namespace Draw\Component\OpenApi\Tests\Exception;
 
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
-/**
- * @covers \Draw\Component\OpenApi\Exception\ConstraintViolationListException
- */
+#[CoversClass(ConstraintViolationListException::class)]
 class ConstraintViolationListExceptionTest extends TestCase
 {
     private ConstraintViolationListException $object;

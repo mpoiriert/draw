@@ -4,12 +4,11 @@ namespace Draw\Component\Messenger\Tests\Broker\Event;
 
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * @covers \Draw\Component\Messenger\Broker\Event\BrokerStartedEvent
- */
+#[CoversClass(BrokerStartedEvent::class)]
 class BrokerStartedEventTest extends TestCase
 {
     private BrokerStartedEvent $event;

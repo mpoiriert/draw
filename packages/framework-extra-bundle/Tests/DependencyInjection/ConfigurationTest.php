@@ -20,7 +20,7 @@ class ConfigurationTest extends ConfigurationTestCase
         ];
     }
 
-    public function provideTestInvalidConfiguration(): iterable
+    public static function provideTestInvalidConfiguration(): iterable
     {
         yield [
             ['invalid' => true],

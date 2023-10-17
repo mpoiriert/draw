@@ -23,7 +23,7 @@ class EvaluatorTest extends TestCase
         $this->object = new Evaluator();
     }
 
-    public function provideExecute(): iterable
+    public static function provideExecute(): iterable
     {
         yield 'simple-match' => [
             (new Query())->where(new ConstraintExpression('[property1]', new EqualTo('value1'))),

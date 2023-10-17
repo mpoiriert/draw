@@ -5,7 +5,7 @@ namespace Draw\Component\OpenApi\Tests\Mock\Model;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Test
+class TestClass
 {
     /**
      * Property description.

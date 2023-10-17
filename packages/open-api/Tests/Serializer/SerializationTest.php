@@ -3,11 +3,10 @@
 namespace Draw\Component\OpenApi\Tests\Serializer;
 
 use Draw\Component\OpenApi\Serializer\Serialization;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\OpenApi\Serializer\Serialization
- */
+#[CoversClass(Serialization::class)]
 class SerializationTest extends TestCase
 {
     private Serialization $object;

@@ -30,7 +30,7 @@ class ValueIsNotUsedValidatorTest extends KernelTestCase
         static::assertSame('VALUE_ALREADY_TAKEN', $violations->get(0)->getCode());
     }
 
-    public function provideTestValidate(): iterable
+    public static function provideTestValidate(): iterable
     {
         yield 'invalid' => [
             'admin@example.com',

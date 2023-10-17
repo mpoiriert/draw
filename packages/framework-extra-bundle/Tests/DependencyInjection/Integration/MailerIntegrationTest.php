@@ -11,16 +11,16 @@ use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
 use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
 use Draw\Component\Mailer\EventListener\EmailWriterListener;
 use Draw\Component\Mailer\Twig\TranslationExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration
- *
  * @property MailerIntegration $integration
  */
+#[CoversClass(MailerIntegration::class)]
 class MailerIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -99,7 +99,7 @@ class MailerIntegrationTest extends IntegrationTestCase
         );
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         $defaultServices = [
             new ServiceConfiguration(

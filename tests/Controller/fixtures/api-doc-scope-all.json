@@ -731,7 +731,7 @@
                         "in": "body",
                         "name": "body",
                         "schema": {
-                            "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Mock.Model.Test"
+                            "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Mock.Model.TestClass"
                         }
                     }
                 ],
@@ -739,7 +739,7 @@
                     "201": {
                         "description": "The created test entity",
                         "schema": {
-                            "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Mock.Model.Test"
+                            "$ref": "#/definitions/Draw.Component.OpenApi.Tests.Mock.Model.TestClass"
                         },
                         "headers": {
                             "X-Draw": {
@@ -969,7 +969,7 @@
                 }
             }
         },
-        "Draw.Component.OpenApi.Tests.Mock.Model.Test": {
+        "Draw.Component.OpenApi.Tests.Mock.Model.TestClass": {
             "type": "object",
             "properties": {
                 "property": {

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestHeadersProcessorTest extends TestCase
 {
-    public function provideTestInvoke(): iterable
+    public static function provideTestInvoke(): iterable
     {
         $requestHeaders = [
             $header1 = uniqid('header1-') => [

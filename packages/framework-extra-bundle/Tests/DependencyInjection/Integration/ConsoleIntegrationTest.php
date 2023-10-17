@@ -8,14 +8,14 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration
- *
  * @property ConsoleIntegration $integration
  */
+#[CoversClass(ConsoleIntegration::class)]
 class ConsoleIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -80,7 +80,7 @@ class ConsoleIntegrationTest extends IntegrationTestCase
         );
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [

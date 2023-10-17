@@ -7,12 +7,12 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
 use Draw\Component\Process\ProcessFactory;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration
- *
  * @property ConsoleIntegration $integration
  */
+#[CoversClass(ProcessIntegration::class)]
 class ProcessIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -30,7 +30,7 @@ class ProcessIntegrationTest extends IntegrationTestCase
         return [];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield [
             [],

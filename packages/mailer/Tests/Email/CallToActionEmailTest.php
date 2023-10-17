@@ -3,11 +3,10 @@
 namespace Draw\Component\Mailer\Tests\Email;
 
 use Draw\Component\Mailer\Email\CallToActionEmail;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Mailer\Email\CallToActionEmail
- */
+#[CoversClass(CallToActionEmail::class)]
 class CallToActionEmailTest extends TestCase
 {
     private CallToActionEmail $object;

@@ -5,11 +5,10 @@ namespace Draw\Component\Console\Tests\Entity;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Core\DateTimeUtils;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \Draw\Component\Console\Entity\Execution
- */
+#[CoversClass(Execution::class)]
 class ExecutionTest extends TestCase
 {
     private Execution $entity;

@@ -17,7 +17,7 @@ class SqlAssertionBuilderTest extends TestCase
         $this->assertionBuilder = new SqlAssertionBuilder();
     }
 
-    public function provideTestAssertCountEquals(): iterable
+    public static function provideTestAssertCountEquals(): iterable
     {
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [1, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
@@ -34,7 +34,7 @@ class SqlAssertionBuilderTest extends TestCase
         $this->invoke($dataTester, $shouldFail);
     }
 
-    public function provideTestAssertCountGreaterThanOrEqual(): \Generator
+    public static function provideTestAssertCountGreaterThanOrEqual(): \Generator
     {
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
@@ -51,7 +51,7 @@ class SqlAssertionBuilderTest extends TestCase
         $this->invoke($dataTester, $shouldFail);
     }
 
-    public function provideTestAssertCountLessThanOrEqual(): \Generator
+    public static function provideTestAssertCountLessThanOrEqual(): \Generator
     {
         yield [1, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];

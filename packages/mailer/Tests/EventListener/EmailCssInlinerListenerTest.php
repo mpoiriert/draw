@@ -3,6 +3,7 @@
 namespace Draw\Component\Mailer\Tests\EventListener;
 
 use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,9 +13,7 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 
-/**
- * @covers \Draw\Component\Mailer\EventListener\EmailCssInlinerListener
- */
+#[CoversClass(EmailCssInlinerListener::class)]
 class EmailCssInlinerListenerTest extends TestCase
 {
     private EmailCssInlinerListener $object;

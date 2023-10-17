@@ -9,12 +9,12 @@ use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV1;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
- * @covers \Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration
- *
  * @property AwsToolKitIntegration $integration
  */
+#[CoversClass(AwsToolKitIntegration::class)]
 class AwsToolKitIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -37,7 +37,7 @@ class AwsToolKitIntegrationTest extends IntegrationTestCase
         ];
     }
 
-    public function provideTestLoad(): iterable
+    public static function provideTestLoad(): iterable
     {
         yield 'imds_version_1' => [
             [

@@ -3,10 +3,10 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataIntegrationBundle\Configuration\Admin\ConfigAdmin;
+use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension
- */
+#[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionConfigurationEnabledTest extends DrawSonataIntegrationExtensionTest
 {
     public function getConfiguration(): array
@@ -20,7 +20,7 @@ class DrawSonataIntegrationExtensionConfigurationEnabledTest extends DrawSonataI
         return $configuration;
     }
 
-    public function provideTestHasServiceDefinition(): iterable
+    public static function provideTestHasServiceDefinition(): iterable
     {
         yield [ConfigAdmin::class];
     }

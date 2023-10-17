@@ -3,12 +3,11 @@
 namespace Draw\Component\OpenApi\Tests\Versioning;
 
 use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 
-/**
- * @covers \Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher
- */
+#[CoversClass(RouteDefaultApiRouteVersionMatcher::class)]
 class RouteDefaultApiRouteVersionMatcherTest extends TestCase
 {
     public function testMatchVersionTrue(): void

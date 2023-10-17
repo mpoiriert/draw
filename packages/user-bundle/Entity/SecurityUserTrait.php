@@ -87,7 +87,7 @@ trait SecurityUserTrait
     {
         $this->plainPassword = $plainPassword;
         if ($this->plainPassword) {
-            // This is needed to flag a property modified to trigger what's is needed for the flush
+            // This is needed to flag a property modified to trigger what is needed for the flush
             // We want to make sure the date change in case the previous value is on the same second
             $this->passwordUpdatedAt = null;
             $this->setPasswordUpdatedAt(new \DateTimeImmutable());

@@ -7,23 +7,21 @@ use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
+use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-/**
- * @covers \Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand
- */
+#[CoversClass(CloudWatchLogsDownloadCommand::class)]
 class CloudWatchLogsDownloadCommandTest extends TestCase
 {
     use CommandTestTrait;
+    use MockTrait;
 
-    /**
-     * @var CloudWatchLogsClient&MockObject
-     */
-    private CloudWatchLogsClient $cloudWatchLogsClient;
+    private CloudWatchLogsClient&MockObject $cloudWatchLogsClient;
 
     public function createCommand(): Command
     {
@@ -44,14 +42,14 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         return 'draw:aws:cloud-watch-logs:download';
     }
 
-    public function provideTestArgument(): iterable
+    public static function provideTestArgument(): iterable
     {
         yield ['logGroupName', InputArgument::REQUIRED, null];
         yield ['logStreamName', InputArgument::REQUIRED, null];
         yield ['output', InputArgument::REQUIRED, null];
     }
 
-    public function provideTestOption(): iterable
+    public static function provideTestOption(): iterable
     {
         yield ['startTime', null, InputOption::VALUE_REQUIRED, '- 1 days'];
         yield ['endTime', null, InputOption::VALUE_REQUIRED, 'now'];
@@ -102,9 +100,11 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         $this->cloudWatchLogsClient
             ->expects(static::exactly(2))
             ->method('getLogEvents')
-            ->withConsecutive(
-                [$logEvents],
-                [$logEvents + ['nextToken' => 'next-token']]
+            ->with(
+                ...static::withConsecutive(
+                    [$logEvents],
+                    [$logEvents + ['nextToken' => 'next-token']]
+                )
             )
             ->willReturnOnConsecutiveCalls(
                 [

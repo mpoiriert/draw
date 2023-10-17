@@ -7,6 +7,7 @@ use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,33 +26,22 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @covers \Draw\Component\Security\Http\Authenticator\JwtAuthenticator
- */
+#[CoversClass(JwtAuthenticator::class)]
 class JwtAuthenticatorTest extends TestCase
 {
     use MockTrait;
 
     private JwtAuthenticator $object;
 
-    /**
-     * @var JwtEncoder&MockObject
-     */
-    private JwtEncoder $jwtEncoder;
+    private JwtEncoder&MockObject $jwtEncoder;
 
-    /**
-     * @var UserProviderInterface&MockObject
-     */
-    private UserProviderInterface $userProvider;
+    private UserProviderInterface&MockObject $userProvider;
 
     private string $userIdentifierPayloadKey;
 
     private string $userIdentifierGetter;
 
-    /**
-     * @var TranslatorInterface&MockObject
-     */
-    private TranslatorInterface $translator;
+    private TranslatorInterface&MockObject $translator;
 
     protected function setUp(): void
     {
@@ -385,7 +375,6 @@ class JwtAuthenticatorTest extends TestCase
                     $messageData
                 )
             );
-            static::fail('Expected Exception');
         } catch (HttpException $error) {
             static::assertSame(
                 Response::HTTP_FORBIDDEN,
@@ -424,7 +413,6 @@ class JwtAuthenticatorTest extends TestCase
                     $messageData
                 )
             );
-            static::fail('Expected Exception');
         } catch (HttpException $error) {
             static::assertSame(
                 Response::HTTP_FORBIDDEN,
