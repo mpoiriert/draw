@@ -5,6 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\Bridge\Monolog\Processor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -14,10 +15,7 @@ class TokenProcessorTest extends TestCase
 {
     private TokenProcessor $service;
 
-    /**
-     * @var TokenStorageInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private TokenStorageInterface $tokenStorage;
+    private TokenStorageInterface&MockObject $tokenStorage;
 
     private string $key;
 
@@ -85,7 +83,7 @@ class TokenProcessorTest extends TestCase
                 return $this;
             }
 
-            public function getUserIdentifier(): ?string
+            public function getUserIdentifier(): string
             {
                 return $this->userIdentifier;
             }

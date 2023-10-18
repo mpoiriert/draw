@@ -12,12 +12,11 @@ use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use Psr\Log\LoggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
  * @method user getUser()
@@ -97,7 +96,6 @@ class UsersController extends AbstractController
     #[Route(path: '/users/{id}/tags', methods: ['PUT'])]
     #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userSetTags')]
-    #[Entity('target', class: User::class)]
     public function setTagsAction(
         User $target,
         #[RequestBody(type: 'array<App\Entity\Tag>')]
@@ -113,7 +111,6 @@ class UsersController extends AbstractController
 
     #[Route(path: '/users/{id}', name: 'user_get', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    #[Entity('target', class: User::class)]
     #[OpenApi\Operation(operationId: 'userGet')]
     public function getAction(User $target): User
     {
@@ -121,7 +118,6 @@ class UsersController extends AbstractController
     }
 
     #[Route(path: '/users/{id}', name: 'user_delete', methods: ['DELETE'])]
-    #[Entity('target', class: User::class)]
     #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userDelete')]
     #[Serialization(statusCode: 204)]
@@ -149,7 +145,6 @@ class UsersController extends AbstractController
      * @return void No return value mean email has been sent
      */
     #[Route(path: '/users/{id}/reset-password-email', methods: ['POST'])]
-    #[Entity('target', class: User::class)]
     #[OpenApi\Operation(operationId: 'userSendResetPasswordEmail')]
     public function sendResetPasswordEmail(User $target, MailerInterface $mailer): void
     {

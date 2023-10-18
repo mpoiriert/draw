@@ -29,7 +29,6 @@ use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
-use Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
@@ -96,12 +95,6 @@ class OpenApiIntegration implements IntegrationInterface
             $container,
             OpenApi::class,
             'draw.open_api'
-        );
-
-        $this->renameDefinitions(
-            $container,
-            'Draw\\Component\\OpenApi\\Request\\ParamConverter\\',
-            'draw.open_api.param_converter.'
         );
 
         $this->renameDefinitions(
@@ -221,7 +214,7 @@ class OpenApiIntegration implements IntegrationInterface
 
         $container
             ->setDefinition(
-                'draw.open_api.schema_builder',
+                SchemaBuilderInterface::class,
                 new Definition(SymfonySchemaBuilder::class)
             )
             ->setAutowired(true)
@@ -241,12 +234,6 @@ class OpenApiIntegration implements IntegrationInterface
                 ->getDefinition(StoreInCacheExtractor::class)
                 ->setArguments($arguments);
         }
-
-        $container
-            ->setAlias(
-                SchemaBuilderInterface::class,
-                'draw.open_api.schema_builder'
-            );
 
         $container
             ->getDefinition(OpenApi::class)
@@ -419,11 +406,7 @@ class OpenApiIntegration implements IntegrationInterface
         }
 
         if (!$config['bodyDeserialization']['enabled']) {
-            $container->removeDefinition(DeserializeBodyParamConverter::class);
             $container->removeDefinition(RequestBodyValueResolver::class);
-        } else {
-            $container->getDefinition(DeserializeBodyParamConverter::class)
-                ->addTag('request.param_converter', ['converter' => 'draw_open_api.request_body']);
         }
     }
 

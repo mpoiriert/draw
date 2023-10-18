@@ -23,7 +23,7 @@ trait ByTimeBaseOneTimePasswordTrait
         $this->totpSecret = $totpSecret;
     }
 
-    abstract public function getUserIdentifier(): ?string;
+    abstract public function getUserIdentifier(): string;
 
     public function isTotpAuthenticationEnabled(): bool
     {

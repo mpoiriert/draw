@@ -104,10 +104,10 @@ class RequestValidationListener implements EventSubscriberInterface
         return $constraintViolations;
     }
 
-    private function validate($object, RequestBody $paramConverter): ConstraintViolationListInterface
+    private function validate($object, RequestBody $requestBody): ConstraintViolationListInterface
     {
-        if ($paramConverter->validate) {
-            return $this->validator->validate($object, null, $paramConverter->validationGroups ?? ['Default']);
+        if ($requestBody->validate) {
+            return $this->validator->validate($object, null, $requestBody->validationGroups ?? ['Default']);
         }
 
         return new ConstraintViolationList();

@@ -55,7 +55,6 @@ use Draw\Component\OpenApi\Extraction\Extractor\Symfony\RouterRootSchemaExtracto
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
-use Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
 use Draw\Component\OpenApi\SchemaBuilder\SymfonySchemaBuilder;
@@ -202,10 +201,6 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     function (Definition $definition): void {
                         static::assertSame(SymfonySchemaBuilder::class, $definition->getClass());
                     }
-                ),
-                new ServiceConfiguration(
-                    'draw.open_api.param_converter.deserialize_body_param_converter',
-                    [DeserializeBodyParamConverter::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.request.value_resolver.request_body_value_resolver',

@@ -6,16 +6,16 @@
     "keywords": ["draw", "aws"],
     "require": {
         "aws/aws-sdk-php": "^3.171",
-        "symfony/console": "^5.4.3",
-        "symfony/event-dispatcher": "^5.4.3"
+        "symfony/console": "^6.4.0",
+        "symfony/event-dispatcher": "^6.4.0"
     },
     "require-dev": {
         "draw/core": "^0.10",
         "draw/tester": "^0.10",
         "phpunit/phpunit": "^9.0 || ^10.0",
-        "symfony/cache": "^5.4.3",
-        "symfony/http-client": "^5.4.3",
-        "symfony/http-client-contracts": "^2.5"
+        "symfony/cache": "^6.4.0",
+        "symfony/http-client": "^6.4.0",
+        "symfony/http-client-contracts": "^3.4"
     },
     "conflict": {
         "guzzlehttp/guzzle": "<6"

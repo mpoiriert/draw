@@ -31,51 +31,7 @@ parameters:
 			path: packages/security/Http/Authenticator/JwtAuthenticator.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getRole\\(\\)\\.$#"
-			count: 1
-			path: packages/security/Http/EventListener/RoleRestrictedAuthenticatorListener.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getUser\\(\\)\\.$#"
-			count: 1
-			path: packages/security/Http/EventListener/RoleRestrictedAuthenticatorListener.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:markResolved\\(\\)\\.$#"
-			count: 1
-			path: packages/security/Http/EventListener/RoleRestrictedAuthenticatorListener.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getPayloadKeyValue\\(\\)\\.$#"
-			count: 2
-			path: packages/security/Tests/Http/Authenticator/JwtAuthenticatorTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getUser\\(\\)\\.$#"
-			count: 1
-			path: packages/security/Tests/Http/Authenticator/JwtAuthenticatorTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getUserIdentifier\\(\\)\\.$#"
-			count: 1
-			path: packages/security/Tests/Http/Authenticator/JwtAuthenticatorTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getUser\\(\\)\\.$#"
-			count: 1
-			path: packages/security/Tests/Http/Authenticator/MessageAuthenticatorTest.php
-
-		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\Passport\\\\Badge\\\\BadgeInterface\\:\\:getUserIdentifier\\(\\)\\.$#"
-			count: 1
-			path: packages/security/Tests/Http/Authenticator/MessageAuthenticatorTest.php
-
-		-
 			message: "#^Class Draw\\\\Bundle\\\\SonataIntegrationBundle\\\\User\\\\Security\\\\AdminLoginAuthenticator extends @final class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\\.$#"
 			count: 1
 			path: packages/sonata-integration-bundle/User/Security/AdminLoginAuthenticator.php
 
-		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertArrayHasKey\\(\\) with string\\|null and array\\{\\} will always evaluate to false\\.$#"
-			count: 1
-			path: packages/user-bundle/Tests/AccountLocker/Entity/LockableUserTraitTest.php

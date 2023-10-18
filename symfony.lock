@@ -23,9 +23,6 @@
     "bamarni/composer-bin-plugin": {
         "version": "v1.5.0"
     },
-    "beberlei/assert": {
-        "version": "v3.3.1"
-    },
     "brick/math": {
         "version": "0.9.3"
     },
@@ -149,9 +146,6 @@
             ".php-cs-fixer.dist.php"
         ]
     },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.5"
-    },
     "guzzlehttp/guzzle": {
         "version": "7.3.0"
     },
@@ -176,17 +170,11 @@
             "ref": "384cec52df45f3bfd46a09930d6960a58872b268"
         }
     },
-    "khanamiryan/qrcode-detector-decoder": {
-        "version": "1.0.5.2"
-    },
     "knplabs/knp-menu": {
         "version": "v3.2.0"
     },
     "knplabs/knp-menu-bundle": {
         "version": "v3.1.0"
-    },
-    "laminas/laminas-code": {
-        "version": "3.4.1"
     },
     "laminas/laminas-diactoros": {
         "version": "2.8.0"
@@ -199,9 +187,6 @@
     },
     "myclabs/deep-copy": {
         "version": "1.10.2"
-    },
-    "myclabs/php-enum": {
-        "version": "1.8.3"
     },
     "nelmio/cors-bundle": {
         "version": "2.1",
@@ -335,9 +320,6 @@
             "config/routes/scheb_2fa.yaml"
         ]
     },
-    "scheb/2fa-qr-code": {
-        "version": "v5.12.1"
-    },
     "scheb/2fa-totp": {
         "version": "v5.12.1"
     },
@@ -385,18 +367,6 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
-    },
-    "sensio/framework-extra-bundle": {
-        "version": "6.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        },
-        "files": [
-            "config/packages/sensio_framework_extra.yaml"
-        ]
     },
     "sensiolabs/ansi-to-html": {
         "version": "1.2",
@@ -448,9 +418,6 @@
     },
     "spomky-labs/otphp": {
         "version": "v10.0.1"
-    },
-    "symfony/amqp-messenger": {
-        "version": "v5.3.7"
     },
     "symfony/asset": {
         "version": "v5.3.4"
@@ -546,12 +513,12 @@
         "version": "v5.3.8"
     },
     "symfony/framework-bundle": {
-        "version": "5.4",
+        "version": "6.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.4",
-            "ref": "3cd216a4d007b78d8554d44a5b1c0a446dab24fb"
+            "branch": "main",
+            "version": "6.4",
+            "ref": "a91c965766ad3ff2ae15981801643330eb42b6a5"
         },
         "files": [
             "config/packages/cache.yaml",
@@ -560,8 +527,8 @@
             "config/routes/framework.yaml",
             "config/services.yaml",
             "public/index.php",
-            "app/src/Controller/.gitignore",
-            "app/src/Kernel.php"
+            "src/Controller/.gitignore",
+            "src/Kernel.php"
         ]
     },
     "symfony/http-client": {
@@ -575,6 +542,18 @@
     },
     "symfony/http-kernel": {
         "version": "v5.3.9"
+    },
+    "symfony/lock": {
+        "version": "6.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.2",
+            "ref": "8e937ff2b4735d110af1770f242c1107fdab4c8e"
+        },
+        "files": [
+            "config/packages/lock.yaml"
+        ]
     },
     "symfony/mailer": {
         "version": "5.3",
@@ -712,9 +691,6 @@
     "symfony/security-csrf": {
         "version": "v5.3.4"
     },
-    "symfony/security-guard": {
-        "version": "v5.3.7"
-    },
     "symfony/security-http": {
         "version": "v5.3.8"
     },
@@ -804,9 +780,6 @@
     },
     "symfony/yaml": {
         "version": "v5.3.6"
-    },
-    "thecodingmachine/safe": {
-        "version": "v1.3.3"
     },
     "theseer/tokenizer": {
         "version": "1.2.1"

@@ -9,13 +9,18 @@ class GetWaitingTimeEvent extends Event
 {
     private ?int $waitingTime = null;
 
-    public function __construct(private Envelope $envelope)
+    public function __construct(private Envelope $envelope, private ?\Throwable $throwable = null)
     {
     }
 
     public function getEnvelope(): Envelope
     {
         return $this->envelope;
+    }
+
+    public function getThrowable(): \Throwable
+    {
+        return $this->throwable;
     }
 
     public function getWaitingTime(): ?int

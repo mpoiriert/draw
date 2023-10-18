@@ -8,15 +8,15 @@ use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 // todo refactor to be reusable
 class ConnectionTokensController extends AbstractController
@@ -32,7 +32,7 @@ class ConnectionTokensController extends AbstractController
      * @return ConnectionToken The newly created token
      */
     #[Route(path: '/connection-tokens', name: 'connection_token_create', methods: ['POST'])]
-    #[Security('not is_granted("IS_AUTHENTICATED_FULLY")')]
+    #[IsGranted(new Expression('not is_granted("IS_AUTHENTICATED_FULLY")'))]
     #[OpenApi\Operation(operationId: 'drawUserBundleCreateConnectionToken', tags: ['Security'])]
     #[Serialization(statusCode: 201)]
     public function createAction(

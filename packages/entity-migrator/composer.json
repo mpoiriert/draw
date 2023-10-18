@@ -11,11 +11,11 @@
     ],
     "require": {
         "draw/messenger": "^0.10",
-        "symfony/console": "^5.4.3",
-        "symfony/event-dispatcher": "^5.4.3",
-        "symfony/lock": "^5.4.3",
-        "symfony/messenger": "^5.4.3",
-        "symfony/workflow": "^5.4.3"
+        "symfony/console": "^6.4.0",
+        "symfony/event-dispatcher": "^6.4.0",
+        "symfony/lock": "^6.4.0",
+        "symfony/messenger": "^6.4.0",
+        "symfony/workflow": "^6.4.0"
     },
     "require-dev": {
         "draw/tester": "^0.10",

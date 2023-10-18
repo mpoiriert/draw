@@ -71,7 +71,7 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
             {
             }
 
-            public function getUsername(): string
+            public function getUserIdentifier(): string
             {
                 return '';
             }

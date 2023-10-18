@@ -51,7 +51,7 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
     {
         $envelope = new Envelope($this);
 
-        $this->object->handleStampingAwareMessage($event = new SendMessageToTransportsEvent($envelope));
+        $this->object->handleStampingAwareMessage($event = new SendMessageToTransportsEvent($envelope, []));
 
         static::assertSame(
             self::$newEnvelope,
@@ -72,7 +72,7 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
             }
         );
 
-        $this->object->handleStampingAwareMessage(new SendMessageToTransportsEvent($envelope));
+        $this->object->handleStampingAwareMessage(new SendMessageToTransportsEvent($envelope, []));
 
         static::assertFalse($message->called, 'Stamp should not have been called.');
     }

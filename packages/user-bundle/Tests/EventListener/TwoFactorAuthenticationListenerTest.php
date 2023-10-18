@@ -88,7 +88,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                         return null;
                     }
 
-                    public function getUsername(): string
+                    public function getUserIdentifier(): string
                     {
                         return '';
                     }
