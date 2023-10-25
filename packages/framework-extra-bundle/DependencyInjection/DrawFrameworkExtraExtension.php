@@ -7,6 +7,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Configurati
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\DoctrineExtraIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\EntityMigratorIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\FeatureIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
@@ -52,6 +53,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new ConsoleIntegration();
         $this->integrations[] = new CronIntegration();
         $this->integrations[] = new DoctrineExtraIntegration();
+        $this->integrations[] = new EntityMigratorIntegration();
         $this->integrations[] = new FeatureIntegration();
         $this->integrations[] = new LoggerIntegration();
         $this->integrations[] = new LogIntegration();

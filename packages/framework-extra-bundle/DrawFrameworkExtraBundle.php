@@ -5,6 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCompilerPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EntityMigratorCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\LoggerDecoratorPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
@@ -14,6 +15,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDec
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\JwtAuthenticatorFactory;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\MessengerMessageAuthenticatorFactory;
 use Draw\Component\Console\EventListener\CommandFlowListener;
+use Draw\Component\EntityMigrator\Migrator;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Expirable\Command\PurgeExpiredMessageCommand;
@@ -53,6 +55,10 @@ class DrawFrameworkExtraBundle extends Bundle
 
         if (interface_exists(EmailWriterInterface::class)) {
             $container->addCompilerPass(new EmailWriterCompilerPass());
+        }
+
+        if (class_exists(Migrator::class)) {
+            $container->addCompilerPass(new EntityMigratorCompilerPass());
         }
 
         if (class_exists(PurgeExpiredMessageCommand::class)) {

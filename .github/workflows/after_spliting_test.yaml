@@ -19,6 +19,7 @@ jobs:
           - console
           - core
           - doctrine-extra
+          - entity-migrator
           - fixer
           - framework-extra-bundle
           - log

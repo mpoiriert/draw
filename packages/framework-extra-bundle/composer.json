@@ -24,6 +24,7 @@
         "draw/console": "^0.10",
         "draw/contracts": "^0.10",
         "draw/doctrine-extra": "^0.10",
+        "draw/entity-migrator": "^0.10",
         "draw/log": "^0.10",
         "draw/mailer": "^0.10",
         "draw/messenger": "^0.10",

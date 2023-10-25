@@ -1,0 +1,36 @@
+{
+    "name": "draw/entity-migrator",
+    "license": "MIT",
+    "type": "library",
+    "keywords": ["draw", "migration", "symfony", "doctrine"],
+    "authors": [
+        {
+            "name": "Martin Poirier Theoret",
+            "email": "mpoiriert@gmail.com"
+        }
+    ],
+    "require": {
+        "draw/messenger": "^0.10",
+        "symfony/console": "^5.4.3",
+        "symfony/event-dispatcher": "^5.4.3",
+        "symfony/lock": "^5.4.3",
+        "symfony/messenger": "^5.4.3",
+        "symfony/workflow": "^5.4.3"
+    },
+    "require-dev": {
+        "draw/tester": "^0.10",
+        "phpunit/phpunit": "^9.0 || ^10.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Draw\\Component\\EntityMigrator\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.10-dev"
+        }
+    }
+}

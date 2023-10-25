@@ -9,6 +9,8 @@ draw_framework_extra:
 
   doctrine_extra: ~
 
+  entity_migrator: ~
+
   feature: ~
 
   log:
@@ -90,3 +92,5 @@ draw_framework_extra:
   validator: ~
 
   versioning: ~
+
+  workflow: ~
