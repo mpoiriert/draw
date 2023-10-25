@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e183452fdb6e676d5e9cb2266ae6bb8c",
+    "content-hash": "87ae648d509c4a0e9b82ba8ee56df3cc",
     "packages": [
         {
             "name": "aws/aws-crt-php",
-            "version": "v1.2.2",
+            "version": "v1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/awslabs/aws-crt-php.git",
-                "reference": "2f1dc7b7eda080498be96a4a6d683a41583030e9"
+                "reference": "5545a4fa310aec39f54279fdacebcce33b3ff382"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/2f1dc7b7eda080498be96a4a6d683a41583030e9",
-                "reference": "2f1dc7b7eda080498be96a4a6d683a41583030e9",
+                "url": "https://api.github.com/repos/awslabs/aws-crt-php/zipball/5545a4fa310aec39f54279fdacebcce33b3ff382",
+                "reference": "5545a4fa310aec39f54279fdacebcce33b3ff382",
                 "shasum": ""
             },
             "require": {
@@ -56,26 +56,26 @@
             ],
             "support": {
                 "issues": "https://github.com/awslabs/aws-crt-php/issues",
-                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.2"
+                "source": "https://github.com/awslabs/aws-crt-php/tree/v1.2.3"
             },
-            "time": "2023-07-20T16:49:55+00:00"
+            "time": "2023-10-16T20:10:06+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.283.4",
+            "version": "3.283.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a0877cbbf6062cef363145b1bd0cb1d1f6654e04"
+                "reference": "348b68edcc83062c329cf7540c4c92d061d27d9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a0877cbbf6062cef363145b1bd0cb1d1f6654e04",
-                "reference": "a0877cbbf6062cef363145b1bd0cb1d1f6654e04",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/348b68edcc83062c329cf7540c4c92d061d27d9c",
+                "reference": "348b68edcc83062c329cf7540c4c92d061d27d9c",
                 "shasum": ""
             },
             "require": {
-                "aws/aws-crt-php": "^1.0.4",
+                "aws/aws-crt-php": "^1.2.3",
                 "ext-json": "*",
                 "ext-pcre": "*",
                 "ext-simplexml": "*",
@@ -151,9 +151,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.283.4"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.283.11"
             },
-            "time": "2023-10-16T18:08:25+00:00"
+            "time": "2023-10-24T18:10:38+00:00"
         },
         {
             "name": "brick/math",
@@ -5220,16 +5220,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "4.27.1",
+            "version": "4.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "2ae0c57def6d64f9f86d9e7d63d55c6cd573f6d9"
+                "reference": "724c4fcec44b33c74aa3f3cc37627aa2e7890446"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/2ae0c57def6d64f9f86d9e7d63d55c6cd573f6d9",
-                "reference": "2ae0c57def6d64f9f86d9e7d63d55c6cd573f6d9",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/724c4fcec44b33c74aa3f3cc37627aa2e7890446",
+                "reference": "724c4fcec44b33c74aa3f3cc37627aa2e7890446",
                 "shasum": ""
             },
             "require": {
@@ -5288,7 +5288,7 @@
                 "psalm/plugin-phpunit": "^0.18",
                 "psalm/plugin-symfony": "^5.0",
                 "psr/event-dispatcher": "^1.0",
-                "rector/rector": "^0.17",
+                "rector/rector": "^0.18",
                 "symfony/browser-kit": "^5.4 || ^6.2",
                 "symfony/css-selector": "^5.4 || ^6.2",
                 "symfony/filesystem": "^5.4 || ^6.2",
@@ -5333,7 +5333,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/SonataAdminBundle/issues",
-                "source": "https://github.com/sonata-project/SonataAdminBundle/tree/4.27.1"
+                "source": "https://github.com/sonata-project/SonataAdminBundle/tree/4.28.0"
             },
             "funding": [
                 {
@@ -5353,7 +5353,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-21T18:44:40+00:00"
+            "time": "2023-10-18T22:47:20+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -5575,16 +5575,16 @@
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
-            "version": "4.13.0",
+            "version": "4.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle.git",
-                "reference": "6f45c37d06c168827f1965cc00c3e8a0191f1fb5"
+                "reference": "534837c60b06d64c06dc01eca69cfe4f944a4e94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/6f45c37d06c168827f1965cc00c3e8a0191f1fb5",
-                "reference": "6f45c37d06c168827f1965cc00c3e8a0191f1fb5",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/534837c60b06d64c06dc01eca69cfe4f944a4e94",
+                "reference": "534837c60b06d64c06dc01eca69cfe4f944a4e94",
                 "shasum": ""
             },
             "require": {
@@ -5629,7 +5629,7 @@
                 "phpunit/phpunit": "^9.5",
                 "psalm/plugin-phpunit": "^0.18",
                 "psalm/plugin-symfony": "^5.0",
-                "rector/rector": "^0.16",
+                "rector/rector": "^0.18",
                 "sonata-project/block-bundle": "^4.2",
                 "sonata-project/entity-audit-bundle": "^1.1",
                 "symfony/browser-kit": "^5.4 || ^6.2",
@@ -5684,7 +5684,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/issues",
-                "source": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/tree/4.13.0"
+                "source": "https://github.com/sonata-project/SonataDoctrineORMAdminBundle/tree/4.14.0"
             },
             "funding": [
                 {
@@ -5704,20 +5704,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-13T15:33:05+00:00"
+            "time": "2023-10-23T16:21:16+00:00"
         },
         {
             "name": "sonata-project/exporter",
-            "version": "3.2.0",
+            "version": "3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/exporter.git",
-                "reference": "2a8f10f6dcc302075969d21bf838e3e21628c00c"
+                "reference": "4ee51253ae536e50ba0985505387614a8af0fed1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/2a8f10f6dcc302075969d21bf838e3e21628c00c",
-                "reference": "2a8f10f6dcc302075969d21bf838e3e21628c00c",
+                "url": "https://api.github.com/repos/sonata-project/exporter/zipball/4ee51253ae536e50ba0985505387614a8af0fed1",
+                "reference": "4ee51253ae536e50ba0985505387614a8af0fed1",
                 "shasum": ""
             },
             "require": {
@@ -5745,7 +5745,7 @@
                 "phpunit/phpunit": "^9.5",
                 "psalm/plugin-phpunit": "^0.18",
                 "psalm/plugin-symfony": "^5.0",
-                "rector/rector": "^0.17",
+                "rector/rector": "^0.18",
                 "symfony/config": "^5.4 || ^6.2",
                 "symfony/dependency-injection": "^5.4 || ^6.2",
                 "symfony/http-foundation": "^5.4 || ^6.2",
@@ -5792,7 +5792,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sonata-project/exporter/issues",
-                "source": "https://github.com/sonata-project/exporter/tree/3.2.0"
+                "source": "https://github.com/sonata-project/exporter/tree/3.3.0"
             },
             "funding": [
                 {
@@ -5812,7 +5812,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-07-22T13:34:14+00:00"
+            "time": "2023-10-23T16:27:25+00:00"
         },
         {
             "name": "sonata-project/form-extensions",
@@ -12173,29 +12173,29 @@
         },
         {
             "name": "laminas/laminas-code",
-            "version": "4.12.0",
+            "version": "4.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-code.git",
-                "reference": "36cbee228b427446419dd51944bdfb6bb8ddbcd0"
+                "reference": "7353d4099ad5388e84737dd16994316a04f48dbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/36cbee228b427446419dd51944bdfb6bb8ddbcd0",
-                "reference": "36cbee228b427446419dd51944bdfb6bb8ddbcd0",
+                "url": "https://api.github.com/repos/laminas/laminas-code/zipball/7353d4099ad5388e84737dd16994316a04f48dbf",
+                "reference": "7353d4099ad5388e84737dd16994316a04f48dbf",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
             },
             "require-dev": {
-                "doctrine/annotations": "^2.0.0",
+                "doctrine/annotations": "^2.0.1",
                 "ext-phar": "*",
-                "laminas/laminas-coding-standard": "^2.3.0",
-                "laminas/laminas-stdlib": "^3.6.1",
-                "phpunit/phpunit": "^10.0.9",
+                "laminas/laminas-coding-standard": "^2.5.0",
+                "laminas/laminas-stdlib": "^3.17.0",
+                "phpunit/phpunit": "^10.3.3",
                 "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.7.1"
+                "vimeo/psalm": "^5.15.0"
             },
             "suggest": {
                 "doctrine/annotations": "Doctrine\\Common\\Annotations >=1.0 for annotation features",
@@ -12232,7 +12232,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-09-06T14:56:25+00:00"
+            "time": "2023-10-18T10:00:55+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -12807,16 +12807,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.38",
+            "version": "1.10.39",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "5302bb402c57f00fb3c2c015bac86e0827e4b691"
+                "reference": "d9dedb0413f678b4d03cbc2279a48f91592c97c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5302bb402c57f00fb3c2c015bac86e0827e4b691",
-                "reference": "5302bb402c57f00fb3c2c015bac86e0827e4b691",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d9dedb0413f678b4d03cbc2279a48f91592c97c4",
+                "reference": "d9dedb0413f678b4d03cbc2279a48f91592c97c4",
                 "shasum": ""
             },
             "require": {
@@ -12865,7 +12865,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-06T14:19:14+00:00"
+            "time": "2023-10-17T15:46:26+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
@@ -13564,16 +13564,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v2.3.3",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "9c402af768c6c9f8126a9ffa192ecf7c16581e35"
+                "reference": "46bebc3d097d1bb1dce04c5ba83658afd79988f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/9c402af768c6c9f8126a9ffa192ecf7c16581e35",
-                "reference": "9c402af768c6c9f8126a9ffa192ecf7c16581e35",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/46bebc3d097d1bb1dce04c5ba83658afd79988f9",
+                "reference": "46bebc3d097d1bb1dce04c5ba83658afd79988f9",
                 "shasum": ""
             },
             "require": {
@@ -13609,7 +13609,7 @@
             "description": "Composer plugin for Symfony",
             "support": {
                 "issues": "https://github.com/symfony/flex/issues",
-                "source": "https://github.com/symfony/flex/tree/v2.3.3"
+                "source": "https://github.com/symfony/flex/tree/v2.4.0"
             },
             "funding": [
                 {
@@ -13625,7 +13625,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-04T09:02:35+00:00"
+            "time": "2023-10-22T18:05:25+00:00"
         },
         {
             "name": "symfony/http-client",
@@ -13795,6 +13795,85 @@
                 }
             ],
             "time": "2022-04-12T15:48:08+00:00"
+        },
+        {
+            "name": "symfony/lock",
+            "version": "v5.4.25",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/lock.git",
+                "reference": "ed4055b2e03c8893ce2d0042c8f0e0707be8e179"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/lock/zipball/ed4055b2e03c8893ce2d0042c8f0e0707be8e179",
+                "reference": "ed4055b2e03c8893ce2d0042c8f0e0707be8e179",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "psr/log": "^1|^2|^3",
+                "symfony/deprecation-contracts": "^2.1|^3",
+                "symfony/polyfill-php80": "^1.16"
+            },
+            "conflict": {
+                "doctrine/dbal": "<2.13"
+            },
+            "require-dev": {
+                "doctrine/dbal": "^2.13|^3.0",
+                "predis/predis": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Lock\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jérémy Derussé",
+                    "email": "jeremy@derusse.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Creates and manages locks, a mechanism to provide exclusive access to a shared resource",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "cas",
+                "flock",
+                "locking",
+                "mutex",
+                "redlock",
+                "semaphore"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/lock/tree/v5.4.25"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-06-22T08:06:06+00:00"
         },
         {
             "name": "symfony/monolog-bridge",

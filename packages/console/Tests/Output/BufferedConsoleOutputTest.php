@@ -3,6 +3,7 @@
 namespace Draw\Component\Console\Tests\Output;
 
 use Draw\Component\Console\Output\BufferedConsoleOutput;
+use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -74,6 +75,12 @@ class BufferedConsoleOutputTest extends TestCase
         static::assertSame('', $this->object->fetch());
 
         $message = uniqid('message-');
+
+        ReflectionAccessor::setPropertyValue(
+            $this->object,
+            'stream',
+            tmpfile()
+        );
 
         $this->object->write($message, true);
 

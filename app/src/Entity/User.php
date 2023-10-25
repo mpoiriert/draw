@@ -20,6 +20,7 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOne
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordTrait;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ConfigurationTrait;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
+use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
 use Draw\DoctrineExtra\Common\Collections\CollectionUtil;
@@ -33,7 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'draw_acme__user')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'])]
-class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface, TwoFactorInterface, ByEmailInterface, ByTimeBaseOneTimePasswordInterface
+class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface, TwoFactorInterface, ByEmailInterface, ByTimeBaseOneTimePasswordInterface, MigrationTargetEntityInterface
 {
     use ByEmailTrait;
     use ByTimeBaseOneTimePasswordTrait;
@@ -397,5 +398,10 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         $this->requiredReadOnly = $requiredReadOnly;
 
         return $this;
+    }
+
+    public static function getEntityMigrationClass(): string
+    {
+        return UserMigration::class;
     }
 }
