@@ -10,6 +10,7 @@ use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationEx
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
+use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -48,6 +49,18 @@ class ConfigurationTest extends ConfigurationTestCase
                     'show_in_dashboard' => true,
                 ],
                 'commands' => [],
+            ],
+            'entity_migrator' => [
+                'enabled' => false,
+                'admin' => [
+                    'group' => 'Entity Migrator',
+                    'entity_class' => Migration::class,
+                    'controller_class' => 'sonata.admin.controller.crud',
+                    'icon' => 'fa fa-cogs',
+                    'label' => 'Migration',
+                    'pager_type' => 'default',
+                    'show_in_dashboard' => true,
+                ],
             ],
             'messenger' => [
                 'enabled' => true,

@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[
     ORM\UniqueConstraint(name: 'entity_migration', fields: ['entity', 'migration'])
 ]
-abstract class BaseEntityMigration implements EntityMigrationInterface
+abstract class BaseEntityMigration implements EntityMigrationInterface, \Stringable
 {
     #[
         ORM\Id,
@@ -46,6 +46,11 @@ abstract class BaseEntityMigration implements EntityMigrationInterface
         $this->entity = $entity;
         $this->migration = $migration;
         $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getEntity(): MigrationTargetEntityInterface
@@ -99,5 +104,10 @@ abstract class BaseEntityMigration implements EntityMigrationInterface
     public function getTransitionLogs(): array
     {
         return $this->transitionLogs;
+    }
+
+    public function __toString(): string
+    {
+        return $this->migration.' --> '.$this->entity;
     }
 }

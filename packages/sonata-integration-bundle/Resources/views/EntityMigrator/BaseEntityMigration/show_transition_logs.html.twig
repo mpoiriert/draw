@@ -1,0 +1,33 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Created By</th>
+            <th>From</th>
+            <th>Transition</th>
+            <th>To</th>
+            <th>Created At</th>
+            <th>Delay</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for entry in value %}
+            <tr>
+                <td>{{ entry['createdBy'] }}</td>
+                <td>{{ entry['from'] }}</td>
+                <td>{{ entry['transition'] }}</td>
+                <td>{{ entry['to'] }}</td>
+                <td>{{ entry['createdAt']|date }}</td>
+                <td>
+                    {% if previousCreatedAt is defined %}
+                        {{ entry['createdAt']|date('U') - previousCreatedAt|date('U') }} seconds
+                    {% endif %}
+                </td>
+            </tr>
+            {% set previousCreatedAt = entry['createdAt'] %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
