@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Table(name: 'draw_entity_migrator__migration'),
     ORM\UniqueConstraint(name: 'name', columns: ['name'])
 ]
-class Migration
+class Migration implements \Stringable
 {
     #[
         ORM\Id,
@@ -67,5 +67,10 @@ class Migration
     public function isPaused(): bool
     {
         return 'paused' === $this->state;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

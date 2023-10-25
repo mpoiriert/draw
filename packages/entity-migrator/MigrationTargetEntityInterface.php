@@ -4,7 +4,7 @@ namespace Draw\Component\EntityMigrator;
 
 use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
 
-interface MigrationTargetEntityInterface
+interface MigrationTargetEntityInterface extends \Stringable
 {
     /**
      * @return class-string<BaseEntityMigration>

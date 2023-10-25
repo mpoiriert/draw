@@ -11,6 +11,7 @@ use Draw\Bundle\UserBundle\DrawUserBundle;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
+use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\Messenger\Broker\Broker;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -26,6 +27,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->append($this->createConfigurationNode())
                 ->append($this->createConsoleNode())
+                ->append($this->createEntityMigratorNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createUserNode())
             ->end();
@@ -79,6 +81,18 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
+    }
+
+    private function createEntityMigratorNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('entity_migrator'))
+            ->canBeEnabled()
+            ->append(
+                (new SonataAdminNodeConfiguration(Migration::class, 'Entity Migrator', 'admin'))
+                    ->addDefaultsIfNotSet()
+                    ->labelDefaultValue('Migration')
+                    ->iconDefaultValue('fa fa-cogs')
+            );
     }
 
     private function createMessengerNode(): ArrayNodeDefinition

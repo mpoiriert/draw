@@ -7,6 +7,7 @@ use Draw\Bundle\SonataIntegrationBundle\Configuration\Admin\ConfigAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Admin\ExecutionAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Command;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
+use Draw\Bundle\SonataIntegrationBundle\EntityMigrator\Admin\MigrationAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Security\CanShowMessageVoter;
@@ -43,6 +44,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
 
         $this->configureConfiguration($config['configuration'], $loader, $container);
         $this->configureConsole($config['console'], $loader, $container);
+        $this->configureEntityMigrator($config['entity_migrator'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
         $this->configureUser($config['user'], $loader, $container);
     }
@@ -159,6 +161,24 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                         ->setAutoconfigured(true)
                 );
         }
+    }
+
+    private function configureEntityMigrator(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $container
+            ->setDefinition(
+                MigrationAdmin::class,
+                SonataAdminNodeConfiguration::configureFromConfiguration(
+                    new Definition(MigrationAdmin::class),
+                    $config['admin']
+                )
+            )
+            ->setAutowired(true)
+            ->setAutoconfigured(true);
     }
 
     private function configureUser(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void

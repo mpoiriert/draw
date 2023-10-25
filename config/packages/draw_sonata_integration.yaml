@@ -7,6 +7,8 @@ draw_sonata_integration:
         commandName: 'app:null'
         label: 'Null'
 
+  entity_migrator: ~
+
   messenger:
     queue_names: ['default', 'failed']
 
