@@ -116,7 +116,7 @@ class CookieTest extends TestCase
         static::assertTrue($cookie->matchesDomain('example.local'));
     }
 
-    public function pathMatchProvider(): array
+    public static function pathMatchProvider(): array
     {
         return [
             ['/foo', '/foo', true],
@@ -147,7 +147,7 @@ class CookieTest extends TestCase
         static::assertSame($isMatch, $cookie->matchesPath($requestPath));
     }
 
-    public function cookieValidateProvider(): array
+    public static function cookieValidateProvider(): array
     {
         return [
             ['foo', 'baz', 'bar', true],
@@ -200,7 +200,7 @@ class CookieTest extends TestCase
     /**
      * Provides the parsed information from a cookie.
      */
-    public function cookieParserDataProvider(): array
+    public static function cookieParserDataProvider(): array
     {
         return [
             [
