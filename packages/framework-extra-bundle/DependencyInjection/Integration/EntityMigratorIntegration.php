@@ -151,7 +151,7 @@ class EntityMigratorIntegration implements IntegrationInterface, PrependIntegrat
                                 ],
                                 'to' => 'processing',
                             ],
-                            'error' => [
+                            'fail' => [
                                 'from' => [
                                     'processing',
                                 ],
