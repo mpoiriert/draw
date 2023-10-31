@@ -43,6 +43,12 @@ class Migrator
             ->getRepository(Migration::class)
             ->findOneBy(['name' => $migrationName]);
 
+        if (null === $migration) {
+            $this->entityMigratorLogger?->warning('Migration "{migration}" not found', ['migration' => $migrationName]);
+
+            return;
+        }
+
         $entityMigration = $this->entityMigrationRepository->load($entity, $migration);
 
         $this->migrate($entityMigration, true);
