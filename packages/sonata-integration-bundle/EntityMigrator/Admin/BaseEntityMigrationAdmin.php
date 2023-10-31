@@ -44,6 +44,6 @@ abstract class BaseEntityMigrationAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
-            ->remove('edit');
+            ->clearExcept('list');
     }
 }
