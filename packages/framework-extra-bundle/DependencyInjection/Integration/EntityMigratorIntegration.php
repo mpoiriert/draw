@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
@@ -113,75 +114,75 @@ class EntityMigratorIntegration implements IntegrationInterface, PrependIntegrat
                         'supports' => [
                             EntityMigrationInterface::class,
                         ],
-                        'initial_marking' => 'new',
+                        'initial_marking' => BaseEntityMigration::STATE_NEW,
                         'places' => [
-                            'new',
-                            'queued',
-                            'processing',
-                            'errored',
-                            'completed',
-                            'paused',
-                            'skipped',
+                            BaseEntityMigration::STATE_NEW,
+                            BaseEntityMigration::STATE_QUEUED,
+                            BaseEntityMigration::STATE_PROCESSING,
+                            BaseEntityMigration::STATE_FAILED,
+                            BaseEntityMigration::STATE_COMPLETED,
+                            BaseEntityMigration::STATE_PAUSED,
+                            BaseEntityMigration::STATE_SKIPPED,
                         ],
                         'transitions' => [
                             'queue' => [
                                 'from' => [
-                                    'new',
+                                    BaseEntityMigration::STATE_NEW,
                                 ],
-                                'to' => 'queued',
+                                'to' => BaseEntityMigration::STATE_QUEUED,
                             ],
                             'pause' => [
                                 'from' => [
-                                    'new',
-                                    'queued',
+                                    BaseEntityMigration::STATE_NEW,
+                                    BaseEntityMigration::STATE_QUEUED,
                                 ],
-                                'to' => 'paused',
+                                'to' => BaseEntityMigration::STATE_PAUSED,
                             ],
                             'skip' => [
                                 'from' => [
-                                    'new',
-                                    'queued',
+                                    BaseEntityMigration::STATE_NEW,
+                                    BaseEntityMigration::STATE_QUEUED,
                                 ],
-                                'to' => 'skipped',
+                                'to' => BaseEntityMigration::STATE_SKIPPED,
                             ],
                             'process' => [
                                 'from' => [
-                                    'new',
-                                    'queued',
+                                    BaseEntityMigration::STATE_NEW,
+                                    BaseEntityMigration::STATE_QUEUED,
                                 ],
-                                'to' => 'processing',
+                                'to' => BaseEntityMigration::STATE_PROCESSING,
                             ],
                             'fail' => [
                                 'from' => [
-                                    'processing',
+                                    BaseEntityMigration::STATE_PROCESSING,
                                 ],
-                                'to' => 'errored',
+                                'to' => 'failed',
                             ],
                             'complete' => [
                                 'from' => [
-                                    'processing',
+                                    BaseEntityMigration::STATE_PROCESSING,
                                 ],
-                                'to' => 'completed',
+                                'to' => BaseEntityMigration::STATE_COMPLETED,
                             ],
                             'retry' => [
                                 'from' => [
-                                    'errored',
+                                    'failed',
                                 ],
-                                'to' => 'queued',
+                                'to' => BaseEntityMigration::STATE_QUEUED,
                             ],
                             'reprocess' => [
                                 'from' => [
-                                    'completed',
+                                    BaseEntityMigration::STATE_COMPLETED,
                                 ],
-                                'to' => 'queued',
+                                'to' => BaseEntityMigration::STATE_QUEUED,
                             ],
                             're_queue' => [
                                 'from' => [
-                                    'paused',
-                                    'processing',
-                                    'queued',
+                                    BaseEntityMigration::STATE_PAUSED,
+                                    BaseEntityMigration::STATE_PROCESSING,
+                                    BaseEntityMigration::STATE_QUEUED,
                                 ],
-                                'to' => 'queued',
+                                'to' => BaseEntityMigration::STATE_QUEUED,
                             ],
                         ],
                     ],
