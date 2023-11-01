@@ -9,6 +9,7 @@ use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
 #[
     ORM\Entity,
     ORM\Table(name: 'user_migration'),
+    ORM\UniqueConstraint(name: 'entity_migration', fields: ['entity', 'migration'])
 ]
 class UserMigration extends BaseEntityMigration
 {

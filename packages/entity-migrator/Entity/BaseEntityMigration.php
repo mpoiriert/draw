@@ -6,9 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[
-    ORM\UniqueConstraint(name: 'entity_migration', fields: ['entity', 'migration'])
-]
 abstract class BaseEntityMigration implements EntityMigrationInterface, \Stringable
 {
     #[
