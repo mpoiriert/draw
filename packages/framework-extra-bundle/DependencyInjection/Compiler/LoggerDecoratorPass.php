@@ -96,6 +96,7 @@ class LoggerDecoratorPass implements CompilerPassInterface
 
         return (new Definition(DecoratedLogger::class))
             ->setArgument('defaultContext', $tag)
-            ->setArgument('decorateMessage', $message);
+            ->setArgument('decorateMessage', $message)
+            ->addTag('kernel.reset', ['method' => 'reset']);
     }
 }
