@@ -11,13 +11,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 
 abstract class BaseCommand extends Command
 {
     public function __construct(
         protected Migrator $migrator,
         protected EntityMigrationRepository $entityMigrationRepository,
-        protected ManagerRegistry $managerRegistry
+        protected ManagerRegistry $managerRegistry,
+        protected ?ServicesResetter $servicesResetter = null
     ) {
         parent::__construct();
     }
