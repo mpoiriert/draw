@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\EntityMigrator\BatchPrepareMigrationInterface;
+use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
 use Draw\Component\EntityMigrator\Migrator;
@@ -104,7 +105,7 @@ class QueueBatchCommand extends BaseCommand
             ->createQueryBuilder()
             ->from($entityMigrationClass, 'entity_migration')
             ->andWhere('entity_migration.state = :state')
-            ->setParameter('state', 'new');
+            ->setParameter('state', BaseEntityMigration::STATE_NEW);
 
         $count = (int) (clone $queryBuilder)
             ->select('count(entity_migration.id)')
