@@ -123,7 +123,7 @@ class Migrator
         return $transitionApplied;
     }
 
-    public function getMigration(string $name): MigrationInterface
+    public function getMigration(string $name): MigrationInterface|BatchPrepareMigrationInterface
     {
         return $this->migrations->get($name);
     }

@@ -5,14 +5,15 @@ namespace App\EntityMigration;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Draw\Component\EntityMigrator\MigrationInterface;
+use Draw\Component\EntityMigrator\BatchPrepareMigrationInterface;
 use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
 
 /**
- * @template-implements  MigrationInterface<User>
+ * @template-implements  BatchPrepareMigrationInterface<User>
  */
-class UserSetCommentNullMigration implements MigrationInterface
+class UserSetCommentNullMigration implements BatchPrepareMigrationInterface
 {
     public static function getName(): string
     {
@@ -75,5 +76,18 @@ class UserSetCommentNullMigration implements MigrationInterface
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function createSelectIdQueryBuilder(): QueryBuilder
+    {
+        $manager = $this->managerRegistry->getManagerForClass(User::class);
+        \assert($manager instanceof EntityManagerInterface);
+
+        return $manager
+            ->createQueryBuilder()
+            ->from(User::class, 'user')
+            ->select('user.id as id')
+            ->where('user.comment != :comment')
+            ->setParameter('comment', '');
     }
 }
