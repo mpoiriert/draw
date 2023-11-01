@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "draw/messenger": "^0.9.82",
+        "draw/messenger": "^0.10",
         "symfony/console": "^5.4.3",
         "symfony/event-dispatcher": "^5.4.3",
         "symfony/lock": "^5.4.3",
@@ -18,7 +18,7 @@
         "symfony/workflow": "^5.4.3"
     },
     "require-dev": {
-        "draw/tester": "^0.9.82",
+        "draw/tester": "^0.10",
         "phpunit/phpunit": "^9.0 || ^10.0"
     },
     "minimum-stability": "dev",
