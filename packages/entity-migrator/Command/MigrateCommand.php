@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -43,13 +44,14 @@ class MigrateCommand extends BaseCommand
             return Command::SUCCESS;
         }
 
-        $progress = $io->createProgressBar($count ?? 0);
-
         $manager = $this->managerRegistry->getManagerForClass(Migration::class);
 
         \assert($manager instanceof EntityManagerInterface);
 
         $realCount = 0;
+
+        $progress = $io->createProgressBar($count ?? 0);
+        $progress->setFormat(ProgressBar::FORMAT_DEBUG);
         foreach ($migration->findAllThatNeedMigration() as $entity) {
             $entityMigration = $this->entityMigrationRepository->load(
                 $entity,

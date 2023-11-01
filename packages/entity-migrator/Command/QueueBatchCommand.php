@@ -13,6 +13,7 @@ use Draw\Component\EntityMigrator\Migrator;
 use Draw\Component\EntityMigrator\Repository\EntityMigrationRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -124,7 +125,7 @@ class QueueBatchCommand extends BaseCommand
             ->toIterable();
 
         $progress = $io->createProgressBar($count);
-
+        $progress->setFormat(ProgressBar::FORMAT_DEBUG);
         foreach ($result as $row) {
             $migrationEntity = $manager->getReference($entityMigrationClass, $row['id']);
 
