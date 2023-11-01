@@ -17,6 +17,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
@@ -26,12 +27,13 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class QueueBatchCommand extends BaseCommand
 {
     public function __construct(
+        private MessageBusInterface $messageBus,
         Migrator $migrator,
         EntityMigrationRepository $entityMigrationRepository,
         ManagerRegistry $managerRegistry,
-        private MessageBusInterface $messageBus
+        ?ServicesResetter $servicesResetter = null,
     ) {
-        parent::__construct($migrator, $entityMigrationRepository, $managerRegistry);
+        parent::__construct($migrator, $entityMigrationRepository, $managerRegistry, $servicesResetter);
     }
 
     protected function configure(): void
@@ -136,6 +138,7 @@ class QueueBatchCommand extends BaseCommand
             $manager->clear();
 
             $progress->advance();
+            $this->servicesResetter?->reset();
         }
 
         $progress->finish();

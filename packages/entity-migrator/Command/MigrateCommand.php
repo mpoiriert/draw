@@ -65,6 +65,8 @@ class MigrateCommand extends BaseCommand
             $progress->advance();
 
             $manager->clear();
+
+            $this->servicesResetter?->reset();
         }
 
         $progress->finish();
