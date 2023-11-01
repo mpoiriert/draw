@@ -2,8 +2,10 @@
 
 namespace Draw\Component\Log;
 
+use Monolog\ResettableInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
+use Symfony\Contracts\Service\ResetInterface;
 
 class DecoratedLogger implements LoggerInterface
 {
@@ -26,5 +28,12 @@ class DecoratedLogger implements LoggerInterface
             str_replace('{message}', $message, $this->decorateMessage),
             array_merge($this->defaultContext, $context)
         );
+    }
+
+    public function reset(): void
+    {
+        if ($this->logger instanceof ResetInterface || $this->logger instanceof ResettableInterface) {
+            $this->logger->reset();
+        }
     }
 }
