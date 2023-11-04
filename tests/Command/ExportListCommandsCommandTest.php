@@ -2,12 +2,12 @@
 
 namespace App\Tests\Command;
 
-use App\Tests\TestCase;
 use App\Command\ExportListCommandsCommand;
+use App\Tests\TestCase;
+use Draw\Component\Tester\Application\CommandDataTester;
+use Draw\Component\Tester\Application\CommandTestTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
-use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\Application\CommandDataTester;
 
 /**
  * @covers \App\Command\ExportListCommandsCommand
@@ -63,7 +63,8 @@ class ExportListCommandsCommandTest extends TestCase
 
     private function getDefaultExpectation(): string
     {
-        $jsonContent = file_get_contents(__DIR__.'/result/defaultExport.json'); 
-        return $jsonContent; 
+        $jsonContent = file_get_contents(__DIR__.'/result/defaultExport.json');
+
+        return $jsonContent;
     }
 }
