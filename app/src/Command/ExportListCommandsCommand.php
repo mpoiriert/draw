@@ -34,7 +34,6 @@ class ExportListCommandsCommand extends Command
 
     $jsonOutput = json_encode($commandList, JSON_PRETTY_PRINT);
     $output->writeln($jsonOutput);
-    dump($jsonOutput); exit;
     return 0;
   }
 
