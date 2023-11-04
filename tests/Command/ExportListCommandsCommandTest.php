@@ -10,7 +10,7 @@ use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\Application\CommandDataTester;
 
 /**
- * @covers \App\Command\ListCommandsCommand
+ * @covers \App\Command\ExportListCommandsCommand
  */
 class ExportListCommandsCommandTest extends TestCase
 {
