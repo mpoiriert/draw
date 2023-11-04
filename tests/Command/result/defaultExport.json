@@ -1,0 +1,527 @@
+{
+    "help": {
+        "description": "Display help for a command",
+        "synopsis": "help [--format FORMAT] [--raw] [--] []",
+        "helper": "The %command.name% command displays help for a given command: %command.full_name% list You can also output the help in other formats by using the --format option: %command.full_name% --format=xml list To display the list of available commands, please use the list command."
+    },
+    "list": {
+        "description": "List commands",
+        "synopsis": "list [--raw] [--format FORMAT] [--short] [--] []",
+        "helper": "The %command.name% command lists all commands: %command.full_name% You can also display the commands for a specific namespace: %command.full_name% test You can also output the information in other formats by using the --format option: %command.full_name% --format=xml It's also possible to get raw list of commands (useful for embedding command runner): %command.full_name% --raw"
+    },
+    "_complete": {
+        "description": "Internal command to provide shell completion suggestions",
+        "synopsis": "_complete [-s|--shell SHELL] [-i|--input INPUT] [-c|--current CURRENT] [-S|--symfony SYMFONY]",
+        "helper": ""
+    },
+    "completion": {
+        "description": "Dump the shell completion script",
+        "synopsis": "completion [--debug] [--] []",
+        "helper": "The %command.name% command dumps the shell completion script required to use shell autocompletion (currently only bash completion is supported). Static installation ------------------- Dump the script to a global completion file and restart your shell: %command.full_name% bash | sudo tee \/etc\/bash_completion.d\/console Or dump the script to a local file and source it: %command.full_name% bash > completion.sh # source the file whenever you use the project source completion.sh # or add this line at the end of your '~\/.bashrc' file: source \/path\/to\/completion.sh Dynamic installation -------------------- Add this to the end of your shell configuration file (e.g. '~\/.bashrc'): eval '$(\/home\/wwwroot\/bin\/console completion bash)'"
+    },
+    "draw:tester:dump-assert-methods": {
+        "description": "Dump all PHPUnit Assert Methods in a json file to use for generation",
+        "synopsis": "draw:tester:dump-assert-methods [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": ""
+    },
+    "draw:tester:generate-trait": {
+        "description": "Generate the assert trait base on the methods available",
+        "synopsis": "draw:tester:generate-trait [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": ""
+    },
+    "draw:tester:generate-asserts-documentation-page": {
+        "description": "Generate the assert documentation base on the methods available",
+        "synopsis": "draw:tester:generate-asserts-documentation-page [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": ""
+    },
+    "app:null": {
+        "description": "This command does nothing.",
+        "synopsis": "app:null [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "draw:user:refresh-user-locks": {
+        "description": "Send a [RefreshUserLockMessage] for all user. Configure you messenger routing properly otherwise it will be sync",
+        "synopsis": "draw:user:refresh-user-locks [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "draw:aws:cloud-watch-logs:download": {
+        "description": "Download logs from cloud watch locally base on it's log group name, log stream name and a start time\/end time",
+        "synopsis": "draw:aws:cloud-watch-logs:download [--startTime STARTTIME] [--endTime ENDTIME] [--fileMode FILEMODE] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": ""
+    },
+    "draw:console:purge-execution": {
+        "description": "Purge the execution table of all records before a specified date interval.",
+        "synopsis": "draw:console:purge-execution [--delay [DELAY]] [--batch-size [BATCH-SIZE]] [--sleep [SLEEP]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "draw:open-api:install-sandbox": {
+        "description": "Install Open Api Sandbox from downloaded zip base on tag version.",
+        "synopsis": "draw:open-api:install-sandbox [--tag TAG] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": ""
+    },
+    "draw:mailer:send-test-email": {
+        "description": "Send a test email.",
+        "synopsis": "draw:mailer:send-test-email [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": ""
+    },
+    "draw:messenger:purge-obsolete-messages": {
+        "description": "Purge obsolete message from transports.",
+        "synopsis": "draw:messenger:purge-obsolete-messages [--delay [DELAY]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": ""
+    },
+    "draw:messenger:start-broker": {
+        "description": "Start multiple messenger:consume base on concurrent option. Automatically restart them if stopped.",
+        "synopsis": "draw:messenger:start-broker [--context CONTEXT] [--concurrent CONCURRENT] [--timeout TIMEOUT] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "draw:system-monitoring:statuses": {
+        "description": "Validate current system statuses.",
+        "synopsis": "draw:system-monitoring:statuses [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": ""
+    },
+    "draw:application:update-deployed-version": {
+        "description": "You should run this after every successful application deployment.",
+        "synopsis": "draw:application:update-deployed-version [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "app:list-commands": {
+        "description": "List all available Symfony commands with their documentation.",
+        "synopsis": "app:list-commands [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--as-system]",
+        "helper": "This command lists all available Symfony commands and their descriptions."
+    },
+    "about": {
+        "description": "Display information about the current project",
+        "synopsis": "about [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command displays information about the current Symfony project. The PHP section displays important configuration that could affect your application. The values might be different between web and CLI."
+    },
+    "assets:install": {
+        "description": "Install bundle's web assets under a public directory",
+        "synopsis": "assets:install [--symlink] [--relative] [--no-cleanup] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command installs bundle assets into a given directory (e.g. the public directory). php %command.full_name% public A 'bundles' directory will be created inside the target directory and the 'Resources\/public' directory of each bundle will be copied into it. To create a symlink to each bundle instead of copying its assets, use the --symlink option (will fall back to hard copies when symbolic links aren't possible: php %command.full_name% public --symlink To make symlink relative, add the --relative option: php %command.full_name% public --symlink --relative"
+    },
+    "cache:clear": {
+        "description": "Clear the cache",
+        "synopsis": "cache:clear [--no-warmup] [--no-optional-warmers] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command clears and warms up the application cache for a given environment and debug mode: php %command.full_name% --env=dev php %command.full_name% --env=prod --no-debug"
+    },
+    "cache:pool:clear": {
+        "description": "Clear cache pools",
+        "synopsis": "cache:pool:clear [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] ...",
+        "helper": "The %command.name% command clears the given cache pools or cache pool clearers. %command.full_name% [...]"
+    },
+    "cache:pool:prune": {
+        "description": "Prune cache pools",
+        "synopsis": "cache:pool:prune [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command deletes all expired items from all pruneable pools. %command.full_name%"
+    },
+    "cache:pool:delete": {
+        "description": "Delete an item from a cache pool",
+        "synopsis": "cache:pool:delete [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% deletes an item from a given cache pool. %command.full_name%"
+    },
+    "cache:pool:list": {
+        "description": "List available cache pools",
+        "synopsis": "cache:pool:list [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command lists all available cache pools."
+    },
+    "cache:warmup": {
+        "description": "Warm up an empty cache",
+        "synopsis": "cache:warmup [--no-optional-warmers] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command warms up the cache. Before running this command, the cache must be empty."
+    },
+    "debug:config": {
+        "description": "Dump the current configuration for an extension",
+        "synopsis": "debug:config [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [ []]",
+        "helper": "The %command.name% command dumps the current configuration for an extension\/bundle. Either the extension alias or bundle name can be used: php %command.full_name% framework php %command.full_name% FrameworkBundle For dumping a specific option, add its path as second argument: php %command.full_name% framework serializer.enabled"
+    },
+    "config:dump-reference": {
+        "description": "Dump the default configuration for an extension",
+        "synopsis": "config:dump-reference [--format FORMAT] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [ []]",
+        "helper": "The %command.name% command dumps the default configuration for an extension\/bundle. Either the extension alias or bundle name can be used: php %command.full_name% framework php %command.full_name% FrameworkBundle With the --format option specifies the format of the configuration, this is either yaml or xml. When the option is not provided, yaml is used. php %command.full_name% FrameworkBundle --format=xml For dumping a specific option, add its path as second argument (only available for the yaml format): php %command.full_name% framework http_client.default_options"
+    },
+    "debug:container": {
+        "description": "Display current services for an application",
+        "synopsis": "debug:container [--show-arguments] [--show-hidden] [--tag TAG] [--tags] [--parameter PARAMETER] [--parameters] [--types] [--env-var ENV-VAR] [--env-vars] [--format FORMAT] [--raw] [--deprecations] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command displays all configured public services: php %command.full_name% To see deprecations generated during container compilation and cache warmup, use the --deprecations option: php %command.full_name% --deprecations To get specific information about a service, specify its name: php %command.full_name% validator To get specific information about a service including all its arguments, use the --show-arguments flag: php %command.full_name% validator --show-arguments To see available types that can be used for autowiring, use the --types flag: php %command.full_name% --types To see environment variables used by the container, use the --env-vars flag: php %command.full_name% --env-vars Display a specific environment variable by specifying its name with the --env-var option: php %command.full_name% --env-var=APP_ENV Use the --tags option to display tagged public services grouped by tag: php %command.full_name% --tags Find all services with a specific tag by specifying the tag name with the --tag option: php %command.full_name% --tag=form.type Use the --parameters option to display all parameters: php %command.full_name% --parameters Display a specific parameter by specifying its name with the --parameter option: php %command.full_name% --parameter=kernel.debug By default, internal services are hidden. You can display them using the --show-hidden flag: php %command.full_name% --show-hidden"
+    },
+    "lint:container": {
+        "description": "Ensure that arguments injected into services match type declarations",
+        "synopsis": "lint:container [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "This command parses service definitions and ensures that injected values match the type declarations of each services' class."
+    },
+    "debug:autowiring": {
+        "description": "List classes\/interfaces you can use for autowiring",
+        "synopsis": "debug:autowiring [--all] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command displays the classes and interfaces that you can use as type-hints for autowiring: php %command.full_name% You can also pass a search term to filter the list: php %command.full_name% log"
+    },
+    "debug:dotenv": {
+        "description": "Lists all dotenv files with variables and values",
+        "synopsis": "debug:dotenv [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "debug:event-dispatcher": {
+        "description": "Display configured listeners for an application",
+        "synopsis": "debug:event-dispatcher [--dispatcher DISPATCHER] [--format FORMAT] [--raw] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command displays all configured listeners: php %command.full_name% To get specific listeners for an event, specify its name: php %command.full_name% kernel.request"
+    },
+    "messenger:consume": {
+        "description": "Consume messages",
+        "synopsis": "messenger:consume [-l|--limit LIMIT] [-f|--failure-limit FAILURE-LIMIT] [-m|--memory-limit MEMORY-LIMIT] [-t|--time-limit TIME-LIMIT] [--sleep SLEEP] [-b|--bus BUS] [--queues QUEUES] [--no-reset] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [...]",
+        "helper": "The %command.name% command consumes messages and dispatches them to the message bus. php %command.full_name% To receive from multiple transports, pass each name: php %command.full_name% receiver1 receiver2 Use the --limit option to limit the number of messages received: php %command.full_name% --limit=10 Use the --failure-limit option to stop the worker when the given number of failed messages is reached: php %command.full_name% --failure-limit=2 Use the --memory-limit option to stop the worker if it exceeds a given memory usage limit. You can use shorthand byte values [K, M or G]: php %command.full_name% --memory-limit=128M Use the --time-limit option to stop the worker when the given time limit (in seconds) is reached. If a message is being handled, the worker will stop after the processing is finished: php %command.full_name% --time-limit=3600 Use the --bus option to specify the message bus to dispatch received messages to instead of trying to determine it automatically. This is required if the messages didn't originate from Messenger: php %command.full_name% --bus=event_bus Use the --queues option to limit a receiver to only certain queues (only supported by some receivers): php %command.full_name% --queues=fasttrack Use the --no-reset option to prevent services resetting after each message (may lead to leaking services' state between messages): php %command.full_name% --no-reset"
+    },
+    "messenger:setup-transports": {
+        "description": "Prepare the required infrastructure for the transport",
+        "synopsis": "messenger:setup-transports [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command setups the transports: php %command.full_name% Or a specific transport only: php %command.full_name%"
+    },
+    "debug:messenger": {
+        "description": "List messages you can dispatch using the message buses",
+        "synopsis": "debug:messenger [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command displays all messages that can be dispatched using the message buses: php %command.full_name% Or for a specific bus only: php %command.full_name% command_bus"
+    },
+    "messenger:stop-workers": {
+        "description": "Stop workers after their current message",
+        "synopsis": "messenger:stop-workers [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command sends a signal to stop any messenger:consume processes that are running. php %command.full_name% Each worker command will finish the message they are currently processing and then exit. Worker commands are *not* automatically restarted: that should be handled by a process control system."
+    },
+    "messenger:failed:retry": {
+        "description": "Retry one or more messages from the failure transport",
+        "synopsis": "messenger:failed:retry [--force] [--transport [TRANSPORT]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [...]",
+        "helper": "The %command.name% retries message in the failure transport. php %command.full_name% The command will interactively ask if each message should be retried or discarded. Some transports support retrying a specific message id, which comes from the messenger:failed:show command. php %command.full_name% {id} Or pass multiple ids at once to process multiple messages: php %command.full_name% {id1} {id2} {id3}"
+    },
+    "messenger:failed:show": {
+        "description": "Show one or more messages from the failure transport",
+        "synopsis": "messenger:failed:show [--max MAX] [--transport [TRANSPORT]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% shows message that are pending in the failure transport. php %command.full_name% Or look at a specific message by its id: php %command.full_name% {id}"
+    },
+    "messenger:failed:remove": {
+        "description": "Remove given messages from the failure transport",
+        "synopsis": "messenger:failed:remove [--force] [--transport [TRANSPORT]] [--show-messages] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] ...",
+        "helper": "The %command.name% removes given messages that are pending in the failure transport. php %command.full_name% {id1} [{id2} ...] The specific ids can be found via the messenger:failed:show command."
+    },
+    "debug:router": {
+        "description": "Display current routes for an application",
+        "synopsis": "debug:router [--show-controllers] [--format FORMAT] [--raw] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% displays the configured routes: php %command.full_name%"
+    },
+    "router:match": {
+        "description": "Help debug routes by simulating a path info match",
+        "synopsis": "router:match [--method METHOD] [--scheme SCHEME] [--host HOST] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% shows which routes match a given request and which don't and for what reason: php %command.full_name% \/foo or php %command.full_name% \/foo --method POST --scheme https --host symfony.com --verbose"
+    },
+    "debug:translation": {
+        "description": "Display translation messages information",
+        "synopsis": "debug:translation [--domain [DOMAIN]] [--only-missing] [--only-unused] [--all] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command helps finding unused or missing translation messages and comparing them with the fallback ones by inspecting the templates and translation files of a given bundle or the default translations directory. You can display information about bundle translations in a specific locale: php %command.full_name% en AcmeDemoBundle You can also specify a translation domain for the search: php %command.full_name% --domain=messages en AcmeDemoBundle You can only display missing messages: php %command.full_name% --only-missing en AcmeDemoBundle You can only display unused messages: php %command.full_name% --only-unused en AcmeDemoBundle You can display information about application translations in a specific locale: php %command.full_name% en You can display information about translations in all registered bundles in a specific locale: php %command.full_name% --all en"
+    },
+    "translation:extract": {
+        "description": "Extract missing translations keys from code to translation files.",
+        "synopsis": "translation:extract [--prefix [PREFIX]] [--output-format [OUTPUT-FORMAT]] [--format [FORMAT]] [--dump-messages] [--force] [--clean] [--domain [DOMAIN]] [--xliff-version [XLIFF-VERSION]] [--sort [SORT]] [--as-tree [AS-TREE]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command extracts translation strings from templates of a given bundle or the default translations directory. It can display them or merge the new ones into the translation files. When new translation strings are found it can automatically add a prefix to the translation message. Example running against a Bundle (AcmeBundle) php %command.full_name% --dump-messages en AcmeBundle php %command.full_name% --force --prefix='new_' fr AcmeBundle Example running against default messages directory php %command.full_name% --dump-messages en php %command.full_name% --force --prefix='new_' fr You can sort the output with the --sort flag: php %command.full_name% --dump-messages --sort=asc en AcmeBundle php %command.full_name% --dump-messages --sort=desc fr You can dump a tree-like structure using the yaml format with --as-tree flag: php %command.full_name% --force --format=yaml --as-tree=3 en AcmeBundle"
+    },
+    "translation:update": {
+        "description": "Extract missing translations keys from code to translation files.",
+        "synopsis": "translation:extract [--prefix [PREFIX]] [--output-format [OUTPUT-FORMAT]] [--format [FORMAT]] [--dump-messages] [--force] [--clean] [--domain [DOMAIN]] [--xliff-version [XLIFF-VERSION]] [--sort [SORT]] [--as-tree [AS-TREE]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command extracts translation strings from templates of a given bundle or the default translations directory. It can display them or merge the new ones into the translation files. When new translation strings are found it can automatically add a prefix to the translation message. Example running against a Bundle (AcmeBundle) php %command.full_name% --dump-messages en AcmeBundle php %command.full_name% --force --prefix='new_' fr AcmeBundle Example running against default messages directory php %command.full_name% --dump-messages en php %command.full_name% --force --prefix='new_' fr You can sort the output with the --sort flag: php %command.full_name% --dump-messages --sort=asc en AcmeBundle php %command.full_name% --dump-messages --sort=desc fr You can dump a tree-like structure using the yaml format with --as-tree flag: php %command.full_name% --force --format=yaml --as-tree=3 en AcmeBundle"
+    },
+    "debug:validator": {
+        "description": "Display validation constraints for classes",
+        "synopsis": "debug:validator [--show-all] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% 'App\\Entity\\Dummy' command dumps the validators for the dummy class. The %command.name% src\/ command dumps the validators for the `src` directory."
+    },
+    "translation:pull": {
+        "description": "Pull translations from a given provider.",
+        "synopsis": "translation:pull [--force] [--intl-icu] [--domains [DOMAINS]] [--locales [LOCALES]] [--format [FORMAT]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% command pulls translations from the given provider. Only new translations are pulled, existing ones are not overwritten. You can overwrite existing translations (and remove the missing ones on local side) by using the --force flag: php %command.full_name% --force provider Full example: php %command.full_name% provider --force --domains=messages --domains=validators --locales=en This command pulls all translations associated with the messages and validators domains for the en locale. Local translations for the specified domains and locale are deleted if they're not present on the provider and overwritten if it's the case. Local translations for others domains and locales are ignored."
+    },
+    "translation:push": {
+        "description": "Push translations to a given provider.",
+        "synopsis": "translation:push [--force] [--delete-missing] [--domains [DOMAINS]] [--locales [LOCALES]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% command pushes translations to the given provider. Only new translations are pushed, existing ones are not overwritten. You can overwrite existing translations by using the --force flag: php %command.full_name% --force provider You can delete provider translations which are not present locally by using the --delete-missing flag: php %command.full_name% --delete-missing provider Full example: php %command.full_name% provider --force --delete-missing --domains=messages --domains=validators --locales=en This command pushes all translations associated with the messages and validators domains for the en locale. Provider translations for the specified domains and locale are deleted if they're not present locally and overwritten if it's the case. Provider translations for others domains and locales are ignored."
+    },
+    "workflow:dump": {
+        "description": "Dump a workflow",
+        "synopsis": "workflow:dump [-l|--label LABEL] [--dump-format DUMP-FORMAT] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [...]",
+        "helper": "The %command.name% command dumps the graphical representation of a workflow in different formats DOT: %command.full_name% | dot -Tpng > workflow.png PUML: %command.full_name% --dump-format=puml | java -jar plantuml.jar -p > workflow.png MERMAID: %command.full_name% --dump-format=mermaid | mmdc -o workflow.svg"
+    },
+    "lint:xliff": {
+        "description": "Lint an XLIFF file and outputs encountered errors",
+        "synopsis": "lint:xliff [--format FORMAT] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [...]",
+        "helper": "The %command.name% command lints an XLIFF file and outputs to STDOUT the first encountered syntax error. You can validates XLIFF contents passed from STDIN: cat filename | php %command.full_name% - You can also validate the syntax of a file: php %command.full_name% filename Or of a whole directory: php %command.full_name% dirname php %command.full_name% dirname --format=json"
+    },
+    "lint:yaml": {
+        "description": "Lint a YAML file and outputs encountered errors",
+        "synopsis": "lint:yaml [--format FORMAT] [--exclude EXCLUDE] [--parse-tags|--no-parse-tags] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [...]",
+        "helper": "The %command.name% command lints a YAML file and outputs to STDOUT the first encountered syntax error. You can validates YAML contents passed from STDIN: cat filename | php %command.full_name% - You can also validate the syntax of a file: php %command.full_name% filename Or of a whole directory: php %command.full_name% dirname php %command.full_name% dirname --format=json You can also exclude one or more specific files: php %command.full_name% dirname --exclude='dirname\/foo.yaml' --exclude='dirname\/bar.yaml' Or find all files in a bundle: php %command.full_name% @AcmeDemoBundle"
+    },
+    "debug:form": {
+        "description": "Display form type information",
+        "synopsis": "debug:form [--show-deprecated] [--format FORMAT] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [ []]",
+        "helper": "The %command.name% command displays information about form types. php %command.full_name% The command lists all built-in types, services types, type extensions and guessers currently available. php %command.full_name% Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType php %command.full_name% ChoiceType The command lists all defined options that contains the given form type, as well as their parents and type extensions. php %command.full_name% ChoiceType choice_value Use the --show-deprecated option to display form types with deprecated options or the deprecated options of the given form type: php %command.full_name% --show-deprecated php %command.full_name% ChoiceType --show-deprecated The command displays the definition of the given option name. php %command.full_name% --format=json The command lists everything in a machine readable json format."
+    },
+    "secrets:set": {
+        "description": "Set a secret in the vault",
+        "synopsis": "secrets:set [-l|--local] [-r|--random [RANDOM]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command stores a secret in the vault. %command.full_name% To reference secrets in services.yaml or any other config files, use '%env()%'. By default, the secret value should be entered interactively. Alternatively, provide a file where to read the secret from: php %command.full_name% filename Use '-' as a file name to read from STDIN: cat filename | php %command.full_name% - Use --local to override secrets for local needs."
+    },
+    "secrets:remove": {
+        "description": "Remove a secret from the vault",
+        "synopsis": "secrets:remove [-l|--local] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% command removes a secret from the vault. %command.full_name%"
+    },
+    "secrets:generate-keys": {
+        "description": "Generate new encryption keys",
+        "synopsis": "secrets:generate-keys [-l|--local] [-r|--rotate] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command generates a new encryption key. %command.full_name% If encryption keys already exist, the command must be called with the --rotate option in order to override those keys and re-encrypt existing secrets. %command.full_name% --rotate"
+    },
+    "secrets:list": {
+        "description": "List all secrets",
+        "synopsis": "secrets:list [-r|--reveal] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command list all stored secrets. %command.full_name% When the option --reveal is provided, the decrypted secrets are also displayed. %command.full_name% --reveal"
+    },
+    "secrets:decrypt-to-local": {
+        "description": "Decrypt all secrets and stores them in the local vault",
+        "synopsis": "secrets:decrypt-to-local [-f|--force] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command decrypts all secrets and copies them in the local vault. %command.full_name% When the option --force is provided, secrets that already exist in the local vault are overriden. %command.full_name% --force"
+    },
+    "secrets:encrypt-from-local": {
+        "description": "Encrypt all local secrets to the vault",
+        "synopsis": "secrets:encrypt-from-local [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command encrypts all locally overridden secrets to the vault. %command.full_name%"
+    },
+    "doctrine:database:create": {
+        "description": "Creates the configured database",
+        "synopsis": "doctrine:database:create [-c|--connection [CONNECTION]] [--if-not-exists] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command creates the default connections database: php %command.full_name% You can also optionally specify the name of a connection to create the database for: php %command.full_name% --connection=default"
+    },
+    "doctrine:database:drop": {
+        "description": "Drops the configured database",
+        "synopsis": "doctrine:database:drop [-c|--connection [CONNECTION]] [--if-exists] [-f|--force] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command drops the default connections database: php %command.full_name% The --force parameter has to be used to actually drop the database. You can also optionally specify the name of a connection to drop the database for: php %command.full_name% --connection=default Be careful: All data in a given database will be lost when executing this command."
+    },
+    "doctrine:query:sql": {
+        "description": "Executes arbitrary SQL directly from the command line.",
+        "synopsis": "doctrine:query:sql [--connection CONNECTION] [--depth DEPTH] [--force-fetch] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% command executes the given SQL query and outputs the results: php %command.full_name% 'SELECT * FROM users'"
+    },
+    "dbal:run-sql": {
+        "description": "Executes arbitrary SQL directly from the command line.",
+        "synopsis": "dbal:run-sql [--connection CONNECTION] [--depth DEPTH] [--force-fetch] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% command executes the given SQL query and outputs the results: php %command.full_name% 'SELECT * FROM users'"
+    },
+    "doctrine:cache:clear-metadata": {
+        "description": "Clear all metadata cache of the various cache drivers",
+        "synopsis": "doctrine:cache:clear-metadata [--em EM] [--flush] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command is meant to clear the metadata cache of associated Entity Manager."
+    },
+    "doctrine:cache:clear-query": {
+        "description": "Clear all query cache of the various cache drivers",
+        "synopsis": "doctrine:cache:clear-query [--em EM] [--flush] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command is meant to clear the query cache of associated Entity Manager. It is possible to invalidate all cache entries at once - called delete -, or flushes the cache provider instance completely. The execution type differ on how you execute the command. If you want to invalidate the entries (and not delete from cache instance), this command would do the work: %command.name% Alternatively, if you want to flush the cache provider using this command: %command.name% --flush Finally, be aware that if --flush option is passed, not all cache providers are able to flush entries, because of a limitation of its execution nature."
+    },
+    "doctrine:cache:clear-result": {
+        "description": "Clear all result cache of the various cache drivers",
+        "synopsis": "doctrine:cache:clear-result [--em EM] [--flush] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command is meant to clear the result cache of associated Entity Manager. It is possible to invalidate all cache entries at once - called delete -, or flushes the cache provider instance completely. The execution type differ on how you execute the command. If you want to invalidate the entries (and not delete from cache instance), this command would do the work: %command.name% Alternatively, if you want to flush the cache provider using this command: %command.name% --flush Finally, be aware that if --flush option is passed, not all cache providers are able to flush entries, because of a limitation of its execution nature."
+    },
+    "doctrine:cache:clear-collection-region": {
+        "description": "Clear a second-level cache collection region",
+        "synopsis": "doctrine:cache:clear-collection-region [--em EM] [--all] [--flush] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [ [ []]]",
+        "helper": "The %command.name% command is meant to clear a second-level cache collection regions for an associated Entity Manager. It is possible to delete\/invalidate all collection region, a specific collection region or flushes the cache provider. The execution type differ on how you execute the command. If you want to invalidate all entries for an collection region this command would do the work: %command.name% 'Entities\\MyEntity' 'collectionName' To invalidate a specific entry you should use : %command.name% 'Entities\\MyEntity' 'collectionName' 1 If you want to invalidate all entries for the all collection regions: %command.name% --all Alternatively, if you want to flush the configured cache provider for an collection region use this command: %command.name% 'Entities\\MyEntity' 'collectionName' --flush Finally, be aware that if --flush option is passed, not all cache providers are able to flush entries, because of a limitation of its execution nature."
+    },
+    "doctrine:mapping:convert": {
+        "description": "Convert mapping information between supported formats",
+        "synopsis": "doctrine:mapping:convert [--em EM] [--filter FILTER] [-f|--force] [--from-database] [--extend [EXTEND]] [--num-spaces [NUM-SPACES]] [--namespace [NAMESPACE]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "Convert mapping information between supported formats. This is an execute one-time command. It should not be necessary for you to call this method multiple times, especially when using the --from-database flag. Converting an existing database schema into mapping files only solves about 70-80% of the necessary mapping information. Additionally the detection from an existing database cannot detect inverse associations, inheritance types, entities with foreign keys as primary keys and many of the semantical operations on associations such as cascade. Hint: There is no need to convert YAML or XML mapping files to annotations every time you make changes. All mapping drivers are first class citizens in Doctrine 2 and can be used as runtime mapping for the ORM. Hint: If you have a database with tables that should not be managed by the ORM, you can use a DBAL functionality to filter the tables and sequences down on a global level: $config->setSchemaAssetsFilter(function (string|AbstractAsset $assetName): bool { if ($assetName instanceof AbstractAsset) { $assetName = $assetName->getName(); } return !str_starts_with($assetName, 'audit_'); });"
+    },
+    "doctrine:schema:create": {
+        "description": "Processes the schema and either create it directly on EntityManager Storage Connection or generate the SQL output",
+        "synopsis": "doctrine:schema:create [--em EM] [--dump-sql] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "Processes the schema and either create it directly on EntityManager Storage Connection or generate the SQL output. Hint: If you have a database with tables that should not be managed by the ORM, you can use a DBAL functionality to filter the tables and sequences down on a global level: $config->setSchemaAssetsFilter(function (string|AbstractAsset $assetName): bool { if ($assetName instanceof AbstractAsset) { $assetName = $assetName->getName(); } return !str_starts_with($assetName, 'audit_'); });"
+    },
+    "doctrine:schema:drop": {
+        "description": "Drop the complete database schema of EntityManager Storage Connection or generate the corresponding SQL output",
+        "synopsis": "doctrine:schema:drop [--em EM] [--dump-sql] [-f|--force] [--full-database] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "Processes the schema and either drop the database schema of EntityManager Storage Connection or generate the SQL output. Beware that the complete database is dropped by this command, even tables that are not relevant to your metadata model. Hint: If you have a database with tables that should not be managed by the ORM, you can use a DBAL functionality to filter the tables and sequences down on a global level: $config->setSchemaAssetsFilter(function (string|AbstractAsset $assetName): bool { if ($assetName instanceof AbstractAsset) { $assetName = $assetName->getName(); } return !str_starts_with($assetName, 'audit_'); });"
+    },
+    "doctrine:ensure-production-settings": {
+        "description": "Verify that Doctrine is properly configured for a production environment",
+        "synopsis": "doctrine:ensure-production-settings [--em EM] [--complete] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "Verify that Doctrine is properly configured for a production environment."
+    },
+    "doctrine:cache:clear-entity-region": {
+        "description": "Clear a second-level cache entity region",
+        "synopsis": "doctrine:cache:clear-entity-region [--em EM] [--all] [--flush] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [ []]",
+        "helper": "The %command.name% command is meant to clear a second-level cache entity region for an associated Entity Manager. It is possible to delete\/invalidate all entity region, a specific entity region or flushes the cache provider. The execution type differ on how you execute the command. If you want to invalidate all entries for an entity region this command would do the work: %command.name% 'Entities\\MyEntity' To invalidate a specific entry you should use : %command.name% 'Entities\\MyEntity' 1 If you want to invalidate all entries for the all entity regions: %command.name% --all Alternatively, if you want to flush the configured cache provider for an entity region use this command: %command.name% 'Entities\\MyEntity' --flush Finally, be aware that if --flush option is passed, not all cache providers are able to flush entries, because of a limitation of its execution nature."
+    },
+    "doctrine:mapping:info": {
+        "description": "Show basic information about all mapped entities",
+        "synopsis": "doctrine:mapping:info [--em EM] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% shows basic information about which entities exist and possibly if their mapping information contains errors or not."
+    },
+    "doctrine:cache:clear-query-region": {
+        "description": "Clear a second-level cache query region",
+        "synopsis": "doctrine:cache:clear-query-region [--em EM] [--all] [--flush] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command is meant to clear a second-level cache query region for an associated Entity Manager. It is possible to delete\/invalidate all query region, a specific query region or flushes the cache provider. The execution type differ on how you execute the command. If you want to invalidate all entries for the default query region this command would do the work: %command.name% To invalidate entries for a specific query region you should use : %command.name% my_region_name If you want to invalidate all entries for the all query region: %command.name% --all Alternatively, if you want to flush the configured cache provider use this command: %command.name% my_region_name --flush Finally, be aware that if --flush option is passed, not all cache providers are able to flush entries, because of a limitation of its execution nature."
+    },
+    "doctrine:query:dql": {
+        "description": "Executes arbitrary DQL directly from the command line",
+        "synopsis": "doctrine:query:dql [--em EM] [--hydrate HYDRATE] [--first-result FIRST-RESULT] [--max-result MAX-RESULT] [--depth DEPTH] [--show-sql] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": "The %command.name% command executes the given DQL query and outputs the results: php %command.full_name% 'SELECT u FROM App\\Entity\\User u' You can also optionally specify some additional options like what type of hydration to use when executing the query: php %command.full_name% 'SELECT u FROM App\\Entity\\User u' --hydrate=array Additionally you can specify the first result and maximum amount of results to show: php %command.full_name% 'SELECT u FROM App\\Entity\\User u' --first-result=0 --max-result=30"
+    },
+    "doctrine:schema:update": {
+        "description": "Executes (or dumps) the SQL needed to update the database schema to match the current mapping metadata",
+        "synopsis": "doctrine:schema:update [--em EM] [--complete] [--dump-sql] [-f|--force] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command generates the SQL needed to synchronize the database schema with the current mapping metadata of the default entity manager. For example, if you add metadata for a new column to an entity, this command would generate and output the SQL needed to add the new column to the database: %command.name% --dump-sql Alternatively, you can execute the generated queries: %command.name% --force If both options are specified, the queries are output and then executed: %command.name% --dump-sql --force Finally, be aware that if the --complete option is passed, this task will drop all database assets (e.g. tables, etc) that are *not* described by the current metadata. In other words, without this option, this task leaves untouched any 'extra' tables that exist in the database, but which aren't described by any metadata. Not passing that option is deprecated. Hint: If you have a database with tables that should not be managed by the ORM, you can use a DBAL functionality to filter the tables and sequences down on a global level: $config->setSchemaAssetsFilter(function (string|AbstractAsset $assetName): bool { if ($assetName instanceof AbstractAsset) { $assetName = $assetName->getName(); } return !str_starts_with($assetName, 'audit_'); });"
+    },
+    "doctrine:schema:validate": {
+        "description": "Validate the mapping files",
+        "synopsis": "doctrine:schema:validate [--em EM] [--skip-mapping] [--skip-sync] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "Validate that the mapping files are correct and in sync with the database."
+    },
+    "doctrine:mapping:import": {
+        "description": "Imports mapping information from an existing database",
+        "synopsis": "doctrine:mapping:import [--em [EM]] [--filter FILTER] [--force] [--path PATH] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command imports mapping information from an existing database: Generate annotation mappings into the src\/ directory using App as the namespace: php %command.full_name% App\\\\Entity annotation --path=src\/Entity Generate xml mappings into the config\/doctrine\/ directory using App as the namespace: php %command.full_name% App\\\\Entity xml --path=config\/doctrine Generate XML mappings into a bundle: php %command.full_name% 'MyCustomBundle' xml You can also optionally specify which entity manager to import from with the --em option: php %command.full_name% 'MyCustomBundle' xml --em=default If you don't want to map every entity that can be found in the database, use the --filter option. It will try to match the targeted mapped entity with the provided pattern string. php %command.full_name% 'MyCustomBundle' xml --filter=MyMatchedEntity Use the --force option, if you want to override existing mapping files: php %command.full_name% 'MyCustomBundle' xml --force"
+    },
+    "debug:twig": {
+        "description": "Show a list of twig functions, filters, globals and tests",
+        "synopsis": "debug:twig [--filter FILTER] [--format FORMAT] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command outputs a list of twig functions, filters, globals and tests. php %command.full_name% The command lists all functions, filters, etc. php %command.full_name% @Twig\/Exception\/error.html.twig The command lists all paths that match the given template name. php %command.full_name% --filter=date The command lists everything that contains the word date. php %command.full_name% --format=json The command lists everything in a machine readable json format."
+    },
+    "lint:twig": {
+        "description": "Lint a Twig template and outputs encountered errors",
+        "synopsis": "lint:twig [--format FORMAT] [--show-deprecations] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [...]",
+        "helper": "The %command.name% command lints a template and outputs to STDOUT the first encountered syntax error. You can validate the syntax of contents passed from STDIN: cat filename | php %command.full_name% - Or the syntax of a file: php %command.full_name% filename Or of a whole directory: php %command.full_name% dirname php %command.full_name% dirname --format=json Or all template files in a bundle: php %command.full_name% @AcmeDemoBundle"
+    },
+    "debug:sonata:block": {
+        "description": "Debug all blocks available, show default settings of each block",
+        "synopsis": "debug:sonata:block [-c|--context CONTEXT] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "debug:firewall": {
+        "description": "Display information about your security firewall(s)",
+        "synopsis": "debug:firewall [--events] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command displays the firewalls that are configured in your application: php %command.full_name% You can pass a firewall name to display more detailed information about a specific firewall: php %command.full_name% main To include all events and event listeners for a specific firewall, use the events option: php %command.full_name% --events main"
+    },
+    "security:encode-password": {
+        "description": "Encode a password",
+        "synopsis": "security:encode-password [--empty-salt] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [ []]",
+        "helper": "The %command.name% command encodes passwords according to your security configuration. This command is mainly used to generate passwords for the in_memory user provider type and for changing passwords in the database while developing the application. Suppose that you have the following security configuration in your application: # app\/config\/security.yml security: encoders: Symfony\\Component\\Security\\Core\\User\\InMemoryUser: plaintext App\\Entity\\User: auto If you execute the command non-interactively, the first available configured user class under the security.encoders key is used and a random salt is generated to encode the password: php %command.full_name% --no-interaction [password] Pass the full user class path as the second argument to encode passwords for your own entities: php %command.full_name% --no-interaction [password] 'App\\Entity\\User' Executing the command interactively allows you to generate a random salt for encoding the password: php %command.full_name% [password] 'App\\Entity\\User' In case your encoder doesn't require a salt, add the empty-salt option: php %command.full_name% --empty-salt [password] 'App\\Entity\\User'"
+    },
+    "security:hash-password": {
+        "description": "Hash a user password",
+        "synopsis": "security:hash-password [--empty-salt] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] [ []]",
+        "helper": "The %command.name% command hashes passwords according to your security configuration. This command is mainly used to generate passwords for the in_memory user provider type and for changing passwords in the database while developing the application. Suppose that you have the following security configuration in your application: # app\/config\/security.yml security: password_hashers: Symfony\\Component\\Security\\Core\\User\\InMemoryUser: plaintext App\\Entity\\User: auto If you execute the command non-interactively, the first available configured user class under the security.password_hashers key is used and a random salt is generated to hash the password: php %command.full_name% --no-interaction [password] Pass the full user class path as the second argument to hash passwords for your own entities: php %command.full_name% --no-interaction [password] 'App\\Entity\\User' Executing the command interactively allows you to generate a random salt for hashing the password: php %command.full_name% [password] 'App\\Entity\\User' In case your hasher doesn't require a salt, add the empty-salt option: php %command.full_name% --empty-salt [password] 'App\\Entity\\User'"
+    },
+    "sonata:admin:explain": {
+        "description": "Explain an admin service",
+        "synopsis": "sonata:admin:explain [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--]",
+        "helper": ""
+    },
+    "sonata:admin:generate-object-acl": {
+        "description": "Install ACL for the objects of the Admin Classes.",
+        "synopsis": "sonata:admin:generate-object-acl [--object_owner [OBJECT_OWNER]] [--user_model [USER_MODEL]] [--step] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "sonata:admin:list": {
+        "description": "List all admin services available",
+        "synopsis": "sonata:admin:list [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "sonata:admin:setup-acl": {
+        "description": "Install ACL for Admin Classes",
+        "synopsis": "sonata:admin:setup-acl [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "server:dump": {
+        "description": "Start a dump server that collects and displays dumps in a single place",
+        "synopsis": "server:dump [--format FORMAT] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "%command.name% starts a dump server that collects and displays dumps in a single place for debugging you application: php %command.full_name% You can consult dumped data in HTML format in your browser by providing the --format=html option and redirecting the output to a file: php %command.full_name% --format='html' > dump.html"
+    },
+    "server:log": {
+        "description": "Start a log server that displays logs in real time",
+        "synopsis": "server:log [--host HOST] [--format FORMAT] [--date-format DATE-FORMAT] [--filter FILTER] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "%command.name% starts a log server to display in real time the log messages generated by your application: php %command.full_name% To filter the log messages using any ExpressionLanguage compatible expression, use the --filter option: php %command.full_name% --filter='level > 200 or channel in ['app', 'doctrine']'"
+    },
+    "doctrine:fixtures:load": {
+        "description": "Load data fixtures to your database",
+        "synopsis": "doctrine:fixtures:load [--append] [--group GROUP] [--em EM] [--purger PURGER] [--purge-exclusions PURGE-EXCLUSIONS] [--shard SHARD] [--purge-with-truncate] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command loads data fixtures from your application: php %command.full_name% Fixtures are services that are tagged with doctrine.fixture.orm. If you want to append the fixtures instead of flushing the database first you can use the --append option: php %command.full_name% --append By default Doctrine Data Fixtures uses DELETE statements to drop the existing rows from the database. If you want to use a TRUNCATE statement instead you can use the --purge-with-truncate flag: php %command.full_name% --purge-with-truncate To execute only fixtures that live in a certain group, use: php %command.full_name% --group=group1"
+    },
+    "doctrine:migrations:diff": {
+        "description": "Generate a migration by comparing your current database to your mapping information.",
+        "synopsis": "doctrine:migrations:diff [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--namespace NAMESPACE] [--filter-expression FILTER-EXPRESSION] [--formatted] [--line-length LINE-LENGTH] [--check-database-platform [CHECK-DATABASE-PLATFORM]] [--allow-empty-diff] [--from-empty-schema] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command generates a migration by comparing your current database to your mapping information: %command.full_name%"
+    },
+    "doctrine:migrations:sync-metadata-storage": {
+        "description": "Ensures that the metadata storage is at the latest version.",
+        "synopsis": "doctrine:migrations:sync-metadata-storage [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command updates metadata storage the latest version. %command.full_name%"
+    },
+    "doctrine:migrations:list": {
+        "description": "Display a list of all available migrations and their status.",
+        "synopsis": "doctrine:migrations:list [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command outputs a list of all available migrations and their status: %command.full_name%"
+    },
+    "doctrine:migrations:current": {
+        "description": "Outputs the current version",
+        "synopsis": "doctrine:migrations:current [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "doctrine:migrations:dump-schema": {
+        "description": "Dump the schema for your database to a migration.",
+        "synopsis": "doctrine:migrations:dump-schema [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--formatted] [--namespace NAMESPACE] [--filter-tables FILTER-TABLES] [--line-length [LINE-LENGTH]] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command dumps the schema for your database to a migration: %command.full_name% After dumping your schema to a migration, you can rollup your migrations using the migrations:rollup command."
+    },
+    "doctrine:migrations:execute": {
+        "description": "Execute one or more migration versions up or down manually.",
+        "synopsis": "doctrine:migrations:execute [--write-sql [WRITE-SQL]] [--dry-run] [--up] [--down] [--query-time] [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] ...",
+        "helper": "The %command.name% command executes migration versions up or down manually: %command.full_name% FQCN You can show more information about the process by increasing the verbosity level. To see the executed queries, set the level to debug with -vv: %command.full_name% FQCN -vv If no --up or --down option is specified it defaults to up: %command.full_name% FQCN --down You can also execute the migration as a --dry-run: %command.full_name% FQCN --dry-run You can output the prepared SQL statements to a file with --write-sql: %command.full_name% FQCN --write-sql Or you can also execute the migration without a warning message which you need to interact with: %command.full_name% FQCN --no-interaction All the previous commands accept multiple migration versions, allowing you run execute more than one migration at once: %command.full_name% FQCN-1 FQCN-2 ...FQCN-n"
+    },
+    "doctrine:migrations:generate": {
+        "description": "Generate a blank migration class.",
+        "synopsis": "doctrine:migrations:generate [--namespace NAMESPACE] [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command generates a blank migration class: %command.full_name%"
+    },
+    "doctrine:migrations:latest": {
+        "description": "Outputs the latest version",
+        "synopsis": "doctrine:migrations:latest [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    },
+    "doctrine:migrations:migrate": {
+        "description": "Execute a migration to a specified version or the latest available version.",
+        "synopsis": "doctrine:migrations:migrate [--write-sql [WRITE-SQL]] [--dry-run] [--query-time] [--allow-no-migration] [--all-or-nothing [ALL-OR-NOTHING]] [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command executes a migration to a specified version or the latest available version: %command.full_name% You can show more information about the process by increasing the verbosity level. To see the executed queries, set the level to debug with -vv: %command.full_name% -vv You can optionally manually specify the version you wish to migrate to: %command.full_name% FQCN You can specify the version you wish to migrate to using an alias: %command.full_name% prev These alias are defined : first, latest, prev, current and next You can specify the version you wish to migrate to using an number against the current version: %command.full_name% current+3 You can also execute the migration as a --dry-run: %command.full_name% FQCN --dry-run You can output the prepared SQL statements to a file with --write-sql: %command.full_name% FQCN --write-sql Or you can also execute the migration without a warning message which you need to interact with: %command.full_name% --no-interaction You can also time all the different queries if you wanna know which one is taking so long: %command.full_name% --query-time Use the --all-or-nothing option to wrap the entire migration in a transaction."
+    },
+    "doctrine:migrations:rollup": {
+        "description": "Rollup migrations by deleting all tracked versions and insert the one version that exists.",
+        "synopsis": "doctrine:migrations:rollup [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command rolls up migrations by deleting all tracked versions and inserts the one version that exists that was created with the migrations:dump-schema command. %command.full_name% To dump your schema to a migration version you can use the migrations:dump-schema command."
+    },
+    "doctrine:migrations:status": {
+        "description": "View the status of a set of migrations.",
+        "synopsis": "doctrine:migrations:status [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command outputs the status of a set of migrations: %command.full_name%"
+    },
+    "doctrine:migrations:up-to-date": {
+        "description": "Tells you if your schema is up-to-date.",
+        "synopsis": "doctrine:migrations:up-to-date [-u|--fail-on-unregistered] [-l|--list-migrations] [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": "The %command.name% command tells you if your schema is up-to-date: %command.full_name%"
+    },
+    "doctrine:migrations:version": {
+        "description": "Manually add and delete migration versions from the version table.",
+        "synopsis": "doctrine:migrations:version [--add] [--delete] [--all] [--range-from [RANGE-FROM]] [--range-to [RANGE-TO]] [--configuration CONFIGURATION] [--em EM] [--conn CONN] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": "The %command.name% command allows you to manually add, delete or synchronize migration versions from the version table: %command.full_name% MIGRATION-FQCN --add If you want to delete a version you can use the --delete option: %command.full_name% MIGRATION-FQCN --delete If you want to synchronize by adding or deleting all migration versions available in the version table you can use the --all option: %command.full_name% --add --all %command.full_name% --delete --all If you want to synchronize by adding or deleting some range of migration versions available in the version table you can use the --range-from\/--range-to option: %command.full_name% --add --range-from=MIGRATION-FQCN --range-to=MIGRATION-FQCN %command.full_name% --delete --range-from=MIGRATION-FQCN --range-to=MIGRATION-FQCN You can also execute this command without a warning message which you need to interact with: %command.full_name% --no-interaction"
+    },
+    "draw:entity-migrator:migrate-all": {
+        "description": "Migrate all entities",
+        "synopsis": "draw:entity-migrator:migrate-all [--now] [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore] [--] []",
+        "helper": ""
+    },
+    "draw:entity-migrator:setup": {
+        "description": "Insert the migration in the database",
+        "synopsis": "draw:entity-migrator:setup [--aws-newest-instance-role AWS-NEWEST-INSTANCE-ROLE] [--draw-execution-id DRAW-EXECUTION-ID] [--draw-execution-ignore]",
+        "helper": ""
+    }
+}
