@@ -34,7 +34,7 @@ draw_framework_extra:
     broker:
       contexts:
         default:
-          receivers: [ 'async' ]
+          receivers: [ 'async_high_priority', 'async', 'async_low_priority' ]
     doctrine_message_bus_hook: ~
     retry:
       event_driven:

@@ -2,6 +2,8 @@
 
 namespace Draw\Component\EntityMigrator;
 
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * @template T of MigrationTargetEntityInterface
  */
@@ -22,19 +24,9 @@ interface MigrationInterface
     public function needMigration(MigrationTargetEntityInterface $entity): bool;
 
     /**
-     * Return all entity that need migration. A migrate command will be sent to queue for each of them.
+     * Create a query builder to select all the entity to migrate.
      *
-     * @return iterable<T>
+     * This query builder will be used to create a count query and a query to fetch all the entities or ids to migrate.
      */
-    public function findAllThatNeedMigration(): iterable;
-
-    /**
-     * Return the number of entities that need migration or null if unknown.
-     */
-    public function countAllThatNeedMigration(): ?int;
-
-    /**
-     * Return a boolean to indicate that no more entities need migration.
-     */
-    public function migrationIsCompleted(): bool;
+    public function createQueryBuilder(): QueryBuilder;
 }

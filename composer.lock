@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87ae648d509c4a0e9b82ba8ee56df3cc",
+    "content-hash": "b83fa132c8eaa00333ed2c813f6e5663",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -11209,6 +11209,58 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "yokai/sonata-workflow",
+            "version": "v0.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yokai-php/sonata-workflow.git",
+                "reference": "fb3c63d53511c0c975bf51fda4de49f7f1e57f5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yokai-php/sonata-workflow/zipball/fb3c63d53511c0c975bf51fda4de49f7f1e57f5d",
+                "reference": "fb3c63d53511c0c975bf51fda4de49f7f1e57f5d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "sonata-project/admin-bundle": "^4.0",
+                "symfony/workflow": "^4.4|^5.0|^6.0"
+            },
+            "require-dev": {
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Yokai\\SonataWorkflow\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yann Eugoné",
+                    "email": "eugone.yann@gmail.com"
+                }
+            ],
+            "description": "Integrate Symfony workflow component in Sonata Admin",
+            "keywords": [
+                "admin",
+                "sonata",
+                "workflow"
+            ],
+            "support": {
+                "issues": "https://github.com/yokai-php/sonata-workflow/issues",
+                "source": "https://github.com/yokai-php/sonata-workflow/tree/v0.7.0"
+            },
+            "time": "2022-05-31T08:56:09+00:00"
         }
     ],
     "packages-dev": [

@@ -2,8 +2,6 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
-use Draw\Component\EntityMigrator\Command\MigrateCommand;
-use Draw\Component\EntityMigrator\Command\QueueBatchCommand;
 use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Entity\Migration;
@@ -37,11 +35,7 @@ class EntityMigratorIntegration implements IntegrationInterface, PrependIntegrat
         );
 
         $container
-            ->getDefinition(MigrateCommand::class)
-            ->setArgument('$servicesResetter', new Reference('services_resetter'));
-
-        $container
-            ->getDefinition(QueueBatchCommand::class)
+            ->getDefinition(Migrator::class)
             ->setArgument('$servicesResetter', new Reference('services_resetter'));
 
         $this->renameDefinitions(

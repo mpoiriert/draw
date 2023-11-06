@@ -57,7 +57,8 @@
         "symfony/yaml": "5.4.*",
         "twig/twig": "^3.3",
         "friendsofphp/php-cs-fixer": "^3.13",
-        "nesbot/carbon": "^2.0"
+        "nesbot/carbon": "^2.0",
+        "yokai/sonata-workflow": "^0.7.0"
     },
     "require-dev": {
         "ext-pcntl": "*",

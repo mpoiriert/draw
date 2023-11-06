@@ -29,6 +29,8 @@ class EntityMigratorCompilerPass implements CompilerPassInterface
             $references[$name] = new Reference($id);
         }
 
+        ksort($references);
+
         $container
             ->getDefinition('draw.entity_migrator.migrator')
             ->setArgument(

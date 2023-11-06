@@ -42,6 +42,6 @@ class SetupCommand extends Command
 
         $manager->flush();
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
