@@ -2,8 +2,8 @@
 
 namespace App\Tests\Command;
 
-use App\Command\ExportListCommandsCommand;
 use App\Tests\TestCase;
+use Draw\Component\Console\Command\ExportListCommandsCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Symfony\Component\Console\Command\Command;
