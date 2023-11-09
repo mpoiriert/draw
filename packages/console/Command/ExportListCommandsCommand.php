@@ -54,18 +54,19 @@ class ExportListCommandsCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function generateBlockText(string $title, int $width = 30, string $borderChar = '#', string $paddingChar = ' '): string
+    private function generateBlockText(string $title): string
     {
+        $width = 30;
         $titleLength = \strlen($title);
 
         if ($titleLength > $width - 4) {
             $width = $titleLength + 4;
         }
 
-        $boderLine = str_repeat($borderChar, $width);
-        $titleLine = $borderChar.' '.str_pad($title, $width - 4, $paddingChar, \STR_PAD_BOTH).' '.$borderChar;
+        $borderLine = str_repeat('#', $width);
+        $titleLine = '# '.str_pad($title, $width - 4, ' ', \STR_PAD_BOTH).' #';
 
-        return $boderLine.\PHP_EOL.$titleLine.\PHP_EOL.$boderLine;
+        return $borderLine.\PHP_EOL.$titleLine.\PHP_EOL.$borderLine;
     }
 
     private function addNameToTheFullDescription(string $name, string $fullDescription): string
@@ -84,54 +85,4 @@ class ExportListCommandsCommand extends Command
             $filesystem->mkdir($path);
         }
     }
-
-    // private function generateBlockText($title): string
-    // {
-    //     return 'Name: '.\PHP_EOL.$title;
-    // }
-
-    // private function addNameToTheFullDescription($name, $fullDescription): string
-    // {
-    //     return $name.\PHP_EOL.$fullDescription;
-    // }
-
-    // private function strToJson($input): array
-    // {
-    //     $lines = explode("\n", $input);
-    //     $indexes = ['Name:', 'Description:', 'Usage:', 'Arguments:', 'Options:', 'Help:'];
-    //     $result = [];
-    //     $currentKey = '';
-    //     $subArray = [];
-    //     foreach ($lines as $line) {
-    //         $line = trim($line);
-
-    //         if (false !== \in_array($line, $indexes)) {
-    //             if (!empty($subArray)) {
-    //                 $result[$currentKey] = $subArray;
-    //                 $subArray = [];
-    //             }
-    //             $currentKey = trim($line);
-    //         } else {
-    //             $subArray[] = $line;
-    //         }
-    //     }
-
-    //     if (!empty($subArray)) {
-    //         $result[$currentKey] = $subArray;
-    //     }
-
-    //     foreach ($result as $key => $values) {
-    //         foreach ($values as $index => $value) {
-    //             $result[$key][$index] = trim($value);
-    //         }
-    //     }
-
-    //     foreach ($indexes as $index) {
-    //         if (isset($result[$index])) {
-    //             $result[$index] = array_filter($result[$index]);
-    //         }
-    //     }
-
-    //     return $result;
-    // }
 }
