@@ -5,6 +5,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\Console\Command\GenerateDocumentationCommand;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
@@ -89,6 +90,12 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                 ],
             ],
             [
+                new ServiceConfiguration(
+                    'draw.console.command.generate_documentation_command',
+                    [
+                        GenerateDocumentationCommand::class,
+                    ],
+                ),
                 new ServiceConfiguration(
                     'draw.console.command.purge_execution_command',
                     [
