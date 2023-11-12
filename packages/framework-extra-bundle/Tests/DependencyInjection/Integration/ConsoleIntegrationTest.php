@@ -3,6 +3,7 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
+use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationIgnoredCommandEventListener;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Console\Command\GenerateDocumentationCommand;
@@ -33,6 +34,9 @@ class ConsoleIntegrationTest extends IntegrationTestCase
     {
         return [
             'ignore_disabled_command' => false,
+            'documentation' => [
+                'ignored_commands' => [],
+            ],
         ];
     }
 
@@ -87,6 +91,11 @@ class ConsoleIntegrationTest extends IntegrationTestCase
             [
                 [
                     'ignore_disabled_command' => true,
+                    'documentation' => [
+                        'ignored_commands' => [
+                            'help',
+                        ],
+                    ],
                 ],
             ],
             [
@@ -110,6 +119,18 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                     function (Definition $definition): void {
                         static::assertTrue(
                             $definition->getArgument('$ignoreDisabledCommand')
+                        );
+                    }
+                ),
+                new ServiceConfiguration(
+                    'draw.console.event_listener.documentation_ignored_command_event_listener',
+                    [
+                        DocumentationIgnoredCommandEventListener::class,
+                    ],
+                    function (Definition $definition): void {
+                        static::assertSame(
+                            ['help'],
+                            $definition->getArgument('$ignoredCommandNames')
                         );
                     }
                 ),

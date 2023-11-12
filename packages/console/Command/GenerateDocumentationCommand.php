@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Console\Command;
 
+use Draw\Component\Console\Event\GenerateDocumentationEvent;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\DescriptorHelper;
@@ -12,10 +13,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[AsCommand(name: 'draw:console:generate-documentation')]
 class GenerateDocumentationCommand extends Command
 {
+    public function __construct(private ?EventDispatcherInterface $eventDispatcher = null)
+    {
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
@@ -53,6 +60,13 @@ class GenerateDocumentationCommand extends Command
         $descriptionHelper = new DescriptorHelper();
 
         foreach ($commands as $command) {
+            $event = new GenerateDocumentationEvent($command);
+            $this->eventDispatcher?->dispatch($event);
+
+            if ($event->isIgnored()) {
+                continue;
+            }
+
             $descriptionHelper->describe(
                 $commandOutput,
                 $command,

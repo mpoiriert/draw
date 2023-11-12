@@ -16,7 +16,7 @@ class GenerateDocumentationCommandTest extends TestCase
 {
     use FilteredCommandTestTrait;
 
-    private bool $writeFile = true;
+    private bool $writeFile = false;
 
     public function createCommand(): Command
     {
@@ -74,6 +74,14 @@ class GenerateDocumentationCommandTest extends TestCase
         static::assertFileEquals(
             __DIR__.'/fixtures/GenerateDocumentationCommandTest/testExecution_expectedExport.md',
             $filePath
+        );
+    }
+
+    public function testWriteFile(): void
+    {
+        static::assertFalse(
+            $this->writeFile,
+            'Do not forget to put this variable back to false.'
         );
     }
 }

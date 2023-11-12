@@ -5,7 +5,9 @@ draw_framework_extra:
 
   configuration: ~
 
-  console: ~
+  console:
+    documentation:
+      ignored_commands: [ 'completion', 'help', 'list' ]
 
   doctrine_extra: ~
 
@@ -38,7 +40,7 @@ draw_framework_extra:
     doctrine_message_bus_hook: ~
     retry:
       event_driven:
-        transports: ['async']
+        transports: [ 'async' ]
 
     serializer_event_dispatcher: ~
     versioning: ~
@@ -72,7 +74,7 @@ draw_framework_extra:
           all:
             tags: ~
           tag:
-            tags: ['Tags']
+            tags: [ 'Tags' ]
 
       sort_schema: true
 

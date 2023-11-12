@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationIgnoredCommandEventListener;
+use Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
@@ -41,6 +43,22 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
             $namespace,
             'draw.console.'
         );
+
+        $this->registerClasses(
+            $loader,
+            $namespace = 'Draw\\Bundle\\FrameworkExtraBundle\\Console\\',
+            \dirname((new \ReflectionClass(DrawFrameworkExtraBundle::class))->getFileName()).'/Console'
+        );
+
+        $container
+            ->getDefinition(DocumentationIgnoredCommandEventListener::class)
+            ->setArgument('$ignoredCommandNames', $config['documentation']['ignored_commands']);
+
+        $this->renameDefinitions(
+            $container,
+            $namespace,
+            'draw.console.'
+        );
     }
 
     public function addConfiguration(ArrayNodeDefinition $node): void
@@ -48,6 +66,15 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
         $node
             ->children()
                 ->booleanNode('ignore_disabled_command')->defaultFalse()->end()
+                ->arrayNode('documentation')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('ignored_commands')
+                            ->defaultValue([])
+                            ->scalarPrototype()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
     }
 
