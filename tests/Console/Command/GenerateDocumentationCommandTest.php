@@ -8,6 +8,7 @@ use Draw\Component\Console\Command\GenerateDocumentationCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * @covers \Draw\Component\Console\Command\GenerateDocumentationCommand
@@ -34,12 +35,16 @@ class GenerateDocumentationCommandTest extends TestCase
             'path',
             InputArgument::REQUIRED,
         ];
-
     }
 
     public static function provideTestOption(): iterable
     {
-        return [];
+        yield [
+            'format',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'txt',
+        ];
     }
 
     public function testExecute(): void
@@ -66,13 +71,13 @@ class GenerateDocumentationCommandTest extends TestCase
 
         if ($this->writeFile) {
             file_put_contents(
-                __DIR__.'/fixtures/GenerateDocumentationCommandTest/testExecution_expectedExport.md',
+                __DIR__.'/fixtures/GenerateDocumentationCommandTest/testExecution_expectedExport.txt',
                 file_get_contents($filePath)
             );
         }
 
         static::assertFileEquals(
-            __DIR__.'/fixtures/GenerateDocumentationCommandTest/testExecution_expectedExport.md',
+            __DIR__.'/fixtures/GenerateDocumentationCommandTest/testExecution_expectedExport.txt',
             $filePath
         );
     }
