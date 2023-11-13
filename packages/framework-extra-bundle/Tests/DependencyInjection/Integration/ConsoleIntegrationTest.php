@@ -8,9 +8,11 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Console\Command\GenerateDocumentationCommand;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
+use Draw\Component\Console\Descriptor\TextDescriptor;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Component\Console\Helper\DescriptorHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -111,6 +113,18 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                     'draw.console.command.purge_execution_command',
                     [
                         PurgeExecutionCommand::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.console.descriptor.text_descriptor',
+                    [
+                        TextDescriptor::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.console.descriptor_helper',
+                    [
+                        DescriptorHelper::class,
                     ]
                 ),
                 new ServiceConfiguration(

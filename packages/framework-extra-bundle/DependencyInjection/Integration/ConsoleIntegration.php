@@ -5,11 +5,15 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationFilterCommandEventListener;
 use Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
+use Draw\Component\Console\Descriptor\TextDescriptor;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Console\Helper\DescriptorHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInterface
 {
@@ -63,6 +67,21 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
             $container,
             $namespace,
             'draw.console.'
+        );
+
+        $container
+            ->setDefinition(
+                'draw.console.descriptor_helper',
+                new Definition(DescriptorHelper::class)
+            )
+            ->addMethodCall(
+                'register',
+                ['txt', new Reference(TextDescriptor::class)]
+            );
+
+        $container->setAlias(
+            DescriptorHelper::class,
+            'draw.console.descriptor_helper'
         );
     }
 
