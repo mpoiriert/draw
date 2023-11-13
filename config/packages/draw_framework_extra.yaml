@@ -7,7 +7,8 @@ draw_framework_extra:
 
   console:
     documentation:
-      ignored_commands: [ 'completion', 'help', 'list' ]
+      filter: 'in'
+      command_names: [ 'draw:console:generate-documentation' ]
 
   doctrine_extra: ~
 
