@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
-use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationIgnoredCommandEventListener;
+use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationFilterCommandEventListener;
 use Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Entity\Execution;
@@ -50,9 +50,14 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
             \dirname((new \ReflectionClass(DrawFrameworkExtraBundle::class))->getFileName()).'/Console'
         );
 
-        $container
-            ->getDefinition(DocumentationIgnoredCommandEventListener::class)
-            ->setArgument('$ignoredCommandNames', $config['documentation']['ignored_commands']);
+        if (!$config['documentation']['command_names']) {
+            $container->removeDefinition(DocumentationFilterCommandEventListener::class);
+        } else {
+            $container
+                ->getDefinition(DocumentationFilterCommandEventListener::class)
+                ->setArgument('$commandNames', $config['documentation']['command_names'])
+                ->setArgument('$filter', $config['documentation']['filter']);
+        }
 
         $this->renameDefinitions(
             $container,
@@ -69,8 +74,8 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
                 ->arrayNode('documentation')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('ignored_commands')
-                            ->defaultValue([])
+                        ->enumNode('filter')->values(['in', 'out'])->defaultValue('in')->end()
+                        ->arrayNode('command_names')
                             ->scalarPrototype()->end()
                         ->end()
                     ->end()

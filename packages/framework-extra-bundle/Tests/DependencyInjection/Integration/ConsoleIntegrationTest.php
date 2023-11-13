@@ -3,7 +3,7 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
-use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationIgnoredCommandEventListener;
+use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationFilterCommandEventListener;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Console\Command\GenerateDocumentationCommand;
@@ -35,7 +35,8 @@ class ConsoleIntegrationTest extends IntegrationTestCase
         return [
             'ignore_disabled_command' => false,
             'documentation' => [
-                'ignored_commands' => [],
+                'filter' => 'in',
+                'command_names' => [],
             ],
         ];
     }
@@ -92,7 +93,8 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                 [
                     'ignore_disabled_command' => true,
                     'documentation' => [
-                        'ignored_commands' => [
+                        'filter' => 'out',
+                        'command_names' => [
                             'help',
                         ],
                     ],
@@ -123,14 +125,18 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                     }
                 ),
                 new ServiceConfiguration(
-                    'draw.console.event_listener.documentation_ignored_command_event_listener',
+                    'draw.console.event_listener.documentation_filter_command_event_listener',
                     [
-                        DocumentationIgnoredCommandEventListener::class,
+                        DocumentationFilterCommandEventListener::class,
                     ],
                     function (Definition $definition): void {
                         static::assertSame(
+                            'out',
+                            $definition->getArgument('$filter')
+                        );
+                        static::assertSame(
                             ['help'],
-                            $definition->getArgument('$ignoredCommandNames')
+                            $definition->getArgument('$commandNames')
                         );
                     }
                 ),
