@@ -9,7 +9,7 @@
     <table class="table table-bordered table-striped table-hover sonata-ba-list">
         {% for related_entity in related_entities %}
             <tr>
-                <td>{{ related_entity }}</td>
+                <td>{{ related_entity|entity_to_string }}</td>
                 {% if related_admin %}
                     <td>
                         <div class="btn-group">
