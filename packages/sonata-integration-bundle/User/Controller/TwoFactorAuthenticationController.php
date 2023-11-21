@@ -48,17 +48,19 @@ class TwoFactorAuthenticationController extends CRUDController
                 return new RedirectResponse($this->admin->generateObjectUrl('disable-2fa', $user));
             }
 
-            $user->setTotpSecret($enable2fa->totpSecret);
-            if ($totpAuthenticator->checkCode($user, $enable2fa->code)) {
-                $user->enableTwoFActorAuthenticationProvider('totp');
-                $this->admin->getModelManager()->update($user);
+            if ($enable2fa->totpSecret) {
+                $user->setTotpSecret($enable2fa->totpSecret);
+                if ($totpAuthenticator->checkCode($user, $enable2fa->code)) {
+                    $user->enableTwoFActorAuthenticationProvider('totp');
+                    $this->admin->getModelManager()->update($user);
 
-                $this->addFlash(
-                    'sonata_flash_success',
-                    $this->trans('admin.flash.2fa_enabled', [], 'DrawUserBundle')
-                );
+                    $this->addFlash(
+                        'sonata_flash_success',
+                        $this->trans('admin.flash.2fa_enabled', [], 'DrawUserBundle')
+                    );
 
-                return $this->redirectTo($request, $user);
+                    return $this->redirectTo($request, $user);
+                }
             }
 
             $this->addFlash(
@@ -74,6 +76,13 @@ class TwoFactorAuthenticationController extends CRUDController
             $totpSecret = $user->getTotpSecret();
             $enable2fa->totpSecret = $totpSecret;
             $form->setData($enable2fa);
+        } elseif (!$user->getTotpSecret()) {
+            $this->addFlash(
+                'sonata_flash_error',
+                $this->trans('admin.flash.2fa_invalid_code_refreshed', [], 'DrawUserBundle')
+            );
+
+            return new RedirectResponse($this->admin->generateObjectUrl('enable-2fa', $user));
         }
 
         $qrCode = $qrCodeGenerator->getTotpQrCode($user);

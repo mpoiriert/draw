@@ -39,6 +39,7 @@ admin:
         2fa_enabled: '2FA successfully enabled.'
         2fa_disabled: '2FA successfully disabled.'
         2fa_invalid_code: 'Invalid code provided. Please, try again.'
+        2fa_invalid_code_refreshed: 'Error with provided code. Please, try again. The code has been refreshed.'
     list:
         2fa_enabled: '2FA enabled'
     form:
