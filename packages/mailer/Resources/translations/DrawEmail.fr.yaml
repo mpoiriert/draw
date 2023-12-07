@@ -8,4 +8,4 @@ email:
         bottom_section: ''
         signature: '<p>Merci !</p>'
         company_address: 'Company Inc, 3 Abbey Road, San Francisco CA 94102'
-        unsubscribe: '<br />Vous ne voulez pas recevoir ces courriels ? <a href="%link%">Se désabonner</a>.'
+        unsubscribe: '<br />Vous ne voulez pas recevoir ces courriels ? <a href="%unsubscribe_link%">Se désabonner</a>.'

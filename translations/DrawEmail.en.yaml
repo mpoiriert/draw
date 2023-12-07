@@ -1,3 +1,4 @@
 email:
     default:
+        salutation: '<p>Bonjour %user_name%,</p>'
         company_address: 'Santa Claus, North Pole H0H 0H0, Canada'

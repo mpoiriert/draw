@@ -41,6 +41,7 @@ class CallToActionEmailTest extends TestCase
             [
                 'key' => 'value',
                 'call_to_action_link' => $link,
+                'translation_tokens' => [],
             ],
             $this->object->getContext()
         );
