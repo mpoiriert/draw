@@ -45,6 +45,6 @@ class TransportTesterTest extends TestCase
 
         $this->expectException(ExpectationFailedException::class);
 
-        $this->transportTester->assertMessageMatch('test');
+        $this->transportTester->assertMessageMatch(\Exception::class);
     }
 }

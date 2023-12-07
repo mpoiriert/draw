@@ -28,11 +28,17 @@ class TransportTester
         return $this->transport;
     }
 
+    /**
+     * @template T of object
+     * @param class-string<T> $messageClass the name of the class
+     *
+     * @return array<T>
+     */
     public function assertMessageMatch(
         string $messageClass,
         ?Expression $expression = null,
-        $count = 1,
-        $message = ''
+        int $count = 1,
+        string $message = ''
     ): array {
         $messages = [];
         foreach ($this->transport->get() as $envelope) {
