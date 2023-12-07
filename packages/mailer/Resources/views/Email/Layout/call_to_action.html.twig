@@ -1,5 +1,6 @@
 {% trans_default_domain 'DrawEmail' %}
 {% set draw_email_name = draw_email_name|default('default') %}
+{% set translation_tokens = translation_tokens|default({}) %}
 {% set _tokens = {
     'subject': ['email.' ~  draw_email_name ~ '.subject', 'email.default.subject'],
     'preview': ['email.' ~  draw_email_name ~ '.preview', 'email.default.preview'],
@@ -16,7 +17,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>{% block subject %}{{ _tokens.subject|trans|raw }}{% endblock subject %}</title>
+    <title>{% block subject %}{{ _tokens.subject|trans(translation_tokens)|raw }}{% endblock subject %}</title>
     {% block style %}
     <style>
         /* -------------------------------------
@@ -348,7 +349,7 @@
     {% endblock style %}
 </head>
 <body class="">
-<span class="preheader">{% block preview %}{{ _tokens.preview|trans|raw }}{% endblock preview %}</span>
+<span class="preheader">{% block preview %}{{ _tokens.preview|trans(translation_tokens)|raw }}{% endblock preview %}</span>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
     <tr>
         <td>&nbsp;</td>
@@ -364,8 +365,8 @@
                             <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        {% block salutation %}{{ _tokens.salutation|trans|raw }}{% endblock salutation %}
-                                        {% block top_section %}{{ _tokens.top_section|trans|raw }}{% endblock top_section %}
+                                        {% block salutation %}{{ _tokens.salutation|trans(translation_tokens)|raw }}{% endblock salutation %}
+                                        {% block top_section %}{{ _tokens.top_section|trans(translation_tokens)|raw }}{% endblock top_section %}
                                         {% block call_to_action %}
                                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
@@ -374,7 +375,7 @@
                                                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{ call_to_action_link }}" target="_blank">{% block call_to_action_text %}{{ _tokens.call_to_action_text|trans|raw }}{% endblock call_to_action_text %}</a></td>
+                                                            <td> <a href="{{ call_to_action_link }}" target="_blank">{% block call_to_action_text %}{{ _tokens.call_to_action_text|trans(translation_tokens)|raw }}{% endblock call_to_action_text %}</a></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -383,8 +384,8 @@
                                             </tbody>
                                         </table>
                                         {% endblock call_to_action %}
-                                        {% block bottom_section %}{{ _tokens.bottom_section|trans|raw }}{% endblock bottom_section %}
-                                        {% block signature %}{{ _tokens.signature|trans|raw }}{% endblock signature %}
+                                        {% block bottom_section %}{{ _tokens.bottom_section|trans(translation_tokens)|raw }}{% endblock bottom_section %}
+                                        {% block signature %}{{ _tokens.signature|trans(translation_tokens)|raw }}{% endblock signature %}
                                     </td>
                                 </tr>
                             </table>
@@ -400,10 +401,10 @@
                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="content-block">
-                                <span class="apple-link">{% block company_address %}{{ _tokens.company_address|trans|raw }}{% endblock company_address %}</span>
+                                <span class="apple-link">{% block company_address %}{{ _tokens.company_address|trans(translation_tokens)|raw }}{% endblock company_address %}</span>
                                 {% block unsubscribe %}
                                 {% if unsubscribe_link is defined %}
-                                   {{ _tokens.unsubscribe|trans({'%link%': unsubscribe_link})|raw }}
+                                   {{ _tokens.unsubscribe|trans(translation_tokens|merge({'%unsubscribe_link%': unsubscribe_link}))|raw }}
                                 {% endif %}
                                 {% endblock unsubscribe %}
                             </td>
