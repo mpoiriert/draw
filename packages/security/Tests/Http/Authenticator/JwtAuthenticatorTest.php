@@ -367,18 +367,25 @@ class JwtAuthenticatorTest extends TestCase
         $this->expectException(HttpException::class);
         $this->expectExceptionMessage($translatedMessage);
 
+        $previous = new CustomUserMessageAuthenticationException(
+            $message,
+            $messageData
+        );
+
         try {
             $this->object->onAuthenticationFailure(
                 new Request(),
-                new CustomUserMessageAuthenticationException(
-                    $message,
-                    $messageData
-                )
+                $previous
             );
         } catch (HttpException $error) {
             static::assertSame(
                 Response::HTTP_FORBIDDEN,
                 $error->getStatusCode()
+            );
+
+            static::assertSame(
+                $previous,
+                $error->getPrevious()
             );
 
             throw $error;
@@ -424,7 +431,7 @@ class JwtAuthenticatorTest extends TestCase
     }
 
     /**
-     * This is form the parent abstract class but we test it as part of a contract test.
+     * This is form the parent abstract class but, we test it as part of a contract test.
      *
      * @see AbstractAuthenticator
      */
