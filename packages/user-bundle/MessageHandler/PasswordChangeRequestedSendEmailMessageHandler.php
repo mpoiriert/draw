@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\Email\PasswordChangeRequestedEmail;
 use Draw\Bundle\UserBundle\Entity\PasswordChangeUserInterface;
 use Draw\Bundle\UserBundle\Message\PasswordChangeRequestedMessage;
+use Draw\Component\Mailer\Recipient\LocalizationAwareInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -38,6 +39,14 @@ class PasswordChangeRequestedSendEmailMessageHandler implements MessageHandlerIn
             return;
         }
 
-        $this->mailer->send((new PasswordChangeRequestedEmail())->setUserId($user->getId()));
+        $this->mailer->send(
+            (new PasswordChangeRequestedEmail())
+                ->setUserId($user->getId())
+                ->setLocale(
+                    $user instanceof LocalizationAwareInterface
+                        ? $user->getPreferredLocale()
+                        : null
+                )
+        );
     }
 }

@@ -49,5 +49,7 @@ App\Entity\User:
             exclude: true
         emailAuthCodeGeneratedAt:
             exclude: true
+        preferredLocale:
+            exclude: true
         twoFactorAuthenticationEnabledProviders:
             exclude: true

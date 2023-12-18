@@ -5,6 +5,7 @@ namespace Draw\Bundle\UserBundle\MessageHandler;
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\Email\UserOnboardingEmail;
 use Draw\Bundle\UserBundle\Message\NewUserMessage;
+use Draw\Component\Mailer\Recipient\LocalizationAwareInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -29,14 +30,18 @@ class NewUserSendEmailMessageHandler implements MessageHandlerInterface
     {
         $user = $this->drawUserEntityRepository->find($message->getUserId());
 
-        if (null === $user) {
-            return;
-        }
-
         if (!method_exists($user, 'getEmail') || empty($user->getEmail())) {
             return;
         }
 
-        $this->mailer->send((new UserOnboardingEmail())->setUserId($message->getUserId()));
+        $this->mailer->send(
+            (new UserOnboardingEmail())
+                ->setUserId($message->getUserId())
+                ->setLocale(
+                    $user instanceof LocalizationAwareInterface ?
+                        $user->getPreferredLocale() :
+                        null
+                )
+        );
     }
 }

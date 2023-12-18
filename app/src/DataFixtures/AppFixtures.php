@@ -78,6 +78,7 @@ class AppFixtures extends Fixture
             $user->setPlainPassword('password');
             if (1 === $number) {
                 $user->setTags([$inactiveTag]);
+                $user->setPreferredLocale('fr');
             }
             $manager->persist($user);
         }
