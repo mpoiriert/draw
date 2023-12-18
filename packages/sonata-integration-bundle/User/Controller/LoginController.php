@@ -38,7 +38,10 @@ final class LoginController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $mailer->send(new ForgotPasswordEmail($form->get('email')->getData()));
+            $mailer->send(
+                (new ForgotPasswordEmail($form->get('email')->getData()))
+                    ->setLocale($request->getLocale())
+            );
 
             return new RedirectResponse($this->generateUrl('admin_check_email'));
         }

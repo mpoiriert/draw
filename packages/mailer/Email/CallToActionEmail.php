@@ -4,8 +4,10 @@ namespace Draw\Component\Mailer\Email;
 
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
-class CallToActionEmail extends TemplatedEmail
+class CallToActionEmail extends TemplatedEmail implements LocalizeEmailInterface
 {
+    use LocalizeEmailTrait;
+
     private ?string $callToActionLink = null;
 
     public array $translationTokens = [];

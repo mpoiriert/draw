@@ -32,7 +32,7 @@ email:
         subject: 'Welcome'
         top_section: |
             <p>Your account have been created.<p>
-            <p>Please click on the button below to finally your account creation.</p>
+            <p>Please click on the button below to finalise your account creation.</p>
         call_to_action_text: 'Finalise my account creation'
         bottom_section: |
             <p>Follow the instruction on the site to finalise your account creation.</p>

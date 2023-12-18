@@ -20,3 +20,12 @@ email:
         bottom_section: |
             <p>Si vous n'êtes pas l'auteur de cette demande, peut-être que quelqu'un à fait une erreur.</p>
             <p>Peut-être seriez vous intéressé par notre site web ? Cliquer sur le lien plus haut pour en savoir plus.</p>
+
+    user_onboarding:
+        subject: 'Bienvenue'
+        top_section: |
+            <p>Votre compte a été créé.<p>
+            <p>Veuillez cliquer sur le bouton ci-dessous pour finaliser la création de votre compte.</p>
+        call_to_action_text: 'Finaliser la création de mon compte'
+        bottom_section: |
+            <p>Suivez les instructions sur le site pour finaliser la création de votre compte.</p>

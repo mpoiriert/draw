@@ -21,6 +21,7 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOne
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ConfigurationTrait;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
+use Draw\Component\Mailer\Recipient\LocalizationAwareInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
 use Draw\DoctrineExtra\Common\Collections\CollectionUtil;
@@ -34,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'draw_acme__user')]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'])]
-class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface, TwoFactorInterface, ByEmailInterface, ByTimeBaseOneTimePasswordInterface, MigrationTargetEntityInterface
+class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface, TwoFactorInterface, ByEmailInterface, ByTimeBaseOneTimePasswordInterface, MigrationTargetEntityInterface, LocalizationAwareInterface
 {
     use ByEmailTrait;
     use ByTimeBaseOneTimePasswordTrait;
@@ -148,8 +149,10 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     private Collection $userTags;
 
     #[Assert\NotNull]
-    #[Serializer\ReadOnlyProperty]
     private string $requiredReadOnly = 'value';
+
+    #[ORM\Column(type: 'string', nullable: false, options: ['default' => 'en'])]
+    private string $preferredLocale = 'en';
 
     public function __construct()
     {
@@ -174,6 +177,18 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     public function setId(string $id): void
     {
         $this->id = $id;
+    }
+
+    public function getPreferredLocale(): string
+    {
+        return $this->preferredLocale;
+    }
+
+    public function setPreferredLocale(string $preferredLocale): static
+    {
+        $this->preferredLocale = $preferredLocale;
+
+        return $this;
     }
 
     /**
