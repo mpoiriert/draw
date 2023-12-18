@@ -1,32 +1,46 @@
 <?php
 
-namespace Draw\Component\Mailer\EventListener;
+namespace Draw\Component\Mailer;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Mailer\Event\MessageEvent;
+use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mime\Header\UnstructuredHeader;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\RawMessage;
 
-class EmailWriterListener implements EventSubscriberInterface
+class EmailComposer
 {
     private array $writers = [];
 
     private array $sortedWriters = [];
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            MessageEvent::class => ['composeMessage', 200],
-        ];
-    }
-
     public function __construct(private ContainerInterface $serviceLocator)
     {
+    }
+
+    public function compose(Message $message, Envelope $envelope): void
+    {
+        $headers = $message->getHeaders();
+
+        foreach ($this->getTypes($message) as $type) {
+            foreach ($this->getWriters($type) as $writerConfiguration) {
+                [$writer, $writerMethod] = $writerConfiguration;
+                $writer = $writer instanceof EmailWriterInterface ? $writer : $this->serviceLocator->get($writer);
+                \call_user_func([$writer, $writerMethod], $message, $envelope);
+            }
+        }
+
+        if ($message instanceof TemplatedEmail) {
+            if ($template = $message->getHtmlTemplate()) {
+                $headers->add(new UnstructuredHeader('X-DrawEmail-HtmlTemplate', $template));
+            }
+            if ($template = $message->getTextTemplate()) {
+                $headers->add(new UnstructuredHeader('X-DrawEmail-TextTemplate', $template));
+            }
+        }
     }
 
     public function registerEmailWriter(EmailWriterInterface $emailWriter): void
@@ -76,46 +90,6 @@ class EmailWriterListener implements EventSubscriberInterface
     {
         krsort($this->writers[$email]);
         $this->sortedWriters[$email] = array_merge(...$this->writers[$email]);
-    }
-
-    public function composeMessage(MessageEvent $event): void
-    {
-        if ($event->isQueued()) {
-            return;
-        }
-
-        $message = $event->getMessage();
-        if (!$message instanceof Message) {
-            return;
-        }
-
-        $headers = $message->getHeaders();
-        if ($headers->has('X-DrawEmail')) {
-            return;
-        }
-
-        $headers->add(new UnstructuredHeader('X-DrawEmail', '1'));
-
-        $envelope = $event->getEnvelope();
-
-        $types = $this->getTypes($message);
-
-        foreach ($types as $type) {
-            foreach ($this->getWriters($type) as $writerConfiguration) {
-                [$writer, $writerMethod] = $writerConfiguration;
-                $writer = $writer instanceof EmailWriterInterface ? $writer : $this->serviceLocator->get($writer);
-                \call_user_func([$writer, $writerMethod], $message, $envelope);
-            }
-        }
-
-        if ($message instanceof TemplatedEmail) {
-            if ($template = $message->getHtmlTemplate()) {
-                $headers->add(new UnstructuredHeader('X-DrawEmail-HtmlTemplate', $template));
-            }
-            if ($template = $message->getTextTemplate()) {
-                $headers->add(new UnstructuredHeader('X-DrawEmail-TextTemplate', $template));
-            }
-        }
     }
 
     private function getTypes(RawMessage $message): array

@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
@@ -28,8 +29,7 @@ class MailerIntegration implements IntegrationInterface, PrependIntegrationInter
             $loader,
             $namespace = 'Draw\\Component\\Mailer\\',
             \dirname(
-                (new \ReflectionClass(EmailWriterInterface::class))->getFileName(),
-                2
+                (new \ReflectionClass(EmailComposer::class))->getFileName(),
             ),
         );
 

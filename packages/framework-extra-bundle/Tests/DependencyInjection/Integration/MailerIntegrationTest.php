@@ -5,11 +5,12 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
+use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
+use Draw\Component\Mailer\EventListener\EmailComposerListener;
 use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
 use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
-use Draw\Component\Mailer\EventListener\EmailWriterListener;
 use Draw\Component\Mailer\Twig\TranslationExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
@@ -109,9 +110,15 @@ class MailerIntegrationTest extends IntegrationTestCase
                 ]
             ),
             new ServiceConfiguration(
-                'draw.mailer.event_listener.email_writer_listener',
+                'draw.mailer.email_composer',
                 [
-                    EmailWriterListener::class,
+                    EmailComposer::class,
+                ]
+            ),
+            new ServiceConfiguration(
+                'draw.mailer.event_listener.email_composer_listener',
+                [
+                    EmailComposerListener::class,
                 ]
             ),
             new ServiceConfiguration(
