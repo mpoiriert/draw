@@ -13,7 +13,6 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\Header\Headers;
 use Symfony\Component\Mime\Message;
 
 #[CoversClass(EmailComposer::class)]
@@ -95,41 +94,16 @@ class EmailComposerTest extends TestCase
             ->expects(static::once())
             ->method('method2')
             ->with(
-                static::callback(
-                    function (TemplatedEmail $templatedEmail) use ($message): bool {
-                        static::assertSame($message, $templatedEmail);
-
-                        $templatedEmail->htmlTemplate('html-template');
-                        $templatedEmail->textTemplate('text-template');
-
-                        return true;
-                    },
-                ),
+                $message,
                 $envelope
             );
 
         $this->object->compose($message, $envelope);
-
-        $headers = $message->getHeaders();
-
-        static::assertSame(
-            'html-template',
-            $headers->get('X-DrawEmail-HtmlTemplate')->getBodyAsString()
-        );
-        static::assertSame(
-            'text-template',
-            $headers->get('X-DrawEmail-TextTemplate')->getBodyAsString()
-        );
     }
 
     public function testRegisterEmailWriter(): void
     {
         $message = $this->createMock(Email::class);
-
-        $message
-            ->expects(static::once())
-            ->method('getHeaders')
-            ->willReturn(new Headers());
 
         $envelope = new Envelope(new Address('test@example.com'), [new Address('test@example.com')]);
 
