@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
+use Draw\Component\Mailer\BodyRenderer\LocalizeBodyRenderer;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\AddTemplateHeaderEmailWriter;
@@ -114,6 +115,12 @@ class MailerIntegrationTest extends IntegrationTestCase
                 'draw.mailer.email_composer',
                 [
                     EmailComposer::class,
+                ]
+            ),
+            new ServiceConfiguration(
+                'draw.mailer.body_renderer.localize_body_renderer',
+                [
+                    LocalizeBodyRenderer::class,
                 ]
             ),
             new ServiceConfiguration(
