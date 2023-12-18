@@ -6,6 +6,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Mailer\EmailComposer;
+use Draw\Component\Mailer\EmailWriter\AddTemplateHeaderEmailWriter;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\EventListener\EmailComposerListener;
@@ -113,6 +114,12 @@ class MailerIntegrationTest extends IntegrationTestCase
                 'draw.mailer.email_composer',
                 [
                     EmailComposer::class,
+                ]
+            ),
+            new ServiceConfiguration(
+                'draw.mailer.email_writer.add_template_header_email_writer',
+                [
+                    AddTemplateHeaderEmailWriter::class,
                 ]
             ),
             new ServiceConfiguration(

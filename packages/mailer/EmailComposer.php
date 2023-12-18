@@ -5,9 +5,7 @@ namespace Draw\Component\Mailer;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Psr\Container\ContainerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Envelope;
-use Symfony\Component\Mime\Header\UnstructuredHeader;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\RawMessage;
 
@@ -23,22 +21,11 @@ class EmailComposer
 
     public function compose(Message $message, Envelope $envelope): void
     {
-        $headers = $message->getHeaders();
-
         foreach ($this->getTypes($message) as $type) {
             foreach ($this->getWriters($type) as $writerConfiguration) {
                 [$writer, $writerMethod] = $writerConfiguration;
                 $writer = $writer instanceof EmailWriterInterface ? $writer : $this->serviceLocator->get($writer);
                 \call_user_func([$writer, $writerMethod], $message, $envelope);
-            }
-        }
-
-        if ($message instanceof TemplatedEmail) {
-            if ($template = $message->getHtmlTemplate()) {
-                $headers->add(new UnstructuredHeader('X-DrawEmail-HtmlTemplate', $template));
-            }
-            if ($template = $message->getTextTemplate()) {
-                $headers->add(new UnstructuredHeader('X-DrawEmail-TextTemplate', $template));
             }
         }
     }
