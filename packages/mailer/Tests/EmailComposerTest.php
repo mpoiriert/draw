@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Mailer\Tests;
 
+use Draw\Component\Mailer\Email\LocalizeEmailInterface;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Tester\MockTrait;
@@ -14,19 +15,24 @@ use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Message;
+use Symfony\Component\Translation\Translator;
 
 #[CoversClass(EmailComposer::class)]
 class EmailComposerTest extends TestCase
 {
     use MockTrait;
+
     private EmailComposer $object;
 
     private ContainerInterface&MockObject $serviceLocator;
 
+    private Translator&MockObject $translator;
+
     protected function setUp(): void
     {
         $this->object = new EmailComposer(
-            $this->serviceLocator = $this->createMock(ContainerInterface::class)
+            $this->serviceLocator = $this->createMock(ContainerInterface::class),
+            $this->translator = $this->createMock(Translator::class)
         );
     }
 
@@ -155,5 +161,35 @@ class EmailComposerTest extends TestCase
 
         static::assertSame(1, $emailWriter->compose1CallCounter);
         static::assertSame(1, $emailWriter->compose2CallCounter);
+    }
+
+    public function testComposeLocalizeEmail(): void
+    {
+        $message = new class() extends Email implements LocalizeEmailInterface {
+            public function getLocale(): ?string
+            {
+                return 'fr';
+            }
+        };
+
+        $this->translator
+            ->expects(static::once())
+            ->method('getLocale')
+            ->willReturn('en');
+
+        $this->translator
+            ->expects(static::exactly(2))
+            ->method('setLocale')
+            ->with(
+                ...static::withConsecutive(
+                    ['fr'],
+                    ['en']
+                )
+            );
+
+        $this->object->compose(
+            $message,
+            new Envelope(new Address('test@example.com'), [new Address('test@example.com')])
+        );
     }
 }

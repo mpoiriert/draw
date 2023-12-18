@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\Mailer\BodyRenderer\LocalizeBodyRenderer;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
@@ -12,6 +13,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Mime\Address;
 
 class MailerIntegration implements IntegrationInterface, PrependIntegrationInterface
@@ -32,6 +34,14 @@ class MailerIntegration implements IntegrationInterface, PrependIntegrationInter
                 (new \ReflectionClass(EmailComposer::class))->getFileName(),
             ),
         );
+
+        $container
+            ->getDefinition(LocalizeBodyRenderer::class)
+            ->setDecoratedService(
+                'twig.mime_body_renderer',
+                'draw.mailer.body_renderer.localize_body_renderer.inner'
+            )
+            ->setArgument('$bodyRenderer', new Reference('draw.mailer.body_renderer.localize_body_renderer.inner'));
 
         $container
             ->registerForAutoconfiguration(EmailWriterInterface::class)

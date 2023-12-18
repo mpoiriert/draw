@@ -3,11 +3,14 @@
 namespace Draw\Component\Mailer;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Mailer\Email\LocalizeEmailInterface;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\RawMessage;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EmailComposer
 {
@@ -15,17 +18,37 @@ class EmailComposer
 
     private array $sortedWriters = [];
 
-    public function __construct(private ContainerInterface $serviceLocator)
-    {
+    private ?LocaleAwareInterface $translator = null;
+
+    public function __construct(
+        private ContainerInterface $serviceLocator,
+        TranslatorInterface $translator
+    ) {
+        if ($translator instanceof LocaleAwareInterface) {
+            $this->translator = $translator;
+        }
     }
 
     public function compose(Message $message, Envelope $envelope): void
     {
-        foreach ($this->getTypes($message) as $type) {
-            foreach ($this->getWriters($type) as $writerConfiguration) {
-                [$writer, $writerMethod] = $writerConfiguration;
-                $writer = $writer instanceof EmailWriterInterface ? $writer : $this->serviceLocator->get($writer);
-                \call_user_func([$writer, $writerMethod], $message, $envelope);
+        $currentLocale = null;
+
+        if ($this->translator && $message instanceof LocalizeEmailInterface && $message->getLocale()) {
+            $currentLocale = $this->translator->getLocale();
+            $this->translator->setLocale($message->getLocale());
+        }
+
+        try {
+            foreach ($this->getTypes($message) as $type) {
+                foreach ($this->getWriters($type) as $writerConfiguration) {
+                    [$writer, $writerMethod] = $writerConfiguration;
+                    $writer = $writer instanceof EmailWriterInterface ? $writer : $this->serviceLocator->get($writer);
+                    \call_user_func([$writer, $writerMethod], $message, $envelope);
+                }
+            }
+        } finally {
+            if ($currentLocale) {
+                $this->translator?->setLocale($currentLocale);
             }
         }
     }
