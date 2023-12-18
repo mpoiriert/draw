@@ -3,8 +3,8 @@
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
-use Draw\Component\Mailer\EventListener\EmailWriterListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -16,7 +16,7 @@ class EmailWriterCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         try {
-            $emailWriterListenerDefinition = $container->findDefinition(EmailWriterListener::class);
+            $emailWriterListenerDefinition = $container->findDefinition(EmailComposer::class);
         } catch (ServiceNotFoundException) {
             return;
         }
