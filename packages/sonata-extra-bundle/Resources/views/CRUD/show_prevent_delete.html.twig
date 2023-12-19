@@ -39,7 +39,7 @@
                     {% if filter_url %}
                         <a href="{{ filter_url }}" class="btn btn-sm btn-default">
                             <i class="fas fa-list" aria-hidden="true"></i>
-                            List
+                            {{ 'link_list'|trans({}, 'SonataAdminBundle') }}
                         </a>
                     {% endif %}
                 </td>
