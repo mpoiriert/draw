@@ -17,6 +17,7 @@
         "draw/application": "^0.10",
         "draw/console": "^0.10",
         "draw/messenger": "^0.10",
+        "draw/security": "^0.10",
         "draw/tester": "^0.10",
         "draw/user-bundle": "^0.10",
         "firebase/php-jwt": "^6.1",

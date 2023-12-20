@@ -23,6 +23,7 @@
         "draw/framework-extra-bundle": "^0.10",
         "draw/mailer": "^0.10",
         "draw/messenger": "^0.10",
+        "draw/security": "^0.10",
         "draw/tester": "^0.10",
         "endroid/qr-code": "^4.8",
         "firebase/php-jwt": "^6.1",

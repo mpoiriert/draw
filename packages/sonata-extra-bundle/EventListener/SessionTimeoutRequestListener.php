@@ -2,11 +2,11 @@
 
 namespace Draw\Bundle\SonataExtraBundle\EventListener;
 
+use Draw\Component\Security\Core\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 
 class SessionTimeoutRequestListener implements EventSubscriberInterface
 {

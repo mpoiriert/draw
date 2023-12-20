@@ -3,6 +3,7 @@
 namespace Draw\Bundle\SonataExtraBundle\Tests\EventListener;
 
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
+use Draw\Component\Security\Core\Security;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -20,7 +21,6 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[CoversClass(SessionTimeoutRequestListener::class)]

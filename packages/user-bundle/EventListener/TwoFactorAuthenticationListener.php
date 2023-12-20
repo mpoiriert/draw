@@ -5,10 +5,10 @@ namespace Draw\Bundle\UserBundle\EventListener;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptionEvent;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordInterface;
+use Draw\Component\Security\Core\Security;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 
 class TwoFactorAuthenticationListener implements EventSubscriberInterface
 {

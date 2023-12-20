@@ -2,11 +2,11 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\User\Action;
 
+use Draw\Component\Security\Core\Security;
 use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 
 class TwoFactorAuthenticationResendCodeAction
 {

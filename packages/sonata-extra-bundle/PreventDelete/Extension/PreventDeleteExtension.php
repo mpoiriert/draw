@@ -5,11 +5,11 @@ namespace Draw\Bundle\SonataExtraBundle\PreventDelete\Extension;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
+use Draw\Component\Security\Core\Security;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use Symfony\Component\Security\Core\Security;
 
 #[AutoconfigureTag(
     'sonata.admin.extension',
