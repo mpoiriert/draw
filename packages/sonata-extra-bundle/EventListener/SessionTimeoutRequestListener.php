@@ -40,7 +40,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        if (!$request->hasSession()) {
+        if (!$request->hasSession(true)) {
             return;
         }
 
@@ -61,7 +61,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        if (!$request->hasSession()) {
+        if (!$request->hasSession(true)) {
             return;
         }
 
