@@ -39,10 +39,7 @@ class MessageAuthenticatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->userProvider = $this->createMockWithExtraMethods(
-            UserProviderInterface::class,
-            ['loadUserByIdentifier']
-        );
+        $this->userProvider = $this->createMock(UserProviderInterface::class);
 
         $this->service = new MessageAuthenticator(
             $this->envelopeFinder = $this->createMock(EnvelopeFinder::class),
@@ -181,10 +178,7 @@ class MessageAuthenticatorTest extends TestCase
             ->with($messageId)
             ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
 
-        $user = $this->createMockWithExtraMethods(
-            UserInterface::class,
-            ['getUserIdentifier']
-        );
+        $user = $this->createMock(UserInterface::class);
 
         $user
             ->expects(static::once())

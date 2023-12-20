@@ -45,10 +45,7 @@ class JwtAuthenticatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->userProvider = $this->createMockWithExtraMethods(
-            UserProviderInterface::class,
-            ['loadUserByIdentifier']
-        );
+        $this->userProvider = $this->createMock(UserProviderInterface::class);
 
         $this->object = new JwtAuthenticator(
             $this->jwtEncoder = $this->createMock(JwtEncoder::class),
@@ -226,10 +223,7 @@ class JwtAuthenticatorTest extends TestCase
             ->with($token)
             ->willReturn((object) [$this->userIdentifierPayloadKey => $userId = uniqid('id-')]);
 
-        $user = $this->createMockWithExtraMethods(
-            UserInterface::class,
-            ['getUserIdentifier']
-        );
+        $user = $this->createMock(UserInterface::class);
 
         $user
             ->expects(static::once())
@@ -278,10 +272,7 @@ class JwtAuthenticatorTest extends TestCase
                 ]
             );
 
-        $user = $this->createMockWithExtraMethods(
-            UserInterface::class,
-            ['getUserIdentifier']
-        );
+        $user = $this->createMock(UserInterface::class);
 
         $user
             ->expects(static::once())
