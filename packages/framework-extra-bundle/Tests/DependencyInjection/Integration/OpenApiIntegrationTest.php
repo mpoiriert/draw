@@ -196,11 +196,8 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                     [OpenApi::class]
                 ),
                 new ServiceConfiguration(
-                    'draw.open_api.schema_builder',
-                    [SchemaBuilderInterface::class],
-                    function (Definition $definition): void {
-                        static::assertSame(SymfonySchemaBuilder::class, $definition->getClass());
-                    }
+                    'draw.open_api.schema_builder.symfony_schema_builder',
+                    [SymfonySchemaBuilder::class],
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.request.value_resolver.request_body_value_resolver',
@@ -489,6 +486,9 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 ],
                 'jms_serializer.metadata_factory' => [
                     MetadataFactoryInterface::class,
+                ],
+                SymfonySchemaBuilder::class => [
+                    SchemaBuilderInterface::class,
                 ],
             ],
             [

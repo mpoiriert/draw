@@ -142,37 +142,34 @@ class OpenApiIntegration implements IntegrationInterface
             ->registerForAutoconfiguration(TypeToSchemaHandlerInterface::class)
             ->addTag(TypeToSchemaHandlerInterface::class);
 
-        $definition = (new Definition())
-            ->setAutowired(true)
-            ->setAutoconfigured(true);
-
-        $openApiComponentDir = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
+        $directory = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
 
         $exclude = [
-            $openApiComponentDir.'/Event/',
-            $openApiComponentDir.'/EventListener/{Request,Response}*',
-            $openApiComponentDir.'/Exception/',
-            $openApiComponentDir.'/Request/',
-            $openApiComponentDir.'/Schema/',
-            $openApiComponentDir.'/SchemaBuilder/',
-            $openApiComponentDir.'/Tests/',
+            $directory.'/EventListener/{Request,Response}*',
+            $directory.'/Request/',
+            $directory.'/Schema/',
+            $directory.'/SchemaBuilder/',
         ];
 
         if (!$config['caching_enabled']) {
-            $exclude[] = $openApiComponentDir.'/Extraction/Extractor/Caching/';
+            $exclude[] = $directory.'/Extraction/Extractor/Caching/';
         }
 
-        $loader->registerClasses(
-            $definition,
+        $this->registerClasses(
+            $loader,
             'Draw\\Component\\OpenApi\\',
-            $openApiComponentDir,
-            $exclude
+            $directory,
+            $exclude,
         );
 
-        $loader->registerClasses(
-            $definition->addTag('controller.service_arguments'),
+        $this->registerClasses(
+            $loader,
             'Draw\\Component\\OpenApi\\Controller\\',
-            $openApiComponentDir.'/Controller'
+            $directory.'/Controller',
+            prototype: (new Definition())
+                ->setAutowired(true)
+                ->setAutoconfigured(true)
+                ->addTag('controller.service_arguments'),
         );
 
         $container
@@ -214,11 +211,18 @@ class OpenApiIntegration implements IntegrationInterface
 
         $container
             ->setDefinition(
-                SchemaBuilderInterface::class,
+                SymfonySchemaBuilder::class,
                 new Definition(SymfonySchemaBuilder::class)
             )
             ->setAutowired(true)
             ->setAutoconfigured(true);
+
+        $container
+            ->addAliases(
+                [
+                    SchemaBuilderInterface::class => SymfonySchemaBuilder::class,
+                ]
+            );
 
         if ($config['caching_enabled']) {
             $arguments = [
