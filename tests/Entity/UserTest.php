@@ -80,7 +80,7 @@ class UserTest extends TestCase
 
         $this->transportTester->assertMessageMatch(UserLockDelayedActivationMessage::class);
 
-        $stamp = $this->transportTester->getTransport()->get()[0]->last(SearchableTagStamp::class);
+        $stamp = $this->transportTester->getTransport()->getSent()[0]->last(SearchableTagStamp::class);
 
         static::assertTrue($stamp->getEnforceUniqueness());
         static::assertSame(

@@ -23,7 +23,7 @@ class TransportTester
         $this->transport = $transport;
     }
 
-    public function getTransport(): TransportInterface
+    public function getTransport(): InMemoryTransport
     {
         return $this->transport;
     }
@@ -41,7 +41,7 @@ class TransportTester
         string $message = ''
     ): array {
         $messages = [];
-        foreach ($this->transport->get() as $envelope) {
+        foreach ($this->transport->getSent() as $envelope) {
             $messages[] = $envelope->getMessage();
         }
 
