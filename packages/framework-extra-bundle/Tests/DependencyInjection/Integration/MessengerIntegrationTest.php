@@ -3,6 +3,7 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
+use Doctrine\ORM\Events;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MessengerIntegration;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
@@ -331,8 +332,11 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         function (Definition $definition): void {
                             static::assertSame(
                                 [
-                                    'doctrine.event_subscriber' => [
-                                        [],
+                                    'doctrine.event_listener' => [
+                                        ['event' => Events::postPersist],
+                                        ['event' => Events::postLoad],
+                                        ['event' => Events::postFlush],
+                                        ['event' => Events::onClear],
                                     ],
                                 ],
                                 $definition->getTags()

@@ -2,10 +2,8 @@
 
 namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\EventListener;
 
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnClearEventArgs;
-use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Proxy;
@@ -48,26 +46,8 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testConstruct(): void
     {
         static::assertInstanceOf(
-            EventSubscriber::class,
-            $this->object
-        );
-
-        static::assertInstanceOf(
             ResetInterface::class,
             $this->object
-        );
-    }
-
-    public function testGetSubscribedEvents(): void
-    {
-        static::assertSame(
-            [
-                Events::postPersist,
-                Events::postLoad,
-                Events::postFlush,
-                Events::onClear,
-            ],
-            $this->object->getSubscribedEvents()
         );
     }
 
