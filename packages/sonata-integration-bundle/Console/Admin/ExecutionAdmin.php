@@ -25,20 +25,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ExecutionAdmin extends AbstractAdmin
 {
-    private CommandRegistry $commandFactory;
-
-    private KernelInterface $kernel;
-
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @required
-     */
-    public function inject(CommandRegistry $commandFactory, KernelInterface $kernel, EntityManagerInterface $entityManager): void
-    {
-        $this->kernel = $kernel;
-        $this->commandFactory = $commandFactory;
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private CommandRegistry $commandFactory,
+        private KernelInterface $kernel,
+        private EntityManagerInterface $entityManager
+    ) {
+        parent::__construct();
     }
 
     public function createNewInstance(): object

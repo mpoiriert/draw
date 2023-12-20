@@ -20,17 +20,9 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 class MessengerMessageAdmin extends AbstractAdmin
 {
-    private EnvelopeFinderInterface $envelopeFinder;
-
-    private array $queueNames = [];
-
-    /**
-     * @required
-     */
-    public function inject(EnvelopeFinderInterface $envelopeFinder, array $queueNames): void
+    public function __construct(private EnvelopeFinderInterface $envelopeFinder, private array $queueNames)
     {
-        $this->envelopeFinder = $envelopeFinder;
-        $this->queueNames = $queueNames;
+        parent::__construct();
     }
 
     protected function configureDefaultSortValues(array &$sortValues): void

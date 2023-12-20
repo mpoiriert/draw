@@ -1,11 +1,11 @@
 sonata:
     resource: "@DrawSonataIntegrationBundle/User/Controller"
-    type: "annotation"
+    type: "attribute"
     prefix: "/admin"
 
 api:
     resource: "@DrawUserBundle/Controller/Api"
-    type: "annotation"
+    type: "attribute"
     format: "json"
     prefix: "/api"
 

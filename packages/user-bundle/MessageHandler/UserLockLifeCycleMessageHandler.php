@@ -9,29 +9,25 @@ use Draw\Bundle\UserBundle\Message\UserLockActivatedMessage;
 use Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage;
 use Draw\Component\Core\DateTimeUtils;
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
-class UserLockLifeCycleMessageHandler implements MessageSubscriberInterface
+class UserLockLifeCycleMessageHandler
 {
-    public static function getHandledMessages(): iterable
-    {
-        yield NewUserLockMessage::class => 'handleNewUserLockMessage';
-        yield UserLockDelayedActivationMessage::class => 'handleUserLockDelayedActivationMessage';
-    }
-
     public function __construct(private MessageBusInterface $messageBus, private EntityManagerInterface $entityManager)
     {
     }
 
+    #[AsMessageHandler]
     public function handleNewUserLockMessage(NewUserLockMessage $message): void
     {
         $this->sendUserLockLifeCycleMessage($message->getUserLockId());
     }
 
+    #[AsMessageHandler]
     public function handleUserLockDelayedActivationMessage(UserLockDelayedActivationMessage $message): void
     {
         $this->sendUserLockLifeCycleMessage($message->getUserLockId());

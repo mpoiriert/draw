@@ -11,14 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ExecutionController extends CRUDController
 {
-    private CommandRegistry $commandFactory;
-
-    /**
-     * @required
-     */
-    public function inject(CommandRegistry $commandFactory): void
+    public function __construct(private CommandRegistry $commandFactory)
     {
-        $this->commandFactory = $commandFactory;
     }
 
     public function myCreateAction(Request $request): Response

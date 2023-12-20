@@ -7,18 +7,11 @@ use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\AccountLocker;
 use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
 use Draw\Bundle\UserBundle\Message\RefreshUserLockMessage;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class RefreshUserLockMessageHandler implements MessageSubscriberInterface
+class RefreshUserLockMessageHandler
 {
-    public static function getHandledMessages(): array
-    {
-        return [
-            RefreshUserLockMessage::class => 'handleRefreshUserLockMessage',
-        ];
-    }
-
     /**
      * @param EntityRepository<UserInterface> $drawUserEntityRepository
      */
@@ -29,6 +22,7 @@ class RefreshUserLockMessageHandler implements MessageSubscriberInterface
     ) {
     }
 
+    #[AsMessageHandler]
     public function handleRefreshUserLockMessage(RefreshUserLockMessage $message): void
     {
         if (!$user = $this->drawUserEntityRepository->find($message->getUserId())) {

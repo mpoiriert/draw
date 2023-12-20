@@ -1,4 +1,4 @@
 keep_alive:
   resource: '@DrawSonataExtraBundle/Controller/KeepAliveController.php'
-  type: 'annotation'
+  type: 'attribute'
   prefix: /admin

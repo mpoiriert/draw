@@ -7,16 +7,11 @@ use Draw\Bundle\UserBundle\Email\UserOnboardingEmail;
 use Draw\Bundle\UserBundle\Message\NewUserMessage;
 use Draw\Component\Mailer\Recipient\LocalizationAwareInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class NewUserSendEmailMessageHandler implements MessageHandlerInterface
+class NewUserSendEmailMessageHandler
 {
-    public static function getHandledMessages(): iterable
-    {
-        yield NewUserMessage::class => 'handleNewUserMessage';
-    }
-
     /**
      * @param EntityRepository<UserInterface> $drawUserEntityRepository
      */
@@ -26,7 +21,8 @@ class NewUserSendEmailMessageHandler implements MessageHandlerInterface
     ) {
     }
 
-    public function __invoke(NewUserMessage $message): void
+    #[AsMessageHandler]
+    public function handleNewUserMessage(NewUserMessage $message): void
     {
         $user = $this->drawUserEntityRepository->find($message->getUserId());
 

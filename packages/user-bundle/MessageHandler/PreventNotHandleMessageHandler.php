@@ -6,19 +6,12 @@ use Draw\Bundle\UserBundle\Message\NewUserMessage;
 use Draw\Bundle\UserBundle\Message\PasswordChangeRequestedMessage;
 use Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage;
 use Draw\Bundle\UserBundle\Message\UserLockActivatedMessage;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class PreventNotHandleMessageHandler implements MessageSubscriberInterface
+class PreventNotHandleMessageHandler
 {
-    public static function getHandledMessages(): iterable
-    {
-        yield PasswordChangeRequestedMessage::class => 'nothing';
-        yield NewUserMessage::class => 'nothing';
-        yield UserLockActivatedMessage::class => 'nothing';
-        yield TemporaryUnlockedMessage::class => 'nothing';
-    }
-
-    public function nothing(object $event): void
+    #[AsMessageHandler]
+    public function nothing(PasswordChangeRequestedMessage|NewUserMessage|UserLockActivatedMessage|TemporaryUnlockedMessage $event): void
     {
     }
 }
