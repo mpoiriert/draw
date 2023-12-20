@@ -71,10 +71,8 @@ class TwoFactorAuthorizationTest extends TestCase
     /**
      * @depends testLoginRedirectEnable2fa
      */
-    public function testCancel(): KernelBrowser
+    public function testCancel(KernelBrowser $client): KernelBrowser
     {
-        /** @var KernelBrowser $client */
-        $client = $this->getService('test.client');
         $client->followRedirects();
 
         $crawler = $client->request('GET', '/admin/app/user/'.self::$user->getId().'/enable-2fa');

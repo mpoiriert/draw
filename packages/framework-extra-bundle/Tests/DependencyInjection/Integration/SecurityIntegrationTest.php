@@ -9,6 +9,7 @@ use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\Authorization\Voter\AbstainRoleHierarchyVoter;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
+use Draw\Component\Security\Core\Security;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -66,6 +67,12 @@ class SecurityIntegrationTest extends IntegrationTestCase
                 'draw.security.http.event_listener.role_restricted_authenticator_listener',
                 [
                     RoleRestrictedAuthenticatorListener::class,
+                ]
+            ),
+            new ServiceConfiguration(
+                'draw.security.core.security',
+                [
+                    Security::class,
                 ]
             ),
         ];

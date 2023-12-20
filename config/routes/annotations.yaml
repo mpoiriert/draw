@@ -1,10 +1,10 @@
 controllers:
     resource: '../../app/src/Controller/'
-    type: 'annotation'
+    type: 'attribute'
 
 
 api_controllers:
     resource: '../../app/src/Controller/Api'
-    type: 'annotation'
+    type: 'attribute'
     format: "json"
     prefix: "/api"

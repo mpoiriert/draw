@@ -7,7 +7,7 @@ use Draw\Component\Core\FilterExpression\Expression\ConstraintExpression;
 use Draw\Component\Core\FilterExpression\Expression\Expression;
 use Draw\Component\Core\FilterExpression\Query;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\Transport\InMemoryTransport;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Validator\Constraints\Type;
 
@@ -23,7 +23,7 @@ class TransportTester
         $this->transport = $transport;
     }
 
-    public function getTransport(): TransportInterface
+    public function getTransport(): InMemoryTransport
     {
         return $this->transport;
     }
@@ -41,7 +41,7 @@ class TransportTester
         string $message = ''
     ): array {
         $messages = [];
-        foreach ($this->transport->get() as $envelope) {
+        foreach ($this->transport->getSent() as $envelope) {
             $messages[] = $envelope->getMessage();
         }
 

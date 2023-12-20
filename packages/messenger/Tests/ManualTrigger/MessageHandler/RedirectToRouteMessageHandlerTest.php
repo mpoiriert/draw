@@ -7,7 +7,6 @@ use Draw\Component\Messenger\ManualTrigger\MessageHandler\RedirectToRouteMessage
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[CoversClass(RedirectToRouteMessageHandler::class)]
@@ -24,14 +23,6 @@ class RedirectToRouteMessageHandlerTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            MessageHandlerInterface::class,
-            $this->service
-        );
-    }
-
     public function testInvoke(): void
     {
         $message = $this->createMock(RedirectToRouteMessageInterface::class);
@@ -44,7 +35,7 @@ class RedirectToRouteMessageHandlerTest extends TestCase
 
         static::assertSame(
             $response,
-            $this->service->__invoke($message)
+            $this->service->handleRedirectToRouteMessage($message)
         );
     }
 }

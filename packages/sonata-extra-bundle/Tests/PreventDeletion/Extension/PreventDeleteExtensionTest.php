@@ -6,13 +6,13 @@ use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Extension\PreventDeleteExtension;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Security\Core\Security;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Security\Core\Security;
 
 class PreventDeleteExtensionTest extends TestCase
 {

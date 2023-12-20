@@ -5,21 +5,14 @@ namespace Draw\Bundle\SonataIntegrationBundle\Console\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
 use Draw\Component\Console\Entity\Execution;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExecutionController extends CRUDController
 {
-    private CommandRegistry $commandFactory;
-
-    /**
-     * @required
-     */
-    public function inject(CommandRegistry $commandFactory): void
+    public function __construct(private CommandRegistry $commandFactory)
     {
-        $this->commandFactory = $commandFactory;
     }
 
     public function myCreateAction(Request $request): Response
@@ -39,7 +32,6 @@ class ExecutionController extends CRUDController
         return parent::createAction($request);
     }
 
-    #[Entity('execution', class: Execution::class)]
     public function acknowledgeAction(Request $request, Execution $execution): Response
     {
         $execution->setState(Execution::STATE_ACKNOWLEDGE);

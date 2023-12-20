@@ -3,5 +3,5 @@ swagger:
 
 test:
     resource: '../../packages/open-api/Tests/Mock/Controller/TestController.php'
-    type: 'annotation'
+    type: 'attribute'
     format: 'json'

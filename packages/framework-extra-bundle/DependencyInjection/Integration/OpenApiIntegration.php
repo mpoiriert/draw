@@ -29,7 +29,6 @@ use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
-use Draw\Component\OpenApi\Request\ParamConverter\DeserializeBodyParamConverter;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
@@ -100,12 +99,6 @@ class OpenApiIntegration implements IntegrationInterface
 
         $this->renameDefinitions(
             $container,
-            'Draw\\Component\\OpenApi\\Request\\ParamConverter\\',
-            'draw.open_api.param_converter.'
-        );
-
-        $this->renameDefinitions(
-            $container,
             'Draw\\Component\\OpenApi\\Extraction\\Extractor\\',
             'draw.open_api.extractor.'
         );
@@ -149,37 +142,34 @@ class OpenApiIntegration implements IntegrationInterface
             ->registerForAutoconfiguration(TypeToSchemaHandlerInterface::class)
             ->addTag(TypeToSchemaHandlerInterface::class);
 
-        $definition = (new Definition())
-            ->setAutowired(true)
-            ->setAutoconfigured(true);
-
-        $openApiComponentDir = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
+        $directory = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
 
         $exclude = [
-            $openApiComponentDir.'/Event/',
-            $openApiComponentDir.'/EventListener/{Request,Response}*',
-            $openApiComponentDir.'/Exception/',
-            $openApiComponentDir.'/Request/',
-            $openApiComponentDir.'/Schema/',
-            $openApiComponentDir.'/SchemaBuilder/',
-            $openApiComponentDir.'/Tests/',
+            $directory.'/EventListener/{Request,Response}*',
+            $directory.'/Request/',
+            $directory.'/Schema/',
+            $directory.'/SchemaBuilder/',
         ];
 
         if (!$config['caching_enabled']) {
-            $exclude[] = $openApiComponentDir.'/Extraction/Extractor/Caching/';
+            $exclude[] = $directory.'/Extraction/Extractor/Caching/';
         }
 
-        $loader->registerClasses(
-            $definition,
+        $this->registerClasses(
+            $loader,
             'Draw\\Component\\OpenApi\\',
-            $openApiComponentDir,
-            $exclude
+            $directory,
+            $exclude,
         );
 
-        $loader->registerClasses(
-            $definition->addTag('controller.service_arguments'),
+        $this->registerClasses(
+            $loader,
             'Draw\\Component\\OpenApi\\Controller\\',
-            $openApiComponentDir.'/Controller'
+            $directory.'/Controller',
+            prototype: (new Definition())
+                ->setAutowired(true)
+                ->setAutoconfigured(true)
+                ->addTag('controller.service_arguments'),
         );
 
         $container
@@ -221,11 +211,18 @@ class OpenApiIntegration implements IntegrationInterface
 
         $container
             ->setDefinition(
-                'draw.open_api.schema_builder',
+                SymfonySchemaBuilder::class,
                 new Definition(SymfonySchemaBuilder::class)
             )
             ->setAutowired(true)
             ->setAutoconfigured(true);
+
+        $container
+            ->addAliases(
+                [
+                    SchemaBuilderInterface::class => SymfonySchemaBuilder::class,
+                ]
+            );
 
         if ($config['caching_enabled']) {
             $arguments = [
@@ -241,12 +238,6 @@ class OpenApiIntegration implements IntegrationInterface
                 ->getDefinition(StoreInCacheExtractor::class)
                 ->setArguments($arguments);
         }
-
-        $container
-            ->setAlias(
-                SchemaBuilderInterface::class,
-                'draw.open_api.schema_builder'
-            );
 
         $container
             ->getDefinition(OpenApi::class)
@@ -419,11 +410,7 @@ class OpenApiIntegration implements IntegrationInterface
         }
 
         if (!$config['bodyDeserialization']['enabled']) {
-            $container->removeDefinition(DeserializeBodyParamConverter::class);
             $container->removeDefinition(RequestBodyValueResolver::class);
-        } else {
-            $container->getDefinition(DeserializeBodyParamConverter::class)
-                ->addTag('request.param_converter', ['converter' => 'draw_open_api.request_body']);
         }
     }
 

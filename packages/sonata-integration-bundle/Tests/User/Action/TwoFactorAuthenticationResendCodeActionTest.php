@@ -3,6 +3,7 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\User\Action;
 
 use Draw\Bundle\SonataIntegrationBundle\User\Action\TwoFactorAuthenticationResendCodeAction;
+use Draw\Component\Security\Core\Security;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -10,7 +11,6 @@ use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[CoversClass(TwoFactorAuthenticationResendCodeAction::class)]
@@ -71,7 +71,7 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
             {
             }
 
-            public function getUsername(): string
+            public function getUserIdentifier(): string
             {
                 return '';
             }

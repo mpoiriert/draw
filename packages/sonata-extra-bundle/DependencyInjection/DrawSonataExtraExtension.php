@@ -122,6 +122,12 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         $container->removeDefinition(SubClassFieldDescriptionFactory::class);
 
         $container->removeAlias(AdminControllerInterface::class);
+
+        foreach ($container->getDefinitions() as $id => $definition) {
+            if ($definition->hasTag('container.excluded')) {
+                $container->removeDefinition($id);
+            }
+        }
     }
 
     public function prepend(ContainerBuilder $container): void

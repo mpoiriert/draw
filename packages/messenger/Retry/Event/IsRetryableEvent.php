@@ -9,13 +9,18 @@ class IsRetryableEvent extends Event
 {
     private ?bool $isRetryable = null;
 
-    public function __construct(private Envelope $envelope)
+    public function __construct(private Envelope $envelope, private ?\Throwable $throwable = null)
     {
     }
 
     public function getEnvelope(): Envelope
     {
         return $this->envelope;
+    }
+
+    public function getThrowable(): ?\Throwable
+    {
+        return $this->throwable;
     }
 
     public function getIsRetryable(): ?bool

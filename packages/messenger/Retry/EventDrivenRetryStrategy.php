@@ -16,19 +16,19 @@ class EventDrivenRetryStrategy implements RetryStrategyInterface
     ) {
     }
 
-    public function isRetryable(Envelope $message): bool
+    public function isRetryable(Envelope $message, ?\Throwable $throwable = null): bool
     {
         $isRetryable = $this->eventDispatcher
-            ->dispatch(new IsRetryableEvent($message))
+            ->dispatch(new IsRetryableEvent($message, $throwable))
             ->getIsRetryable();
 
         return $isRetryable ?? $this->fallbackRetryStrategy?->isRetryable($message) ?? false;
     }
 
-    public function getWaitingTime(Envelope $message): int
+    public function getWaitingTime(Envelope $message, ?\Throwable $throwable = null): int
     {
         $waitingTime = $this->eventDispatcher
-            ->dispatch(new GetWaitingTimeEvent($message))
+            ->dispatch(new GetWaitingTimeEvent($message, $throwable))
             ->getWaitingTime();
 
         return $waitingTime ?? $this->fallbackRetryStrategy?->getWaitingTime($message) ?? 1000;

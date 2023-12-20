@@ -8,26 +8,32 @@ use JMS\Serializer\Exception\Exception as JMSSerializerException;
 use JMS\Serializer\Exception\UnsupportedFormatException;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class RequestBodyValueResolver implements ArgumentValueResolverInterface
+class RequestBodyValueResolver implements ValueResolverInterface
 {
+    public static function getDefaultNamePriority(): int
+    {
+        return 115; // Need to be before EntityValueResolver which is 110
+    }
+
     public function __construct(private SerializerInterface $serializer)
     {
     }
 
-    public function supports(Request $request, ArgumentMetadata $argument): bool
-    {
-        return (bool) \count($argument->getAttributes(RequestBody::class, ArgumentMetadata::IS_INSTANCEOF));
-    }
-
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $attribute = $argument->getAttributes(RequestBody::class, ArgumentMetadata::IS_INSTANCEOF)[0];
+        $attributes = $argument->getAttributes(RequestBody::class, ArgumentMetadata::IS_INSTANCEOF);
+
+        if (empty($attributes)) {
+            return [];
+        }
+
+        $attribute = $attributes[0];
 
         \assert($attribute instanceof RequestBody);
 

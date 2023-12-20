@@ -63,7 +63,7 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
     #[DataProvider('provideTestHandleManuallyTriggeredMessage')]
     public function testHandleManuallyTriggeredMessage(Envelope $envelope, int $expectedCount): void
     {
-        $this->service->handleManuallyTriggeredMessage($event = new SendMessageToTransportsEvent($envelope));
+        $this->service->handleManuallyTriggeredMessage($event = new SendMessageToTransportsEvent($envelope, []));
 
         static::assertCount(
             $expectedCount,

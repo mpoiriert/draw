@@ -140,6 +140,12 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             'draw.user.orm.metadata_driver.exclude_paths',
             $this->excludeEntitiesPath
         );
+
+        foreach ($container->getDefinitions() as $id => $definition) {
+            if ($definition->hasTag('container.excluded')) {
+                $container->removeDefinition($id);
+            }
+        }
     }
 
     private function assignParameters(array $config, ContainerBuilder $container): void

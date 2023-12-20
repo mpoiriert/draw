@@ -14,29 +14,29 @@
         "draw/contracts": "^0.10",
         "draw/core": "^0.10",
         "ramsey/uuid": "^4.2",
-        "symfony/framework-bundle": "^5.4.3",
-        "symfony/security-core": "^5.4.3",
-        "symfony/security-guard": "^5.4.3",
-        "symfony/security-http": "^5.4.3",
-        "symfony/yaml": "^5.4.3"
+        "symfony/framework-bundle": "^6.4.0",
+        "symfony/security-core": "^6.4.0",
+        "symfony/security-http": "^6.4.0",
+        "symfony/yaml": "^6.4.0"
     },
     "require-dev": {
         "draw/framework-extra-bundle": "^0.10",
         "draw/mailer": "^0.10",
         "draw/messenger": "^0.10",
+        "draw/security": "^0.10",
         "draw/tester": "^0.10",
+        "endroid/qr-code": "^4.8",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^9.0 || ^10.0",
-        "scheb/2fa-bundle": "^5.12",
-        "scheb/2fa-qr-code": "^5.12",
-        "scheb/2fa-totp": "^5.12"
+        "scheb/2fa-bundle": "^6.0",
+        "scheb/2fa-totp": "^6.0"
     },
     "suggest": {
         "draw/messenger": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",
         "draw/post-office-bundle": "This allow to write and send email via email writer services.",
+        "endroid/qr-code": "Use for the 2FA secret code generation using QR code",
         "firebase/php-jwt": "Use for the jwt connection token system",
         "scheb/2fa-bundle": "Use for the 2FA",
-        "scheb/2fa-qr-code": "Use for the 2FA secret code generation using QR code",
         "scheb/2fa-totp": "Use to enable TOTP methdon for 2FA"
     },
     "minimum-stability": "dev",

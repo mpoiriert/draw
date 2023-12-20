@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
+use Doctrine\ORM\Events;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\BasicEnvelopeFactory;
@@ -166,7 +167,10 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         );
 
         $container->getDefinition(DoctrineBusMessageListener::class)
-            ->addTag('doctrine.event_subscriber');
+            ->addTag('doctrine.event_listener', ['event' => Events::postPersist])
+            ->addTag('doctrine.event_listener', ['event' => Events::postLoad])
+            ->addTag('doctrine.event_listener', ['event' => Events::postFlush])
+            ->addTag('doctrine.event_listener', ['event' => Events::onClear]);
 
         $container
             ->setAlias(EnvelopeFactoryInterface::class, BasicEnvelopeFactory::class);

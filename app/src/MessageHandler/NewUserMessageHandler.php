@@ -3,18 +3,14 @@
 namespace App\MessageHandler;
 
 use App\Message\NewUserMessage;
-use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-class NewUserMessageHandler implements MessageSubscriberInterface
+class NewUserMessageHandler
 {
-    public static function getHandledMessages(): iterable
-    {
-        yield NewUserMessage::class => 'handleNewUserMessage';
-    }
-
     /**
      * Empty method just to prevent error.
      */
+    #[AsMessageHandler]
     public function handleNewUserMessage(NewUserMessage $message): void
     {
     }

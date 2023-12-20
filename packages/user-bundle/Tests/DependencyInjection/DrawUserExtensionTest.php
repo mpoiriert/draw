@@ -11,6 +11,7 @@ use Draw\Bundle\UserBundle\EventListener\UserRequestInterceptorListener;
 use Draw\Bundle\UserBundle\Feed\FlashUserFeed;
 use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\QrCodeGenerator;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -52,6 +53,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
         yield [UserFeedInterface::class, FlashUserFeed::class];
         yield ['Doctrine\ORM\EntityRepository $drawUserEntityRepository', 'draw_user.user_repository'];
         yield [PreventNotHandleMessageHandler::class];
+        yield [QrCodeGenerator::class];
     }
 
     public function testExcludePathsParameter(): void

@@ -2,10 +2,8 @@
 
 namespace Draw\Component\Messenger\DoctrineMessageBusHook\EventListener;
 
-use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnClearEventArgs;
-use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\Proxy;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
@@ -14,7 +12,7 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessag
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
-class DoctrineBusMessageListener implements EventSubscriber, ResetInterface
+class DoctrineBusMessageListener implements ResetInterface
 {
     /**
      * @var MessageHolderInterface[]
@@ -25,16 +23,6 @@ class DoctrineBusMessageListener implements EventSubscriber, ResetInterface
         private MessageBusInterface $messageBus,
         private EnvelopeFactoryInterface $envelopeFactory
     ) {
-    }
-
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::postPersist,
-            Events::postLoad,
-            Events::postFlush,
-            Events::onClear,
-        ];
     }
 
     public function postPersist(LifecycleEventArgs $event): void

@@ -67,7 +67,7 @@ class ClickMessageAction
 
     private function addFlash(Request $request, string $type, string $message): void
     {
-        if (!$request->hasSession()) {
+        if (!$request->hasSession(true)) {
             return;
         }
 

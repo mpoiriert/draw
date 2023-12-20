@@ -19,7 +19,7 @@ class UserLock implements \Stringable
     #[ORM\Column(name: 'id', type: 'guid')]
     private ?string $id = null;
 
-    #[ORM\ManyToOne(targetEntity: LockableUserInterface::class)]
+    #[ORM\ManyToOne(targetEntity: LockableUserInterface::class, inversedBy: 'userLocks')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?LockableUserInterface $user = null;
 

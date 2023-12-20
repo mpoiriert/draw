@@ -39,11 +39,6 @@ class TemporaryUnlockedMessage implements LifeCycleAwareMessageInterface
             throw new \LogicException(sprintf('The parameter [%s] must implement interfaced [%s]', '$messageHolder', LockableUserInterface::class));
         }
 
-        $this->setUser($messageHolder);
-    }
-
-    private function setUser(LockableUserInterface $user): void
-    {
-        $this->userIdentifier = $user->getUserIdentifier();
+        $this->userIdentifier = $messageHolder->getUserIdentifier();
     }
 }

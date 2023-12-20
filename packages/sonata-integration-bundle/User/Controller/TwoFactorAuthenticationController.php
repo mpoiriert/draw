@@ -5,8 +5,8 @@ namespace Draw\Bundle\SonataIntegrationBundle\User\Controller;
 use Draw\Bundle\SonataIntegrationBundle\User\Form\Enable2fa;
 use Draw\Bundle\SonataIntegrationBundle\User\Form\Enable2faForm;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordInterface;
+use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\QrCodeGenerator;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
-use Scheb\TwoFactorBundle\Security\TwoFactor\QrCode\QrCodeGenerator;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -85,7 +85,7 @@ class TwoFactorAuthenticationController extends CRUDController
             return new RedirectResponse($this->admin->generateObjectUrl('enable-2fa', $user));
         }
 
-        $qrCode = $qrCodeGenerator->getTotpQrCode($user);
+        $qrCode = $qrCodeGenerator->getTotpQrCode($totpAuthenticator->getQRContent($user));
 
         return new Response(
             $this->renderWithExtraParams(
@@ -94,7 +94,7 @@ class TwoFactorAuthenticationController extends CRUDController
                     'object' => $user,
                     'action' => 'enable-2fa',
                     'form' => $form->createView(),
-                    'qrCodeSvg' => $qrCode->getWriter('svg')->writeString($qrCode),
+                    'qrCodeSvg' => $qrCode->getString(),
                     'totpSecret' => $user->getTotpSecret(),
                 ]
             )

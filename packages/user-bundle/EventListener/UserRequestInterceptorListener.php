@@ -4,6 +4,7 @@ namespace Draw\Bundle\UserBundle\EventListener;
 
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptedEvent;
 use Draw\Bundle\UserBundle\Event\UserRequestInterceptionEvent;
+use Draw\Component\Security\Core\Security;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -11,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UserRequestInterceptorListener implements EventSubscriberInterface
@@ -124,7 +124,7 @@ class UserRequestInterceptorListener implements EventSubscriberInterface
             }
         }
 
-        if (!$request->hasSession()) {
+        if (!$request->hasSession(true)) {
             return null;
         }
 

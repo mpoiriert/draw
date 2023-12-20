@@ -3,13 +3,13 @@
 namespace Draw\Bundle\SonataIntegrationBundle\User\Extension;
 
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\TwoFactorAuthenticationController;
+use Draw\Component\Security\Core\Security;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Security\Core\Security;
 
 class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 {

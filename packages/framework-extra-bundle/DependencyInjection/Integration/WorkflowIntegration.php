@@ -2,12 +2,12 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\Security\Core\Security;
 use Draw\Component\Workflow\EventListener\AddTransitionNameToContextListener;
 use Draw\Component\Workflow\EventListener\AddUserToContextListener;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\Security\Core\Security;
 
 class WorkflowIntegration implements IntegrationInterface
 {

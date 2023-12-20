@@ -32,9 +32,10 @@ class EmailWriterCompilerPass implements CompilerPassInterface
                     $priority = 0;
                 }
 
-                $emailType = (new \ReflectionMethod($class, $methodName))->getParameters()[0]->getClass()->name;
-                $emailWriterListenerDefinition
-                    ->addMethodCall('addWriter', [$emailType, $id, $methodName, $priority]);
+                foreach ($this->getClasses((new \ReflectionMethod($class, $methodName))->getParameters()[0]) as $emailType) {
+                    $emailWriterListenerDefinition
+                        ->addMethodCall('addWriter', [$emailType, $id, $methodName, $priority]);
+                }
             }
         }
 
@@ -43,5 +44,28 @@ class EmailWriterCompilerPass implements CompilerPassInterface
                 '$serviceLocator',
                 ServiceLocatorTagPass::register($container, $writers)
             );
+    }
+
+    /**
+     * Extract classes base on union and name type.
+     *
+     * @return array<class-string>
+     */
+    private function getClasses(\ReflectionParameter $reflectionParameter): array
+    {
+        $type = $reflectionParameter->getType();
+
+        if ($type instanceof \ReflectionNamedType) {
+            return [$type->getName()];
+        }
+
+        if ($type instanceof \ReflectionUnionType) {
+            return array_map(
+                fn (\ReflectionNamedType $type) => $type->getName(),
+                $type->getTypes()
+            );
+        }
+
+        throw new \InvalidArgumentException('Unable to extract classes from parameter. Only named type and union type are supported.');
     }
 }
