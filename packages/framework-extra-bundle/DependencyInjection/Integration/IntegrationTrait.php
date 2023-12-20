@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -41,6 +42,19 @@ trait IntegrationTrait
                 ]
             )
         );
+
+        $container = ReflectionAccessor::getPropertyValue(
+            $loader,
+            'container',
+        );
+
+        \assert($container instanceof ContainerBuilder);
+
+        foreach ($container->getDefinitions() as $id => $definition) {
+            if ($definition->hasTag('container.excluded')) {
+                $container->removeDefinition($id);
+            }
+        }
     }
 
     protected function assertHasExtension(
