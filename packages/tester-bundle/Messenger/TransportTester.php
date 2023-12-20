@@ -7,7 +7,7 @@ use Draw\Component\Core\FilterExpression\Expression\ConstraintExpression;
 use Draw\Component\Core\FilterExpression\Expression\Expression;
 use Draw\Component\Core\FilterExpression\Query;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\Transport\InMemoryTransport;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Validator\Constraints\Type;
 
