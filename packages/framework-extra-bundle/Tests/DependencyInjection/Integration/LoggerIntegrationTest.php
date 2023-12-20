@@ -7,6 +7,11 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerInteg
 use Draw\Bundle\FrameworkExtraBundle\Logger\EventListener\SlowRequestLoggerListener;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\HttpFoundation\RequestMatcher\HostRequestMatcher;
+use Symfony\Component\HttpFoundation\RequestMatcher\IpsRequestMatcher;
+use Symfony\Component\HttpFoundation\RequestMatcher\MethodRequestMatcher;
+use Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher;
+use Symfony\Component\HttpFoundation\RequestMatcher\PortRequestMatcher;
 
 /**
  * @property LoggerIntegration $integration
@@ -67,57 +72,75 @@ class LoggerIntegrationTest extends IntegrationTestCase
                         SlowRequestLoggerListener::class,
                     ],
                     function (Definition $definition): void {
-                        $requestMatcherDefinitions = $definition->getArgument('$requestMatchers');
+                        $chainRequestMatcherDefinitions = $definition->getArgument('$requestMatchers');
 
-                        static::assertCount(2, $requestMatcherDefinitions);
+                        static::assertCount(2, $chainRequestMatcherDefinitions);
 
-                        $requestMatcherDefinitions5000 = $requestMatcherDefinitions[5000];
+                        $chainRequestMatcherDefinitions5000 = $chainRequestMatcherDefinitions[5000];
 
-                        static::assertCount(1, $requestMatcherDefinitions5000);
+                        static::assertCount(1, $chainRequestMatcherDefinitions5000);
 
-                        $requestMatcherDefinition = $requestMatcherDefinitions5000[0];
+                        $chainRequestMatcherDefinition = $chainRequestMatcherDefinitions5000[0];
 
-                        static::assertInstanceOf(Definition::class, $requestMatcherDefinition);
+                        static::assertInstanceOf(Definition::class, $chainRequestMatcherDefinition);
 
-                        static::assertSame(
+                        self::assertRequestMatcherDefinitions(
+                            $chainRequestMatcherDefinition->getArgument('$matchers'),
                             [
-                                '$ips' => [
-                                    '127.0.0.1',
-                                ],
-                                '$path' => '^/api',
-                                '$host' => 'example.com',
-                                '$port' => 80,
-                                '$methods' => [
-                                    'GET',
-                                    'POST',
-                                ],
-                                '$schemes' => [],
-                            ],
-                            $requestMatcherDefinition->getArguments()
+                                [HostRequestMatcher::class, ['example.com']],
+                                [IpsRequestMatcher::class, [['127.0.0.1']]],
+                                [MethodRequestMatcher::class, [['GET', 'POST']]],
+                                [PathRequestMatcher::class, ['^/api']],
+                                [PortRequestMatcher::class, [80]],
+                            ]
                         );
 
-                        $requestMatcherDefinitions9000 = $requestMatcherDefinitions[9000];
+                        $chainRequestMatcherDefinitions9000 = $chainRequestMatcherDefinitions[9000];
 
-                        static::assertCount(1, $requestMatcherDefinitions9000);
+                        static::assertCount(1, $chainRequestMatcherDefinitions9000);
 
-                        $requestMatcherDefinition = $requestMatcherDefinitions9000[0];
+                        $chainRequestMatcherDefinition = $chainRequestMatcherDefinitions9000[0];
 
-                        static::assertInstanceOf(Definition::class, $requestMatcherDefinition);
+                        static::assertInstanceOf(Definition::class, $chainRequestMatcherDefinition);
 
-                        static::assertSame(
+                        self::assertRequestMatcherDefinitions(
+                            $chainRequestMatcherDefinition->getArgument('$matchers'),
                             [
-                                '$path' => '^/admin',
-                                '$host' => null,
-                                '$port' => null,
-                                '$schemes' => [],
-                                '$ips' => [],
-                                '$methods' => [],
-                            ],
-                            $requestMatcherDefinition->getArguments()
+                                [PathRequestMatcher::class, ['^/admin']],
+                            ]
                         );
                     }
                 ),
             ],
         ];
+    }
+
+    /**
+     * @param array<Definition> $definitions
+     */
+    private static function assertRequestMatcherDefinitions(
+        array $definitions,
+        array $expectedDefinitions,
+    ): void {
+        static::assertCount(
+            \count($expectedDefinitions),
+            $definitions
+        );
+
+        foreach ($definitions as $index => $definition) {
+            static::assertInstanceOf(Definition::class, $definition);
+
+            [$expectedClass, $expectedArguments] = $expectedDefinitions[$index];
+
+            static::assertSame(
+                $expectedClass,
+                $definition->getClass()
+            );
+
+            static::assertSame(
+                $expectedArguments,
+                $definition->getArguments()
+            );
+        }
     }
 }

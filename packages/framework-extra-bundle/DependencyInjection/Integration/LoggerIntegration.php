@@ -8,6 +8,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\HttpFoundation\ChainRequestMatcher;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 
 class LoggerIntegration implements IntegrationInterface
@@ -54,18 +55,46 @@ class LoggerIntegration implements IntegrationInterface
             $requestMatchers[] = ['duration' => $defaultDuration];
         }
 
+        $requestMatcherClasses = [
+            'path' => RequestMatcher\PathRequestMatcher::class,
+            'host' => RequestMatcher\HostRequestMatcher::class,
+            'port' => RequestMatcher\PortRequestMatcher::class,
+            'schemes' => RequestMatcher\SchemeRequestMatcher::class,
+            'ips' => RequestMatcher\IpsRequestMatcher::class,
+            'methods' => RequestMatcher\MethodRequestMatcher::class,
+        ];
+
         $requestMatcherReferences = [];
         foreach ($requestMatchers as $requestMatcher) {
-            $requestMatcherDefinition = new Definition(RequestMatcher::class);
+            $chainRequestMatcherDefinition = new Definition(ChainRequestMatcher::class);
 
             $duration = $requestMatcher['duration'] ?? $defaultDuration ?: 10000;
 
-            $requestMatcherReferences[(int) $duration][] = $requestMatcherDefinition;
+            $requestMatcherReferences[(int) $duration][] = $chainRequestMatcherDefinition;
 
             unset($requestMatcher['duration']);
 
-            $requestMatcherDefinition->setArguments(
-                $this->arrayToArgumentsArray($requestMatcher)
+            $requestMatcherDefinitions = [];
+
+            ksort($requestMatcher);
+
+            foreach ($requestMatcher as $key => $value) {
+                if (null === $value || [] === $value) {
+                    continue;
+                }
+
+                $requestMatcherClass = $requestMatcherClasses[$key] ?? null;
+
+                if (null === $requestMatcherClass) {
+                    throw new \InvalidArgumentException(sprintf('Unknown request matcher "%s".', $key));
+                }
+
+                $requestMatcherDefinitions[] = (new Definition($requestMatcherClass))->setArguments([$value]);
+            }
+
+            $chainRequestMatcherDefinition->setArgument(
+                '$matchers',
+                $requestMatcherDefinitions
             );
         }
 
