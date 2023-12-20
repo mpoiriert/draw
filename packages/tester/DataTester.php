@@ -29,7 +29,13 @@ class DataTester extends DataAccessor
      */
     public function isReadable($path): bool
     {
-        return static::getPropertyAccessor()->isReadable($this->getData(), $path);
+        $data = $this->getData();
+
+        if (!\is_array($data) && !\is_object($data)) {
+            return false;
+        }
+
+        return static::getPropertyAccessor()->isReadable($data, $path);
     }
 
     /**
