@@ -13,6 +13,12 @@ trait EventListenerTestTrait
         $events = [];
         foreach ($listeners as $eventName => $eventListeners) {
             foreach ($eventListeners as $eventListener) {
+                if (!\is_array($eventListener)) {
+                    continue;
+                }
+                if (!\is_object($eventListener[0])) {
+                    continue;
+                }
                 if ($eventListener[0] instanceof $className) {
                     $events[$eventName][] = $eventListener[1];
                 }
