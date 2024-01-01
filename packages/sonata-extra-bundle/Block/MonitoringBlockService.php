@@ -87,8 +87,12 @@ class MonitoringBlockService implements BlockServiceInterface
                 ->setTtl(0);
     }
 
-    private function findThresholdSetting(array $thresholds, int $count): array
+    private function findThresholdSetting(array $thresholds, ?int $count): array
     {
+        if (null === $count) {
+            return [];
+        }
+
         foreach ($thresholds as $threshold) {
             if (!isset($threshold['if'])) {
                 return $threshold;

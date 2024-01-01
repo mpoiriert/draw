@@ -4,7 +4,7 @@
     <!-- small box -->
     <div class="small-box {{ settings.css_class }}">
         <div class="inner">
-            <h3>{{ count }}</h3>
+            <h3>{{ count|default('N/A') }}</h3>
             <p>
                 {% if translation_domain %}
                     {{ settings.text|trans({'%count%':  count}, translation_domain) }}
