@@ -2,9 +2,9 @@
 
 namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\EventListener;
 
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\EnvelopeFactoryDispatchAfterCurrentBusStampListener;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -8,7 +8,7 @@ use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage;
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

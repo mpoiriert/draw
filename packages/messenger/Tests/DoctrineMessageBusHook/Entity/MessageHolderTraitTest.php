@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\Entity;
 
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

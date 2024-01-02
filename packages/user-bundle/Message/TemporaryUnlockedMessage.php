@@ -4,8 +4,8 @@ namespace Draw\Bundle\UserBundle\Message;
 
 use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
 use Draw\Component\Core\DateTimeUtils;
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 
 class TemporaryUnlockedMessage implements LifeCycleAwareMessageInterface
 {

@@ -2,21 +2,23 @@
 
 namespace App\Tests\MessageHandler;
 
+use App\Message\NewTestDocumentMessage;
 use App\Message\NewUserMessage;
-use App\MessageHandler\NewUserMessageHandler;
+use App\MessageHandler\NullMessageHandler;
 use Draw\Bundle\TesterBundle\Messenger\MessageHandlerAssertionTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class NewUserMessageHandlerTest extends KernelTestCase
+class NullMessageHandlerTest extends KernelTestCase
 {
     use MessageHandlerAssertionTrait;
 
     public function testHandlerConfiguration(): void
     {
         $this->assertHandlerMessageConfiguration(
-            NewUserMessageHandler::class,
+            NullMessageHandler::class,
             [
                 NewUserMessage::class => ['handleNewUserMessage'],
+                NewTestDocumentMessage::class => ['handleNewTestDocumentMessage'],
             ]
         );
     }
