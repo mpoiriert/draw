@@ -20,6 +20,12 @@ class DoctrineExtraIntegration implements IntegrationInterface
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
+        $container
+            ->registerAliasForArgument('doctrine', ManagerRegistry::class, 'ormManagerRegistry');
+
+        $container
+            ->registerAliasForArgument('doctrine_mongodb', ManagerRegistry::class, 'odmManagerRegistry');
+
         $this->loadORM($config, $loader, $container);
     }
 

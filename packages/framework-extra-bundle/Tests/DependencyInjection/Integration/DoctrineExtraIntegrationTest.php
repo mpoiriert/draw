@@ -40,6 +40,14 @@ class DoctrineExtraIntegrationTest extends IntegrationTestCase
                     ]
                 ),
             ],
+            [
+                'doctrine' => [
+                    'Doctrine\Persistence\ManagerRegistry $ormManagerRegistry',
+                ],
+                'doctrine_mongodb' => [
+                    'Doctrine\Persistence\ManagerRegistry $odmManagerRegistry',
+                ],
+            ],
         ];
     }
 }

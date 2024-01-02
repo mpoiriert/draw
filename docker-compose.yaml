@@ -40,6 +40,7 @@ services:
     depends_on:
       - mysql
       - maildev
+      - mongodb
     environment:
       IN_CONTAINER: 1
 
@@ -50,5 +51,12 @@ services:
     ports:
       - 8001:80
 
+  mongodb:
+    container_name: draw_mongodb
+    image: "mongo:3.6.0"
+    volumes:
+      - "data_mongo:/data/db"
+
 volumes:
   data_mysql:
+  data_mongo:

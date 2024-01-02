@@ -53,6 +53,9 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen
 
+#MONGODB
+RUN pecl install mongodb 1.17.2 && docker-php-ext-enable mongodb
+
 ARG PUID=1000
 ARG PGID=1000
 
