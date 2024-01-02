@@ -3,6 +3,7 @@
 namespace Draw\Component\Messenger\DoctrineEnvelopeEntityReference\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Message\DoctrineReferenceAwareInterface;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Stamp\PropertyReferenceStamp;
@@ -24,8 +25,10 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
         ];
     }
 
-    public function __construct(private ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        private ?ManagerRegistry $ormManagerRegistry,
+        private ?ManagerRegistry $odmManagerRegistry
+    ) {
     }
 
     public function createPropertyReferenceStamps(PreEncodeEvent $event): void
@@ -62,8 +65,7 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
                 null
             );
 
-            $metadata = $this->managerRegistry
-                ->getManagerForClass($object::class)
+            $metadata = $this->getManagerForClass($object::class)
                 ->getClassMetadata($object::class);
 
             $stamps[] = new PropertyReferenceStamp(
@@ -90,10 +92,22 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
             ReflectionAccessor::setPropertyValue(
                 $message,
                 $stamp->getPropertyName(),
-                $this->managerRegistry
-                    ->getManagerForClass($stamp->getClass())
+                $this->getManagerForClass($stamp->getClass())
                     ->find($stamp->getClass(), $stamp->getIdentifiers())
             );
         }
+    }
+
+    private function getManagerForClass(string $class): ObjectManager
+    {
+        $objectManager =
+            $this->ormManagerRegistry?->getManagerForClass($class)
+            ?? $this->odmManagerRegistry?->getManagerForClass($class);
+
+        if (!$objectManager) {
+            throw new \RuntimeException(sprintf('No manager found for class "%s"', $class));
+        }
+
+        return $objectManager;
     }
 }

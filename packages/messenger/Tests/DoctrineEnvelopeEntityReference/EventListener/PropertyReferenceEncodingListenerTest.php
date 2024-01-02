@@ -17,6 +17,7 @@ class PropertyReferenceEncodingListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new PropertyReferenceEncodingListener(
+            $this->createMock(ManagerRegistry::class),
             $this->createMock(ManagerRegistry::class)
         );
     }

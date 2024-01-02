@@ -1,15 +1,22 @@
-framework:
+when@test:
+  framework:
     messenger:
-        failure_transport: 'failed'
+      transports:
+        sync: 'in-memory://'
 
-        transports:
-            async: 'draw://default?queue_name=default'
-            async_high_priority: 'draw://default?queue_name=async_high_priority'
-            async_low_priority: 'draw://default?queue_name=async_low_priority'
-            failed: 'draw://default?queue_name=failed'
-            sync: 'sync://'
+framework:
+  messenger:
+    failure_transport: 'failed'
 
-        routing:
-            Draw\Component\Messenger\ManualTrigger\Message\ManuallyTriggeredInterface: 'async'
-            Draw\Bundle\UserBundle\Message\NewUserLockMessage: 'sync'
-            Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage: 'sync'
+    transports:
+      async: 'draw://default?queue_name=default'
+      async_high_priority: 'draw://default?queue_name=async_high_priority'
+      async_low_priority: 'draw://default?queue_name=async_low_priority'
+      failed: 'draw://default?queue_name=failed'
+      sync: 'sync://'
+
+    routing:
+      App\Message\NewTestDocumentMessage: ['sync', 'async']
+      Draw\Component\Messenger\ManualTrigger\Message\ManuallyTriggeredInterface: 'async'
+      Draw\Bundle\UserBundle\Message\NewUserLockMessage: 'sync'
+      Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage: 'sync'
