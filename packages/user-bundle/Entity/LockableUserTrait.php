@@ -7,8 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
 use Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage;
-
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
 
 use function Draw\Component\Core\use_trait;
 

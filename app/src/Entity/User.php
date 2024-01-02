@@ -22,8 +22,8 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\Configuration
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
 use Draw\Component\Mailer\Recipient\LocalizationAwareInterface;
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
 use Draw\DoctrineExtra\Common\Collections\CollectionUtil;
 use JMS\Serializer\Annotation as Serializer;
 use Ramsey\Uuid\Uuid;

@@ -4,8 +4,7 @@ namespace Draw\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Message\NewUserMessage;
-
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderTrait;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
 
 use function Draw\Component\Core\use_trait;
 

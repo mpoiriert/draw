@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\Messenger\DoctrineMessageBusHook\Entity;
+namespace Draw\Component\Messenger\DoctrineMessageBusHook\Model;
 
 trait MessageHolderTrait
 {

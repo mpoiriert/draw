@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Messenger\DoctrineMessageBusHook\Event;
 
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Contracts\EventDispatcher\Event;
 

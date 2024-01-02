@@ -2,8 +2,8 @@
 
 namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\Event;
 
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

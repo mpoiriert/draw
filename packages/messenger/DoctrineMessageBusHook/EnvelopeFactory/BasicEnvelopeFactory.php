@@ -2,8 +2,8 @@
 
 namespace Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory;
 
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

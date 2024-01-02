@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Messenger\DoctrineMessageBusHook\Message;
 
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 
 interface LifeCycleAwareMessageInterface
 {

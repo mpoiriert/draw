@@ -2,13 +2,12 @@
 
 namespace Draw\Component\Messenger\DoctrineMessageBusHook\EventListener;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\OnClearEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\OnClearEventArgs;
 use Doctrine\Persistence\Proxy;
-use Draw\Component\Messenger\DoctrineMessageBusHook\Entity\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
+use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -72,9 +71,6 @@ class DoctrineBusMessageListener implements ResetInterface
         }
     }
 
-    /**
-     * @param LifecycleEventArgs<EntityManagerInterface> $event
-     */
     private function trackMessageHolder(LifecycleEventArgs $event): void
     {
         $entity = $event->getObject();
@@ -86,7 +82,11 @@ class DoctrineBusMessageListener implements ResetInterface
         $entityManager = $event->getObjectManager();
 
         $classMetadata = $entityManager->getClassMetadata($entity::class);
-        $className = $classMetadata->rootEntityName;
+
+        $className = $classMetadata->rootDocumentName
+            ?? $classMetadata->rootEntityName
+            ?? $classMetadata->getName();
+
         $this->messageHolders[$className][spl_object_id($entity)] = $entity;
     }
 

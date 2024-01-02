@@ -21,9 +21,8 @@ class UserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->entityManager = static::getService(EntityManagerInterface::class);
+        $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->transportTester = static::getTransportTester('sync');
-        $this->transportTester->reset();
     }
 
     /**
@@ -49,10 +48,8 @@ class UserTest extends TestCase
 
         $user->setManualLock(true);
 
-        $entityManager = $this->getService(EntityManagerInterface::class);
-
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         $this->transportTester->assertMessageMatch(NewUserLockMessage::class);
     }
@@ -75,7 +72,8 @@ class UserTest extends TestCase
         static::assertInstanceOf(NewUserLockMessage::class, $envelope->getMessage());
 
         $this->transportTester->reset();
-        static::getService(MessageBusInterface::class)
+        static::getContainer()
+            ->get(MessageBusInterface::class)
             ->dispatch($envelope->with(new ReceivedStamp('sync')));
 
         $this->transportTester->assertMessageMatch(UserLockDelayedActivationMessage::class);
