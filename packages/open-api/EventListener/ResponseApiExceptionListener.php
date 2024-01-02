@@ -190,12 +190,11 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         }
 
         $exceptionClass = $exception::class;
-        $reflectionExceptionClass = new \ReflectionClass($exceptionClass);
 
         foreach ($this->errorCodes as $exceptionMapClass => $value) {
             switch (true) {
                 case $exceptionClass === $exceptionMapClass:
-                case $reflectionExceptionClass->isSubclassOf($exceptionMapClass):
+                case is_a($exception, $exceptionMapClass, true):
                     return $value;
             }
         }
