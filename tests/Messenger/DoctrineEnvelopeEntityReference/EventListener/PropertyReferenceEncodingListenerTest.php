@@ -2,7 +2,9 @@
 
 namespace App\Tests\Messenger\DoctrineEnvelopeEntityReference\EventListener;
 
+use App\Document\TestDocument;
 use App\Entity\User;
+use App\Message\NewTestDocumentMessage;
 use App\Message\NewUserMessage;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +21,13 @@ class PropertyReferenceEncodingListenerTest extends TestCase
     private bool $postEncodeEventCalled = false;
 
     private static string $email;
+
+    private EnvelopeFinderInterface $envelopeFinder;
+
+    protected function setUp(): void
+    {
+        $this->envelopeFinder = static::getContainer()->get(EnvelopeFinderInterface::class);
+    }
 
     public function testSend(): void
     {
@@ -87,9 +96,7 @@ class PropertyReferenceEncodingListenerTest extends TestCase
      */
     public function testLoad(): void
     {
-        $envelope = static::getContainer()
-            ->get(EnvelopeFinderInterface::class)
-            ->findByTags([self::$email])[0];
+        $envelope = $this->envelopeFinder->findByTags([self::$email])[0];
 
         $message = $envelope->getMessage();
 
@@ -98,6 +105,28 @@ class PropertyReferenceEncodingListenerTest extends TestCase
         static::assertSame(
             self::$email,
             $message->getUser()->getEmail()
+        );
+    }
+
+    public function testODM(): void
+    {
+        $testDocument = new TestDocument();
+
+        $manager = static::getContainer()->get('doctrine_mongodb')->getManager();
+
+        $manager->persist($testDocument);
+
+        $manager->flush();
+
+        $envelope = $this->envelopeFinder->findByTags([$testDocument->id])[0];
+
+        $message = $envelope->getMessage();
+
+        static::assertInstanceOf(NewTestDocumentMessage::class, $message);
+
+        static::assertSame(
+            $testDocument,
+            $message->getTestDocument()
         );
     }
 }

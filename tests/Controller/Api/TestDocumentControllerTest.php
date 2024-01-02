@@ -16,8 +16,6 @@ class TestDocumentControllerTest extends WebTestCase
             ->jsonRequest(
                 'POST',
                 '/api/test-documents',
-                [
-                ]
             );
 
         static::assertResponseIsSuccessful();

@@ -19,6 +19,6 @@ class TestDocument implements MessageHolderInterface
     #[ODM\PrePersist]
     public function raiseNewEvent(): void
     {
-        $this->onHoldMessages[] = new NewTestDocumentMessage();
+        $this->onHoldMessages[] = new NewTestDocumentMessage($this);
     }
 }
