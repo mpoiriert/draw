@@ -53,7 +53,7 @@ services:
 
   mongodb:
     container_name: draw_mongodb
-    image: "mongo:3.6.0"
+    image: "mongo:5.0.0"
     volumes:
       - "data_mongo:/data/db"
 

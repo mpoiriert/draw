@@ -25,8 +25,17 @@ jobs:
   automation_test:
     name: Automation Test
     runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: "mongo:5.0.0"
+        ports:
+          - "27017:27017"
+        options: |
+          --health-cmd "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"
+
     env:
       DATABASE_URL: 'mysql://root@127.0.0.1:3306/draw'
+      MONGODB_URL: 'mongodb://127.0.0.1'
     strategy:
       fail-fast: false
       matrix:
