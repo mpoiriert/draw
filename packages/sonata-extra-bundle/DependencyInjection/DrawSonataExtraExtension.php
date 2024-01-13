@@ -11,6 +11,7 @@ use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
 use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescriptionFactory;
+use Draw\Bundle\SonataExtraBundle\Notifier\Channel\SonataChannel;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Extension\PreventDeleteExtension;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
@@ -55,6 +56,10 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             $container
                 ->getDefinition(PreventDeleteExtension::class)
                 ->setArgument('$restrictToRole', $config['prevent_delete_extension']['restrict_to_role']);
+        }
+
+        if (!($config['notifier']['enabled'] ?? false)) {
+            $container->removeDefinition(SonataChannel::class);
         }
 
         if (!($config['can_security_handler']['enabled'] ?? false)) {

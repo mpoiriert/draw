@@ -7,6 +7,7 @@
 
         <prototype namespace="Draw\Bundle\SonataExtraBundle\" resource="../..">
             <exclude>../../{vendor,Annotation,Builder,Configuration,DependencyInjection,Entity,Event,Tests}</exclude>
+            <exclude>../../Notifier/Notification</exclude>
             <exclude>../../{DrawSonataExtraBundle.php}</exclude>
         </prototype>
 

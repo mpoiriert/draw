@@ -49,6 +49,9 @@ class ConfigurationTest extends ConfigurationTestCase
                 'enabled' => false,
                 'restrict_to_role' => null,
             ],
+            'notifier' => [
+                'enabled' => false,
+            ],
             'session_timeout' => [
                 'enabled' => false,
                 'delay' => 3600,
