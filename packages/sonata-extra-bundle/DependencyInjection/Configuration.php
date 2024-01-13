@@ -6,6 +6,8 @@ use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Notifier\NotifierInterface;
 
 class Configuration implements ConfigurationInterface
 {
@@ -22,6 +24,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createCanSecurityHandlerNode())
                 ->append($this->createFixMenuDepthNode())
                 ->append($this->createListFieldPriorityNode())
+                ->append($this->createNotifierNode())
                 ->append($this->createPreventDeleteExtensionNode())
                 ->append($this->createSessionTimeoutNode())
             ->end();
@@ -33,6 +36,17 @@ class Configuration implements ConfigurationInterface
     {
         return (new ArrayNodeDefinition('auto_help'))
             ->canBeEnabled();
+    }
+
+    private function createNotifierNode(): ArrayNodeDefinition
+    {
+        $node = new ArrayNodeDefinition('notifier');
+
+        ContainerBuilder::willBeAvailable('symfony/notifier', NotifierInterface::class, [])
+            ? $node->canBeDisabled()
+            : $node->canBeEnabled();
+
+        return $node;
     }
 
     private function createPreventDeleteExtensionNode(): ArrayNodeDefinition

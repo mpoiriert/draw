@@ -116,7 +116,8 @@
         "phpstan/phpstan-phpunit": "^1.1",
         "scheb/2fa-email": "^6.0",
         "colinodell/psr-testlogger": "^1.1",
-        "cweagans/composer-patches": "^1.7"
+        "cweagans/composer-patches": "^1.7",
+        "symfony/notifier": "^6.4.0"
     },
     "replace": {
         "draw/application": "self.version",
