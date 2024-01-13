@@ -53,7 +53,7 @@ class GenerateDocumentationCommand extends Command
 
         $file = fopen($filePath, 'w');
 
-        $commandOutput = new StreamOutput($file);
+        $commandOutput = new StreamOutput($file, decorated: false);
 
         $commands = $this->getApplication()->all();
 
