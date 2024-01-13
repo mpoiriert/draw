@@ -23,7 +23,7 @@ config/routes/scheb_2fa.yaml
 admin_2fa_login:
     path: /admin/2fa
     defaults:
-        _controller: "scheb_two_factor.form_controller:form"
+        _controller: "scheb_two_factor.form_controller::form"
 
 admin_2fa_login_check:
     path: /admin/2fa_check
