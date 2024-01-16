@@ -74,7 +74,7 @@
         "monolog/monolog": "^2.4.0",
         "nelmio/cors-bundle": "^2.0",
         "pdeans/http": "^1.1",
-        "pelago/emogrifier": "^6.0",
+        "pelago/emogrifier": "^7.0",
         "scheb/2fa-bundle": "^6.0",
         "endroid/qr-code": "^4.8",
         "scheb/2fa-totp": "^6.0",

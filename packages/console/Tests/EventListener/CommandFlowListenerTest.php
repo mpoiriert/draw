@@ -89,7 +89,7 @@ class CommandFlowListenerTest extends TestCase
                     ['loadIdFromInput', -10],
                     ['generateFromDatabase', -10],
                 ],
-                Event\ConsoleCommandEvent::class => [
+                ConsoleCommandEvent::class => [
                     ['configureOptions', 1],
                     ['logCommandStart', 0],
                 ],
@@ -521,7 +521,7 @@ class CommandFlowListenerTest extends TestCase
             ->method('dispatch')
             ->willReturnArgument(0);
 
-        $event = new Event\ConsoleCommandEvent(
+        $event = new ConsoleCommandEvent(
             $command = $this->createMock(Command::class),
             $this->createMock(InputInterface::class),
             $this->createMock(OutputInterface::class)
@@ -549,7 +549,7 @@ class CommandFlowListenerTest extends TestCase
             )
             ->willReturnArgument(0);
 
-        $event = new Event\ConsoleCommandEvent(
+        $event = new ConsoleCommandEvent(
             $command = $this->createMock(Command::class),
             $this->createMock(InputInterface::class),
             $this->createMock(OutputInterface::class)
@@ -837,14 +837,14 @@ class CommandFlowListenerTest extends TestCase
         return $input;
     }
 
-    private function createCommandEvent(): Event\ConsoleCommandEvent
+    private function createCommandEvent(): ConsoleCommandEvent
     {
         $command = new PurgeExecutionCommand(
             self::$entityManager->getConnection(),
             new NullLogger()
         );
 
-        return new Event\ConsoleCommandEvent(
+        return new ConsoleCommandEvent(
             $command,
             $this->createMock(InputInterface::class),
             $this->createMock(OutputInterface::class)

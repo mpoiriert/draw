@@ -38,7 +38,7 @@
         "draw/validator": "^0.11",
         "draw/workflow": "^0.11",
         "monolog/monolog": "^2.4.0",
-        "pelago/emogrifier": "^6.0",
+        "pelago/emogrifier": "^7.0",
         "phpunit/phpunit": "^9.0 || ^10.0",
         "psr/log": "@stable",
         "symfony/event-dispatcher": "^6.4.0",
