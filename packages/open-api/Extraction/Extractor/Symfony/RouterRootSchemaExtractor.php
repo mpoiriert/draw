@@ -61,7 +61,13 @@ class RouterRootSchemaExtractor implements ExtractorInterface
                 continue;
             }
 
-            $controller = explode('::', $route->getDefault('_controller'));
+            $controller = $route->getDefault('_controller');
+
+            if (!\is_string($controller)) {
+                continue;
+            }
+
+            $controller = explode('::', $controller);
 
             if (2 != \count($controller)) {
                 continue;
