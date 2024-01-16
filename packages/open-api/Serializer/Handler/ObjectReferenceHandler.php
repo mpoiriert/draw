@@ -74,6 +74,6 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
     {
         return $this->ormManagerRegistry?->getManagerForClass($class)
             ?? $this->odmManagerRegistry?->getManagerForClass($class)
-            ?? throw new \RuntimeException('No object manager found for class ' . $class);
+            ?? throw new \RuntimeException('No object manager found for class '.$class);
     }
 }

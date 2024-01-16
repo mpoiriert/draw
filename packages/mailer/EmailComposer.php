@@ -3,6 +3,7 @@
 namespace Draw\Component\Mailer;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Core\Reflection\ReflectionExtractor;
 use Draw\Component\Mailer\Email\LocalizeEmailInterface;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Psr\Container\ContainerInterface;
@@ -63,8 +64,13 @@ class EmailComposer
                 $priority = 0;
             }
 
-            $emailType = (new \ReflectionMethod($class, $methodName))->getParameters()[0]->getClass()->name;
-            $this->addWriter($emailType, $emailWriter, $methodName, $priority);
+            $emailTypes = ReflectionExtractor::getClasses(
+                (new \ReflectionMethod($class, $methodName))->getParameters()[0]->getType()
+            );
+
+            foreach ($emailTypes as $emailType) {
+                $this->addWriter($emailType, $emailWriter, $methodName, $priority);
+            }
         }
     }
 

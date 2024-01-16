@@ -6,6 +6,7 @@
         colors="true"
         bootstrap="tests/bootstrap.php"
         cacheDirectory=".phpunit.cache"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
 >
     <php>
         <ini name="memory_limit" value="4096M"/>
