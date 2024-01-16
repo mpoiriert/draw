@@ -3,6 +3,7 @@
 namespace Draw\Component\OpenApi\Serializer\Handler;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use JMS\Serializer\Context;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\GraphNavigatorInterface;
@@ -30,8 +31,10 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
         ];
     }
 
-    public function __construct(private ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        private ?ManagerRegistry $ormManagerRegistry,
+        private ?ManagerRegistry $odmManagerRegistry
+    ) {
     }
 
     public function serializeObjectReference(
@@ -45,8 +48,7 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
         }
 
         $class = $type['params'][0]['name'];
-        $identifiers = $this->managerRegistry
-            ->getManagerForClass($class)
+        $identifiers = $this->getManagerForClass($class)
             ->getMetadataFactory()
             ->getMetadataFor($class)
             ->getIdentifierValues($value);
@@ -64,9 +66,14 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
             return null;
         }
 
-        $repository = $this->managerRegistry
-            ->getRepository($type['params'][0]['name']);
+        return $this->getManagerForClass($type['params'][0]['name'])
+            ->find($type['params'][0]['name'], $value);
+    }
 
-        return $repository->find($value);
+    private function getManagerForClass(string $class): ObjectManager
+    {
+        return $this->ormManagerRegistry?->getManagerForClass($class)
+            ?? $this->odmManagerRegistry?->getManagerForClass($class)
+            ?? throw new \RuntimeException('No object manager found for class ' . $class);
     }
 }
