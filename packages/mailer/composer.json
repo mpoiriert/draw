@@ -6,7 +6,7 @@
     "keywords": ["draw", "mailer", "symfony"],
     "require": {
         "php": ">=8.1",
-        "draw/core": "^0.10.3",
+        "draw/core": "^0.11",
         "symfony/dom-crawler": "^6.4.0",
         "symfony/css-selector": "^6.4.0",
         "symfony/console": "^6.4.0",
@@ -16,7 +16,7 @@
         "twig/twig": "^3.3"
     },
     "require-dev": {
-        "draw/tester": "^0.10.3",
+        "draw/tester": "^0.11",
         "pelago/emogrifier": "^7.0",
         "phpunit/phpunit": "^9.0 || ^10.0"
     },
