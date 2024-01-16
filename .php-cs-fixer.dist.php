@@ -3,6 +3,7 @@
 $finder = (new \PhpCsFixer\Finder)
     ->in(__DIR__)
     ->exclude('var')
+    ->exclude('bin')
     ->exclude('packages/fixer/Tests/fixtures/ClassPrivateStaticCallFixerTest')
     ->exclude('packages/fixer/Tests/fixtures/ClassStaticCallFixerTest')
 ;

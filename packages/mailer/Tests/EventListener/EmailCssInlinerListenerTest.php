@@ -94,13 +94,7 @@ class EmailCssInlinerListenerTest extends TestCase
             ->expects(static::once())
             ->method('html')
             ->with('<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title></title>
-</head>
-<body><div class="body" style="background: maroon;"></div></body>
-</html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title></title></head><body><div class="body" style="background: maroon;"></div></body></html>
 ');
 
         $this->object->inlineEmailCss($event);

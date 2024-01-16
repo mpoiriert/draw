@@ -41,7 +41,7 @@ class CommandFlowListener implements EventSubscriberInterface
                 ['loadIdFromInput', -10],
                 ['generateFromDatabase', -10],
             ],
-            Event\ConsoleCommandEvent::class => [
+            ConsoleCommandEvent::class => [
                 ['configureOptions', 1],
                 ['logCommandStart', 0],
             ],
@@ -58,7 +58,7 @@ class CommandFlowListener implements EventSubscriberInterface
     ) {
     }
 
-    public function configureOptions(Event\ConsoleCommandEvent $event): void
+    public function configureOptions(ConsoleCommandEvent $event): void
     {
         $definition = $event->getCommand()->getDefinition();
 
@@ -163,7 +163,7 @@ class CommandFlowListener implements EventSubscriberInterface
         $event->setExecutionId($executionId);
     }
 
-    public function logCommandStart(Event\ConsoleCommandEvent $event): void
+    public function logCommandStart(ConsoleCommandEvent $event): void
     {
         if ($event->getInput()->getOption(self::OPTION_IGNORE)) {
             return;
