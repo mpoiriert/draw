@@ -56,6 +56,10 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 #MONGODB
 RUN pecl install mongodb 1.17.2 && docker-php-ext-enable mongodb
 
+#MYSQL
+RUN apt-get update && apt-get install -y --no-install-recommends default-mysql-client && \
+    rm -rf /var/lib/apt
+
 ARG PUID=1000
 ARG PGID=1000
 

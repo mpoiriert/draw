@@ -245,13 +245,22 @@
             "vendor/bin/phpunit"
         ],
         "test:reset": [
-            "php bin/console doctrine:database:drop --if-exists --no-interaction --force",
-            "php bin/console doctrine:database:create --no-interaction",
-            "php bin/console messenger:setup-transports --no-interaction",
-            "php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --quiet",
+            "@test:database:setup",
             "php bin/console doctrine:fixtures:load --no-interaction",
             "php bin/console draw:entity-migrator:setup --no-interaction",
             "php bin/console draw:application:update-deployed-version --no-interaction"
+        ],
+        "test:database:setup": [
+            "bin/console doctrine:database:drop --if-exists --no-interaction --force --env=test",
+            "bin/console doctrine:database:create --no-interaction --env=test",
+            "bin/console draw:doctrine:import-file ./data/sql/dump.sql --no-interaction --env=test",
+            "bin/console messenger:setup-transports --no-interaction --env=test",
+            "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --quiet --env=test"
+        ],
+        "test:database:setup-dump": [
+            "@test:database:setup",
+            "bin/console draw:doctrine:import-file ./data/sql/truncate.sql --no-interaction --env=test -vvv",
+            "bin/console draw:doctrine:mysql-dump ./data/sql/dump.sql --no-interaction --env=test"
         ],
         "linter": [
             "@linter:php-cs-fixer",
