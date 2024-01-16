@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\DoctrineExtraIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\DoctrineExtra\ORM\Command\ImportFileCommand;
@@ -9,7 +11,6 @@ use Draw\DoctrineExtra\ORM\Command\MysqlDumpCommand;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Notifier\NotifierInterface;
 
 /**
  * @property DoctrineExtraIntegration $integration
@@ -31,7 +32,10 @@ class DoctrineExtraIntegrationTest extends IntegrationTestCase
     {
         return [
             'orm' => [
-                'enabled' => ContainerBuilder::willBeAvailable('doctrine/orm', NotifierInterface::class, []),
+                'enabled' => ContainerBuilder::willBeAvailable('doctrine/orm', EntityManagerInterface::class, []),
+            ],
+            'mongodb_odm' => [
+                'enabled' => ContainerBuilder::willBeAvailable('doctrine/mongodb-odm', DocumentManager::class, []),
             ],
         ];
     }
@@ -42,6 +46,9 @@ class DoctrineExtraIntegrationTest extends IntegrationTestCase
             [
                 'doctrine_extra' => [
                     'orm' => [
+                        'enabled' => true,
+                    ],
+                    'mongodb_odm' => [
                         'enabled' => true,
                     ],
                 ],

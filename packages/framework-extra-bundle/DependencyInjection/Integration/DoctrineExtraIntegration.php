@@ -2,13 +2,14 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use Draw\DoctrineExtra\ORM\Query\CommentSqlWalker;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\Notifier\NotifierInterface;
 
 class DoctrineExtraIntegration implements IntegrationInterface
 {
@@ -21,13 +22,8 @@ class DoctrineExtraIntegration implements IntegrationInterface
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
-        $container
-            ->registerAliasForArgument('doctrine', ManagerRegistry::class, 'ormManagerRegistry');
-
-        $container
-            ->registerAliasForArgument('doctrine_mongodb', ManagerRegistry::class, 'odmManagerRegistry');
-
         $this->loadORM($config['orm'], $loader, $container);
+        $this->loadMongoODM($config['mongodb_odm'], $loader, $container);
     }
 
     private function loadORM(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -35,6 +31,9 @@ class DoctrineExtraIntegration implements IntegrationInterface
         if (!$this->isConfigEnabled($container, $config)) {
             return;
         }
+
+        $container
+            ->registerAliasForArgument('doctrine', ManagerRegistry::class, 'ormManagerRegistry');
 
         $this->registerClasses(
             $loader,
@@ -55,19 +54,41 @@ class DoctrineExtraIntegration implements IntegrationInterface
         );
     }
 
+    private function loadMongoODM(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $container
+            ->registerAliasForArgument('doctrine_mongodb', ManagerRegistry::class, 'odmManagerRegistry');
+    }
+
     public function addConfiguration(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
                 ->append($this->createORMNode())
+                ->append($this->createMongoODMNode())
             ->end();
+    }
+
+    private function createMongoODMNode(): ArrayNodeDefinition
+    {
+        $node = new ArrayNodeDefinition('mongodb_odm');
+
+        ContainerBuilder::willBeAvailable('doctrine/mongodb-odm', DocumentManager::class, [])
+            ? $node->canBeDisabled()
+            : $node->canBeEnabled();
+
+        return $node;
     }
 
     private function createORMNode(): ArrayNodeDefinition
     {
         $node = new ArrayNodeDefinition('orm');
 
-        ContainerBuilder::willBeAvailable('doctrine/orm', NotifierInterface::class, [])
+        ContainerBuilder::willBeAvailable('doctrine/orm', EntityManagerInterface::class, [])
             ? $node->canBeDisabled()
             : $node->canBeEnabled();
 
