@@ -75,9 +75,6 @@ jobs:
           echo "::endgroup::"
 
           echo "::group::Script"
-          php bin/console doctrine:database:create --no-interaction
-          php bin/console messenger:setup-transports --no-interaction
-          php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration -q
-          php bin/console doctrine:fixtures:load --no-interaction
+          composer test:reset
           vendor/bin/phpunit --no-coverage
           echo "::endgroup::"

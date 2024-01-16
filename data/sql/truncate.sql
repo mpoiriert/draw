@@ -1,0 +1,1 @@
+TRUNCATE TABLE command__execution;

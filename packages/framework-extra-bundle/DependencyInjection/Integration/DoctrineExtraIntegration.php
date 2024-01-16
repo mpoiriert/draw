@@ -8,6 +8,7 @@ use Draw\DoctrineExtra\ORM\Query\CommentSqlWalker;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\Notifier\NotifierInterface;
 
 class DoctrineExtraIntegration implements IntegrationInterface
 {
@@ -26,11 +27,15 @@ class DoctrineExtraIntegration implements IntegrationInterface
         $container
             ->registerAliasForArgument('doctrine_mongodb', ManagerRegistry::class, 'odmManagerRegistry');
 
-        $this->loadORM($config, $loader, $container);
+        $this->loadORM($config['orm'], $loader, $container);
     }
 
     private function loadORM(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\DoctrineExtra\\ORM\\',
@@ -52,6 +57,20 @@ class DoctrineExtraIntegration implements IntegrationInterface
 
     public function addConfiguration(ArrayNodeDefinition $node): void
     {
-        // nothing to do
+        $node
+            ->children()
+                ->append($this->createORMNode())
+            ->end();
+    }
+
+    private function createORMNode(): ArrayNodeDefinition
+    {
+        $node = new ArrayNodeDefinition('orm');
+
+        ContainerBuilder::willBeAvailable('doctrine/orm', NotifierInterface::class, [])
+            ? $node->canBeDisabled()
+            : $node->canBeEnabled();
+
+        return $node;
     }
 }
