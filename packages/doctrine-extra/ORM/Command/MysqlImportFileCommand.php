@@ -8,12 +8,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
-class ImportFileCommand extends Command
+class MysqlImportFileCommand extends Command
 {
     public function __construct(private ManagerRegistry $ormManagerRegistry)
     {
-        parent::__construct('draw:doctrine:import-file');
+        parent::__construct('draw:doctrine:mysql-import-file');
     }
 
     protected function configure(): void
@@ -26,10 +27,20 @@ class ImportFileCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $connection = $this->ormManagerRegistry->getConnection($input->getOption('connection'));
+        $connectionParameter = $this->ormManagerRegistry
+            ->getConnection($input->getOption('connection'))
+            ->getParams()['primary'];
 
         foreach ($input->getArgument('files') as $file) {
-            $connection->executeQuery(file_get_contents($file));
+            Process::fromShellCommandline(sprintf(
+                'mysql -h %s -P %s -u %s %s %s < %s',
+                $connectionParameter['host'],
+                $connectionParameter['port'],
+                $connectionParameter['user'],
+                null === $connectionParameter['password'] ? '' : '-p'.$connectionParameter['password'],
+                $connectionParameter['dbname'],
+                $file
+            ))->mustRun();
         }
 
         return Command::SUCCESS;
