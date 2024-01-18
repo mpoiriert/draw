@@ -6,8 +6,8 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\DoctrineExtraIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
-use Draw\DoctrineExtra\ORM\Command\ImportFileCommand;
 use Draw\DoctrineExtra\ORM\Command\MysqlDumpCommand;
+use Draw\DoctrineExtra\ORM\Command\MysqlImportFileCommand;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -61,9 +61,9 @@ class DoctrineExtraIntegrationTest extends IntegrationTestCase
                     ]
                 ),
                 new ServiceConfiguration(
-                    'draw.doctrine_extra.orm.command.import_file_command',
+                    'draw.doctrine_extra.orm.command.mysql_import_file_command',
                     [
-                        ImportFileCommand::class,
+                        MysqlImportFileCommand::class,
                     ]
                 ),
                 new ServiceConfiguration(

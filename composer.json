@@ -253,13 +253,13 @@
         "test:database:setup": [
             "bin/console doctrine:database:drop --if-exists --no-interaction --force --env=test",
             "bin/console doctrine:database:create --no-interaction --env=test",
-            "bin/console draw:doctrine:import-file ./data/sql/dump.sql --no-interaction --env=test",
+            "bin/console draw:doctrine:mysql-import-file ./data/sql/dump.sql --no-interaction --env=test",
             "bin/console messenger:setup-transports --no-interaction --env=test",
             "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --quiet --env=test"
         ],
         "test:database:setup-dump": [
             "@test:database:setup",
-            "bin/console draw:doctrine:import-file ./data/sql/truncate.sql --no-interaction --env=test -vvv",
+            "bin/console draw:doctrine:mysql-import-file ./data/sql/truncate.sql --no-interaction --env=test -vvv",
             "bin/console draw:doctrine:mysql-dump ./data/sql/dump.sql --no-interaction --env=test"
         ],
         "linter": [
