@@ -40,5 +40,6 @@
     </source>
     <extensions>
         <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\CarbonResetExtension"/>
+        <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\KernelShutdownExtension"/>
     </extensions>
 </phpunit>
