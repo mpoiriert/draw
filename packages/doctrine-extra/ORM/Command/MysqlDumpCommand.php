@@ -35,7 +35,7 @@ class MysqlDumpCommand extends Command
             $connectionParameter['host'],
             $connectionParameter['port'],
             $connectionParameter['user'],
-            null === $connectionParameter['password'] ? '' : '-p'.$connectionParameter['password'],
+            empty($connectionParameter['password']) ? '' : '-p'.$connectionParameter['password'],
             $connectionParameter['dbname'],
             $input->getArgument('file')
         ))->mustRun();
