@@ -244,6 +244,10 @@
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/phpunit"
         ],
+        "test:run:coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/phpunit --coverage-html ./tmp/phpunit/report"
+        ],
         "test:reset": [
             "@test:database:setup",
             "php bin/console doctrine:fixtures:load --no-interaction",
