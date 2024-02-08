@@ -57,9 +57,11 @@ class Tag implements \Stringable
         return $this->label;
     }
 
-    public function setLabel(string $label): void
+    public function setLabel(string $label): static
     {
         $this->label = $label;
+
+        return $this;
     }
 
     public function getActive(): bool
@@ -67,9 +69,11 @@ class Tag implements \Stringable
         return $this->active;
     }
 
-    public function setActive(bool $active): void
+    public function setActive(bool $active): static
     {
         $this->active = $active;
+
+        return $this;
     }
 
     #[

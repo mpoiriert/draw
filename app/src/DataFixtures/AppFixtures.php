@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Address;
 use App\Entity\ChildObject2;
 use App\Entity\Tag;
 use App\Entity\User;
@@ -17,122 +18,131 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $tag = $adminTag = new Tag();
-        $tag->setLabel('Admin');
-        $manager->persist($tag);
-
-        $tag = $inactiveTag = new Tag();
-        $tag->setLabel('Inactive');
-        $tag->setActive(false);
-        $manager->persist($tag);
-
-        $tag = new Tag();
-        $tag->setLabel('NotUse');
-        $manager->persist($tag);
-
-        $user = new User();
-        $user->setEmail('admin@example.com');
-        $user->setPlainPassword('admin');
-        $user->setLevel(User::LEVEL_ADMIN);
-        $user->setRoles(['ROLE_SUPER_ADMIN']);
-        $user->setTags([$adminTag]);
-
-        $user->getAddress()->setStreet('200 Acme');
-
-        $user->addUserAddress($userAddress = new UserAddress());
-        $userAddress->getAddress()->setStreet('201 Secondary Acme');
-
-        $manager->persist($user);
-
-        $this->assignOnDeleteObject($manager, $user);
-
-        $user = new User();
-        $user->setEmail('2fa-admin@example.com');
-        $user->setPlainPassword('2fa-admin');
-        $user->setLevel(User::LEVEL_ADMIN);
-        $user->setRoles(['ROLE_2FA_ADMIN']);
-
-        $manager->persist($user);
-
-        $user = new User();
-        $user->setEmail('need-change-password@example.com');
-        $user->setNeedChangePassword(true);
-        $user->setLevel(User::LEVEL_ADMIN);
-        $user->setRoles(['ROLE_ADMIN']);
-
-        $manager->persist($user);
-
-        $user = new User();
-        $user->setEmail('locked@example.com');
-        $user->setPlainPassword('locked');
-        $user->setLevel(User::LEVEL_ADMIN);
-        $user->setRoles(['ROLE_ADMIN']);
-
-        $user->setManualLock(true);
-
-        $manager->persist($user);
-
-        foreach (range(1, 4) as $number) {
-            $user = new User();
-            $user->setEmail('user-'.str_pad((string) $number, 4, '0', \STR_PAD_LEFT).'@example.com');
-            $user->setPlainPassword('password');
-            if (1 === $number) {
-                $user->setTags([$inactiveTag]);
-                $user->setPreferredLocale('fr');
-            }
-            $manager->persist($user);
-        }
-
-        $manager->persist(
-            (new Config())
-                ->setId('acme_demo')
-                ->setValue(['enabled' => false, 'limit' => 10])
+        $this->persistAndFlush(
+            $manager,
+            $this->loadTags()
         );
 
-        $manager->flush();
+        $this->persistAndFlush(
+            $manager,
+            $this->loadUsers()
+        );
+
+        $this->persistAndFlush(
+            $manager,
+            $this->loadChildObject2()
+        );
+
+        $this->persistAndFlush(
+            $manager,
+            [
+                (new Config())
+                    ->setId('acme_demo')
+                    ->setValue(['enabled' => false, 'limit' => 10]),
+            ]
+        );
     }
 
-    private function assignOnDeleteObject(ObjectManager $manager, User $user): void
+    private function loadTags(): iterable
     {
+        yield 'admin' => (new Tag())
+            ->setLabel('Admin');
+
+        yield 'inactive' => (new Tag())
+            ->setLabel('Inactive')
+            ->setActive(false);
+
+        yield 'not-use' => (new Tag())
+            ->setLabel('NotUse');
+    }
+
+    private function loadUsers(): iterable
+    {
+        yield 'admin' => (new User())
+            ->setEmail('admin@example.com')
+            ->setPlainPassword('admin')
+            ->setLevel(User::LEVEL_ADMIN)
+            ->setRoles(['ROLE_SUPER_ADMIN'])
+            ->setTags([$this->getObjectReference(Tag::class, 'admin')])
+            ->setAddress(
+                (new Address())
+                    ->setStreet('200 Acme')
+            )
+            ->addUserAddress(
+                (new UserAddress())
+                    ->setAddress(
+                        (new Address())
+                            ->setStreet('201 Secondary Acme')
+                    )
+            );
+
+        yield (new User())
+            ->setEmail('2fa-admin@example.com')
+            ->setPlainPassword('2fa-admin')
+            ->setLevel(User::LEVEL_ADMIN)
+            ->setRoles(['ROLE_2FA_ADMIN']);
+
+        yield (new User())
+            ->setEmail('need-change-password@example.com')
+            ->setNeedChangePassword(true)
+            ->setLevel(User::LEVEL_ADMIN)
+            ->setRoles(['ROLE_ADMIN']);
+
+        yield (new User())
+            ->setEmail('locked@example.com')
+            ->setPlainPassword('locked')
+            ->setLevel(User::LEVEL_ADMIN)
+            ->setRoles(['ROLE_ADMIN'])
+            ->setManualLock(true);
+
+        $inactiveTag = $this->getObjectReference(Tag::class, 'inactive');
+
+        foreach (range(1, 4) as $number) {
+            $user = (new User())
+                ->setEmail('user-'.str_pad((string) $number, 4, '0', \STR_PAD_LEFT).'@example.com')
+                ->setPlainPassword('password');
+
+            if (1 === $number) {
+                $user
+                    ->setTags([$inactiveTag])
+                    ->setPreferredLocale('fr');
+            }
+
+            yield $user;
+        }
+    }
+
+    private function loadChildObject2(): iterable
+    {
+        $user = $this->getObjectReference(User::class, 'admin');
+
         $objects = [];
 
         $user
             ->setOnDeleteRestrict(
-                $object = (new ChildObject2())->setAttribute2('on-delete-restrict')
+                $objects[] = (new ChildObject2())->setAttribute2('on-delete-restrict')
             );
-
-        $objects[] = $object;
 
         $user
             ->setOnDeleteCascade(
-                $object = (new ChildObject2())->setAttribute2('on-delete-cascade')
+                $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade')
             );
-
-        $objects[] = $object;
 
         $user
             ->setOnDeleteSetNull(
-                $object = (new ChildObject2())->setAttribute2('on-delete-set-null')
+                $objects[] = (new ChildObject2())->setAttribute2('on-delete-set-null')
             );
-
-        $objects[] = $object;
 
         $user
             ->setOnDeleteCascadeConfigOverridden(
-                $object = (new ChildObject2())->setAttribute2('on-delete-cascade-config-overridden')
+                $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade-config-overridden')
             );
-
-        $objects[] = $object;
 
         $user
             ->setOnDeleteCascadeAttributeOverridden(
-                $object = (new ChildObject2())->setAttribute2('on-delete-cascade-attribute-overridden')
+                $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade-attribute-overridden')
             );
 
-        $objects[] = $object;
-
-        foreach ($objects as $object) {
-            $manager->persist($object);
-        }
+        yield from $objects;
     }
 }

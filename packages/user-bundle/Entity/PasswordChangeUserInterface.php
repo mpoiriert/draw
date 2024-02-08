@@ -8,5 +8,5 @@ interface PasswordChangeUserInterface extends SecurityUserInterface
 
     public function getNeedChangePassword(): bool;
 
-    public function setNeedChangePassword(bool $needPasswordChange): void;
+    public function setNeedChangePassword(bool $needPasswordChange): static;
 }

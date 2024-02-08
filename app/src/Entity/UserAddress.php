@@ -55,9 +55,11 @@ class UserAddress
         return $this->address;
     }
 
-    public function setAddress(Address $address): void
+    public function setAddress(Address $address): static
     {
         $this->address = $address;
+
+        return $this;
     }
 
     public function getPosition(): ?int
