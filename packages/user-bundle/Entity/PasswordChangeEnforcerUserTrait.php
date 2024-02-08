@@ -20,10 +20,10 @@ trait PasswordChangeEnforcerUserTrait
         $this->setNeedChangePassword(true);
     }
 
-    public function setNeedChangePassword(bool $needChangePassword): void
+    public function setNeedChangePassword(bool $needChangePassword): static
     {
         if ($this->needChangePassword === $needChangePassword) {
-            return;
+            return $this;
         }
 
         $this->needChangePassword = $needChangePassword;
@@ -34,16 +34,18 @@ trait PasswordChangeEnforcerUserTrait
         }
 
         if (!use_trait($this, MessageHolderTrait::class)) {
-            return;
+            return $this;
         }
 
         if (!$needChangePassword) {
             unset($this->onHoldMessages[PasswordChangeRequestedMessage::class]);
 
-            return;
+            return $this;
         }
 
         $this->onHoldMessages[PasswordChangeRequestedMessage::class] = new PasswordChangeRequestedMessage();
+
+        return $this;
     }
 
     public function getNeedChangePassword(): bool

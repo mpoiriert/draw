@@ -202,9 +202,11 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         return $roles;
     }
 
-    public function setRoles(array $roles): void
+    public function setRoles(array $roles): static
     {
         $this->roles = $roles;
+
+        return $this;
     }
 
     /**
@@ -218,13 +220,15 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * @phpstan-param Collection<Tag>|array<int,Tag> $tags
      */
-    public function setTags(Collection|array $tags): void
+    public function setTags(Collection|array $tags): static
     {
         $this->tags = new ArrayCollection();
 
         foreach ($tags as $tag) {
             $this->tags->add($tag);
         }
+
+        return $this;
     }
 
     /**
@@ -259,9 +263,11 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         return $this->address;
     }
 
-    public function setAddress(Address $address): void
+    public function setAddress(Address $address): static
     {
         $this->address = $address;
+
+        return $this;
     }
 
     /**
@@ -272,20 +278,24 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         return $this->userAddresses;
     }
 
-    public function addUserAddress(UserAddress $userAddress): void
+    public function addUserAddress(UserAddress $userAddress): static
     {
         if (!$this->userAddresses->contains($userAddress)) {
             CollectionUtil::assignPosition($userAddress, $this->userAddresses);
             $this->userAddresses->add($userAddress);
             $userAddress->setUser($this);
         }
+
+        return $this;
     }
 
-    public function removeUserAddress(UserAddress $userAddress): void
+    public function removeUserAddress(UserAddress $userAddress): static
     {
         if ($this->userAddresses->contains($userAddress)) {
             $this->userAddresses->removeElement($userAddress);
         }
+
+        return $this;
     }
 
     public function getDateOfBirth(): ?\DateTimeImmutable
@@ -303,9 +313,11 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         return $this->level;
     }
 
-    public function setLevel(string $level): void
+    public function setLevel(string $level): static
     {
         $this->level = $level;
+
+        return $this;
     }
 
     public function getComment(): string
