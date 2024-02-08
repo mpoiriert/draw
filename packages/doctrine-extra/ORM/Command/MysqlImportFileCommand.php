@@ -32,15 +32,18 @@ class MysqlImportFileCommand extends Command
             ->getParams()['primary'];
 
         foreach ($input->getArgument('files') as $file) {
-            Process::fromShellCommandline(sprintf(
-                'mysql -h %s -P %s -u %s %s %s < %s',
-                $connectionParameter['host'],
-                $connectionParameter['port'],
-                $connectionParameter['user'],
-                empty($connectionParameter['password']) ? '' : '-p'.$connectionParameter['password'],
-                $connectionParameter['dbname'],
-                $file
-            ))->mustRun();
+            Process::fromShellCommandline(
+                sprintf(
+                    'mysql -h %s -P %s -u %s %s %s < %s',
+                    $connectionParameter['host'],
+                    $connectionParameter['port'],
+                    $connectionParameter['user'],
+                    empty($connectionParameter['password']) ? '' : '-p'.$connectionParameter['password'],
+                    $connectionParameter['dbname'],
+                    $file
+                ),
+                timeout: 600
+            )->mustRun();
         }
 
         return Command::SUCCESS;
