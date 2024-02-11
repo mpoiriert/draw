@@ -32,7 +32,6 @@ services:
     volumes:
       - .:/home/wwwroot
       - ~/.ssh:/home/dev/.ssh
-      - ~/.gitconfig:/etc/gitconfig
       - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - mysql
