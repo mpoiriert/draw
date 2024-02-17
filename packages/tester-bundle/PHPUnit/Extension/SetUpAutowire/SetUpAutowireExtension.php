@@ -62,6 +62,10 @@ class SetUpAutowireExtension implements Extension
                             $container->get($serviceId)
                         );
                     }
+
+                    if ($testCase instanceof AutowireCompletionAwareInterface) {
+                        $testCase->postAutowire($container ?? ReflectionAccessor::callMethod($testCase, 'getContainer'));
+                    }
                 }
 
                 /**
