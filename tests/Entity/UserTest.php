@@ -6,33 +6,32 @@ use App\Entity\User;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\Messenger\TransportTester;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
 use Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage;
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
+use PHPUnit\Framework\Attributes\After;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 
-class UserTest extends TestCase
+class UserTest extends TestCase implements AutowireInterface
 {
+    #[AutowireService]
     private EntityManagerInterface $entityManager;
 
+    #[AutowireTransportTester('sync')]
     private TransportTester $transportTester;
 
-    protected function setUp(): void
-    {
-        $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
-        $this->transportTester = static::getTransportTester('sync');
-    }
+    #[AutowireService]
+    private MessageBusInterface $messageBus;
 
-    /**
-     * @before
-     *
-     * @after
-     */
+    #[After]
     public function cleanUp(): void
     {
-        static::getService(EntityManagerInterface::class)
+        $this->entityManager
             ->createQueryBuilder()
             ->delete(User::class, 'user')
             ->where('user.email = :email')
@@ -72,9 +71,7 @@ class UserTest extends TestCase
         static::assertInstanceOf(NewUserLockMessage::class, $envelope->getMessage());
 
         $this->transportTester->reset();
-        static::getContainer()
-            ->get(MessageBusInterface::class)
-            ->dispatch($envelope->with(new ReceivedStamp('sync')));
+        $this->messageBus->dispatch($envelope->with(new ReceivedStamp('sync')));
 
         $this->transportTester->assertMessageMatch(UserLockDelayedActivationMessage::class);
 

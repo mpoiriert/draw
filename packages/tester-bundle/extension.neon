@@ -1,0 +1,5 @@
+services:
+    draw.tester_bundle.autowire_read_write_properties_extension:
+        class: Draw\Bundle\TesterBundle\PHPStan\Rules\Properties\AutowireReadWritePropertiesExtension
+        tags:
+            - phpstan.properties.readWriteExtension
