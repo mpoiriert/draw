@@ -4,9 +4,11 @@ namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Core\Reflection\ReflectionExtractor;
+use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\Prepared as TestPrepared;
 use PHPUnit\Event\Test\PreparedSubscriber as TestPreparedSubscriber;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
@@ -24,6 +26,11 @@ class SetUpAutowireExtension implements Extension
                  * @var array<string, array<int, array{\ReflectionProperty, string}>>
                  */
                 private array $propertyAttributes = [];
+
+                /**
+                 * @var array<string, array<int, arrar<array{\ReflectionProperty, string}>>>
+                 */
+                private array $propertyMocks = [];
 
                 public function notify(TestPrepared $event): void
                 {
@@ -57,9 +64,31 @@ class SetUpAutowireExtension implements Extension
                     foreach ($this->getPropertyAttributes($testCase) as [$property, $serviceId]) {
                         $container ??= ReflectionAccessor::callMethod($testCase, 'getContainer');
 
+                        if ($serviceId instanceof AutowireMock) {
+                            $property->setValue(
+                                $testCase,
+                                $this->getMockFor($testCase, $property->getName())
+                            );
+
+                            continue;
+                        }
+
                         $property->setValue(
                             $testCase,
                             $container->get($serviceId)
+                        );
+                    }
+
+                    foreach ($this->getPropertyMockAttributes($testCase) as [$property, $autoWireMockProperty]) {
+                        $service = $property->getValue($testCase);
+
+                        ReflectionAccessor::setPropertyValue(
+                            $service,
+                            $autoWireMockProperty->getProperty(),
+                            ReflectionAccessor::getPropertyValue(
+                                $testCase,
+                                $autoWireMockProperty->getFromProperty()
+                            )
                         );
                     }
 
@@ -69,7 +98,7 @@ class SetUpAutowireExtension implements Extension
                 }
 
                 /**
-                 * @return iterable<array{0:\ReflectionProperty, 1: string}>
+                 * @return iterable<array{\ReflectionProperty, string|AutowireMock}>
                  */
                 private function getPropertyAttributes(TestCase $testCase): iterable
                 {
@@ -87,6 +116,12 @@ class SetUpAutowireExtension implements Extension
 
                             $autoWireService = $attribute->newInstance();
 
+                            if ($autoWireService instanceof AutowireMock) {
+                                $this->propertyAttributes[$className][] = [$property, $autoWireService];
+
+                                continue;
+                            }
+
                             $serviceId = $autoWireService->getServiceId();
 
                             if (!$serviceId) {
@@ -99,11 +134,58 @@ class SetUpAutowireExtension implements Extension
                             }
 
                             $this->propertyAttributes[$className][] = [$property, $serviceId];
+
+                            foreach ($property->getAttributes(AutowireMockProperty::class) as $attribute) {
+                                $autoWireMockProperty = $attribute->newInstance();
+                                $this->propertyMocks[$className][] = [$property, $autoWireMockProperty];
+                            }
                         }
                     }
 
                     foreach ($this->propertyAttributes[$className] as $property) {
                         yield $property;
+                    }
+                }
+
+                /**
+                 * @return iterable<array{\ReflectionProperty, AutowireMockProperty}>
+                 */
+                private function getPropertyMockAttributes(TestCase $testCase): iterable
+                {
+                    yield from $this->propertyMocks[$testCase::class] ?? [];
+                }
+
+                private function getMockFor(TestCase $testCase, string $property)
+                {
+                    $reflectionProperty = new \ReflectionProperty($testCase, $property);
+
+                    $type = $reflectionProperty->getType();
+
+                    if (!$type instanceof \ReflectionIntersectionType) {
+                        throw new \RuntimeException('Property '.$property.' of class '.$testCase::class.' must have a type hint intersection with Mock.');
+                    }
+
+                    $types = $type->getTypes();
+
+                    if (2 !== \count($types)) {
+                        throw new \RuntimeException('Property ' . $property . ' of class ' . $testCase::class . ' can only have 2 intersection types.');
+                    }
+
+                    foreach ($types as $type) {
+                        if (!$type instanceof \ReflectionNamedType) {
+                            throw new \RuntimeException('Property ' . $property . ' of class ' . $testCase::class . ' intersction must be of named type.');
+                        }
+
+                        if ($type->getName() === MockObject::class) {
+                            continue;
+                        }
+
+                        $reflectionProperty->setValue(
+                            $testCase,
+                            $mock = ReflectionAccessor::callMethod($testCase, 'createMock', $type->getName())
+                        );
+
+                        return $mock;
                     }
                 }
             },
