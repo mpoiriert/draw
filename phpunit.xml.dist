@@ -40,7 +40,8 @@
     </source>
     <extensions>
         <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\CarbonResetExtension"/>
-        <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\KernelShutdownExtension"/>
         <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\SetUpAutowireExtension"/>
+        <!-- <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\DeleteTemporaryEntity\DeleteTemporaryEntityExtension"/> -->
+        <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\KernelShutdownExtension"/>
     </extensions>
 </phpunit>
