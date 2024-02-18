@@ -4,13 +4,13 @@ namespace App\Tests\Validator\Constraints;
 
 use App\Entity\Tag;
 use App\Entity\User;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Validator\Constraints\ValueIsNotUsed;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowireInterface
+class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowiredInterface
 {
     #[AutowireService]
     protected ValidatorInterface $validator;

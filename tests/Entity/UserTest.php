@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\Messenger\TransportTester;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Bundle\UserBundle\Entity\UserLock;
@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\After;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 
-class UserTest extends TestCase implements AutowireInterface
+class UserTest extends TestCase implements AutowiredInterface
 {
     #[AutowireService]
     private EntityManagerInterface $entityManager;

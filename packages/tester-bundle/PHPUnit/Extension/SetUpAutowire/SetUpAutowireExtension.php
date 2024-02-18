@@ -4,7 +4,6 @@ namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Core\Reflection\ReflectionExtractor;
-use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\Prepared as TestPrepared;
 use PHPUnit\Event\Test\PreparedSubscriber as TestPreparedSubscriber;
@@ -28,7 +27,7 @@ class SetUpAutowireExtension implements Extension
                 private array $propertyAttributes = [];
 
                 /**
-                 * @var array<string, array<int, arrar<array{\ReflectionProperty, string}>>>
+                 * @var array<string, array<int, array{\ReflectionProperty, AutowireMockProperty}>>
                  */
                 private array $propertyMocks = [];
 
@@ -38,7 +37,7 @@ class SetUpAutowireExtension implements Extension
 
                     \assert($test instanceof TestMethod);
 
-                    if (!is_a($test->className(), AutowireInterface::class, true)) {
+                    if (!is_a($test->className(), AutowiredInterface::class, true)) {
                         return;
                     }
 
@@ -51,7 +50,7 @@ class SetUpAutowireExtension implements Extension
                         }
                     }
 
-                    if (!$testCase instanceof AutowireInterface) {
+                    if (!$testCase instanceof AutowiredInterface) {
                         return;
                     }
 
@@ -92,8 +91,8 @@ class SetUpAutowireExtension implements Extension
                         );
                     }
 
-                    if ($testCase instanceof AutowireCompletionAwareInterface) {
-                        $testCase->postAutowire($container ?? ReflectionAccessor::callMethod($testCase, 'getContainer'));
+                    if ($testCase instanceof AutowiredCompletionAwareInterface) {
+                        $testCase->postAutowire();
                     }
                 }
 
@@ -168,15 +167,15 @@ class SetUpAutowireExtension implements Extension
                     $types = $type->getTypes();
 
                     if (2 !== \count($types)) {
-                        throw new \RuntimeException('Property ' . $property . ' of class ' . $testCase::class . ' can only have 2 intersection types.');
+                        throw new \RuntimeException('Property '.$property.' of class '.$testCase::class.' can only have 2 intersection types.');
                     }
 
                     foreach ($types as $type) {
                         if (!$type instanceof \ReflectionNamedType) {
-                            throw new \RuntimeException('Property ' . $property . ' of class ' . $testCase::class . ' intersction must be of named type.');
+                            throw new \RuntimeException('Property '.$property.' of class '.$testCase::class.' intersction must be of named type.');
                         }
 
-                        if ($type->getName() === MockObject::class) {
+                        if (MockObject::class === $type->getName()) {
                             continue;
                         }
 
