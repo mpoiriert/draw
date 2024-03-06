@@ -5,6 +5,8 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\Bridge\Monolog\Processor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
+use Monolog\Level;
+use Monolog\LogRecord;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
@@ -29,15 +31,16 @@ class TokenProcessorTest extends TestCase
 
     public function testInvokeNoToken(): void
     {
-        $records = [uniqid() => uniqid()];
         static::assertSame(
-            $records +
-            [
-                'extra' => [
-                    $this->key => null,
-                ],
-            ],
-            $this->service->__invoke($records)
+            [$this->key => null],
+            $this->service->__invoke(
+                new LogRecord(
+                    new \DateTimeImmutable(),
+                    'test',
+                    Level::Info,
+                    'message',
+                )
+            )->toArray()['extra']
         );
     }
 
@@ -51,15 +54,20 @@ class TokenProcessorTest extends TestCase
 
         static::assertSame(
             [
-                'extra' => [
-                    $this->key => [
-                        'authenticated' => false,
-                        'roles' => [],
-                        'user_identifier' => '',
-                    ],
+                $this->key => [
+                    'authenticated' => false,
+                    'roles' => [],
+                    'user_identifier' => '',
                 ],
             ],
-            $this->service->__invoke([])
+            $this->service->__invoke(
+                new LogRecord(
+                    new \DateTimeImmutable(),
+                    'test',
+                    Level::Info,
+                    'message',
+                )
+            )->toArray()['extra']
         );
     }
 
@@ -110,16 +118,21 @@ class TokenProcessorTest extends TestCase
 
         static::assertSame(
             [
-                'extra' => [
-                    $this->key => [
-                        'authenticated' => true,
-                        'roles' => $roles,
-                        'user_identifier' => $user->getUserIdentifier(),
-                        'user_id' => (string) $user->getId(),
-                    ],
+                $this->key => [
+                    'authenticated' => true,
+                    'roles' => $roles,
+                    'user_identifier' => $user->getUserIdentifier(),
+                    'user_id' => (string) $user->getId(),
                 ],
             ],
-            $this->service->__invoke([])
+            $this->service->__invoke(
+                new LogRecord(
+                    new \DateTimeImmutable(),
+                    'test',
+                    Level::Info,
+                    'message',
+                )
+            )->toArray()['extra']
         );
     }
 }

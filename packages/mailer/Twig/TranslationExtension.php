@@ -21,7 +21,7 @@ class TranslationExtension extends AbstractExtension
         ];
     }
 
-    public function trans(null|string|\Stringable|array|TranslatableInterface $messages, string|array $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): ?string
+    public function trans(string|\Stringable|array|TranslatableInterface|null $messages, string|array $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): ?string
     {
         if (!\is_array($messages)) {
             $messages = [$messages];

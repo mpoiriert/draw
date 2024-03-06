@@ -40,7 +40,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         return $this->encoder;
     }
 
-    public function generaToken(UserInterface $user, null|int|string $expiration = null, array $extraPayload = []): string
+    public function generaToken(UserInterface $user, int|string|null $expiration = null, array $extraPayload = []): string
     {
         $expiration ??= $this->expiration;
 

@@ -3,6 +3,8 @@
 namespace Draw\Component\Log\Tests\Monolog\Processor;
 
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
+use Monolog\Level;
+use Monolog\LogRecord;
 use PHPUnit\Framework\TestCase;
 
 class DelayProcessorTest extends TestCase
@@ -20,11 +22,16 @@ class DelayProcessorTest extends TestCase
     {
         static::assertSame(
             [
-                'extra' => [
-                    $this->key => number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2),
-                ],
+                $this->key => number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2),
             ],
-            $this->delayProcessor->__invoke([])
+            $this->delayProcessor->__invoke(
+                new LogRecord(
+                    new \DateTimeImmutable(),
+                    'test',
+                    Level::Info,
+                    'message',
+                )
+            )->toArray()['extra']
         );
     }
 
@@ -32,12 +39,15 @@ class DelayProcessorTest extends TestCase
     {
         $this->delayProcessor->reset();
         static::assertSame(
-            [
-                'extra' => [
-                    $this->key => '0.00',
-                ],
-            ],
-            $this->delayProcessor->__invoke([])
+            [$this->key => '0.00'],
+            $this->delayProcessor->__invoke(
+                new LogRecord(
+                    new \DateTimeImmutable(),
+                    'test',
+                    Level::Info,
+                    'message',
+                )
+            )->toArray()['extra']
         );
     }
 
@@ -46,7 +56,14 @@ class DelayProcessorTest extends TestCase
         $this->delayProcessor = new DelayProcessor();
         static::assertArrayHasKey(
             'delay',
-            $this->delayProcessor->__invoke([])['extra']
+            $this->delayProcessor->__invoke(
+                new LogRecord(
+                    new \DateTimeImmutable(),
+                    'test',
+                    Level::Info,
+                    'message',
+                )
+            )->toArray()['extra']
         );
     }
 }

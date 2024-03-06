@@ -71,7 +71,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/sql-formatter": "^1.1",
         "firebase/php-jwt": "^6.1",
-        "monolog/monolog": "^2.4.0",
+        "monolog/monolog": "^3.5.0",
         "nelmio/cors-bundle": "^2.0",
         "pdeans/http": "^1.1",
         "pelago/emogrifier": "^7.0",

@@ -3,6 +3,8 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\Bridge\Monolog\Processor;
 
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
+use Monolog\Level;
+use Monolog\LogRecord;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -94,24 +96,31 @@ class RequestHeadersProcessorTest extends TestCase
             $mainRequest->headers->replace($requestHeaders);
         }
 
-        $originalRecords = [uniqid('header-name-') => uniqid()];
-        $records = $service->__invoke($originalRecords);
+        $logRecord = new LogRecord(
+            new \DateTimeImmutable(),
+            'test',
+            Level::Info,
+            'message',
+            [uniqid('header-name-') => uniqid()]
+        );
+
+        static::assertSame(
+            $logRecord,
+            $service->__invoke($logRecord)
+        );
 
         if (null === $expectedHeaders) {
             static::assertSame(
-                $originalRecords,
-                $records
+                [],
+                $logRecord->toArray()['extra']
             );
 
             return;
         }
 
         static::assertSame(
-            array_merge(
-                $originalRecords,
-                ['extra' => [$key => $expectedHeaders]]
-            ),
-            $records
+            [$key => $expectedHeaders],
+            $logRecord->toArray()['extra']
         );
     }
 
@@ -124,11 +133,17 @@ class RequestHeadersProcessorTest extends TestCase
             uniqid()
         );
 
-        $records = [uniqid() => uniqid()];
+        $logRecord = new LogRecord(
+            new \DateTimeImmutable(),
+            'test',
+            Level::Info,
+            'message',
+            [uniqid('header-name-') => uniqid()]
+        );
 
         static::assertSame(
-            $records,
-            $service->__invoke($records)
+            [],
+            $logRecord->toArray()['extra']
         );
     }
 }

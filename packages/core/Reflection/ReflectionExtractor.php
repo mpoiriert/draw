@@ -4,7 +4,7 @@ namespace Draw\Component\Core\Reflection;
 
 class ReflectionExtractor
 {
-    public static function getClasses(null|\ReflectionType $reflectionType): array
+    public static function getClasses(?\ReflectionType $reflectionType): array
     {
         if (!$reflectionType) {
             return [];
