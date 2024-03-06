@@ -3,10 +3,12 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor;
 
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
+use Monolog\LogRecord;
+use Monolog\Processor\ProcessorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class TokenProcessor
+class TokenProcessor implements ProcessorInterface
 {
     public function __construct(protected TokenStorageInterface $tokenStorage, private string $key = 'token')
     {
@@ -17,7 +19,7 @@ class TokenProcessor
         return $this->tokenStorage->getToken();
     }
 
-    public function __invoke(array $record): array
+    public function __invoke(LogRecord $record): LogRecord
     {
         $data = null;
 

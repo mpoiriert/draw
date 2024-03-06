@@ -7,8 +7,8 @@ use Symfony\Component\Console\Command\Command;
 
 final class CommandDataTester
 {
-    private null|string|array $expectedDisplay = null;
-    private null|string|array $expectedErrorOutput = null;
+    private string|array|null $expectedDisplay = null;
+    private string|array|null $expectedErrorOutput = null;
 
     private int $expectedStatusCode = 0;
 
@@ -18,8 +18,8 @@ final class CommandDataTester
      */
     public static function create(
         int $expectedStatusCode = Command::SUCCESS,
-        null|string|array $expectedDisplay = '',
-        null|string|array $expectedErrorOutput = '',
+        string|array|null $expectedDisplay = '',
+        string|array|null $expectedErrorOutput = '',
     ): self {
         return (new self())->setExpectedStatusCode($expectedStatusCode)
             ->setExpectedDisplay($expectedDisplay)

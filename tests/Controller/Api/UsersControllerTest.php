@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
-use Psr\Log\LogLevel;
+use Monolog\Level;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersControllerTest extends TestCase
@@ -54,7 +54,7 @@ class UsersControllerTest extends TestCase
         $handler = static::getContainer()->get('monolog.handler.testing');
 
         static::assertTrue(
-            $handler->hasRecord('[UsersController] Create new user', LogLevel::INFO)
+            $handler->hasRecord('[UsersController] Create new user', Level::Info)
         );
 
         return $data;

@@ -2,6 +2,8 @@
 
 namespace Draw\Component\Log\Monolog\Processor;
 
+use Monolog\LogRecord;
+
 class DelayProcessor
 {
     private ?float $start = null;
@@ -10,15 +12,15 @@ class DelayProcessor
     {
     }
 
-    public function __invoke(array $records): array
+    public function __invoke(LogRecord $record): LogRecord
     {
         if (null === $this->start) {
             $this->start = (float) ($_SERVER['REQUEST_TIME_FLOAT'] ?? microtime(true));
         }
 
-        $records['extra'][$this->key] = number_format(microtime(true) - $this->start, 2);
+        $record['extra'][$this->key] = number_format(microtime(true) - $this->start, 2);
 
-        return $records;
+        return $record;
     }
 
     public function reset(): void

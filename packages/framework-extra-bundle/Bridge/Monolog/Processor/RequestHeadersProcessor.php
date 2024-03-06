@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor;
 
+use Monolog\LogRecord;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class RequestHeadersProcessor
@@ -23,14 +24,14 @@ class RequestHeadersProcessor
         $this->ignoreHeaders = array_flip(array_map($this->normalizeHeaderName(...), $ignoreHeaders));
     }
 
-    public function __invoke(array $records): array
+    public function __invoke(LogRecord $record): LogRecord
     {
         if (null === $this->requestStack) {
-            return $records;
+            return $record;
         }
 
         if (!$request = $this->requestStack->getMainRequest()) {
-            return $records;
+            return $record;
         }
 
         $headers = $request->headers->all();
@@ -43,9 +44,9 @@ class RequestHeadersProcessor
             $headers = array_diff_key($headers, $this->ignoreHeaders);
         }
 
-        $records['extra'][$this->key] = $headers;
+        $record['extra'][$this->key] = $headers;
 
-        return $records;
+        return $record;
     }
 
     public function normalizeHeaderName(string $header): string
