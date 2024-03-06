@@ -76,7 +76,7 @@
         "pdeans/http": "^1.1",
         "pelago/emogrifier": "^7.0",
         "scheb/2fa-bundle": "^6.0",
-        "endroid/qr-code": "^4.8",
+        "endroid/qr-code": "^5.0",
         "scheb/2fa-totp": "^6.0",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
