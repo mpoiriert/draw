@@ -121,6 +121,30 @@ class JmsExtractorStubModel
     public $generic;
 
     /**
+     * The simple enum.
+     * @var JmsExtractorStubEnum
+     */
+    #[Serializer\Type('enum<\''.JmsExtractorStubEnum::class.'\'>')]
+    #[Serializer\Groups(['test'])]
+    public $genericEnum;
+
+    /**
+     * The backed enum.
+     * @var JmsExtractorStubEnum
+     */
+    #[Serializer\Type('enum<\''.JmsExtractorStubBackedEnum::class.'\'>')]
+    #[Serializer\Groups(['test'])]
+    public $backedEnum;
+
+    /**
+     * The backed enum int.
+     * @var JmsExtractorStubEnum
+     */
+    #[Serializer\Type('enum<\''.JmsExtractorStubBackedEnumInt::class.'\'>')]
+    #[Serializer\Groups(['test'])]
+    public $backedEnumInt;
+
+    /**
      * Serialized property.
      *
      * @var string
@@ -176,4 +200,21 @@ class JmsExtractorStubGeneric
     #[Serializer\Groups(['test'])]
     #[Serializer\ReadOnlyProperty]
     public $name;
+}
+
+enum JmsExtractorStubEnum
+{
+    case FOO;
+    case BAR;
+}
+enum JmsExtractorStubBackedEnum: string
+{
+    case ABC = 'abc';
+    case DEF = 'def';
+}
+
+enum JmsExtractorStubBackedEnumInt: int
+{
+    case ABC = 1;
+    case DEF = 2;
 }
