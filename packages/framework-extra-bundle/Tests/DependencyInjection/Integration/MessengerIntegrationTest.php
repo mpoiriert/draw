@@ -11,6 +11,7 @@ use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\Command\StartMessengerBrokerCommand;
 use Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener;
 use Draw\Component\Messenger\Broker\EventListener\StopBrokerOnSigtermSignalListener;
+use Draw\Component\Messenger\Counter\CpuCounter;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\EventListener\PropertyReferenceEncodingListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\BasicEnvelopeFactory;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;
@@ -167,6 +168,10 @@ class MessengerIntegrationTest extends IntegrationTestCase
             new ServiceConfiguration(
                 'draw.messenger.manual_trigger.action.click_message_action',
                 [ClickMessageAction::class]
+            ),
+            new ServiceConfiguration(
+                'draw.messenger.counter.cpu_counter',
+                [CpuCounter::class]
             ),
         ];
 

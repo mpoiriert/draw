@@ -5,10 +5,12 @@ namespace Draw\Component\Messenger\Tests\Broker\Command;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\Broker\Command\StartMessengerBrokerCommand;
 use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
+use Draw\Component\Messenger\Counter\CpuCounter;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidOptionException;
@@ -24,6 +26,8 @@ class StartMessengerBrokerCommandTest extends TestCase
 
     private EventDispatcher $eventDispatcher;
 
+    private CpuCounter&MockObject $cpuCounter;
+
     private string $consolePath;
 
     public function createCommand(): Command
@@ -31,7 +35,8 @@ class StartMessengerBrokerCommandTest extends TestCase
         return new StartMessengerBrokerCommand(
             $this->consolePath = uniqid('console-path-'),
             $this->processFactory = $this->createMock(ProcessFactoryInterface::class),
-            $this->eventDispatcher = new EventDispatcher()
+            $this->eventDispatcher = new EventDispatcher(),
+            $this->cpuCounter = $this->createMock(CpuCounter::class)
         );
     }
 
@@ -62,6 +67,20 @@ class StartMessengerBrokerCommandTest extends TestCase
         ];
 
         yield [
+            'processes-per-core',
+            null,
+            InputOption::VALUE_REQUIRED,
+            1,
+        ];
+
+        yield [
+            'minimum-processes',
+            null,
+            InputOption::VALUE_REQUIRED,
+            1,
+        ];
+
+        yield [
             'timeout',
             null,
             InputOption::VALUE_REQUIRED,
@@ -85,6 +104,34 @@ class StartMessengerBrokerCommandTest extends TestCase
         $this->expectExceptionMessage('Timeout value ['.$timeout.'] is invalid. Must be 0 or greater');
 
         $this->execute(['--timeout' => $timeout]);
+    }
+
+    public function testExecuteInvalidProcessesPerCoreWithAutoConcurrent(): void
+    {
+        $processesPerCore = random_int(\PHP_INT_MIN, 0);
+        $this->expectExceptionObject(new InvalidOptionException(sprintf(
+            'Processes per core value [%f] is invalid. Must be greater than 0',
+            $processesPerCore
+        )));
+
+        $this->execute([
+            '--concurrent' => 'auto',
+            '--processes-per-core' => $processesPerCore,
+        ]);
+    }
+
+    public function testExecuteInvalidMinimumProcessesWithAutoConcurrent(): void
+    {
+        $minProcesses = random_int(\PHP_INT_MIN, 0);
+        $this->expectExceptionObject(new InvalidOptionException(sprintf(
+            'Minimum processes value [%d] is invalid. Must be greater than 0',
+            $minProcesses
+        )));
+
+        $this->execute([
+            '--concurrent' => 'auto',
+            '--minimum-processes' => $minProcesses,
+        ]);
     }
 
     public function testExecute(): void
@@ -136,6 +183,8 @@ class StartMessengerBrokerCommandTest extends TestCase
             '--context' => $context,
             '--concurrent' => $concurrent,
             '--timeout' => $timeout,
+            '--processes-per-core' => random_int(\PHP_INT_MIN, 0),
+            '--minimum-processes' => random_int(\PHP_INT_MIN, 0),
         ])->test(
             CommandDataTester::create(
                 0,
@@ -147,5 +196,70 @@ class StartMessengerBrokerCommandTest extends TestCase
                 ]
             )
         );
+    }
+
+    /**
+     * @dataProvider provideDataForTestExecuteWithAutoConcurrent
+     */
+    public function testExecuteWithAutoConcurrent(
+        int $numCpus,
+        float $processesPerCore,
+        int $minProcesses,
+        int $concurrent
+    ): void {
+        $this
+            ->cpuCounter
+            ->method('count')
+            ->willReturn($numCpus);
+
+        $this->eventDispatcher->addListener(
+            BrokerStartedEvent::class,
+            function (BrokerStartedEvent $event) use ($concurrent): void {
+                static::assertSame($concurrent, $event->getConcurrent());
+
+                $broker = $event->getBroker();
+                $broker->stop();
+            }
+        );
+
+        $this
+            ->execute([
+                '--concurrent' => 'auto',
+                '--processes-per-core' => $processesPerCore,
+                '--minimum-processes' => $minProcesses,
+            ])
+            ->test(CommandDataTester::create(
+                0,
+                [
+                    '[OK] Broker starting.',
+                    sprintf('! [NOTE] Concurrency %d', $concurrent),
+                    '! [NOTE] Timeout 10',
+                    '[OK] Broker stopped. ',
+                ]
+            ));
+    }
+
+    public static function provideDataForTestExecuteWithAutoConcurrent(): iterable
+    {
+        yield 'integer multiplier' => [
+            '$numCpus' => 4,
+            '$processesPerCore' => 1.0,
+            '$minProcesses' => 2,
+            '$concurrent' => 4,
+        ];
+
+        yield 'float multiplier' => [
+            '$numCpus' => 4,
+            '$processesPerCore' => 0.8,
+            '$minProcesses' => 1,
+            '$concurrent' => 3,
+        ];
+
+        yield 'minimum processes' => [
+            '$numCpus' => 2,
+            '$processesPerCore' => 0.8,
+            '$minProcesses' => 5,
+            '$concurrent' => 5,
+        ];
     }
 }

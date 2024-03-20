@@ -58,7 +58,8 @@
         "twig/twig": "^3.3",
         "friendsofphp/php-cs-fixer": "^3.13",
         "nesbot/carbon": "^2.0",
-        "doctrine/mongodb-odm-bundle": "*"
+        "doctrine/mongodb-odm-bundle": "*",
+        "fidry/cpu-core-counter": "^1.1"
     },
     "require-dev": {
         "ext-pcntl": "*",
