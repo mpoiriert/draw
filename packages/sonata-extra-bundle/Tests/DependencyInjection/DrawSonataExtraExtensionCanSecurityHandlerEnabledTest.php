@@ -19,6 +19,7 @@ class DrawSonataExtraExtensionCanSecurityHandlerEnabledTest extends DrawSonataEx
     public function getConfiguration(): array
     {
         return [
+            ...parent::getConfiguration(),
             'can_security_handler' => [
                 'enabled' => true,
                 'prevent_delete_voter' => [

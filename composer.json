@@ -222,6 +222,9 @@
             "target-directory": "vendor-bin"
         },
         "patches": {
+            "sonata-project/doctrine-orm-admin-bundle": {
+                "Batch model delete check": "https://github.com/mpoiriert/SonataDoctrineORMAdminBundle/commit/9f9768c99d63020e3b9168d4456edf2a3dc97cca.patch"
+            }
         }
     },
     "scripts": {

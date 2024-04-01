@@ -16,6 +16,7 @@ class DrawSonataExtraExtensionAutoHelpEnabledTest extends DrawSonataExtraExtensi
     public function getConfiguration(): array
     {
         return [
+            ...parent::getConfiguration(),
             'auto_help' => [
                 'enabled' => true,
             ],

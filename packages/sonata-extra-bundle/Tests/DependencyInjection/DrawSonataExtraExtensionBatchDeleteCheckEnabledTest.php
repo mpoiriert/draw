@@ -1,12 +1,13 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
+namespace DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
-use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
+use Draw\Bundle\SonataExtraBundle\EventListener\PreObjectDeleteBatchEventEventListener;
+use Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection\DrawSonataExtraExtensionTest;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
-class DrawSonataExtraExtensionFixMenuDeptEnabledTest extends DrawSonataExtraExtensionTest
+class DrawSonataExtraExtensionBatchDeleteCheckEnabledTest extends DrawSonataExtraExtensionTest
 {
     public function createExtension(): Extension
     {
@@ -17,7 +18,7 @@ class DrawSonataExtraExtensionFixMenuDeptEnabledTest extends DrawSonataExtraExte
     {
         return [
             ...parent::getConfiguration(),
-            'fix_menu_depth' => [
+            'batch_delete_check' => [
                 'enabled' => true,
             ],
         ];
@@ -26,6 +27,6 @@ class DrawSonataExtraExtensionFixMenuDeptEnabledTest extends DrawSonataExtraExte
     public static function provideTestHasServiceDefinition(): iterable
     {
         yield from parent::provideTestHasServiceDefinition();
-        yield [FixDepthMenuBuilderListener::class];
+        yield [PreObjectDeleteBatchEventEventListener::class];
     }
 }

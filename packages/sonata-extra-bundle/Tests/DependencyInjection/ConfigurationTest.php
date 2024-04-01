@@ -25,6 +25,9 @@ class ConfigurationTest extends ConfigurationTestCase
             'auto_help' => [
                 'enabled' => false,
             ],
+            'batch_delete_check' => [
+                'enabled' => true,
+            ],
             'can_security_handler' => [
                 'enabled' => false,
                 'grant_by_default' => true,
