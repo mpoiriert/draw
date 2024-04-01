@@ -17,6 +17,7 @@ class DrawSonataExtraExtensionNotifierEnabledTest extends DrawSonataExtraExtensi
     public function getConfiguration(): array
     {
         return [
+            ...parent::getConfiguration(),
             'notifier' => [
                 'enabled' => true,
             ],

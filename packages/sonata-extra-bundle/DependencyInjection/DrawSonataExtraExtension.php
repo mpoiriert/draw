@@ -7,6 +7,7 @@ use Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
 use Draw\Bundle\SonataExtraBundle\EventListener\AutoHelpListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
+use Draw\Bundle\SonataExtraBundle\EventListener\PreObjectDeleteBatchEventEventListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
@@ -44,6 +45,10 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
 
         if (!($config['auto_help']['enabled'] ?? false)) {
             $container->removeDefinition(AutoHelpListener::class);
+        }
+
+        if (!($config['batch_delete_check']['enabled'] ?? false)) {
+            $container->removeDefinition(PreObjectDeleteBatchEventEventListener::class);
         }
 
         if (!($config['fix_menu_depth']['enabled'] ?? false)) {

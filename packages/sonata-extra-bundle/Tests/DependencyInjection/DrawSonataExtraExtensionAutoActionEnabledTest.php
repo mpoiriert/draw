@@ -16,6 +16,7 @@ class DrawSonataExtraExtensionAutoActionEnabledTest extends DrawSonataExtraExten
     public function getConfiguration(): array
     {
         return [
+            ...parent::getConfiguration(),
             'auto_action' => [
                 'enabled' => true,
             ],

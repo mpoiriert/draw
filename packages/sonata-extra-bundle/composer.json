@@ -10,6 +10,7 @@
         "symfony/expression-language": "^6.4.0"
     },
     "require-dev": {
+        "cweagans/composer-patches": "^1.7",
         "draw/tester": "^0.11",
         "draw/security": "^0.11",
         "phpunit/phpunit": "^9.0 || ^10.0",
@@ -24,9 +25,19 @@
             "Draw\\Bundle\\SonataExtraBundle\\": ""
         }
     },
+    "config": {
+        "allow-plugins": {
+            "cweagans/composer-patches": true
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.11-dev"
+        },
+        "patches": {
+            "sonata-project/doctrine-orm-admin-bundle": {
+                "Batch model delete check": "https://github.com/mpoiriert/SonataDoctrineORMAdminBundle/commit/9f9768c99d63020e3b9168d4456edf2a3dc97cca.patch"
+            }
         }
     }
 }

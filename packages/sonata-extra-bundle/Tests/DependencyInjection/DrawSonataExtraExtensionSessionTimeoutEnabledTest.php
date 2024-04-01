@@ -16,6 +16,7 @@ class DrawSonataExtraExtensionSessionTimeoutEnabledTest extends DrawSonataExtraE
     public function getConfiguration(): array
     {
         return [
+            ...parent::getConfiguration(),
             'session_timeout' => [
                 'enabled' => true,
                 'delay' => 900,

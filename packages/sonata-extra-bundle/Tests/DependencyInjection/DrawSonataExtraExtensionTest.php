@@ -35,7 +35,11 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
 
     public function getConfiguration(): array
     {
-        return [];
+        return [
+            'batch_delete_check' => [
+                'enabled' => false,
+            ],
+        ];
     }
 
     public static function provideTestHasServiceDefinition(): iterable
