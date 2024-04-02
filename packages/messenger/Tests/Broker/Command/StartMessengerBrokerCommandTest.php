@@ -81,6 +81,13 @@ class StartMessengerBrokerCommandTest extends TestCase
         ];
 
         yield [
+            'maximum-processes',
+            null,
+            InputOption::VALUE_REQUIRED,
+            null,
+        ];
+
+        yield [
             'timeout',
             null,
             InputOption::VALUE_REQUIRED,
@@ -131,6 +138,20 @@ class StartMessengerBrokerCommandTest extends TestCase
         $this->execute([
             '--concurrent' => 'auto',
             '--minimum-processes' => $minProcesses,
+        ]);
+    }
+
+    public function testExecuteInvalidMaximumProcessesWithAutoConcurrent(): void
+    {
+        $maxProcesses = random_int(\PHP_INT_MIN, 0);
+        $this->expectExceptionObject(new InvalidOptionException(sprintf(
+            'Maximum processes value [%d] is invalid. Must be greater than 0',
+            $maxProcesses
+        )));
+
+        $this->execute([
+            '--concurrent' => 'auto',
+            '--maximum-processes' => $maxProcesses,
         ]);
     }
 
@@ -205,6 +226,7 @@ class StartMessengerBrokerCommandTest extends TestCase
         int $numCpus,
         float $processesPerCore,
         int $minProcesses,
+        ?int $maxProcesses,
         int $concurrent
     ): void {
         $this
@@ -223,11 +245,17 @@ class StartMessengerBrokerCommandTest extends TestCase
         );
 
         $this
-            ->execute([
-                '--concurrent' => 'auto',
-                '--processes-per-core' => $processesPerCore,
-                '--minimum-processes' => $minProcesses,
-            ])
+            ->execute(
+                array_filter(
+                    [
+                        '--concurrent' => 'auto',
+                        '--processes-per-core' => $processesPerCore,
+                        '--minimum-processes' => $minProcesses,
+                        '--maximum-processes' => $maxProcesses,
+                    ],
+                    static fn ($value) => null !== $value
+                )
+            )
             ->test(CommandDataTester::create(
                 0,
                 [
@@ -245,6 +273,7 @@ class StartMessengerBrokerCommandTest extends TestCase
             '$numCpus' => 4,
             '$processesPerCore' => 1.0,
             '$minProcesses' => 2,
+            '$maxProcesses' => null,
             '$concurrent' => 4,
         ];
 
@@ -252,6 +281,7 @@ class StartMessengerBrokerCommandTest extends TestCase
             '$numCpus' => 4,
             '$processesPerCore' => 0.8,
             '$minProcesses' => 1,
+            '$maxProcesses' => null,
             '$concurrent' => 3,
         ];
 
@@ -259,7 +289,16 @@ class StartMessengerBrokerCommandTest extends TestCase
             '$numCpus' => 2,
             '$processesPerCore' => 0.8,
             '$minProcesses' => 5,
+            '$maxProcesses' => null,
             '$concurrent' => 5,
+        ];
+
+        yield 'maximum processes' => [
+            '$numCpus' => 2,
+            '$processesPerCore' => 5,
+            '$minProcesses' => 1,
+            '$maxProcesses' => 1,
+            '$concurrent' => 1,
         ];
     }
 }
