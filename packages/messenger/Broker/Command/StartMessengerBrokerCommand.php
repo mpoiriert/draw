@@ -69,6 +69,15 @@ class StartMessengerBrokerCommand extends Command
                 1
             )
             ->addOption(
+                'maximum-processes',
+                null,
+                InputOption::VALUE_REQUIRED,
+                sprintf(
+                    'Maximum number of processes (used only if "concurrent" is set to "%s")',
+                    self::OPTION_VALUE_CONCURRENT_AUTO
+                )
+            )
+            ->addOption(
                 'timeout',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -140,6 +149,20 @@ class StartMessengerBrokerCommand extends Command
             ));
         }
 
-        return max([$minProcesses, (int) round($processesPerCore * $this->cpuCounter->count())]);
+        $process = max([$minProcesses, (int) round($processesPerCore * $this->cpuCounter->count())]);
+
+        if ($maxProcesses = null === $input->getOption('maximum-processes')) {
+            return $process;
+        }
+
+        $maxProcesses = (int) $input->getOption('maximum-processes');
+        if ($maxProcesses <= 0) {
+            throw new InvalidOptionException(sprintf(
+                'Maximum processes value [%d] is invalid. Must be greater than 0',
+                $maxProcesses
+            ));
+        }
+
+        return min([$maxProcesses, $process]);
     }
 }
