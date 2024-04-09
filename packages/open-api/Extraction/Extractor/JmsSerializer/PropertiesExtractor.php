@@ -7,8 +7,8 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\Event\PropertyExtractedEvent;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\ArrayHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\DynamicObjectHandler;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\EnumHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\GenericTemplateHandler;
-use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\JmsEnumHander;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\TypeToSchemaHandlerInterface;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Schema;
@@ -52,7 +52,7 @@ class PropertiesExtractor implements ExtractorInterface
             new DynamicObjectHandler(),
             new ArrayHandler(),
             new GenericTemplateHandler(),
-            new JmsEnumHander(),
+            new EnumHandler(),
         ];
     }
 

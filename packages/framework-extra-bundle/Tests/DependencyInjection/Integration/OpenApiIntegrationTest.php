@@ -37,6 +37,7 @@ use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtracto
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\ArrayHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\DoctrineObjectReferenceSchemaHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\DynamicObjectHandler;
+use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\EnumHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\TypeHandler\GenericTemplateHandler;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\HeaderAttributeExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
@@ -266,6 +267,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.extractor.jms_serializer.type_handler.dynamic_object_handler',
                     [DynamicObjectHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.extractor.jms_serializer.type_handler.enum_handler',
+                    [EnumHandler::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.extractor.jms_serializer.type_handler.generic_template_handler',

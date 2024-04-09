@@ -25,7 +25,7 @@
           "readOnly": true
         },
         "backed_enum_int": {
-          "description": "The backed enum int",
+          "description": "The backed enum int.",
           "enum": [
             1,
             2
@@ -33,7 +33,7 @@
           "type": "integer"
         },
         "backed_enum": {
-          "description": "The backed enum",
+          "description": "The backed enum.",
           "enum": [
             "abc",
             "def"
@@ -41,7 +41,7 @@
           "type": "string"
         },
         "generic_enum": {
-          "description": "The simple enum",
+          "description": "The simple enum.",
           "enum": [
             "FOO",
             "BAR"

@@ -6,25 +6,36 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Schema\Schema;
 use JMS\Serializer\Metadata\PropertyMetadata;
 
-class JmsEnumHander implements TypeToSchemaHandlerInterface
+class EnumHandler implements TypeToSchemaHandlerInterface
 {
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
         ExtractionContextInterface $extractionContext
     ): ?Schema {
-        if (null === ($type = $this->getEnumFqcn($propertyMetadata))) {
+        if (null === ($type = $this->getEnumClassName($propertyMetadata))) {
             return null;
         }
 
+        $backingType = $type->getBackingType();
+
         $prop = new Schema();
-        $prop->type = $type->getBackingType() instanceof \ReflectionNamedType
-                        && 'int' === $type->getBackingType()->getName() ? 'integer' : 'string';
-        $prop->enum = array_map(static fn (\ReflectionEnumBackedCase|\ReflectionEnumUnitCase $value) => $value instanceof \ReflectionEnumBackedCase ? $value->getBackingValue() : $value->getName(), $type->getCases());
+        $prop->type = $backingType instanceof \ReflectionNamedType && 'int' === $backingType->getName()
+            ? 'integer'
+            : 'string';
+
+        $prop->enum = array_map(
+            static function (\ReflectionEnumBackedCase|\ReflectionEnumUnitCase $value) {
+                return $value instanceof \ReflectionEnumBackedCase
+                    ? $value->getBackingValue()
+                    : $value->getName();
+            },
+            $type->getCases()
+        );
 
         return $prop;
     }
 
-    private function getEnumFqcn(PropertyMetadata $item): ?\ReflectionEnum
+    private function getEnumClassName(PropertyMetadata $item): ?\ReflectionEnum
     {
         if (!isset($item->type['name'])
             || 'enum' !== $item->type['name']
