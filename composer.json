@@ -139,6 +139,7 @@
         "draw/profiling": "self.version",
         "draw/security": "self.version",
         "draw/sonata-extra-bundle": "self.version",
+        "draw/sonata-import-bundle": "self.version",
         "draw/sonata-integration-bundle": "self.version",
         "draw/tester": "self.version",
         "draw/tester-bundle": "self.version",
@@ -165,6 +166,7 @@
         "psr-4": {
             "Draw\\Bundle\\FrameworkExtraBundle\\": "packages/framework-extra-bundle/",
             "Draw\\Bundle\\SonataExtraBundle\\": "packages/sonata-extra-bundle/",
+            "Draw\\Bundle\\SonataImportBundle\\": "packages/sonata-import-bundle/",
             "Draw\\Bundle\\SonataIntegrationBundle\\": "packages/sonata-integration-bundle/",
             "Draw\\Bundle\\TesterBundle\\": "packages/tester-bundle/",
             "Draw\\Bundle\\UserBundle\\": "packages/user-bundle/",

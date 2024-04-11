@@ -33,7 +33,7 @@ class Tag implements \Stringable
     #[ORM\Column(name: 'active', type: 'boolean', options: ['default' => 1])]
     private bool $active = true;
 
-    #[ORM\Column(name: 'label', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'label', type: 'string', length: 255, unique: true, nullable: false)]
     #[
         Assert\NotNull,
         Assert\Length(min: 3, max: 255)
