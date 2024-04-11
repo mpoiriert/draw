@@ -31,6 +31,11 @@ parameters:
 			path: packages/security/Http/Authenticator/JwtAuthenticator.php
 
 		-
+			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'DateTime' and null will always evaluate to false\\.$#"
+			count: 2
+			path: packages/sonata-import-bundle/Tests/Entity/ImportTest.php
+
+		-
 			message: "#^Class Draw\\\\Bundle\\\\SonataIntegrationBundle\\\\User\\\\Security\\\\AdminLoginAuthenticator extends @final class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\\.$#"
 			count: 1
 			path: packages/sonata-integration-bundle/User/Security/AdminLoginAuthenticator.php

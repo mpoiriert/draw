@@ -29,6 +29,7 @@ jobs:
           - process
           - profiling
           - security
+          - sonata-import-bundle
           - sonata-integration-bundle
           - sonata-extra-bundle
           - tester
