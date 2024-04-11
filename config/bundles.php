@@ -27,4 +27,5 @@ return [
     Draw\Bundle\SonataIntegrationBundle\DrawSonataIntegrationBundle::class => ['all' => true],
     Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle::class => ['all' => true],
     Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle::class => ['all' => true],
+    Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
 ];
