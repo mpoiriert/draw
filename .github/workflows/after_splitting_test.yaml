@@ -40,26 +40,34 @@ jobs:
     name: After Split Testing of ${{ matrix.package_name }}
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: shivammathur/setup-php@v2
+      
+      - name: Checkout
+        uses: 'actions/checkout@v2'
+
+      - name: PHP Setup
+        uses: 'shivammathur/setup-php@v2'
         with:
           php-version: '8.1'
           coverage: none
+
       - name: Setup MySQL
-        uses: shogo82148/actions-setup-mysql@v1
+        uses: 'shogo82148/actions-setup-mysql@v1'
         with:
           mysql-version: 8.0
           distribution: mysql
           auto-start: true
+
       - name: Create Database
         run: |
           mysql -h 127.0.0.1 -uroot -e "CREATE DATABASE draw"
+
       - name: 'Composer Setup'
         run: |
           composer install --no-progress
           vendor-bin/monorepo/vendor/bin/monorepo-builder localize-composer-paths
           cd packages/${{ matrix.package_name }}
           composer update --no-progress
+
       - name: 'Automation Test'
         run: |
           cd packages/${{ matrix.package_name }}
