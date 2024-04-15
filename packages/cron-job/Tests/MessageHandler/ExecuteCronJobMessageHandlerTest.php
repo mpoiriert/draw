@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Draw\Component\CronJob\Tests\MessageHandler;
 
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredCompletionAwareInterface;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireMock;
-use Draw\Bundle\TesterBundle\WebTestCase;
 use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\CronJob\Event\PostCronJobExecutionEvent;
 use Draw\Component\CronJob\Event\PreCronJobExecutionEvent;
@@ -14,21 +11,23 @@ use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
 use Draw\Component\CronJob\MessageHandler\ExecuteCronJobMessageHandler;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class ExecuteCronJobMessageHandlerTest extends WebTestCase implements AutowiredCompletionAwareInterface
+class ExecuteCronJobMessageHandlerTest extends TestCase
 {
     use MockTrait;
 
-    #[AutowireMock]
-    private EventDispatcherInterface&MockObject $eventDispatcher;
-
     private ExecuteCronJobMessageHandler $handler;
 
-    public function postAutowire(): void
+    private EventDispatcherInterface&MockObject $eventDispatcher;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $this->handler = new ExecuteCronJobMessageHandler(
-            $this->eventDispatcher
+            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
         );
     }
 

@@ -27,14 +27,14 @@ class CronJob implements \Stringable
     #[ORM\Column(name: 'active', type: 'boolean', nullable: false, options: ['default' => false])]
     private bool $active = false;
 
-    #[ORM\Column(name: 'command', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'command', type: 'text', nullable: false)]
     private ?string $command = null;
 
     #[ORM\Column(name: 'schedule', type: 'string', length: 255, nullable: true)]
     private ?string $schedule = null;
 
-    #[ORM\Column(name: 'ttl', type: 'int', nullable: false, options: ['default' => 0])]
-    private int $ttl = 0;
+    #[ORM\Column(name: 'time_to_live', type: 'int', nullable: false, options: ['default' => 0])]
+    private int $timeToLive = 0;
 
     #[ORM\Column(name: 'priority', type: 'int', nullable: true)]
     private ?int $priority = null;
@@ -110,14 +110,14 @@ class CronJob implements \Stringable
         return $this;
     }
 
-    public function getTtl(): int
+    public function getTimeToLive(): int
     {
-        return $this->ttl;
+        return $this->timeToLive;
     }
 
-    public function setTtl(int $ttl): self
+    public function setTimeToLive(int $timeToLive): self
     {
-        $this->ttl = $ttl;
+        $this->timeToLive = $timeToLive;
 
         return $this;
     }

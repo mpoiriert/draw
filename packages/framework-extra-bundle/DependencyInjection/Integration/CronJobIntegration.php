@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
-use Draw\Component\Console\Command\PurgeExecutionCommand;
-use Draw\Component\Console\Entity\Execution;
+use Draw\Component\CronJob\CronJobProcessor;
+use Draw\Component\CronJob\Entity\CronJob;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
@@ -16,7 +16,7 @@ class CronJobIntegration implements IntegrationInterface, PrependIntegrationInte
 
     public function getConfigSectionName(): string
     {
-        return 'cron-job';
+        return 'cron_job';
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -24,13 +24,7 @@ class CronJobIntegration implements IntegrationInterface, PrependIntegrationInte
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\\Component\\CronJob\\',
-            $directory = \dirname(
-                (new \ReflectionClass(PurgeExecutionCommand::class))->getFileName(),
-                2
-            ),
-            [
-                $directory.'/Output/',
-            ]
+            \dirname((new \ReflectionClass(CronJobProcessor::class))->getFileName())
         );
 
         $this->renameDefinitions(
@@ -49,7 +43,7 @@ class CronJobIntegration implements IntegrationInterface, PrependIntegrationInte
     {
         $this->assertHasExtension($container, 'doctrine');
 
-        $reflection = new \ReflectionClass(Execution::class);
+        $reflection = new \ReflectionClass(CronJob::class);
 
         $container->prependExtensionConfig(
             'doctrine',
