@@ -23,6 +23,7 @@
         "draw/aws-tool-kit": "^0.11",
         "draw/console": "^0.11",
         "draw/contracts": "^0.11",
+        "draw/cron-job": "^0.11",
         "draw/doctrine-extra": "^0.11",
         "draw/entity-migrator": "^0.11",
         "draw/log": "^0.11",

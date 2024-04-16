@@ -154,4 +154,26 @@ class CronJobExecution
 
         return $this;
     }
+
+    public function start(): void
+    {
+        $this
+            ->setExecutionStartedAt(new \DateTimeImmutable())
+            ->setExecutionEndedAt(null);
+    }
+
+    public function end(?int $exitCode): void
+    {
+        $this
+            ->setExitCode($exitCode)
+            ->setExecutionEndedAt($executionEndedAt = new \DateTimeImmutable())
+            ->setExecutionDelay($executionEndedAt->getTimestamp() - $this->getExecutionStartedAt()->getTimestamp());
+    }
+
+    public function fail(?int $exitCode, ?array $error): void
+    {
+        $this
+            ->setExitCode($exitCode)
+            ->setError($error);
+    }
 }

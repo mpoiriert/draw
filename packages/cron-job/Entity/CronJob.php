@@ -162,6 +162,11 @@ class CronJob implements \Stringable
         return $this;
     }
 
+    public function isDue(): bool
+    {
+        return false;
+    }
+
     public function __toString(): string
     {
         return $this->name;

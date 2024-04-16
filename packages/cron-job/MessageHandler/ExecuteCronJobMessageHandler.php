@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Draw\Component\CronJob\MessageHandler;
 
+use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Event\PostCronJobExecutionEvent;
 use Draw\Component\CronJob\Event\PreCronJobExecutionEvent;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
@@ -14,6 +15,7 @@ class ExecuteCronJobMessageHandler
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
+        private CronJobProcessor $cronJobProcessor,
     ) {
     }
 
@@ -28,7 +30,7 @@ class ExecuteCronJobMessageHandler
             return;
         }
 
-        // @TODO
+        $this->cronJobProcessor->process($execution);
 
         $this->eventDispatcher->dispatch(new PostCronJobExecutionEvent($execution));
     }
