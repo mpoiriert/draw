@@ -6,12 +6,14 @@ use App\Entity\MessengerMessage;
 use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobController;
+use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\Configuration;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\CronJob\Entity\CronJob;
+use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -57,14 +59,26 @@ class ConfigurationTest extends ConfigurationTestCase
             'cron_job' => [
                 'enabled' => true,
                 'admin' => [
-                    'group' => 'Cron Job',
-                    'entity_class' => CronJob::class,
-                    'controller_class' => CronJobController::class,
-                    'icon' => 'fas fa-clock',
-                    'label' => 'Cron Job',
-                    'pager_type' => 'simple',
-                    'show_in_dashboard' => true,
-                    'translation_domain' => 'SonataAdminBundle',
+                    'cron_job' => [
+                        'group' => 'Cron Job',
+                        'entity_class' => CronJob::class,
+                        'controller_class' => CronJobController::class,
+                        'icon' => 'fas fa-clock',
+                        'label' => 'Cron Job',
+                        'pager_type' => 'simple',
+                        'show_in_dashboard' => true,
+                        'translation_domain' => 'SonataAdminBundle',
+                    ],
+                    'cron_job_execution' => [
+                        'group' => 'Cron Job',
+                        'entity_class' => CronJobExecution::class,
+                        'controller_class' => CronJobExecutionController::class,
+                        'icon' => null,
+                        'label' => 'Cron Job Execution',
+                        'pager_type' => 'simple',
+                        'show_in_dashboard' => true,
+                        'translation_domain' => 'SonataAdminBundle',
+                    ],
                 ],
             ],
             'entity_migrator' => [

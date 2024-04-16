@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
     ORM\Entity,
     ORM\Table(name: 'cron_job__cron_job_execution'),
 ]
-class CronJobExecution
+class CronJobExecution implements \Stringable
 {
     #[
         ORM\Id,
@@ -22,7 +22,7 @@ class CronJobExecution
     #[ORM\Column(name: 'requested_at', type: 'datetime_immutable', nullable: false)]
     private ?\DateTimeImmutable $requestedAt = null;
 
-    #[ORM\Column(name: 'force', type: 'boolean', nullable: false, options: ['default' => false])]
+    #[ORM\Column(name: '`force`', type: 'boolean', nullable: false, options: ['default' => false])]
     private bool $force = false;
 
     #[ORM\Column(name: 'execution_started_at', type: 'datetime_immutable', nullable: true)]
@@ -175,5 +175,10 @@ class CronJobExecution
         $this
             ->setExitCode($exitCode)
             ->setError($error);
+    }
+
+    public function __toString(): string
+    {
+        return $this->getRequestedAt()->format('Y-m-d H:i:s.u');
     }
 }

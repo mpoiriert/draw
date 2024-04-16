@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Draw\Bundle\SonataIntegrationBundle\CronJob\Admin;
 
+use Draw\Component\CronJob\Entity\CronJob;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+/**
+ * @method CronJob getSubject()
+ */
 class CronJobAdmin extends AbstractAdmin
 {
     protected function configureDatagridFilters(DatagridMapper $filter): void
@@ -29,7 +34,21 @@ class CronJobAdmin extends AbstractAdmin
             ->add('schedule')
             ->add('active', null, ['editable' => true])
             ->add('timeToLive')
-            ->add('priority');
+            ->add('priority')
+            ->add(
+                ListMapper::NAME_ACTIONS,
+                ListMapper::TYPE_ACTIONS,
+                [
+                    'actions' => [
+                        'show' => [],
+                        'edit' => [],
+                        'queue' => [
+                            'template' => '@DrawSonataIntegration/CronJob/CronJob/list__action_queue.html.twig',
+                        ],
+                        'delete' => [],
+                    ],
+                ]
+            );
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -55,18 +74,43 @@ class CronJobAdmin extends AbstractAdmin
 
     protected function configureShowFields(ShowMapper $show): void
     {
+        /** @var CronJobExecutionAdmin $executionAdmin */
+        $executionAdmin = $this->getConfigurationPool()->getAdminByAdminCode(CronJobExecutionAdmin::class);
+
         $show
-            ->tab('Cron Job')
-                ->with('General')
-                    ->add('name')
-                    ->add('command')
-                    ->add('schedule')
-                    ->add('active', null, ['editable' => true])
-                    ->add('timeToLive')
-                    ->add('priority')
-                ->end()
-                ->with('Executions')
-                ->end()
-            ->end();
+            ->add('name')
+            ->add('command')
+            ->add('schedule')
+            ->add('active', null, ['editable' => true])
+            ->add('timeToLive')
+            ->add('priority')
+            ->ifTrue(!$this->getSubject()->getExecutions()->isEmpty())
+                ->add(
+                    'executions',
+                    'grid',
+                    [
+                        'fieldValueOnly' => false,
+                        'colspan' => true,
+                        'fieldsAdmin' => $executionAdmin,
+                        'fields' => $executionAdmin->configureGridFields([]),
+                    ]
+                )
+            ->ifEnd();
+    }
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+        $collection->add('queue', sprintf('%s/queue', $this->getRouterIdParameter()));
+    }
+
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    {
+        if (null !== $object) {
+            $buttonList['queue'] = [
+                'template' => '@DrawSonataIntegration/CronJob/CronJob/show__action_queue.html.twig',
+            ];
+        }
+
+        return $buttonList;
     }
 }
