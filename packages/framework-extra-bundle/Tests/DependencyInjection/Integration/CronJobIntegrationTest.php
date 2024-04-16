@@ -6,6 +6,9 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronJobIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\CronJob\Command\QueueCronJobByNameCommand;
+use Draw\Component\CronJob\Command\QueueDueCronJobsCommand;
+use Draw\Component\CronJob\CronJobExecutionFactory;
 use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\MessageHandler\ExecuteCronJobMessageHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -33,6 +36,24 @@ class CronJobIntegrationTest extends IntegrationTestCase
         yield [
             [],
             [
+                new ServiceConfiguration(
+                    'draw.cron_job.command.queue_cron_job_by_name_command',
+                    [
+                        QueueCronJobByNameCommand::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.cron_job.command.queue_due_cron_jobs_command',
+                    [
+                        QueueDueCronJobsCommand::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.cron_job.cron_job_execution_factory',
+                    [
+                        CronJobExecutionFactory::class,
+                    ]
+                ),
                 new ServiceConfiguration(
                     'draw.cron_job.cron_job_processor',
                     [
