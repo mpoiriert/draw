@@ -8,5 +8,4 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 class CronJobExecutionAdmin extends AbstractAdmin
 {
-
 }

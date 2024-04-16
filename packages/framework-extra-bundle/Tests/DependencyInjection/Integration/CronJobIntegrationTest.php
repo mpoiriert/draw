@@ -8,7 +8,6 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronJobInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\CronJob\Command\QueueCronJobByNameCommand;
 use Draw\Component\CronJob\Command\QueueDueCronJobsCommand;
-use Draw\Component\CronJob\CronJobExecutionFactory;
 use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\MessageHandler\ExecuteCronJobMessageHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -49,12 +48,6 @@ class CronJobIntegrationTest extends IntegrationTestCase
                     ]
                 ),
                 new ServiceConfiguration(
-                    'draw.cron_job.cron_job_execution_factory',
-                    [
-                        CronJobExecutionFactory::class,
-                    ]
-                ),
-                new ServiceConfiguration(
                     'draw.cron_job.cron_job_processor',
                     [
                         CronJobProcessor::class,
@@ -65,7 +58,7 @@ class CronJobIntegrationTest extends IntegrationTestCase
                     [
                         ExecuteCronJobMessageHandler::class,
                     ]
-                )
+                ),
             ],
             [],
         ];

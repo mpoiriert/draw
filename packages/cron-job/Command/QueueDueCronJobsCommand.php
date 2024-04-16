@@ -35,11 +35,11 @@ class QueueDueCronJobsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->section('Queueing cron jobs...');
 
-        $cronJobs = array_map(
-            static fn(CronJob $cronJob): bool => $cronJob->isDue(),
+        $cronJobs = array_filter(
             $this->managerRegistry
                 ->getRepository(CronJob::class)
-                ->findAll()
+                ->findAll(),
+            static fn (CronJob $cronJob): bool => $cronJob->isDue(),
         );
 
         $progress = $io->createProgressBar(\count($cronJobs));

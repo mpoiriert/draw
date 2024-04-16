@@ -5,11 +5,13 @@ namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 use App\Entity\MessengerMessage;
 use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
+use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobController;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\Configuration;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
+use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -51,6 +53,19 @@ class ConfigurationTest extends ConfigurationTestCase
                     'translation_domain' => 'SonataAdminBundle',
                 ],
                 'commands' => [],
+            ],
+            'cron_job' => [
+                'enabled' => true,
+                'admin' => [
+                    'group' => 'Cron Job',
+                    'entity_class' => CronJob::class,
+                    'controller_class' => CronJobController::class,
+                    'icon' => 'fas fa-clock',
+                    'label' => 'Cron Job',
+                    'pager_type' => 'simple',
+                    'show_in_dashboard' => true,
+                    'translation_domain' => 'SonataAdminBundle',
+                ],
             ],
             'entity_migrator' => [
                 'enabled' => false,

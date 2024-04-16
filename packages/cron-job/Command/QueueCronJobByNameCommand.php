@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Draw\Component\CronJob\Command;
 
+use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Entity\CronJob;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

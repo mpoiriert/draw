@@ -8,14 +8,14 @@ use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
+use Draw\Contracts\Process\ProcessFactoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Process\Process;
 
 class CronJobProcessor
 {
     public function __construct(
-        private CronJobExecutionFactory $cronJobExecutionFactory,
         private ManagerRegistry $managerRegistry,
+        private ProcessFactoryInterface $processFactory,
         private MessageBusInterface $messageBus,
     ) {
     }
@@ -24,7 +24,7 @@ class CronJobProcessor
     {
         $manager = $this->managerRegistry->getManagerForClass(CronJobExecution::class);
 
-        $manager->persist($execution = $this->cronJobExecutionFactory->create($cronJob, $force));
+        $manager->persist($execution = $cronJob->newExecution($force));
         $manager->flush();
 
         $this->messageBus->dispatch(new ExecuteCronJobMessage($execution));
@@ -38,14 +38,15 @@ class CronJobProcessor
         $manager->flush();
 
         $command = $execution->getCronJob()->getCommand();
-
-        $process = Process::fromShellCommandline($command)
-            ->setTimeout(1800);
+        $process = $this->processFactory->create(
+            [$command],
+            timeout: 1800
+        );
 
         try {
-            $process->run();
+            $process->mustRun();
 
-            $execution->end($process->getExitCode());
+            $execution->end();
         } catch (\Throwable $error) {
             $execution->fail($process->getExitCode(), ['TODO']);
         } finally {

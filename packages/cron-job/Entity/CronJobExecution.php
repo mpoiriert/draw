@@ -31,10 +31,10 @@ class CronJobExecution
     #[ORM\Column(name: 'execution_ended_at', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $executionEndedAt = null;
 
-    #[ORM\Column(name: 'execution_delay', type: 'int', nullable: true)]
+    #[ORM\Column(name: 'execution_delay', type: 'integer', nullable: true)]
     private ?int $executionDelay = null;
 
-    #[ORM\Column(name: 'exit_code', type: 'int', nullable: true)]
+    #[ORM\Column(name: 'exit_code', type: 'integer', nullable: true)]
     private ?int $exitCode = null;
 
     #[ORM\Column(name: 'error', type: 'json', nullable: true)]
@@ -162,10 +162,10 @@ class CronJobExecution
             ->setExecutionEndedAt(null);
     }
 
-    public function end(?int $exitCode): void
+    public function end(): void
     {
         $this
-            ->setExitCode($exitCode)
+            ->setExitCode(0)
             ->setExecutionEndedAt($executionEndedAt = new \DateTimeImmutable())
             ->setExecutionDelay($executionEndedAt->getTimestamp() - $this->getExecutionStartedAt()->getTimestamp());
     }

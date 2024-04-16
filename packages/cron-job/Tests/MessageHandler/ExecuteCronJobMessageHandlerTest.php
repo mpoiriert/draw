@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Draw\Component\CronJob\Tests\MessageHandler;
 
+use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\CronJob\Event\PostCronJobExecutionEvent;
 use Draw\Component\CronJob\Event\PreCronJobExecutionEvent;
@@ -22,12 +23,15 @@ class ExecuteCronJobMessageHandlerTest extends TestCase
 
     private EventDispatcherInterface&MockObject $eventDispatcher;
 
+    private CronJobProcessor&MockObject $cronJobProcessor;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->handler = new ExecuteCronJobMessageHandler(
-            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
+            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            $this->cronJobProcessor = $this->createMock(CronJobProcessor::class)
         );
     }
 
@@ -52,6 +56,11 @@ class ExecuteCronJobMessageHandlerTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls($preExecutionEvent, $postExecutionEvent);
 
+        $this->cronJobProcessor
+            ->expects(static::once())
+            ->method('process')
+            ->with($execution);
+
         $this->handler->handleExecuteCronJobMessage(new ExecuteCronJobMessage($execution));
     }
 
@@ -66,6 +75,10 @@ class ExecuteCronJobMessageHandlerTest extends TestCase
             ->willReturn(
                 new PreCronJobExecutionEvent($execution, true)
             );
+
+        $this->cronJobProcessor
+            ->expects(static::never())
+            ->method('process');
 
         $this->handler->handleExecuteCronJobMessage(new ExecuteCronJobMessage($execution));
     }

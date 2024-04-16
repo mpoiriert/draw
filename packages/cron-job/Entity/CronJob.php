@@ -17,7 +17,7 @@ class CronJob implements \Stringable
     #[
         ORM\Id,
         ORM\GeneratedValue,
-        ORM\Column(name: 'id', type: 'int'),
+        ORM\Column(name: 'id', type: 'integer'),
     ]
     private ?int $id = null;
 
@@ -33,10 +33,10 @@ class CronJob implements \Stringable
     #[ORM\Column(name: 'schedule', type: 'string', length: 255, nullable: true)]
     private ?string $schedule = null;
 
-    #[ORM\Column(name: 'time_to_live', type: 'int', nullable: false, options: ['default' => 0])]
+    #[ORM\Column(name: 'time_to_live', type: 'integer', nullable: false, options: ['default' => 0])]
     private int $timeToLive = 0;
 
-    #[ORM\Column(name: 'priority', type: 'int', nullable: true)]
+    #[ORM\Column(name: 'priority', type: 'integer', nullable: true)]
     private ?int $priority = null;
 
     /**
@@ -165,6 +165,14 @@ class CronJob implements \Stringable
     public function isDue(): bool
     {
         return false;
+    }
+
+    public function newExecution(bool $force = false): CronJobExecution
+    {
+        return (new CronJobExecution())
+            ->setCronJob($this)
+            ->setRequestedAt(new \DateTimeImmutable())
+            ->setForce($force);
     }
 
     public function __toString(): string
