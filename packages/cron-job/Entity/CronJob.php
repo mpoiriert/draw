@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Draw\Component\CronJob\Entity;
 
+use Cron\CronExpression;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -105,6 +106,10 @@ class CronJob implements \Stringable
 
     public function setSchedule(?string $schedule): self
     {
+        if (null !== $schedule) {
+            $schedule = (new CronExpression($schedule))->getExpression();
+        }
+
         $this->schedule = $schedule;
 
         return $this;
@@ -164,7 +169,11 @@ class CronJob implements \Stringable
 
     public function isDue(): bool
     {
-        return false;
+        if (null === $this->getSchedule()) {
+            return false;
+        }
+
+        return (new CronExpression($this->getSchedule()))->isDue();
     }
 
     public function newExecution(bool $force = false): CronJobExecution

@@ -11,10 +11,12 @@ use Draw\Component\CronJob\Event\PreCronJobExecutionEvent;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
 use Draw\Component\CronJob\MessageHandler\ExecuteCronJobMessageHandler;
 use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[CoversClass(ExecuteCronJobMessageHandler::class)]
 class ExecuteCronJobMessageHandlerTest extends TestCase
 {
     use MockTrait;

@@ -9,7 +9,6 @@ use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Entity\CronJob;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -35,25 +34,20 @@ class QueueDueCronJobsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->section('Queueing cron jobs...');
 
-        $cronJobs = array_filter(
-            $this->managerRegistry
-                ->getRepository(CronJob::class)
-                ->findAll(),
-            static fn (CronJob $cronJob): bool => $cronJob->isDue(),
-        );
-
-        $progress = $io->createProgressBar(\count($cronJobs));
-        $progress->setFormat(ProgressBar::FORMAT_DEBUG);
+        $cronJobs = $this->managerRegistry
+            ->getRepository(CronJob::class)
+            ->findBy(['active' => true]);
 
         foreach ($cronJobs as $cronJob) {
-            $this->cronJobProcessor->queue($cronJob);
+            if (!$cronJob->isDue()) {
+                continue;
+            }
 
-            $progress->advance();
+            $io->note(sprintf('Queueing cron job "%s"...', $cronJob->getName()));
+
+            $this->cronJobProcessor->queue($cronJob);
         }
 
-        $progress->finish();
-
-        $io->newLine(2);
         $io->success('Cron jobs successfully queued...');
 
         return Command::SUCCESS;

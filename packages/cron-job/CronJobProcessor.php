@@ -9,6 +9,9 @@ use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Level;
+use Monolog\LogRecord;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class CronJobProcessor
@@ -48,9 +51,30 @@ class CronJobProcessor
 
             $execution->end();
         } catch (\Throwable $error) {
-            $execution->fail($process->getExitCode(), ['TODO']);
+            $execution->fail(
+                $process->getExitCode(),
+                $this->formatError($error)
+            );
         } finally {
             $manager->flush();
         }
+    }
+
+    private function formatError(\Throwable $error): array
+    {
+        $formatter = (new JsonFormatter())->includeStacktraces();
+
+        return json_decode(
+            (string) $formatter->format(
+                new LogRecord(
+                    new \DateTimeImmutable(),
+                    'unknown',
+                    Level::Info,
+                    'N/A',
+                    (array) $error
+                )
+            ),
+            true
+        )['context'];
     }
 }

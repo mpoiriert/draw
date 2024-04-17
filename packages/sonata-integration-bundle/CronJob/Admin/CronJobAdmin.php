@@ -105,7 +105,7 @@ class CronJobAdmin extends AbstractAdmin
 
     protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
     {
-        if (null !== $object) {
+        if ('show' === $action) {
             $buttonList['queue'] = [
                 'template' => '@DrawSonataIntegration/CronJob/CronJob/show__action_queue.html.twig',
             ];
