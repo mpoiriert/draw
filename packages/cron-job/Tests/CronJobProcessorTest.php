@@ -222,8 +222,8 @@ class CronJobProcessorTest extends TestCase
         $this->cronJobProcessor->process($execution);
 
         static::assertNotNull($execution->getExecutionStartedAt());
-        static::assertNull($execution->getExecutionEndedAt());
-        static::assertNull($execution->getExecutionDelay());
+        static::assertNotNull($execution->getExecutionEndedAt());
+        static::assertNotNull($execution->getExecutionDelay());
         static::assertEquals($exitCode, $execution->getExitCode());
         static::assertNotNull($execution->getError());
     }

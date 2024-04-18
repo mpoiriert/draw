@@ -6,7 +6,6 @@ use App\Entity\MessengerMessage;
 use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobController;
-use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\Configuration;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Entity\UserLock;
@@ -72,7 +71,7 @@ class ConfigurationTest extends ConfigurationTestCase
                     'cron_job_execution' => [
                         'group' => 'Cron Job',
                         'entity_class' => CronJobExecution::class,
-                        'controller_class' => CronJobExecutionController::class,
+                        'controller_class' => 'sonata.admin.controller.crud',
                         'icon' => null,
                         'label' => 'Cron Job Execution',
                         'pager_type' => 'simple',
