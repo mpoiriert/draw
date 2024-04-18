@@ -9,22 +9,31 @@ use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\CronJob\Entity\CronJobExecution;
+use Draw\Component\CronJob\Event\PostCronJobExecutionEvent;
+use Draw\Component\CronJob\Event\PreCronJobExecutionEvent;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
+use Draw\Component\Tester\MockTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[CoversClass(CronJobProcessor::class)]
 class CronJobProcessorTest extends TestCase
 {
+    use MockTrait;
+
     private CronJobProcessor $cronJobProcessor;
 
     private ManagerRegistry&MockObject $managerRegistry;
+
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
     private ProcessFactoryInterface&MockObject $processFactory;
 
@@ -45,6 +54,10 @@ class CronJobProcessorTest extends TestCase
 
         $this->cronJobProcessor = new CronJobProcessor(
             $this->managerRegistry,
+            new ParameterBag([
+                'kernel.cache_dir' => '/var/cache',
+            ]),
+            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
             $this->processFactory = $this->createMock(ProcessFactoryInterface::class),
             $this->messageBus = $this->createMock(MessageBusInterface::class)
         );
@@ -58,7 +71,7 @@ class CronJobProcessorTest extends TestCase
             ->expects(static::any())
             ->method('newExecution')
             ->with($force)
-            ->willReturn($execution = $this->createExecution());
+            ->willReturn($execution = $this->createCronJobExecution());
 
         $this->entityManager
             ->expects(static::once())
@@ -80,12 +93,35 @@ class CronJobProcessorTest extends TestCase
 
     public static function provideDataForTestQueue(): iterable
     {
-        yield 'not forced' => ['$force' => false];
+        yield 'normal' => ['$force' => false];
+
         yield 'forced' => ['$force' => true];
     }
 
-    public function testProcess(): void
-    {
+    #[DataProvider('provideDataForTestProcess')]
+    public function testProcess(
+        string $command,
+        ?string $overwrittenCommand,
+        string $expectedProcessCommand
+    ): void {
+        $this->eventDispatcher
+            ->expects(static::exactly(2))
+            ->method('dispatch')
+            ->with(
+                ...static::withConsecutive(
+                    [
+                        new PreCronJobExecutionEvent($execution = $this->createCronJobExecution($command)),
+                    ],
+                    [
+                        $postExecutionEvent = new PostCronJobExecutionEvent($execution),
+                    ]
+                )
+            )
+            ->willReturnOnConsecutiveCalls(
+                new PreCronJobExecutionEvent($execution, command: $overwrittenCommand),
+                $postExecutionEvent
+            );
+
         $this->entityManager
             ->expects(static::exactly(2))
             ->method('flush');
@@ -94,7 +130,7 @@ class CronJobProcessorTest extends TestCase
             ->expects(static::once())
             ->method('create')
             ->with(
-                [$command = 'draw:test:successfully'],
+                [$expectedProcessCommand],
                 null,
                 null,
                 null,
@@ -106,7 +142,7 @@ class CronJobProcessorTest extends TestCase
             ->expects(static::once())
             ->method('mustRun');
 
-        $this->cronJobProcessor->process($execution = $this->createExecution($command));
+        $this->cronJobProcessor->process($execution);
 
         static::assertNotNull($execution->getExecutionStartedAt());
         static::assertNotNull($execution->getExecutionEndedAt());
@@ -118,8 +154,40 @@ class CronJobProcessorTest extends TestCase
         static::assertNull($execution->getError());
     }
 
+    public static function provideDataForTestProcess(): iterable
+    {
+        yield 'original command' => [
+            '$command' => 'bin/console draw:test:successfully',
+            '$overwrittenCommand' => null,
+            '$expectedProcessCommand' => 'bin/console draw:test:successfully',
+        ];
+
+        yield 'overwritten command' => [
+            '$command' => $command = 'ls -lah %kernel.cache_dir%',
+            '$overwrittenCommand' => sprintf('%s | wc', $command),
+            '$expectedProcessCommand' => 'ls -lah /var/cache | wc',
+        ];
+    }
+
     public function testProcessWithError(): void
     {
+        $this->eventDispatcher
+            ->expects(static::exactly(2))
+            ->method('dispatch')
+            ->with(
+                ...static::withConsecutive(
+                    [
+                        $preExecutionEvent = new PreCronJobExecutionEvent(
+                            $execution = $this->createCronJobExecution('echo 12345 > %kernel.cache_dir%/crontab.out')
+                        ),
+                    ],
+                    [
+                        $postExecutionEvent = new PostCronJobExecutionEvent($execution),
+                    ]
+                )
+            )
+            ->willReturnOnConsecutiveCalls($preExecutionEvent, $postExecutionEvent);
+
         $this->entityManager
             ->expects(static::exactly(2))
             ->method('flush');
@@ -143,7 +211,7 @@ class CronJobProcessorTest extends TestCase
             ->expects(static::once())
             ->method('create')
             ->with(
-                [$command = 'draw:test:failure'],
+                ['echo 12345 > /var/cache/crontab.out'],
                 null,
                 null,
                 null,
@@ -151,7 +219,7 @@ class CronJobProcessorTest extends TestCase
             )
             ->willReturn($process);
 
-        $this->cronJobProcessor->process($execution = $this->createExecution($command));
+        $this->cronJobProcessor->process($execution);
 
         static::assertNotNull($execution->getExecutionStartedAt());
         static::assertNull($execution->getExecutionEndedAt());
@@ -160,7 +228,30 @@ class CronJobProcessorTest extends TestCase
         static::assertNotNull($execution->getError());
     }
 
-    private function createExecution(string $command = 'draw:test:execute'): CronJobExecution
+    public function testProcessWithCancelledExecution(): void
+    {
+        $this->eventDispatcher
+            ->expects(static::once())
+            ->method('dispatch')
+            ->with(
+                new PreCronJobExecutionEvent($execution = $this->createCronJobExecution())
+            )
+            ->willReturn(
+                new PreCronJobExecutionEvent($execution, true)
+            );
+
+        $this->entityManager
+            ->expects(static::never())
+            ->method('flush');
+
+        $this->processFactory
+            ->expects(static::never())
+            ->method('create');
+
+        $this->cronJobProcessor->process($execution);
+    }
+
+    private function createCronJobExecution(string $command = 'bin/console draw:test:execute'): CronJobExecution
     {
         return (new CronJobExecution())
             ->setCronJob(

@@ -155,6 +155,23 @@ class CronJobExecution implements \Stringable
         return $this;
     }
 
+    public function isExecutable(\DateTimeImmutable $dateTime): bool
+    {
+        if (!($cronJob = $this->getCronJob())?->isActive()) {
+            return false;
+        }
+
+        if (0 === ($timeToLive = $cronJob->getTimeToLive())) {
+            return true;
+        }
+
+        if (null === $this->getRequestedAt()) {
+            return false;
+        }
+
+        return $dateTime->getTimestamp() <= $this->getRequestedAt()->getTimestamp() + $timeToLive;
+    }
+
     public function start(): void
     {
         $this

@@ -7,17 +7,20 @@ namespace Draw\Component\CronJob;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\CronJob\Entity\CronJobExecution;
+use Draw\Component\CronJob\Event\PostCronJobExecutionEvent;
+use Draw\Component\CronJob\Event\PreCronJobExecutionEvent;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
 use Draw\Contracts\Process\ProcessFactoryInterface;
-use Monolog\Formatter\JsonFormatter;
-use Monolog\Level;
-use Monolog\LogRecord;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CronJobProcessor
 {
     public function __construct(
         private ManagerRegistry $managerRegistry,
+        private ParameterBagInterface $parameterBag,
+        private EventDispatcherInterface $eventDispatcher,
         private ProcessFactoryInterface $processFactory,
         private MessageBusInterface $messageBus,
     ) {
@@ -35,14 +38,23 @@ class CronJobProcessor
 
     public function process(CronJobExecution $execution): void
     {
+        $event = $this->eventDispatcher->dispatch(new PreCronJobExecutionEvent($execution));
+
+        if ($event->isExecutionCancelled()) {
+            return;
+        }
+
         $manager = $this->managerRegistry->getManagerForClass(CronJobExecution::class);
 
         $execution->start();
         $manager->flush();
 
-        $command = $execution->getCronJob()->getCommand();
         $process = $this->processFactory->create(
-            [$command],
+            [
+                $this->parameterBag->resolveValue(
+                    $event->getCommand()
+                ),
+            ],
             timeout: 1800
         );
 
@@ -53,28 +65,12 @@ class CronJobProcessor
         } catch (\Throwable $error) {
             $execution->fail(
                 $process->getExitCode(),
-                $this->formatError($error)
+                (array) $error
             );
-        } finally {
-            $manager->flush();
         }
-    }
 
-    private function formatError(\Throwable $error): array
-    {
-        $formatter = (new JsonFormatter())->includeStacktraces();
+        $manager->flush();
 
-        return json_decode(
-            (string) $formatter->format(
-                new LogRecord(
-                    new \DateTimeImmutable(),
-                    'unknown',
-                    Level::Info,
-                    'N/A',
-                    (array) $error
-                )
-            ),
-            true
-        )['context'];
+        $this->eventDispatcher->dispatch(new PostCronJobExecutionEvent($execution));
     }
 }
