@@ -78,6 +78,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->add('email')
             ->add('childObject1')
             ->add('childObject2')
+            ->add('userTags', 'list')
             ->add('tags', 'list')
             ->add('isLocked', 'boolean', ['inverse' => true]);
     }

@@ -1,0 +1,6 @@
+draw_sonata_import:
+  classes:
+    'App\Entity\Tag':
+      alias: 'Tag'
+    'App\Entity\UserTag':
+      alias: 'UserTag'
