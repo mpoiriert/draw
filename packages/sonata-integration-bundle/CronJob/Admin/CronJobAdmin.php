@@ -60,7 +60,7 @@ class CronJobAdmin extends AbstractAdmin
                     'command',
                     null,
                     [
-                        'help' => 'Enter the full command to run excluding stdOut and stdErr directive (... 2>&1 | logger -t ...)<p>Parameters bag is available. Use like %kernel.project_dir%</p>',
+                        'help' => 'Parameters bag is available. Use like %kernel.project_dir%',
                     ]
                 )
                 ->add('schedule')
@@ -81,7 +81,7 @@ class CronJobAdmin extends AbstractAdmin
             ->add('name')
             ->add('command')
             ->add('schedule')
-            ->add('active', null, ['editable' => true])
+            ->add('active')
             ->add('timeToLive')
             ->add('priority')
             ->ifTrue(!$this->getSubject()->getExecutions()->isEmpty())

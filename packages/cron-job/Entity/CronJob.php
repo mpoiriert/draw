@@ -48,6 +48,7 @@ class CronJob implements \Stringable
             mappedBy: 'cronJob',
             targetEntity: CronJobExecution::class,
             cascade: ['persist'],
+            fetch: 'EXTRA_LAZY',
             orphanRemoval: true,
         )
     ]
@@ -186,6 +187,6 @@ class CronJob implements \Stringable
 
     public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 }

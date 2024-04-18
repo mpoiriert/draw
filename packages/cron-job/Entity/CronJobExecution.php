@@ -189,6 +189,8 @@ class CronJobExecution implements \Stringable
 
     public function fail(?int $exitCode, ?array $error): void
     {
+        $this->end();
+
         $this
             ->setExitCode($exitCode)
             ->setError($error);
@@ -196,6 +198,15 @@ class CronJobExecution implements \Stringable
 
     public function __toString(): string
     {
-        return $this->getRequestedAt()->format('Y-m-d H:i:s.u');
+        return implode(
+            ', ',
+            array_filter(
+                [
+                    $this->getRequestedAt()?->format('Y-m-d H:i:s.u') ?? '-',
+                    $this->getExitCode(),
+                    $this->getExecutionDelay(),
+                ]
+            )
+        );
     }
 }

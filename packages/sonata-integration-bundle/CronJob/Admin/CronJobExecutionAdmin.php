@@ -20,6 +20,7 @@ class CronJobExecutionAdmin extends AbstractAdmin
                 'force' => [],
                 'executionStartedAt' => [],
                 'executionEndedAt' => [],
+                'executionDelay' => [],
                 'exitCode' => [],
                 'actions' => [
                     'type' => ListMapper::TYPE_ACTIONS,
