@@ -9,14 +9,13 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PreCronJobExecutionEvent extends Event
 {
-    private ?string $command;
+    private string $command;
 
     public function __construct(
         private CronJobExecution $execution,
         private bool $executionCancelled = false,
-        ?string $command = null
     ) {
-        $this->command = $command ?? $this->execution->getCronJob()?->getCommand();
+        $this->command = $this->execution->getCronJob()->getCommand();
     }
 
     public function getExecution(): CronJobExecution
@@ -36,12 +35,12 @@ class PreCronJobExecutionEvent extends Event
         return $this;
     }
 
-    public function getCommand(): ?string
+    public function getCommand(): string
     {
         return $this->command;
     }
 
-    public function setCommand(?string $command): self
+    public function setCommand(string $command): self
     {
         $this->command = $command;
 
