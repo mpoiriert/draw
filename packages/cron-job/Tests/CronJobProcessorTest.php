@@ -104,13 +104,21 @@ class CronJobProcessorTest extends TestCase
         ?string $overwrittenCommand,
         string $expectedProcessCommand
     ): void {
+        $returnedPreCronJobExecutionEvent = new PreCronJobExecutionEvent(
+            $execution = $this->createCronJobExecution($command)
+        );
+
+        if (null !== $overwrittenCommand) {
+            $returnedPreCronJobExecutionEvent->setCommand($overwrittenCommand);
+        }
+
         $this->eventDispatcher
             ->expects(static::exactly(2))
             ->method('dispatch')
             ->with(
                 ...static::withConsecutive(
                     [
-                        new PreCronJobExecutionEvent($execution = $this->createCronJobExecution($command)),
+                        new PreCronJobExecutionEvent($execution),
                     ],
                     [
                         $postExecutionEvent = new PostCronJobExecutionEvent($execution),
@@ -118,7 +126,7 @@ class CronJobProcessorTest extends TestCase
                 )
             )
             ->willReturnOnConsecutiveCalls(
-                new PreCronJobExecutionEvent($execution, command: $overwrittenCommand),
+                $returnedPreCronJobExecutionEvent,
                 $postExecutionEvent
             );
 
