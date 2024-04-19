@@ -2,12 +2,11 @@
 
 namespace Draw\Bundle\SonataImportBundle\Admin;
 
-use Draw\Bundle\SonataImportBundle\Column\MappedToOptionBuilder\MappedToOptionBuilderInterface;
+use Draw\Bundle\SonataImportBundle\Column\MappedToOptionBuilderAggregator;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
@@ -26,8 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class ColumnAdmin extends AbstractAdmin
 {
     public function __construct(
-        #[TaggedIterator(MappedToOptionBuilderInterface::class)]
-        private iterable $mappedToOptionBuilders
+        private MappedToOptionBuilderAggregator $mappedToOptionBuilderAggregator
     ) {
         parent::__construct();
     }
@@ -35,14 +33,28 @@ class ColumnAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('headerName')
-            ->add('sample')
+            ->add(
+                'headerName',
+                options: [
+                    'disabled' => true,
+                ]
+            )
+            ->add(
+                'sample',
+                options: [
+                    'required' => false,
+                    'disabled' => true,
+                ]
+            )
             ->add(
                 'mappedTo',
                 ChoiceType::class,
                 [
                     'required' => false,
                     'choices' => $this->loadMappedToOptions($this->getSubject()),
+                    'attr' => [
+                        'data-sonata-select2' => 'false',
+                    ],
                 ]
             )
             ->add('isIdentifier')
@@ -52,15 +64,20 @@ class ColumnAdmin extends AbstractAdmin
 
     private function loadMappedToOptions(Column $column): array
     {
-        $options = [];
+        $options = $this->mappedToOptionBuilderAggregator->getOptions($column);
 
-        foreach ($this->mappedToOptionBuilders as $mappedToOptionBuilder) {
-            $options = $mappedToOptionBuilder->getOptions(
-                $column,
-                $options
-            );
+        $result = [];
+        // Iterate over each element in the original array
+        foreach ($options as $option) {
+            $parts = explode('.', $option);
+            if (1 === \count($parts)) {
+                $result[$option] = $option;
+                continue;
+            }
+
+            $result[$parts[0]][$option] = $option;
         }
 
-        return $options;
+        return $result;
     }
 }

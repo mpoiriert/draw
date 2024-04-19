@@ -46,14 +46,32 @@ class AppFixtures extends Fixture
     private function loadTags(): iterable
     {
         yield 'admin' => (new Tag())
-            ->setLabel('Admin');
+            ->setName('admin')
+            ->translate('en')
+                ->setLabel('Admin')
+            ->getTranslatable()
+            ->translate('fr')
+                ->setLabel('Administrateur')
+            ->getTranslatable();
 
         yield 'inactive' => (new Tag())
-            ->setLabel('Inactive')
-            ->setActive(false);
+            ->setName('inactive')
+            ->setActive(false)
+            ->translate('en')
+                ->setLabel('Inactive')
+            ->getTranslatable()
+            ->translate('fr')
+                ->setLabel('Inactif')
+            ->getTranslatable();
 
         yield 'not-use' => (new Tag())
-            ->setLabel('NotUse');
+            ->setName('not-use')
+            ->translate('en')
+                ->setLabel('NotUse')
+            ->getTranslatable()
+            ->translate('fr')
+                ->setLabel('Non Utilisé')
+            ->getTranslatable();
     }
 
     private function loadUsers(): iterable

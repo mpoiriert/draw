@@ -3,6 +3,7 @@
 namespace Draw\Bundle\SonataImportBundle\Column\MappedToOptionBuilder;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 
@@ -23,12 +24,15 @@ class DoctrineMappedToOptionBuilder implements MappedToOptionBuilderInterface
             return $options;
         }
 
-        $choices = [];
-        foreach ($metadata->fieldMappings as $fieldMapping) {
-            $choices[$fieldMapping['columnName']] = $fieldMapping['columnName'];
+        foreach ($metadata->fieldNames as $fieldName) {
+            $options[] = $fieldName;
         }
 
         foreach ($metadata->associationMappings as $name => $associationMapping) {
+            if (!($associationMapping['type'] & ClassMetadataInfo::TO_ONE)) {
+                continue;
+            }
+
             $targetClassMetadata = $this->managerRegistry
                 ->getManagerForClass($associationMapping['targetEntity'])
                 ->getClassMetadata($associationMapping['targetEntity']);
@@ -42,10 +46,10 @@ class DoctrineMappedToOptionBuilder implements MappedToOptionBuilderInterface
                     continue;
                 }
 
-                $choices[$name.'.'.$fieldName] = $name.'.'.$fieldName;
+                $options[] = $name.'.'.$fieldName;
             }
         }
 
-        return $choices;
+        return $options;
     }
 }

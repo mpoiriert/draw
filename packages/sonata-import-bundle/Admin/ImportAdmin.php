@@ -253,15 +253,11 @@ class ImportAdmin extends AbstractAdmin
             $samples[] = $row;
         }
 
-        $columns = $this->columnFactory->generateColumns(
-            $import->getEntityClass(),
+        $this->columnFactory->buildColumns(
+            $import,
             $headers,
             $samples
         );
-
-        foreach ($columns as $column) {
-            $import->addColumn($column);
-        }
 
         $import->setState(Import::STATE_CONFIGURATION);
     }

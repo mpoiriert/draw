@@ -74,7 +74,6 @@ class Column
     public function setImport(?Import $import): static
     {
         $this->import = $import;
-        $import->addColumn($this);
 
         return $this;
     }

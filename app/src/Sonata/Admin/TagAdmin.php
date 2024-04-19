@@ -24,6 +24,7 @@ class TagAdmin extends AbstractAdmin
     {
         $list
             ->addIdentifier('id')
+            ->add('name')
             ->add('label')
             ->add('active');
     }
@@ -32,6 +33,7 @@ class TagAdmin extends AbstractAdmin
     {
         $show
             ->add('id')
+            ->add('name')
             ->add('label')
             ->add('active');
     }
@@ -39,6 +41,7 @@ class TagAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
+            ->add('name')
             ->add('label')
             ->add('active');
     }
@@ -49,6 +52,7 @@ class TagAdmin extends AbstractAdmin
             $fields,
             [
                 'id' => [],
+                'name' => [],
                 'label' => [],
                 'active' => [],
                 'actions' => [

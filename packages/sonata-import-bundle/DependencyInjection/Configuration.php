@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\SonataImportBundle\DependencyInjection;
 
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -47,8 +49,32 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('handlers')
+                    ->append($this->createDoctrineTranslationNode())
+                ->end()
             ->end();
 
         return $treeBuilder;
+    }
+
+    private function createDoctrineTranslationNode(): ArrayNodeDefinition
+    {
+        $node = new ArrayNodeDefinition('doctrine_translation');
+
+        if (class_exists(TranslatableInterface::class)) {
+            $node->canBeDisabled();
+        } else {
+            $node->canBeEnabled();
+        }
+
+        return
+            $node
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->arrayNode('supported_locales')
+                        ->defaultValue([])
+                        ->scalarPrototype()->end()
+                    ->end()
+                ->end();
     }
 }

@@ -13,8 +13,9 @@ class DoctrineAssociationPathColumnBuilder implements ColumnBuilderInterface
     {
     }
 
-    public function extract(string $class, Column $column, array $samples): ?Column
+    public function extract(Column $column, array $samples): ?Column
     {
+        $class = $column->getImport()->getEntityClass();
         $headerName = $column->getHeaderName();
         $manager = $this->managerRegistry->getManagerForClass($class);
         $metadata = $manager->getClassMetadata($class);
