@@ -136,9 +136,9 @@ class CronJobProcessorTest extends TestCase
 
         $this->processFactory
             ->expects(static::once())
-            ->method('create')
+            ->method('createFromShellCommandLine')
             ->with(
-                [$expectedProcessCommand],
+                $expectedProcessCommand,
                 null,
                 null,
                 null,
@@ -217,9 +217,9 @@ class CronJobProcessorTest extends TestCase
 
         $this->processFactory
             ->expects(static::once())
-            ->method('create')
+            ->method('createFromShellCommandLine')
             ->with(
-                ['echo 12345 > /var/cache/crontab.out'],
+                'echo 12345 > /var/cache/crontab.out',
                 null,
                 null,
                 null,
@@ -254,7 +254,7 @@ class CronJobProcessorTest extends TestCase
 
         $this->processFactory
             ->expects(static::never())
-            ->method('create');
+            ->method('createFromShellCommandLine');
 
         $this->cronJobProcessor->process($execution);
     }

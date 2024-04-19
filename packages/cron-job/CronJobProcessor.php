@@ -49,12 +49,10 @@ class CronJobProcessor
         $execution->start();
         $manager->flush();
 
-        $process = $this->processFactory->create(
-            [
-                $this->parameterBag->resolveValue(
-                    $event->getCommand()
-                ),
-            ],
+        $process = $this->processFactory->createFromShellCommandLine(
+            $this->parameterBag->resolveValue(
+                $event->getCommand()
+            ),
             timeout: 1800
         );
 
