@@ -42,6 +42,10 @@ RUN if [ $xdebug = "1" ] ; then \
 RUN docker-php-ext-configure opcache --enable-opcache \
     && docker-php-ext-install opcache
 
+#AMQP
+RUN apt-get -y install --no-install-recommends gcc make autoconf libc-dev pkg-config librabbitmq-dev --fix-missing
+RUN pecl install amqp-1.11.0 && docker-php-ext-enable amqp
+
 #INTL
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libicu-dev

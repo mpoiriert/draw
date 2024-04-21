@@ -6,6 +6,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitI
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronJobIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\DoctrineExtraIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\EntityMigratorIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\FeatureIntegration;
@@ -52,6 +53,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         $this->integrations[] = new ConfigurationIntegration();
         $this->integrations[] = new ConsoleIntegration();
         $this->integrations[] = new CronIntegration();
+        $this->integrations[] = new CronJobIntegration();
         $this->integrations[] = new DoctrineExtraIntegration();
         $this->integrations[] = new EntityMigratorIntegration();
         $this->integrations[] = new FeatureIntegration();

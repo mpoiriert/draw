@@ -6,11 +6,14 @@ use App\Entity\MessengerMessage;
 use App\Sonata\Admin\UserAdmin;
 use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
+use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobController;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\DrawUserBundle;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Console\Entity\Execution;
+use Draw\Component\CronJob\Entity\CronJob;
+use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\Messenger\Broker\Broker;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -27,6 +30,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->append($this->createConfigurationNode())
                 ->append($this->createConsoleNode())
+                ->append($this->createCronJobNode())
                 ->append($this->createEntityMigratorNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createUserNode())
@@ -79,6 +83,34 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('icon')->defaultValue(null)->end()
                         ->end()
                     ->end()
+                ->end()
+            ->end();
+    }
+
+    private function createCronJobNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('cron_job'))
+            ->canBeDisabled()
+            ->children()
+                ->arrayNode('admin')
+                    ->addDefaultsIfNotSet()
+                    ->append(
+                        (new SonataAdminNodeConfiguration(CronJob::class, 'Cron Job', 'cron_job'))
+                            ->addDefaultsIfNotSet()
+                            ->pagerTypeDefaultValue('simple')
+                            ->controllerClassDefaultValue(CronJobController::class)
+                            ->labelDefaultValue('Cron Job')
+                            ->iconDefaultValue('fas fa-clock')
+                            ->translationDomainDefaultValue('DrawCronJobAdmin')
+                    )
+                    ->append(
+                        (new SonataAdminNodeConfiguration(CronJobExecution::class, 'Cron Job', 'cron_job_execution'))
+                            ->addDefaultsIfNotSet()
+                            ->pagerTypeDefaultValue('simple')
+                            ->labelDefaultValue('Cron Job Execution')
+                            ->iconDefaultValue('fas fa-clock')
+                            ->translationDomainDefaultValue('DrawCronJobAdmin')
+                    )
                 ->end()
             ->end();
     }

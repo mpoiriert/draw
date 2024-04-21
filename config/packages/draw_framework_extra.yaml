@@ -10,6 +10,8 @@ draw_framework_extra:
       filter: 'in'
       command_names: [ 'draw:console:generate-documentation' ]
 
+  cron_job: ~
+
   doctrine_extra: ~
 
   entity_migrator: ~

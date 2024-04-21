@@ -24,6 +24,9 @@ class DrawSonataIntegrationExtensionTest extends ExtensionTestCase
             'console' => [
                 'enabled' => false,
             ],
+            'cron_job' => [
+                'enabled' => false,
+            ],
             'messenger' => [
                 'enabled' => false,
             ],

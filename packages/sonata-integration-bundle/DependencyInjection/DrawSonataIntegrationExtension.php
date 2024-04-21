@@ -7,6 +7,8 @@ use Draw\Bundle\SonataIntegrationBundle\Configuration\Admin\ConfigAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Admin\ExecutionAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Command;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
+use Draw\Bundle\SonataIntegrationBundle\CronJob\Admin\CronJobAdmin;
+use Draw\Bundle\SonataIntegrationBundle\CronJob\Admin\CronJobExecutionAdmin;
 use Draw\Bundle\SonataIntegrationBundle\EntityMigrator\Admin\MigrationAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
@@ -44,6 +46,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
 
         $this->configureConfiguration($config['configuration'], $loader, $container);
         $this->configureConsole($config['console'], $loader, $container);
+        $this->configureCronJob($config['cron_job'], $loader, $container);
         $this->configureEntityMigrator($config['entity_migrator'], $loader, $container);
         $this->configureMessenger($config['messenger'], $loader, $container);
         $this->configureUser($config['user'], $loader, $container);
@@ -89,15 +92,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             ->setAutowired(true)
             ->setAutoconfigured(true);
 
-        if (!$container->hasDefinition($config['admin']['controller_class'])) {
-            $container->setDefinition(
-                $config['admin']['controller_class'],
-                (new Definition($config['admin']['controller_class']))
-                    ->setAutoconfigured(true)
-                    ->setAutowired(true)
-                    ->addTag('controller.service_arguments')
-            );
-        }
+        $this->setControllerClassDefinition($config['admin'], $container);
 
         $definition = $container
             ->setDefinition(
@@ -116,6 +111,33 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 ]
             );
         }
+    }
+
+    private function configureCronJob(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        foreach (
+            [
+                'cron_job' => CronJobAdmin::class,
+                'cron_job_execution' => CronJobExecutionAdmin::class,
+            ] as $adminId => $adminClass
+        ) {
+            $container
+                ->setDefinition(
+                    $adminClass,
+                    SonataAdminNodeConfiguration::configureFromConfiguration(
+                        new Definition($adminClass),
+                        $config['admin'][$adminId]
+                    )
+                )
+                ->setAutowired(true)
+                ->setAutoconfigured(true);
+        }
+
+        $this->setControllerClassDefinition($config['admin']['cron_job'], $container);
     }
 
     private function configureMessenger(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
@@ -400,5 +422,20 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 ]
             );
         }
+    }
+
+    private function setControllerClassDefinition(array $config, ContainerBuilder $container): void
+    {
+        if ($container->hasDefinition($config['controller_class'])) {
+            return;
+        }
+
+        $container->setDefinition(
+            $config['controller_class'],
+            (new Definition($config['controller_class']))
+                ->setAutoconfigured(true)
+                ->setAutowired(true)
+                ->addTag('controller.service_arguments')
+        );
     }
 }
