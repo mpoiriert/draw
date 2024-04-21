@@ -1,6 +1,8 @@
 # Cron Job
 
-This library is used to manage and process cron jobs.
+This library is used to manage and process cron jobs from the database.
+
+The cron are sent to a queue and processed by a worker via symfony messenger.
 
 ## Configuration
 
@@ -57,9 +59,20 @@ draw_sonata_integration:
         translation_domain: SonataAdminBundle
 ```
 
+### Messenger
+
+You need to configure the routing for the messenger component for the message that will be used to process the cron jobs.
+
+```yaml
+framework:
+  messenger:
+    routing:
+      Draw\Component\CronJob\Message\ExecuteCronJobMessage: 'async'
+```
+
 ## Usage
 
 Once the package is enabled, a new admin page will be available - **Cron Job**. The package also provides
 2 console commands:
-- **draw:cron-job:queue-due** - it is used to process due cron jobs by their configs; it can be configured in the **crontab**
+- **draw:cron-job:queue-due** - it is used to process due cron jobs by their configs; it should be configured as a cron to be executed with * * * * *
 - **draw:cron-job:queue-by-name** - it allows to manually process a cron job by its name passed as an argument

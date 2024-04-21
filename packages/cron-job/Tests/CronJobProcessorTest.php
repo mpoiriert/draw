@@ -31,8 +31,6 @@ class CronJobProcessorTest extends TestCase
 
     private CronJobProcessor $cronJobProcessor;
 
-    private ManagerRegistry&MockObject $managerRegistry;
-
     private EventDispatcherInterface&MockObject $eventDispatcher;
 
     private ProcessFactoryInterface&MockObject $processFactory;
@@ -43,17 +41,15 @@ class CronJobProcessorTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
-
-        $this->managerRegistry = $this->createMock(ManagerRegistry::class);
-        $this->managerRegistry
+        $managerRegistry = $this->createMock(ManagerRegistry::class);
+        $managerRegistry
             ->expects(static::any())
             ->method('getManagerForClass')
             ->with(CronJobExecution::class)
             ->willReturn($this->entityManager = $this->createMock(EntityManagerInterface::class));
 
         $this->cronJobProcessor = new CronJobProcessor(
-            $this->managerRegistry,
+            $managerRegistry,
             new ParameterBag([
                 'kernel.cache_dir' => '/var/cache',
             ]),
@@ -261,9 +257,10 @@ class CronJobProcessorTest extends TestCase
 
     private function createCronJobExecution(string $command = 'bin/console draw:test:execute'): CronJobExecution
     {
-        return (new CronJobExecution())
-            ->setCronJob(
-                (new CronJob())->setCommand($command)
-            );
+        return new CronJobExecution(
+            (new CronJob())->setCommand($command),
+            new \DateTimeImmutable(),
+            false
+        );
     }
 }

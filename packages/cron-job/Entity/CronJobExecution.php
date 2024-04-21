@@ -20,7 +20,7 @@ class CronJobExecution implements \Stringable
     private ?int $id = null;
 
     #[ORM\Column(name: 'requested_at', type: 'datetime_immutable', nullable: false)]
-    private ?\DateTimeImmutable $requestedAt = null;
+    private \DateTimeImmutable $requestedAt;
 
     #[ORM\Column(name: '`force`', type: 'boolean', nullable: false, options: ['default' => false])]
     private bool $force = false;
@@ -52,7 +52,17 @@ class CronJobExecution implements \Stringable
             onDelete: 'CASCADE',
         )
     ]
-    private ?CronJob $cronJob = null;
+    private CronJob $cronJob;
+
+    public function __construct(
+        CronJob $cronJob,
+        \DateTimeImmutable $requestedAt,
+        bool $force
+    ) {
+        $this->cronJob = $cronJob;
+        $this->requestedAt = $requestedAt;
+        $this->force = $force;
+    }
 
     public function getId(): ?int
     {
@@ -64,23 +74,9 @@ class CronJobExecution implements \Stringable
         return $this->requestedAt;
     }
 
-    public function setRequestedAt(?\DateTimeImmutable $requestedAt): self
-    {
-        $this->requestedAt = $requestedAt;
-
-        return $this;
-    }
-
     public function isForce(): bool
     {
         return $this->force;
-    }
-
-    public function setForce(bool $force): self
-    {
-        $this->force = $force;
-
-        return $this;
     }
 
     public function getExecutionStartedAt(): ?\DateTimeImmutable
@@ -88,7 +84,7 @@ class CronJobExecution implements \Stringable
         return $this->executionStartedAt;
     }
 
-    public function setExecutionStartedAt(?\DateTimeImmutable $executionStartedAt): self
+    private function setExecutionStartedAt(?\DateTimeImmutable $executionStartedAt): self
     {
         $this->executionStartedAt = $executionStartedAt;
 
@@ -100,7 +96,7 @@ class CronJobExecution implements \Stringable
         return $this->executionEndedAt;
     }
 
-    public function setExecutionEndedAt(?\DateTimeImmutable $executionEndedAt): self
+    private function setExecutionEndedAt(?\DateTimeImmutable $executionEndedAt): self
     {
         $this->executionEndedAt = $executionEndedAt;
 
@@ -112,7 +108,7 @@ class CronJobExecution implements \Stringable
         return $this->executionDelay;
     }
 
-    public function setExecutionDelay(?int $executionDelay): self
+    private function setExecutionDelay(?int $executionDelay): self
     {
         $this->executionDelay = $executionDelay;
 
@@ -124,7 +120,7 @@ class CronJobExecution implements \Stringable
         return $this->exitCode;
     }
 
-    public function setExitCode(?int $exitCode): self
+    private function setExitCode(?int $exitCode): self
     {
         $this->exitCode = $exitCode;
 
@@ -136,7 +132,7 @@ class CronJobExecution implements \Stringable
         return $this->error;
     }
 
-    public function setError(?array $error): self
+    private function setError(?array $error): self
     {
         $this->error = $error;
 
@@ -146,13 +142,6 @@ class CronJobExecution implements \Stringable
     public function getCronJob(): ?CronJob
     {
         return $this->cronJob;
-    }
-
-    public function setCronJob(?CronJob $cronJob): self
-    {
-        $this->cronJob = $cronJob;
-
-        return $this;
     }
 
     public function isExecutable(\DateTimeImmutable $dateTime): bool
@@ -179,19 +168,22 @@ class CronJobExecution implements \Stringable
             ->setExecutionEndedAt(null);
     }
 
-    public function end(): void
+    public function end(): static
     {
         $this
             ->setExitCode(0)
             ->setExecutionEndedAt($executionEndedAt = new \DateTimeImmutable())
-            ->setExecutionDelay($executionEndedAt->getTimestamp() - $this->getExecutionStartedAt()->getTimestamp());
+            ->setExecutionDelay(
+                $executionEndedAt->getTimestamp() - $this->getExecutionStartedAt()->getTimestamp()
+            );
+
+        return $this;
     }
 
     public function fail(?int $exitCode, ?array $error): void
     {
-        $this->end();
-
         $this
+            ->end()
             ->setExitCode($exitCode)
             ->setError($error);
     }

@@ -17,7 +17,7 @@ class CronJobController extends CRUDController
         CronJob $cronJob,
         CronJobProcessor $cronJobProcessor
     ): Response {
-        $cronJobProcessor->queue($cronJob);
+        $cronJobProcessor->queue($cronJob, true);
 
         $this->addFlash(
             'sonata_flash_success',

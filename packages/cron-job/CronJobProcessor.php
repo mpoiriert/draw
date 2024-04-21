@@ -26,7 +26,7 @@ class CronJobProcessor
     ) {
     }
 
-    public function queue(CronJob $cronJob, bool $force = false): void
+    public function queue(CronJob $cronJob, bool $force): void
     {
         $manager = $this->managerRegistry->getManagerForClass(CronJobExecution::class);
 

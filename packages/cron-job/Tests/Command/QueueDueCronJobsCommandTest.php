@@ -93,7 +93,7 @@ class QueueDueCronJobsCommandTest extends TestCase
                 ->method('queue')
                 ->with(
                     ...static::withConsecutive(...array_map(
-                        static fn (CronJob $cronJob): array => [$cronJob],
+                        static fn (CronJob $cronJob): array => [$cronJob, false],
                         $dueCronJobs
                     ))
                 );

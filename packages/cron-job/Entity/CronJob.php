@@ -8,6 +8,7 @@ use Cron\CronExpression;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     ORM\Entity,
@@ -23,21 +24,31 @@ class CronJob implements \Stringable
     private ?int $id = null;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255, unique: true, nullable: false)]
+    #[
+        Assert\NotNull,
+        Assert\Length(min: 1, max: 255),
+    ]
     private ?string $name = null;
 
     #[ORM\Column(name: 'active', type: 'boolean', nullable: false, options: ['default' => false])]
     private bool $active = false;
 
     #[ORM\Column(name: 'command', type: 'text', nullable: false)]
+    #[Assert\NotNull]
     private ?string $command = null;
 
     #[ORM\Column(name: 'schedule', type: 'string', length: 255, nullable: true)]
     private ?string $schedule = null;
 
     #[ORM\Column(name: 'time_to_live', type: 'integer', nullable: false, options: ['default' => 0])]
+    #[
+        Assert\NotNull,
+        Assert\GreaterThanOrEqual(0),
+    ]
     private int $timeToLive = 0;
 
     #[ORM\Column(name: 'priority', type: 'integer', nullable: true)]
+    #[Assert\Range(min: 0, max: 255)]
     private ?int $priority = null;
 
     /**
@@ -148,26 +159,6 @@ class CronJob implements \Stringable
         return $this->executions;
     }
 
-    public function addExecution(CronJobExecution $execution): self
-    {
-        if (!$this->executions->contains($execution)) {
-            $this->executions->add($execution);
-            $execution->setCronJob($this);
-        }
-
-        return $this;
-    }
-
-    public function removeExecution(CronJobExecution $execution): self
-    {
-        if ($this->executions->contains($execution)) {
-            $this->executions->removeElement($execution);
-            $execution->setCronJob(null);
-        }
-
-        return $this;
-    }
-
     public function isDue(): bool
     {
         if (null === $this->getSchedule()) {
@@ -179,10 +170,11 @@ class CronJob implements \Stringable
 
     public function newExecution(bool $force = false): CronJobExecution
     {
-        return (new CronJobExecution())
-            ->setCronJob($this)
-            ->setRequestedAt(new \DateTimeImmutable())
-            ->setForce($force);
+        $cronJobExecution = new CronJobExecution($this, new \DateTimeImmutable(), $force);
+
+        $this->executions->add($cronJobExecution);
+
+        return $cronJobExecution;
     }
 
     public function __toString(): string

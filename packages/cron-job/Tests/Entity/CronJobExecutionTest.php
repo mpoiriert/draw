@@ -24,13 +24,13 @@ class CronJobExecutionTest extends TestCase
     ): void {
         Carbon::setTestNow($now);
 
-        $execution = (new CronJobExecution())
-            ->setRequestedAt($requestedAt)
-            ->setCronJob(
-                (new CronJob())
-                    ->setActive($active)
-                    ->setTimeToLive($timeToLive)
-            );
+        $execution = new CronJobExecution(
+            (new CronJob())
+                ->setActive($active)
+                ->setTimeToLive($timeToLive),
+            $requestedAt,
+            false
+        );
 
         static::assertSame($expectedExecutable, $execution->isExecutable(Carbon::now()->toDateTimeImmutable()));
     }
@@ -40,6 +40,8 @@ class CronJobExecutionTest extends TestCase
         yield 'inactive' => [
             '$expectedExecutable' => false,
             '$active' => false,
+            '$timeToLive' => 0,
+            '$requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
         ];
 
         yield 'active with no time to live' => [
