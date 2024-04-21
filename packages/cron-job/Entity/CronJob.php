@@ -7,6 +7,8 @@ namespace Draw\Component\CronJob\Entity;
 use Cron\CronExpression;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -52,7 +54,7 @@ class CronJob implements \Stringable
     private ?int $priority = null;
 
     /**
-     * @var Collection<CronJobExecution>
+     * @var Selectable&Collection<CronJobExecution>
      */
     #[
         ORM\OneToMany(
@@ -63,7 +65,7 @@ class CronJob implements \Stringable
             orphanRemoval: true,
         )
     ]
-    private Collection $executions;
+    private Selectable&Collection $executions;
 
     public function __construct()
     {
@@ -152,11 +154,24 @@ class CronJob implements \Stringable
     }
 
     /**
-     * @return Collection<CronJobExecution>
+     * @return Selectable&Collection<CronJobExecution>
      */
     public function getExecutions(): Collection
     {
         return $this->executions;
+    }
+
+    /**
+     * @return Selectable&Collection<CronJobExecution>
+     */
+    public function getRecentExecutions(): Selectable&Collection
+    {
+        return $this->executions
+            ->matching(
+                Criteria::create()
+                    ->orderBy(['requestedAt' => 'DESC'])
+                    ->setMaxResults(10)
+            );
     }
 
     public function isDue(): bool

@@ -101,12 +101,15 @@ class Configuration implements ConfigurationInterface
                             ->controllerClassDefaultValue(CronJobController::class)
                             ->labelDefaultValue('Cron Job')
                             ->iconDefaultValue('fas fa-clock')
+                            ->translationDomainDefaultValue('DrawCronJobAdmin')
                     )
                     ->append(
                         (new SonataAdminNodeConfiguration(CronJobExecution::class, 'Cron Job', 'cron_job_execution'))
                             ->addDefaultsIfNotSet()
                             ->pagerTypeDefaultValue('simple')
                             ->labelDefaultValue('Cron Job Execution')
+                            ->iconDefaultValue('fas fa-clock')
+                            ->translationDomainDefaultValue('DrawCronJobAdmin')
                     )
                 ->end()
             ->end();

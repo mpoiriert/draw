@@ -23,7 +23,7 @@ class CronJobExecution implements \Stringable
     private \DateTimeImmutable $requestedAt;
 
     #[ORM\Column(name: '`force`', type: 'boolean', nullable: false, options: ['default' => false])]
-    private bool $force = false;
+    private bool $force;
 
     #[ORM\Column(name: 'execution_started_at', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $executionStartedAt = null;

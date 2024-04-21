@@ -86,7 +86,7 @@ class CronJobAdmin extends AbstractAdmin
             ->add('priority')
             ->ifTrue(!$this->getSubject()->getExecutions()->isEmpty())
                 ->add(
-                    'executions',
+                    'recentExecutions',
                     'grid',
                     [
                         'fieldValueOnly' => false,

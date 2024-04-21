@@ -57,6 +57,13 @@ class SonataAdminNodeConfiguration extends ArrayNodeDefinition
         return $this;
     }
 
+    public function translationDomainDefaultValue(?string $value): self
+    {
+        $this->children['translation_domain']->defaultValue($value);
+
+        return $this;
+    }
+
     public static function configureFromConfiguration(Definition $definition, array $config): Definition
     {
         return $definition
