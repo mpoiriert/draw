@@ -14,7 +14,7 @@ class ConfigAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('name');
+            ->add('id');
     }
 
     public function configureFormFields(FormMapper $form): void
