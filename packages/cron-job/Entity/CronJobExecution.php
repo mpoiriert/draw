@@ -146,7 +146,9 @@ class CronJobExecution implements \Stringable
 
     public function isExecutable(\DateTimeImmutable $dateTime): bool
     {
-        if (!($cronJob = $this->getCronJob())?->isActive()) {
+        $cronJob = $this->getCronJob();
+
+        if (!$this->isForce() && !$cronJob?->isActive()) {
             return false;
         }
 
