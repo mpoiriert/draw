@@ -14,8 +14,8 @@ RUN docker-php-ext-configure gd --with-jpeg
 RUN docker-php-ext-install pdo pdo_mysql gd zip pcntl
 
 COPY php.ini /usr/local/etc/php/php.ini
-COPY php.ini /etc/php/7.3.24/php.ini
-COPY php-fpm-pool.conf /etc/php/7.3.24/pool.d/www.conf
+COPY php.ini /etc/php/8.1.5/php.ini
+COPY php-fpm-pool.conf /etc/php/8.1.5/pool.d/www.conf
 
 #COMPOSER
 RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
@@ -57,12 +57,12 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen
 
-#MONGODB
-RUN pecl install mongodb 1.17.2 && docker-php-ext-enable mongodb
-
 #MYSQL
 RUN apt-get update && apt-get install -y --no-install-recommends default-mysql-client && \
     rm -rf /var/lib/apt
+
+#MONGODB
+RUN pecl install mongodb-1.17.2 && docker-php-ext-enable mongodb
 
 ARG PUID=1000
 ARG PGID=1000
