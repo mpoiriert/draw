@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Draw\Bundle\SonataIntegrationBundle\CronJob\Admin;
 
+use Draw\Component\CronJob\Entity\CronJobExecution;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Filter\ChoiceFilter;
 use Sonata\DoctrineORMAdminBundle\Filter\ModelFilter;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CronJobExecutionAdmin extends AbstractAdmin
 {
@@ -29,6 +32,21 @@ class CronJobExecutionAdmin extends AbstractAdmin
                 ]
             )
             ->add('requestedAt')
+            ->add(
+                'state',
+                ChoiceFilter::class,
+                [
+                    'field_type' => ChoiceType::class,
+                    'field_options' => [
+                        'multiple' => true,
+                        'choices' => array_combine(
+                            CronJobExecution::STATES,
+                            CronJobExecution::STATES
+                        ),
+                    ],
+                    'show_filter' => true,
+                ]
+            )
             ->add('force')
             ->add('executionStartedAt')
             ->add('executionEndedAt')
@@ -53,6 +71,7 @@ class CronJobExecutionAdmin extends AbstractAdmin
                 ]
             )
             ->add('requestedAt')
+            ->add('state')
             ->add('force')
             ->add('executionStartedAt')
             ->add('executionEndedAt')
@@ -74,6 +93,7 @@ class CronJobExecutionAdmin extends AbstractAdmin
     {
         $show
             ->add('requestedAt')
+            ->add('state')
             ->add('force')
             ->add('executionStartedAt')
             ->add('executionEndedAt')
@@ -84,7 +104,8 @@ class CronJobExecutionAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->clearExcept(['list', 'show', 'delete']);
+        $collection->remove('create');
+        $collection->remove('edit');
     }
 
     public function configureGridFields(array $fields): array
@@ -93,6 +114,7 @@ class CronJobExecutionAdmin extends AbstractAdmin
             $fields,
             [
                 'requestedAt' => [],
+                'state' => [],
                 'force' => [],
                 'executionStartedAt' => [],
                 'executionEndedAt' => [],

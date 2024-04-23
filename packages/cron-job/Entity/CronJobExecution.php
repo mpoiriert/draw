@@ -9,9 +9,24 @@ use Doctrine\ORM\Mapping as ORM;
 #[
     ORM\Entity,
     ORM\Table(name: 'cron_job__cron_job_execution'),
+    ORM\Index(fields: ['state'], name: 'state'),
 ]
 class CronJobExecution implements \Stringable
 {
+    public const STATE_REQUESTED = 'requested';
+    public const STATE_RUNNING = 'running';
+    public const STATE_TERMINATED = 'terminated';
+    public const STATE_ERRORED = 'errored';
+    public const STATE_SKIPPED = 'skipped';
+
+    public const STATES = [
+        self::STATE_REQUESTED,
+        self::STATE_RUNNING,
+        self::STATE_TERMINATED,
+        self::STATE_ERRORED,
+        self::STATE_SKIPPED,
+    ];
+
     #[
         ORM\Id,
         ORM\GeneratedValue,
@@ -21,6 +36,9 @@ class CronJobExecution implements \Stringable
 
     #[ORM\Column(name: 'requested_at', type: 'datetime_immutable', nullable: false)]
     private \DateTimeImmutable $requestedAt;
+
+    #[ORM\Column(name: 'state', type: 'string', length: 20, nullable: false, options: ['default' => self::STATE_REQUESTED])]
+    private string $state = self::STATE_REQUESTED;
 
     #[ORM\Column(name: '`force`', type: 'boolean', nullable: false, options: ['default' => false])]
     private bool $force;
@@ -72,6 +90,18 @@ class CronJobExecution implements \Stringable
     public function getRequestedAt(): ?\DateTimeImmutable
     {
         return $this->requestedAt;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    private function setState(string $state): self
+    {
+        $this->state = $state;
+
+        return $this;
     }
 
     public function isForce(): bool
@@ -166,6 +196,7 @@ class CronJobExecution implements \Stringable
     public function start(): void
     {
         $this
+            ->setState(self::STATE_RUNNING)
             ->setExecutionStartedAt(new \DateTimeImmutable())
             ->setExecutionEndedAt(null);
     }
@@ -173,6 +204,7 @@ class CronJobExecution implements \Stringable
     public function end(): static
     {
         $this
+            ->setState(self::STATE_TERMINATED)
             ->setExitCode(0)
             ->setExecutionEndedAt($executionEndedAt = new \DateTimeImmutable())
             ->setExecutionDelay(
@@ -186,8 +218,14 @@ class CronJobExecution implements \Stringable
     {
         $this
             ->end()
+            ->setState(self::STATE_ERRORED)
             ->setExitCode($exitCode)
             ->setError($error);
+    }
+
+    public function skip(): void
+    {
+        $this->setState(self::STATE_SKIPPED);
     }
 
     public function __toString(): string

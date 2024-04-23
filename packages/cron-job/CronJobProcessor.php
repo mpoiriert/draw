@@ -38,13 +38,15 @@ class CronJobProcessor
 
     public function process(CronJobExecution $execution): void
     {
+        $manager = $this->managerRegistry->getManagerForClass(CronJobExecution::class);
         $event = $this->eventDispatcher->dispatch(new PreCronJobExecutionEvent($execution));
 
         if ($event->isExecutionCancelled()) {
+            $execution->skip();
+            $manager->flush();
+
             return;
         }
-
-        $manager = $this->managerRegistry->getManagerForClass(CronJobExecution::class);
 
         $execution->start();
         $manager->flush();
