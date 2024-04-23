@@ -83,6 +83,9 @@ class CronJobExecutionAdmin extends AbstractAdmin
                 [
                     'actions' => [
                         'show' => [],
+                        'acknowledge' => [
+                            'template' => '@DrawSonataIntegration/CronJob/CronJobExecution/list__action_acknowledge.html.twig',
+                        ],
                         'delete' => [],
                     ],
                 ]
@@ -104,8 +107,20 @@ class CronJobExecutionAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
+        $collection->add('acknowledge', sprintf('%s/acknowledge', $this->getRouterIdParameter()));
         $collection->remove('create');
         $collection->remove('edit');
+    }
+
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    {
+        if ('show' === $action && $object?->canBeAcknowledged()) {
+            $buttonList['acknowledge'] = [
+                'template' => '@DrawSonataIntegration/CronJob/CronJobExecution/show__action_acknowledge.html.twig',
+            ];
+        }
+
+        return $buttonList;
     }
 
     public function configureGridFields(array $fields): array

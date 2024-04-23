@@ -51,7 +51,7 @@ draw_sonata_integration:
       cron_job_execution:
         group: Cron Job
         entity_class: Draw\Component\CronJob\Entity\CronJobExecution
-        controller_class: sonata.admin.controller.crud
+        controller_class: Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobExecutionController
         icon: null
         label: Cron Job Execution
         pager_type: simple

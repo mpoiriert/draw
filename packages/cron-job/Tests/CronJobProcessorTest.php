@@ -234,6 +234,29 @@ class CronJobProcessorTest extends TestCase
         static::assertNotNull($execution->getError());
     }
 
+    public function testProcessWithInactiveCronJob(): void
+    {
+        $this->eventDispatcher
+            ->expects(static::never())
+            ->method('dispatch');
+
+        $this->entityManager
+            ->expects(static::once())
+            ->method('flush');
+
+        $this->processFactory
+            ->expects(static::never())
+            ->method('createFromShellCommandLine');
+
+        $this->cronJobProcessor->process(
+            $execution = (new CronJob())
+                ->setActive(false)
+                ->newExecution()
+        );
+
+        static::assertEquals(CronJobExecution::STATE_SKIPPED, $execution->getState());
+    }
+
     public function testProcessWithCancelledExecution(): void
     {
         $this->eventDispatcher
@@ -262,7 +285,9 @@ class CronJobProcessorTest extends TestCase
     private function createCronJobExecution(string $command = 'bin/console draw:test:execute'): CronJobExecution
     {
         return new CronJobExecution(
-            (new CronJob())->setCommand($command),
+            (new CronJob())
+                ->setActive(true)
+                ->setCommand($command),
             new \DateTimeImmutable(),
             false
         );

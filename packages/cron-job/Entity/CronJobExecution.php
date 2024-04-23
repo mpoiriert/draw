@@ -18,6 +18,7 @@ class CronJobExecution implements \Stringable
     public const STATE_TERMINATED = 'terminated';
     public const STATE_ERRORED = 'errored';
     public const STATE_SKIPPED = 'skipped';
+    public const STATE_ACKNOWLEDGED = 'acknowledged';
 
     public const STATES = [
         self::STATE_REQUESTED,
@@ -25,6 +26,7 @@ class CronJobExecution implements \Stringable
         self::STATE_TERMINATED,
         self::STATE_ERRORED,
         self::STATE_SKIPPED,
+        self::STATE_ACKNOWLEDGED,
     ];
 
     #[
@@ -223,9 +225,19 @@ class CronJobExecution implements \Stringable
             ->setError($error);
     }
 
+    public function acknowledge(): void
+    {
+        $this->setState(self::STATE_ACKNOWLEDGED);
+    }
+
     public function skip(): void
     {
         $this->setState(self::STATE_SKIPPED);
+    }
+
+    public function canBeAcknowledged(): bool
+    {
+        return self::STATE_ERRORED === $this->getState();
     }
 
     public function __toString(): string

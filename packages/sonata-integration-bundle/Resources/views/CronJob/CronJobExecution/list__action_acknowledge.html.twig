@@ -1,0 +1,8 @@
+{% if object.canBeAcknowledged() %}
+    <a href="{{ admin.generateObjectUrl('acknowledge', object) }}"
+       class="btn btn-sm btn-default"
+       title="Acknowledge"
+    >
+        <i class="fa fa-check"></i> Acknowledge
+    </a>
+{% endif %}

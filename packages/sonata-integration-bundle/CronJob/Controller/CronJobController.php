@@ -7,8 +7,8 @@ namespace Draw\Bundle\SonataIntegrationBundle\CronJob\Controller;
 use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Entity\CronJob;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class CronJobController extends CRUDController
 {
@@ -16,15 +16,12 @@ class CronJobController extends CRUDController
         Request $request,
         CronJob $cronJob,
         CronJobProcessor $cronJobProcessor
-    ): Response {
+    ): RedirectResponse {
         $cronJobProcessor->queue($cronJob, true);
 
         $this->addFlash(
             'sonata_flash_success',
-            $this->trans(
-                'cron_job_successfully_queued',
-                domain: 'DrawCronJobSonata'
-            )
+            $this->trans('cron_job_successfully_queued')
         );
 
         return $this->redirect(
