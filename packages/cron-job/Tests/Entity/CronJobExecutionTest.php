@@ -39,59 +39,59 @@ class CronJobExecutionTest extends TestCase
     public static function provideDataForTestIsExecutable(): iterable
     {
         yield 'inactive' => [
-            '$expectedExecutable' => false,
-            '$active' => false,
-            '$timeToLive' => 0,
-            '$requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
+            'expectedExecutable' => false,
+            'active' => false,
+            'timeToLive' => 0,
+            'requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
         ];
 
         yield 'inactive-forced' => [
-            '$expectedExecutable' => true,
-            '$active' => false,
-            '$timeToLive' => 0,
-            '$requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
-            '$now' => new \DateTimeImmutable('2024-04-17 01:00:00'),
-            '$forced' => true,
+            'expectedExecutable' => true,
+            'active' => false,
+            'timeToLive' => 0,
+            'requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
+            'now' => new \DateTimeImmutable('2024-04-17 01:00:00'),
+            'forced' => true,
         ];
 
         yield 'active with no time to live' => [
-            '$expectedExecutable' => true,
-            '$active' => true,
-            '$timeToLive' => 0,
-            '$requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
-            '$now' => new \DateTimeImmutable('2024-04-17 01:00:00'),
+            'expectedExecutable' => true,
+            'active' => true,
+            'timeToLive' => 0,
+            'requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
+            'now' => new \DateTimeImmutable('2024-04-17 01:00:00'),
         ];
 
         yield 'inactive with no time to live' => [
-            '$expectedExecutable' => false,
-            '$active' => false,
-            '$timeToLive' => 0,
-            '$requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
-            '$now' => new \DateTimeImmutable('2024-04-17 01:00:00'),
+            'expectedExecutable' => false,
+            'active' => false,
+            'timeToLive' => 0,
+            'requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
+            'now' => new \DateTimeImmutable('2024-04-17 01:00:00'),
         ];
 
         yield 'active with exceeding time to live' => [
-            '$expectedExecutable' => false,
-            '$active' => true,
-            '$timeToLive' => 55,
-            '$requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
-            '$now' => new \DateTimeImmutable('2024-04-17 00:00:59'),
+            'expectedExecutable' => false,
+            'active' => true,
+            'timeToLive' => 55,
+            'requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
+            'now' => new \DateTimeImmutable('2024-04-17 00:00:59'),
         ];
 
         yield 'inactive with exceeding time to live' => [
-            '$expectedExecutable' => false,
-            '$active' => false,
-            '$timeToLive' => 120,
-            '$requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
-            '$now' => new \DateTimeImmutable('2024-04-17 00:00:59'),
+            'expectedExecutable' => false,
+            'active' => false,
+            'timeToLive' => 120,
+            'requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
+            'now' => new \DateTimeImmutable('2024-04-17 00:00:59'),
         ];
 
         yield 'active with time to live' => [
-            '$expectedExecutable' => true,
-            '$active' => true,
-            '$timeToLive' => 180,
-            '$requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
-            '$now' => new \DateTimeImmutable('2024-04-17 00:02:59'),
+            'expectedExecutable' => true,
+            'active' => true,
+            'timeToLive' => 180,
+            'requestedAt' => new \DateTimeImmutable('2024-04-17 00:00:00'),
+            'now' => new \DateTimeImmutable('2024-04-17 00:02:59'),
         ];
     }
 }
