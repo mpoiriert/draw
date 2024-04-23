@@ -7,6 +7,7 @@ use App\Entity\ChildObject2;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\UserAddress;
+use App\Entity\UserTag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Draw\Component\Application\Configuration\Entity\Config;
@@ -82,6 +83,10 @@ class AppFixtures extends Fixture
             ->setLevel(User::LEVEL_ADMIN)
             ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setTags([$this->getObjectReference(Tag::class, 'admin')])
+            ->addUserTag(
+                (new UserTag())
+                    ->setTag($this->getObjectReference(Tag::class, 'admin'))
+            )
             ->setAddress(
                 (new Address())
                     ->setStreet('200 Acme')
