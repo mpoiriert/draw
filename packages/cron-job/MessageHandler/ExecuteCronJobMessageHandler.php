@@ -18,10 +18,6 @@ class ExecuteCronJobMessageHandler
     #[AsMessageHandler]
     public function handleExecuteCronJobMessage(ExecuteCronJobMessage $message): void
     {
-        if (!($execution = $message->getExecution())->isExecutable(new \DateTimeImmutable())) {
-            return;
-        }
-
-        $this->cronJobProcessor->process($execution);
+        $this->cronJobProcessor->process($message->getExecution());
     }
 }

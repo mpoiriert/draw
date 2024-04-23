@@ -135,9 +135,9 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 )
                 ->setAutowired(true)
                 ->setAutoconfigured(true);
-        }
 
-        $this->setControllerClassDefinition($config['admin']['cron_job'], $container);
+            $this->setControllerClassDefinition($config['admin'][$adminId], $container);
+        }
     }
 
     private function configureMessenger(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Draw\Component\CronJob\Tests\MessageHandler;
 
 use Draw\Component\CronJob\CronJobProcessor;
+use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
 use Draw\Component\CronJob\MessageHandler\ExecuteCronJobMessageHandler;
@@ -33,32 +34,13 @@ class ExecuteCronJobMessageHandlerTest extends TestCase
         $this->cronJobProcessor
             ->expects(static::once())
             ->method('process')
-            ->with($execution = $this->createCronJobExecution());
+            ->with($execution = (new CronJob())->newExecution());
 
         $this->handler->handleExecuteCronJobMessage(
             new ExecuteCronJobMessage($execution)
         );
-    }
 
-    public function testHandleExecuteCronJobMessageWithNotExecutableExecution(): void
-    {
-        $this->cronJobProcessor
-            ->expects(static::never())
-            ->method('process');
-
-        $this->handler->handleExecuteCronJobMessage(
-            new ExecuteCronJobMessage($this->createCronJobExecution(false))
-        );
-    }
-
-    private function createCronJobExecution(bool $executable = true): CronJobExecution&MockObject
-    {
-        $execution = $this->createMock(CronJobExecution::class);
-        $execution
-            ->expects(static::any())
-            ->method('isExecutable')
-            ->willReturn($executable);
-
-        return $execution;
+        static::assertEquals(CronJobExecution::STATE_REQUESTED, $execution->getState());
+        static::assertNotNull($execution->getRequestedAt());
     }
 }

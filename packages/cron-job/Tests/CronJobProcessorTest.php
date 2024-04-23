@@ -148,6 +148,7 @@ class CronJobProcessorTest extends TestCase
 
         $this->cronJobProcessor->process($execution);
 
+        static::assertEquals(CronJobExecution::STATE_TERMINATED, $execution->getState());
         static::assertNotNull($execution->getExecutionStartedAt());
         static::assertNotNull($execution->getExecutionEndedAt());
         static::assertEquals(
@@ -225,11 +226,35 @@ class CronJobProcessorTest extends TestCase
 
         $this->cronJobProcessor->process($execution);
 
+        static::assertEquals(CronJobExecution::STATE_ERRORED, $execution->getState());
         static::assertNotNull($execution->getExecutionStartedAt());
         static::assertNotNull($execution->getExecutionEndedAt());
         static::assertNotNull($execution->getExecutionDelay());
         static::assertEquals($exitCode, $execution->getExitCode());
         static::assertNotNull($execution->getError());
+    }
+
+    public function testProcessWithInactiveCronJob(): void
+    {
+        $this->eventDispatcher
+            ->expects(static::never())
+            ->method('dispatch');
+
+        $this->entityManager
+            ->expects(static::once())
+            ->method('flush');
+
+        $this->processFactory
+            ->expects(static::never())
+            ->method('createFromShellCommandLine');
+
+        $this->cronJobProcessor->process(
+            $execution = (new CronJob())
+                ->setActive(false)
+                ->newExecution()
+        );
+
+        static::assertEquals(CronJobExecution::STATE_SKIPPED, $execution->getState());
     }
 
     public function testProcessWithCancelledExecution(): void
@@ -245,7 +270,7 @@ class CronJobProcessorTest extends TestCase
             );
 
         $this->entityManager
-            ->expects(static::never())
+            ->expects(static::once())
             ->method('flush');
 
         $this->processFactory
@@ -253,12 +278,16 @@ class CronJobProcessorTest extends TestCase
             ->method('createFromShellCommandLine');
 
         $this->cronJobProcessor->process($execution);
+
+        static::assertEquals(CronJobExecution::STATE_SKIPPED, $execution->getState());
     }
 
     private function createCronJobExecution(string $command = 'bin/console draw:test:execute'): CronJobExecution
     {
         return new CronJobExecution(
-            (new CronJob())->setCommand($command),
+            (new CronJob())
+                ->setActive(true)
+                ->setCommand($command),
             new \DateTimeImmutable(),
             false
         );
