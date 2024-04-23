@@ -270,35 +270,35 @@ class StartMessengerBrokerCommandTest extends TestCase
     public static function provideDataForTestExecuteWithAutoConcurrent(): iterable
     {
         yield 'integer multiplier' => [
-            '$numCpus' => 4,
-            '$processesPerCore' => 1.0,
-            '$minProcesses' => 2,
-            '$maxProcesses' => null,
-            '$concurrent' => 4,
+            'numCpus' => 4,
+            'processesPerCore' => 1.0,
+            'minProcesses' => 2,
+            'maxProcesses' => null,
+            'concurrent' => 4,
         ];
 
         yield 'float multiplier' => [
-            '$numCpus' => 4,
-            '$processesPerCore' => 0.8,
-            '$minProcesses' => 1,
-            '$maxProcesses' => null,
-            '$concurrent' => 3,
+            'numCpus' => 4,
+            'processesPerCore' => 0.8,
+            'minProcesses' => 1,
+            'maxProcesses' => null,
+            'concurrent' => 3,
         ];
 
         yield 'minimum processes' => [
-            '$numCpus' => 2,
-            '$processesPerCore' => 0.8,
-            '$minProcesses' => 5,
-            '$maxProcesses' => null,
-            '$concurrent' => 5,
+            'numCpus' => 2,
+            'processesPerCore' => 0.8,
+            'minProcesses' => 5,
+            'maxProcesses' => null,
+            'concurrent' => 5,
         ];
 
         yield 'maximum processes' => [
-            '$numCpus' => 2,
-            '$processesPerCore' => 5,
-            '$minProcesses' => 1,
-            '$maxProcesses' => 1,
-            '$concurrent' => 1,
+            'numCpus' => 2,
+            'processesPerCore' => 5,
+            'minProcesses' => 1,
+            'maxProcesses' => 1,
+            'concurrent' => 1,
         ];
     }
 }

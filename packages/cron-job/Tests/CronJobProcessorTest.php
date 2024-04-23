@@ -89,9 +89,9 @@ class CronJobProcessorTest extends TestCase
 
     public static function provideDataForTestQueue(): iterable
     {
-        yield 'normal' => ['$force' => false];
+        yield 'normal' => ['force' => false];
 
-        yield 'forced' => ['$force' => true];
+        yield 'forced' => ['force' => true];
     }
 
     #[DataProvider('provideDataForTestProcess')]
@@ -161,15 +161,15 @@ class CronJobProcessorTest extends TestCase
     public static function provideDataForTestProcess(): iterable
     {
         yield 'original command' => [
-            '$command' => 'bin/console draw:test:successfully',
-            '$overwrittenCommand' => null,
-            '$expectedProcessCommand' => 'bin/console draw:test:successfully',
+            'command' => 'bin/console draw:test:successfully',
+            'overwrittenCommand' => null,
+            'expectedProcessCommand' => 'bin/console draw:test:successfully',
         ];
 
         yield 'overwritten command' => [
-            '$command' => $command = 'ls -lah %kernel.cache_dir%',
-            '$overwrittenCommand' => sprintf('%s | wc', $command),
-            '$expectedProcessCommand' => 'ls -lah /var/cache | wc',
+            'command' => $command = 'ls -lah %kernel.cache_dir%',
+            'overwrittenCommand' => sprintf('%s | wc', $command),
+            'expectedProcessCommand' => 'ls -lah /var/cache | wc',
         ];
     }
 

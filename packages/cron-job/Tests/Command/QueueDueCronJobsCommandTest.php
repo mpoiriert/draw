@@ -121,41 +121,41 @@ class QueueDueCronJobsCommandTest extends TestCase
     public static function provideDataForTestExecute(): iterable
     {
         yield [
-            '$rawCronJobs' => [],
-            '$expectedDisplay' => [],
+            'rawCronJobs' => [],
+            'expectedDisplay' => [],
         ];
 
         yield [
-            '$rawCronJobs' => [
+            'rawCronJobs' => [
                 ['name' => 'CronJob1', 'due' => true],
                 ['name' => 'CronJob2', 'due' => false],
                 ['name' => 'CronJob3', 'due' => true],
             ],
-            '$expectedDisplay' => [
+            'expectedDisplay' => [
                 '! [NOTE] Queueing cron job "CronJob1"...',
                 '! [NOTE] Queueing cron job "CronJob3"...',
             ],
         ];
 
         yield [
-            '$rawCronJobs' => [
+            'rawCronJobs' => [
                 ['name' => 'CronJob1', 'due' => false],
                 ['name' => 'CronJob2', 'due' => false],
                 ['name' => 'CronJob3', 'due' => false],
                 ['name' => 'CronJob4', 'due' => false],
             ],
-            '$expectedDisplay' => [],
+            'expectedDisplay' => [],
         ];
 
         yield [
-            '$rawCronJobs' => [
+            'rawCronJobs' => [
                 ['name' => 'CronJob1', 'due' => true],
                 ['name' => 'CronJob2', 'due' => true],
                 ['name' => 'CronJob3', 'due' => true],
                 ['name' => 'CronJob4', 'due' => true],
                 ['name' => 'CronJob5', 'due' => false],
             ],
-            '$expectedDisplay' => [
+            'expectedDisplay' => [
                 '! [NOTE] Queueing cron job "CronJob1"...',
                 '! [NOTE] Queueing cron job "CronJob2"...',
                 '! [NOTE] Queueing cron job "CronJob3"...',
