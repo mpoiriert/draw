@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         'path_label' => 'User tags',
     ]
 )]
+#[Serializer\ExclusionPolicy('all')]
 class Tag implements \Stringable, TranslatableInterface
 {
     use TranslatableTrait;
@@ -32,6 +33,7 @@ class Tag implements \Stringable, TranslatableInterface
         ORM\GeneratedValue,
         ORM\Column(name: 'id', type: 'bigint')
     ]
+    #[Serializer\Expose]
     private ?int $id = null;
 
     #[ORM\Column(unique: true)]
@@ -39,9 +41,11 @@ class Tag implements \Stringable, TranslatableInterface
         Assert\NotNull,
         Assert\Length(min: 3, max: 255)
     ]
+    #[Serializer\Expose]
     private ?string $name = null;
 
     #[ORM\Column(name: 'active', type: 'boolean', options: ['default' => 1])]
+    #[Serializer\Expose]
     private bool $active = true;
 
     public function getId(): ?int
