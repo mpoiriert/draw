@@ -321,7 +321,7 @@
         },
         "Tag": {
             "required": [
-                "label"
+                "name"
             ],
             "type": "object",
             "properties": {
@@ -332,7 +332,7 @@
                     "format": "int32",
                     "type": "integer"
                 },
-                "label": {
+                "name": {
                     "maxLength": 255,
                     "minLength": 3,
                     "type": "string"

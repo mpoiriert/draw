@@ -6,8 +6,10 @@ use Draw\Bundle\SonataImportBundle\Entity\Column;
 
 class ReflectionColumnBuilder implements ColumnBuilderInterface
 {
-    public function extract(string $class, Column $column, array $samples): ?Column
+    public function extract(Column $column, array $samples): ?Column
     {
+        $class = $column->getImport()->getEntityClass();
+
         $headerName = $column->getHeaderName();
 
         $reflectionClass = new \ReflectionClass($class);

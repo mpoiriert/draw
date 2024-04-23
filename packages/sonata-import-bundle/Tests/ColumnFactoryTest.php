@@ -31,12 +31,17 @@ class ColumnFactoryTest extends TestCase
 
     public function testGenerateColumnsIdentifier(): void
     {
-        $columns = $this->columnFactory
-            ->generateColumns(
-                Import::class,
+        $import = (new Import())
+            ->setEntityClass(Import::class);
+
+        $this->columnFactory
+            ->buildColumns(
+                $import,
                 ['id'],
                 [[12]]
             );
+
+        $columns = $import->getColumns()->toArray();
 
         static::assertCount(1, $columns);
 
@@ -53,12 +58,17 @@ class ColumnFactoryTest extends TestCase
 
     public function testGenerateColumnsDate(): void
     {
-        $columns = $this->columnFactory
-            ->generateColumns(
-                Import::class,
+        $import = (new Import())
+            ->setEntityClass(Import::class);
+
+        $this->columnFactory
+            ->buildColumns(
+                $import,
                 ['createdAt'],
                 ['2018-10-10']
             );
+
+        $columns = $import->getColumns()->toArray();
 
         static::assertCount(1, $columns);
 

@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataImportBundle\Column;
 
 use Draw\Bundle\SonataImportBundle\Column\ColumnBuilder\ColumnBuilderInterface;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
+use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class ColumnFactory
@@ -17,14 +18,12 @@ class ColumnFactory
     ) {
     }
 
-    /**
-     * @return Column[]
-     */
-    public function generateColumns(string $class, array $headers, array $samples): array
+    public function buildColumns(Import $import, array $headers, array $samples): void
     {
         $columns = [];
         foreach ($headers as $index => $headerName) {
             $column = (new Column())
+                ->setImport($import)
                 ->setIsDate(false)
                 ->setHeaderName($headerName);
 
@@ -44,8 +43,8 @@ class ColumnFactory
                 $columnSamples[] = $columnSample;
             }
 
-            foreach ($this->columnBuilders as $extractor) {
-                $columnInfo = $extractor->extract($class, clone $column, $columnSamples);
+            foreach ($this->columnBuilders as $columnBuilder) {
+                $columnInfo = $columnBuilder->extract(clone $column, $columnSamples);
                 if ($columnInfo) {
                     $this->assign($columnInfo, $column);
                 }
@@ -63,7 +62,9 @@ class ColumnFactory
             $columns[] = $column;
         }
 
-        return $columns;
+        foreach ($columns as $column) {
+            $import->addColumn($column);
+        }
     }
 
     private function assign(Column $source, Column $target): void

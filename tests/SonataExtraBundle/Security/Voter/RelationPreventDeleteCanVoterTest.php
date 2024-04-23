@@ -53,7 +53,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
                 $this->createMock(TokenInterface::class),
-                $this->entityManager->getRepository(Tag::class)->findOneBy(['label' => 'Admin']),
+                $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => 'admin']),
                 ['SONATA_CAN_CREATE']
             )
         );
@@ -65,7 +65,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
             VoterInterface::ACCESS_DENIED,
             $this->object->vote(
                 $this->createMock(TokenInterface::class),
-                $this->entityManager->getRepository(Tag::class)->findOneBy(['label' => 'Admin']),
+                $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => 'admin']),
                 ['SONATA_CAN_DELETE']
             )
         );
@@ -77,7 +77,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
                 $this->createMock(TokenInterface::class),
-                $this->entityManager->getRepository(Tag::class)->findOneBy(['label' => 'NotUse']),
+                $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => 'NotUse']),
                 ['SONATA_CAN_DELETE']
             )
         );

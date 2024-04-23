@@ -5,14 +5,17 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 use JMS\Serializer\Annotation as Serializer;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
     ORM\Entity(repositoryClass: 'App\Repository\TagRepository'),
     ORM\Table(name: 'draw_acme__tag'),
+    ORM\HasLifecycleCallbacks
 ]
-#[UniqueEntity(fields: ['label'])]
+#[UniqueEntity(fields: ['name'])]
 #[PreventDelete(
     relatedClass: User::class,
     path: 'userTags.tag',
@@ -21,24 +24,29 @@ use Symfony\Component\Validator\Constraints as Assert;
         'path_label' => 'User tags',
     ]
 )]
-class Tag implements \Stringable
+#[Serializer\ExclusionPolicy('all')]
+class Tag implements \Stringable, TranslatableInterface
 {
+    use TranslatableTrait;
     #[
         ORM\Id,
         ORM\GeneratedValue,
         ORM\Column(name: 'id', type: 'bigint')
     ]
+    #[Serializer\Expose]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'active', type: 'boolean', options: ['default' => 1])]
-    private bool $active = true;
-
-    #[ORM\Column(name: 'label', type: 'string', length: 255, unique: true, nullable: false)]
+    #[ORM\Column(unique: true)]
     #[
         Assert\NotNull,
         Assert\Length(min: 3, max: 255)
     ]
-    private ?string $label = null;
+    #[Serializer\Expose]
+    private ?string $name = null;
+
+    #[ORM\Column(name: 'active', type: 'boolean', options: ['default' => 1])]
+    #[Serializer\Expose]
+    private bool $active = true;
 
     public function getId(): ?int
     {
@@ -52,14 +60,14 @@ class Tag implements \Stringable
         return $this;
     }
 
-    public function getLabel(): ?string
+    public function getName(): ?string
     {
-        return $this->label;
+        return $this->name;
     }
 
-    public function setLabel(string $label): static
+    public function setName(?string $name): static
     {
-        $this->label = $label;
+        $this->name = $name;
 
         return $this;
     }
@@ -72,6 +80,18 @@ class Tag implements \Stringable
     public function setActive(bool $active): static
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->translate(fallbackToDefault: false)->getLabel();
+    }
+
+    public function setLabel(?string $label): static
+    {
+        $this->translate(fallbackToDefault: false)->setLabel($label);
 
         return $this;
     }
@@ -95,6 +115,12 @@ class Tag implements \Stringable
     public function getVirtualPropertyArray(): array
     {
         return [1];
+    }
+
+    #[ORM\PreFlush]
+    public function preFlush(): void
+    {
+        $this->mergeNewTranslations();
     }
 
     public function __toString(): string

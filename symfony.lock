@@ -32,18 +32,6 @@
     "dasprid/enum": {
         "version": "1.0.3"
     },
-    "doctrine/annotations": {
-        "version": "1.13",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "a2759dd6123694c8d901d0ec80006e044c2e6457"
-        },
-        "files": [
-            "config/routes/annotations.yaml"
-        ]
-    },
     "doctrine/cache": {
         "version": "2.1.1"
     },
@@ -182,6 +170,9 @@
             "version": "3.0",
             "ref": "384cec52df45f3bfd46a09930d6960a58872b268"
         }
+    },
+    "knplabs/doctrine-behaviors": {
+        "version": "2.6.2"
     },
     "knplabs/knp-menu": {
         "version": "v3.2.0"

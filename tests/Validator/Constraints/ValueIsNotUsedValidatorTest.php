@@ -53,7 +53,7 @@ class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowiredInt
         yield 'other-entity' => [
             'admin@example.com',
             Tag::class,
-            'label',
+            'name',
             false,
         ];
     }

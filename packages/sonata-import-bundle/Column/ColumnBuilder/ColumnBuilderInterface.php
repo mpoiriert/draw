@@ -8,5 +8,5 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 #[AutoconfigureTag(ColumnBuilderInterface::class)]
 interface ColumnBuilderInterface
 {
-    public function extract(string $class, Column $column, array $samples): ?Column;
+    public function extract(Column $column, array $samples): ?Column;
 }
