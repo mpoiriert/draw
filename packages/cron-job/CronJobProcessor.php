@@ -73,7 +73,12 @@ class CronJobProcessor
         } catch (\Throwable $error) {
             $execution->fail(
                 $process->getExitCode(),
-                (array) $error
+                sprintf(
+                    "Error: %s\nOutput: %s\nError Output: %s\n",
+                    $error->getMessage(),
+                    $process->getOutput(),
+                    $process->getErrorOutput()
+                )
             );
         }
 

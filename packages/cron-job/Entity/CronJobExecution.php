@@ -57,8 +57,8 @@ class CronJobExecution implements \Stringable
     #[ORM\Column(name: 'exit_code', type: 'integer', nullable: true)]
     private ?int $exitCode = null;
 
-    #[ORM\Column(name: 'error', type: 'json', nullable: true)]
-    private ?array $error = null;
+    #[ORM\Column(name: 'error', type: 'text', nullable: true)]
+    private ?string $error = null;
 
     #[
         ORM\ManyToOne(
@@ -159,12 +159,12 @@ class CronJobExecution implements \Stringable
         return $this;
     }
 
-    public function getError(): ?array
+    public function getError(): ?string
     {
         return $this->error;
     }
 
-    private function setError(?array $error): self
+    private function setError(?string $error): self
     {
         $this->error = $error;
 
@@ -216,7 +216,7 @@ class CronJobExecution implements \Stringable
         return $this;
     }
 
-    public function fail(?int $exitCode, ?array $error): void
+    public function fail(?int $exitCode, string $error): void
     {
         $this
             ->end()
