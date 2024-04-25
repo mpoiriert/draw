@@ -171,6 +171,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                                 'json' => '@DrawSonataExtra/CRUD/show_json.html.twig',
                                 'list' => '@DrawSonataExtra/CRUD/show_list.html.twig',
                                 'static' => '@DrawSonataExtra/CRUD/show_static.html.twig',
+                                'url' => '@DrawSonataExtra/CRUD/show_url.html.twig',
                             ],
                             'list' => [
                                 'list' => '@DrawSonataExtra/CRUD/list_list.html.twig',
