@@ -56,6 +56,12 @@ class CronJobExecutionAdmin extends AbstractAdmin
                 filterOptions: [
                     'show_filter' => true,
                 ]
+            )
+            ->add(
+                'error',
+                filterOptions: [
+                    'show_filter' => true,
+                ]
             );
 
     }
@@ -102,7 +108,7 @@ class CronJobExecutionAdmin extends AbstractAdmin
             ->add('executionEndedAt')
             ->add('executionDelay')
             ->add('exitCode')
-            ->add('error', 'json');
+            ->add('error');
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
