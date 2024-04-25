@@ -2,8 +2,8 @@
 
 namespace Draw\Bundle\SonataImportBundle\Admin;
 
-use Draw\Bundle\SonataImportBundle\Column\MappedToOptionBuilderAggregator;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
+use Draw\Bundle\SonataImportBundle\Import\Importer;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class ColumnAdmin extends AbstractAdmin
 {
     public function __construct(
-        private MappedToOptionBuilderAggregator $mappedToOptionBuilderAggregator
+        private Importer $importer
     ) {
         parent::__construct();
     }
@@ -64,7 +64,7 @@ class ColumnAdmin extends AbstractAdmin
 
     private function loadMappedToOptions(Column $column): array
     {
-        $options = $this->mappedToOptionBuilderAggregator->getOptions($column);
+        $options = $this->importer->getOptions($column);
 
         $result = [];
         // Iterate over each element in the original array

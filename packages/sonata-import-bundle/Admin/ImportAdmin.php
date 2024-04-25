@@ -2,13 +2,9 @@
 
 namespace Draw\Bundle\SonataImportBundle\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\Persistence\ManagerRegistry;
-use Draw\Bundle\SonataImportBundle\Column\ColumnFactory;
 use Draw\Bundle\SonataImportBundle\Controller\ImportController;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
-use Draw\Bundle\SonataImportBundle\Event\AttributeImportEvent;
+use Draw\Bundle\SonataImportBundle\Import\Importer;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -19,8 +15,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[AutoconfigureTag(
     'sonata.admin',
@@ -36,9 +30,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class ImportAdmin extends AbstractAdmin
 {
     public function __construct(
-        private ColumnFactory $columnFactory,
-        private EventDispatcherInterface $eventDispatcher,
-        private ManagerRegistry $managerRegistry,
+        private Importer $importer,
         #[Autowire('%draw.sonata_import.classes%')]
         private array $importableClassList
     ) {
@@ -68,165 +60,11 @@ class ImportAdmin extends AbstractAdmin
     protected function postUpdate($object): void
     {
         if (Import::STATE_VALIDATION === $object->getState()) {
-            if ($this->processImport($object)) {
+            if ($this->importer->processImport($object)) {
                 $object->setState(Import::STATE_PROCESSED);
                 $this->getModelManager()->update($object);
             }
         }
-    }
-
-    private function processImport(Import $import): bool
-    {
-        $flashBag = $this->getRequest()->getSession()->getFlashBag();
-
-        $file = tempnam(sys_get_temp_dir(), 'csv_');
-        file_put_contents($file, $import->getFileContent());
-        register_shutdown_function('unlink', $file);
-        $handle = fopen($file, 'r+');
-        $headers = fgetcsv($handle);
-
-        $identifierHeaderName = $import->getIdentifierHeaderName();
-        $columnMapping = $import->getColumnMapping();
-        $line = 1;
-        $saved = 0;
-        $accessor = PropertyAccess::createPropertyAccessor();
-
-        $identifierColumns = $import->getIdentifierColumns();
-
-        $identifierHeaderNames = [];
-        foreach ($identifierColumns as $column) {
-            $identifierHeaderNames[$column->getHeaderName()] = $column->getMappedTo();
-        }
-
-        while (($row = fgetcsv($handle)) !== false) {
-            ++$line;
-            $data = array_combine($headers, $row);
-            $id = $data[$identifierHeaderName];
-            $criteria = [];
-            foreach ($identifierHeaderNames as $headerName => $mappedTo) {
-                $criteria[$mappedTo] = $data[$headerName];
-            }
-
-            $model = $this->findOne($import->getEntityClass(), $criteria, $import->getInsertWhenNotFound());
-
-            if (null === $model) {
-                $flashBag->add(
-                    'sonata_flash_error',
-                    'Skipped Id ['.implode(', ', $criteria).'] cannot be found at line ['.$line.']. Make sure you are using unique id value.'
-                );
-                continue;
-            }
-
-            try {
-                foreach ($columnMapping as $headerName => $column) {
-                    $value = $data[$headerName];
-                    if ($column->getIsDate()) {
-                        $value = new \DateTime($value);
-                    }
-
-                    $this->eventDispatcher->dispatch($event = new AttributeImportEvent($model, $column, $value));
-
-                    if ($event->isPropagationStopped()) {
-                        continue;
-                    }
-
-                    $accessor->setValue($model, $column->getMappedTo(), $value);
-                }
-            } catch (\Throwable $exception) {
-                $flashBag->add(
-                    'sonata_flash_error',
-                    'Skipped Id ['.$id.'] at line ['.$line.']. Error: '.$exception->getMessage()
-                );
-                continue;
-            }
-
-            ++$saved;
-        }
-
-        try {
-            $this->managerRegistry->getManagerForClass($import->getEntityClass())->flush();
-
-            $flashBag->add(
-                'sonata_flash_success',
-                'Entity saved: '.$saved
-            );
-
-            return true;
-        } catch (\Throwable $error) {
-            $flashBag->add(
-                'sonata_flash_error',
-                'Error saving data:'.$error->getMessage()
-            );
-
-            return false;
-        }
-    }
-
-    /**
-     * The criteria can define path with dot for separator.
-     *
-     * @param array<string, string> $criteria
-     */
-    private function findOne(string $class, array $criteria, bool $create): ?object
-    {
-        $manager = $this->managerRegistry->getManagerForClass($class);
-
-        \assert($manager instanceof EntityManagerInterface);
-
-        $parameters = [];
-
-        /** @var array<string,array<string>> $relationsCriteria */
-        $relationsCriteria = [];
-
-        foreach ($criteria as $key => $value) {
-            if (1 === substr_count($key, '.')) {
-                [$object, $field] = explode('.', $key);
-                $relationsCriteria[$object][$field] = $value;
-            } else {
-                $parameters[$key] = $value;
-            }
-        }
-
-        $classMetadata = $manager->getClassMetadata($class);
-
-        foreach ($relationsCriteria as $relationName => $objectCriteria) {
-            $objectClass = $classMetadata->getAssociationTargetClass($relationName);
-
-            $relatedObject = $this->managerRegistry
-                ->getRepository($objectClass)
-                ->findOneBy($objectCriteria);
-
-            if (!$relatedObject) {
-                return null;
-            }
-
-            $parameters[$relationName] = $relatedObject;
-        }
-
-        $objects = $manager->getRepository($class)->findBy($parameters);
-
-        if (\count($objects) > 1) {
-            throw new NonUniqueResultException();
-        }
-
-        if (1 === \count($objects)) {
-            return $objects[0];
-        }
-
-        if (!$create) {
-            return null;
-        }
-
-        $accessor = PropertyAccess::createPropertyAccessor();
-
-        $object = new $class();
-        foreach ($parameters as $key => $value) {
-            $accessor->setValue($object, $key, $value);
-        }
-
-        $manager->persist($object);
-
-        return $object;
     }
 
     private function processFileUpload(Import $import, ?UploadedFile $file = null): void
@@ -239,27 +77,8 @@ class ImportAdmin extends AbstractAdmin
             return;
         }
 
-        $import->setFileContent(file_get_contents($file->getRealPath()));
-
-        $handle = fopen($file->getRealPath(), 'r');
-
-        $headers = fgetcsv($handle);
-        $samples = [];
-        for ($i = 0; $i < 10; ++$i) {
-            $row = fgetcsv($handle);
-            if (!$row) {
-                break;
-            }
-            $samples[] = $row;
-        }
-
-        $this->columnFactory->buildColumns(
-            $import,
-            $headers,
-            $samples
-        );
-
-        $import->setState(Import::STATE_CONFIGURATION);
+        $this->importer
+            ->buildFromFile($import, $file);
     }
 
     public function configureListFields(ListMapper $list): void

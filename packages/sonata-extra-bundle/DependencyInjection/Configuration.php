@@ -7,8 +7,6 @@ use Sonata\DoctrineORMAdminBundle\Event\PreObjectDeleteBatchEvent;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Notifier\NotifierInterface;
 
 class Configuration implements ConfigurationInterface
 {
@@ -53,13 +51,8 @@ class Configuration implements ConfigurationInterface
 
     private function createNotifierNode(): ArrayNodeDefinition
     {
-        $node = new ArrayNodeDefinition('notifier');
-
-        ContainerBuilder::willBeAvailable('symfony/notifier', NotifierInterface::class, [])
-            ? $node->canBeDisabled()
-            : $node->canBeEnabled();
-
-        return $node;
+        return (new ArrayNodeDefinition('notifier'))
+            ->canBeEnabled();
     }
 
     private function createPreventDeleteExtensionNode(): ArrayNodeDefinition

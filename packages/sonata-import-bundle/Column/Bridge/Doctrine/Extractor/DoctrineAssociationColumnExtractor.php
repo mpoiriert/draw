@@ -1,53 +1,21 @@
 <?php
 
-namespace Draw\Bundle\SonataImportBundle\Column\MappedToOptionBuilder;
+namespace Draw\Bundle\SonataImportBundle\Column\Bridge\Doctrine\Extractor;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Bundle\SonataImportBundle\Column\BaseColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
-use Draw\Bundle\SonataImportBundle\Event\AttributeImportEvent;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-class DoctrineMappedToOptionBuilder implements MappedToOptionBuilderInterface
+class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
 {
     public function __construct(
         private ManagerRegistry $managerRegistry,
     ) {
     }
 
-    #[AsEventListener]
-    public function handleAttributeImportEvent(AttributeImportEvent $event): void
-    {
-        $column = $event->getColumn();
-
-        if (!str_contains($column->getMappedTo(), '.')) {
-            return;
-        }
-
-        $class = $column->getImport()->getEntityClass();
-
-        $metadata = $this->managerRegistry->getManagerForClass($class)->getClassMetadata($class);
-
-        [$relation, $field] = explode('.', $column->getMappedTo());
-
-        if (!isset($metadata->associationMappings[$relation])) {
-            return;
-        }
-
-        $targetEntityClass = $metadata->associationMappings[$relation]['targetEntity'];
-
-        $targetEntity = $this->managerRegistry->getRepository($targetEntityClass)->findOneBy([$field => $event->getValue()]);
-
-        if (null === $targetEntity) {
-            return;
-        }
-
-        $event->getEntity()->{'set'.ucfirst($relation)}($targetEntity);
-
-        $event->stopPropagation();
-    }
-
+    #[\Override]
     public function getOptions(Column $column, array $options): array
     {
         $class = $column->getImport()->getEntityClass();
@@ -56,10 +24,6 @@ class DoctrineMappedToOptionBuilder implements MappedToOptionBuilderInterface
 
         if (!$metadata instanceof ClassMetadata) {
             return $options;
-        }
-
-        foreach ($metadata->fieldNames as $fieldName) {
-            $options[] = $fieldName;
         }
 
         foreach ($metadata->associationMappings as $name => $associationMapping) {
@@ -85,5 +49,37 @@ class DoctrineMappedToOptionBuilder implements MappedToOptionBuilderInterface
         }
 
         return $options;
+    }
+
+    #[\Override]
+    public function assign(object $object, Column $column, mixed $value): bool
+    {
+        if (!\in_array($column->getMappedTo(), $this->getOptions($column, []))) {
+            return false;
+        }
+
+        $class = $column->getImport()->getEntityClass();
+
+        $classMetadata = $this->managerRegistry
+            ->getManagerForClass($class)
+            ->getClassMetadata($class);
+
+        \assert($classMetadata instanceof ClassMetadata);
+
+        [$relation, $field] = explode('.', $column->getMappedTo());
+
+        $targetEntityClass = $classMetadata->associationMappings[$relation]['targetEntity'];
+
+        $targetEntity = $this->managerRegistry
+            ->getRepository($targetEntityClass)
+            ->findOneBy([$field => $value]);
+
+        if (null === $targetEntity) {
+            return false;
+        }
+
+        $object->{'set'.ucfirst($relation)}($targetEntity);
+
+        return true;
     }
 }

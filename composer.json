@@ -62,7 +62,8 @@
         "nesbot/carbon": "^2.0",
         "doctrine/mongodb-odm-bundle": "*",
         "fidry/cpu-core-counter": "^1.1",
-        "knplabs/doctrine-behaviors": "*"
+        "knplabs/doctrine-behaviors": "*",
+        "symfony/notifier": "^6.4.0"
     },
     "require-dev": {
         "ext-pcntl": "*",
@@ -121,7 +122,6 @@
         "scheb/2fa-email": "^6.0",
         "colinodell/psr-testlogger": "^1.1",
         "cweagans/composer-patches": "^1.7",
-        "symfony/notifier": "^6.4.0",
         "symfony/maker-bundle": "^1.58"
     },
     "replace": {
