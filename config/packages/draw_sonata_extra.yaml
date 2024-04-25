@@ -27,6 +27,8 @@ draw_sonata_extra:
     default_field_priorities:
       createdAt: 0
 
+  notifier: true
+
   prevent_delete_extension:
     restrict_to_role: 'ROLE_SUPER_ADMIN'
 

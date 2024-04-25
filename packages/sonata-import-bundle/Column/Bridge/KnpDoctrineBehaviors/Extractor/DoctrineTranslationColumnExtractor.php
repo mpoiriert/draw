@@ -1,15 +1,14 @@
 <?php
 
-namespace Draw\Bundle\SonataImportBundle\Column\MappedToOptionBuilder;
+namespace Draw\Bundle\SonataImportBundle\Column\Bridge\KnpDoctrineBehaviors\Extractor;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Bundle\SonataImportBundle\Column\BaseColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
-use Draw\Bundle\SonataImportBundle\Event\AttributeImportEvent;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-class DoctrineTranslationMappedToOptionBuilder implements MappedToOptionBuilderInterface
+class DoctrineTranslationColumnExtractor extends BaseColumnExtractor
 {
     public function __construct(
         private ManagerRegistry $managerRegistry,
@@ -17,30 +16,7 @@ class DoctrineTranslationMappedToOptionBuilder implements MappedToOptionBuilderI
     ) {
     }
 
-    #[AsEventListener]
-    public function handleAttributeImportEvent(AttributeImportEvent $event): void
-    {
-        $column = $event->getColumn();
-
-        if (!str_starts_with($column->getMappedTo(), 'translation#')) {
-            return;
-        }
-
-        $model = $event->getEntity();
-
-        if (!$model instanceof TranslatableInterface) {
-            return;
-        }
-
-        $fieldInfo = explode('#', $column->getMappedTo())[1];
-
-        [$locale, $fieldName] = explode('.', $fieldInfo);
-
-        $model->translate($locale, false)->{'set'.ucfirst($fieldName)}($event->getValue());
-
-        $event->stopPropagation();
-    }
-
+    #[\Override]
     public function getOptions(Column $column, array $options): array
     {
         $class = $column->getImport()->getEntityClass();
@@ -82,5 +58,25 @@ class DoctrineTranslationMappedToOptionBuilder implements MappedToOptionBuilderI
         }
 
         return $options;
+    }
+
+    #[\Override]
+    public function assign(object $object, Column $column, mixed $value): bool
+    {
+        if (!\in_array($column->getMappedTo(), $this->getOptions($column, []))) {
+            return false;
+        }
+
+        if (!$object instanceof TranslatableInterface) {
+            return false;
+        }
+
+        $fieldInfo = explode('#', $column->getMappedTo())[1];
+
+        [$locale, $fieldName] = explode('.', $fieldInfo);
+
+        $object->translate($locale, false)->{'set'.ucfirst($fieldName)}($value);
+
+        return true;
     }
 }

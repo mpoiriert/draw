@@ -16,8 +16,15 @@ class DeleteTemporaryEntityExtension implements Extension
 {
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
+        $ignoreMissingService = $parameters->has('ignoreMissingService')
+            && $parameters->get('ignoreMissingService');
+
         $facade->registerSubscribers(
-            new class() implements TestSuiteFinishedSubscriber {
+            new class($ignoreMissingService) implements TestSuiteFinishedSubscriber {
+                public function __construct(private bool $ignoreMissingService)
+                {
+                }
+
                 public function notify(TestSuiteFinished $event): void
                 {
                     $class = $event->testSuite()->name();
@@ -38,6 +45,10 @@ class DeleteTemporaryEntityExtension implements Extension
                     \assert($container instanceof ContainerInterface);
 
                     try {
+                        if (!$container->has(TemporaryEntityCleanerInterface::class) && $this->ignoreMissingService) {
+                            return;
+                        }
+
                         $temporaryEntityFactory = $container->get(TemporaryEntityCleanerInterface::class);
 
                         \assert($temporaryEntityFactory instanceof TemporaryEntityCleanerInterface);

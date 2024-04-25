@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataImportBundle\Column;
 
-use Draw\Bundle\SonataImportBundle\Column\ColumnBuilder\ColumnBuilderInterface;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
@@ -11,10 +10,10 @@ class ColumnFactory
 {
     public function __construct(
         /**
-         * @param iterable<ColumnBuilderInterface> $columnBuilders
+         * @param iterable<ColumnExtractorInterface> $columnExtractors
          */
-        #[TaggedIterator(ColumnBuilderInterface::class)]
-        private iterable $columnBuilders = []
+        #[TaggedIterator(ColumnExtractorInterface::class)]
+        private iterable $columnExtractors = []
     ) {
     }
 
@@ -43,8 +42,8 @@ class ColumnFactory
                 $columnSamples[] = $columnSample;
             }
 
-            foreach ($this->columnBuilders as $columnBuilder) {
-                $columnInfo = $columnBuilder->extract(clone $column, $columnSamples);
+            foreach ($this->columnExtractors as $columnBuilder) {
+                $columnInfo = $columnBuilder->extractDefaultValue(clone $column, $columnSamples);
                 if ($columnInfo) {
                     $this->assign($columnInfo, $column);
                 }
