@@ -29,7 +29,6 @@ use Draw\Component\Messenger\Message\AsyncMessageInterface;
 use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\TransportRepository;
-use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
@@ -91,7 +90,10 @@ class MessengerIntegrationTest extends IntegrationTestCase
             ],
             'serializer_event_dispatcher' => [
                 'enabled' => false,
-                'transport' => 'messenger.transport.native_php_serializer',
+                'decorate_serializers' => [
+                    'messenger.transport.native_php_serializer',
+                    'messenger.transport.symfony_serializer',
+                ],
             ],
             'versioning' => [
                 'enabled' => false,
@@ -207,7 +209,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
             [
                 [
                     'serializer_event_dispatcher' => [
-                        'transport' => 'messenger.transport.serializer',
+                        'decorate_serializers' => ['messenger.transport.serializer'],
                     ],
                 ],
             ],
@@ -215,10 +217,8 @@ class MessengerIntegrationTest extends IntegrationTestCase
                 $defaultServices,
                 [
                     new ServiceConfiguration(
-                        'draw.messenger.serializer_event_dispatcher.event_dispatcher_serializer_decorator',
-                        [
-                            EventDispatcherSerializerDecorator::class,
-                        ],
+                        'draw.messenger.serializer_event_dispatcher0',
+                        [],
                         function (Definition $definition): void {
                             static::assertSame(
                                 ['messenger.transport.serializer', 'messenger.transport.serializer.inner', 0],
