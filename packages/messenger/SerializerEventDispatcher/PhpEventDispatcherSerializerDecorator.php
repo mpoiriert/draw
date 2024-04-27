@@ -7,14 +7,14 @@ use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
+use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[Exclude]
-class EventDispatcherSerializerDecorator implements SerializerInterface
+class PhpEventDispatcherSerializerDecorator extends PhpSerializer
 {
     public function __construct(
-        private SerializerInterface $serializer,
+        private PhpSerializer $serializer,
         private EventDispatcherInterface $eventDispatcher
     ) {
     }

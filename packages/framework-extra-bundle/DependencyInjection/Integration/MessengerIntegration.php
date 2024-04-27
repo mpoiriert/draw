@@ -18,6 +18,7 @@ use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
+use Draw\Component\Messenger\SerializerEventDispatcher\PhpEventDispatcherSerializerDecorator;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageInterface;
 use Draw\Component\Messenger\Transport\Entity\DrawMessageTagInterface;
@@ -224,13 +225,24 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
             \dirname((new \ReflectionClass(EventDispatcherSerializerDecorator::class))->getFileName()),
         );
 
-        $container
-            ->getDefinition(EventDispatcherSerializerDecorator::class)
-            ->setDecoratedService(
-                $config['transport'],
-                $config['transport'].'.inner'
-            )
-            ->setArgument(0, new Reference($config['transport'].'.inner'));
+        foreach ($config['decorate_serializers'] as $key => $serializer) {
+            $decoratorClass = EventDispatcherSerializerDecorator::class;
+            if ('messenger.transport.native_php_serializer' === $serializer) {
+                $decoratorClass = PhpEventDispatcherSerializerDecorator::class;
+            }
+
+            $container
+                ->setDefinition(
+                    'draw.messenger.serializer_event_dispatcher'.$key,
+                    (new Definition($decoratorClass))
+                        ->setAutowired(true)
+                        ->setDecoratedService(
+                            $serializer,
+                            $serializer.'.inner'
+                        )
+                        ->setArgument(0, new Reference($serializer.'.inner'))
+                );
+        }
     }
 
     private function loadVersioning(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -394,7 +406,13 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
         return (new ArrayNodeDefinition('serializer_event_dispatcher'))
             ->canBeEnabled()
             ->children()
-                ->scalarNode('transport')->defaultValue('messenger.transport.native_php_serializer')->end()
+                ->arrayNode('decorate_serializers')
+                    ->defaultValue([
+                        'messenger.transport.native_php_serializer',
+                        'messenger.transport.symfony_serializer',
+                    ])
+                    ->scalarPrototype()->end()
+                ->end()
             ->end();
     }
 
