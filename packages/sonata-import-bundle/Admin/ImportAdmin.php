@@ -4,7 +4,7 @@ namespace Draw\Bundle\SonataImportBundle\Admin;
 
 use Draw\Bundle\SonataImportBundle\Controller\ImportController;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
-use Draw\Bundle\SonataImportBundle\Import\Importer;
+use Draw\Bundle\SonataImportBundle\Import\ImporterInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class ImportAdmin extends AbstractAdmin
 {
     public function __construct(
-        private Importer $importer,
+        private ImporterInterface $importer,
         #[Autowire('%draw.sonata_import.classes%')]
         private array $importableClassList
     ) {
