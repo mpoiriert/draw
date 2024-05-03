@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
+use Draw\Bundle\SonataIntegrationBundle\Messenger\Controller\MessageController;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Security\CanShowMessageVoter;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -28,6 +29,7 @@ class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataInteg
     public static function provideTestHasServiceDefinition(): iterable
     {
         yield [MessengerMessageAdmin::class];
+        yield [MessageController::class];
         yield [FinalizeContextQueueCountEventListener::class];
         yield [CanShowMessageVoter::class];
     }

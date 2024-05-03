@@ -90,7 +90,20 @@ class MessengerMessageAdmin extends AbstractAdmin
             ->add('availableAt')
             ->add('deliveredAt')
             ->add('expiresAt')
-            ->add('tags', 'list');
+            ->add('tags', 'list')
+            ->add(
+                ListMapper::NAME_ACTIONS,
+                ListMapper::TYPE_ACTIONS,
+                [
+                    'actions' => [
+                        'show' => [],
+                        'retry' => [
+                            'template' => '@DrawSonataIntegration/Messenger/Message/list__action_retry.html.twig',
+                        ],
+                        'delete' => [],
+                    ],
+                ]
+            );
     }
 
     public function dumpMessage(DrawMessageInterface $message): string
@@ -109,6 +122,7 @@ class MessengerMessageAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
+        $collection->add('retry', sprintf('%s/retry', $this->getRouterIdParameter()));
         $collection->remove('create');
         $collection->remove('edit');
     }
@@ -129,5 +143,16 @@ class MessengerMessageAdmin extends AbstractAdmin
             ->setParameter('now', new \DateTimeImmutable());
 
         return $query;
+    }
+
+    protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array
+    {
+        if ('show' === $action && 'failed' === $object?->getQueueName()) {
+            $buttonList['retry'] = [
+                'template' => '@DrawSonataIntegration/Messenger/Message/show__action_retry.html.twig',
+            ];
+        }
+
+        return $buttonList;
     }
 }

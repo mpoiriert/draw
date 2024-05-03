@@ -26,6 +26,7 @@ use Draw\Component\Messenger\ManualTrigger\MessageHandler\RedirectToRouteMessage
 use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
+use Draw\Component\Messenger\MessageHandler\RetryFailedMessageMessageHandler;
 use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\TransportRepository;
@@ -165,6 +166,12 @@ class MessengerIntegrationTest extends IntegrationTestCase
                 'draw.messenger.searchable.transport_repository',
                 [
                     TransportRepository::class,
+                ]
+            ),
+            new ServiceConfiguration(
+                'draw.messenger.message_handler.retry_failed_message_message_handler',
+                [
+                    RetryFailedMessageMessageHandler::class,
                 ]
             ),
             new ServiceConfiguration(

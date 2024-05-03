@@ -8,6 +8,7 @@ use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobController;
 use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\Configuration;
+use Draw\Bundle\SonataIntegrationBundle\Messenger\Controller\MessageController;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Application\Configuration\Entity\Config;
@@ -103,12 +104,12 @@ class ConfigurationTest extends ConfigurationTestCase
                 'admin' => [
                     'group' => 'Messenger',
                     'entity_class' => MessengerMessage::class,
-                    'controller_class' => 'sonata.admin.controller.crud',
+                    'controller_class' => MessageController::class,
                     'icon' => 'fas fa-rss',
                     'label' => 'Message',
                     'pager_type' => 'simple',
                     'show_in_dashboard' => true,
-                    'translation_domain' => 'SonataAdminBundle',
+                    'translation_domain' => 'DrawMessengerAdmin',
                     'enabled' => true,
                 ],
             ],
