@@ -12,7 +12,17 @@
             {% for field in field_description.options.fields %}
                 {% if field.type != 'grid' %}
                     {% set colCount = colCount +1 %}
-                    <th>{{ field.label }}</th>
+                    <th>
+                        {% apply spaceless %}
+                            {% if field.label is not same as(false) %}
+                                {% if field.translationDomain is same as(false) %}
+                                    {{ field.label }}
+                                {% else %}
+                                    {{ field.label|trans({}, field.translationDomain) }}
+                                {% endif %}
+                            {% endif %}
+                        {% endapply %}
+                    </th>
                 {% endif %}
             {% endfor %}
         </tr>
