@@ -1,0 +1,2 @@
+message_cannot_be_retried: Message cannot be retried.
+retry_message_successfully_dispatched: Retry message successfully dispatched.

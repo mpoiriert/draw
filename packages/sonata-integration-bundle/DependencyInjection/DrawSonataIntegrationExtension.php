@@ -182,6 +182,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                         ->setAutowired(true)
                         ->setAutoconfigured(true)
                 );
+
+            $this->setControllerClassDefinition($config['admin'], $container);
         }
     }
 

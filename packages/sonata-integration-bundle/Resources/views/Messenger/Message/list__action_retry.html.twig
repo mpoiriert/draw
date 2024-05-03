@@ -1,0 +1,8 @@
+{% if 'failed' == object.getQueueName() %}
+    <a href="{{ admin.generateObjectUrl('retry', object) }}"
+       class="btn btn-sm btn-default"
+       title="Retry"
+    >
+        <i class="fa fa-rotate-right"></i> Retry
+    </a>
+{% endif %}
