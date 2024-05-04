@@ -25,7 +25,7 @@ class MessageController extends CRUDController
         }
 
         $messageBus->dispatch(
-            new RetryFailedMessageMessage($message)
+            new RetryFailedMessageMessage($message->getId())
         );
 
         $this->addFlash(

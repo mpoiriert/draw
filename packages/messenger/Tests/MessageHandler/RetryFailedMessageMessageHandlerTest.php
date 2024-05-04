@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Draw\Component\Messenger\Tests\MessageHandler;
 
-use App\Entity\MessengerMessage;
 use Draw\Component\Messenger\Message\RetryFailedMessageMessage;
 use Draw\Component\Messenger\MessageHandler\RetryFailedMessageMessageHandler;
 use Draw\Contracts\Process\ProcessFactoryInterface;
@@ -56,9 +55,7 @@ class RetryFailedMessageMessageHandlerTest extends TestCase
             ->method('mustRun');
 
         $this->handler->handleRetryFailedMessageMessage(
-            new RetryFailedMessageMessage(
-                (new MessengerMessage())->setId($messageId)
-            )
+            new RetryFailedMessageMessage($messageId)
         );
     }
 }

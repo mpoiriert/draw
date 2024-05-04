@@ -24,7 +24,7 @@ class RetryFailedMessageMessageHandler
                 [
                     $this->consolePath,
                     'messenger:failed:retry',
-                    $message->getMessage()->getId(),
+                    $message->getMessageId(),
                     '--force',
                 ]
             )

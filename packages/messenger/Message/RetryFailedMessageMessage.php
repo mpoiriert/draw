@@ -4,31 +4,15 @@ declare(strict_types=1);
 
 namespace Draw\Component\Messenger\Message;
 
-use App\Entity\MessengerMessage;
-use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Message\DoctrineReferenceAwareInterface;
-use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-
-class RetryFailedMessageMessage implements DoctrineReferenceAwareInterface
+class RetryFailedMessageMessage
 {
-    private ?MessengerMessage $message;
-
     public function __construct(
-        MessengerMessage $message,
+        private string $messageId,
     ) {
-        $this->message = $message;
     }
 
-    public function getMessage(): MessengerMessage
+    public function getMessageId(): string
     {
-        if (null === $this->message) {
-            throw new UnrecoverableMessageHandlingException('Message is not set.');
-        }
-
-        return $this->message;
-    }
-
-    public function getPropertiesWithDoctrineObject(): array
-    {
-        return ['message'];
+        return $this->messageId;
     }
 }
