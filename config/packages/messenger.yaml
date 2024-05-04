@@ -19,5 +19,6 @@ framework:
       Draw\Component\CronJob\Message\ExecuteCronJobMessage: 'async_high_priority'
       App\Message\NewTestDocumentMessage: ['sync', 'async']
       Draw\Component\Messenger\ManualTrigger\Message\ManuallyTriggeredInterface: 'async'
+      Draw\Component\Messenger\Message\RetryFailedMessageMessage: 'async'
       Draw\Bundle\UserBundle\Message\NewUserLockMessage: 'sync'
       Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage: 'sync'

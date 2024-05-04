@@ -9,6 +9,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EntityMigrator
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\LoggerDecoratorPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerRetryFailedMessageMessageHandlerCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\TagIfExpressionCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
@@ -37,7 +38,7 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder
-            ->expects(static::exactly(10))
+            ->expects(static::exactly(11))
             ->method('addCompilerPass')
             ->with(
                 ...static::withConsecutive(
@@ -58,6 +59,11 @@ class DrawFrameworkExtraBundleTest extends TestCase
                     ],
                     [
                         static::isInstanceOf(MessengerBrokerCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(MessengerRetryFailedMessageMessageHandlerCompilerPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
