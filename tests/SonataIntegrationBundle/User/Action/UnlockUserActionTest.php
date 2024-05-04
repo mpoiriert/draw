@@ -7,7 +7,7 @@ use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UnlockTraitUserActionTest extends WebTestCase implements AutowiredInterface
+class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
 {
     use WebTestCaseTrait;
 
