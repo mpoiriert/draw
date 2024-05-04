@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Draw\Component\CronJob;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\CronJob\Entity\CronJobExecution;
@@ -40,6 +41,8 @@ class CronJobProcessor
     {
         $manager = $this->managerRegistry->getManagerForClass(CronJobExecution::class);
 
+        \assert($manager instanceof EntityManagerInterface);
+
         if (!$execution->isExecutable(new \DateTimeImmutable())) {
             $execution->skip();
             $manager->flush();
@@ -58,6 +61,10 @@ class CronJobProcessor
 
         $execution->start();
         $manager->flush();
+
+        // This allows long process cron to release connection
+        // Also allow issue with server "gone away" to be resolved
+        $manager->getConnection()->close();
 
         $process = $this->processFactory->createFromShellCommandLine(
             $this->parameterBag->resolveValue(

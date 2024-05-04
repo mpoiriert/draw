@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Draw\Component\CronJob\Tests;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\CronJob\CronJobProcessor;
@@ -130,6 +131,17 @@ class CronJobProcessorTest extends TestCase
             ->expects(static::exactly(2))
             ->method('flush');
 
+        $this->entityManager
+            ->expects(static::once())
+            ->method('getConnection')
+            ->willReturn(
+                $connection = $this->createMock(Connection::class)
+            );
+
+        $connection
+            ->expects(static::once())
+            ->method('close');
+
         $this->processFactory
             ->expects(static::once())
             ->method('createFromShellCommandLine')
@@ -196,6 +208,17 @@ class CronJobProcessorTest extends TestCase
         $this->entityManager
             ->expects(static::exactly(2))
             ->method('flush');
+
+        $this->entityManager
+            ->expects(static::once())
+            ->method('getConnection')
+            ->willReturn(
+                $connection = $this->createMock(Connection::class)
+            );
+
+        $connection
+            ->expects(static::once())
+            ->method('close');
 
         $process = $this->createMock(Process::class);
         $process
