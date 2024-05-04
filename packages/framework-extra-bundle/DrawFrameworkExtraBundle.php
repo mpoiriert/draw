@@ -9,6 +9,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EntityMigrator
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\LoggerDecoratorPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerRetryFailedMessageMessageHandlerCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\TagIfExpressionCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
@@ -19,6 +20,7 @@ use Draw\Component\EntityMigrator\Migrator;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Expirable\Command\PurgeExpiredMessageCommand;
+use Draw\Component\Messenger\MessageHandler\RetryFailedMessageMessageHandler;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
@@ -43,6 +45,10 @@ class DrawFrameworkExtraBundle extends Bundle
 
         if (class_exists(Broker::class)) {
             $container->addCompilerPass(new MessengerBrokerCompilerPass());
+        }
+
+        if (class_exists(RetryFailedMessageMessageHandler::class)) {
+            $container->addCompilerPass(new MessengerRetryFailedMessageMessageHandlerCompilerPass());
         }
 
         if (class_exists(AddNewestInstanceRoleCommandOptionPass::class)) {
