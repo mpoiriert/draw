@@ -27,6 +27,8 @@ use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\VersionLinkDocumentation
 use Draw\Component\OpenApi\Extraction\Extractor\PhpDoc\OperationExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\ExtractorInterface;
+use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ConfigurableErrorToHttpCodeConverter;
+use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\HttpExceptionToHttpCodeConverter;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
@@ -330,6 +332,8 @@ class OpenApiIntegration implements IntegrationInterface
     {
         if (!$this->isConfigEnabled($container, $config)) {
             $container->removeDefinition(ResponseApiExceptionListener::class);
+            $container->removeDefinition(ConfigurableErrorToHttpCodeConverter::class);
+            $container->removeDefinition(HttpExceptionToHttpCodeConverter::class);
 
             return;
         }
@@ -352,12 +356,14 @@ class OpenApiIntegration implements IntegrationInterface
                 new Parameter('kernel.debug')
             )
             ->setArgument(
-                '$errorCodes',
-                $codes
-            )
-            ->setArgument(
                 '$violationKey',
                 $config['violationKey']
+            );
+
+        $container->getDefinition(ConfigurableErrorToHttpCodeConverter::class)
+            ->setArgument(
+                '$errorCodes',
+                $codes
             );
 
         $operationExtractorDefinition = $container->getDefinition(OperationExtractor::class);

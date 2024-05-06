@@ -10,7 +10,6 @@ use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Response as OpenResponse;
 use Draw\Component\OpenApi\Schema\Root;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +25,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class ResponseApiExceptionListenerTest extends TestCase
 {
     private ResponseApiExceptionListener $object;
+
     private HttpKernelInterface $httpKernel;
     private \Exception $exception;
     private ExceptionEvent $exceptionEvent;
@@ -146,7 +146,9 @@ class ResponseApiExceptionListenerTest extends TestCase
         static::assertArrayNotHasKey(
             'detail',
             json_decode(
-                $this->onKernelException(new ResponseApiExceptionListener(false))->getContent(),
+                $this->onKernelException(
+                    new ResponseApiExceptionListener(debug: false)
+                )->getContent(),
                 true,
                 512,
                 \JSON_THROW_ON_ERROR
@@ -170,7 +172,7 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
 
         $responseData = json_decode(
-            $this->onKernelException(new ResponseApiExceptionListener(true))->getContent(),
+            $this->onKernelException(new ResponseApiExceptionListener(debug: true))->getContent(),
             true,
             512,
             \JSON_THROW_ON_ERROR
@@ -199,72 +201,6 @@ class ResponseApiExceptionListenerTest extends TestCase
                 ],
             ],
             $responseData['detail']
-        );
-    }
-
-    public function testOnKernelExceptionDefaultStatusCode500(): void
-    {
-        static::assertSame(
-            500,
-            $this->onKernelException()->getStatusCode()
-        );
-    }
-
-    public static function provideOnKernelExceptionStatusCode(): iterable
-    {
-        yield 'ChangeDefault' => [
-            new \Exception(),
-            [\Exception::class => 400],
-            400,
-        ];
-
-        yield 'FallbackOnDefault' => [
-            new \Exception(),
-            [\RuntimeException::class => 400],
-            500,
-        ];
-
-        yield 'MultipleConfiguration' => [
-            new \Exception(),
-            [\RuntimeException::class => 400, \Exception::class => 300],
-            300,
-        ];
-
-        yield 'Extend' => [
-            new \OutOfBoundsException(),
-            [\RuntimeException::class => 400, \Exception::class => 300],
-            400,
-        ];
-
-        $exception = new class() extends \Exception implements \JsonSerializable {
-            public function jsonSerialize(): void
-            {
-            }
-        };
-
-        yield 'Implements' => [
-            $exception,
-            [\RuntimeException::class => 400, \JsonSerializable::class => 300],
-            300,
-        ];
-    }
-
-    /**
-     * @param array<string,int> $errorCodes
-     */
-    #[DataProvider('provideOnKernelExceptionStatusCode')]
-    public function testOnKernelExceptionErrorCode(\Throwable $throwable, array $errorCodes, int $errorCode): void
-    {
-        $this->exceptionEvent = new ExceptionEvent(
-            $this->httpKernel,
-            $this->request,
-            HttpKernelInterface::MAIN_REQUEST,
-            $throwable
-        );
-
-        static::assertSame(
-            $errorCode,
-            $this->onKernelException(new ResponseApiExceptionListener(false, $errorCodes))->getStatusCode()
         );
     }
 
@@ -299,7 +235,7 @@ class ResponseApiExceptionListenerTest extends TestCase
         $this->createConstraintListExceptionEvent($constraint = new NotNull(['payload' => uniqid('payload-')]));
 
         $value = json_decode(
-            $this->onKernelException(new ResponseApiExceptionListener(false, [], 'errors'))->getContent(),
+            $this->onKernelException(new ResponseApiExceptionListener())->getContent(),
             null,
             512,
             \JSON_THROW_ON_ERROR

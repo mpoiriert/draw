@@ -4,25 +4,20 @@ namespace Draw\Component\OpenApi\EventListener;
 
 use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
+use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ConfigurableErrorToHttpCodeConverter;
+use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ErrorToHttpCodeConverterInterface;
 use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 final class ResponseApiExceptionListener implements EventSubscriberInterface
 {
-    /**
-     * @var array<string,int>
-     */
-    private array $errorCodes;
-
-    private const DEFAULT_STATUS_CODE = 500;
-
     public static function getSubscribedEvents(): array
     {
         return [
@@ -32,11 +27,15 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
     }
 
     public function __construct(
+        /**
+         * @var ErrorToHttpCodeConverterInterface[]
+         */
+        #[TaggedIterator(ErrorToHttpCodeConverterInterface::class)]
+        private iterable $errorToHttpCodeConverters = [],
         private bool $debug = false,
-        array $errorCodes = [],
         private string $violationKey = 'errors',
     ) {
-        $this->errorCodes = array_filter($errorCodes);
+        $this->errorToHttpCodeConverters ??= new ConfigurableErrorToHttpCodeConverter();
     }
 
     public function addErrorDefinition(PreDumpRootSchemaEvent $event): void
@@ -183,22 +182,14 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         return $result;
     }
 
-    private function getStatusCode(\Throwable $exception): int
+    private function getStatusCode(\Throwable $error): int
     {
-        if ($exception instanceof HttpException) {
-            return $exception->getStatusCode();
-        }
-
-        $exceptionClass = $exception::class;
-
-        foreach ($this->errorCodes as $exceptionMapClass => $value) {
-            switch (true) {
-                case $exceptionClass === $exceptionMapClass:
-                case is_a($exception, $exceptionMapClass, true):
-                    return $value;
+        foreach ($this->errorToHttpCodeConverters as $converter) {
+            if (null !== $statusCode = $converter->convertToHttpCode($error)) {
+                return $statusCode;
             }
         }
 
-        return self::DEFAULT_STATUS_CODE;
+        return 500;
     }
 }

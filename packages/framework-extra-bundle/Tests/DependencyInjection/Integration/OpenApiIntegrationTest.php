@@ -54,6 +54,8 @@ use Draw\Component\OpenApi\Extraction\Extractor\PhpReflection\OperationResponseE
 use Draw\Component\OpenApi\Extraction\Extractor\Symfony\RouteOperationExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\Symfony\RouterRootSchemaExtractor;
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
+use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ConfigurableErrorToHttpCodeConverter;
+use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\HttpExceptionToHttpCodeConverter;
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBodyValueResolver;
@@ -480,6 +482,18 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.event_listener.request_validation_listener',
                     [RequestValidationListener::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.http_foundation.error_to_http_code_converter.configurable_error_to_http_code_converter',
+                    [
+                        ConfigurableErrorToHttpCodeConverter::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.http_foundation.error_to_http_code_converter.http_exception_to_http_code_converter',
+                    [
+                        HttpExceptionToHttpCodeConverter::class,
+                    ]
                 ),
             ],
             [
