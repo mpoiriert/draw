@@ -5,15 +5,15 @@
     "type": "symfony-bundle",
     "keywords": ["symfony", "automation test", "test", "unit test", "integration test"],
     "require": {
-        "draw/core": "^0.10.26",
-        "draw/tester": "^0.10.26",
+        "draw/core": "^0.11",
+        "draw/tester": "^0.11",
         "symfony/browser-kit": "^6.4.0",
         "symfony/framework-bundle": "^6.4.0",
         "symfony/http-foundation": "^6.4.0",
         "symfony/validator": "^6.4.0"
     },
     "require-dev": {
-        "draw/profiling": "^0.10.26",
+        "draw/profiling": "^0.11",
         "phpunit/phpunit": "^9.0 || ^10.0",
         "symfony/messenger": "^6.4.0",
         "symfony/yaml": "^6.4.0"
