@@ -19,7 +19,7 @@
             "subSystems": [
                 {
                     "name": "Messenger transport [async]",
-                    "status": "OK"
+                    "status": "UNKNOWN"
                 }
             ]
         },

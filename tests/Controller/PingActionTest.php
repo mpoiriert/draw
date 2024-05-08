@@ -13,7 +13,7 @@ class PingActionTest extends WebTestCase
 
         $client->request('GET', '/ping');
 
-        static::assertResponseStatusCodeSame(200);
+        static::assertResponseStatusCodeSame(207);
 
         static::assertResponseJsonAgainstFile(
             __DIR__.'/fixtures/PingActionTest/testPingWithContext_ping.json',
@@ -24,9 +24,9 @@ class PingActionTest extends WebTestCase
     {
         yield 'error' => ['error', Response::HTTP_BAD_GATEWAY];
 
-        yield 'ping' => ['ping', Response::HTTP_OK];
+        yield 'ping' => ['ping', Response::HTTP_MULTI_STATUS];
 
-        yield 'not-configured' => ['not-configured', Response::HTTP_OK];
+        yield 'not-configured' => ['not-configured', Response::HTTP_MULTI_STATUS];
 
         yield 'unknown' => ['unknown', Response::HTTP_MULTI_STATUS];
     }
