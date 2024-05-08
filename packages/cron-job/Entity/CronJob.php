@@ -53,6 +53,9 @@ class CronJob implements \Stringable
     #[Assert\Range(min: 0, max: 255)]
     private ?int $priority = null;
 
+    #[ORM\Column(name: 'notes', type: 'text', nullable: true)]
+    private ?string $notes = null;
+
     /**
      * @var Selectable&Collection<CronJobExecution>
      */
@@ -149,6 +152,18 @@ class CronJob implements \Stringable
     public function setPriority(?int $priority): self
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): self
+    {
+        $this->notes = $notes;
 
         return $this;
     }

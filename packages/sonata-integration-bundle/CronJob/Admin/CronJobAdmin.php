@@ -56,6 +56,7 @@ class CronJobAdmin extends AbstractAdmin
         $form
             ->with('Definition', ['class' => 'col-md-8'])
                 ->add('name')
+                ->add('notes')
                 ->add(
                     'command',
                     null,
@@ -79,6 +80,7 @@ class CronJobAdmin extends AbstractAdmin
 
         $show
             ->add('name')
+            ->add('notes')
             ->add('command')
             ->add('schedule')
             ->add('active')
