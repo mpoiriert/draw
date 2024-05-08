@@ -8,6 +8,7 @@ use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
 use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobController;
 use Draw\Bundle\SonataIntegrationBundle\CronJob\Controller\CronJobExecutionController;
+use Draw\Bundle\SonataIntegrationBundle\Messenger\Controller\MessageController;
 use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationExtension;
 use Draw\Bundle\UserBundle\DrawUserBundle;
 use Draw\Bundle\UserBundle\Entity\UserLock;
@@ -143,8 +144,10 @@ class Configuration implements ConfigurationInterface
                     (new SonataAdminNodeConfiguration(MessengerMessage::class, 'Messenger', 'admin'))
                         ->addDefaultsIfNotSet()
                         ->pagerTypeDefaultValue('simple')
+                        ->controllerClassDefaultValue(MessageController::class)
                         ->iconDefaultValue('fas fa-rss')
                         ->labelDefaultValue('Message')
+                        ->translationDomainDefaultValue('DrawMessengerAdmin')
                         ->canBeDisabled()
                 )
             ->end();

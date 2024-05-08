@@ -2,32 +2,18 @@
 
 namespace App\Tests\SonataIntegrationBundle\User\Action;
 
-use App\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Tests\SonataIntegrationBundle\WebTestCaseTrait;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class UnlockUserActionTest extends WebTestCase
+class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
 {
-    protected function login(KernelBrowser $client, string $email): void
-    {
-        $client->loginUser($this->getUser($email), 'user');
-    }
-
-    protected function getUser(string $email): User
-    {
-        return static::getContainer()
-            ->get(EntityManagerInterface::class)
-            ->getRepository(User::class)
-            ->findOneBy(['email' => $email]);
-    }
+    use WebTestCaseTrait;
 
     public function testUnlock(): void
     {
-        $client = static::createClient();
-
-        $this->login($client, 'admin@example.com');
+        $this->login('admin@example.com');
 
         $user = $this->getUser('locked@example.com');
 
@@ -35,7 +21,7 @@ class UnlockUserActionTest extends WebTestCase
 
         $userLock->setUnlockUntil(null);
 
-        $client->request('GET', sprintf('/admin/app/user/%s/unlock', $user->getId()));
+        static::$client->request('GET', sprintf('/admin/app/user/%s/unlock', $user->getId()));
 
         static::assertResponseStatusCodeSame(302);
         static::assertResponseHeaderSame(
@@ -43,28 +29,27 @@ class UnlockUserActionTest extends WebTestCase
             sprintf('/admin/app/user/%s/show', $user->getId())
         );
 
-        $client->followRedirect();
+        static::$client->followRedirect();
 
         static::assertResponseIsSuccessful();
 
         static::assertSelectorTextContains('.alert-success', 'The user lock has been unlock for the next 24 hour');
 
-        $userLock = static::getContainer()
-            ->get(EntityManagerInterface::class)
-            ->find(UserLock::class, $userLock->getId());
+        $userLock = $this->entityManager->find(
+            UserLock::class,
+            $userLock->getId()
+        );
 
         static::assertEqualsWithDelta(new \DateTimeImmutable('+ 24 hours'), $userLock->getUnlockUntil(), 2);
     }
 
     public function testNoAccess(): void
     {
-        $client = static::createClient();
-
-        $this->login($client, 'locked@example.com');
+        $this->login('locked@example.com');
 
         $user = $this->getUser('admin@example.com');
 
-        $client->request('GET', sprintf('/admin/app/user/%s/unlock', $user->getId()));
+        static::$client->request('GET', sprintf('/admin/app/user/%s/unlock', $user->getId()));
 
         static::assertResponseStatusCodeSame(403);
     }

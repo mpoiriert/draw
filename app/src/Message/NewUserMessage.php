@@ -5,11 +5,11 @@ namespace App\Message;
 use App\Entity\User;
 use Draw\Component\Messenger\AutoStamp\Message\StampingAwareInterface;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Message\DoctrineReferenceAwareInterface;
-use Draw\Component\Messenger\Message\AsyncMessageInterface;
+use Draw\Component\Messenger\Message\AsyncHighPriorityMessageInterface;
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Symfony\Component\Messenger\Envelope;
 
-class NewUserMessage implements DoctrineReferenceAwareInterface, AsyncMessageInterface, StampingAwareInterface
+class NewUserMessage implements DoctrineReferenceAwareInterface, AsyncHighPriorityMessageInterface, StampingAwareInterface
 {
     public function __construct(private ?User $user)
     {

@@ -3,6 +3,7 @@ when@test:
     messenger:
       transports:
         sync: 'in-memory://'
+        async: 'in-memory://'
 
 framework:
   messenger:
@@ -17,7 +18,8 @@ framework:
 
     routing:
       Draw\Component\CronJob\Message\ExecuteCronJobMessage: 'async_high_priority'
-      App\Message\NewTestDocumentMessage: ['sync', 'async']
+      App\Message\NewTestDocumentMessage: ['sync', 'async_high_priority']
       Draw\Component\Messenger\ManualTrigger\Message\ManuallyTriggeredInterface: 'async'
+      Draw\Component\Messenger\Message\RetryFailedMessageMessage: 'async'
       Draw\Bundle\UserBundle\Message\NewUserLockMessage: 'sync'
       Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage: 'sync'
