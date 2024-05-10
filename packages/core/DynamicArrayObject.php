@@ -30,6 +30,11 @@ class DynamicArrayObject extends \ArrayObject
         $this->offsetSet($key, $value);
     }
 
+    public function __isset($key): bool
+    {
+        return $this->offsetExists($key);
+    }
+
     public function offsetExists($key): bool
     {
         return true;
