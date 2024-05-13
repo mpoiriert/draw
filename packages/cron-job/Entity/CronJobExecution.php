@@ -37,13 +37,13 @@ class CronJobExecution implements \Stringable
     private ?int $id = null;
 
     #[ORM\Column(name: 'requested_at', type: 'datetime_immutable', nullable: false)]
-    private \DateTimeImmutable $requestedAt;
+    private ?\DateTimeImmutable $requestedAt = null;
 
     #[ORM\Column(name: 'state', type: 'string', length: 20, nullable: false, options: ['default' => self::STATE_REQUESTED])]
     private string $state = self::STATE_REQUESTED;
 
     #[ORM\Column(name: '`force`', type: 'boolean', nullable: false, options: ['default' => false])]
-    private bool $force;
+    private bool $force = false;
 
     #[ORM\Column(name: 'execution_started_at', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $executionStartedAt = null;
@@ -72,7 +72,7 @@ class CronJobExecution implements \Stringable
             onDelete: 'CASCADE',
         )
     ]
-    private CronJob $cronJob;
+    private ?CronJob $cronJob = null;
 
     public function __construct(
         CronJob $cronJob,
