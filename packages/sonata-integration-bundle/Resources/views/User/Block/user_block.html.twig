@@ -6,10 +6,14 @@
         </li>
         <li class="user-footer">
             <div class="pull-left">
-                <a href="{{ _profile_uri }}" class="btn btn-default btn-flat"><i class="fas fa-user"></i> Profile</a>
+                <a href="{{ _profile_uri }}" class="btn btn-default btn-flat">
+                    <i class="fas fa-user"></i> {{ 'header.button.profile' | trans([], 'DrawUserBundle') }}
+                </a>
             </div>
             <div class="pull-right">
-                <a href="{{  url('admin_logout') }}" class="btn btn-default btn-flat"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="{{ url('admin_logout') }}" class="btn btn-default btn-flat">
+                    <i class="fas fa-sign-out-alt"></i> {{ 'header.button.logout' | trans([], 'DrawUserBundle') }}
+                </a>
             </div>
         </li>
     {% endif %}

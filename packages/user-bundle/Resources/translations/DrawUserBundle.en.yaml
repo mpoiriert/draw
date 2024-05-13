@@ -44,3 +44,13 @@ admin:
         2fa_enabled: '2FA enabled'
     form:
         2fa_enabled: '2FA enabled'
+    button:
+        enable_2fa: 'Enable 2FA'
+        disable_2fa: 'Disable 2FA'
+        unlock_for_24h: 'Unlock for 24h'
+        request_password_change: 'Request password change'
+
+header:
+    button:
+        profile: 'Profile'
+        logout: 'Logout'
