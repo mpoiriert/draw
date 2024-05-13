@@ -2,7 +2,7 @@
     <li>
         <a class="sonata-action-element" href="{{ admin.generateObjectUrl('enable-2fa', object) }}">
             <i class="fas fa-fingerprint"></i>
-            Enable 2FA
+            {{ 'admin.button.enable_2fa' | trans([], 'DrawUserBundle') }}
         </a>
     </li>
 {% endif %}
