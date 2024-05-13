@@ -41,6 +41,11 @@ class PreventDeleteExtension extends AbstractAdminExtension
 
         $subject = $admin->getSubject();
 
+        // This can occur when calling symfony translation:extract commandf
+        if (null === $admin->id($subject)) {
+            return;
+        }
+
         $relations = $this->preventDeleteRelationLoader->getRelationsForObject($subject);
 
         if (empty($relations)) {
