@@ -51,6 +51,7 @@ class KernelShutdownExtension implements Extension
             $method->invoke(null);
 
             $reflection->getProperty('kernel')->setValue(null);
+            $reflection->getProperty('class')->setValue(null);
         }
     }
 }
