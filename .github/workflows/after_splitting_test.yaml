@@ -19,6 +19,7 @@ jobs:
           - console
           - core
           - cron-job
+          - dependency-injection
           - doctrine-extra
           - entity-migrator
           - fixer
@@ -38,6 +39,7 @@ jobs:
           - user-bundle
           - validator
           - workflow
+
 
     name: After Split Testing of ${{ matrix.package_name }}
 

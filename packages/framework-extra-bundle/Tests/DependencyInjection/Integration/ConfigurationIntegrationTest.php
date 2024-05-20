@@ -4,9 +4,11 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Application\Configuration\DoctrineConfigurationRegistry;
 use Draw\Component\Application\Configuration\Entity\Config;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

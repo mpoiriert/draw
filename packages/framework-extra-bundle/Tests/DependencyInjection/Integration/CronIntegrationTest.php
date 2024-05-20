@@ -3,9 +3,11 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Application\Cron\Command\CronDumpToFileCommand;
 use Draw\Component\Application\Cron\CronManager;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Definition;
 

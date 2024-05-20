@@ -4,6 +4,8 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Component\Application\Versioning\EventListener\FetchRunningVersionListener;
 use Draw\Component\Application\Versioning\VersionManager;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

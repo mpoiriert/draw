@@ -1,10 +1,9 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\DependencyInjection\Integration\Test;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\DrawFrameworkExtraExtension;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -57,9 +56,8 @@ abstract class IntegrationTestCase extends TestCase
         array $extraAliases = [],
         array $expectedParameters = []
     ): void {
-        $dirname = \dirname((new \ReflectionClass(DrawFrameworkExtraExtension::class))->getFileName(), 2);
         $container = new ContainerBuilder();
-        $loader = new PhpFileLoader($container, new FileLocator($dirname.'/Resources/config'));
+        $loader = new PhpFileLoader($container, new FileLocator([]));
 
         $configuration = $this->processConfiguration($configuration);
 

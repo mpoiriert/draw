@@ -3,12 +3,14 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV1;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**

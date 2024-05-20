@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\DependencyInjection\Integration;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

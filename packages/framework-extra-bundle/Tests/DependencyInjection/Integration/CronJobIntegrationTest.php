@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronJobIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\CronJob\Command\QueueCronJobByNameCommand;
 use Draw\Component\CronJob\Command\QueueDueCronJobsCommand;
 use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\EventListener\PostExecutionQueueCronJobListener;
 use Draw\Component\CronJob\MessageHandler\ExecuteCronJobMessageHandler;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(CronJobIntegration::class)]

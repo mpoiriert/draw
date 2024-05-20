@@ -2,6 +2,9 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
+use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Component\EntityMigrator\Command\MigrateCommand;
 use Draw\Component\EntityMigrator\Command\QueueBatchCommand;
 use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;

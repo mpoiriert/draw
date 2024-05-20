@@ -2,9 +2,11 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\Logger\EventListener\SlowRequestLoggerListener;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpFoundation\RequestMatcher\HostRequestMatcher;

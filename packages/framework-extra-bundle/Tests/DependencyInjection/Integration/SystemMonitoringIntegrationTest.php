@@ -3,7 +3,6 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\DrawFrameworkExtraExtension;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SystemMonitoringIntegration;
 use Draw\Component\Application\SystemMonitoring\Action\PingAction;
 use Draw\Component\Application\SystemMonitoring\Bridge\Doctrine\DBALConnectionStatusProvider;
@@ -12,6 +11,9 @@ use Draw\Component\Application\SystemMonitoring\Bridge\Doctrine\DoctrineConnecti
 use Draw\Component\Application\SystemMonitoring\Bridge\Symfony\Messenger\MessengerStatusProvider;
 use Draw\Component\Application\SystemMonitoring\Command\SystemStatusesCommand;
 use Draw\Component\Application\SystemMonitoring\System;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

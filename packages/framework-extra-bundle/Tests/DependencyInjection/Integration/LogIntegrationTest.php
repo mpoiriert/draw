@@ -4,8 +4,10 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;

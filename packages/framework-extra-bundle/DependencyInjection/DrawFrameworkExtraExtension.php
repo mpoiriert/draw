@@ -10,13 +10,11 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronJobInte
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\DoctrineExtraIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\EntityMigratorIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\FeatureIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MessengerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SecurityIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SystemMonitoringIntegration;
@@ -24,20 +22,20 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterInteg
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ValidatorIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration;
+use Draw\Component\DependencyInjection\Integration\ExtendableExtensionTrait;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 class DrawFrameworkExtraExtension extends Extension implements PrependExtensionInterface
 {
-    /**
-     * @var array|IntegrationInterface[]
-     */
-    private array $integrations = [];
+    use ExtendableExtensionTrait;
 
+    /**
+     * @param array<IntegrationInterface>|null $integrations
+     */
     public function __construct(?array $integrations = null)
     {
         if (null === $integrations) {
@@ -47,28 +45,30 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
         }
     }
 
-    private function registerDefaultIntegrations(): void
+    private function provideExtensionClasses(): array
     {
-        $this->integrations[] = new AwsToolKitIntegration();
-        $this->integrations[] = new ConfigurationIntegration();
-        $this->integrations[] = new ConsoleIntegration();
-        $this->integrations[] = new CronIntegration();
-        $this->integrations[] = new CronJobIntegration();
-        $this->integrations[] = new DoctrineExtraIntegration();
-        $this->integrations[] = new EntityMigratorIntegration();
-        $this->integrations[] = new FeatureIntegration();
-        $this->integrations[] = new LoggerIntegration();
-        $this->integrations[] = new LogIntegration();
-        $this->integrations[] = new OpenApiIntegration();
-        $this->integrations[] = new MailerIntegration();
-        $this->integrations[] = new MessengerIntegration();
-        $this->integrations[] = new ProcessIntegration();
-        $this->integrations[] = new SecurityIntegration();
-        $this->integrations[] = new SystemMonitoringIntegration();
-        $this->integrations[] = new TesterIntegration();
-        $this->integrations[] = new ValidatorIntegration();
-        $this->integrations[] = new VersioningIntegration();
-        $this->integrations[] = new WorkflowIntegration();
+        return [
+            AwsToolKitIntegration::class,
+            ConfigurationIntegration::class,
+            ConsoleIntegration::class,
+            CronIntegration::class,
+            CronJobIntegration::class,
+            DoctrineExtraIntegration::class,
+            EntityMigratorIntegration::class,
+            FeatureIntegration::class,
+            LoggerIntegration::class,
+            LogIntegration::class,
+            MailerIntegration::class,
+            MessengerIntegration::class,
+            OpenApiIntegration::class,
+            ProcessIntegration::class,
+            SecurityIntegration::class,
+            SystemMonitoringIntegration::class,
+            TesterIntegration::class,
+            ValidatorIntegration::class,
+            VersioningIntegration::class,
+            WorkflowIntegration::class,
+        ];
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
@@ -78,41 +78,13 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
 
     public function load(array $configs, ContainerBuilder $container): void
     {
-        foreach ($this->integrations as $integration) {
-            $container->addObjectResource($integration);
-        }
-
-        $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
-        $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
+        $config = $this->loadIntegrations($configs, $container);
 
         $container->setParameter('draw.symfony_console_path', $config['symfony_console_path']);
-
-        foreach ($this->integrations as $integration) {
-            if ($this->isConfigEnabled($container, $config[$integration->getConfigSectionName()])) {
-                $integration->load($config[$integration->getConfigSectionName()], $loader, $container);
-            }
-        }
     }
 
     public function prepend(ContainerBuilder $container): void
     {
-        $configs = $container->getExtensionConfig('draw_framework_extra');
-
-        $config = $this->processConfiguration(
-            $this->getConfiguration($configs, $container),
-            $container->getParameterBag()->resolveValue($configs)
-        );
-
-        foreach ($this->integrations as $integration) {
-            if (!$integration instanceof PrependIntegrationInterface) {
-                continue;
-            }
-
-            $integrationConfiguration = $config[$integration->getConfigSectionName()];
-
-            if ($this->isConfigEnabled($container, $integrationConfiguration)) {
-                $integration->prepend($container, $integrationConfiguration);
-            }
-        }
+        $this->prependIntegrations($container, 'draw_framework_extra');
     }
 }

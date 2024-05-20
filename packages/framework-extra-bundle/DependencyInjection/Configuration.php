@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

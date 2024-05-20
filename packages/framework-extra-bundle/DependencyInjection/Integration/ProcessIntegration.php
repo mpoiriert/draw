@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\Process\ProcessFactory;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;

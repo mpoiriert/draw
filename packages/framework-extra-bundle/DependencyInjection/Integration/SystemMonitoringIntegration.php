@@ -10,6 +10,9 @@ use Draw\Component\Application\SystemMonitoring\Bridge\Doctrine\DoctrineConnecti
 use Draw\Component\Application\SystemMonitoring\Bridge\Symfony\Messenger\MessengerStatusProvider;
 use Draw\Component\Application\SystemMonitoring\MonitoredService;
 use Draw\Component\Application\SystemMonitoring\System;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
+use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
