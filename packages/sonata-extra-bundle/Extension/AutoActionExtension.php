@@ -38,13 +38,24 @@ class AutoActionExtension extends AbstractAdminExtension
             }
         }
 
-        $list->add(
-            ListMapper::NAME_ACTIONS,
-            ListMapper::TYPE_ACTIONS,
-            [
-                'label' => 'Action',
-                'actions' => $this->actions,
-            ]
-        );
+        $actions = [];
+        $routes = $admin->getRoutes();
+
+        foreach ($this->actions as $action => $options) {
+            if ($routes->has($routes->getCode($action))) {
+                $actions[$action] = $options;
+            }
+        }
+
+        if (!empty($actions)) {
+            $list->add(
+                ListMapper::NAME_ACTIONS,
+                ListMapper::TYPE_ACTIONS,
+                [
+                    'label' => 'Action',
+                    'actions' => $actions,
+                ]
+            );
+        }
     }
 }
