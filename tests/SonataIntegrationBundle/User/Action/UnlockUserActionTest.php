@@ -21,7 +21,10 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
 
         $userLock->setUnlockUntil(null);
 
-        static::$client->request('GET', sprintf('/admin/app/user/%s/unlock', $user->getId()));
+        $this->client->request(
+            'GET',
+            sprintf('/admin/app/user/%s/unlock', $user->getId())
+        );
 
         static::assertResponseStatusCodeSame(302);
         static::assertResponseHeaderSame(
@@ -29,7 +32,7 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
             sprintf('/admin/app/user/%s/show', $user->getId())
         );
 
-        static::$client->followRedirect();
+        $this->client->followRedirect();
 
         static::assertResponseIsSuccessful();
 
@@ -49,7 +52,10 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
 
         $user = $this->getUser('admin@example.com');
 
-        static::$client->request('GET', sprintf('/admin/app/user/%s/unlock', $user->getId()));
+        $this->client->request(
+            'GET',
+            sprintf('/admin/app/user/%s/unlock', $user->getId())
+        );
 
         static::assertResponseStatusCodeSame(403);
     }

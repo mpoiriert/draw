@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
+use Draw\Bundle\TesterBundle\WebTestCase as DrawWebTestCase;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Core\Reflection\ReflectionExtractor;
 use PHPUnit\Event\Code\TestMethod;
@@ -14,6 +15,7 @@ use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SetUpAutowireExtension implements Extension
 {
@@ -58,6 +60,8 @@ class SetUpAutowireExtension implements Extension
                         return;
                     }
 
+                    $this->initializeClients($testCase);
+
                     $container = null;
 
                     foreach ($this->getPropertyAttributes($testCase) as [$property, $serviceId]) {
@@ -93,6 +97,55 @@ class SetUpAutowireExtension implements Extension
 
                     if ($testCase instanceof AutowiredCompletionAwareInterface) {
                         $testCase->postAutowire();
+                    }
+                }
+
+                private function initializeClients(TestCase $testCase): void
+                {
+                    if (!$testCase instanceof WebTestCase && !$testCase instanceof DrawWebTestCase) {
+                        if (!empty(iterator_to_array($this->getClientAttributes($testCase), false))) {
+                            throw new \RuntimeException(
+                                sprintf(
+                                    'AutowireClient attribute can only be used in %s or %s.',
+                                    WebTestCase::class,
+                                    DrawWebTestCase::class
+                                )
+                            );
+                        }
+
+                        return;
+                    }
+
+                    foreach ($this->getClientAttributes($testCase) as [$property, $attribute]) {
+                        \assert($property instanceof \ReflectionProperty);
+                        \assert($attribute instanceof \ReflectionAttribute);
+
+                        $autoWireClient = $attribute->newInstance();
+                        \assert($autoWireClient instanceof AutowireClient);
+
+                        $property->setValue(
+                            $testCase,
+                            ReflectionAccessor::callMethod(
+                                $testCase,
+                                'createClient',
+                                $autoWireClient->getOptions(),
+                                $autoWireClient->getServer()
+                            )
+                        );
+                    }
+                }
+
+                private function getClientAttributes(TestCase $testCase): \Generator
+                {
+                    foreach ((new \ReflectionObject($testCase))->getProperties() as $property) {
+                        $attribute = $property->getAttributes(
+                            AutowireClient::class,
+                            \ReflectionAttribute::IS_INSTANCEOF
+                        )[0] ?? null;
+
+                        if (null !== $attribute) {
+                            yield [$property, $attribute];
+                        }
                     }
                 }
 

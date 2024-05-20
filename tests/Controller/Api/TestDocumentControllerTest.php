@@ -4,15 +4,21 @@ namespace App\Tests\Controller\Api;
 
 use App\Message\NewTestDocumentMessage;
 use Draw\Bundle\TesterBundle\Messenger\MessengerTesterTrait;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
-class TestDocumentControllerTest extends WebTestCase
+class TestDocumentControllerTest extends WebTestCase implements AutowiredInterface
 {
     use MessengerTesterTrait;
 
+    #[AutowireClient]
+    private KernelBrowser $client;
+
     public function testCreate(): void
     {
-        static::createClient()
+        $this->client
             ->jsonRequest(
                 'POST',
                 '/api/test-documents',

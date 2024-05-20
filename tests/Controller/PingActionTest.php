@@ -2,16 +2,23 @@
 
 namespace App\Tests\Controller;
 
+use Draw\Bundle\TesterBundle\JsonResponseAssertionsTrait;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
-class PingActionTest extends WebTestCase
+class PingActionTest extends WebTestCase implements AutowiredInterface
 {
+    use JsonResponseAssertionsTrait;
+
+    #[AutowireClient]
+    private KernelBrowser $client;
+
     public function testPing(): void
     {
-        $client = static::createClient();
-
-        $client->request('GET', '/ping');
+        $this->client->request('GET', '/ping');
 
         static::assertResponseStatusCodeSame(207);
 
@@ -36,9 +43,7 @@ class PingActionTest extends WebTestCase
      */
     public function testPingWithContext(string $context, int $statusCode): void
     {
-        $client = static::createClient();
-
-        $client->request('GET', '/ping/'.$context);
+        $this->client->request('GET', '/ping/'.$context);
 
         static::assertResponseStatusCodeSame($statusCode);
 
