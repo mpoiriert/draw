@@ -3,6 +3,8 @@
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\OpenApi\Cleaner\ReferenceCleanerInterface;
 use Draw\Component\OpenApi\Controller\OpenApiController;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;

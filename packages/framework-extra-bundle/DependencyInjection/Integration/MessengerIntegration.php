@@ -4,6 +4,9 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
+use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\BasicEnvelopeFactory;

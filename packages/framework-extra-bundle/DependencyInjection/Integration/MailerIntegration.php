@@ -2,6 +2,9 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
+use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Component\Mailer\BodyRenderer\LocalizeBodyRenderer;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;

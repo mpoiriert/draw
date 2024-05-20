@@ -1,8 +1,7 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\DependencyInjection\Integration;
 
-use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -11,6 +10,22 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 trait IntegrationTrait
 {
     abstract public function getConfigSectionName(): string;
+
+    private static function getDefaultExcludedDirectories(): array
+    {
+        return [
+            'Attribute/',
+            'DependencyInjection/',
+            'Email/',
+            'Entity/',
+            'Event/',
+            'Exception/',
+            'Message/',
+            'Resources/',
+            'Stamp/',
+            'Tests/',
+        ];
+    }
 
     protected function registerClasses(
         PhpFileLoader $loader,
@@ -23,30 +38,19 @@ trait IntegrationTrait
             ->setAutowired(true)
             ->setAutoconfigured(true);
 
+        foreach ($this->getDefaultExcludedDirectories() as $defaultExcludedDirectory) {
+            $exclude[] = $directory.'/'.$defaultExcludedDirectory;
+        }
+
         $loader->registerClasses(
             $prototype,
             $namespace,
             $directory,
-            array_merge(
-                $exclude,
-                [
-                    $directory.'/Attribute/',
-                    $directory.'/Email/',
-                    $directory.'/Entity/',
-                    $directory.'/Event/',
-                    $directory.'/Exception/',
-                    $directory.'/Message/',
-                    $directory.'/Resources/',
-                    $directory.'/Stamp/',
-                    $directory.'/Tests/',
-                ]
-            )
+            $exclude
         );
 
-        $container = ReflectionAccessor::getPropertyValue(
-            $loader,
-            'container',
-        );
+        $container = (new \ReflectionProperty($loader, 'container'))
+            ->getValue($loader);
 
         \assert($container instanceof ContainerBuilder);
 

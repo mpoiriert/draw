@@ -2,8 +2,10 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\Component\OpenApi\Cleaner\DoctrineInheritanceCleaner;
 use Draw\Component\OpenApi\Cleaner\UnreferencedCleaner;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;

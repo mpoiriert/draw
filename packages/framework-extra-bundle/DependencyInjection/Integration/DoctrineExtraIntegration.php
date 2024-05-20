@@ -5,6 +5,8 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use Draw\DoctrineExtra\ORM\Query\CommentSqlWalker;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;

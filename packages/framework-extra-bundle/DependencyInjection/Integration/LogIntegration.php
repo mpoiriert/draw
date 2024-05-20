@@ -4,6 +4,8 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
 use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;

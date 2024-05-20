@@ -2,8 +2,10 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\Component\Mailer\BodyRenderer\LocalizeBodyRenderer;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Mailer\EmailComposer;

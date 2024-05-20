@@ -3,6 +3,9 @@
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ValidatorIntegration;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\Component\Validator\Constraints\PhpCallableValidator;
 use Draw\Component\Validator\Constraints\RemoteFileExistsValidator;
 use Draw\Component\Validator\Constraints\ValueIsNotUsedValidator;
@@ -14,7 +17,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(ValidatorIntegration::class)]
 class ValidatorIntegrationTest extends IntegrationTestCase
 {
-    public function createIntegration(): ValidatorIntegration
+    public function createIntegration(): IntegrationInterface
     {
         return new ValidatorIntegration();
     }

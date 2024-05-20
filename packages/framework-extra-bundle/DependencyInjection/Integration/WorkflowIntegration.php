@@ -2,6 +2,8 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\Security\Core\Security;
 use Draw\Component\Workflow\EventListener\AddTransitionNameToContextListener;
 use Draw\Component\Workflow\EventListener\AddUserToContextListener;

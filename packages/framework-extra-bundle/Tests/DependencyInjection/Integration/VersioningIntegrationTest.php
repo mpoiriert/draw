@@ -2,11 +2,13 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
 use Draw\Component\Application\Versioning\Command\UpdateDeployedVersionCommand;
 use Draw\Component\Application\Versioning\EventListener\FetchRunningVersionListener;
 use Draw\Component\Application\Versioning\VersionManager;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\Contracts\Application\VersionVerificationInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Definition;

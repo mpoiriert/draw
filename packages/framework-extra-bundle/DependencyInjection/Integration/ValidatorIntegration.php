@@ -3,6 +3,8 @@
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\Validator\Constraints\ValueIsNotUsedValidator;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

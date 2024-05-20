@@ -4,6 +4,9 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
 
 use Draw\Component\Application\Configuration\DoctrineConfigurationRegistry;
 use Draw\Component\Application\Configuration\Entity\Config;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
+use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

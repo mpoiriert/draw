@@ -5,12 +5,14 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
 use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationFilterCommandEventListener;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\Console\Command\GenerateDocumentationCommand;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Descriptor\TextDescriptor;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
+use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
+use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Helper\DescriptorHelper;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
