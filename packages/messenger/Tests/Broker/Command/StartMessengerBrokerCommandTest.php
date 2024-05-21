@@ -12,7 +12,6 @@ use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -30,9 +29,9 @@ class StartMessengerBrokerCommandTest extends TestCase
 
     private string $consolePath;
 
-    public function createCommand(): Command
+    protected function setUp(): void
     {
-        return new StartMessengerBrokerCommand(
+        $this->command = new StartMessengerBrokerCommand(
             $this->consolePath = uniqid('console-path-'),
             $this->processFactory = $this->createMock(ProcessFactoryInterface::class),
             $this->eventDispatcher = new EventDispatcher(),

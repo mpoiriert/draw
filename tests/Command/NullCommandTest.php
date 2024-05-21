@@ -4,22 +4,19 @@ namespace App\Tests\Command;
 
 use App\Command\NullCommand;
 use App\Tests\TestCase;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 
-/**
- * @covers \App\Command\NullCommand
- */
-class NullCommandTest extends TestCase
+class NullCommandTest extends TestCase implements AutowiredInterface
 {
     use CommandTestTrait;
 
-    public function createCommand(): Command
-    {
-        return static::getService(NullCommand::class);
-    }
+    #[AutowireService(NullCommand::class)]
+    protected ?Command $command = null;
 
     public function getCommandName(): string
     {

@@ -8,7 +8,6 @@ use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Filesystem\Filesystem;
@@ -19,9 +18,9 @@ class InstallSandboxCommandTest extends TestCase
     use CommandTestTrait;
     use MockTrait;
 
-    public function createCommand(): Command
+    protected function setUp(): void
     {
-        return new InstallSandboxCommand();
+        $this->command = new InstallSandboxCommand();
     }
 
     public function getCommandName(): string

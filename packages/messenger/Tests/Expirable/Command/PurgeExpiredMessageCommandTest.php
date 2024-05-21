@@ -11,7 +11,6 @@ use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Messenger\Transport\TransportInterface;
@@ -24,9 +23,9 @@ class PurgeExpiredMessageCommandTest extends TestCase
 
     private TransportRepository&MockObject $transportRepository;
 
-    public function createCommand(): Command
+    protected function setUp(): void
     {
-        return new PurgeExpiredMessageCommand(
+        $this->command = new PurgeExpiredMessageCommand(
             $this->transportRepository = $this->createMock(TransportRepository::class),
         );
     }
