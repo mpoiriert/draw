@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
+use Draw\Bundle\TesterBundle\WebTestCase as DrawWebTestCase;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Core\Reflection\ReflectionExtractor;
 use PHPUnit\Event\Code\TestMethod;
@@ -14,6 +15,7 @@ use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as SymfonyWebTestCase;
 
 class SetUpAutowireExtension implements Extension
 {
@@ -58,6 +60,8 @@ class SetUpAutowireExtension implements Extension
                         return;
                     }
 
+                    $this->initializeClients($testCase);
+
                     $container = null;
 
                     foreach ($this->getPropertyAttributes($testCase) as [$property, $serviceId]) {
@@ -93,6 +97,64 @@ class SetUpAutowireExtension implements Extension
 
                     if ($testCase instanceof AutowiredCompletionAwareInterface) {
                         $testCase->postAutowire();
+                    }
+                }
+
+                private function initializeClients(TestCase $testCase): void
+                {
+                    $clientAttributes = iterator_to_array($this->getClientAttributes($testCase));
+
+                    if (empty($clientAttributes)) {
+                        return;
+                    }
+
+                    if (!$testCase instanceof SymfonyWebTestCase && !$testCase instanceof DrawWebTestCase) {
+                        throw new \RuntimeException(
+                            sprintf(
+                                'AutowireClient attribute can only be used in %s or %s.',
+                                SymfonyWebTestCase::class,
+                                DrawWebTestCase::class
+                            )
+                        );
+                    }
+
+                    // This is to ensure the kernel is not booted before calling createClient
+                    // Can happen if we use the container in a setUpBeforeClass method or a beforeClass hook
+                    ReflectionAccessor::callMethod(
+                        $testCase,
+                        'ensureKernelShutdown'
+                    );
+
+                    foreach ($clientAttributes as [$property, $attribute]) {
+                        \assert($property instanceof \ReflectionProperty);
+                        \assert($attribute instanceof \ReflectionAttribute);
+
+                        $autoWireClient = $attribute->newInstance();
+                        \assert($autoWireClient instanceof AutowireClient);
+
+                        $property->setValue(
+                            $testCase,
+                            ReflectionAccessor::callMethod(
+                                $testCase,
+                                'createClient',
+                                $autoWireClient->getOptions(),
+                                $autoWireClient->getServer()
+                            )
+                        );
+                    }
+                }
+
+                private function getClientAttributes(TestCase $testCase): iterable
+                {
+                    foreach ((new \ReflectionObject($testCase))->getProperties() as $property) {
+                        $attribute = $property->getAttributes(
+                            AutowireClient::class,
+                            \ReflectionAttribute::IS_INSTANCEOF
+                        )[0] ?? null;
+
+                        if (null !== $attribute) {
+                            yield [$property, $attribute];
+                        }
                     }
                 }
 

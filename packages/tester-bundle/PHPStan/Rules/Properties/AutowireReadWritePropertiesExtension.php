@@ -2,12 +2,16 @@
 
 namespace Draw\Bundle\TesterBundle\PHPStan\Rules\Properties;
 
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Properties\ReadWritePropertiesExtension;
 
 class AutowireReadWritePropertiesExtension implements ReadWritePropertiesExtension
 {
+    public function __construct(
+        private string $attribute
+    ) {
+    }
+
     public function isAlwaysRead(PropertyReflection $property, string $propertyName): bool
     {
         return false;
@@ -15,18 +19,18 @@ class AutowireReadWritePropertiesExtension implements ReadWritePropertiesExtensi
 
     public function isAlwaysWritten(PropertyReflection $property, string $propertyName): bool
     {
-        return $this->hasProperAttribute($property, $propertyName, AutowireService::class);
+        return $this->hasProperAttribute($property, $propertyName);
     }
 
     public function isInitialized(PropertyReflection $property, string $propertyName): bool
     {
-        return $this->hasProperAttribute($property, $propertyName, AutowireService::class);
+        return $this->hasProperAttribute($property, $propertyName);
     }
 
-    private function hasProperAttribute(PropertyReflection $property, string $propertyName, string $attribute): bool
+    private function hasProperAttribute(PropertyReflection $property, string $propertyName): bool
     {
         $properReflection = $property->getDeclaringClass()->getNativeProperty($propertyName)->getNativeReflection();
 
-        return 0 !== \count($properReflection->getAttributes($attribute, \ReflectionAttribute::IS_INSTANCEOF));
+        return 0 !== \count($properReflection->getAttributes($this->attribute, \ReflectionAttribute::IS_INSTANCEOF));
     }
 }

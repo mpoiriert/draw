@@ -2,10 +2,16 @@
 
 namespace App\Tests\Controller;
 
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
-class OpenApiControllerTest extends WebTestCase
+class OpenApiControllerTest extends WebTestCase implements AutowiredInterface
 {
+    #[AutowireClient]
+    private KernelBrowser $client;
+
     private bool $writeFile = false;
 
     public function testApiDocScopeAll(): void
@@ -22,9 +28,7 @@ class OpenApiControllerTest extends WebTestCase
     {
         $file = __DIR__.sprintf('/fixtures/api-doc-scope-%s.json', $scope);
 
-        $client = static::createClient();
-
-        $client->request('get', '/api-doc.json?scope='.$scope);
+        $this->client->request('get', '/api-doc.json?scope='.$scope);
 
         static::assertResponseIsSuccessful();
         static::assertResponseIsJson();

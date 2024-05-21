@@ -42,14 +42,17 @@ class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInter
         );
         static::assertSame(FailedMessage::class, $failedMessage->getMessageClass());
 
-        static::$client->request('GET', sprintf('/admin/app/messengermessage/%s/retry', $failedMessage->getId()));
+        $this->client->request(
+            'GET',
+            sprintf('/admin/app/messengermessage/%s/retry', $failedMessage->getId())
+        );
 
         static::assertResponseStatusCodeSame(302);
 
         static::getTransportTester('async')
             ->assertMessageMatch(RetryFailedMessageMessage::class);
 
-        static::$client->followRedirect();
+        $this->client->followRedirect();
 
         static::assertSelectorTextContains('.alert-success', 'Retry message successfully dispatched.');
     }

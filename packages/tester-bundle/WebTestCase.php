@@ -3,11 +3,15 @@
 namespace Draw\Bundle\TesterBundle;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\DomCrawlerAssertionsTrait;
+use Symfony\Bundle\FrameworkBundle\Test\HttpClientAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 abstract class WebTestCase extends KernelTestCase
 {
+    use DomCrawlerAssertionsTrait;
+    use HttpClientAssertionsTrait;
     use JsonResponseAssertionsTrait;
 
     protected function tearDown(): void

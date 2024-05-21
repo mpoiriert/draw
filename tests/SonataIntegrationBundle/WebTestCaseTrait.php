@@ -6,23 +6,17 @@ namespace App\Tests\SonataIntegrationBundle;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
-/**
- * @method static KernelBrowser createClient(array $options = [], array $server = [])
- */
 trait WebTestCaseTrait
 {
-    protected static ?KernelBrowser $client = null;
-
     #[AutowireService]
     protected EntityManagerInterface $entityManager;
 
-    protected function setUp(): void
-    {
-        static::$client = static::createClient();
-    }
+    #[AutowireClient]
+    private KernelBrowser $client;
 
     protected function getUser(string $email): User
     {
@@ -33,7 +27,7 @@ trait WebTestCaseTrait
 
     protected function login(string $email): void
     {
-        static::$client->loginUser(
+        $this->client->loginUser(
             $this->getUser($email),
             'user'
         );
