@@ -2,7 +2,6 @@
 
 namespace App\Tests;
 
-use Draw\Bundle\TesterBundle\DependencyInjection\ServiceTesterTrait;
 use Draw\Bundle\TesterBundle\Http\BrowserFactoryInterface;
 use Draw\Bundle\TesterBundle\Http\HttpTesterTrait;
 use Draw\Bundle\TesterBundle\Mailer\TemplatedMailerAssertionsTrait;
@@ -21,7 +20,6 @@ class TestCase extends KernelTestCase implements BrowserFactoryInterface
     }
     use MessengerTesterTrait;
     use MetricTesterTrait;
-    use ServiceTesterTrait;
     use TemplatedMailerAssertionsTrait;
 
     public function createBrowser(): AbstractBrowser

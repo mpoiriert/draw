@@ -14,13 +14,13 @@ class TransportTesterTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->transportTester = $this->getService('messenger.transport.memory.draw.tester');
+        $this->transportTester = static::getContainer()->get('messenger.transport.memory.draw.tester');
     }
 
     public function testGetTransport(): void
     {
         static::assertSame(
-            $this->getService('messenger.transport.memory'),
+            static::getContainer()->get('messenger.transport.memory'),
             $this->transportTester->getTransport()
         );
     }

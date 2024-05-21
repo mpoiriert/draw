@@ -12,14 +12,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class DrawTesterBundle extends Bundle
 {
-    public static $ids = [];
-
-    public static function addServicesToTest($ids): void
-    {
-        $ids = (array) $ids;
-        self::$ids += $ids;
-    }
-
     public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new CompilerPass());

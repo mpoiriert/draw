@@ -7,18 +7,20 @@ use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Monolog\Level;
+use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\BeforeClass;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersControllerTest extends TestCase
 {
-    /**
-     * @beforeClass
-     *
-     * @afterClass
-     */
+    #[
+        BeforeClass,
+        AfterClass,
+    ]
     public static function cleanUp(): void
     {
-        static::getService(EntityManagerInterface::class)
+        static::getContainer()
+            ->get(EntityManagerInterface::class)
             ->createQueryBuilder()
             ->delete(User::class, 'user')
             ->andWhere('user.email = :email')
