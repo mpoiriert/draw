@@ -15,7 +15,7 @@ use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as SymfonyWebTestCase;
 
 class SetUpAutowireExtension implements Extension
 {
@@ -102,21 +102,23 @@ class SetUpAutowireExtension implements Extension
 
                 private function initializeClients(TestCase $testCase): void
                 {
-                    if (!$testCase instanceof WebTestCase && !$testCase instanceof DrawWebTestCase) {
-                        if (!empty(iterator_to_array($this->getClientAttributes($testCase), false))) {
-                            throw new \RuntimeException(
-                                sprintf(
-                                    'AutowireClient attribute can only be used in %s or %s.',
-                                    WebTestCase::class,
-                                    DrawWebTestCase::class
-                                )
-                            );
-                        }
+                    $clientAttributes = iterator_to_array($this->getClientAttributes($testCase));
 
+                    if (empty($clientAttributes)) {
                         return;
                     }
 
-                    foreach ($this->getClientAttributes($testCase) as [$property, $attribute]) {
+                    if (!$testCase instanceof SymfonyWebTestCase && !$testCase instanceof DrawWebTestCase) {
+                        throw new \RuntimeException(
+                            sprintf(
+                                'AutowireClient attribute can only be used in %s or %s.',
+                                SymfonyWebTestCase::class,
+                                DrawWebTestCase::class
+                            )
+                        );
+                    }
+
+                    foreach ($clientAttributes as [$property, $attribute]) {
                         \assert($property instanceof \ReflectionProperty);
                         \assert($attribute instanceof \ReflectionAttribute);
 
@@ -135,7 +137,7 @@ class SetUpAutowireExtension implements Extension
                     }
                 }
 
-                private function getClientAttributes(TestCase $testCase): \Generator
+                private function getClientAttributes(TestCase $testCase): iterable
                 {
                     foreach ((new \ReflectionObject($testCase))->getProperties() as $property) {
                         $attribute = $property->getAttributes(
