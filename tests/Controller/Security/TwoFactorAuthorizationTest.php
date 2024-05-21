@@ -61,11 +61,6 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
             ->execute();
     }
 
-    protected function setUp(): void
-    {
-        static::ensureKernelShutdown();
-    }
-
     public function testLoginRedirectEnable2fa(): void
     {
         static::assertTrue(self::$user->needToEnableTotpAuthenticationEnabled());

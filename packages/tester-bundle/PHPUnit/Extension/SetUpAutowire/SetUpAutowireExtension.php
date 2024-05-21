@@ -118,6 +118,13 @@ class SetUpAutowireExtension implements Extension
                         );
                     }
 
+                    // This is to ensure the kernel is not booted before calling createClient
+                    // Can happen if we use the container in a setUpBeforeClass method or a beforeClass hook
+                    ReflectionAccessor::callMethod(
+                        $testCase,
+                        'ensureKernelShutdown'
+                    );
+
                     foreach ($clientAttributes as [$property, $attribute]) {
                         \assert($property instanceof \ReflectionProperty);
                         \assert($attribute instanceof \ReflectionAttribute);
