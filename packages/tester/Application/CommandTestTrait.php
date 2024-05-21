@@ -14,11 +14,37 @@ trait CommandTestTrait
 {
     private static int $argumentsCount;
 
-    protected CommandTester $commandTester;
+    protected ?CommandTester $commandTester = null;
 
-    protected Command $command;
+    protected ?Command $command = null;
 
-    abstract public function createCommand(): Command;
+    private ?Application $application = null;
+
+    protected function createCommand(): Command
+    {
+        if (null === $this->command) {
+            throw new \RuntimeException('You must override createCommand method or set the command property.');
+        }
+
+        return $this->command;
+    }
+
+    final protected function loadCommand(): Command
+    {
+        $command = $this->command ??= $this->createCommand();
+
+        if (null === $this->application) {
+            $this->application = new Application();
+            $this->application->add($command);
+        }
+
+        return $command;
+    }
+
+    final protected function loadCommandTester(): CommandTester
+    {
+        return $this->commandTester ??= new CommandTester($this->loadCommand());
+    }
 
     abstract public function getCommandName(): string;
 
@@ -31,14 +57,6 @@ trait CommandTestTrait
         self::$argumentsCount = 0;
     }
 
-    public function setUp(): void
-    {
-        $application = new Application();
-        $application->add($this->createCommand());
-        $this->command = $application->find($this->getCommandName());
-        $this->commandTester = new CommandTester($this->command);
-    }
-
     protected function getMinimumCommandDescriptionStringLength(): int
     {
         return 10;
@@ -49,22 +67,34 @@ trait CommandTestTrait
         return 10;
     }
 
+    public function testGetCommandName(): void
+    {
+        $command = $this->loadCommand();
+
+        TestCase::assertSame(
+            $command,
+            $this->application->find($this->getCommandName()),
+            'Cannot find the command by name'
+        );
+    }
+
     public function testGetDescription(): void
     {
         TestCase::assertGreaterThanOrEqual(
             $this->getMinimumCommandDescriptionStringLength(),
-            mb_strlen($this->command->getDescription()),
+            mb_strlen($this->loadCommand()->getDescription()),
             'Command description is too short'
         );
     }
 
     public function testArguments(): void
     {
-        $definition = $this->command->getDefinition();
+        $command = $this->loadCommand();
+        $definition = $command->getDefinition();
 
         $position = 0;
         foreach ($this->provideTestArgument() as $argument) {
-            array_unshift($argument, $this->command, $position);
+            array_unshift($argument, $command, $position);
             \call_user_func_array([$this, 'assertArgument'], $argument);
             ++$position;
         }
@@ -118,7 +148,8 @@ trait CommandTestTrait
     public function testOptions(): void
     {
         $count = 0;
-        $definition = $this->command->getDefinition();
+        $command = $this->loadCommand();
+        $definition = $command->getDefinition();
         $realCommandOptions = [];
         foreach ($definition->getOptions() as $option) {
             $realCommandOptions[$option->getName()] = $option;
@@ -127,7 +158,7 @@ trait CommandTestTrait
         foreach ($this->provideTestOption() as $optionConfiguration) {
             unset($realCommandOptions[$optionConfiguration[0]]);
             ++$count;
-            array_unshift($optionConfiguration, $this->command);
+            array_unshift($optionConfiguration, $command);
             \call_user_func_array([$this, 'assertOption'], $optionConfiguration);
         }
 
@@ -207,12 +238,13 @@ trait CommandTestTrait
      */
     public function execute(array $input, array $options = []): DataTester
     {
+        $commandTester = $this->loadCommandTester();
         $columns = getenv('COLUMNS');
         putenv('COLUMNS=120');
         $options += ['capture_stderr_separately' => true];
-        $this->commandTester->execute($input, $options);
+        $commandTester->execute($input, $options);
         putenv('COLUMNS='.$columns);
 
-        return new DataTester($this->commandTester);
+        return new DataTester($commandTester);
     }
 }

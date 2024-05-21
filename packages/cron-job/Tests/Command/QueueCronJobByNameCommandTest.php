@@ -28,7 +28,7 @@ class QueueCronJobByNameCommandTest extends TestCase
 
     private EntityRepository&MockObject $repository;
 
-    public function createCommand(): Command
+    protected function setUp(): void
     {
         $this->managerRegistry = $this->createMock(ManagerRegistry::class);
         $this->managerRegistry
@@ -37,7 +37,7 @@ class QueueCronJobByNameCommandTest extends TestCase
             ->with(CronJob::class)
             ->willReturn($this->repository = $this->createMock(EntityRepository::class));
 
-        return new QueueCronJobByNameCommand(
+        $this->command = new QueueCronJobByNameCommand(
             $this->managerRegistry,
             $this->cronJobProcessor = $this->createMock(CronJobProcessor::class)
         );
