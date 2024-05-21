@@ -3,14 +3,22 @@
 namespace App\Tests\Controller\Security;
 
 use App\Entity\User;
-use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use Draw\Bundle\TesterBundle\WebTestCase;
+use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
-class TwoFactorAuthorizationTest extends TestCase
+class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterface
 {
     final public const ADMIN_URL = '/admin';
+
+    #[AutowireClient]
+    private KernelBrowser $client;
 
     private static EntityManagerInterface $entityManager;
 
@@ -18,30 +26,30 @@ class TwoFactorAuthorizationTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$entityManager = static::getService(EntityManagerInterface::class);
+        self::$entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        $user = new User();
-        $user->setEmail('test-2fa@example.com');
-        $user->setPlainPassword('test');
-        $user->setRoles(['ROLE_ADMIN']);
+        self::$user = (new User())
+            ->setEmail('test-2fa@example.com')
+            ->setPlainPassword('test')
+            ->setRoles(['ROLE_ADMIN']);
 
         // This role for enabling 2fa as per configuration
-        $user->enableTwoFActorAuthenticationProvider('totp');
+        self::$user->enableTwoFActorAuthenticationProvider('totp');
 
-        self::$entityManager->persist($user);
+        self::$entityManager->persist(self::$user);
         self::$entityManager->flush();
 
-        self::$user = $user;
+        static::ensureKernelShutdown();
     }
 
-    /**
-     * @afterClass
-     *
-     * @beforeClass
-     */
+    #[
+        BeforeClass,
+        AfterClass
+    ]
     public static function cleanUp(): void
     {
-        static::getService(EntityManagerInterface::class)
+        static::getContainer()
+            ->get(EntityManagerInterface::class)
             ->createQueryBuilder()
             ->delete(User::class, 'user')
             ->andWhere('user.email like :email')
@@ -53,11 +61,10 @@ class TwoFactorAuthorizationTest extends TestCase
     public function testLoginRedirectEnable2fa(): KernelBrowser
     {
         static::assertTrue(self::$user->needToEnableTotpAuthenticationEnabled());
-        /** @var KernelBrowser $client */
-        $client = $this->getService('test.client');
-        $client->followRedirects();
 
-        $crawler = $this->loginToAdmin($client, self::$user->getUsername(), 'test');
+        $this->client->followRedirects();
+
+        $crawler = $this->loginToAdmin($this->client, self::$user->getUsername(), 'test');
 
         static::assertStringContainsString(
             '/admin/app/user/'.self::$user->getId().'/enable-2fa',
@@ -65,12 +72,10 @@ class TwoFactorAuthorizationTest extends TestCase
             'User must be redirect to enable 2fa url'
         );
 
-        return $client;
+        return $this->client;
     }
 
-    /**
-     * @depends testLoginRedirectEnable2fa
-     */
+    #[Depends('testLoginRedirectEnable2fa')]
     public function testCancel(KernelBrowser $client): KernelBrowser
     {
         $client->followRedirects();
@@ -89,9 +94,7 @@ class TwoFactorAuthorizationTest extends TestCase
         return $client;
     }
 
-    /**
-     * @depends testLoginRedirectEnable2fa
-     */
+    #[Depends('testLoginRedirectEnable2fa')]
     public function testEnable2faInAdminInvalidCode(KernelBrowser $client): KernelBrowser
     {
         $this->reloadUser();
@@ -114,9 +117,7 @@ class TwoFactorAuthorizationTest extends TestCase
         return $client;
     }
 
-    /**
-     * @depends testEnable2faInAdminInvalidCode
-     */
+    #[Depends('testEnable2faInAdminInvalidCode')]
     public function testEnable2faInAdmin(KernelBrowser $client): KernelBrowser
     {
         $crawler = $client->submit(
@@ -134,9 +135,7 @@ class TwoFactorAuthorizationTest extends TestCase
         return $client;
     }
 
-    /**
-     * @depends testEnable2faInAdmin
-     */
+    #[Depends('testEnable2faInAdmin')]
     public function test2faLoginToAdminFailed(KernelBrowser $client): KernelBrowser
     {
         $crawler = $client->submit(
@@ -151,9 +150,7 @@ class TwoFactorAuthorizationTest extends TestCase
         return $client;
     }
 
-    /**
-     * @depends test2faLoginToAdminFailed
-     */
+    #[Depends('test2faLoginToAdminFailed')]
     public function test2faLoginToAdmin(KernelBrowser $client): KernelBrowser
     {
         $crawler = $client->submit(
@@ -167,9 +164,7 @@ class TwoFactorAuthorizationTest extends TestCase
         return $client;
     }
 
-    /**
-     * @depends test2faLoginToAdmin
-     */
+    #[Depends('test2faLoginToAdmin')]
     public function testDisable2faInAdmin(KernelBrowser $client): KernelBrowser
     {
         // This is to remove the force enable 2fa
