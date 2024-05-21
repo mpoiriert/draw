@@ -11,7 +11,6 @@ use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -23,7 +22,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
 
     private CloudWatchLogsClient&MockObject $cloudWatchLogsClient;
 
-    public function createCommand(): Command
+    protected function setUp(): void
     {
         $this->cloudWatchLogsClient = $this
             ->getMockBuilder(CloudWatchLogsClient::class)
@@ -34,7 +33,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
             ->addMethods(['getLogEvents'])
             ->getMock();
 
-        return new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
+        $this->command = new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
     }
 
     public function getCommandName(): string

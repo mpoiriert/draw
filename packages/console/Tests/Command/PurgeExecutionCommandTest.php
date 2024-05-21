@@ -11,7 +11,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 
 #[CoversClass(PurgeExecutionCommand::class)]
@@ -24,12 +23,12 @@ class PurgeExecutionCommandTest extends TestCase
 
     private LoggerInterface&MockObject $logger;
 
-    public function createCommand(): Command
+    protected function setUp(): void
     {
         $this->connection = $this->createMock(Connection::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        return new PurgeExecutionCommand($this->connection, $this->logger);
+        $this->command = new PurgeExecutionCommand($this->connection, $this->logger);
     }
 
     public function getCommandName(): string

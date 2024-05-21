@@ -8,7 +8,6 @@ use Draw\Component\Tester\Application\CommandTestTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -20,9 +19,9 @@ class SendTestEmailCommandTest extends TestCase
 
     private MailerInterface&MockObject $mailer;
 
-    public function createCommand(): Command
+    protected function setUp(): void
     {
-        return new SendTestEmailCommand(
+        $this->command = new SendTestEmailCommand(
             $this->mailer = $this->createMock(MailerInterface::class)
         );
     }

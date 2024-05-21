@@ -28,9 +28,9 @@ class QueueDueCronJobsCommandTest extends TestCase
 
     private CronJobProcessor&MockObject $cronJobProcessor;
 
-    public function createCommand(): Command
+    protected function setUp(): void
     {
-        return new QueueDueCronJobsCommand(
+        $this->command = new QueueDueCronJobsCommand(
             $this->managerRegistry = $this->createMock(ManagerRegistry::class),
             $this->cronJobProcessor = $this->createMock(CronJobProcessor::class)
         );
