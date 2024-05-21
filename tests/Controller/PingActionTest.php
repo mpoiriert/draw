@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller;
 
-use Draw\Bundle\TesterBundle\JsonResponseAssertionsTrait;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\WebTestCase;
@@ -11,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PingActionTest extends WebTestCase implements AutowiredInterface
 {
-    use JsonResponseAssertionsTrait;
-
     #[AutowireClient]
     private KernelBrowser $client;
 
