@@ -2,4 +2,8 @@ auth_code:
   email: "Enter the code received by email"
   totp: "Enter the code from your authenticator application"
 
+form:
+  2fa_login:
+    title: 'Two factor authentication'
+
 resend: "Resend code"
