@@ -18,6 +18,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\TransportException;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
@@ -115,6 +116,33 @@ class DrawTransportTest extends TestCase
         $this->expectExceptionMessage($exceptionMessage);
 
         $this->service->send(new Envelope(new \stdClass()));
+    }
+
+    #[Depends('testSetup')]
+    public function testSendNegativeDelay(): void
+    {
+        $envelope = $this->service->send(new Envelope(
+            new \stdClass(),
+            [new DelayStamp(-10000)]
+        ));
+
+        $id = $envelope->last(TransportMessageIdStamp::class)->getId();
+
+        static::assertNotNull($id);
+
+        $result = static::loadDefaultConnection()
+            ->executeQuery(
+                'SELECT available_at FROM draw_messenger__message WHERE id = ?',
+                [
+                    $id,
+                ]
+            )->fetchAllAssociative();
+
+        static::assertEqualsWithDelta(
+            strtotime('now - 10 seconds'),
+            strtotime($result[0]['available_at']),
+            1
+        );
     }
 
     #[Depends('testSetup')]
