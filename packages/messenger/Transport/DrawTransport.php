@@ -137,10 +137,10 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         ?string $messageClass = null,
     ): string {
         $id = Uuid::uuid6()->toString();
-        $now = new \DateTime();
+        $now = new \DateTimeImmutable();
         $availableAt = null;
         if (null !== $delay) {
-            $availableAt = (clone $now)->modify(sprintf('+%d seconds', $delay / 1000));
+            $availableAt = $now->modify(sprintf('%d seconds', $delay / 1000));
         }
 
         $queryBuilder = $this->driverConnection->createQueryBuilder()
@@ -164,8 +164,8 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
                 json_encode($headers, \JSON_THROW_ON_ERROR),
                 $this->connection->getConfiguration()['queue_name'],
                 self::formatDateTime($now),
-                $availableAt ? self::formatDateTime($availableAt) : null,
-                $expiresAt ? self::formatDateTime($expiresAt) : null,
+                self::formatDateTime($availableAt),
+                self::formatDateTime($expiresAt),
             ]);
 
         if ($tags) {
@@ -182,9 +182,9 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         return $id;
     }
 
-    private static function formatDateTime(\DateTimeInterface $dateTime): string
+    private static function formatDateTime(?\DateTimeInterface $dateTime): ?string
     {
-        return $dateTime->format('Y-m-d\TH:i:s');
+        return $dateTime?->format('Y-m-d\TH:i:s');
     }
 
     public function setup(): void
