@@ -2,13 +2,6 @@ services:
     draw.tester_bundle.autowire_client_read_write_properties_extension:
         class: Draw\Bundle\TesterBundle\PHPStan\Rules\Properties\AutowireReadWritePropertiesExtension
         arguments:
-            - 'Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient'
-        tags:
-            - phpstan.properties.readWriteExtension
-
-    draw.tester_bundle.autowire_service_read_write_properties_extension:
-        class: Draw\Bundle\TesterBundle\PHPStan\Rules\Properties\AutowireReadWritePropertiesExtension
-        arguments:
-            - 'Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService'
+            - 'Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireInterface'
         tags:
             - phpstan.properties.readWriteExtension

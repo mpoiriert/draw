@@ -13,7 +13,7 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
-    public function findActive()
+    public function findActive(): array
     {
         return $this->findBy(['active' => true]);
     }

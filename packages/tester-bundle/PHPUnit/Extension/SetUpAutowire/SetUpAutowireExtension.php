@@ -2,20 +2,14 @@
 
 namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
-use Draw\Bundle\TesterBundle\WebTestCase as DrawWebTestCase;
-use Draw\Component\Core\Reflection\ReflectionAccessor;
-use Draw\Component\Core\Reflection\ReflectionExtractor;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\Prepared as TestPrepared;
 use PHPUnit\Event\Test\PreparedSubscriber as TestPreparedSubscriber;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Extension\Extension;
 use PHPUnit\Runner\Extension\Facade;
 use PHPUnit\Runner\Extension\ParameterCollection;
 use PHPUnit\TextUI\Configuration\Configuration;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as SymfonyWebTestCase;
 
 class SetUpAutowireExtension implements Extension
 {
@@ -24,14 +18,9 @@ class SetUpAutowireExtension implements Extension
         $facade->registerSubscribers(
             new class() implements TestPreparedSubscriber {
                 /**
-                 * @var array<string, array<int, array{\ReflectionProperty, string}>>
+                 * @var array<string, array<int, array{\ReflectionProperty, AutowireInterface}>>
                  */
                 private array $propertyAttributes = [];
-
-                /**
-                 * @var array<string, array<int, array{\ReflectionProperty, AutowireMockProperty}>>
-                 */
-                private array $propertyMocks = [];
 
                 public function notify(TestPrepared $event): void
                 {
@@ -56,43 +45,10 @@ class SetUpAutowireExtension implements Extension
                         return;
                     }
 
-                    if (!$testCase instanceof KernelTestCase) {
-                        return;
-                    }
+                    foreach ($this->getPropertyAttributes($testCase) as [$property, $autowire]) {
+                        \assert($autowire instanceof AutowireInterface);
 
-                    $this->initializeClients($testCase);
-
-                    $container = null;
-
-                    foreach ($this->getPropertyAttributes($testCase) as [$property, $serviceId]) {
-                        $container ??= ReflectionAccessor::callMethod($testCase, 'getContainer');
-
-                        if ($serviceId instanceof AutowireMock) {
-                            $property->setValue(
-                                $testCase,
-                                $this->getMockFor($testCase, $property->getName())
-                            );
-
-                            continue;
-                        }
-
-                        $property->setValue(
-                            $testCase,
-                            $container->get($serviceId)
-                        );
-                    }
-
-                    foreach ($this->getPropertyMockAttributes($testCase) as [$property, $autoWireMockProperty]) {
-                        $service = $property->getValue($testCase);
-
-                        ReflectionAccessor::setPropertyValue(
-                            $service,
-                            $autoWireMockProperty->getProperty(),
-                            ReflectionAccessor::getPropertyValue(
-                                $testCase,
-                                $autoWireMockProperty->getFromProperty()
-                            )
-                        );
+                        $autowire->autowire($testCase, $property);
                     }
 
                     if ($testCase instanceof AutowiredCompletionAwareInterface) {
@@ -100,153 +56,36 @@ class SetUpAutowireExtension implements Extension
                     }
                 }
 
-                private function initializeClients(TestCase $testCase): void
-                {
-                    $clientAttributes = iterator_to_array($this->getClientAttributes($testCase));
-
-                    if (empty($clientAttributes)) {
-                        return;
-                    }
-
-                    if (!$testCase instanceof SymfonyWebTestCase && !$testCase instanceof DrawWebTestCase) {
-                        throw new \RuntimeException(
-                            sprintf(
-                                'AutowireClient attribute can only be used in %s or %s.',
-                                SymfonyWebTestCase::class,
-                                DrawWebTestCase::class
-                            )
-                        );
-                    }
-
-                    // This is to ensure the kernel is not booted before calling createClient
-                    // Can happen if we use the container in a setUpBeforeClass method or a beforeClass hook
-                    ReflectionAccessor::callMethod(
-                        $testCase,
-                        'ensureKernelShutdown'
-                    );
-
-                    foreach ($clientAttributes as [$property, $attribute]) {
-                        \assert($property instanceof \ReflectionProperty);
-                        \assert($attribute instanceof \ReflectionAttribute);
-
-                        $autoWireClient = $attribute->newInstance();
-                        \assert($autoWireClient instanceof AutowireClient);
-
-                        $property->setValue(
-                            $testCase,
-                            ReflectionAccessor::callMethod(
-                                $testCase,
-                                'createClient',
-                                $autoWireClient->getOptions(),
-                                $autoWireClient->getServer()
-                            )
-                        );
-                    }
-                }
-
-                private function getClientAttributes(TestCase $testCase): iterable
-                {
-                    foreach ((new \ReflectionObject($testCase))->getProperties() as $property) {
-                        $attribute = $property->getAttributes(
-                            AutowireClient::class,
-                            \ReflectionAttribute::IS_INSTANCEOF
-                        )[0] ?? null;
-
-                        if (null !== $attribute) {
-                            yield [$property, $attribute];
-                        }
-                    }
-                }
-
                 /**
-                 * @return iterable<array{\ReflectionProperty, string|AutowireMock}>
+                 * @return iterable<array{\ReflectionProperty, AutowireInterface}>
                  */
                 private function getPropertyAttributes(TestCase $testCase): iterable
                 {
                     $className = $testCase::class;
 
                     if (!\array_key_exists($className, $this->propertyAttributes)) {
-                        $this->propertyAttributes[$className] = [];
+                        $autowireAttributes = [];
 
                         foreach ((new \ReflectionObject($testCase))->getProperties() as $property) {
-                            $attribute = $property->getAttributes(AutowireService::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null;
+                            foreach ($property->getAttributes() as $attribute) {
+                                $attributeClass = $attribute->getName();
 
-                            if (!$attribute) {
-                                continue;
-                            }
-
-                            $autoWireService = $attribute->newInstance();
-
-                            if ($autoWireService instanceof AutowireMock) {
-                                $this->propertyAttributes[$className][] = [$property, $autoWireService];
-
-                                continue;
-                            }
-
-                            $serviceId = $autoWireService->getServiceId();
-
-                            if (!$serviceId) {
-                                $classes = ReflectionExtractor::getClasses($property->getType());
-                                if (1 !== \count($classes)) {
-                                    throw new \RuntimeException('Property '.$property->getName().' of class '.$testCase::class.' must have a type hint.');
+                                if (!(new \ReflectionClass($attributeClass))->implementsInterface(AutowireInterface::class)) {
+                                    continue;
                                 }
 
-                                $serviceId = $classes[0];
-                            }
-
-                            $this->propertyAttributes[$className][] = [$property, $serviceId];
-
-                            foreach ($property->getAttributes(AutowireMockProperty::class) as $attribute) {
-                                $autoWireMockProperty = $attribute->newInstance();
-                                $this->propertyMocks[$className][] = [$property, $autoWireMockProperty];
+                                $autowireAttributes[] = [$property, $attribute->newInstance()];
                             }
                         }
+
+                        usort($autowireAttributes, static fn ($a, $b) => $a[1]::getPriority() <=> $b[1]::getPriority());
+
+                        // We reverse because priority 1 comes before priority 0
+                        $this->propertyAttributes[$className] = array_reverse($autowireAttributes);
                     }
 
                     foreach ($this->propertyAttributes[$className] as $property) {
                         yield $property;
-                    }
-                }
-
-                /**
-                 * @return iterable<array{\ReflectionProperty, AutowireMockProperty}>
-                 */
-                private function getPropertyMockAttributes(TestCase $testCase): iterable
-                {
-                    yield from $this->propertyMocks[$testCase::class] ?? [];
-                }
-
-                private function getMockFor(TestCase $testCase, string $property)
-                {
-                    $reflectionProperty = new \ReflectionProperty($testCase, $property);
-
-                    $type = $reflectionProperty->getType();
-
-                    if (!$type instanceof \ReflectionIntersectionType) {
-                        throw new \RuntimeException('Property '.$property.' of class '.$testCase::class.' must have a type hint intersection with Mock.');
-                    }
-
-                    $types = $type->getTypes();
-
-                    if (2 !== \count($types)) {
-                        throw new \RuntimeException('Property '.$property.' of class '.$testCase::class.' can only have 2 intersection types.');
-                    }
-
-                    foreach ($types as $type) {
-                        if (!$type instanceof \ReflectionNamedType) {
-                            throw new \RuntimeException('Property '.$property.' of class '.$testCase::class.' intersction must be of named type.');
-                        }
-
-                        if (MockObject::class === $type->getName()) {
-                            continue;
-                        }
-
-                        $reflectionProperty->setValue(
-                            $testCase,
-                            $mock = ReflectionAccessor::callMethod($testCase, 'createMock', $type->getName())
-                        );
-
-                        return $mock;
                     }
                 }
             },
