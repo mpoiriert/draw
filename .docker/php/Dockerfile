@@ -51,6 +51,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends libicu-dev
 RUN docker-php-ext-install intl
 
+# ROADRUNNER
+RUN docker-php-ext-install sockets
+
 #localisation file
 RUN rm -rf /var/lib/apt/lists/*
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \

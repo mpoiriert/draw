@@ -30,4 +30,5 @@ return [
     Draw\Bundle\SonataImportBundle\DrawSonataImportBundle::class => ['all' => true],
     Knp\DoctrineBehaviors\DoctrineBehaviorsBundle::class => ['all' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
+    Baldinof\RoadRunnerBundle\BaldinofRoadRunnerBundle::class => ['all' => true],
 ];

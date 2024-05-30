@@ -9,6 +9,7 @@
         "ext-json": "*",
         "ext-mongodb": "*",
         "ext-simplexml": "*",
+        "ext-sockets": "*",
         "ext-zip": "*",
         "aws/aws-sdk-php": "^3.171",
         "doctrine/common": "^3.1",
@@ -63,7 +64,8 @@
         "doctrine/mongodb-odm-bundle": "*",
         "fidry/cpu-core-counter": "^1.1",
         "knplabs/doctrine-behaviors": "*",
-        "symfony/notifier": "^6.4.0"
+        "symfony/notifier": "^6.4.0",
+        "baldinof/roadrunner-bundle": "^3.1"
     },
     "require-dev": {
         "ext-pcntl": "*",
