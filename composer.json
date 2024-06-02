@@ -124,7 +124,8 @@
         "scheb/2fa-email": "^6.0",
         "colinodell/psr-testlogger": "^1.1",
         "cweagans/composer-patches": "^1.7",
-        "symfony/maker-bundle": "^1.58"
+        "symfony/maker-bundle": "^1.58",
+        "spiral/roadrunner-cli": "^2.6"
     },
     "replace": {
         "draw/application": "self.version",

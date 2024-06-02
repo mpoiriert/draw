@@ -7,12 +7,10 @@ server:
 
 http:
   address: 0.0.0.0:8080
-  ssl:
-    address: :443
-    cert: certs/draw.com.crt
-    key: certs/draw.com.key
   pool:
     debug: true
+    num_workers: 8      # Adjust based on your system's CPU cores
+    max_jobs: 200        # Maximum number of jobs a worker can handle before being recycled
   middleware: [ "static", "gzip" ]
   uploads:
     forbid: [ ".php", ".exe", ".bat" ]

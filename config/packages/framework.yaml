@@ -1,5 +1,8 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
+    trusted_proxies: '127.0.0.1,REMOTE_ADDR'
+    trusted_headers: [ 'x-forwarded-for', 'x-forwarded-host', 'x-forwarded-port', 'x-forwarded-proto' ]
+
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true
     annotations: false

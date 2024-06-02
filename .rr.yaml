@@ -9,6 +9,8 @@ http:
   address: 0.0.0.0:8080
   pool:
     debug: false
+    num_workers: 8      # Adjust based on your system's CPU cores
+    max_jobs: 4000        # Maximum number of jobs a worker can handle before being recycled
   middleware: [ "static", "gzip" ]
   uploads:
     forbid: [ ".php", ".exe", ".bat" ]

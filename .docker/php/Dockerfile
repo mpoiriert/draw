@@ -83,4 +83,5 @@ USER dev
 
 WORKDIR /home/wwwroot/
 
+EXPOSE 8080
 EXPOSE 9000

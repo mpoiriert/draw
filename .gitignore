@@ -40,5 +40,5 @@ phpstan.neon
 ###< phpstan/phpstan ###
 
 ###> baldinof/roadrunner-bundle ###
-/bin/rr
+#/bin/rr
 ###< baldinof/roadrunner-bundle ###

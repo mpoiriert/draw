@@ -1,5 +1,8 @@
 DOMAIN := draw.com
 
+# Add dev.draw.com and phpfpm-dev.draw.com to /etc/hosts
+## dev.draw.com use Road Runner
+
 include make/shared.mk
 
 tester-dump-assert-methods:

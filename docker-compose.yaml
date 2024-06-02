@@ -33,6 +33,7 @@ services:
       - .:/home/wwwroot
       - ~/.ssh:/home/dev/.ssh
       - ./.docker/php/php.ini:/usr/local/etc/php/php.ini
+    entrypoint: ["sh", "-c", "php-fpm & bin/rr serve"]
     depends_on:
       - mysql
       - maildev
