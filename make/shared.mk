@@ -78,7 +78,7 @@ cert-install:
 .PHONY: soup
 # Run soup
 soup:
-	docker-compose exec soup bash -c 'sudo $$(which soup)'
+	docker-compose exec soup soup
 
 .PHONY: migrations-diff
 # Generate migration diff
