@@ -78,7 +78,7 @@ cert-install:
 .PHONY: soup
 # Run soup
 soup:
-	docker-compose exec soup soup
+	docker-compose exec soup soup --ignored_folders pnp-scripts
 
 .PHONY: migrations-diff
 # Generate migration diff
