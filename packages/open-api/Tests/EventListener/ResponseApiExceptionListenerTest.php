@@ -11,7 +11,6 @@ use Draw\Component\OpenApi\Schema\Response as OpenResponse;
 use Draw\Component\OpenApi\Schema\Root;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -39,32 +38,15 @@ class ResponseApiExceptionListenerTest extends TestCase
             $this->httpKernel = $this->createMock(HttpKernelInterface::class),
             $this->request = $this->createMock(Request::class),
             HttpKernelInterface::MAIN_REQUEST,
-            $this->exception = $this->createMock(\Exception::class)
+            $this->exception = new \Exception(
+                previous: new \Exception()
+            )
         );
 
         $this->request
             ->expects(static::any())
             ->method('getRequestFormat')
             ->willReturn('json');
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
-    }
-
-    public function testSubscribedEvents(): void
-    {
-        static::assertSame(
-            [
-                ExceptionEvent::class => ['onKernelException', 255],
-                PreDumpRootSchemaEvent::class => ['addErrorDefinition'],
-            ],
-            $this->object::getSubscribedEvents()
-        );
     }
 
     /**
@@ -135,23 +117,45 @@ class ResponseApiExceptionListenerTest extends TestCase
 
     public function testOnKernelExceptionDefaultDebugFalse(): void
     {
+        $exceptionDetail = json_decode(
+            $this->onKernelException()->getContent(),
+            true,
+            512,
+            \JSON_THROW_ON_ERROR
+        )['detail'];
+
         static::assertArrayNotHasKey(
-            'detail',
-            json_decode($this->onKernelException()->getContent(), true, 512, \JSON_THROW_ON_ERROR)
+            'stack',
+            $exceptionDetail
         );
     }
 
     public function testOnKernelExceptionDebugFalse(): void
     {
-        static::assertArrayNotHasKey(
-            'detail',
-            json_decode(
-                $this->onKernelException(
-                    new ResponseApiExceptionListener(debug: false)
-                )->getContent(),
-                true,
-                512,
-                \JSON_THROW_ON_ERROR
+        $exceptionDetail = json_decode(
+            $this->onKernelException(
+                new ResponseApiExceptionListener(debug: false)
+            )->getContent(),
+            true,
+            512,
+            \JSON_THROW_ON_ERROR
+        )['detail'];
+
+        $expectedKeys = ['class', 'message', 'code', 'file', 'line', 'previous'];
+
+        static::assertEmpty(
+            $extraKeys = array_diff(array_keys($exceptionDetail), $expectedKeys),
+            sprintf(
+                'Unexpected keys: %s',
+                implode(', ', $extraKeys)
+            )
+        );
+
+        static::assertEmpty(
+            $missingKeys = array_diff($expectedKeys, array_keys($exceptionDetail)),
+            sprintf(
+                'Missing keys: %s',
+                implode(', ', $missingKeys)
             )
         );
     }

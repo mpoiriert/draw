@@ -9,26 +9,18 @@ use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ErrorToHttpCo
 use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
-final class ResponseApiExceptionListener implements EventSubscriberInterface
+final class ResponseApiExceptionListener
 {
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            ExceptionEvent::class => ['onKernelException', 255],
-            PreDumpRootSchemaEvent::class => ['addErrorDefinition'],
-        ];
-    }
-
     public function __construct(
         /**
-         * @var ErrorToHttpCodeConverterInterface[]
+         * @var iterable<ErrorToHttpCodeConverterInterface>
          */
         #[TaggedIterator(ErrorToHttpCodeConverterInterface::class)]
         private iterable $errorToHttpCodeConverters = [],
@@ -38,6 +30,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         $this->errorToHttpCodeConverters ??= new ConfigurableErrorToHttpCodeConverter();
     }
 
+    #[AsEventListener]
     public function addErrorDefinition(PreDumpRootSchemaEvent $event): void
     {
         $root = $event->getSchema();
@@ -88,6 +81,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         }
     }
 
+    #[AsEventListener(priority: 255)]
     public function onKernelException(ExceptionEvent $event): void
     {
         $request = $event->getRequest();
@@ -108,9 +102,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
             $data[$this->violationKey] = $this->getConstraintViolationData($error);
         }
 
-        if ($this->debug) {
-            $data['detail'] = $this->getExceptionDetail($error);
-        }
+        $data['detail'] = $this->getExceptionDetail($error);
 
         $event->setResponse(
             new JsonResponse(
@@ -143,10 +135,7 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
         return $errors;
     }
 
-    /**
-     * @return mixed
-     */
-    private function getConstraintPayload(ConstraintViolationInterface $constraintViolation)
+    private function getConstraintPayload(ConstraintViolationInterface $constraintViolation): mixed
     {
         if (!$constraintViolation instanceof ConstraintViolation) {
             return null;
@@ -173,10 +162,10 @@ final class ResponseApiExceptionListener implements EventSubscriberInterface
             foreach (explode("\n", $e->getTraceAsString()) as $line) {
                 $result['stack'][] = $line;
             }
+        }
 
-            if ($previous = $e->getPrevious()) {
-                $result['previous'] = $this->getExceptionDetail($previous);
-            }
+        if ($previous = $e->getPrevious()) {
+            $result['previous'] = $this->getExceptionDetail($previous);
         }
 
         return $result;
