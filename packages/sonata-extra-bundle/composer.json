@@ -11,8 +11,8 @@
     },
     "require-dev": {
         "cweagans/composer-patches": "^1.7",
-        "draw/tester": "^0.11",
-        "draw/security": "^0.11",
+        "draw/tester": "^0.10.36",
+        "draw/security": "^0.10.36",
         "phpunit/phpunit": "^9.0 || ^10.0",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
