@@ -101,6 +101,7 @@ class CronJobExecutionAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
+            ->add('cronJob', null, ['route' => ['name' => 'show']])
             ->add('requestedAt')
             ->add('state')
             ->add('force')
