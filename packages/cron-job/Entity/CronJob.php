@@ -49,6 +49,9 @@ class CronJob implements \Stringable
     ]
     private int $timeToLive = 0;
 
+    #[ORM\Column(name: 'execution_timeout', type: 'integer', nullable: true)]
+    private ?int $executionTimeout = null;
+
     #[ORM\Column(name: 'priority', type: 'integer', nullable: true)]
     #[Assert\Range(min: 0, max: 255)]
     private ?int $priority = null;
@@ -140,6 +143,18 @@ class CronJob implements \Stringable
     public function setTimeToLive(int $timeToLive): self
     {
         $this->timeToLive = $timeToLive;
+
+        return $this;
+    }
+
+    public function getExecutionTimeout(): ?int
+    {
+        return $this->executionTimeout;
+    }
+
+    public function setExecutionTimeout(?int $executionTimeout): self
+    {
+        $this->executionTimeout = $executionTimeout;
 
         return $this;
     }

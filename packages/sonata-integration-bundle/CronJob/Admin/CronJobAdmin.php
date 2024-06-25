@@ -34,6 +34,7 @@ class CronJobAdmin extends AbstractAdmin
             ->add('schedule')
             ->add('active', null, ['editable' => true])
             ->add('timeToLive')
+            ->add('executionTimeout')
             ->add('priority')
             ->add(
                 ListMapper::NAME_ACTIONS,
@@ -66,6 +67,7 @@ class CronJobAdmin extends AbstractAdmin
                 )
                 ->add('schedule')
                 ->add('active')
+                ->add('executionTimeout')
             ->end()
             ->with('Queue Configuration', ['class' => 'col-md-4'])
                 ->add('timeToLive')
@@ -84,6 +86,7 @@ class CronJobAdmin extends AbstractAdmin
             ->add('command')
             ->add('schedule')
             ->add('active')
+            ->add('executionTimeout')
             ->add('timeToLive')
             ->add('priority')
             ->ifTrue(!$this->getSubject()->getExecutions()->isEmpty())

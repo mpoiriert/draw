@@ -70,7 +70,7 @@ class CronJobProcessor
             $this->parameterBag->resolveValue(
                 $event->getCommand()
             ),
-            timeout: 1800
+            timeout: $execution->getCronJob()->getExecutionTimeout()
         );
 
         try {

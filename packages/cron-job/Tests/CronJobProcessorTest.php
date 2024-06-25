@@ -109,6 +109,8 @@ class CronJobProcessorTest extends TestCase
             $returnedPreCronJobExecutionEvent->setCommand($overwrittenCommand);
         }
 
+        $execution->getCronJob()->setExecutionTimeout($executionTimeout = random_int(1, 100));
+
         $this->eventDispatcher
             ->expects(static::exactly(2))
             ->method('dispatch')
@@ -150,7 +152,7 @@ class CronJobProcessorTest extends TestCase
                 null,
                 null,
                 null,
-                1800
+                $executionTimeout,
             )
             ->willReturn($process = $this->createMock(Process::class));
 
@@ -243,7 +245,7 @@ class CronJobProcessorTest extends TestCase
                 null,
                 null,
                 null,
-                1800
+                $execution->getCronJob()->getExecutionTimeout()
             )
             ->willReturn($process);
 
