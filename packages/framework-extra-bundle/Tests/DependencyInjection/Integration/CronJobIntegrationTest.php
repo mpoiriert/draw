@@ -9,6 +9,7 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\Integration
 use Draw\Component\CronJob\Command\QueueCronJobByNameCommand;
 use Draw\Component\CronJob\Command\QueueDueCronJobsCommand;
 use Draw\Component\CronJob\CronJobProcessor;
+use Draw\Component\CronJob\EventListener\PostExecutionQueueCronJobListener;
 use Draw\Component\CronJob\MessageHandler\ExecuteCronJobMessageHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
 
@@ -45,6 +46,12 @@ class CronJobIntegrationTest extends IntegrationTestCase
                     'draw.cron_job.command.queue_due_cron_jobs_command',
                     [
                         QueueDueCronJobsCommand::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.cron_job.event_listener.post_execution_queue_cron_job_listener',
+                    [
+                        PostExecutionQueueCronJobListener::class,
                     ]
                 ),
                 new ServiceConfiguration(

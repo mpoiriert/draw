@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle\Tests;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddPostCronJobExecutionOptionPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EntityMigratorCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
@@ -38,7 +39,7 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder
-            ->expects(static::exactly(11))
+            ->expects(static::exactly(12))
             ->method('addCompilerPass')
             ->with(
                 ...static::withConsecutive(
@@ -69,6 +70,11 @@ class DrawFrameworkExtraBundleTest extends TestCase
                     ],
                     [
                         static::isInstanceOf(AddNewestInstanceRoleCommandOptionPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(AddPostCronJobExecutionOptionPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],

@@ -6,28 +6,26 @@ use App\Document\TestDocument;
 use App\Entity\User;
 use App\Message\NewTestDocumentMessage;
 use App\Message\NewUserMessage;
-use App\Tests\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-class PropertyReferenceEncodingListenerTest extends TestCase
+class PropertyReferenceEncodingListenerTest extends KernelTestCase implements AutowiredInterface
 {
+    #[AutowireService]
+    private EnvelopeFinderInterface $envelopeFinder;
+
     private bool $preEncodeEventCalled = false;
 
     private bool $postEncodeEventCalled = false;
 
     private static string $email;
-
-    private EnvelopeFinderInterface $envelopeFinder;
-
-    protected function setUp(): void
-    {
-        $this->envelopeFinder = static::getContainer()->get(EnvelopeFinderInterface::class);
-    }
 
     public function testSend(): void
     {

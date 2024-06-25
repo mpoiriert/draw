@@ -4,6 +4,7 @@ namespace Draw\Bundle\FrameworkExtraBundle;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
+use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddPostCronJobExecutionOptionPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EntityMigratorCompilerPass;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
@@ -53,6 +54,10 @@ class DrawFrameworkExtraBundle extends Bundle
 
         if (class_exists(AddNewestInstanceRoleCommandOptionPass::class)) {
             $container->addCompilerPass(new AddNewestInstanceRoleCommandOptionPass());
+        }
+
+        if (class_exists(AddPostCronJobExecutionOptionPass::class)) {
+            $container->addCompilerPass(new AddPostCronJobExecutionOptionPass());
         }
 
         if (class_exists(CommandFlowListener::class)) {
