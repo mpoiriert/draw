@@ -49,9 +49,15 @@ class NewestInstanceRoleCheckListener implements EventSubscriberInterface
             return;
         }
 
-        $role = (string) $input->getOption(static::OPTION_AWS_NEWEST_INSTANCE_ROLE);
+        $role = $input->getOption(static::OPTION_AWS_NEWEST_INSTANCE_ROLE);
 
-        if (!$role) {
+        if ('' === $role) {
+            $this->disableCommand($consoleCommandEvent, 'Role is empty', LogLevel::ERROR);
+
+            return;
+        }
+
+        if (null === $role) {
             return;
         }
 
