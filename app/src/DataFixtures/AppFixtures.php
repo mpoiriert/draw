@@ -11,6 +11,7 @@ use App\Entity\UserTag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Draw\Component\Application\Configuration\Entity\Config;
+use Draw\Component\CronJob\Entity\CronJob;
 use Draw\DoctrineExtra\Common\DataFixtures\ObjectReferenceTrait;
 
 class AppFixtures extends Fixture
@@ -40,6 +41,15 @@ class AppFixtures extends Fixture
                 (new Config())
                     ->setId('acme_demo')
                     ->setValue(['enabled' => false, 'limit' => 10]),
+            ]
+        );
+
+        $this->persistAndFlush(
+            $manager,
+            [
+                (new CronJob())
+                    ->setName('test')
+                    ->setCommand('echo "test"'),
             ]
         );
     }

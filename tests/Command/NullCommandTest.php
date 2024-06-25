@@ -31,6 +31,13 @@ class NullCommandTest extends TestCase implements AutowiredInterface
     public static function provideTestOption(): iterable
     {
         yield [
+            'exit-code',
+            null,
+            InputOption::VALUE_REQUIRED,
+            Command::SUCCESS,
+        ];
+
+        yield [
             'draw-execution-id',
             null,
             InputOption::VALUE_REQUIRED,
@@ -46,6 +53,13 @@ class NullCommandTest extends TestCase implements AutowiredInterface
             'aws-newest-instance-role',
             null,
             InputOption::VALUE_REQUIRED,
+        ];
+
+        yield [
+            'draw-post-execution-queue-cron-job',
+            null,
+            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+            [],
         ];
     }
 
