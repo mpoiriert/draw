@@ -15,7 +15,7 @@
         "symfony/workflow": "^6.4.0"
     },
     "require-dev": {
-        "draw/security": "^0.11",
+        "draw/security": "^0.10.37",
         "phpunit/phpunit": "^9.0 || ^10.0",
         "symfony/security-core": "^6.4.0"
     },
