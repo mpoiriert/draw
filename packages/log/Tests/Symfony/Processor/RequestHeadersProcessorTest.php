@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\Bridge\Monolog\Processor;
+namespace Draw\Component\Log\Tests\Symfony\Processor;
 
-use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\RequestHeadersProcessor;
+use Draw\Component\Log\Symfony\Processor\RequestHeadersProcessor;
 use Monolog\Level;
 use Monolog\LogRecord;
 use PHPUnit\Framework\TestCase;

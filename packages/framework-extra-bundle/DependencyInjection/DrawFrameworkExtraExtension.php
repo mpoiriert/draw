@@ -2,8 +2,6 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
 use Draw\Component\Application\DependencyInjection\ConfigurationIntegration;
 use Draw\Component\Application\DependencyInjection\CronIntegration;
 use Draw\Component\Application\DependencyInjection\FeatureIntegration;
@@ -15,6 +13,7 @@ use Draw\Component\CronJob\DependencyInjection\CronJobIntegration;
 use Draw\Component\DependencyInjection\Integration\ExtendableExtensionTrait;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\EntityMigrator\DependencyInjection\EntityMigratorIntegration;
+use Draw\Component\Log\DependencyInjection\LogIntegration;
 use Draw\Component\Mailer\DependencyInjection\MailerIntegration;
 use Draw\Component\Messenger\DependencyInjection\MessengerIntegration;
 use Draw\Component\OpenApi\DependencyInjection\OpenApiIntegration;
@@ -56,7 +55,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             DoctrineExtraIntegration::class,
             EntityMigratorIntegration::class,
             FeatureIntegration::class,
-            LoggerIntegration::class,
             LogIntegration::class,
             MailerIntegration::class,
             MessengerIntegration::class,

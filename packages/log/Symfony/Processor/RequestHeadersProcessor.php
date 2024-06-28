@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor;
+namespace Draw\Component\Log\Symfony\Processor;
 
 use Monolog\LogRecord;
 use Symfony\Component\HttpFoundation\RequestStack;
