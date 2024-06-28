@@ -3,7 +3,7 @@
 namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
-use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
+use Draw\Component\Tester\Test\DependencyInjection\ExtensionTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 

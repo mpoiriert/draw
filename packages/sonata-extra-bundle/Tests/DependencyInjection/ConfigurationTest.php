@@ -4,7 +4,7 @@ namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\Configuration;
 use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
-use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
+use Draw\Component\Tester\Test\DependencyInjection\ConfigurationTestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class ConfigurationTest extends ConfigurationTestCase

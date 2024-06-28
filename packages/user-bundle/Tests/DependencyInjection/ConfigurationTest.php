@@ -4,7 +4,7 @@ namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use App\Entity\User;
 use Draw\Bundle\UserBundle\DependencyInjection\Configuration;
-use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
+use Draw\Component\Tester\Test\DependencyInjection\ConfigurationTestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class ConfigurationTest extends ConfigurationTestCase

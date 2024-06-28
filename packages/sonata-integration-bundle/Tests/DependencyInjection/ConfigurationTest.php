@@ -16,7 +16,7 @@ use Draw\Component\Console\Entity\Execution;
 use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\EntityMigrator\Entity\Migration;
-use Draw\Component\Tester\DependencyInjection\ConfigurationTestCase;
+use Draw\Component\Tester\Test\DependencyInjection\ConfigurationTestCase;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 

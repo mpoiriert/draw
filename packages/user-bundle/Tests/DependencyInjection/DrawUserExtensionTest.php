@@ -13,7 +13,7 @@ use Draw\Bundle\UserBundle\Feed\UserFeedInterface;
 use Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\QrCodeGenerator;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
-use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
+use Draw\Component\Tester\Test\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawUserExtensionTest extends ExtensionTestCase
