@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Console\EventListener;
+namespace Draw\Component\Console\EventListener;
 
 use Draw\Component\Console\Event\GenerateDocumentationEvent;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
