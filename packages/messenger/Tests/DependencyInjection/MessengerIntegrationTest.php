@@ -1,9 +1,8 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Messenger\Tests\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MessengerIntegration;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
@@ -14,6 +13,7 @@ use Draw\Component\Messenger\Broker\Command\StartMessengerBrokerCommand;
 use Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener;
 use Draw\Component\Messenger\Broker\EventListener\StopBrokerOnSigtermSignalListener;
 use Draw\Component\Messenger\Counter\CpuCounter;
+use Draw\Component\Messenger\DependencyInjection\MessengerIntegration;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\EventListener\PropertyReferenceEncodingListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\BasicEnvelopeFactory;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;

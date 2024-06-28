@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\Messenger\DependencyInjection;
 
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
@@ -54,6 +54,7 @@ class MessengerIntegration implements IntegrationInterface, PrependIntegrationIn
 
         $ignoreFolders = [
             'Broker',
+            'DependencyInjection',
             'DoctrineMessageBusHook',
             'Message',
             'Resources',
