@@ -1,11 +1,11 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Workflow\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
+use Draw\Component\Workflow\DependencyInjection\WorkflowIntegration;
 use Draw\Component\Workflow\EventListener\AddTransitionNameToContextListener;
 use Draw\Component\Workflow\EventListener\AddUserToContextListener;
 use PHPUnit\Framework\Attributes\CoversClass;
