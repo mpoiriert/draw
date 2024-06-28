@@ -2,23 +2,30 @@
 
 namespace Draw\Component\AwsToolKit\DependencyInjection;
 
+use Draw\Component\AwsToolKit\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV1;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-class AwsToolKitIntegration implements IntegrationInterface
+class AwsToolKitIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'aws_tool_kit';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new AddNewestInstanceRoleCommandOptionPass());
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

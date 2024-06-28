@@ -2,11 +2,13 @@
 
 namespace Draw\Component\EntityMigrator\DependencyInjection;
 
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Component\EntityMigrator\Command\MigrateCommand;
 use Draw\Component\EntityMigrator\Command\QueueBatchCommand;
+use Draw\Component\EntityMigrator\DependencyInjection\Compiler\EntityMigratorCompilerPass;
 use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Entity\Migration;
@@ -18,13 +20,18 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
-class EntityMigratorIntegration implements IntegrationInterface, PrependIntegrationInterface
+class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface, PrependIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'entity_migrator';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new EntityMigratorCompilerPass());
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

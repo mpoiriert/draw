@@ -2,10 +2,12 @@
 
 namespace Draw\Component\Mailer\DependencyInjection;
 
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Component\Mailer\BodyRenderer\LocalizeBodyRenderer;
+use Draw\Component\Mailer\DependencyInjection\Compiler\EmailWriterCompilerPass;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
@@ -19,13 +21,18 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Mime\Address;
 
-class MailerIntegration implements IntegrationInterface, PrependIntegrationInterface
+class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface, PrependIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'mailer';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new EmailWriterCompilerPass());
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

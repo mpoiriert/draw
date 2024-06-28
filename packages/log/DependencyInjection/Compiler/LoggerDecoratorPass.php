@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
+namespace Draw\Component\Log\DependencyInjection\Compiler;
 
 use Draw\Component\Log\DecoratedLogger;
 use Symfony\Component\DependencyInjection\Argument\BoundArgument;

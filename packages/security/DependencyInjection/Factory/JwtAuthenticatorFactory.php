@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security;
+namespace Draw\Component\Security\DependencyInjection\Factory;
 
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Jwt\JwtEncoder;

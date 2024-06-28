@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Draw\Component\CronJob\DependencyInjection;
 
 use Draw\Component\CronJob\CronJobProcessor;
+use Draw\Component\CronJob\DependencyInjection\Compiler\AddPostCronJobExecutionOptionPass;
 use Draw\Component\CronJob\Entity\CronJob;
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
@@ -13,13 +15,18 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-class CronJobIntegration implements IntegrationInterface, PrependIntegrationInterface
+class CronJobIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface, PrependIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'cron_job';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new AddPostCronJobExecutionOptionPass());
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

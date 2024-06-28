@@ -1,8 +1,9 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
+namespace Draw\Component\Console\DependencyInjection\Compiler;
 
 use Draw\Component\Console\EventListener\CommandFlowListener;
+use Draw\Component\DependencyInjection\Container\DefinitionFinder;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,12 +19,7 @@ class AddCommandExecutionOptionsCompilerPass implements CompilerPassInterface
             return;
         }
 
-        foreach (array_keys($container->findTaggedServiceIds('console.command')) as $serviceId) {
-            $definition = $container->getDefinition($serviceId);
-            if ($definition->isAbstract()) {
-                continue;
-            }
-
+        foreach (DefinitionFinder::findConsoleCommandDefinitions($container) as $definition) {
             $definition->addMethodCall(
                 'addOption',
                 [

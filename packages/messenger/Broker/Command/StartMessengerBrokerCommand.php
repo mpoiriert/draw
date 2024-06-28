@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class StartMessengerBrokerCommand extends Command
@@ -18,6 +19,7 @@ class StartMessengerBrokerCommand extends Command
     private const OPTION_VALUE_CONCURRENT_AUTO = 'auto';
 
     public function __construct(
+        #[Autowire('%draw.symfony_console_path%')]
         private string $consolePath,
         private ProcessFactoryInterface $processFactory,
         private EventDispatcherInterface $eventDispatcher,

@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Security\DependencyInjection;
 
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
@@ -9,19 +10,37 @@ use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\Authorization\Voter\AbstainRoleHierarchyVoter;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
+use Draw\Component\Security\DependencyInjection\Compiler\UserCheckerDecoratorPass;
+use Draw\Component\Security\DependencyInjection\Factory\JwtAuthenticatorFactory;
+use Draw\Component\Security\DependencyInjection\Factory\MessengerMessageAuthenticatorFactory;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Jwt\JwtEncoder;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-class SecurityIntegration implements IntegrationInterface
+class SecurityIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'security';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new UserCheckerDecoratorPass());
+
+        if ($container->hasExtension('security')) {
+            $extension = $container->getExtension('security');
+
+            \assert($extension instanceof SecurityExtension);
+
+            $extension->addAuthenticatorFactory(new JwtAuthenticatorFactory());
+            $extension->addAuthenticatorFactory(new MessengerMessageAuthenticatorFactory());
+        }
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

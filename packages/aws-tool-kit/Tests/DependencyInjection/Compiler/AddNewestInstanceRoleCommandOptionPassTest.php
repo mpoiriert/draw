@@ -1,29 +1,29 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
+namespace Draw\Component\AwsToolKit\Tests\DependencyInjection\Compiler;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
-use Draw\Component\Console\EventListener\CommandFlowListener;
+use Draw\Component\AwsToolKit\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
+use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-#[CoversClass(AddCommandExecutionOptionsCompilerPass::class)]
-class AddCommandExecutionOptionsCompilerPassTest extends TestCase
+#[CoversClass(AddNewestInstanceRoleCommandOptionPass::class)]
+class AddNewestInstanceRoleCommandOptionPassTest extends TestCase
 {
-    private AddCommandExecutionOptionsCompilerPass $compilerPass;
+    private AddNewestInstanceRoleCommandOptionPass $compilerPass;
 
     private ContainerBuilder $containerBuilder;
 
     protected function setUp(): void
     {
-        $this->compilerPass = new AddCommandExecutionOptionsCompilerPass();
+        $this->compilerPass = new AddNewestInstanceRoleCommandOptionPass();
         $this->containerBuilder = new ContainerBuilder();
     }
 
-    public function testProcessNoDefinition(): void
+    public function testProcessNoNewestInstanceRoleCheckListener(): void
     {
         $definition = new Definition(\stdClass::class);
 
@@ -39,10 +39,9 @@ class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 
     public function testProcess(): void
     {
-        $this->containerBuilder->setDefinition(CommandFlowListener::class, new Definition(\stdClass::class));
-
         $definition = new Definition(\stdClass::class);
 
+        $this->containerBuilder->setDefinition(NewestInstanceRoleCheckListener::class, clone $definition);
         $this->containerBuilder->setDefinition('service-id', $definition)->addTag('console.command');
 
         $this->compilerPass->process($this->containerBuilder);
@@ -52,19 +51,10 @@ class AddCommandExecutionOptionsCompilerPassTest extends TestCase
                 [
                     'addOption',
                     [
-                        CommandFlowListener::OPTION_EXECUTION_ID,
+                        NewestInstanceRoleCheckListener::OPTION_AWS_NEWEST_INSTANCE_ROLE,
                         null,
                         InputOption::VALUE_REQUIRED,
-                        'The existing execution id of the command. Use internally by the DrawCommandBundle.',
-                    ],
-                ],
-                [
-                    'addOption',
-                    [
-                        CommandFlowListener::OPTION_IGNORE,
-                        null,
-                        InputOption::VALUE_NONE,
-                        'Flag to ignore login of the execution to the databases.',
+                        'The instance role the server must be the newest of to run the command.',
                     ],
                 ],
             ],

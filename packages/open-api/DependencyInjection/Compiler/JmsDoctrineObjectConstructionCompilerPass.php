@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
+namespace Draw\Component\OpenApi\DependencyInjection\Compiler;
 
 use Draw\Component\OpenApi\Serializer\Construction\DoctrineObjectConstructor;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
