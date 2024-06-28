@@ -2,16 +2,21 @@
 
 namespace App\Feature;
 
-use Draw\Bundle\FrameworkExtraBundle\Feature\ServiceFeature;
 use Draw\Component\Application\Feature\Attribute\Config;
+use Draw\Component\Application\Feature\FeatureInitializer;
 use Draw\Component\Application\Feature\SelfInitializeFeatureInterface;
 
-class DemoFeature extends ServiceFeature implements SelfInitializeFeatureInterface
+class DemoFeature implements SelfInitializeFeatureInterface
 {
     #[Config]
     private bool $enabled = true;
 
     private ?int $limit = null;
+
+    public function __construct(FeatureInitializer $featureInitializer)
+    {
+        $featureInitializer->initialize($this);
+    }
 
     public function getName(): string
     {
