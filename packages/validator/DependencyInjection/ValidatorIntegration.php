@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\Validator\DependencyInjection;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
