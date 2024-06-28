@@ -10,6 +10,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
 abstract class IntegrationTestCase extends TestCase
@@ -23,6 +24,22 @@ abstract class IntegrationTestCase extends TestCase
     abstract public function getDefaultConfiguration(): array;
 
     abstract public static function provideTestLoad(): iterable;
+
+    protected function mockExtension(string $name): ExtensionInterface
+    {
+        $extension = $this->createMock(ExtensionInterface::class);
+
+        $extension->expects(static::any())
+            ->method('getAlias')
+            ->willReturn($name);
+
+        $extension
+            ->expects(static::any())
+            ->method('getNamespace')
+            ->willReturn($name);
+
+        return $extension;
+    }
 
     protected function setUp(): void
     {

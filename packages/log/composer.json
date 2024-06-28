@@ -16,11 +16,13 @@
     },
     "require-dev": {
         "draw/dependency-injection": "^0.11",
+        "draw/user-bundle": "^0.11",
         "monolog/monolog": "^3.5.0",
         "phpunit/phpunit": "^9.0 || ^10.0",
         "symfony/event-dispatcher": "^6.4.0",
         "symfony/http-foundation": "^6.4.0",
-        "symfony/http-kernel": "^6.4.0"
+        "symfony/http-kernel": "^6.4.0",
+        "symfony/security-core": "^6.4.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
