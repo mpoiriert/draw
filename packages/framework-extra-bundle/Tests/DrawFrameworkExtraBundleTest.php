@@ -2,21 +2,19 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\AddPostCronJobExecutionOptionPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EmailWriterCompilerPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\EntityMigratorCompilerPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\LoggerDecoratorPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerBrokerCompilerPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerRetryFailedMessageMessageHandlerCompilerPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\TagIfExpressionCompilerPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\JwtAuthenticatorFactory;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security\MessengerMessageAuthenticatorFactory;
 use Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle;
+use Draw\Component\AwsToolKit\DependencyInjection\Compiler\AddNewestInstanceRoleCommandOptionPass;
+use Draw\Component\Console\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
+use Draw\Component\CronJob\DependencyInjection\Compiler\AddPostCronJobExecutionOptionPass;
+use Draw\Component\DependencyInjection\DependencyInjection\Compiler\TagIfExpressionCompilerPass;
+use Draw\Component\EntityMigrator\DependencyInjection\Compiler\EntityMigratorCompilerPass;
+use Draw\Component\Log\DependencyInjection\Compiler\LoggerDecoratorPass;
+use Draw\Component\Mailer\DependencyInjection\Compiler\EmailWriterCompilerPass;
+use Draw\Component\Messenger\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
+use Draw\Component\OpenApi\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
+use Draw\Component\Security\DependencyInjection\Compiler\UserCheckerDecoratorPass;
+use Draw\Component\Security\DependencyInjection\Factory\JwtAuthenticatorFactory;
+use Draw\Component\Security\DependencyInjection\Factory\MessengerMessageAuthenticatorFactory;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
@@ -39,7 +37,7 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder
-            ->expects(static::exactly(12))
+            ->expects(static::exactly(10))
             ->method('addCompilerPass')
             ->with(
                 ...static::withConsecutive(
@@ -49,32 +47,7 @@ class DrawFrameworkExtraBundleTest extends TestCase
                         0,
                     ],
                     [
-                        static::isInstanceOf(LoggerDecoratorPass::class),
-                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
-                        -1,
-                    ],
-                    [
-                        static::isInstanceOf(UserCheckerDecoratorPass::class),
-                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
-                        0,
-                    ],
-                    [
-                        static::isInstanceOf(MessengerBrokerCompilerPass::class),
-                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
-                        0,
-                    ],
-                    [
-                        static::isInstanceOf(MessengerRetryFailedMessageMessageHandlerCompilerPass::class),
-                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
-                        0,
-                    ],
-                    [
                         static::isInstanceOf(AddNewestInstanceRoleCommandOptionPass::class),
-                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
-                        0,
-                    ],
-                    [
-                        static::isInstanceOf(AddPostCronJobExecutionOptionPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
@@ -84,12 +57,22 @@ class DrawFrameworkExtraBundleTest extends TestCase
                         0,
                     ],
                     [
-                        static::isInstanceOf(EmailWriterCompilerPass::class),
+                        static::isInstanceOf(AddPostCronJobExecutionOptionPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
                     [
                         static::isInstanceOf(EntityMigratorCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(LoggerDecoratorPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        -1,
+                    ],
+                    [
+                        static::isInstanceOf(EmailWriterCompilerPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
@@ -100,6 +83,11 @@ class DrawFrameworkExtraBundleTest extends TestCase
                     ],
                     [
                         static::isInstanceOf(JmsDoctrineObjectConstructionCompilerPass::class),
+                        PassConfig::TYPE_BEFORE_OPTIMIZATION,
+                        0,
+                    ],
+                    [
+                        static::isInstanceOf(UserCheckerDecoratorPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],

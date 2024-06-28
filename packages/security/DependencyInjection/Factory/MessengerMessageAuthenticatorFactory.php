@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Factory\Security;
+namespace Draw\Component\Security\DependencyInjection\Factory;
 
 use Draw\Component\Messenger\ManualTrigger\Action\ClickMessageAction;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;

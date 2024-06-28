@@ -15,6 +15,14 @@ trait ExtendableExtensionTrait
 
     abstract private function provideExtensionClasses(): array;
 
+    /**
+     * @return array<IntegrationInterface>
+     */
+    public function getIntegrations(): array
+    {
+        return $this->integrations;
+    }
+
     private function registerDefaultIntegrations(): void
     {
         foreach ($this->provideExtensionClasses() as $extensionClass) {

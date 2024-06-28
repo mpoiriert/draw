@@ -3,10 +3,12 @@
 namespace Draw\Component\OpenApi\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\OpenApi\Cleaner\ReferenceCleanerInterface;
 use Draw\Component\OpenApi\Controller\OpenApiController;
+use Draw\Component\OpenApi\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
 use Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener;
 use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
@@ -53,13 +55,18 @@ use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class OpenApiIntegration implements IntegrationInterface
+class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'open_api';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new JmsDoctrineObjectConstructionCompilerPass());
     }
 
     public function addConfiguration(ArrayNodeDefinition $node): void

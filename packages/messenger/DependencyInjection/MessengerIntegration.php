@@ -4,11 +4,13 @@ namespace Draw\Component\Messenger\DependencyInjection;
 
 use App\Entity\MessengerMessage;
 use App\Entity\MessengerMessageTag;
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener;
+use Draw\Component\Messenger\DependencyInjection\Compiler\MessengerTransportNamesCompilerPass;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\BasicEnvelopeFactory;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFactoryInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMessageListener;
@@ -30,19 +32,29 @@ use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use Draw\Contracts\Messenger\TransportRepositoryInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 
-class MessengerIntegration implements IntegrationInterface, PrependIntegrationInterface
+class MessengerIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface, PrependIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'messenger';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(
+            new MessengerTransportNamesCompilerPass(),
+            PassConfig::TYPE_BEFORE_OPTIMIZATION,
+            -1
+        );
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

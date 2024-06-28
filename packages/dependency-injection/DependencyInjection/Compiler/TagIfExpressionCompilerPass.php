@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
+namespace Draw\Component\DependencyInjection\DependencyInjection\Compiler;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

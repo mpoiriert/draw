@@ -3,10 +3,12 @@
 namespace Draw\Component\Console\DependencyInjection;
 
 use Draw\Component\Console\Command\PurgeExecutionCommand;
+use Draw\Component\Console\DependencyInjection\Compiler\AddCommandExecutionOptionsCompilerPass;
 use Draw\Component\Console\Descriptor\TextDescriptor;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Console\EventListener\DocumentationFilterCommandEventListener;
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
@@ -17,13 +19,18 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInterface
+class ConsoleIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface, PrependIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'console';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new AddCommandExecutionOptionsCompilerPass());
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

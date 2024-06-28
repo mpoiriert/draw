@@ -1,9 +1,9 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Compiler;
+namespace DependencyInjection\Compiler;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
+use Draw\Component\Security\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

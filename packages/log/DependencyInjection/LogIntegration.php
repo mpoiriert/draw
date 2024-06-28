@@ -2,8 +2,10 @@
 
 namespace Draw\Component\Log\DependencyInjection;
 
+use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
+use Draw\Component\Log\DependencyInjection\Compiler\LoggerDecoratorPass;
 use Draw\Component\Log\Monolog\Processor\DelayProcessor;
 use Draw\Component\Log\Symfony\EventListener\SlowRequestLoggerListener;
 use Draw\Component\Log\Symfony\Processor\RequestHeadersProcessor;
@@ -16,13 +18,19 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpFoundation\ChainRequestMatcher;
 use Symfony\Component\HttpFoundation\RequestMatcher;
 
-class LogIntegration implements IntegrationInterface
+class LogIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface
 {
     use IntegrationTrait;
 
     public function getConfigSectionName(): string
     {
         return 'log';
+    }
+
+    public function buildContainer(ContainerBuilder $container): void
+    {
+        // It needs to run after the LoggerChannelPass
+        $container->addCompilerPass(new LoggerDecoratorPass(), priority: -1);
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void

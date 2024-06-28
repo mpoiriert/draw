@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
+namespace Draw\Component\EntityMigrator\DependencyInjection\Compiler;
 
 use Draw\Component\EntityMigrator\MigrationInterface;
 use Draw\Component\EntityMigrator\Migrator;

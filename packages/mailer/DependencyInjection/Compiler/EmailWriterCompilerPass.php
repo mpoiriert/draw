@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Compiler;
+namespace Draw\Component\Mailer\DependencyInjection\Compiler;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Core\Reflection\ReflectionExtractor;

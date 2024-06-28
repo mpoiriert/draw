@@ -8,13 +8,12 @@ use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Console\Command\GenerateDocumentationCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-/**
- * @covers \Draw\Component\Console\Command\GenerateDocumentationCommand
- */
+#[CoversClass(GenerateDocumentationCommand::class)]
 class GenerateDocumentationCommandTest extends TestCase implements AutowiredInterface
 {
     use FilteredCommandTestTrait;
