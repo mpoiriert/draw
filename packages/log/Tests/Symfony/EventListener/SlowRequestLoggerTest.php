@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\Logger\EventListener;
+namespace Draw\Component\Log\Tests\Symfony\EventListener;
 
-use Draw\Bundle\FrameworkExtraBundle\Logger\EventListener\SlowRequestLoggerListener;
+use Draw\Component\Log\Symfony\EventListener\SlowRequestLoggerListener;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

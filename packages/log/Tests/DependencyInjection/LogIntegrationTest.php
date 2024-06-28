@@ -1,13 +1,17 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Log\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
-use Draw\Bundle\FrameworkExtraBundle\Logger\EventListener\SlowRequestLoggerListener;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
+use Draw\Component\Log\DependencyInjection\LogIntegration;
+use Draw\Component\Log\Monolog\Processor\DelayProcessor;
+use Draw\Component\Log\Symfony\EventListener\SlowRequestLoggerListener;
+use Draw\Component\Log\Symfony\Processor\RequestHeadersProcessor;
+use Draw\Component\Log\Symfony\Processor\TokenProcessor;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpFoundation\RequestMatcher\HostRequestMatcher;
 use Symfony\Component\HttpFoundation\RequestMatcher\IpsRequestMatcher;
@@ -16,19 +20,19 @@ use Symfony\Component\HttpFoundation\RequestMatcher\PathRequestMatcher;
 use Symfony\Component\HttpFoundation\RequestMatcher\PortRequestMatcher;
 
 /**
- * @property LoggerIntegration $integration
+ * @property LogIntegration $integration
  */
-#[CoversClass(LoggerIntegration::class)]
-class LoggerIntegrationTest extends IntegrationTestCase
+#[CoversClass(LogIntegration::class)]
+class LogIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
     {
-        return new LoggerIntegration();
+        return new LogIntegration();
     }
 
     public function getConfigurationSectionName(): string
     {
-        return 'logger';
+        return 'log';
     }
 
     public function getDefaultConfiguration(): array
@@ -39,12 +43,66 @@ class LoggerIntegrationTest extends IntegrationTestCase
                 'default_duration' => 10000,
                 'request_matchers' => [],
             ],
+            'enable_all_processors' => false,
+            'processor' => [
+                'console_command' => [
+                    'enabled' => false,
+                    'includeArguments' => true,
+                    'includeOptions' => false,
+                ],
+                'delay' => [
+                    'enabled' => false,
+                    'key' => 'delay',
+                ],
+                'request_headers' => [
+                    'enabled' => false,
+                    'key' => 'request_headers',
+                    'onlyHeaders' => [],
+                    'ignoreHeaders' => [],
+                ],
+                'token' => [
+                    'enabled' => false,
+                    'key' => 'token',
+                ],
+            ],
         ];
     }
 
     public static function provideTestLoad(): iterable
     {
-        yield 'default' => [];
+        yield 'all' => [
+            [
+                [
+                    'enable_all_processors' => true,
+                ],
+            ],
+            [
+                new ServiceConfiguration(
+                    'draw.log.console_command_processor',
+                    [
+                        ConsoleCommandProcessor::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.log.delay_processor',
+                    [
+                        DelayProcessor::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.log.request_headers_processor',
+                    [
+                        RequestHeadersProcessor::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.log.token_processor',
+                    [
+                        TokenProcessor::class,
+                    ]
+                ),
+            ],
+        ];
 
         yield 'slow_request' => [
             [
@@ -69,7 +127,7 @@ class LoggerIntegrationTest extends IntegrationTestCase
             ],
             [
                 new ServiceConfiguration(
-                    'draw.logger.event_listener.slow_request_logger_listener',
+                    'draw.log.slow_request_logger_listener',
                     [
                         SlowRequestLoggerListener::class,
                     ],

@@ -1,10 +1,10 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\Bridge\Monolog\Processor;
+namespace Draw\Component\Log\Tests\Symfony\Processor;
 
-use Draw\Bundle\FrameworkExtraBundle\Bridge\Monolog\Processor\TokenProcessor;
 use Draw\Bundle\UserBundle\Entity\SecurityUserInterface;
 use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
+use Draw\Component\Log\Symfony\Processor\TokenProcessor;
 use Monolog\Level;
 use Monolog\LogRecord;
 use PHPUnit\Framework\MockObject\MockObject;

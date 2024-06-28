@@ -19,13 +19,11 @@ draw_framework_extra:
   feature: ~
 
   log:
-    enable_all_processors: true
-
-  logger:
     slow_request:
       default_duration: 5000
       request_matchers:
         - path: '^/api'
+    enable_all_processors: true
 
   mailer:
     css_inliner: ~

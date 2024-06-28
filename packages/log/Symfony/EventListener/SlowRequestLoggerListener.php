@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Logger\EventListener;
+namespace Draw\Component\Log\Symfony\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
