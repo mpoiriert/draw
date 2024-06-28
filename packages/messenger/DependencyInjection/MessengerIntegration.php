@@ -72,6 +72,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
             'Resources',
             'SerializerEventDispatcher',
             'Tests',
+            'vendor',
             'Versioning',
         ];
 

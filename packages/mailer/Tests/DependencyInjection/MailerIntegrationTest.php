@@ -17,8 +17,6 @@ use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
 use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
 use Draw\Component\Mailer\Twig\TranslationExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
-use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -68,8 +66,8 @@ class MailerIntegrationTest extends IntegrationTestCase
     public function testPrepend(): void
     {
         $containerBuilder = new ContainerBuilder();
-        $containerBuilder->registerExtension(new FrameworkExtension());
-        $containerBuilder->registerExtension(new TwigExtension());
+        $containerBuilder->registerExtension($this->mockExtension('framework'));
+        $containerBuilder->registerExtension($this->mockExtension('twig'));
 
         $this->integration->prepend(
             $containerBuilder,

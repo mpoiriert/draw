@@ -2,8 +2,6 @@
 
 namespace Draw\Component\Messenger\Tests\DependencyInjection;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
-use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
@@ -39,7 +37,6 @@ use Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use Draw\Contracts\Messenger\TransportRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Symfony\Bundle\FrameworkBundle\DependencyInjection\FrameworkExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -404,9 +401,9 @@ class MessengerIntegrationTest extends IntegrationTestCase
     public function testPrepend(): void
     {
         $containerBuilder = new ContainerBuilder();
-        $containerBuilder->registerExtension(new DoctrineExtension());
-        $containerBuilder->registerExtension(new FrameworkExtension());
-        $containerBuilder->registerExtension(new DrawSonataIntegrationExtension());
+        $containerBuilder->registerExtension($this->mockExtension('doctrine'));
+        $containerBuilder->registerExtension($this->mockExtension('framework'));
+        $containerBuilder->registerExtension($this->mockExtension('draw_sonata_integration'));
 
         $this->integration->prepend(
             $containerBuilder,

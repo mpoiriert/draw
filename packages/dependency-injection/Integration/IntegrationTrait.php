@@ -24,6 +24,7 @@ trait IntegrationTrait
             'Resources/',
             'Stamp/',
             'Tests/',
+            'vendor/',
         ];
     }
 

@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Console\Tests\DependencyInjection;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
 use Draw\Component\Console\Command\GenerateDocumentationCommand;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\DependencyInjection\ConsoleIntegration;
@@ -60,7 +59,7 @@ class ConsoleIntegrationTest extends IntegrationTestCase
     public function testPrepend(): void
     {
         $containerBuilder = new ContainerBuilder();
-        $containerBuilder->registerExtension(new DoctrineExtension());
+        $containerBuilder->registerExtension($this->mockExtension('doctrine'));
 
         $this->integration->prepend(
             $containerBuilder,
