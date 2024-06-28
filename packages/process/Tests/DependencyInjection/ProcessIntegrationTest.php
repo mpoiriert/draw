@@ -1,12 +1,12 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Process\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
 use Draw\Component\Console\DependencyInjection\ConsoleIntegration;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
+use Draw\Component\Process\DependencyInjection\ProcessIntegration;
 use Draw\Component\Process\ProcessFactory;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
