@@ -1,9 +1,9 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\AwsToolKit\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\AwsToolKitIntegration;
 use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
+use Draw\Component\AwsToolKit\DependencyInjection\AwsToolKitIntegration;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\AwsToolKit\Imds\ImdsClientV1;
