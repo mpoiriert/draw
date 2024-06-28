@@ -1,8 +1,7 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\OpenApi\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
@@ -10,6 +9,7 @@ use Draw\Component\OpenApi\Cleaner\DoctrineInheritanceCleaner;
 use Draw\Component\OpenApi\Cleaner\UnreferencedCleaner;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\OpenApi\Controller\OpenApiController;
+use Draw\Component\OpenApi\DependencyInjection\OpenApiIntegration;
 use Draw\Component\OpenApi\EventListener\DefinitionAliasCleanerListener;
 use Draw\Component\OpenApi\EventListener\DoctrineInheritanceSchemaCleanerListener;
 use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
