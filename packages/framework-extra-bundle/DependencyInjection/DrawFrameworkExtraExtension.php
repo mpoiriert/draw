@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\DoctrineExtraIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\EntityMigratorIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
@@ -24,6 +23,7 @@ use Draw\Component\Console\DependencyInjection\ConsoleIntegration;
 use Draw\Component\CronJob\DependencyInjection\CronJobIntegration;
 use Draw\Component\DependencyInjection\Integration\ExtendableExtensionTrait;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
+use Draw\DoctrineExtra\DependencyInjection\DoctrineExtraIntegration;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
