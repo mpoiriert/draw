@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\Application\DependencyInjection;
 
 use Draw\Component\Application\Feature\FeatureInitializer;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;

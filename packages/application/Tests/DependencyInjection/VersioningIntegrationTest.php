@@ -1,8 +1,8 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Application\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\VersioningIntegration;
+use Draw\Component\Application\DependencyInjection\VersioningIntegration;
 use Draw\Component\Application\Versioning\Command\UpdateDeployedVersionCommand;
 use Draw\Component\Application\Versioning\EventListener\FetchRunningVersionListener;
 use Draw\Component\Application\Versioning\VersionManager;

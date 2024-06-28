@@ -1,9 +1,9 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Application\Tests\DependencyInjection;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\DrawFrameworkExtraExtension;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\SystemMonitoringIntegration;
+use Draw\Component\Application\DependencyInjection\SystemMonitoringIntegration;
 use Draw\Component\Application\SystemMonitoring\Action\PingAction;
 use Draw\Component\Application\SystemMonitoring\Bridge\Doctrine\DBALConnectionStatusProvider;
 use Draw\Component\Application\SystemMonitoring\Bridge\Doctrine\DBALPrimaryReadReplicaConnectionStatusProvider;
