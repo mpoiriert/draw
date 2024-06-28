@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\Tester\DependencyInjection;
+namespace Draw\Component\Tester\Test\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

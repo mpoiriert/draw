@@ -9,7 +9,7 @@ use Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator
 use Draw\Component\Core\FilterExpression\Expression\ConstraintExpressionEvaluator;
 use Draw\Component\Profiling\ProfilerCoordinator;
 use Draw\Component\Profiling\ProfilerInterface;
-use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
+use Draw\Component\Tester\Test\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
 class DrawTesterExtensionTest extends ExtensionTestCase

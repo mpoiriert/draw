@@ -1,12 +1,12 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Tester\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\Component\Tester\Command\TestsCoverageCheckCommand;
+use Draw\Component\Tester\DependencyInjection\TesterIntegration;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 /**

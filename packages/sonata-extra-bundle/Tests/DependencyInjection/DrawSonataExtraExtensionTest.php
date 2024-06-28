@@ -17,7 +17,7 @@ use Draw\Bundle\SonataExtraBundle\Extension\GridExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
 use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
 use Draw\Bundle\SonataExtraBundle\Twig\EntityTwigExtension;
-use Draw\Component\Tester\DependencyInjection\ExtensionTestCase;
+use Draw\Component\Tester\Test\DependencyInjection\ExtensionTestCase;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\DoctrineORMAdminBundle\DependencyInjection\SonataDoctrineORMAdminExtension;
 use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;

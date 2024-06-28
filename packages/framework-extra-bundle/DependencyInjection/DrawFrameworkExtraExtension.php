@@ -4,7 +4,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\TesterIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ValidatorIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\WorkflowIntegration;
 use Draw\Component\Application\DependencyInjection\ConfigurationIntegration;
@@ -23,6 +22,7 @@ use Draw\Component\Messenger\DependencyInjection\MessengerIntegration;
 use Draw\Component\OpenApi\DependencyInjection\OpenApiIntegration;
 use Draw\Component\Process\DependencyInjection\ProcessIntegration;
 use Draw\Component\Security\DependencyInjection\SecurityIntegration;
+use Draw\Component\Tester\DependencyInjection\TesterIntegration;
 use Draw\DoctrineExtra\DependencyInjection\DoctrineExtraIntegration;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

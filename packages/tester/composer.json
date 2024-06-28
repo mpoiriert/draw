@@ -21,6 +21,7 @@
     "require-dev": {
         "nesbot/carbon": "^2.0",
         "doctrine/orm": "^2.11",
+        "draw/dependency-injection": "^0.11",
         "pdeans/http": "^1.1",
         "symfony/console": "^6.4.0",
         "symfony/dependency-injection": "^6.4.0"
