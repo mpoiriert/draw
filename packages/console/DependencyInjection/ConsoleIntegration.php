@@ -1,13 +1,12 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\Console\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationFilterCommandEventListener;
-use Draw\Bundle\FrameworkExtraBundle\DrawFrameworkExtraBundle;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Console\Descriptor\TextDescriptor;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
+use Draw\Component\Console\EventListener\DocumentationFilterCommandEventListener;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
@@ -44,18 +43,6 @@ class ConsoleIntegration implements IntegrationInterface, PrependIntegrationInte
         $container
             ->getDefinition(CommandFlowListener::class)
             ->setArgument('$ignoreDisabledCommand', $config['ignore_disabled_command']);
-
-        $this->renameDefinitions(
-            $container,
-            $namespace,
-            'draw.console.'
-        );
-
-        $this->registerClasses(
-            $loader,
-            $namespace = 'Draw\\Bundle\\FrameworkExtraBundle\\Console\\',
-            \dirname((new \ReflectionClass(DrawFrameworkExtraBundle::class))->getFileName()).'/Console'
-        );
 
         if (!$config['documentation']['command_names']) {
             $container->removeDefinition(DocumentationFilterCommandEventListener::class);

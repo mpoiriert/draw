@@ -1,15 +1,15 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Console\Tests\DependencyInjection;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\DoctrineExtension;
-use Draw\Bundle\FrameworkExtraBundle\Console\EventListener\DocumentationFilterCommandEventListener;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Component\Console\Command\GenerateDocumentationCommand;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
+use Draw\Component\Console\DependencyInjection\ConsoleIntegration;
 use Draw\Component\Console\Descriptor\TextDescriptor;
 use Draw\Component\Console\Entity\Execution;
 use Draw\Component\Console\EventListener\CommandFlowListener;
+use Draw\Component\Console\EventListener\DocumentationFilterCommandEventListener;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;

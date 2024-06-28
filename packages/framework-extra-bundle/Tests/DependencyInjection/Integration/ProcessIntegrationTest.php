@@ -2,8 +2,8 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConsoleIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
+use Draw\Component\Console\DependencyInjection\ConsoleIntegration;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
