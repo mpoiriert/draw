@@ -4,7 +4,6 @@ namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LogIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MessengerIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\OpenApiIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ProcessIntegration;
@@ -23,6 +22,7 @@ use Draw\Component\CronJob\DependencyInjection\CronJobIntegration;
 use Draw\Component\DependencyInjection\Integration\ExtendableExtensionTrait;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\EntityMigrator\DependencyInjection\EntityMigratorIntegration;
+use Draw\Component\Mailer\DependencyInjection\MailerIntegration;
 use Draw\DoctrineExtra\DependencyInjection\DoctrineExtraIntegration;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

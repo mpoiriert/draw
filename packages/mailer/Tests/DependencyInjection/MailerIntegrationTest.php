@@ -1,13 +1,13 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Mailer\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\MailerIntegration;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\Component\Mailer\BodyRenderer\LocalizeBodyRenderer;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
+use Draw\Component\Mailer\DependencyInjection\MailerIntegration;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\AddTemplateHeaderEmailWriter;
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
