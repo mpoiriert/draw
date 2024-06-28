@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\Application\DependencyInjection;
 
 use Doctrine\Persistence\ConnectionRegistry;
 use Draw\Component\Application\SystemMonitoring\Bridge\Doctrine\ConnectionStatusProviderInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\Application\DependencyInjection;
 
 use Draw\Component\Application\Configuration\DoctrineConfigurationRegistry;
 use Draw\Component\Application\Configuration\Entity\Config;

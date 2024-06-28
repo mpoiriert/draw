@@ -1,9 +1,9 @@
 <?php
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\Application\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\ConfigurationIntegration;
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\FeatureIntegration;
+use Draw\Component\Application\DependencyInjection\ConfigurationIntegration;
+use Draw\Component\Application\DependencyInjection\FeatureIntegration;
 use Draw\Component\Application\Feature\FeatureInitializer;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
