@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration;
+namespace Draw\Component\CronJob\DependencyInjection;
 
 use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Entity\CronJob;

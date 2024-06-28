@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Draw\Bundle\FrameworkExtraBundle\Tests\DependencyInjection\Integration;
+namespace Draw\Component\CronJob\Tests\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronJobIntegration;
 use Draw\Component\CronJob\Command\QueueCronJobByNameCommand;
 use Draw\Component\CronJob\Command\QueueDueCronJobsCommand;
 use Draw\Component\CronJob\CronJobProcessor;
+use Draw\Component\CronJob\DependencyInjection\CronJobIntegration;
 use Draw\Component\CronJob\EventListener\PostExecutionQueueCronJobListener;
 use Draw\Component\CronJob\MessageHandler\ExecuteCronJobMessageHandler;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;

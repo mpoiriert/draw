@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
-use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\CronJobIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\DoctrineExtraIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\EntityMigratorIntegration;
 use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\Integration\LoggerIntegration;
@@ -22,6 +21,7 @@ use Draw\Component\Application\DependencyInjection\SystemMonitoringIntegration;
 use Draw\Component\Application\DependencyInjection\VersioningIntegration;
 use Draw\Component\AwsToolKit\DependencyInjection\AwsToolKitIntegration;
 use Draw\Component\Console\DependencyInjection\ConsoleIntegration;
+use Draw\Component\CronJob\DependencyInjection\CronJobIntegration;
 use Draw\Component\DependencyInjection\Integration\ExtendableExtensionTrait;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
