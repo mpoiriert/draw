@@ -1,0 +1,57 @@
+name: Split Test
+
+on:
+  push:
+    branches:
+      - 'master'
+
+    tags:
+      - '*'
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        packages:
+          - application
+          - aws-tool-kit
+          - console
+          - core
+          - cron-job
+          - dependency-injection
+          - doctrine-extra
+          - entity-migrator
+          - fixer
+          - framework-extra-bundle
+          - log
+          - mailer
+          - messenger
+          - open-api
+          - process
+          - profiling
+          - security
+          - sonata-import-bundle
+          - sonata-integration-bundle
+          - sonata-extra-bundle
+          - tester
+          - tester-bundle
+          - user-bundle
+          - validator
+          - workflow
+    steps:
+      -
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      -
+        uses: "./.github/actions/git-split"
+        with:
+          user_name: 'mpoiriert'
+          user_email: 'mpoiriert@gmail.com'
+          access_token: '${{ secrets.GH_ACCESS_TOKEN }}'
+          git_ref: '${{ github.ref }}'
+          source_repository: 'mpoiriert/test-monorepo'
+          source_directory: 'split/${{ matrix.packages }}'
+          target_repository: 'mpoiriert/${{ matrix.packages }}'
