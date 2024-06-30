@@ -2,7 +2,11 @@
     "name": "draw/validator",
     "license": "MIT",
     "type": "library",
-    "keywords": ["draw", "validator", "symfony"],
+    "keywords": [
+        "draw",
+        "validator",
+        "symfony"
+    ],
     "authors": [
         {
             "name": "Martin Poirier Theoret",
@@ -15,7 +19,7 @@
     "require-dev": {
         "phpunit/phpunit": "^10.0",
         "doctrine/persistence": "^2.2 || ^3.0",
-        "draw/dependency-injection": "^0.11"
+        "draw/dependency-injection": "^0.10.38"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

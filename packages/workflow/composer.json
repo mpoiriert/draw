@@ -3,7 +3,11 @@
     "description": "Library to add feature to symfony/workflow.",
     "license": "MIT",
     "type": "library",
-    "keywords": ["draw", "workflow", "symfony"],
+    "keywords": [
+        "draw",
+        "workflow",
+        "symfony"
+    ],
     "authors": [
         {
             "name": "Martin Poirier Theoret",
@@ -15,8 +19,8 @@
         "symfony/workflow": "^6.4.0"
     },
     "require-dev": {
-        "draw/security": "^0.11",
-        "draw/dependency-injection": "^0.11",
+        "draw/security": "^0.10.38",
+        "draw/dependency-injection": "^0.10.38",
         "phpunit/phpunit": "^10.0",
         "symfony/security-core": "^6.4.0"
     },

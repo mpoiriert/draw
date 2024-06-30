@@ -2,7 +2,13 @@
     "name": "draw/profiling",
     "license": "MIT",
     "type": "library",
-    "keywords": ["draw", "profiling", "laravel", "test", "phpunit"],
+    "keywords": [
+        "draw",
+        "profiling",
+        "laravel",
+        "test",
+        "phpunit"
+    ],
     "authors": [
         {
             "name": "Martin Poirier Theoret",
@@ -10,7 +16,7 @@
         }
     ],
     "require-dev": {
-        "draw/tester": "^0.11",
+        "draw/tester": "^0.10.38",
         "phpunit/phpunit": "^10.0"
     },
     "minimum-stability": "dev",

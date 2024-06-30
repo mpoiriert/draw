@@ -3,7 +3,14 @@
     "description": "A set of abstractions extracted out of the Draw components",
     "license": "MIT",
     "type": "library",
-    "keywords": ["abstractions", "contracts", "decoupling", "interfaces", "interoperability", "standards"],
+    "keywords": [
+        "abstractions",
+        "contracts",
+        "decoupling",
+        "interfaces",
+        "interoperability",
+        "standards"
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "autoload": {

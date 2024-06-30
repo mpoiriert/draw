@@ -3,7 +3,10 @@
     "description": "Customer rules for php-cs-fixer",
     "license": "MIT",
     "type": "library",
-    "keywords": ["draw", "php-cs-fixer"],
+    "keywords": [
+        "draw",
+        "php-cs-fixer"
+    ],
     "authors": [
         {
             "name": "Martin Poirier Theoret",

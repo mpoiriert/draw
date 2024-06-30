@@ -3,7 +3,11 @@
     "description": "Generic customisable import system for sonata",
     "license": "MIT",
     "type": "library",
-    "keywords": ["draw", "bundle", "symfony"],
+    "keywords": [
+        "draw",
+        "bundle",
+        "symfony"
+    ],
     "authors": [
         {
             "name": "Martin Poirier Theoret",
@@ -12,7 +16,7 @@
     ],
     "require": {
         "php": ">=8.1",
-        "draw/sonata-extra-bundle": "^0.11",
+        "draw/sonata-extra-bundle": "^0.10.38",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
         "symfony/event-dispatcher": "^6.4.0",
@@ -20,7 +24,7 @@
         "symfony/validator": "^6.4.0"
     },
     "require-dev": {
-        "draw/tester": "^0.11",
+        "draw/tester": "^0.10.38",
         "knplabs/doctrine-behaviors": "*",
         "phpunit/phpunit": "^10.0"
     },

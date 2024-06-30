@@ -3,16 +3,19 @@
     "description": "This package offer a few AWS tool kit.",
     "license": "MIT",
     "type": "library",
-    "keywords": ["draw", "aws"],
+    "keywords": [
+        "draw",
+        "aws"
+    ],
     "require": {
         "aws/aws-sdk-php": "^3.171",
         "symfony/console": "^6.4.0",
         "symfony/event-dispatcher": "^6.4.0"
     },
     "require-dev": {
-        "draw/core": "^0.11",
-        "draw/dependency-injection": "^0.11",
-        "draw/tester": "^0.11",
+        "draw/core": "^0.10.38",
+        "draw/dependency-injection": "^0.10.38",
+        "draw/tester": "^0.10.38",
         "phpunit/phpunit": "^10.0",
         "symfony/cache": "^6.4.0",
         "symfony/http-client": "^6.4.0",
