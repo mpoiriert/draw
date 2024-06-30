@@ -52,6 +52,6 @@ jobs:
           user_email: 'mpoiriert@gmail.com'
           access_token: '${{ secrets.GH_ACCESS_TOKEN }}'
           git_ref: '${{ github.ref }}'
-          source_repository: 'mpoiriert/test-monorepo'
+          source_repository: 'mpoiriert/draw'
           source_directory: 'split/${{ matrix.packages }}'
           target_repository: 'mpoiriert/${{ matrix.packages }}'
