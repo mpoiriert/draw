@@ -9,6 +9,8 @@ use Symplify\MonorepoBuilder\Config\MBConfig;
 use Symplify\MonorepoBuilder\Release\ReleaseWorker;
 
 return static function (MBConfig $mbConfig): void {
+    $mbConfig::disableDefaultWorkers();
+
     $mbConfig->packageDirectories([
         __DIR__.'/packages',
     ]);
@@ -38,9 +40,10 @@ return static function (MBConfig $mbConfig): void {
 
     // What is the release workflow
 
+    $mbConfig->isDisableDefaultWorkers();
+
     $mbConfig->workers([
         ReleaseWorker\SetCurrentMutualDependenciesReleaseWorker::class,
-        ReleaseWorker\AddTagToChangelogReleaseWorker::class,
         DrawReleaseWorker\TagCurrentBranchReleaseWorker::class,
         ReleaseWorker\PushTagReleaseWorker::class,
         ReleaseWorker\SetNextMutualDependenciesReleaseWorker::class,
