@@ -11,12 +11,11 @@
     "symfony/polyfill-php81": "1.99"
   },
   "require": {
-    "symplify/monorepo-builder": "^8.3.48"
+    "symplify/monorepo-builder": "^11.2.20"
   },
   "autoload": {
     "psr-4": {
-      "Draw\\Development\\": "src/Development/",
-      "Symplify\\MonorepoBuilder\\Testing\\": "src-override/Simplify/MonorepoBuilder/Testing/"
+      "Draw\\Development\\": "src/Development/"
     }
   }
 }

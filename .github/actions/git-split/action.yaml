@@ -1,0 +1,39 @@
+name: 'Monorepo Split'
+description: 'Split monorepo folder to repository'
+author: "Martin Poirier Théorêt <mpoireirt@gmail.com>"
+
+inputs:
+  user_name:
+    description: 'Git User Name'
+    required: true
+  user_email:
+    description: 'Git User Email'
+    required: true
+  access_token:
+    description: 'GitHub Access Token'
+    required: true
+  git_ref:
+    description: 'Git Ref'
+    required: true
+  source_repository:
+    description: 'Source Repository'
+    required: true
+  source_directory:
+    description: 'Local package directory'
+    required: true
+  target_repository:
+    description: 'Target Repository'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    # "GitHub stores input parameters as environment variables" - important!!!
+    - ${{ inputs.user_name }} # => INPUT_USER_NAME
+    - ${{ inputs.user_email }}
+    - ${{ inputs.access_token }}
+    - ${{ inputs.git_ref }}
+    - ${{ inputs.source_repository }}
+    - ${{ inputs.source_directory }}
+    - ${{ inputs.target_repository }}

@@ -2,29 +2,40 @@
     "name": "draw/draw",
     "description": "Monolitic repository for draw components",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Martin Poirier Theoret",
+            "email": "mpoiriert@gmail.com"
+        }
+    ],
     "require": {
-        "php": ">=8.1",
+        "aws/aws-sdk-php": "^3.171",
+        "doctrine/common": "^3.1",
+        "doctrine/data-fixtures": "^1.5",
+        "doctrine/dbal": "^3.3",
+        "doctrine/doctrine-bundle": "^2.5",
+        "doctrine/mongodb-odm-bundle": "*",
+        "doctrine/orm": "^2.11",
+        "doctrine/persistence": "^2.2 || ^3.0",
+        "dragonmantank/cron-expression": "^3.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-mongodb": "*",
         "ext-simplexml": "*",
         "ext-zip": "*",
-        "aws/aws-sdk-php": "^3.171",
-        "doctrine/common": "^3.1",
-        "doctrine/data-fixtures": "^1.5",
-        "doctrine/dbal": "^3.3",
-        "doctrine/doctrine-bundle": "^2.5",
-        "doctrine/orm": "^2.11",
-        "doctrine/persistence": "^3.2",
-        "dragonmantank/cron-expression": "^3.3",
+        "fidry/cpu-core-counter": "^1.1",
+        "friendsofphp/php-cs-fixer": "^3.13",
         "guzzlehttp/psr7": "^1.8 || ^2.0",
-        "jms/serializer": "^3.29.1",
+        "jms/serializer": "^3.11",
         "jms/serializer-bundle": "^5.4.0",
+        "knplabs/doctrine-behaviors": "*",
+        "nesbot/carbon": "^2.0",
+        "php": ">=8.1",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "phpunit/phpunit": "^9.0 || ^10.0",
+        "phpunit/phpunit": "^10.0",
         "psr/http-message": "^1.0",
-        "psr/log": "@stable",
+        "psr/log": "^3",
         "ramsey/uuid": "^4.2",
         "sensiolabs/ansi-to-html": "^1.2",
         "sonata-project/admin-bundle": "^4.8",
@@ -45,10 +56,13 @@
         "symfony/framework-bundle": "^6.4.0",
         "symfony/http-foundation": "^6.4.0",
         "symfony/http-kernel": "^6.4.0",
+        "symfony/lock": "^6.4.0",
         "symfony/mailer": "^6.4.0",
         "symfony/messenger": "^6.4.0",
+        "symfony/notifier": "^6.4.0",
         "symfony/process": "^6.4.0",
         "symfony/property-access": "^6.4.0",
+        "symfony/routing": "^6.4.0",
         "symfony/runtime": "^6.4.0",
         "symfony/security-core": "^6.4.0",
         "symfony/security-http": "^6.4.0",
@@ -57,54 +71,48 @@
         "symfony/validator": "^6.4.0",
         "symfony/workflow": "^6.4.0",
         "symfony/yaml": "^6.4.0",
-        "twig/twig": "^3.3",
-        "friendsofphp/php-cs-fixer": "^3.13",
-        "nesbot/carbon": "^2.0",
-        "doctrine/mongodb-odm-bundle": "*",
-        "fidry/cpu-core-counter": "^1.1",
-        "knplabs/doctrine-behaviors": "*",
-        "symfony/notifier": "^6.4.0"
+        "twig/twig": "^3.3"
     },
     "require-dev": {
-        "ext-pcntl": "*",
-        "ext-zip": "*",
-        "aws/aws-sdk-php-symfony": "^2.3",
+        "aws/aws-sdk-php-symfony": "^2.2",
         "bamarni/composer-bin-plugin": "^1.4",
+        "colinodell/psr-testlogger": "^1.1",
         "composer/semver": "^3.2",
-        "doctrine/data-fixtures": "^1.5",
+        "cweagans/composer-patches": "^1.7",
+        "doctrine/collections": "^1.0",
         "doctrine/doctrine-fixtures-bundle": "^3.5",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/sql-formatter": "^1.1",
+        "endroid/qr-code": "^5.0",
+        "ext-pcntl": "*",
         "firebase/php-jwt": "^6.1",
         "monolog/monolog": "^3.5.0",
         "nelmio/cors-bundle": "^2.0",
         "pdeans/http": "^1.1",
         "pelago/emogrifier": "^7.0",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.7",
+        "phpstan/phpstan-phpunit": "^1.1",
+        "phpstan/phpstan-symfony": "^1.2",
         "scheb/2fa-bundle": "^6.0",
-        "endroid/qr-code": "^5.0",
+        "scheb/2fa-email": "^6.0",
         "scheb/2fa-totp": "^6.0",
-        "sonata-project/admin-bundle": "^4.8",
-        "sonata-project/doctrine-orm-admin-bundle": "^4.2",
         "symfony/asset": "^6.4.0",
         "symfony/cache": "^6.4.0",
         "symfony/debug-bundle": "^6.4.0",
-        "symfony/dependency-injection": "^6.4.0",
         "symfony/dotenv": "^6.4.0",
         "symfony/error-handler": "^6.4.0",
-        "symfony/event-dispatcher": "^6.4.0",
-        "symfony/expression-language": "^6.4.0",
         "symfony/finder": "^6.4.0",
-        "symfony/flex": "^2.2.4",
+        "symfony/flex": "^1.16",
         "symfony/form": "^6.4.0",
         "symfony/http-client": "^6.4.0",
         "symfony/http-client-contracts": "^3.4",
-        "symfony/lock": "^6.4.0",
-        "symfony/monolog-bundle": "^3.8",
+        "symfony/maker-bundle": "^1.58",
+        "symfony/monolog-bundle": "^3.7",
         "symfony/password-hasher": "^6.4.0",
         "symfony/phpunit-bridge": "^6.4.0",
         "symfony/property-info": "^6.4.0",
         "symfony/redis-messenger": "^6.4.0",
-        "symfony/routing": "^6.4.0",
         "symfony/security-bundle": "^6.4.0",
         "symfony/security-csrf": "^6.4.0",
         "symfony/serializer": "^6.4.0",
@@ -114,15 +122,7 @@
         "symfony/twig-bundle": "^6.4.0",
         "symfony/var-dumper": "^6.4.0",
         "symfony/var-exporter": "^6.4.0",
-        "symfony/web-profiler-bundle": "^6.4.0",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.7",
-        "phpstan/phpstan-symfony": "^1.2",
-        "phpstan/phpstan-phpunit": "^1.1",
-        "scheb/2fa-email": "^6.0",
-        "colinodell/psr-testlogger": "^1.1",
-        "cweagans/composer-patches": "^1.7",
-        "symfony/maker-bundle": "^1.58"
+        "symfony/web-profiler-bundle": "^6.4.0"
     },
     "replace": {
         "draw/application": "self.version",
@@ -166,9 +166,10 @@
         "doctrine/data-fixtures": "<1.5.2",
         "guzzlehttp/guzzle": "<6"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "autoload": {
+        "files": [
+            "packages/core/functions.php"
+        ],
         "psr-4": {
             "Draw\\Bundle\\FrameworkExtraBundle\\": "packages/framework-extra-bundle/",
             "Draw\\Bundle\\SonataExtraBundle\\": "packages/sonata-extra-bundle/",
@@ -196,10 +197,7 @@
             "Draw\\Contracts\\": "packages/contracts/",
             "Draw\\DoctrineExtra\\": "packages/doctrine-extra/",
             "Draw\\Fixer\\": "packages/fixer/"
-        },
-        "files": [
-            "packages/core/functions.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
@@ -216,16 +214,12 @@
             "cweagans/composer-patches": true
         },
         "symfony": {
-            "id": "01CAD2CSWYZBBNJDXQR6BP23MR",
             "allow-contrib": true,
+            "id": "01CAD2CSWYZBBNJDXQR6BP23MR",
             "require": "^6.4.0"
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "0.9-dev"
-        },
-        "src-dir": "app/src",
         "bamarni-bin": {
             "bin-links": false,
             "forward-command": true,
@@ -235,7 +229,8 @@
             "sonata-project/doctrine-orm-admin-bundle": {
                 "Batch model delete check": "https://github.com/mpoiriert/SonataDoctrineORMAdminBundle/commit/9f9768c99d63020e3b9168d4456edf2a3dc97cca.patch"
             }
-        }
+        },
+        "src-dir": "app/src"
     },
     "scripts": {
         "post-install-cmd": [
@@ -250,36 +245,6 @@
             "draw:open-api:install-sandbox %PUBLIC_DIR%/open-api/sandbox --tag v3.52.5": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
         },
-        "test": [
-            "@test:reset",
-            "@test:run"
-        ],
-        "test:run": [
-            "Composer\\Config::disableProcessTimeout",
-            "vendor/bin/phpunit"
-        ],
-        "test:run:coverage": [
-            "Composer\\Config::disableProcessTimeout",
-            "vendor/bin/phpunit --coverage-html ./tmp/phpunit/report"
-        ],
-        "test:reset": [
-            "@test:database:setup",
-            "php bin/console doctrine:fixtures:load --no-interaction",
-            "php bin/console draw:entity-migrator:setup --no-interaction",
-            "php bin/console draw:application:update-deployed-version --no-interaction"
-        ],
-        "test:database:setup": [
-            "bin/console doctrine:database:drop --if-exists --no-interaction --force --env=test",
-            "bin/console doctrine:database:create --no-interaction --env=test",
-            "bin/console draw:doctrine:mysql-import-file ./data/sql/dump.sql --no-interaction --env=test",
-            "bin/console messenger:setup-transports --no-interaction --env=test",
-            "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --quiet --env=test"
-        ],
-        "test:database:setup-dump": [
-            "@test:database:setup",
-            "bin/console draw:doctrine:mysql-import-file ./data/sql/truncate.sql --no-interaction --env=test -vvv",
-            "bin/console draw:doctrine:mysql-dump ./data/sql/dump.sql --no-interaction --env=test"
-        ],
         "linter": [
             "@linter:php-cs-fixer",
             "@linter:phpstan"
@@ -294,6 +259,38 @@
         "phpstan:generate-baseline": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/phpstan analyse --generate-baseline"
+        ],
+        "test": [
+            "@test:reset",
+            "@test:run"
+        ],
+        "test:database:setup": [
+            "bin/console doctrine:database:drop --if-exists --no-interaction --force --env=test",
+            "bin/console doctrine:database:create --no-interaction --env=test",
+            "bin/console draw:doctrine:mysql-import-file ./data/sql/dump.sql --no-interaction --env=test",
+            "bin/console messenger:setup-transports --no-interaction --env=test",
+            "bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --quiet --env=test"
+        ],
+        "test:database:setup-dump": [
+            "@test:database:setup",
+            "bin/console draw:doctrine:mysql-import-file ./data/sql/truncate.sql --no-interaction --env=test -vvv",
+            "bin/console draw:doctrine:mysql-dump ./data/sql/dump.sql --no-interaction --env=test"
+        ],
+        "test:reset": [
+            "@test:database:setup",
+            "php bin/console doctrine:fixtures:load --no-interaction",
+            "php bin/console draw:entity-migrator:setup --no-interaction",
+            "php bin/console draw:application:update-deployed-version --no-interaction"
+        ],
+        "test:run": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/phpunit"
+        ],
+        "test:run:coverage": [
+            "Composer\\Config::disableProcessTimeout",
+            "vendor/bin/phpunit --coverage-html ./tmp/phpunit/report"
         ]
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

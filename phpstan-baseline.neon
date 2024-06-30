@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Method Draw\\\\Component\\\\CronJob\\\\Entity\\\\CronJob\\:\\:getRecentExecutions\\(\\) should return Doctrine\\\\Common\\\\Collections\\\\Collection&Doctrine\\\\Common\\\\Collections\\\\Selectable&iterable\\<Draw\\\\Component\\\\CronJob\\\\Entity\\\\CronJobExecution\\> but returns Doctrine\\\\Common\\\\Collections\\\\ReadableCollection\\<\\(int\\|string\\), mixed\\>&Doctrine\\\\Common\\\\Collections\\\\Selectable\\<\\(int\\|string\\), mixed\\>\\.$#"
-			count: 1
-			path: packages/cron-job/Entity/CronJob.php
-
-		-
 			message: "#^Parameter \\#1 \\$node of method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeBuilder\\:\\:append\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\|null given\\.$#"
 			count: 1
 			path: packages/log/DependencyInjection/LogIntegration.php

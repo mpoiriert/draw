@@ -33,8 +33,8 @@
         "doctrine/orm": "^2.11",
         "draw/dependency-injection": "^0.11",
         "draw/tester": "^0.11",
-        "phpunit/phpunit": "^9.0 || ^10.0",
-        "psr/log": "@stable"
+        "phpunit/phpunit": "^10.0",
+        "psr/log": "^3"
     },
     "suggest": {
         "ext-pcntl": "To allow message broker to catch signal",
