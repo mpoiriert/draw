@@ -53,5 +53,5 @@ jobs:
           access_token: '${{ secrets.GH_ACCESS_TOKEN }}'
           git_ref: '${{ github.ref }}'
           source_repository: 'mpoiriert/draw'
-          source_directory: 'split/${{ matrix.packages }}'
+          source_directory: 'packages/${{ matrix.packages }}'
           target_repository: 'mpoiriert/${{ matrix.packages }}'
