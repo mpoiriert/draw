@@ -17,6 +17,7 @@ jobs:
           - application
           - aws-tool-kit
           - console
+          - contracts
           - core
           - cron-job
           - dependency-injection
@@ -31,9 +32,9 @@ jobs:
           - process
           - profiling
           - security
+          - sonata-extra-bundle
           - sonata-import-bundle
           - sonata-integration-bundle
-          - sonata-extra-bundle
           - tester
           - tester-bundle
           - user-bundle
