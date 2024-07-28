@@ -1,4 +1,6 @@
 draw_sonata_extra:
+  actionable_admin: true
+
   auto_help: true
 
   auto_action: true

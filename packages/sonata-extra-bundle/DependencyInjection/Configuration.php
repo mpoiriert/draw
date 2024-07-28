@@ -18,6 +18,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->booleanNode('install_assets')->defaultTrue()->end()
+                ->append($this->createActionableAdminNode())
                 ->append($this->createAutoActionNode())
                 ->append($this->createAutoHelpNode())
                 ->append($this->createBatchDeleteCheckNode())
@@ -62,6 +63,12 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('restrict_to_role')->defaultNull()->end()
             ->end();
+    }
+
+    private function createActionableAdminNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('actionable_admin'))
+            ->canBeEnabled();
     }
 
     private function createAutoActionNode(): ArrayNodeDefinition

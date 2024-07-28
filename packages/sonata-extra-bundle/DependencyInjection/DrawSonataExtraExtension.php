@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\DependencyInjection;
 
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
 use Draw\Bundle\SonataExtraBundle\Block\Event\FinalizeContextEvent;
 use Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService;
 use Draw\Bundle\SonataExtraBundle\Controller\AdminControllerInterface;
@@ -19,6 +20,7 @@ use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter\PreventDeleteVoter;
 use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
+use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -27,12 +29,21 @@ use Symfony\Component\DependencyInjection\Loader;
 
 class DrawSonataExtraExtension extends Extension implements PrependExtensionInterface
 {
+    use IntegrationTrait;
+
+    public function getConfigSectionName(): string
+    {
+        return ''; // This is just to meet requirement of IntegrationTrait
+    }
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        $this->loadActionableAdmin($config['actionable_admin'], $container);
 
         if (!($config['auto_action']['enabled'] ?? false)) {
             $container->removeDefinition(AutoActionExtension::class);
@@ -138,6 +149,21 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 $container->removeDefinition($id);
             }
         }
+    }
+
+    private function loadActionableAdmin(array $config, ContainerBuilder $container): void
+    {
+        if (!$this->isConfigEnabled($container, $config)) {
+            return;
+        }
+
+        $loader = new Loader\PhpFileLoader($container, new FileLocator([]));
+
+        $this->registerClasses(
+            $loader,
+            'Draw\\Bundle\\SonataExtraBundle\\ActionableAdmin\\',
+            \dirname((new \ReflectionClass(AdminAction::class))->getFileName()),
+        );
     }
 
     public function prepend(ContainerBuilder $container): void
