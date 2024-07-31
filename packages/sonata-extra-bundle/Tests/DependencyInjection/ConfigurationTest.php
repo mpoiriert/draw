@@ -17,6 +17,9 @@ class ConfigurationTest extends ConfigurationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
+            'actionable_admin' => [
+                'enabled' => false,
+            ],
             'auto_action' => [
                 'enabled' => false,
                 'ignore_admins' => [],

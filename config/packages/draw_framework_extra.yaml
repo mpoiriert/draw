@@ -1,4 +1,6 @@
 draw_framework_extra:
+  symfony_console_path: '%kernel.project_dir%/bin/console'
+
   aws_tool_kit:
     imds_version: 2
     newest_instance_role_check: true

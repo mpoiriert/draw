@@ -1,0 +1,8 @@
+{% if admin.hasAccess(actions.action.name, object) %}
+    <a class="btn btn-sm btn-default" href="{{ admin.generateObjectUrl(actions.action.name, object) }}">
+        {% if actions.action.icon %}
+            <i class="{{ actions.action.icon }}" aria-hidden="true"></i>
+        {% endif %}
+        {{ actions.action|translate_label }}
+    </a>
+{% endif %}

@@ -9,7 +9,6 @@ parameters:
     - tests
   excludePaths:
   	- packages/fixer/Tests/fixtures/*
-  checkGenericClassInNonGenericObjectType: false
   ignoreErrors:
       - '#Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface::getFlashBag\(\).#'
       - '#Trying to mock an undefined method [a-zA-Z0-9\\_]#'

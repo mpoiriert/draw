@@ -2,8 +2,11 @@
 
 namespace App\Sonata\Admin;
 
+use App\Controller\Admin\MakeAdminAction;
 use App\Entity\Tag;
 use App\Entity\User;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableInterface;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
 use Draw\Bundle\SonataExtraBundle\ListPriorityAwareAdminInterface;
@@ -31,7 +34,7 @@ use Symfony\Component\Translation\TranslatableMessage;
         'pager_type' => 'simple',
     ]
 )]
-class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
+class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface, ActionableInterface
 {
     public function getListFieldPriorityOptions(): array
     {
@@ -197,5 +200,13 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
                     )
                 ->end()
             ->end();
+    }
+
+    public function getActions(): iterable
+    {
+        yield (new AdminAction('makeAdmin', true))
+            ->setController(MakeAdminAction::class)
+            ->setIcon('fa fa-user-plus')
+            ->setAllowBatchAction(true);
     }
 }
