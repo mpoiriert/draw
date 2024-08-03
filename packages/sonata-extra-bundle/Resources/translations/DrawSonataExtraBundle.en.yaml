@@ -1,0 +1,7 @@
+batch.notification.processed: "{0} No element were processed.|{1} One element was processed.|[2,Inf[ %count% elements were processed."
+
+batch.notification.skipped: "{1} One element was skipped due to %reason%.|[2,Inf[ %count% elements were skipped due to %reason%."
+
+batch.notification.skipped.reason:
+  insufficient-access: 'insufficient access'
+  undefined: 'undefined reason'

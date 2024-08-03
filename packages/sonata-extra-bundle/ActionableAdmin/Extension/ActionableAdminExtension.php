@@ -35,8 +35,8 @@ class ActionableAdminExtension extends AbstractAdminExtension
             }
 
             $pattern = $action->getTargetEntity()
-                ? $admin->getRouterIdParameter().'/'.$action->getName()
-                : $action->getName();
+                ? $admin->getRouterIdParameter().'/'.$action->getUrlSuffix()
+                : $action->getUrlSuffix();
 
             $collection
                 ->add(
@@ -61,7 +61,7 @@ class ActionableAdminExtension extends AbstractAdminExtension
     public function configureBatchActions(AdminInterface $admin, array $actions): array
     {
         foreach ($this->loadActions($admin) as $adminAction) {
-            if (!$adminAction->getAllowBatchAction()) {
+            if (!$batchController = $adminAction->getBatchController()) {
                 continue;
             }
 
@@ -72,7 +72,7 @@ class ActionableAdminExtension extends AbstractAdminExtension
             $actions[$adminAction->getName()] = [
                 'label' => $adminAction->getLabel(),
                 'translation_domain' => $adminAction->getTranslationDomain(),
-                'controller' => $adminAction->getBatchController(),
+                'controller' => $batchController,
             ];
         }
 
