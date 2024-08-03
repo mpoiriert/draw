@@ -207,6 +207,6 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
         yield (new AdminAction('makeAdmin', true))
             ->setController(MakeAdminAction::class)
             ->setIcon('fa fa-user-plus')
-            ->setAllowBatchAction(true);
+            ->setBatchController(MakeAdminAction::class.'::batch');
     }
 }

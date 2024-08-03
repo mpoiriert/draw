@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin;
 
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Action\BatchAction;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\String\UnicodeString;
 
@@ -15,13 +14,13 @@ class AdminAction
         '_default' => true,
     ];
 
-    private bool $allowBatchAction = false;
+    private ?string $controller = null;
 
-    private mixed $controller = null;
-
-    private string $batchController = BatchAction::class;
+    private ?string $batchController = null;
 
     private ?string $icon = null;
+
+    private string $urlSuffix;
 
     private string $access;
 
@@ -37,6 +36,11 @@ class AdminAction
         $this->access = (new UnicodeString($this->name))
             ->snake()
             ->upper()
+            ->toString();
+
+        $this->urlSuffix = (new UnicodeString($this->name))
+            ->snake()
+            ->replace('_', '-')
             ->toString();
     }
 
@@ -58,6 +62,18 @@ class AdminAction
     public function setAccess(string $access): self
     {
         $this->access = $access;
+
+        return $this;
+    }
+
+    public function getUrlSuffix(): string
+    {
+        return $this->urlSuffix;
+    }
+
+    public function setUrlSuffix(string $urlSuffix): self
+    {
+        $this->urlSuffix = $urlSuffix;
 
         return $this;
     }
@@ -86,12 +102,12 @@ class AdminAction
         return $this;
     }
 
-    public function getController(): mixed
+    public function getController(): string
     {
         return $this->controller;
     }
 
-    public function setController(mixed $controller): self
+    public function setController(string $controller): self
     {
         $this->controller = $controller;
 
@@ -118,18 +134,6 @@ class AdminAction
     public function setIcon(?string $icon): self
     {
         $this->icon = $icon;
-
-        return $this;
-    }
-
-    public function getAllowBatchAction(): bool
-    {
-        return $this->allowBatchAction;
-    }
-
-    public function setAllowBatchAction(bool $allowBatchAction): self
-    {
-        $this->allowBatchAction = $allowBatchAction;
 
         return $this;
     }

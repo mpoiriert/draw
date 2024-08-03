@@ -4,32 +4,61 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Sonata\Admin\UserAdmin;
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\BatchActionInterface;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\BatchIterator;
+use Draw\Bundle\SonataExtraBundle\Notifier\Notification\SonataNotification;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Notifier\NotifierInterface;
 
-class MakeAdminAction implements BatchActionInterface
+class MakeAdminAction
 {
-    public function __invoke(UserAdmin $admin, User $user): Response
+    public function __invoke(UserAdmin $admin, User $user, NotifierInterface $notifier): Response
     {
-        $user->setRoles(
-            array_values(
-                array_unique(
-                    array_merge(
-                        $user->getRoles(),
-                        ['ROLE_ADMIN']
-                    )
-                )
-            )
-        );
+        if ($this->addAdminRole($user)) {
+            $admin->update($user);
+            $notifier->send(SonataNotification::success('User is now an admin'));
+        } else {
+            $notifier->send(
+                (new SonataNotification('User already has the admin role'))
+                    ->setSonataFlashType('info')
+            );
+        }
 
-        $admin->update($user);
-
-        return new RedirectResponse($admin->generateUrl('list'));
+        return new RedirectResponse($admin->generateObjectUrl('show', $user));
     }
 
-    public function getBatchCallable(): callable
+    private function addAdminRole(User $user): bool
     {
-        return [$this, '__invoke'];
+        $currentRoles = $user->getRoles();
+
+        if (\in_array('ROLE_ADMIN', $currentRoles)) {
+            return false;
+        }
+
+        $user->setRoles([
+            ...$currentRoles,
+            'ROLE_ADMIN',
+        ]);
+
+        return true;
+    }
+
+    /**
+     * @param BatchIterator<User> $batchIterator
+     */
+    public function batch(BatchIterator $batchIterator, AdminInterface $admin): Response
+    {
+        foreach ($batchIterator->getObjects() as $object) {
+            if (!$this->addAdminRole($object)) {
+                $batchIterator->skip('already-admin');
+
+                continue;
+            }
+
+            $admin->update($object);
+        }
+
+        return new RedirectResponse($admin->generateUrl('list'));
     }
 }
