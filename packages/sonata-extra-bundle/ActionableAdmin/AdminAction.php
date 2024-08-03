@@ -114,12 +114,12 @@ class AdminAction
         return $this;
     }
 
-    public function getBatchController(): string
+    public function getBatchController(): ?string
     {
         return $this->batchController;
     }
 
-    public function setBatchController(string $batchController): self
+    public function setBatchController(?string $batchController): self
     {
         $this->batchController = $batchController;
 
