@@ -2,8 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension;
 
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableAdminInterface;
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminActionLoader;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,11 +18,14 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 )]
 class ActionableAdminExtension extends AbstractAdminExtension
 {
-    private array $actions = [];
+    public function __construct(
+        private AdminActionLoader $actionLoader
+    ) {
+    }
 
     public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void
     {
-        foreach ($this->loadActions($admin) as $action) {
+        foreach ($this->actionLoader->getActions($admin) as $action) {
             $defaults = [
                 '_actionableAdmin' => [
                     'action' => $action->getName(),
@@ -51,7 +53,7 @@ class ActionableAdminExtension extends AbstractAdminExtension
     {
         $accessMapping = [];
 
-        foreach ($this->loadActions($admin) as $adminAction) {
+        foreach ($this->actionLoader->getActions($admin) as $adminAction) {
             $accessMapping[$adminAction->getName()] = $adminAction->getAccess();
         }
 
@@ -60,7 +62,7 @@ class ActionableAdminExtension extends AbstractAdminExtension
 
     public function configureBatchActions(AdminInterface $admin, array $actions): array
     {
-        foreach ($this->loadActions($admin) as $adminAction) {
+        foreach ($this->actionLoader->getActions($admin) as $adminAction) {
             if (!$batchController = $adminAction->getBatchController()) {
                 continue;
             }
@@ -81,7 +83,7 @@ class ActionableAdminExtension extends AbstractAdminExtension
 
     public function configureListFields(ListMapper $list): void
     {
-        foreach ($this->loadActions($list->getAdmin()) as $adminAction) {
+        foreach ($this->actionLoader->getActions($list->getAdmin()) as $adminAction) {
             if (!$adminAction->getForEntityListAction()) {
                 continue;
             }
@@ -115,7 +117,7 @@ class ActionableAdminExtension extends AbstractAdminExtension
         string $action,
         ?object $object = null
     ): array {
-        foreach ($this->loadActions($admin) as $adminAction) {
+        foreach ($this->actionLoader->getActions($admin) as $adminAction) {
             if (!$adminAction->isForAction($action)) {
                 continue;
             }
@@ -140,37 +142,5 @@ class ActionableAdminExtension extends AbstractAdminExtension
         }
 
         return $list;
-    }
-
-    /**
-     * @return array<AdminAction>
-     */
-    private function loadActions(AdminInterface $admin): array
-    {
-        if (!\array_key_exists($admin->getCode(), $this->actions)) {
-            $actions = $admin instanceof ActionableAdminInterface
-                ? $admin->getActions()
-                : [];
-
-            foreach ($admin->getExtensions() as $extension) {
-                if (!$extension instanceof ActionableAdminExtensionInterface) {
-                    continue;
-                }
-
-                $actions = $extension->getActions($actions);
-            }
-
-            array_walk(
-                $actions,
-                function (AdminAction $adminAction) use ($admin): void {
-                    // Set default translation domain
-                    $adminAction->setTranslationDomain($adminAction->getTranslationDomain() ?? $admin->getTranslationDomain());
-                }
-            );
-
-            $this->actions[$admin->getCode()] = $actions;
-        }
-
-        return $this->actions[$admin->getCode()];
     }
 }

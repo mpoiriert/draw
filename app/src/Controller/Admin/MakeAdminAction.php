@@ -6,13 +6,11 @@ use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\ExecutionErrorEvent;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ObjectActionExecutioner;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Notifier\NotifierInterface;
 
 class MakeAdminAction
 {
     public function __invoke(
-        ObjectActionExecutioner $objectActionExecutioner,
-        NotifierInterface $notifier
+        ObjectActionExecutioner $objectActionExecutioner
     ): Response {
         return $objectActionExecutioner
             ->execute(

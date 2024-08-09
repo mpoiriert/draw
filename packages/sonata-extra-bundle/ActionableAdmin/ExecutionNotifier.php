@@ -14,7 +14,8 @@ class ExecutionNotifier implements ResetInterface
 
     public function __construct(
         private ?NotifierInterface $notifier,
-        private TranslatorInterface $translator
+        private TranslatorInterface $translator,
+        private AdminActionLoader $actionLoader,
     ) {
     }
 
@@ -32,9 +33,9 @@ class ExecutionNotifier implements ResetInterface
             ),
         ];
 
-        if ($objectActionExecutioner->isBatch()) {
-            $count = $objectActionExecutioner->getProcessedCount();
+        $count = $objectActionExecutioner->getProcessedCount();
 
+        if ($objectActionExecutioner->isBatch() || $count > 0) {
             $subject = $this->translator
                 ->trans(
                     'execution.notification.processed',
@@ -115,19 +116,17 @@ class ExecutionNotifier implements ResetInterface
 
         if (!isset($this->actionLabels[$adminCode][$action])) {
             $label = null;
-            if ($admin instanceof ActionableAdminInterface) {
-                foreach ($admin->getActions() as $adminAction) {
-                    if ($adminAction->getName() === $action) {
-                        $label = $this->translator
-                            ->trans(
-                                $adminAction->getLabel(),
-                                [],
-                                $adminAction->getTranslationDomain()
-                            );
-                        break;
-                    }
-                }
+            $adminAction = $this->actionLoader->getActions($admin)[$action] ?? null;
+
+            if ($adminAction instanceof AdminAction) {
+                $label = $this->translator
+                    ->trans(
+                        $adminAction->getLabel(),
+                        [],
+                        $adminAction->getTranslationDomain()
+                    );
             }
+
             $label ??= $action;
 
             $this->actionLabels[$adminCode][$action] = $label;

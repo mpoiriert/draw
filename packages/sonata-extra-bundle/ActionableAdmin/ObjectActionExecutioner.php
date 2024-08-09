@@ -5,9 +5,11 @@ namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\ExecutionErrorEvent;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\PostExecutionEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -15,7 +17,21 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @template T of object
  */
-#[Autoconfigure(shared: false)]
+#[
+    Autoconfigure(shared: false),
+    AutoconfigureTag(
+        'monolog.logger',
+        attributes: [
+            'channel' => 'sonata_admin',
+        ]
+    ),
+    AutoconfigureTag(
+        'logger.decorate',
+        attributes: [
+            'message' => '[ObjectActionExecutioner] {message}',
+        ]
+    )
+]
 class ObjectActionExecutioner
 {
     private ?ProxyQuery $query = null;
@@ -42,8 +58,10 @@ class ObjectActionExecutioner
         'insufficient-access' => 0,
     ];
 
-    public function __construct(private EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+        private ?LoggerInterface $logger
+    ) {
     }
 
     public function initialize(object $target, AdminInterface $admin, string $action): self
@@ -184,6 +202,15 @@ class ObjectActionExecutioner
             try {
                 $response = $execution($object);
             } catch (\Throwable $error) {
+                $this->logger?->error(
+                    'An error occurred during the execution of {action}.',
+                    [
+                        'action' => $this->action,
+                        'error' => $error,
+                        'objectId' => $this->admin->id($object),
+                        'object' => $object::class,
+                    ]
+                );
                 $this->skip('error');
 
                 $event = new ExecutionErrorEvent($error, $object, $this);

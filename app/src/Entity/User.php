@@ -204,7 +204,12 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
 
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        $this->roles = array_values(
+            array_filter(
+                $roles,
+                fn ($role) => \is_string($role) && '' !== $role && 'ROLE_USER' !== $role
+            )
+        );
 
         return $this;
     }

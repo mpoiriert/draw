@@ -1,0 +1,33 @@
+{% extends base_template %}
+
+{%- block actions -%}
+    {% include '@SonataAdmin/CRUD/action_buttons.html.twig' %}
+{%- endblock -%}
+
+{%- block tab_menu -%}
+    {{ knp_menu_render(admin.sidemenu(action), {
+        'currentClass': 'active',
+        'template': get_global_template('tab_menu_template')
+    }, 'twig') }}
+{%- endblock -%}
+
+{% block sonata_admin_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h1>
+                        {{ adminAction|translate_label }}
+                    </h1>
+                </div>
+                <div class="box-body diagnostic-form">
+                    <div id="form">
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

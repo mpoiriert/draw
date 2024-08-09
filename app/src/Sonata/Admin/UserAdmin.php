@@ -2,6 +2,7 @@
 
 namespace App\Sonata\Admin;
 
+use App\Controller\Admin\AddRolesAminAction;
 use App\Controller\Admin\MakeAdminAction;
 use App\Entity\Tag;
 use App\Entity\User;
@@ -83,6 +84,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->add('childObject2')
             ->add('userTags', 'list')
             ->add('tags', 'list')
+            ->add('roles', 'list')
             ->add('isLocked', 'boolean', ['inverse' => true]);
     }
 
@@ -209,6 +211,9 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
                 ->setController(MakeAdminAction::class)
                 ->setIcon('fa fa-user-plus')
                 ->setBatchController(MakeAdminAction::class),
+            'addRoles' => (new AdminAction('addRoles', true))
+                ->setController(AddRolesAminAction::class)
+                ->setBatchController(AddRolesAminAction::class),
         ];
     }
 }
