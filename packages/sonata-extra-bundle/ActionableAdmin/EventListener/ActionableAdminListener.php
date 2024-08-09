@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\EventListener;
 
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableInterface;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableAdminInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 
@@ -13,14 +13,14 @@ class ActionableAdminListener
     {
         $admin = null;
         foreach ($event->getArguments() as $argument) {
-            if ($argument instanceof ActionableInterface) {
+            if ($argument instanceof ActionableAdminInterface) {
                 $admin = $argument;
 
                 break;
             }
         }
 
-        if (!$admin instanceof ActionableInterface) {
+        if (!$admin instanceof ActionableAdminInterface) {
             return;
         }
 

@@ -1,2 +1,2 @@
-batch.notification.skipped.reason:
+execution.notification.skipped.reason:
   already-admin: 'already being an admin'

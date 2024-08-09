@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension;
 
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableInterface;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableAdminInterface;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -148,19 +148,27 @@ class ActionableAdminExtension extends AbstractAdminExtension
     private function loadActions(AdminInterface $admin): array
     {
         if (!\array_key_exists($admin->getCode(), $this->actions)) {
-            if ($admin instanceof ActionableInterface) {
-                $this->actions[$admin->getCode()] = iterator_to_array($admin->getActions());
+            $actions = $admin instanceof ActionableAdminInterface
+                ? $admin->getActions()
+                : [];
 
-                array_walk(
-                    $this->actions[$admin->getCode()],
-                    function (AdminAction $adminAction) use ($admin): void {
-                        // Set default translation domain
-                        $adminAction->setTranslationDomain($adminAction->getTranslationDomain() ?? $admin->getTranslationDomain());
-                    }
-                );
-            } else {
-                $this->actions[$admin->getCode()] = [];
+            foreach ($admin->getExtensions() as $extension) {
+                if (!$extension instanceof ActionableAdminExtensionInterface) {
+                    continue;
+                }
+
+                $actions = $extension->getActions($actions);
             }
+
+            array_walk(
+                $actions,
+                function (AdminAction $adminAction) use ($admin): void {
+                    // Set default translation domain
+                    $adminAction->setTranslationDomain($adminAction->getTranslationDomain() ?? $admin->getTranslationDomain());
+                }
+            );
+
+            $this->actions[$admin->getCode()] = $actions;
         }
 
         return $this->actions[$admin->getCode()];

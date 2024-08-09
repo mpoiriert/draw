@@ -5,7 +5,7 @@ namespace App\Sonata\Admin;
 use App\Controller\Admin\MakeAdminAction;
 use App\Entity\Tag;
 use App\Entity\User;
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableInterface;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableAdminInterface;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
 use Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter;
 use Draw\Bundle\SonataExtraBundle\Form\Extension\Core\Type\SingleLineDateTimeType;
@@ -34,7 +34,7 @@ use Symfony\Component\Translation\TranslatableMessage;
         'pager_type' => 'simple',
     ]
 )]
-class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface, ActionableInterface
+class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface, ActionableAdminInterface
 {
     public function getListFieldPriorityOptions(): array
     {
@@ -202,11 +202,13 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->end();
     }
 
-    public function getActions(): iterable
+    public function getActions(): array
     {
-        yield (new AdminAction('makeAdmin', true))
-            ->setController(MakeAdminAction::class)
-            ->setIcon('fa fa-user-plus')
-            ->setBatchController(MakeAdminAction::class.'::batch');
+        return [
+            'makeAdin' => (new AdminAction('makeAdmin', true))
+                ->setController(MakeAdminAction::class)
+                ->setIcon('fa fa-user-plus')
+                ->setBatchController(MakeAdminAction::class),
+        ];
     }
 }
