@@ -26,11 +26,6 @@ parameters:
 			path: packages/open-api/Tests/Mock/Model/TestClass.php
 
 		-
-			message: "#^Strict comparison using \\=\\=\\= between null and string will always evaluate to false\\.$#"
-			count: 1
-			path: packages/security/Http/Authenticator/JwtAuthenticator.php
-
-		-
 			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'DateTime' and null will always evaluate to false\\.$#"
 			count: 2
 			path: packages/sonata-import-bundle/Tests/Entity/ImportTest.php

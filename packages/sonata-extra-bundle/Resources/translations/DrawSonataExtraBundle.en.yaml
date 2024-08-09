@@ -1,7 +1,9 @@
-batch.notification.processed: "{0} No element were processed.|{1} One element was processed.|[2,Inf[ %count% elements were processed."
+execution.notification.error: "An error has occurred during execution of [%action%] for element [%object%]: <br>%error%"
+execution.notification.processed: "{0} During [%action%] execution, [%count%/%total%] element were processed.|{1} During [%action%] execution, [%count%/%total%] element was processed.|[2,Inf[ During [%action%] execution, [%count%/%total%] elements were processed."
 
-batch.notification.skipped: "{1} One element was skipped due to %reason%.|[2,Inf[ %count% elements were skipped due to %reason%."
+execution.notification.skipped: "{1} During [%action%] execution, [%count%/%total%] element was skipped due to [%reason%].|[2,Inf[ During [%action%] execution, [%count%/%total%] elements were skipped due to [%reason%]."
 
-batch.notification.skipped.reason:
+execution.notification.skipped.reason:
   insufficient-access: 'insufficient access'
   undefined: 'undefined reason'
+  error: 'error'
