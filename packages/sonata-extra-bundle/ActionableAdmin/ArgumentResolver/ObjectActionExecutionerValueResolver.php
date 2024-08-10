@@ -3,6 +3,7 @@
 namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\ArgumentResolver;
 
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ObjectActionExecutioner;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ObjectActionExecutionerFactory;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,13 +14,12 @@ class ObjectActionExecutionerValueResolver implements ValueResolverInterface
 {
     public function __construct(
         private AdminFetcherInterface $adminFetcher,
-        private ObjectActionExecutioner $objectActionExecutioner
+        private ObjectActionExecutionerFactory $objectActionExecutionerFactory,
     ) {
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-
         $type = $argument->getType();
 
         if (null === $type) {
@@ -43,10 +43,10 @@ class ObjectActionExecutionerValueResolver implements ValueResolverInterface
                 return [];
             }
 
-            return [$this->objectActionExecutioner->initialize(
-                target: $admin->getSubject(),
+            return [$this->objectActionExecutionerFactory->create(
                 admin: $admin,
-                action: $action
+                action: $action,
+                target: $admin->getSubject()
             )];
         }
 
@@ -58,10 +58,10 @@ class ObjectActionExecutionerValueResolver implements ValueResolverInterface
 
         foreach ($request->attributes as $attribute) {
             if ($attribute instanceof ProxyQuery) {
-                return [$this->objectActionExecutioner->initialize(
-                    target: $attribute,
+                return [$this->objectActionExecutionerFactory->create(
                     admin: $admin,
                     action: $action,
+                    target: $attribute,
                 )];
             }
         }
