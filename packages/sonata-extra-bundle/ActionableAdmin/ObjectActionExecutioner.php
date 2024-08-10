@@ -4,6 +4,8 @@ namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin;
 
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\ExecutionErrorEvent;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\PostExecutionEvent;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\PreExecutionEvent;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\PrepareExecutionEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -180,14 +182,22 @@ class ObjectActionExecutioner
         $postExecution = $executions['postExecution'] ?? null;
         $onExecutionError = $executions['onExecutionError'] ?? null;
 
+        if (!\is_callable($execution)) {
+            throw new \InvalidArgumentException('The execution is not callable.');
+        }
+
+        $this->eventDispatcher->dispatch(new PrepareExecutionEvent($this));
+
         $response = $preExecution ? $preExecution() : null;
+
+        if (!$response instanceof Response) {
+            $this->eventDispatcher->dispatch($event = new PreExecutionEvent($this));
+
+            $response = $event->getResponse();
+        }
 
         if ($response instanceof Response) {
             return $response;
-        }
-
-        if (!$execution) {
-            throw new \InvalidArgumentException('The execution key is required in the executions array.');
         }
 
         foreach ($this->getObjects() as $object) {

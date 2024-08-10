@@ -3,7 +3,7 @@
 namespace App\Tests\SonataExtraBundle\EventListener;
 
 use App\Entity\User;
-use App\Security\Voter\CannotDeleteSelfVoter;
+use App\Security\Voter\CannotSelfVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\SonataExtraBundle\EventListener\PreObjectDeleteBatchEventEventListener;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
@@ -41,7 +41,7 @@ class PreObjectDeleteBatchEventEventListenerTest extends KernelTestCase implemen
 
         static::assertFalse(
             $event->shouldDelete(),
-            CannotDeleteSelfVoter::class.' should prevent deletion of the user.'
+            CannotSelfVoter::class.' should prevent deletion of the user.'
         );
     }
 
