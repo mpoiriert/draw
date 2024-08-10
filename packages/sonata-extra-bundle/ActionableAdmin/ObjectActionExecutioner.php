@@ -3,13 +3,15 @@
 namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin;
 
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\ExecutionErrorEvent;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\ExecutionEvent;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\PostExecutionEvent;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\PreExecutionEvent;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Event\PrepareExecutionEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
-use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,34 +19,10 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @template T of object
  */
-#[
-    Autoconfigure(shared: false),
-    AutoconfigureTag(
-        'monolog.logger',
-        attributes: [
-            'channel' => 'sonata_admin',
-        ]
-    ),
-    AutoconfigureTag(
-        'logger.decorate',
-        attributes: [
-            'message' => '[ObjectActionExecutioner] {message}',
-        ]
-    )
-]
+#[Exclude]
 class ObjectActionExecutioner
 {
-    private ?ProxyQuery $query = null;
-
-    private ?object $subject = null;
-
-    private AdminInterface $admin;
-
-    private string $action;
-
-    private bool $checkObjectAccess = true;
-
-    private ?int $totalCount = null;
+    private ?int $totalCount;
 
     private int $processedCount = 0;
 
@@ -53,28 +31,16 @@ class ObjectActionExecutioner
     /**
      * @var array<string, int>
      */
-    private array $skippedCount = [
-        'undefined' => 0,
-        'insufficient-access' => 0,
-    ];
+    private array $skippedCount = [];
 
     public function __construct(
+        private AdminInterface $admin,
+        private string $action,
+        private object $target,
         private EventDispatcherInterface $eventDispatcher,
         private ?LoggerInterface $logger
     ) {
-    }
-
-    public function initialize(object $target, AdminInterface $admin, string $action): self
-    {
-        $batchIterator = clone $this;
-
-        $batchIterator->query = $target instanceof ProxyQuery ? $target : null;
-        $batchIterator->subject = !$target instanceof ProxyQuery ? $target : null;
-        $batchIterator->totalCount = $batchIterator->subject ? 1 : null;
-        $batchIterator->admin = $admin;
-        $batchIterator->action = $action;
-
-        return $batchIterator;
+        $this->totalCount = !($this->target instanceof ProxyQuery) ? 1 : null;
     }
 
     public function getAction(): string
@@ -92,32 +58,20 @@ class ObjectActionExecutioner
      */
     private function getObjects(): iterable
     {
-        if ($this->subject) {
-            yield $this->subject;
+        if (!$this->target instanceof ProxyQuery) {
+            yield $this->target;
 
             return;
         }
 
-        $this->query->select('o.id as id');
+        $this->target->select('o.id as id');
 
         $this->admin->getModelManager();
-        foreach ($this->query->execute() as $id) {
+        foreach ($this->target->execute() as $id) {
             $object = $this->admin->getObject($id['id']);
 
             yield $object;
         }
-    }
-
-    public function getCheckObjectAccess(): bool
-    {
-        return $this->checkObjectAccess;
-    }
-
-    public function setCheckObjectAccess(bool $checkObjectAccess): self
-    {
-        $this->checkObjectAccess = $checkObjectAccess;
-
-        return $this;
     }
 
     public function skip(string $reason = 'undefined'): void
@@ -142,20 +96,29 @@ class ObjectActionExecutioner
 
     public function isBatch(): bool
     {
-        return null !== $this->query;
+        return $this->target instanceof ProxyQuery;
     }
 
     public function getTotalCount(): int
     {
-        return $this->totalCount ??= (clone $this->query)
-            ->select('COUNT(o.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        // Total count is initialized to 1 in constructor if the target is not a ProxyQuery.
+        if (null === $this->totalCount) {
+            \assert($this->target instanceof ProxyQuery);
+            $this->totalCount = (clone $this->target)
+                ->select('COUNT(o.id)')
+                ->getQuery()
+                ->getSingleScalarResult();
+        }
+
+        return $this->totalCount;
     }
 
+    /**
+     * @return T
+     */
     public function getSubject(): ?object
     {
-        return $this->subject;
+        return $this->target instanceof ProxyQuery ? null : $this->target;
     }
 
     /**
@@ -180,27 +143,37 @@ class ObjectActionExecutioner
         $postExecution = $executions['postExecution'] ?? null;
         $onExecutionError = $executions['onExecutionError'] ?? null;
 
+        if (!\is_callable($execution)) {
+            throw new \InvalidArgumentException('The execution is not callable.');
+        }
+
+        $this->eventDispatcher->dispatch(new PrepareExecutionEvent($this));
+
         $response = $preExecution ? $preExecution() : null;
+
+        if (!$response instanceof Response) {
+            $this->eventDispatcher->dispatch($event = new PreExecutionEvent($this));
+
+            $response = $event->getResponse();
+        }
 
         if ($response instanceof Response) {
             return $response;
         }
 
-        if (!$execution) {
-            throw new \InvalidArgumentException('The execution key is required in the executions array.');
-        }
-
         foreach ($this->getObjects() as $object) {
             ++$this->processedCount;
 
-            if ($this->checkObjectAccess && !$this->admin->hasAccess($this->action, $object)) {
-                $this->skip('insufficient-access');
-
-                continue;
-            }
-
             try {
-                $response = $execution($object);
+                $this->eventDispatcher->dispatch($event = new ExecutionEvent($object, $this));
+
+                $response = $event->getResponse();
+
+                if ($event->isPropagationStopped()) {
+                    continue;
+                }
+
+                $response = $execution($object) ?? $response;
             } catch (\Throwable $error) {
                 $this->logger?->error(
                     'An error occurred during the execution of {action}.',

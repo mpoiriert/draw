@@ -18,6 +18,15 @@ services:
     Draw\Component\Tester\Command\GenerateTraitCommand: ~
     Draw\Component\Tester\Command\GenerateAssertsDocumentationPageCommand: ~
 
+    # Sonata Admin services >>>
+    Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension\DefaultActionExtension:
+        class: 'Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension\DefaultActionExtension'
+        arguments:
+            $actions: ['delete']
+        tags:
+            - { name: sonata.admin.extension, global: true }
+    # Sonata Admin services <<<
+
     App\:
         resource: '../app/src'
         exclude:

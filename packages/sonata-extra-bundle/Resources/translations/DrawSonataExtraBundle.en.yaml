@@ -7,3 +7,6 @@ execution.notification.skipped.reason:
   insufficient-access: 'insufficient access'
   undefined: 'undefined reason'
   error: 'error'
+
+execution.action.delete:
+  label: 'Delete'

@@ -1,2 +1,3 @@
 makeAdmin: 'Make Admin'
 addRoles: 'Add Roles'
+delete: 'Delete'

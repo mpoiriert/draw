@@ -41,6 +41,11 @@ class PostExecutionResponseListener
 
         $subject = $objectActionExecutioner->getSubject();
 
+        // This is when object got deleted
+        if ($subject && null === $admin->id($subject)) {
+            $subject = null;
+        }
+
         $routes = $admin->getRoutes();
 
         $objectIdParameter = $admin->getIdParameter();
