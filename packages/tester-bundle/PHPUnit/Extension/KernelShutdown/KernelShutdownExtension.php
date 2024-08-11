@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\TesterBundle\PHPUnit\Extension;
+namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\KernelShutdown;
 
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\Finished as TestFinished;

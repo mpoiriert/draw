@@ -42,8 +42,8 @@
         <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\DeleteTemporaryEntity\DeleteTemporaryEntityExtension">
             <parameter name="ignoreMissingService" value="1" />
         </bootstrap>
-        <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\CarbonResetExtension"/>
-        <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\SetUpAutowireExtension"/>
-        <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\KernelShutdownExtension"/>
+        <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\CarbonReset\CarbonResetExtension"/>
+        <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\SetUpAutowireExtension"/>
+        <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\KernelShutdown\KernelShutdownExtension"/>
     </extensions>
 </phpunit>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
+namespace Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use PHPUnit\Framework\TestCase;

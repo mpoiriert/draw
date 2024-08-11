@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Component\Tester\PHPUnit\Extension;
+namespace Draw\Component\Tester\PHPUnit\Extension\CarbonReset;
 
 use Carbon\Carbon;
 use PHPUnit\Event\Test\Finished as TestFinished;

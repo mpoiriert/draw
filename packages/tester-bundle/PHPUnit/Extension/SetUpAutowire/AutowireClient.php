@@ -6,6 +6,7 @@ namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
 use Draw\Bundle\TesterBundle\WebTestCase as DrawWebTestCase;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as SymfonyWebTestCase;
 

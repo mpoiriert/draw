@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
+namespace Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire;
 
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\Prepared as TestPrepared;

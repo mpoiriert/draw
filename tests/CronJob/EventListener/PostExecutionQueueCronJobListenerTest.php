@@ -4,11 +4,11 @@ namespace App\Tests\CronJob\EventListener;
 
 use App\Command\NullCommand;
 use Draw\Bundle\TesterBundle\Messenger\TransportTester;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredCompletionAwareInterface;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Component\Core\FilterExpression\Expression\Expression;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredCompletionAwareInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;

@@ -4,10 +4,10 @@ namespace App\Tests\Console\Command;
 
 use App\Tests\FilteredCommandTestTrait;
 use App\Tests\TestCase;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Console\Command\GenerateDocumentationCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
