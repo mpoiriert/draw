@@ -18,11 +18,11 @@
         "php": ">=8.1"
     },
     "require-dev": {
-        "draw/core": "^0.10.44",
-        "draw/dependency-injection": "^0.10.44",
-        "draw/framework-extra-bundle": "^0.10.44",
-        "draw/messenger": "^0.10.44",
-        "draw/tester": "^0.10.44",
+        "draw/core": "^0.11",
+        "draw/dependency-injection": "^0.11",
+        "draw/framework-extra-bundle": "^0.11",
+        "draw/messenger": "^0.11",
+        "draw/tester": "^0.11",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^10.0",
         "symfony/console": "^6.4.0",
