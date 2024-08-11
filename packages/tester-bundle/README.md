@@ -3,29 +3,46 @@ Draw Tester Bundle
 
 This bundle integrate the Draw Tester Component.
 
-To use the HttpTesterTrait in a KernelTestCase you must simply do this:
+It also provides test helpers to make it easier to test your Symfony application.
 
-```PHP
-<?php namespace App\Tests;
+## Kernel Testing
 
-use Draw\Bundle\TesterBundle\Http\BrowserFactoryInterface;
-use Draw\Bundle\TesterBundle\Http\HttpTesterTrait;
+When configuring your kernel you may want to test that everything is hooked up correctly.
+
+There is the list of service, event dispatcher, command etc.
+
+There is some TestCase/Trait to help you do that (work in progress).
+
+### Event Dispatcher
+
+Relying on the `debug:event-dispatcher` command we can dump the list of event listeners and validated it against the expected list.
+
+```php
+<?php
+
+namespace App\Tests;
+
+use Draw\Bundle\TesterBundle\EventDispatcher\EventDispatcherTesterTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\BrowserKit\AbstractBrowser;
 
-class TestCase extends KernelTestCase implements BrowserFactoryInterface
+class AppKernelTest extends KernelTestCase
 {
-    use HttpTesterTrait;
-    
-    public function createBrowser(): AbstractBrowser
+    use EventDispatcherTesterTrait;
+
+    public function testEventDispatcherConfiguration(): void
     {
-       return static::bootKernel()->getContainer()->get('test.client');
+        $this->assertEventDispatcherConfiguration(
+            __DIR__.'/fixtures/AppKernelTest/testEventDispatcherConfiguration/event_dispatcher.xml',
+           'event_dispatcher' // This is the default value, same as the debug:event-dispatcher command
+        );
     }
 }
 ```
 
-As you can see we are using the **HttpTesterTrait** of the **Bundle** instead of the **Component**.
-This is because it as the implementation of the implementation of the **createHttpTesterClient** method.
+The first time you run this test it will fail and dump the current configuration in the `event_dispatcher.xml` file.
 
-Also you can see that we are booting a new kernel every time. It's to make sure we are using a new container
-on each request like the behaviour of a normal client request will do.
+Commit this file, next time your rune this test you will be able to validate that the configuration is still valid.
+
+If you change the listener in your code or change your dependencies you can run the test again and see the diff.
+
+This will allow you to see if some external listeners changed at the same time.

@@ -19,6 +19,7 @@
         "doctrine/persistence": "^2.2 || ^3.0",
         "dragonmantank/cron-expression": "^3.3",
         "ext-ctype": "*",
+        "ext-dom": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-mongodb": "*",
