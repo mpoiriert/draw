@@ -7,8 +7,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Bundle\SonataImportBundle\Import\Importer;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\DeleteTemporaryEntity\BaseTemporaryEntityCleaner;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ImporterTest extends KernelTestCase implements AutowiredInterface

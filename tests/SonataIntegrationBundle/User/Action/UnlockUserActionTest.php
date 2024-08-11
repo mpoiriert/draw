@@ -3,8 +3,8 @@
 namespace App\Tests\SonataIntegrationBundle\User\Action;
 
 use App\Tests\SonataIntegrationBundle\WebTestCaseTrait;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Bundle\UserBundle\Entity\UserLock;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UnlockUserActionTest extends WebTestCase implements AutowiredInterface

@@ -3,6 +3,7 @@
 namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
 use Draw\Component\Core\Reflection\ReflectionExtractor;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\TesterBundle\PHPStan\Rules\Properties;
+namespace Draw\Component\Tester\PHPStan\Rules\Properties;
 
 use PHPStan\Reflection\PropertyReflection;
 use PHPStan\Rules\Properties\ReadWritePropertiesExtension;

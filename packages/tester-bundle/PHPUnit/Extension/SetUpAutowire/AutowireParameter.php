@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
