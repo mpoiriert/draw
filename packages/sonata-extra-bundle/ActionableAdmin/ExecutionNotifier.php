@@ -75,10 +75,7 @@ class ExecutionNotifier implements ResetInterface
                     'DrawSonataExtraBundle'
                 );
 
-            $this->notifier->send(
-                (new SonataNotification($subject))
-                    ->setSonataFlashType('info')
-            );
+            $this->notifier->send(SonataNotification::info($subject));
         }
     }
 
