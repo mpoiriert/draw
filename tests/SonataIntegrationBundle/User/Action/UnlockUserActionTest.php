@@ -5,6 +5,7 @@ namespace App\Tests\SonataIntegrationBundle\User\Action;
 use App\Tests\SonataIntegrationBundle\WebTestCaseTrait;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
@@ -46,6 +47,7 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
         static::assertEqualsWithDelta(new \DateTimeImmutable('+ 24 hours'), $userLock->getUnlockUntil(), 2);
     }
 
+    #[Depends('testUnlock')]
     public function testNoAccess(): void
     {
         $this->login('locked@example.com');

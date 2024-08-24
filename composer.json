@@ -124,7 +124,8 @@
         "symfony/twig-bundle": "^6.4.0",
         "symfony/var-dumper": "^6.4.0",
         "symfony/var-exporter": "^6.4.0",
-        "symfony/web-profiler-bundle": "^6.4.0"
+        "symfony/web-profiler-bundle": "^6.4.0",
+        "dama/doctrine-test-bundle": "^8.2"
     },
     "replace": {
         "draw/application": "self.version",

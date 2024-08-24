@@ -169,3 +169,38 @@ class MyTest extends WebTestCase implements AutowiredInterface
 This is the same client as the one you get from the `WebTestCase`, you can use it the same way.
 
 Note that the `AutowireClient` attribute have an `options` and `server` parameters like you would do when calling the `createClient` method.
+
+### DoctrineTransaction
+
+Base on `dama/doctrine-test-bundle` this extension will start a transaction before each test class and rollback it after the test.
+
+By using test class instead of test method, like the original bundle does, it will ease dependencies managements.
+
+Make sure to configure this extension first in your phpunit configuration file.
+
+```xml
+<phpunit bootstrap="vendor/autoload.php">
+    <extensions>
+        <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\DoctrineTransaction\DoctrineTransactionExtension"/>
+    </extensions>
+</phpunit>
+```
+
+Also if one of your test should not have transaction you can use the `NoTransaction` attribute on the test class.
+
+```php
+
+namespace App\Tests;
+
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\DoctrineTransaction\NoTransaction;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+
+#[NoTransaction]
+class MyTest extends KernelTestCase
+{
+    public function testSomething(): void
+    {
+        /*...*/
+    }
+}
+```

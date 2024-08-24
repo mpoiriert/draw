@@ -8,9 +8,8 @@ use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Bundle\TesterBundle\WebTestCase;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
-use PHPUnit\Framework\Attributes\AfterClass;
-use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -26,11 +25,9 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
 
     private static User $user;
 
-    public static function setUpBeforeClass(): void
+    #[DoesNotPerformAssertions]
+    public function testCreateUser(): void
     {
-        $entityManager = static::getContainer()
-            ->get(EntityManagerInterface::class);
-
         $user = new User();
         $user->setEmail('test-2fa@example.com');
         $user->setPlainPassword('test');
@@ -39,28 +36,13 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
         // This role for enabling 2fa as per configuration
         $user->enableTwoFActorAuthenticationProvider('totp');
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         self::$user = $user;
     }
 
-    #[
-        AfterClass,
-        BeforeClass,
-    ]
-    public static function cleanUp(): void
-    {
-        static::getContainer()
-            ->get(EntityManagerInterface::class)
-            ->createQueryBuilder()
-            ->delete(User::class, 'user')
-            ->andWhere('user.email like :email')
-            ->setParameter('email', 'test-2fa%@example.com')
-            ->getQuery()
-            ->execute();
-    }
-
+    #[Depends('testCreateUser')]
     public function testLoginRedirectEnable2fa(): void
     {
         static::assertTrue(self::$user->needToEnableTotpAuthenticationEnabled());
@@ -76,6 +58,7 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
         );
     }
 
+    #[Depends('testCreateUser')]
     public function testCancel(): void
     {
         $this->client->followRedirects();
@@ -102,7 +85,7 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
         self::$user->setRoles(['ROLE_2FA_ADMIN']);
         $this->entityManager->flush();
 
-        $crawler = $this->loginToAdmin();
+        $this->loginToAdmin();
 
         $crawler = $this->client->submit(
             $this->client->getCrawler()

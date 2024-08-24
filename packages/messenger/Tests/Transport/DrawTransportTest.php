@@ -3,6 +3,7 @@
 namespace Draw\Component\Messenger\Tests\Transport;
 
 use Doctrine\DBAL\Connection;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\DoctrineTransaction\NoTransaction;
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
 use Draw\Component\Messenger\Searchable\SearchableTransportInterface;
@@ -28,6 +29,7 @@ use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 #[CoversClass(DrawTransport::class)]
+#[NoTransaction]
 class DrawTransportTest extends TestCase
 {
     use MockTrait;

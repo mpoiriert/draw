@@ -39,6 +39,7 @@
         </exclude>
     </source>
     <extensions>
+        <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\DoctrineTransaction\DoctrineTransactionExtension" />
         <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\DeleteTemporaryEntity\DeleteTemporaryEntityExtension">
             <parameter name="ignoreMissingService" value="1" />
         </bootstrap>
