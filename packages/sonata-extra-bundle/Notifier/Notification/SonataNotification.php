@@ -13,6 +13,11 @@ class SonataNotification extends Notification implements SonataNotificationInter
         return (new self($message))->setSonataFlashType('success');
     }
 
+    public static function info(string $message): self
+    {
+        return (new self($message))->setSonataFlashType('info');
+    }
+
     public static function error(string $message): self
     {
         return (new self($message))->setSonataFlashType('error');
