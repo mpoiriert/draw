@@ -152,6 +152,10 @@ trait CommandTestTrait
         $definition = $command->getDefinition();
         $realCommandOptions = [];
         foreach ($definition->getOptions() as $option) {
+            if (null !== $shortcut = $option->getShortcut()) {
+                TestCase::assertEquals(1, \strlen($shortcut));
+            }
+
             $realCommandOptions[$option->getName()] = $option;
         }
 
