@@ -11,7 +11,7 @@ Arguments:
   path                                                                         The path where the documentation will be generated.
 
 Options:
-      --format=FORMAT                                                          The format of the documentation (txt|md|json|xml). [default: "txt"]
+  -f, --format=FORMAT                                                          The format of the documentation (txt|md|json|xml). [default: "txt"]
       --aws-newest-instance-role=AWS-NEWEST-INSTANCE-ROLE                      The instance role the server must be the newest of to run the command.
       --draw-execution-id=DRAW-EXECUTION-ID                                    The existing execution id of the command. Use internally by the DrawCommandBundle.
       --draw-execution-ignore                                                  Flag to ignore login of the execution to the databases.

@@ -40,7 +40,7 @@ class GenerateDocumentationCommandTest extends TestCase implements AutowiredInte
     {
         yield [
             'format',
-            null,
+            'f',
             InputOption::VALUE_REQUIRED,
             'txt',
         ];
@@ -58,7 +58,7 @@ class GenerateDocumentationCommandTest extends TestCase implements AutowiredInte
             }
         );
 
-        $this->execute(['path' => $filePath])
+        $this->execute(['path' => $filePath, '-f' => 'txt'])
             ->test(
                 CommandDataTester::create()
                     ->setExpectedDisplay([

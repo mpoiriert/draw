@@ -30,7 +30,7 @@ class GenerateDocumentationCommand extends Command
         $this
             ->setDescription('Generate a documentation for all the command of the application.')
             ->addArgument('path', InputArgument::REQUIRED, 'The path where the documentation will be generated.')
-            ->addOption('format', null, InputArgument::OPTIONAL, 'The format of the documentation (txt|md|json|xml).', 'txt');
+            ->addOption('format', 'f', InputArgument::OPTIONAL, 'The format of the documentation (txt|md|json|xml).', 'txt');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
