@@ -1,4 +1,4 @@
-FROM php:8.3.1-fpm
+FROM php:8.2-fpm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends vim curl debconf subversion git apt-transport-https apt-utils \
@@ -14,8 +14,8 @@ RUN docker-php-ext-configure gd --with-jpeg
 RUN docker-php-ext-install pdo pdo_mysql gd zip pcntl
 
 COPY php.ini /usr/local/etc/php/php.ini
-COPY php.ini /etc/php/8.3.1/php.ini
-COPY php-fpm-pool.conf /etc/php/8.3.1/pool.d/www.conf
+COPY php.ini /etc/php/8.2/php.ini
+COPY php-fpm-pool.conf /etc/php/8.2/pool.d/www.conf
 
 #COMPOSER
 RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
