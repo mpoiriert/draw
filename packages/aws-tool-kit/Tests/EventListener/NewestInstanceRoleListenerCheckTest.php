@@ -3,7 +3,6 @@
 namespace Draw\Component\AwsToolKit\Tests\EventListener;
 
 use Aws\Ec2\Ec2Client;
-use Aws\Result;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
@@ -284,15 +283,13 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         } else {
             $invocationMocker
                 ->willReturn(
-                    new Result(
-                        [
-                            'Reservations' => [
-                                [
-                                    'Instances' => $instances,
-                                ],
+                    [
+                        'Reservations' => [
+                            [
+                                'Instances' => $instances,
                             ],
-                        ]
-                    )
+                        ],
+                    ]
                 );
         }
     }
