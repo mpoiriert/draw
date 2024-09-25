@@ -35,3 +35,8 @@ parameters:
 			count: 1
 			path: packages/sonata-integration-bundle/User/Security/AdminLoginAuthenticator.php
 
+		-
+			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int\\)\\: bool\\)\\|null, Closure\\(\\)\\: null given\\.$#"
+			count: 1
+			path: packages/tester-bundle/Tests/bootstrap.php
+
