@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Tester\Test\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -22,9 +23,7 @@ abstract class ConfigurationTestCase extends TestCase
         $this->configuration = $this->createConfiguration();
     }
 
-    /**
-     * @dataProvider provideTestInvalidConfiguration
-     */
+    #[DataProvider('provideTestInvalidConfiguration')]
     public function testInvalidConfiguration(array $configuration, string $expectedMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);

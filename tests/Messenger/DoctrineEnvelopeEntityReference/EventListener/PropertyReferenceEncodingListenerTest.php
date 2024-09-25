@@ -13,6 +13,7 @@ use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
+use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -89,9 +90,7 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
         static::assertTrue($this->postEncodeEventCalled);
     }
 
-    /**
-     * @depends testSend
-     */
+    #[Depends('testSend')]
     public function testLoad(): void
     {
         $envelope = $this->envelopeFinder->findByTags([self::$email])[0];

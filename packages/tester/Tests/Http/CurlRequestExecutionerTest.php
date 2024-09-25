@@ -5,6 +5,7 @@ namespace Draw\Component\Tester\Tests\Http;
 use Draw\Component\Tester\Http\CurlRequestExecutioner;
 use Draw\Component\Tester\Http\RequestExecutionerInterface;
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
@@ -19,9 +20,7 @@ class CurlRequestExecutionerTest extends TestCase
         return $curlRequestExecutioner;
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testExecuteRequest(CurlRequestExecutioner $curlRequestExecutioner): void
     {
         $request = new Request(

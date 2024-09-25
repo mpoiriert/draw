@@ -9,6 +9,7 @@ use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\Schema\Schema;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TypeSchemaExtractorTest extends TestCase
@@ -53,9 +54,7 @@ class TypeSchemaExtractorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestCanExtract
-     */
+    #[DataProvider('provideTestCanExtract')]
     public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
         $context = $this->createMock(ExtractionContextInterface::class);

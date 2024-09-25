@@ -60,10 +60,10 @@ Add the package to the autoload section:
     }
   ],
   "require": {
-    "php": ">=8.1"
+    "php": ">=8.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.0"
+    "phpunit/phpunit": "^11.3"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

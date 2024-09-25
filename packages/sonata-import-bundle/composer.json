@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "draw/sonata-extra-bundle": "^0.11",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
@@ -26,7 +26,7 @@
     "require-dev": {
         "draw/tester": "^0.11",
         "knplabs/doctrine-behaviors": "*",
-        "phpunit/phpunit": "^10.0"
+        "phpunit/phpunit": "^11.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

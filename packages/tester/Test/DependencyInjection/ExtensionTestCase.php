@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Tester\Test\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -49,10 +50,9 @@ abstract class ExtensionTestCase extends TestCase
     }
 
     /**
-     * @dataProvider provideTestHasServiceDefinition
-     *
      * @param ?string $aliasOf If the id is a alias it's a alias of which service ?
      */
+    #[DataProvider('provideTestHasServiceDefinition')]
     public function testServiceDefinition(?string $id, ?string $aliasOf = null): void
     {
         if (!$id) {

@@ -1,5 +1,5 @@
 # THIS IS BASE IMAGE
-FROM php:8.3-cli-alpine
+FROM php:8.2-cli-alpine
 
 RUN apk add --no-cache git git-subtree
 

@@ -10,6 +10,7 @@ use Draw\Component\Tester\Http\RequestExecutionerInterface;
 use Draw\Component\Tester\Http\TestResponse;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
@@ -45,9 +46,7 @@ class ClientTest extends TestCase
         return $client;
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testGet(Client $client): void
     {
         $testResponse = $client->get(
@@ -66,9 +65,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testHead(Client $client): void
     {
         $testResponse = $client->head(
@@ -87,9 +84,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testPut(Client $client): void
     {
         $testResponse = $client->put(
@@ -109,9 +104,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testPost(Client $client): void
     {
         $testResponse = $client->post(
@@ -131,9 +124,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testDelete(Client $client): void
     {
         $testResponse = $client->delete(
@@ -152,9 +143,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testOptions(Client $client): void
     {
         $testResponse = $client->options(
@@ -173,9 +162,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testPatch(Client $client): void
     {
         $testResponse = $client->patch(
@@ -195,9 +182,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testSend(Client $client): void
     {
         $request = new Request(
@@ -220,9 +205,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testCreateRequest(Client $client): void
     {
         $request = $client->createRequest(
@@ -243,9 +226,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testRegisterObserver(Client $client): void
     {
         $mockClientObserver = $this->createMock(ClientObserverInterface::class);

@@ -5,6 +5,7 @@ namespace Draw\Component\Profiling\Tests\Sql;
 use Draw\Component\Profiling\Sql\SqlAssertionBuilder;
 use Draw\Component\Profiling\Sql\SqlMetric;
 use Draw\Component\Tester\DataTester;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -25,9 +26,7 @@ class SqlAssertionBuilderTest extends TestCase
         yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), true];
     }
 
-    /**
-     * @dataProvider provideTestAssertCountEquals
-     */
+    #[DataProvider('provideTestAssertCountEquals')]
     public function testProvideAssertCountEquals(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
     {
         $this->assertionBuilder->assertCountEquals($expectedCount);
@@ -42,9 +41,7 @@ class SqlAssertionBuilderTest extends TestCase
         yield [1, new DataTester((object) ['sql' => new SqlMetric([])]), true];
     }
 
-    /**
-     * @dataProvider provideTestAssertCountGreaterThanOrEqual
-     */
+    #[DataProvider('provideTestAssertCountGreaterThanOrEqual')]
     public function testAssertCountGreaterThanOrEqual(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
     {
         $this->assertionBuilder->assertCountGreaterThanOrEqual($expectedCount);
@@ -59,9 +56,7 @@ class SqlAssertionBuilderTest extends TestCase
         yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), true];
     }
 
-    /**
-     * @dataProvider provideTestAssertCountLessThanOrEqual
-     */
+    #[DataProvider('provideTestAssertCountLessThanOrEqual')]
     public function testAssertCountLessThanOrEqual(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
     {
         $this->assertionBuilder->assertCountLessThanOrEqual($expectedCount);

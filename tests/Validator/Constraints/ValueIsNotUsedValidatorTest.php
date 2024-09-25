@@ -7,6 +7,7 @@ use App\Entity\User;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Component\Validator\Constraints\ValueIsNotUsed;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -15,9 +16,7 @@ class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowiredInt
     #[AutowireService]
     protected ValidatorInterface $validator;
 
-    /**
-     * @dataProvider provideTestValidate
-     */
+    #[DataProvider('provideTestValidate')]
     public function testValidate(mixed $value, string $entityClass, string $field, bool $expectError): void
     {
         $violations = $this->validator

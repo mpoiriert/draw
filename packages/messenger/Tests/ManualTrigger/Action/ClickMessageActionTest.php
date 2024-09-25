@@ -10,6 +10,7 @@ use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -92,9 +93,7 @@ class ClickMessageActionTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestClickEnvelopeError
-     */
+    #[DataProvider('provideTestClickEnvelopeError')]
     public function testClickEnvelopeError(
         ?Envelope $returnedEnveloped,
         string $exceptionClass,

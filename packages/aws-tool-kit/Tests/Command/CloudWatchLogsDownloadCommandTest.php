@@ -28,9 +28,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
             ->getMockBuilder(CloudWatchLogsClient::class)
             ->disableOriginalConstructor()
             ->disableOriginalClone()
-            ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
-            ->addMethods(['getLogEvents'])
+            ->onlyMethods(['__call'])
             ->getMock();
 
         $this->command = new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
@@ -88,21 +86,29 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);
 
-        $logEvents = [
-            'startFromHead' => true,
-            'logGroupName' => $logGroupName,
-            'logStreamName' => $logStreamName,
-            'startTime' => $startTime->getTimestamp() * 1000,
-            'endTime' => $endTime->getTimestamp() * 1000,
-        ];
-
         $this->cloudWatchLogsClient
             ->expects(static::exactly(2))
-            ->method('getLogEvents')
+            ->method('__call')
             ->with(
                 ...static::withConsecutive(
-                    [$logEvents],
-                    [$logEvents + ['nextToken' => 'next-token']]
+                    [
+                        'getLogEvents',
+                        [
+                            $logEvents = [
+                                'startFromHead' => true,
+                                'logGroupName' => $logGroupName,
+                                'logStreamName' => $logStreamName,
+                                'startTime' => $startTime->getTimestamp() * 1000,
+                                'endTime' => $endTime->getTimestamp() * 1000,
+                            ],
+                        ],
+                    ],
+                    [
+                        'getLogEvents',
+                        [
+                            $logEvents + ['nextToken' => 'next-token'],
+                        ],
+                    ],
                 )
             )
             ->willReturnOnConsecutiveCalls(
@@ -147,14 +153,17 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
 
         $this->cloudWatchLogsClient
             ->expects(static::once())
-            ->method('getLogEvents')
+            ->method('__call')
             ->with(
+                'getLogEvents',
                 [
-                    'startFromHead' => true,
-                    'logGroupName' => $logGroupName,
-                    'logStreamName' => $logStreamName,
-                    'startTime' => $startTime->getTimestamp() * 1000,
-                    'endTime' => $endTime->getTimestamp() * 1000,
+                    [
+                        'startFromHead' => true,
+                        'logGroupName' => $logGroupName,
+                        'logStreamName' => $logStreamName,
+                        'startTime' => $startTime->getTimestamp() * 1000,
+                        'endTime' => $endTime->getTimestamp() * 1000,
+                    ],
                 ]
             )
             ->willReturn(

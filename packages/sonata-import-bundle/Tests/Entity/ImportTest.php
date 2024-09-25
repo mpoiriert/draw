@@ -9,6 +9,7 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
@@ -16,6 +17,8 @@ use Symfony\Component\Validator\Validation;
 
 class ImportTest extends TestCase
 {
+    use MockTrait;
+
     private Import $entity;
 
     protected function setUp(): void
@@ -138,7 +141,7 @@ class ImportTest extends TestCase
         $this->entity->updateTimestamp(
             new LifecycleEventArgs(
                 $this->entity,
-                $this->getMockForAbstractClass(ObjectManager::class)
+                $this->createMock(ObjectManager::class)
             )
         );
 
@@ -148,7 +151,7 @@ class ImportTest extends TestCase
         $this->entity->updateTimestamp(
             new PreUpdateEventArgs(
                 $this->entity,
-                $this->getMockForAbstractClass(EntityManagerInterface::class),
+                $this->createMock(EntityManagerInterface::class),
                 $changeSet
             )
         );

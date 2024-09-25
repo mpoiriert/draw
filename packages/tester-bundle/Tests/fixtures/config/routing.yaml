@@ -1,4 +1,4 @@
 test:
     resource: '@DrawTesterBundle/Tests/Mock/Controller/TestController.php'
-    type: 'annotation'
+    type: 'attribute'
     format: 'json'

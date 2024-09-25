@@ -5,6 +5,7 @@ namespace Draw\Component\Log\Tests\Symfony\Processor;
 use Draw\Component\Log\Symfony\Processor\RequestHeadersProcessor;
 use Monolog\Level;
 use Monolog\LogRecord;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -66,9 +67,7 @@ class RequestHeadersProcessorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestInvoke
-     */
+    #[DataProvider('provideTestInvoke')]
     public function testInvoke(
         ?array $requestHeaders,
         array $onlyHeaders,

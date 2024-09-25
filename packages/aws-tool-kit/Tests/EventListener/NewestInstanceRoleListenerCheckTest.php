@@ -247,7 +247,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     ): void {
         $ec2Client = $this->getMockBuilder(Ec2Client::class)
             ->disableOriginalConstructor()
-            ->addMethods(['describeInstances'])
+            ->onlyMethods(['__call'])
             ->getMock();
 
         ReflectionAccessor::setPropertyValue(
@@ -258,18 +258,21 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
         $invocationMocker = $ec2Client
             ->expects(static::once())
-            ->method('describeInstances')
+            ->method('__call')
             ->with(
+                'describeInstances',
                 [
-                    'DryRun' => false,
-                    'Filters' => [
-                        [
-                            'Name' => 'tag:Name',
-                            'Values' => [$role],
-                        ],
-                        [
-                            'Name' => 'instance-state-name',
-                            'Values' => ['running'],
+                    [
+                        'DryRun' => false,
+                        'Filters' => [
+                            [
+                                'Name' => 'tag:Name',
+                                'Values' => [$role],
+                            ],
+                            [
+                                'Name' => 'instance-state-name',
+                                'Values' => ['running'],
+                            ],
                         ],
                     ],
                 ]
@@ -279,13 +282,15 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             $invocationMocker->willThrowException($error);
         } else {
             $invocationMocker
-                ->willReturn([
-                    'Reservations' => [
-                        [
-                            'Instances' => $instances,
+                ->willReturn(
+                    [
+                        'Reservations' => [
+                            [
+                                'Instances' => $instances,
+                            ],
                         ],
-                    ],
-                ]);
+                    ]
+                );
         }
     }
 

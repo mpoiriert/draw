@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Tests\Expirable\Command;
 use Draw\Component\Messenger\Expirable\Command\PurgeExpiredMessageCommand;
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Searchable\TransportRepository;
+use Draw\Component\Messenger\Tests\Stub\Transport\PurgeAwareTransportInterface;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\MockTrait;
@@ -13,7 +14,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 
 #[CoversClass(PurgeExpiredMessageCommand::class)]
 class PurgeExpiredMessageCommandTest extends TestCase
@@ -85,10 +85,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls(
                 $transport1 = $this->createMock(PurgeableTransportInterface::class),
-                $transport2 = $this->createMockWithExtraMethods(
-                    TransportInterface::class,
-                    ['purgeObsoleteMessages']
-                )
+                $transport2 = $this->createMock(PurgeAwareTransportInterface::class)
             );
 
         $transport1

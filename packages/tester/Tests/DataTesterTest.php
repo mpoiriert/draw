@@ -3,6 +3,7 @@
 namespace Draw\Component\Tester\Tests;
 
 use Draw\Component\Tester\DataTester;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\TestCase;
 
@@ -42,9 +43,7 @@ class DataTesterTest extends TestCase
         static::assertSame('value', $newTester->getData());
     }
 
-    /**
-     * @depends testPath
-     */
+    #[Depends('testPath')]
     public function testChain(): void
     {
         $data = new \stdClass();
@@ -83,10 +82,10 @@ class DataTesterTest extends TestCase
         static::assertFalse($hasBeenCalled, 'The path is not readable the callable should not have been called.');
     }
 
-    /**
-     * @depends testIfPathIsReadable
-     * @depends testPath
-     */
+    #[
+        Depends('testIfPathIsReadable'),
+        Depends('testPath'),
+    ]
     public function testEach(): void
     {
         $users = [
@@ -110,9 +109,7 @@ class DataTesterTest extends TestCase
         static::assertSame(\count($users), $callbackCount);
     }
 
-    /**
-     * @depends testPath
-     */
+    #[Depends('testPath')]
     public function testTransform(): void
     {
         $tester = new DataTester('{"key":"value"}');

@@ -6,6 +6,7 @@ use Draw\Component\Tester\Http\Cookie\Cookie;
 use Draw\Component\Tester\Http\Cookie\CookieJar;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CookieJarTest extends TestCase
@@ -239,11 +240,10 @@ class CookieJarTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTestReturnsCookiesMatchingRequests
-     *
      * @param string $url
      * @param string $cookies
      */
+    #[DataProvider('provideTestReturnsCookiesMatchingRequests')]
     public function testReturnsCookiesMatchingRequests($url, $cookies): void
     {
         $bag = [
@@ -350,9 +350,7 @@ class CookieJarTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestCookiePathWithEmptyCookiePath
-     */
+    #[DataProvider('provideTestCookiePathWithEmptyCookiePath')]
     public function testCookiePathWithEmptyCookiePath(string $uriPath, string $cookiePath): void
     {
         $response = new Response(

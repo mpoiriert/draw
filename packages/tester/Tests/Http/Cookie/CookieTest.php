@@ -3,6 +3,7 @@
 namespace Draw\Component\Tester\Tests\Http\Cookie;
 
 use Draw\Component\Tester\Http\Cookie\Cookie;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class CookieTest extends TestCase
@@ -137,9 +138,7 @@ class CookieTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider pathMatchProvider
-     */
+    #[DataProvider('pathMatchProvider')]
     public function testMatchesPath(string $cookiePath, string $requestPath, bool $isMatch): void
     {
         $cookie = new Cookie();
@@ -160,9 +159,7 @@ class CookieTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider cookieValidateProvider
-     */
+    #[DataProvider('cookieValidateProvider')]
     public function testValidatesCookies(string $name, string $value, string $domain, bool|string $result): void
     {
         $cookie = new Cookie([
@@ -359,9 +356,7 @@ class CookieTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider cookieParserDataProvider
-     */
+    #[DataProvider('cookieParserDataProvider')]
     public function testParseCookie(string|array $cookie, array $parsed): void
     {
         foreach ((array) $cookie as $v) {

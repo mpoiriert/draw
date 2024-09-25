@@ -5,6 +5,7 @@ namespace Draw\Component\Core\Tests\FilterExpression;
 use Draw\Component\Core\FilterExpression\Evaluator;
 use Draw\Component\Core\FilterExpression\Expression\ConstraintExpression;
 use Draw\Component\Core\FilterExpression\Query;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\EqualTo;
 
@@ -69,9 +70,7 @@ class EvaluatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideExecute
-     */
+    #[DataProvider('provideExecute')]
     public function testExecute(Query $query, int $expectedCount): void
     {
         static::assertCount(

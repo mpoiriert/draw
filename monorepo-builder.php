@@ -25,7 +25,7 @@ return static function (MBConfig $mbConfig): void {
             'doctrine/sql-formatter' => '^1.1',
             'nelmio/cors-bundle' => '^2.0',
             'pelago/emogrifier' => '^7.0',
-            'phpunit/phpunit' => '^10.0',
+            'phpunit/phpunit' => '^11.3',
             'sonata-project/admin-bundle' => '^4.8',
             'sonata-project/doctrine-orm-admin-bundle' => '^4.2',
             'symfony/debug-bundle' => '^6.4.0',
