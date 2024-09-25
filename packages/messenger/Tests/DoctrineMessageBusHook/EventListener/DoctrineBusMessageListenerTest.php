@@ -221,7 +221,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->willReturn(
                 $messages = [
                     $message1 = $this->createMock(LifeCycleAwareMessageInterface::class),
-                    // Arbitrary interface just to add preSen method without implementing LifeCycleAwareMessageInterface
+                    // Arbitrary interface just to add preSend method without implementing LifeCycleAwareMessageInterface
                     $message2 = $this->createMockWithExtraMethods(MessageHolderInterface::class, ['preSend']),
                 ]
             );
