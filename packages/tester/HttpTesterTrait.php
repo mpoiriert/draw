@@ -5,6 +5,9 @@ namespace Draw\Component\Tester;
 use Draw\Component\Tester\Http\ClientInterface;
 use PHPUnit\Framework\Attributes\BeforeClass;
 
+/**
+ * @deprecated
+ */
 trait HttpTesterTrait
 {
     protected static ?ClientInterface $httpTesterClient = null;
