@@ -5,7 +5,7 @@ namespace Draw\Component\Mailer\Tests;
 use Draw\Component\Mailer\Email\LocalizeEmailInterface;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
-use Draw\Component\Mailer\Tests\Mock\MockableEmailWriter;
+use Draw\Component\Mailer\Tests\Stub\EmailWriter\EmailWriterStub;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -86,7 +86,7 @@ class EmailComposerTest extends TestCase
                 )
             )
             ->willReturn(
-                $emailWriter = $this->createMock(MockableEmailWriter::class)
+                $emailWriter = $this->createMock(EmailWriterStub::class)
             );
 
         $emailWriter

@@ -6,7 +6,6 @@ use Aws\Ec2\Ec2Client;
 use Aws\Result;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
-use Draw\Component\AwsToolKit\Tests\Mock\MockableEc2Client;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -247,9 +246,9 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         array $instances,
         ?\Exception $error = null
     ): void {
-        $ec2Client = $this->getMockBuilder(MockableEc2Client::class)
+        $ec2Client = $this->getMockBuilder(Ec2Client::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['describeInstances'])
+            ->onlyMethods(['__call'])
             ->getMock();
 
         ReflectionAccessor::setPropertyValue(
@@ -260,18 +259,21 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
         $invocationMocker = $ec2Client
             ->expects(static::once())
-            ->method('describeInstances')
+            ->method('__call')
             ->with(
+                'describeInstances',
                 [
-                    'DryRun' => false,
-                    'Filters' => [
-                        [
-                            'Name' => 'tag:Name',
-                            'Values' => [$role],
-                        ],
-                        [
-                            'Name' => 'instance-state-name',
-                            'Values' => ['running'],
+                    [
+                        'DryRun' => false,
+                        'Filters' => [
+                            [
+                                'Name' => 'tag:Name',
+                                'Values' => [$role],
+                            ],
+                            [
+                                'Name' => 'instance-state-name',
+                                'Values' => ['running'],
+                            ],
                         ],
                     ],
                 ]

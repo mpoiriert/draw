@@ -6,7 +6,7 @@ use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
 use Draw\Component\Security\Jwt\JwtEncoder;
-use Draw\Component\Security\Tests\Mock\MockableUserInterface;
+use Draw\Component\Security\Tests\Stub\JwtAuthenticatableUserInterface;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -42,7 +42,7 @@ class JwtAuthenticatorTest extends TestCase
 
     private TranslatorInterface&MockObject $translator;
 
-    private static string $userIdentifierGetter = 'getIdentifierForJwtAuthenticatorTest';
+    private static string $userIdentifierGetter = 'getJwtIdentifier';
 
     protected function setUp(): void
     {
@@ -93,7 +93,7 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateToken(): void
     {
-        $user = $this->createMock(MockableUserInterface::class);
+        $user = $this->createMock(JwtAuthenticatableUserInterface::class);
 
         $user
             ->expects(static::once())
@@ -123,7 +123,7 @@ class JwtAuthenticatorTest extends TestCase
             null
         );
 
-        $user = $this->createMock(MockableUserInterface::class);
+        $user = $this->createMock(JwtAuthenticatableUserInterface::class);
 
         $user
             ->expects(static::once())
@@ -146,7 +146,7 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateTokenWithExpiration(): void
     {
-        $user = $this->createMock(MockableUserInterface::class);
+        $user = $this->createMock(JwtAuthenticatableUserInterface::class);
 
         $user
             ->expects(static::once())
@@ -172,7 +172,7 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateTokenWithExtraPayload(): void
     {
-        $user = $this->createMock(MockableUserInterface::class);
+        $user = $this->createMock(JwtAuthenticatableUserInterface::class);
 
         $user
             ->expects(static::once())

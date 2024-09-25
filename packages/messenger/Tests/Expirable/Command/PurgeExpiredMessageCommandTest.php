@@ -5,7 +5,7 @@ namespace Draw\Component\Messenger\Tests\Expirable\Command;
 use Draw\Component\Messenger\Expirable\Command\PurgeExpiredMessageCommand;
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Searchable\TransportRepository;
-use Draw\Component\Messenger\Tests\Mock\MockablePurgeAwareTransportInterface;
+use Draw\Component\Messenger\Tests\Stub\Transport\PurgeAwareTransportInterface;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\MockTrait;
@@ -85,7 +85,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls(
                 $transport1 = $this->createMock(PurgeableTransportInterface::class),
-                $transport2 = $this->createMock(MockablePurgeAwareTransportInterface::class)
+                $transport2 = $this->createMock(PurgeAwareTransportInterface::class)
             );
 
         $transport1

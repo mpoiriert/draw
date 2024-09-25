@@ -2,9 +2,8 @@
 
 namespace Draw\Component\AwsToolKit\Tests\Command;
 
-use Aws\Result;
+use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
-use Draw\Component\AwsToolKit\Tests\Mock\MockableCloudWatchLogsClient;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
@@ -21,15 +20,15 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
     use CommandTestTrait;
     use MockTrait;
 
-    private MockableCloudWatchLogsClient&MockObject $cloudWatchLogsClient;
+    private CloudWatchLogsClient&MockObject $cloudWatchLogsClient;
 
     protected function setUp(): void
     {
         $this->cloudWatchLogsClient = $this
-            ->getMockBuilder(MockableCloudWatchLogsClient::class)
+            ->getMockBuilder(CloudWatchLogsClient::class)
             ->disableOriginalConstructor()
             ->disableOriginalClone()
-            ->onlyMethods(['getLogEvents'])
+            ->onlyMethods(['__call'])
             ->getMock();
 
         $this->command = new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
@@ -87,40 +86,44 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);
 
-        $logEvents = [
-            'startFromHead' => true,
-            'logGroupName' => $logGroupName,
-            'logStreamName' => $logStreamName,
-            'startTime' => $startTime->getTimestamp() * 1000,
-            'endTime' => $endTime->getTimestamp() * 1000,
-        ];
-
         $this->cloudWatchLogsClient
             ->expects(static::exactly(2))
-            ->method('getLogEvents')
+            ->method('__call')
             ->with(
                 ...static::withConsecutive(
-                    [$logEvents],
-                    [$logEvents + ['nextToken' => 'next-token']]
+                    [
+                        'getLogEvents',
+                        [
+                            $logEvents = [
+                                'startFromHead' => true,
+                                'logGroupName' => $logGroupName,
+                                'logStreamName' => $logStreamName,
+                                'startTime' => $startTime->getTimestamp() * 1000,
+                                'endTime' => $endTime->getTimestamp() * 1000,
+                            ],
+                        ],
+                    ],
+                    [
+                        'getLogEvents',
+                        [
+                            $logEvents + ['nextToken' => 'next-token'],
+                        ],
+                    ],
                 )
             )
             ->willReturnOnConsecutiveCalls(
-                new Result(
-                    [
-                        'events' => [
-                            ['message' => 'Line 1'],
-                        ],
-                        'nextForwardToken' => 'next-token',
-                    ]
-                ),
-                new Result(
-                    [
-                        'events' => [
-                            ['message' => 'Line 2'],
-                        ],
-                        'nextForwardToken' => 'next-token',
-                    ]
-                )
+                [
+                    'events' => [
+                        ['message' => 'Line 1'],
+                    ],
+                    'nextForwardToken' => 'next-token',
+                ],
+                [
+                    'events' => [
+                        ['message' => 'Line 2'],
+                    ],
+                    'nextForwardToken' => 'next-token',
+                ]
             );
 
         $this->execute(
@@ -150,25 +153,26 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
 
         $this->cloudWatchLogsClient
             ->expects(static::once())
-            ->method('getLogEvents')
+            ->method('__call')
             ->with(
+                'getLogEvents',
                 [
-                    'startFromHead' => true,
-                    'logGroupName' => $logGroupName,
-                    'logStreamName' => $logStreamName,
-                    'startTime' => $startTime->getTimestamp() * 1000,
-                    'endTime' => $endTime->getTimestamp() * 1000,
+                    [
+                        'startFromHead' => true,
+                        'logGroupName' => $logGroupName,
+                        'logStreamName' => $logStreamName,
+                        'startTime' => $startTime->getTimestamp() * 1000,
+                        'endTime' => $endTime->getTimestamp() * 1000,
+                    ],
                 ]
             )
             ->willReturn(
-                new Result(
-                    [
-                        'events' => [
-                            ['message' => 'Line 1'],
-                        ],
-                        'nextForwardToken' => null,
-                    ]
-                )
+                [
+                    'events' => [
+                        ['message' => 'Line 1'],
+                    ],
+                    'nextForwardToken' => null,
+                ]
             );
 
         $this->execute(
