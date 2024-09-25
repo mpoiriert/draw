@@ -4,6 +4,7 @@ namespace Draw\Fixer\Tests;
 
 use Draw\Fixer\ClassNotation\ClassStaticCallFixer;
 use PhpCsFixer\Tokenizer\Tokens;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ClassStaticCallFixerTest extends TestCase
@@ -26,9 +27,7 @@ class ClassStaticCallFixerTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider provideTestFix
-     */
+    #[DataProvider('provideTestFix')]
     public function testFix(string $inCode, string $outCode): void
     {
         $tokens = Tokens::fromCode($inCode);

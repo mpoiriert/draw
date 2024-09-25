@@ -6,6 +6,7 @@ use Draw\Component\Messenger\SerializerEventDispatcher\Event\BaseSerializerEvent
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 
@@ -18,9 +19,7 @@ class BaseSerializerEventTest extends TestCase
         yield [PreEncodeEvent::class];
     }
 
-    /**
-     * @dataProvider provideTestConstruct
-     */
+    #[DataProvider('provideTestConstruct')]
     public function testConstruct(string $class): void
     {
         $object = new $class($envelope = new Envelope((object) []));

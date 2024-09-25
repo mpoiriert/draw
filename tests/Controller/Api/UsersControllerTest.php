@@ -9,6 +9,7 @@ use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
 use Monolog\Level;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersControllerTest extends TestCase
@@ -62,9 +63,7 @@ class UsersControllerTest extends TestCase
         return $data;
     }
 
-    /**
-     * @depends testUsersCreateAction
-     */
+    #[Depends('testUsersCreateAction')]
     public function testUsersEditAction(object $user): void
     {
         $this->httpTester()
@@ -79,9 +78,7 @@ class UsersControllerTest extends TestCase
             ->path('tags')->assertSame([]);
     }
 
-    /**
-     * @depends testUsersCreateAction
-     */
+    #[Depends('testUsersCreateAction')]
     public function testSetTagsAction(object $user): void
     {
         $this->httpTester()
@@ -98,9 +95,7 @@ class UsersControllerTest extends TestCase
             ->assertSame(1);
     }
 
-    /**
-     * @depends testUsersCreateAction
-     */
+    #[Depends('testUsersCreateAction')]
     public function testSendResetPasswordEmail(object $user): void
     {
         $this->httpTester()
@@ -125,9 +120,7 @@ class UsersControllerTest extends TestCase
         );
     }
 
-    /**
-     * @depends testUsersCreateAction
-     */
+    #[Depends('testUsersCreateAction')]
     public function testUsersDeleteAction(object $user): void
     {
         $this->httpTester()

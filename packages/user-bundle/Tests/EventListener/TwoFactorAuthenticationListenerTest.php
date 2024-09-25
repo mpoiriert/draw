@@ -11,6 +11,7 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOne
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ConfigurationTrait;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 use Draw\Component\Security\Core\Security;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -253,9 +254,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestCheckNeedToEnableTwoFactorAuthentication
-     */
+    #[DataProvider('provideTestCheckNeedToEnableTwoFactorAuthentication')]
     public function testCheckNeedToEnableTwoFactorAuthentication(
         UserRequestInterceptionEvent $event,
         bool $allowHandingRequest,

@@ -4,6 +4,7 @@ namespace Draw\Component\Tester\Tests\Http;
 
 use Draw\Component\Tester\Http\RequestFactory;
 use Draw\Component\Tester\Http\RequestFactoryInterface;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 
@@ -17,9 +18,7 @@ class RequestFactoryTest extends TestCase
         return $requestFactory;
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testCreateRequest(RequestFactory $requestFactory): void
     {
         $request = $requestFactory->createRequest(

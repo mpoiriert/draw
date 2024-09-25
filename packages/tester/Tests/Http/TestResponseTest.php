@@ -6,6 +6,7 @@ use Draw\Component\Tester\DataTester;
 use Draw\Component\Tester\Http\TestResponse;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -69,9 +70,7 @@ class TestResponseTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertSuccessful
-     */
+    #[DataProvider('provideAssertSuccessful')]
     public function testAssertSuccessful(int $statusCode, bool $expectSuccess): void
     {
         $testResponse = $this->createTestResponse(new Response($statusCode));
@@ -159,9 +158,7 @@ class TestResponseTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideAssertRedirectStatusCode
-     */
+    #[DataProvider('provideAssertRedirectStatusCode')]
     public function testAssertRedirectStatusCode(int $statusCode, bool $expectSuccess): void
     {
         $testResponse = $this->createTestResponse(new Response($statusCode));
@@ -216,10 +213,9 @@ class TestResponseTest extends TestCase
     }
 
     /**
-     * @dataProvider provideAssertHeader
-     *
      * @phpstan-param array<string, mixed> $headers
      */
+    #[DataProvider('provideAssertHeader')]
     public function testAssertHeader(string $headerName, mixed $value, array $headers, bool $expectedPass): void
     {
         $testResponse = $this->createTestResponse(new Response(200, $headers));

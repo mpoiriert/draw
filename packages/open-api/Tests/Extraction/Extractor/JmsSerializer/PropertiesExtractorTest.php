@@ -9,6 +9,7 @@ use Draw\Component\OpenApi\Extraction\Extractor\JmsSerializer\PropertiesExtracto
 use Draw\Component\OpenApi\Extraction\Extractor\TypeSchemaExtractor;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Schema;
+use Draw\Component\Tester\MockTrait;
 use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Naming\CamelCaseNamingStrategy;
 use JMS\Serializer\Naming\SerializedNameAnnotationStrategy;
@@ -22,6 +23,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 #[CoversClass(PropertiesExtractor::class)]
 class PropertiesExtractorTest extends TestCase
 {
+    use MockTrait;
+
     private PropertiesExtractor $jmsExtractor;
 
     public static function provideTestCanExtract(): iterable
@@ -54,10 +57,14 @@ class PropertiesExtractorTest extends TestCase
             $source = new \ReflectionClass($source);
         }
 
-        /** @var ExtractionContextInterface $context */
-        $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
-
-        static::assertSame($canBeExtract, $this->jmsExtractor->canExtract($source, $type, $context));
+        static::assertSame(
+            $canBeExtract,
+            $this->jmsExtractor->canExtract(
+                $source,
+                $type,
+                $context = $this->createMock(ExtractionContextInterface::class)
+            )
+        );
 
         if (!$canBeExtract) {
             try {

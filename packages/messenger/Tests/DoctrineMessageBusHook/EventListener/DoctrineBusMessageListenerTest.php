@@ -12,6 +12,7 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\EnvelopeFact
 use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMessageListener;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
+use Draw\Component\Messenger\Tests\Mock\MockablePreSendAwareMessageInterface;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -221,8 +222,8 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->willReturn(
                 $messages = [
                     $message1 = $this->createMock(LifeCycleAwareMessageInterface::class),
-                    // Arbitrary interface just to add preSen method without implementing LifeCycleAwareMessageInterface
-                    $message2 = $this->createMockWithExtraMethods(MessageHolderInterface::class, ['preSend']),
+                    // Arbitrary interface just to add preSend method without implementing LifeCycleAwareMessageInterface
+                    $message2 = $this->createMock(MockablePreSendAwareMessageInterface::class),
                 ]
             );
 

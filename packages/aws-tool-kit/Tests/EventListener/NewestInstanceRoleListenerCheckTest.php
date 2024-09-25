@@ -3,8 +3,10 @@
 namespace Draw\Component\AwsToolKit\Tests\EventListener;
 
 use Aws\Ec2\Ec2Client;
+use Aws\Result;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
+use Draw\Component\AwsToolKit\Tests\Mock\MockableEc2Client;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -245,9 +247,9 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         array $instances,
         ?\Exception $error = null
     ): void {
-        $ec2Client = $this->getMockBuilder(Ec2Client::class)
+        $ec2Client = $this->getMockBuilder(MockableEc2Client::class)
             ->disableOriginalConstructor()
-            ->addMethods(['describeInstances'])
+            ->onlyMethods(['describeInstances'])
             ->getMock();
 
         ReflectionAccessor::setPropertyValue(
@@ -279,13 +281,17 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             $invocationMocker->willThrowException($error);
         } else {
             $invocationMocker
-                ->willReturn([
-                    'Reservations' => [
+                ->willReturn(
+                    new Result(
                         [
-                            'Instances' => $instances,
-                        ],
-                    ],
-                ]);
+                            'Reservations' => [
+                                [
+                                    'Instances' => $instances,
+                                ],
+                            ],
+                        ]
+                    )
+                );
         }
     }
 

@@ -6,11 +6,15 @@ use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\Extraction\Extractor\OpenApi\JsonRootSchemaExtractor;
 use Draw\Component\OpenApi\Schema\Root;
+use Draw\Component\Tester\MockTrait;
 use JMS\Serializer\SerializerBuilder;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class RootSchemaExtractorTest extends TestCase
 {
+    use MockTrait;
+
     public static function provideTestCanExtract(): array
     {
         return [
@@ -23,17 +27,19 @@ class RootSchemaExtractorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestCanExtract
-     */
+    #[DataProvider('provideTestCanExtract')]
     public function testCanExtract(mixed $source, mixed $type, bool $expected): void
     {
         $extractor = new JsonRootSchemaExtractor(SerializerBuilder::create()->build());
 
-        /** @var ExtractionContextInterface $context */
-        $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
-
-        static::assertSame($expected, $extractor->canExtract($source, $type, $context));
+        static::assertSame(
+            $expected,
+            $extractor->canExtract(
+                $source,
+                $type,
+                $context = $this->createMock(ExtractionContextInterface::class)
+            )
+        );
 
         if ($expected) {
             $extractor->extract($source, $type, $context);

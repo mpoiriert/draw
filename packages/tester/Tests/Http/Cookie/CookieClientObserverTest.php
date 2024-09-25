@@ -6,6 +6,7 @@ use Draw\Component\Tester\Http\ClientObserver;
 use Draw\Component\Tester\Http\Cookie\CookieClientObserver;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -21,9 +22,7 @@ class CookieClientObserverTest extends TestCase
         return $cookieClientObserver;
     }
 
-    /**
-     * @depends testConstruct
-     */
+    #[Depends('testConstruct')]
     public function testRequestNoCookie(CookieClientObserver $clientObserver): CookieClientObserver
     {
         $request = $clientObserver->preSendRequest(new Request('GET', 'http://locahhost/test'));
@@ -35,9 +34,7 @@ class CookieClientObserverTest extends TestCase
         return $clientObserver;
     }
 
-    /**
-     * @depends testRequestNoCookie
-     */
+    #[Depends('testRequestNoCookie')]
     public function testResponseWithCookie(CookieClientObserver $clientObserver): CookieClientObserver
     {
         $response = $clientObserver->postSendRequest(
@@ -50,9 +47,7 @@ class CookieClientObserverTest extends TestCase
         return $clientObserver;
     }
 
-    /**
-     * @depends testResponseWithCookie
-     */
+    #[Depends('testResponseWithCookie')]
     public function testRequestWithCookie(CookieClientObserver $clientObserver): CookieClientObserver
     {
         $request = $clientObserver->preSendRequest(new Request('GET', 'http://locahhost/test'));
@@ -65,9 +60,7 @@ class CookieClientObserverTest extends TestCase
         return $clientObserver;
     }
 
-    /**
-     * @depends testRequestWithCookie
-     */
+    #[Depends('testRequestWithCookie')]
     public function testRemoveCookie(CookieClientObserver $clientObserver): CookieClientObserver
     {
         $response = $clientObserver->postSendRequest(
@@ -80,9 +73,7 @@ class CookieClientObserverTest extends TestCase
         return $clientObserver;
     }
 
-    /**
-     * @depends testRemoveCookie
-     */
+    #[Depends('testRemoveCookie')]
     public function testRequestCookieRemoved(CookieClientObserver $clientObserver): CookieClientObserver
     {
         return $this->testRequestNoCookie($clientObserver);

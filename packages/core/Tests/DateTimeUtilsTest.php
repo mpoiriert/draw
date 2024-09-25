@@ -3,6 +3,7 @@
 namespace Draw\Component\Core\Tests;
 
 use Draw\Component\Core\DateTimeUtils;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class DateTimeUtilsTest extends TestCase
@@ -48,9 +49,7 @@ class DateTimeUtilsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestIsSameTimestamp
-     */
+    #[DataProvider('provideTestIsSameTimestamp')]
     public function testIsSameTimestamp(
         ?\DateTimeInterface $dateTime1,
         ?\DateTimeInterface $dateTime2,
@@ -71,9 +70,7 @@ class DateTimeUtilsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestToDateTimeX
-     */
+    #[DataProvider('provideTestToDateTimeX')]
     public function testToDateTimeImmutable(?\DateTimeInterface $dateTimeInterface): void
     {
         $dateTimeImmutable = DateTimeUtils::toDateTimeImmutable($dateTimeInterface);
@@ -88,9 +85,7 @@ class DateTimeUtilsTest extends TestCase
         static::assertNotSame($dateTimeInterface, $dateTimeImmutable);
     }
 
-    /**
-     * @dataProvider provideTestToDateTimeX
-     */
+    #[DataProvider('provideTestToDateTimeX')]
     public function testToDateTime(?\DateTimeInterface $dateTimeInterface): void
     {
         $dateTime = DateTimeUtils::toDateTime($dateTimeInterface);
@@ -115,9 +110,7 @@ class DateTimeUtilsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestMillisecondDiff
-     */
+    #[DataProvider('provideTestMillisecondDiff')]
     public function testMillisecondDiff(string $delay, ?string $compareToDelay, int $expected): void
     {
         static::assertSame(

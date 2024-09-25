@@ -6,6 +6,7 @@ use Draw\Component\Tester\Http\Client;
 use Draw\Component\Tester\Http\ClientInterface;
 use Draw\Component\Tester\Http\CurlRequestExecutioner;
 use Draw\Component\Tester\HttpTesterTrait;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 class HttpTesterTraitTest extends TestCase
@@ -31,9 +32,7 @@ class HttpTesterTraitTest extends TestCase
         static::assertSame($client, $this->httpTester());
     }
 
-    /**
-     * @depends testHttpTester
-     */
+    #[Depends('testHttpTester')]
     public function testClearHttpTesterClient(): void
     {
         $this->clearHttpTesterClient();

@@ -10,6 +10,7 @@ use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Exception\InvalidOptionException;
@@ -218,9 +219,7 @@ class StartMessengerBrokerCommandTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideDataForTestExecuteWithAutoConcurrent
-     */
+    #[DataProvider('provideDataForTestExecuteWithAutoConcurrent')]
     public function testExecuteWithAutoConcurrent(
         int $numCpus,
         float $processesPerCore,

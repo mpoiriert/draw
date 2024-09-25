@@ -6,6 +6,7 @@ use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\Extraction\ExtractionContext;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 abstract class BaseCleanerTestCase extends TestCase
@@ -21,9 +22,7 @@ abstract class BaseCleanerTestCase extends TestCase
         }
     }
 
-    /**
-     * @dataProvider provideTestClean
-     */
+    #[DataProvider('provideTestClean')]
     public function testClean(string $dirty, string $clean): void
     {
         $openApi = new OpenApi();

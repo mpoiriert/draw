@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Tests\Searchable;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
+use Draw\Component\Messenger\Tests\Mock\MockableFindAwareTransportInterface;
 use Draw\Component\Tester\MockTrait;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -12,7 +13,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 
 #[CoversClass(EnvelopeFinder::class)]
 class EnvelopeFinderTest extends TestCase
@@ -60,7 +60,7 @@ class EnvelopeFinderTest extends TestCase
             ->method('findAll')
             ->willReturn(
                 [
-                    $transport = $this->createMockWithExtraMethods(TransportInterface::class, ['find']),
+                    $transport = $this->createMock(MockableFindAwareTransportInterface::class),
                     $transport,
                 ]
             );

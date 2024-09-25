@@ -4,6 +4,7 @@ namespace Draw\Component\DependencyInjection\Integration\Test;
 
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -64,9 +65,7 @@ abstract class IntegrationTestCase extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideTestLoad
-     */
+    #[DataProvider('provideTestLoad')]
     public function testLoad(
         array $configuration = [],
         array $services = [],

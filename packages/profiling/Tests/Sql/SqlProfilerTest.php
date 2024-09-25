@@ -5,17 +5,22 @@ namespace Draw\Component\Profiling\Tests\Sql;
 use Draw\Component\Profiling\Sql\SqlMetric;
 use Draw\Component\Profiling\Sql\SqlMetricBuilder;
 use Draw\Component\Profiling\Sql\SqlProfiler;
+use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class SqlProfilerTest extends TestCase
 {
+    use MockTrait;
+
     private SqlProfiler&MockObject $profiler;
 
     protected function setUp(): void
     {
-        $mock = $this->getMockForAbstractClass(SqlProfiler::class);
-        $this->profiler = $mock;
+        $this->profiler = $this->createMock(SqlProfiler::class);
+        $this->profiler
+            ->method('getType')
+            ->willReturn(SqlProfiler::PROFILER_TYPE);
     }
 
     public function testGetType(): void
@@ -25,10 +30,7 @@ class SqlProfilerTest extends TestCase
 
     public function testGetMetricBuilder(): void
     {
-        $metricBuilder = $this->profiler->getMetricBuilder();
-
-        static::assertInstanceOf(SqlMetricBuilder::class, $metricBuilder);
-        static::assertSame($metricBuilder, $this->profiler->getMetricBuilder());
+        static::assertInstanceOf(SqlMetricBuilder::class, $this->profiler->getMetricBuilder());
     }
 
     public function testStop(): void

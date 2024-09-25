@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\WebTestCase;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,9 +36,7 @@ class PingActionTest extends WebTestCase implements AutowiredInterface
         yield 'unknown' => ['unknown', Response::HTTP_MULTI_STATUS];
     }
 
-    /**
-     * @dataProvider provideTestPingWithContext
-     */
+    #[DataProvider('provideTestPingWithContext')]
     public function testPingWithContext(string $context, int $statusCode): void
     {
         $this->client->request('GET', '/ping/'.$context);

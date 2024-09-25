@@ -359,9 +359,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestOnKernelResponseAddDialogNoInjection
-     */
+    #[DataProvider('provideTestOnKernelResponseAddDialogNoInjection')]
     public function testOnKernelResponseAddDialogNoInjection(
         Response $response,
         ?UserInterface $user = null,

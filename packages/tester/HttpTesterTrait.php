@@ -3,6 +3,7 @@
 namespace Draw\Component\Tester;
 
 use Draw\Component\Tester\Http\ClientInterface;
+use PHPUnit\Framework\Attributes\BeforeClass;
 
 trait HttpTesterTrait
 {
@@ -17,9 +18,7 @@ trait HttpTesterTrait
         return static::$httpTesterClient;
     }
 
-    /**
-     * @beforeClass
-     */
+    #[BeforeClass]
     public static function clearHttpTesterClient(): void
     {
         static::$httpTesterClient = null;

@@ -11,10 +11,14 @@ use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\QueryParameter;
+use Draw\Component\Tester\MockTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class OperationExtractorTest extends TestCase
 {
+    use MockTrait;
+
     private OperationExtractor $phpDocOperationExtractor;
 
     protected function setUp(): void
@@ -34,15 +38,17 @@ class OperationExtractorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideTestCanExtract
-     */
+    #[DataProvider('provideTestCanExtract')]
     public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
-        /** @var ExtractionContextInterface $context */
-        $context = $this->getMockForAbstractClass(ExtractionContextInterface::class);
-
-        static::assertSame($canBeExtract, $this->phpDocOperationExtractor->canExtract($source, $type, $context));
+        static::assertSame(
+            $canBeExtract,
+            $this->phpDocOperationExtractor->canExtract(
+                $source,
+                $type,
+                $context = $this->createMock(ExtractionContextInterface::class)
+            )
+        );
 
         if ($canBeExtract) {
             return;

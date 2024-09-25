@@ -2,8 +2,9 @@
 
 namespace Draw\Component\AwsToolKit\Tests\Command;
 
-use Aws\CloudWatchLogs\CloudWatchLogsClient;
+use Aws\Result;
 use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
+use Draw\Component\AwsToolKit\Tests\Mock\MockableCloudWatchLogsClient;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
@@ -20,17 +21,15 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
     use CommandTestTrait;
     use MockTrait;
 
-    private CloudWatchLogsClient&MockObject $cloudWatchLogsClient;
+    private MockableCloudWatchLogsClient&MockObject $cloudWatchLogsClient;
 
     protected function setUp(): void
     {
         $this->cloudWatchLogsClient = $this
-            ->getMockBuilder(CloudWatchLogsClient::class)
+            ->getMockBuilder(MockableCloudWatchLogsClient::class)
             ->disableOriginalConstructor()
             ->disableOriginalClone()
-            ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
-            ->addMethods(['getLogEvents'])
+            ->onlyMethods(['getLogEvents'])
             ->getMock();
 
         $this->command = new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
@@ -106,18 +105,22 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
                 )
             )
             ->willReturnOnConsecutiveCalls(
-                [
-                    'events' => [
-                        ['message' => 'Line 1'],
-                    ],
-                    'nextForwardToken' => 'next-token',
-                ],
-                [
-                    'events' => [
-                        ['message' => 'Line 2'],
-                    ],
-                    'nextForwardToken' => 'next-token',
-                ]
+                new Result(
+                    [
+                        'events' => [
+                            ['message' => 'Line 1'],
+                        ],
+                        'nextForwardToken' => 'next-token',
+                    ]
+                ),
+                new Result(
+                    [
+                        'events' => [
+                            ['message' => 'Line 2'],
+                        ],
+                        'nextForwardToken' => 'next-token',
+                    ]
+                )
             );
 
         $this->execute(
@@ -158,12 +161,14 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
                 ]
             )
             ->willReturn(
-                [
-                    'events' => [
-                        ['message' => 'Line 1'],
-                    ],
-                    'nextForwardToken' => null,
-                ]
+                new Result(
+                    [
+                        'events' => [
+                            ['message' => 'Line 1'],
+                        ],
+                        'nextForwardToken' => null,
+                    ]
+                )
             );
 
         $this->execute(
