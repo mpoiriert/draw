@@ -68,7 +68,7 @@ jobs:
       - name: 'Composer Setup'
         run: |
           composer install --no-progress
-          vendor-bin/monorepo/vendor/bin/monorepo-builder localize-composer-paths composer.json
+          vendor-bin/monorepo/vendor/bin/monorepo-builder localize-composer-paths packages/${{ matrix.package_name }}/composer.json
           cd packages/${{ matrix.package_name }}
           composer update --no-progress
 
