@@ -108,11 +108,13 @@ namespace App\Tests;
 use App\AServiceInterface;
 use App\MyService;
 use Draw\Bundle\TesterBundle\Messenger\TransportTester;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireLoggerTester;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireParameter;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMock;
+use Monolog\Handler\TestHandler;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -137,6 +139,10 @@ class MyTest extends KernelTestCase implements AutowiredInterface
    // Will hook the transport tester from the container.
    #[AutowireTransportTester('async')]
    private TransportTester $transportTester;
+   
+   // Rely on the 'monolog.handler.testing' service to be available in the container.
+   #[AutowireLoggerTester]
+   private TestHandler $loggerTester;
 }
 ```
 
