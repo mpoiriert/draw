@@ -106,8 +106,10 @@ Here is an example of attribute you can use in your test case:
 namespace App\Tests;
 
 use App\AServiceInterface;
+use App\Entity\User;
 use App\MyService;
 use Draw\Bundle\TesterBundle\Messenger\TransportTester;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireEntity;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireLoggerTester;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireParameter;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
@@ -143,6 +145,9 @@ class MyTest extends KernelTestCase implements AutowiredInterface
    // Rely on the 'monolog.handler.testing' service to be available in the container.
    #[AutowireLoggerTester]
    private TestHandler $loggerTester;
+   
+   #[AutowireEntity(['email' => 'test@example.com'])]
+   private User $user;
 }
 ```
 
