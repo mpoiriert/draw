@@ -2,11 +2,18 @@
 
 namespace App\Tests\Controller\Api;
 
-use App\Tests\TestCase;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
+use Draw\Bundle\TesterBundle\WebTestCase;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Firebase\JWT\JWT;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\Response;
 
-class ConnectionTokensControllerTest extends TestCase
+class ConnectionTokensControllerTest extends WebTestCase implements AutowiredInterface
 {
+    #[AutowireClient]
+    private KernelBrowser $client;
+
     public function testRefresh(): void
     {
         $token = JWT::encode(
@@ -18,12 +25,14 @@ class ConnectionTokensControllerTest extends TestCase
             'HS256'
         );
 
-        $this->httpTester()
-            ->post(
+        $this->client
+            ->jsonRequest(
+                'POST',
                 '/api/connection-tokens/refresh',
-                '',
+                [],
                 ['Authorization' => 'Bearer '.$token]
-            )
-            ->assertStatus(403);
+            );
+
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 }

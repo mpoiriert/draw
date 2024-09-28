@@ -6,8 +6,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\Core\Reflection\ReflectionExtractor;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Exclude]
 class AutowireEntity implements AutowireInterface
 {
     use KernelTestCaseAutowireDependentTrait;

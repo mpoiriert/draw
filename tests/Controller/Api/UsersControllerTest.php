@@ -3,17 +3,35 @@
 namespace App\Tests\Controller\Api;
 
 use App\Entity\User;
-use App\Tests\TestCase;
+use App\Test\PHPUnit\Extension\SetUpAutowire\AutowireAdminUser;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\TesterBundle\Mailer\TemplatedMailerAssertionsTrait;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireLoggerTester;
+use Draw\Bundle\TesterBundle\WebTestCase;
 use Draw\Bundle\UserBundle\Email\ForgotPasswordEmail;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\Depends;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
-class UsersControllerTest extends TestCase
+class UsersControllerTest extends WebTestCase implements AutowiredInterface
 {
+    use TemplatedMailerAssertionsTrait;
+
+    #[AutowireClient]
+    private KernelBrowser $client;
+
+    #[AutowireLoggerTester]
+    private TestHandler $loggerTester;
+
+    #[AutowireAdminUser]
+    private User $user;
+
     #[
         BeforeClass,
         AfterClass,
@@ -32,65 +50,76 @@ class UsersControllerTest extends TestCase
 
     public function testUsersAction(): void
     {
-        $this->httpTester()
-            ->get('/api/users')
-            ->assertStatus(200);
+        $this->client
+            ->request('GET', '/api/users');
+
+        static::assertResponseIsSuccessful();
     }
 
     public function testUsersCreateAction(): object
     {
-        $data = $this->connect($this->httpTester())
-            ->post(
+        $this->client->loginUser($this->user);
+
+        $this->client
+            ->jsonRequest(
+                'POST',
                 '/api/users',
-                json_encode([
+                [
                     'email' => 'test@example.com',
                     'plainPassword' => 'test',
                     'tags' => [
                         ['id' => 1],
                     ],
-                ])
-            )
-            ->assertStatus(200)
-            ->toJsonDataTester()
-            ->getData();
+                ]
+            );
 
-        $handler = static::getContainer()->get('monolog.handler.testing');
+        static::assertResponseIsSuccessful();
 
         static::assertTrue(
-            $handler->hasRecord('[UsersController] Create new user', Level::Info)
+            $this->loggerTester->hasRecord('[UsersController] Create new user', Level::Info)
         );
 
-        return $data;
+        return static::getJsonResponseDataTester()->getData();
     }
 
     #[Depends('testUsersCreateAction')]
     public function testUsersEditAction(object $user): void
     {
-        $this->httpTester()
-            ->put(
+        $this->client->loginUser($this->user);
+
+        $this->client
+            ->jsonRequest(
+                'PUT',
                 '/api/users/'.$user->id,
-                json_encode([
+                [
                     'tags' => [],
-                ])
-            )
-            ->assertStatus(200)
-            ->toJsonDataTester()
-            ->path('tags')->assertSame([]);
+                ]
+            );
+
+        static::assertResponseIsSuccessful();
+
+        static::getJsonResponseDataTester()
+            ->path('tags')
+            ->assertSame([]);
     }
 
     #[Depends('testUsersCreateAction')]
     public function testSetTagsAction(object $user): void
     {
-        $this->httpTester()
-            ->put(
+        $this->client->loginUser($this->user);
+
+        $this->client
+            ->jsonRequest(
+                'PUT',
                 '/api/users/'.$user->id.'/tags',
-                json_encode([
+                [
                     ['id' => 1],
-                ])
-            )
-            ->assertStatus(200)
-            ->toJsonDataTester()
-            ->assertCount(1)
+                ]
+            );
+
+        static::assertResponseIsSuccessful();
+
+        static::getJsonResponseDataTester()
             ->path('[0].id')
             ->assertSame(1);
     }
@@ -98,12 +127,14 @@ class UsersControllerTest extends TestCase
     #[Depends('testUsersCreateAction')]
     public function testSendResetPasswordEmail(object $user): void
     {
-        $this->httpTester()
-            ->post(
+        $this->client
+            ->loginUser($this->user)
+            ->jsonRequest(
+                'POST',
                 '/api/users/'.$user->id.'/reset-password-email',
-                ''
-            )
-            ->assertSuccessful();
+            );
+
+        static::assertResponseIsSuccessful();
 
         static::assertEmailCount(1);
 
@@ -123,19 +154,26 @@ class UsersControllerTest extends TestCase
     #[Depends('testUsersCreateAction')]
     public function testUsersDeleteAction(object $user): void
     {
-        $this->httpTester()
-            ->delete('/api/users/'.$user->id)
-            ->assertStatus(204);
+        $this->client->loginUser($this->user);
+
+        $this->client
+            ->jsonRequest('DELETE', '/api/users/'.$user->id);
+
+        static::assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
     }
 
     public function testCreateUnsupportedContentType(): void
     {
-        $this->httpTester()
-            ->post(
+        $this->client->loginUser($this->user);
+
+        $this->client
+            ->request(
+                'POST',
                 '/api/users',
-                '<test />',
-                ['Content-Type' => 'application/xml']
-            )
-            ->assertStatus(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
+                server: ['CONTENT_TYPE' => 'application/xml'],
+                content: '<test />'
+            );
+
+        static::assertResponseStatusCodeSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
     }
 }
