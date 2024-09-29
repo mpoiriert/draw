@@ -40,7 +40,7 @@ class ConnectionTokensController extends AbstractController
         Credential $credential,
         UserProviderInterface $userProvider,
         JwtAuthenticator $authenticator,
-        UserPasswordHasherInterface $passwordEncoder
+        UserPasswordHasherInterface $passwordEncoder,
     ): ConnectionToken {
         try {
             $user = $userProvider->loadUserByIdentifier($credential->getUsername());

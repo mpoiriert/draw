@@ -192,7 +192,7 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
     protected function createConsoleCommandEvent(array $input = []): ConsoleCommandEvent
     {
         return new ConsoleCommandEvent(
-            new class() extends Command {},
+            new class extends Command {},
             new ArrayInput($input),
             new NullOutput()
         );

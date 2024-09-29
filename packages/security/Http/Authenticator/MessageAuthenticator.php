@@ -24,7 +24,7 @@ class MessageAuthenticator extends AbstractAuthenticator
         private EnvelopeFinder $envelopeFinder,
         private UserProviderInterface $userProvider,
         private Security $security,
-        private string $requestParameterKey = 'dMUuid'
+        private string $requestParameterKey = 'dMUuid',
     ) {
     }
 

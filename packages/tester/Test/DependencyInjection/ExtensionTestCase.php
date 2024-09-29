@@ -72,7 +72,7 @@ abstract class ExtensionTestCase extends TestCase
 
         static::assertTrue(
             self::$containerBuilder->{$aliasOf ? 'hasAlias' : 'hasDefinition'}($id),
-            sprintf(
+            \sprintf(
                 'Service id [%s] is not found',
                 $id
             )

@@ -27,7 +27,7 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
 
     public function __construct(
         private ?ManagerRegistry $ormManagerRegistry,
-        private ?ManagerRegistry $odmManagerRegistry
+        private ?ManagerRegistry $odmManagerRegistry,
     ) {
     }
 
@@ -105,7 +105,7 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
             ?? $this->odmManagerRegistry?->getManagerForClass($class);
 
         if (!$objectManager) {
-            throw new \RuntimeException(sprintf('No manager found for class "%s"', $class));
+            throw new \RuntimeException(\sprintf('No manager found for class "%s"', $class));
         }
 
         return $objectManager;

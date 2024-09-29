@@ -17,7 +17,7 @@ class OpenApiController
         private OpenApi $openApi,
         private SchemaBuilderInterface $schemaBuilder,
         private UrlGeneratorInterface $urlGenerator,
-        private string $sandboxUrl
+        private string $sandboxUrl,
     ) {
     }
 

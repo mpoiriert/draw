@@ -36,7 +36,7 @@ class TemporaryUnlockedMessage implements LifeCycleAwareMessageInterface
     public function preSend(MessageHolderInterface $messageHolder): void
     {
         if (!$messageHolder instanceof LockableUserInterface) {
-            throw new \LogicException(sprintf('The parameter [%s] must implement interfaced [%s]', '$messageHolder', LockableUserInterface::class));
+            throw new \LogicException(\sprintf('The parameter [%s] must implement interfaced [%s]', '$messageHolder', LockableUserInterface::class));
         }
 
         $this->userIdentifier = $messageHolder->getUserIdentifier();

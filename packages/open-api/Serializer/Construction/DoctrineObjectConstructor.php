@@ -23,7 +23,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
     public function __construct(
         private ManagerRegistry $managerRegistry,
         private ObjectConstructorInterface $fallbackConstructor,
-        private MetadataFactoryInterface $metadataFactory
+        private MetadataFactoryInterface $metadataFactory,
     ) {
     }
 
@@ -32,7 +32,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
         ClassMetadata $metadata,
         $data,
         array $type,
-        DeserializationContext $context
+        DeserializationContext $context,
     ): ?object {
         // Locate possible ObjectManager
         $objectManager = $this->managerRegistry->getManagerForClass($metadata->name);
@@ -52,7 +52,7 @@ class DoctrineObjectConstructor implements ObjectConstructorInterface
                 case self::ON_MISSING_NULL:
                     return null;
                 case self::ON_MISSING_EXCEPTION:
-                    throw new ObjectConstructionException(sprintf('Entity %s can not be found', $metadata->name));
+                    throw new ObjectConstructionException(\sprintf('Entity %s can not be found', $metadata->name));
                 case self::ON_MISSING_FALLBACK:
                 case null:
                     return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);

@@ -38,7 +38,7 @@ class ObjectActionExecutioner
         private string $action,
         private object $target,
         private EventDispatcherInterface $eventDispatcher,
-        private ?LoggerInterface $logger
+        private ?LoggerInterface $logger,
     ) {
         $this->totalCount = !($this->target instanceof ProxyQuery) ? 1 : null;
     }
@@ -132,7 +132,7 @@ class ObjectActionExecutioner
      * } $executions
      */
     public function execute(
-        array|callable $executions
+        array|callable $executions,
     ): ?Response {
         if (\is_callable($executions)) {
             $executions = ['execution' => $executions];

@@ -62,6 +62,6 @@ class UserTag
 
     public function __toString(): string
     {
-        return sprintf('%s: %s', $this->getUser(), $this->getTag());
+        return \sprintf('%s: %s', $this->getUser(), $this->getTag());
     }
 }

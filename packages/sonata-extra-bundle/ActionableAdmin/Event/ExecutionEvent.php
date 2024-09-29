@@ -11,7 +11,7 @@ class ExecutionEvent extends Event
     public function __construct(
         private object $object,
         private ObjectActionExecutioner $objectActionExecutioner,
-        private ?Response $response = null
+        private ?Response $response = null,
     ) {
     }
 

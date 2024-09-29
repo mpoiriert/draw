@@ -180,7 +180,7 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
 
         $crawler = $this->client->request(
             'GET',
-            sprintf(self::ADMIN_URL.'/app/user/%s/disable-2fa', self::$user->getId())
+            \sprintf(self::ADMIN_URL.'/app/user/%s/disable-2fa', self::$user->getId())
         );
 
         static::assertStringContainsString('/edit', $crawler->getUri());

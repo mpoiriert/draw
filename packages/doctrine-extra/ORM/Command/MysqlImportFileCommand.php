@@ -33,7 +33,7 @@ class MysqlImportFileCommand extends Command
 
         foreach ($input->getArgument('files') as $file) {
             Process::fromShellCommandline(
-                sprintf(
+                \sprintf(
                     'mysql -h %s -P %s -u %s %s %s < %s',
                     $connectionParameter['host'],
                     $connectionParameter['port'],

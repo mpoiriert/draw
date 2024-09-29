@@ -26,7 +26,7 @@ class OpenApiControllerTest extends WebTestCase implements AutowiredInterface
 
     public function assertApiDocIsTheSame(string $scope): void
     {
-        $file = __DIR__.sprintf('/fixtures/api-doc-scope-%s.json', $scope);
+        $file = __DIR__.\sprintf('/fixtures/api-doc-scope-%s.json', $scope);
 
         $this->client->request('get', '/api-doc.json?scope='.$scope);
 

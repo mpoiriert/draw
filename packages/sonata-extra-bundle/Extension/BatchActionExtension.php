@@ -28,7 +28,7 @@ class BatchActionExtension extends AbstractAdminExtension
                 continue;
             }
 
-            $actions[$name]['controller'] = sprintf(
+            $actions[$name]['controller'] = \sprintf(
                 '%s::batchAction%s',
                 $admin->getBaseControllerName(),
                 InflectorFactory::create()->build()->classify($name)

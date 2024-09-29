@@ -41,7 +41,7 @@ class PropertiesExtractor implements ExtractorInterface
         private MetadataFactoryInterface $factory,
         private PropertyNamingStrategyInterface $namingStrategy,
         private EventDispatcherInterface $eventDispatcher,
-        ?iterable $typeToSchemaHandlers = null
+        ?iterable $typeToSchemaHandlers = null,
     ) {
         $this->typeToSchemaHandlers = $typeToSchemaHandlers ?: $this::getDefaultHandlers();
     }
@@ -127,7 +127,7 @@ class PropertiesExtractor implements ExtractorInterface
 
             if (!$propertySchema) {
                 if (!isset($propertyMetadata->type['name'])) {
-                    throw new \RuntimeException(sprintf('Type of property [%s::%s] is not set', $propertyMetadata->class, $propertyMetadata->name));
+                    throw new \RuntimeException(\sprintf('Type of property [%s::%s] is not set', $propertyMetadata->class, $propertyMetadata->name));
                 }
                 $propertySchema = static::extractTypeSchema(
                     $propertyMetadata->type['name'],
@@ -151,7 +151,7 @@ class PropertiesExtractor implements ExtractorInterface
     public static function extractTypeSchema(
         string $type,
         ExtractionContextInterface $extractionContext,
-        PropertyMetadata $propertyMetadata
+        PropertyMetadata $propertyMetadata,
     ): Schema {
         $extractionContext = $extractionContext->createSubContext();
         $path = $extractionContext->getParameter('jms-path', []);
@@ -190,7 +190,7 @@ class PropertiesExtractor implements ExtractorInterface
     private function shouldSkipProperty(
         array $exclusionStrategies,
         PropertyMetadata $item,
-        ExtractionContextInterface $extractionContext
+        ExtractionContextInterface $extractionContext,
     ): bool {
         $serializationContext = SerializationContext::create();
 

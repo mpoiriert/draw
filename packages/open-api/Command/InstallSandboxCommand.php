@@ -59,7 +59,7 @@ class InstallSandboxCommand extends Command
 
         $zip = new \ZipArchive();
         if (true !== $error = $zip->open($zipPath)) {
-            throw new \RuntimeException(sprintf('Cannot open zip file [%s]. Error code [%s].', $zipPath, $error));
+            throw new \RuntimeException(\sprintf('Cannot open zip file [%s]. Error code [%s].', $zipPath, $error));
         }
 
         $this->filesystem->remove($outputPath);
@@ -67,7 +67,7 @@ class InstallSandboxCommand extends Command
 
         for ($i = 0; $i < $zip->numFiles; ++$i) {
             $filename = $zip->getNameIndex($i);
-            $zipFile = sprintf('zip://%s#%s', $zipPath, $filename);
+            $zipFile = \sprintf('zip://%s#%s', $zipPath, $filename);
             // Remove the first directory (eg. "wysiwyg-editor-master") from the file path
             $explodedPath = explode('/', $filename, 2);
             $realFilePath = $explodedPath[1];

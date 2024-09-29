@@ -39,7 +39,7 @@ class DrawTransportFactoryTest extends TestCase
     {
         $dsn = 'draw://invalid';
         $this->expectException(TransportException::class);
-        $this->expectExceptionMessage(sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn));
+        $this->expectExceptionMessage(\sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn));
 
         $this->service->createTransport(
             $dsn,
@@ -52,7 +52,7 @@ class DrawTransportFactoryTest extends TestCase
     {
         $dsn = '&:/@&#test';
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('The given Draw Messenger DSN "%s" is invalid.', $dsn));
+        $this->expectExceptionMessage(\sprintf('The given Draw Messenger DSN "%s" is invalid.', $dsn));
 
         $this->service::buildConfiguration($dsn, []);
     }
@@ -62,7 +62,7 @@ class DrawTransportFactoryTest extends TestCase
         $options = [$key = uniqid('key-') => uniqid()];
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf(
+            \sprintf(
                 'Unknown option found : [%s]. Allowed options are [table_name, tag_table_name, queue_name, redeliver_timeout, auto_setup]',
                 $key
             )
@@ -76,7 +76,7 @@ class DrawTransportFactoryTest extends TestCase
         $dsn = 'draw://default?'.($key = uniqid('key-')).'='.uniqid();
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf(
+            \sprintf(
                 'Unknown option found in DSN: [%s]. Allowed options are [table_name, tag_table_name, queue_name, redeliver_timeout, auto_setup]',
                 $key
             )

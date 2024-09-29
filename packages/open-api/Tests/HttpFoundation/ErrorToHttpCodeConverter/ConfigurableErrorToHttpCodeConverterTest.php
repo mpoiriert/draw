@@ -70,7 +70,7 @@ class ConfigurableErrorToHttpCodeConverterTest extends TestCase
             400,
         ];
 
-        $exception = new class() extends \Exception implements \JsonSerializable {
+        $exception = new class extends \Exception implements \JsonSerializable {
             public function jsonSerialize(): void
             {
             }

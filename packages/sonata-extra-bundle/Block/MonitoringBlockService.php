@@ -18,7 +18,7 @@ class MonitoringBlockService implements BlockServiceInterface
     public function __construct(
         private Environment $twig,
         private ExpressionLanguage $expressionLanguage,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

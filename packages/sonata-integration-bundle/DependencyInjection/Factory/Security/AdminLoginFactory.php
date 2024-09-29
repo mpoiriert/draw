@@ -25,7 +25,7 @@ class AdminLoginFactory extends FormLoginFactory
     public function addConfiguration(NodeDefinition $node): void
     {
         if (!$node instanceof ArrayNodeDefinition) {
-            throw new \RuntimeException(sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, $node::class));
+            throw new \RuntimeException(\sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, $node::class));
         }
 
         parent::addConfiguration($node);

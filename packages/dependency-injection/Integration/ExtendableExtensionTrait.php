@@ -33,7 +33,7 @@ trait ExtendableExtensionTrait
             $integration = new $extensionClass();
 
             if (!$integration instanceof IntegrationInterface) {
-                throw new \RuntimeException(sprintf('The class "%s" must implement "%s".', $extensionClass, IntegrationInterface::class));
+                throw new \RuntimeException(\sprintf('The class "%s" must implement "%s".', $extensionClass, IntegrationInterface::class));
             }
 
             $this->integrations[] = $integration;

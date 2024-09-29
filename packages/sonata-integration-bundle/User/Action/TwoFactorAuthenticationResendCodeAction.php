@@ -12,7 +12,7 @@ class TwoFactorAuthenticationResendCodeAction
 {
     public function __construct(
         private CodeGeneratorInterface $codeGenerator,
-        private UrlGeneratorInterface $urlGenerator
+        private UrlGeneratorInterface $urlGenerator,
     ) {
     }
 

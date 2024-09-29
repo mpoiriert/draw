@@ -20,7 +20,7 @@ class DoctrineBusMessageListener implements ResetInterface
 
     public function __construct(
         private MessageBusInterface $messageBus,
-        private EnvelopeFactoryInterface $envelopeFactory
+        private EnvelopeFactoryInterface $envelopeFactory,
     ) {
     }
 

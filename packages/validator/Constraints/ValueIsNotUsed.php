@@ -15,7 +15,7 @@ class ValueIsNotUsed extends Constraint
         public string $message = 'Value "{{ value }}" is already used.',
         ?array $groups = null,
         $payload = null,
-        array $options = []
+        array $options = [],
     ) {
         parent::__construct($options, $groups, $payload);
     }

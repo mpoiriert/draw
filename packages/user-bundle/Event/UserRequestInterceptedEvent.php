@@ -13,7 +13,7 @@ class UserRequestInterceptedEvent extends Event
         private UserInterface $user,
         private Request $request,
         private Response $response,
-        private string $reason
+        private string $reason,
     ) {
     }
 

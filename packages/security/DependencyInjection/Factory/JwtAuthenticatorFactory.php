@@ -27,7 +27,7 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
         ContainerBuilder $container,
         string $firewallName,
         array $config,
-        string $userProviderId
+        string $userProviderId,
     ): string {
         $container
             ->setDefinition(
@@ -62,7 +62,7 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
     public function addConfiguration(NodeDefinition $builder): void
     {
         if (!$builder instanceof ArrayNodeDefinition) {
-            throw new \RuntimeException(sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, $builder::class));
+            throw new \RuntimeException(\sprintf('Invalid class for $builder parameter. Expected [%s] received [%s]', ArrayNodeDefinition::class, $builder::class));
         }
 
         $builder

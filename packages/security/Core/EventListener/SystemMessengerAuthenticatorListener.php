@@ -18,7 +18,7 @@ class SystemMessengerAuthenticatorListener implements EventSubscriberInterface
 
     public function __construct(
         private TokenStorageInterface $tokenStorage,
-        private SystemAuthenticatorInterface $systemAuthenticator
+        private SystemAuthenticatorInterface $systemAuthenticator,
     ) {
     }
 

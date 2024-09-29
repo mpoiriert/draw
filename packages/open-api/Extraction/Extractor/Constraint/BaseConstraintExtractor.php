@@ -28,7 +28,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     protected function assertSupportConstraint(Constraint $constraint): void
     {
         if (!$this->supportConstraint($constraint)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'The constraint of type [%s] is not supported by [%s]',
                 $constraint::class,
                 static::class
@@ -71,7 +71,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     private function getPropertiesConstraints(
         \ReflectionClass $reflectionClass,
         Schema $schema,
-        ?array $groups = null
+        ?array $groups = null,
     ): array {
         $class = $reflectionClass->getName();
         if (!$this->validator->hasMetadataFor($class)) {
@@ -87,7 +87,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
         $classMetadata = $this->validator->getMetadataFor($class);
 
         if (!$classMetadata instanceof ClassMetadataInterface) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Validator::getMetadataFor expect class return to be of type [%s]',
                 ClassMetadataInterface::class
             ));

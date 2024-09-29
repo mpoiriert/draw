@@ -31,7 +31,7 @@ class ResponseSerializerListener implements EventSubscriberInterface
         private SerializerInterface $serializer,
         private SerializationContextFactoryInterface $serializationContextFactory,
         private EventDispatcherInterface $eventDispatcher,
-        private bool $serializeNull
+        private bool $serializeNull,
     ) {
     }
 

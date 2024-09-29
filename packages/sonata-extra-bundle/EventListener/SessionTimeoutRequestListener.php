@@ -28,7 +28,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
     public function __construct(
         private Security $security,
         private UrlGeneratorInterface $urlGenerator,
-        private int $delay = 3600
+        private int $delay = 3600,
     ) {
     }
 
@@ -98,7 +98,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
 
         $content = str_replace(
             '<title>',
-            sprintf(
+            \sprintf(
                 '
   <script type="text/javascript">
     const sessionHandler = new SessionExpirationHandler(%s,"%s","%s");

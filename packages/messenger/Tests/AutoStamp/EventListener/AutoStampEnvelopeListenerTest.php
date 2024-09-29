@@ -62,7 +62,7 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
     public function testHandleStampingAwareMessageMessageStampingAwareInterface(): void
     {
         $envelope = new Envelope(
-            $message = new class() {
+            $message = new class {
                 public bool $called = false;
 
                 public function stamp(): void

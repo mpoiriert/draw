@@ -224,7 +224,7 @@ class RequestValidationListenerTest extends TestCase
     private function assertViolationIsSimilar(
         ConstraintViolationInterface $originalViolation,
         ConstraintViolationInterface $newViolation,
-        string $newPropertyPath
+        string $newPropertyPath,
     ): void {
         static::assertSame(
             $originalViolation->getMessage(),

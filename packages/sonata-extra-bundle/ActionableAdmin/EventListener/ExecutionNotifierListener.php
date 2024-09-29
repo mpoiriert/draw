@@ -16,7 +16,7 @@ class ExecutionNotifierListener
     public function __construct(
         private ExecutionNotifier $executionNotifier,
         private bool $autoNotify = true,
-        private bool $notifyError = true
+        private bool $notifyError = true,
     ) {
     }
 

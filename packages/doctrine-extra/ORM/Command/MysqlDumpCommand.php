@@ -31,7 +31,7 @@ class MysqlDumpCommand extends Command
             ->getParams()['primary'];
 
         Process::fromShellCommandline(
-            sprintf(
+            \sprintf(
                 'mysqldump -h %s -P %s -u %s %s %s > %s',
                 $connectionParameter['host'],
                 $connectionParameter['port'],

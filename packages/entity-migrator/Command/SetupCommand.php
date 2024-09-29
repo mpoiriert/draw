@@ -18,7 +18,7 @@ class SetupCommand extends Command
 {
     public function __construct(
         private Migrator $migrator,
-        private ManagerRegistry $managerRegistry
+        private ManagerRegistry $managerRegistry,
     ) {
         parent::__construct();
     }

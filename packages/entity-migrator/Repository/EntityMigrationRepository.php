@@ -10,7 +10,7 @@ use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
 class EntityMigrationRepository
 {
     public function __construct(
-        private ManagerRegistry $managerRegistry
+        private ManagerRegistry $managerRegistry,
     ) {
     }
 

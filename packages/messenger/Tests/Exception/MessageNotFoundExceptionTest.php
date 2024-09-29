@@ -31,7 +31,7 @@ class MessageNotFoundExceptionTest extends TestCase
     public function testGetMessage(): void
     {
         static::assertSame(
-            sprintf('Message id [%s] not found', $this->messageId),
+            \sprintf('Message id [%s] not found', $this->messageId),
             $this->exception->getMessage()
         );
     }

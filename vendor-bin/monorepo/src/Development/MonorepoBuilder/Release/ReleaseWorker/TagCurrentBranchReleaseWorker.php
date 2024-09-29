@@ -21,7 +21,7 @@ class TagCurrentBranchReleaseWorker implements ReleaseWorkerInterface
     public function work(Version $version): void
     {
         try {
-            $this->processRunner->run(sprintf(
+            $this->processRunner->run(\sprintf(
                 'git add . && git commit -m "prepare release %s" && git push origin master',
                 $version->getVersionString()
             ));
@@ -34,6 +34,6 @@ class TagCurrentBranchReleaseWorker implements ReleaseWorkerInterface
 
     public function getDescription(Version $version): string
     {
-        return sprintf('Add local tag to the current branch "%s"', $version->getVersionString());
+        return \sprintf('Add local tag to the current branch "%s"', $version->getVersionString());
     }
 }

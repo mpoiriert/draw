@@ -54,7 +54,7 @@ class CommandFlowListener implements EventSubscriberInterface
         private Connection $connection,
         private EventDispatcherInterface $eventDispatcher,
         private LoggerInterface $logger,
-        private bool $ignoreDisabledCommand = false
+        private bool $ignoreDisabledCommand = false,
     ) {
     }
 
@@ -253,7 +253,7 @@ class CommandFlowListener implements EventSubscriberInterface
         string $executionId,
         string $state,
         ?string $outputString = null,
-        ?string $autoAcknowledgeReason = null
+        ?string $autoAcknowledgeReason = null,
     ): void {
         $reconnectToSlave = $this->mustReconnectToSlave();
 
@@ -270,7 +270,7 @@ class CommandFlowListener implements EventSubscriberInterface
         }
 
         if (mb_strlen((string) $outputString) > 50000) {
-            $outputString = sprintf(
+            $outputString = \sprintf(
                 "%s\n\n[OUTPUT WAS TOO BIG]\n\nTail of log:\n\n%s",
                 mb_substr($outputString, 0, 40000),
                 mb_substr($outputString, -10000)

@@ -16,7 +16,7 @@ class GenericFormHandler
         private FormFactoryInterface $formFactory,
         private Environment $twig,
         private AdminActionLoader $adminActionLoader,
-        private ?CsrfTokenManagerInterface $csrfTokenManager
+        private ?CsrfTokenManagerInterface $csrfTokenManager,
     ) {
     }
 
@@ -25,7 +25,7 @@ class GenericFormHandler
         Request $request,
         string $formClass,
         mixed $data,
-        callable|array $executions
+        callable|array $executions,
     ): ?Response {
         $executions = \is_callable($executions) ? ['execution' => $executions] : $executions;
 

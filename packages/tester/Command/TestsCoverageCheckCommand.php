@@ -25,10 +25,10 @@ class TestsCoverageCheckCommand extends Command
         $inputFile = realpath($input->getArgument('clover-xlm-file-path'));
         $percentage = (float) $input->getArgument('coverage');
         if (!is_file($inputFile)) {
-            throw new \InvalidArgumentException(sprintf('Invalid input file provided "%s"', $inputFile));
+            throw new \InvalidArgumentException(\sprintf('Invalid input file provided "%s"', $inputFile));
         }
         if (!$percentage) {
-            throw new \InvalidArgumentException(sprintf('Invalid coverage percentage value "%s"', $input->getArgument('coverage')));
+            throw new \InvalidArgumentException(\sprintf('Invalid coverage percentage value "%s"', $input->getArgument('coverage')));
         }
 
         $io->title('Automation test coverage check');
@@ -47,7 +47,7 @@ class TestsCoverageCheckCommand extends Command
 
         $coverage = ($checkedElements / $totalElements) * 100;
         if ($coverage < $percentage) {
-            $io->error(sprintf(
+            $io->error(\sprintf(
                 'Code coverage is %.02f%%, which is below the accepted %d%%',
                 $coverage,
                 $percentage
@@ -56,7 +56,7 @@ class TestsCoverageCheckCommand extends Command
             return 1;
         }
 
-        $io->success(sprintf('Code coverage is %.02f%%', $coverage));
+        $io->success(\sprintf('Code coverage is %.02f%%', $coverage));
 
         return 0;
     }

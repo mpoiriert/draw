@@ -77,7 +77,7 @@ class CronJobExecution implements \Stringable
     public function __construct(
         CronJob $cronJob,
         \DateTimeImmutable $requestedAt,
-        bool $force
+        bool $force,
     ) {
         $this->cronJob = $cronJob;
         $this->requestedAt = $requestedAt;

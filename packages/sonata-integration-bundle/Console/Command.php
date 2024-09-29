@@ -8,7 +8,7 @@ class Command
         private string $name,
         private string $commandName,
         private ?string $label = null,
-        private ?string $icon = null
+        private ?string $icon = null,
     ) {
     }
 

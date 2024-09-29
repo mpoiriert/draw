@@ -15,7 +15,7 @@ class MessageController extends CRUDController
 {
     public function retryAction(
         Request $request,
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
     ): Response {
         $message = $this->assertObjectExists($request, true);
 

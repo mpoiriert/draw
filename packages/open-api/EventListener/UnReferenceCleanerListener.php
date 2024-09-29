@@ -19,7 +19,7 @@ class UnReferenceCleanerListener implements EventSubscriberInterface
         /**
          * @var iterable<ReferenceCleanerInterface>
          */
-        private iterable $referenceCleaners = []
+        private iterable $referenceCleaners = [],
     ) {
     }
 

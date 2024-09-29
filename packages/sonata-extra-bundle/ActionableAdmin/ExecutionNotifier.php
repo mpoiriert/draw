@@ -82,7 +82,7 @@ class ExecutionNotifier implements ResetInterface
     public function notifyError(
         ObjectActionExecutioner $objectActionExecutioner,
         \Throwable $throwable,
-        object $object
+        object $object,
     ): void {
         if (null === $this->notifier) {
             return;

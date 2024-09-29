@@ -11,7 +11,7 @@ class ArrayHandler implements TypeToSchemaHandlerInterface
 {
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
-        ExtractionContextInterface $extractionContext
+        ExtractionContextInterface $extractionContext,
     ): ?Schema {
         if (!($type = $this->getNestedTypeInArray($propertyMetadata))) {
             return null;

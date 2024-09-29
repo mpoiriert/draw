@@ -13,6 +13,6 @@ interface ProcessFactoryInterface
         ?string $cwd = null,
         ?array $env = null,
         $input = null,
-        ?float $timeout = 60
+        ?float $timeout = 60,
     ): Process;
 }

@@ -9,7 +9,7 @@ class NewConsumerProcessEvent extends Event
     public function __construct(
         private string $context,
         private array $receivers = [],
-        private array $options = []
+        private array $options = [],
     ) {
     }
 

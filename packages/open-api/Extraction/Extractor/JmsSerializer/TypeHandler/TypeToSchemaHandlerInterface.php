@@ -10,6 +10,6 @@ interface TypeToSchemaHandlerInterface
 {
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
-        ExtractionContextInterface $extractionContext
+        ExtractionContextInterface $extractionContext,
     ): ?Schema;
 }

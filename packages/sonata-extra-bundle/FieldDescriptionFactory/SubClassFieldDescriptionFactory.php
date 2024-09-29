@@ -11,7 +11,7 @@ class SubClassFieldDescriptionFactory implements FieldDescriptionFactoryInterfac
 {
     public function __construct(
         private FieldDescriptionFactoryInterface $decorated,
-        private ManagerRegistry $managerRegistry
+        private ManagerRegistry $managerRegistry,
     ) {
     }
 

@@ -14,7 +14,7 @@ class RefreshUserLocksCommand extends Command
 {
     public function __construct(
         private MessageBusInterface $messageBus,
-        private EntityRepository $drawUserEntityRepository
+        private EntityRepository $drawUserEntityRepository,
     ) {
         parent::__construct();
     }

@@ -17,7 +17,7 @@ class KernelShutdownExtension implements Extension
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         $facade->registerSubscribers(
-            new class() implements TestFinishedSubscriber {
+            new class implements TestFinishedSubscriber {
                 public function notify(TestFinished $event): void
                 {
                     $test = $event->test();
@@ -27,7 +27,7 @@ class KernelShutdownExtension implements Extension
                     KernelShutdownExtension::ensureKernelShutdown($test->className());
                 }
             },
-            new class() implements TestSuiteFinishedSubscriber {
+            new class implements TestSuiteFinishedSubscriber {
                 public function notify(TestSuiteFinished $event): void
                 {
                     $class = $event->testSuite()->name();

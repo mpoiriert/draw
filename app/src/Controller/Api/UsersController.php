@@ -43,7 +43,7 @@ class UsersController extends AbstractController
     public function createAction(
         #[RequestBody]
         User $target,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): User {
         $this->logger->info('Create new user');
 
@@ -83,7 +83,7 @@ class UsersController extends AbstractController
     public function editAction(
         #[RequestBody(propertiesMap: ['id' => 'id'])]
         User $target,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): User {
         $entityManager->flush();
 
@@ -100,7 +100,7 @@ class UsersController extends AbstractController
         User $target,
         #[RequestBody(type: 'array<App\Entity\Tag>')]
         array $tags,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): array {
         $target->setTags($tags);
 

@@ -23,7 +23,7 @@ class PreventDeleteExtension extends AbstractAdminExtension
         private PreventDeleteRelationLoader $preventDeleteRelationLoader,
         private ManagerRegistry $managerRegistry,
         private Security $security,
-        private ?string $restrictToRole = null
+        private ?string $restrictToRole = null,
     ) {
     }
 
@@ -128,7 +128,7 @@ class PreventDeleteExtension extends AbstractAdminExtension
     private function getFilterParameters(
         AdminInterface $admin,
         PreventDelete $preventDelete,
-        object $subject
+        object $subject,
     ): ?string {
         if (!$admin->getDatagrid()->hasFilter($preventDelete->getPath())) {
             return null;

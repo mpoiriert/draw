@@ -42,10 +42,10 @@ class RelativeDateTimeFilter extends Filter
 
         $inputValue = date('Y-m-d H:i:s', strtotime($value));
         $parameterName = $this->getNewParameterName($query);
-        $completeField = sprintf('%s.%s', $alias, $field);
+        $completeField = \sprintf('%s.%s', $alias, $field);
         $this->applyWhere(
             $query,
-            sprintf('%s %s :%s', $completeField, $operator, $parameterName)
+            \sprintf('%s %s :%s', $completeField, $operator, $parameterName)
         );
 
         $query->getQueryBuilder()->setParameter($parameterName, $inputValue);

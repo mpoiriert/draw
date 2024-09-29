@@ -17,7 +17,7 @@ class WorkflowListener
     public function __construct(
         private ManagerRegistry $managerRegistry,
         private Migrator $migrator,
-        private MessageBusInterface $messageBus
+        private MessageBusInterface $messageBus,
     ) {
     }
 

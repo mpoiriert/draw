@@ -99,7 +99,7 @@ class CronJobProcessorTest extends TestCase
     public function testProcess(
         string $command,
         ?string $overwrittenCommand,
-        string $expectedProcessCommand
+        string $expectedProcessCommand,
     ): void {
         $returnedPreCronJobExecutionEvent = new PreCronJobExecutionEvent(
             $execution = $this->createCronJobExecution($command)
@@ -183,7 +183,7 @@ class CronJobProcessorTest extends TestCase
 
         yield 'overwritten command' => [
             'command' => $command = 'ls -lah %kernel.cache_dir%',
-            'overwrittenCommand' => sprintf('%s | wc', $command),
+            'overwrittenCommand' => \sprintf('%s | wc', $command),
             'expectedProcessCommand' => 'ls -lah /var/cache | wc',
         ];
     }

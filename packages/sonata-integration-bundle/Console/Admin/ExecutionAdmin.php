@@ -28,7 +28,7 @@ class ExecutionAdmin extends AbstractAdmin
     public function __construct(
         private CommandRegistry $commandFactory,
         private KernelInterface $kernel,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
     }

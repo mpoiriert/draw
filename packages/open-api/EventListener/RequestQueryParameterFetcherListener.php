@@ -43,7 +43,7 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
             $name = $queryParameter->name;
 
             if ($request->attributes->has($name) && null !== $request->attributes->get($name)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'QueryParameterFetcherSubscriber parameter conflicts with a path parameter [%s] for route [%s]',
                     $name,
                     $request->attributes->get('_route')
@@ -72,7 +72,7 @@ class RequestQueryParameterFetcherListener implements EventSubscriberInterface
                             'tsv' => "\t",
                             'pipes' => '|',
                             // no break
-                            default => throw new \RuntimeException(sprintf(
+                            default => throw new \RuntimeException(\sprintf(
                                 'Unsupported collection format [%s]',
                                 $queryParameter->collectionFormat
                             )),

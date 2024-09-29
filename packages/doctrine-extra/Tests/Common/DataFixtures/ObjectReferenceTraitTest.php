@@ -41,7 +41,7 @@ class ObjectReferenceTraitTest extends TestCase
             ->expects(static::once())
             ->method('addReference')
             ->with(
-                sprintf(
+                \sprintf(
                     '%s.%s',
                     $class = uniqid('class-'),
                     $name = uniqid('name-')
@@ -58,7 +58,7 @@ class ObjectReferenceTraitTest extends TestCase
             ->expects(static::once())
             ->method('hasReference')
             ->with(
-                sprintf(
+                \sprintf(
                     '%s.%s',
                     $class = uniqid('class-'),
                     $name = uniqid('name-')
@@ -77,7 +77,7 @@ class ObjectReferenceTraitTest extends TestCase
             ->expects(static::once())
             ->method('getReference')
             ->with(
-                sprintf(
+                \sprintf(
                     '%s.%s',
                     $class = uniqid('class-'),
                     $name = uniqid('name-')
@@ -97,7 +97,7 @@ class ObjectReferenceTraitTest extends TestCase
             ->expects(static::once())
             ->method('setReference')
             ->with(
-                sprintf(
+                \sprintf(
                     '%s.%s',
                     $class = uniqid('class-'),
                     $name = uniqid('name-')

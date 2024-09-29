@@ -15,7 +15,7 @@ class EventDispatcherSerializerDecorator implements SerializerInterface
 {
     public function __construct(
         private SerializerInterface $serializer,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

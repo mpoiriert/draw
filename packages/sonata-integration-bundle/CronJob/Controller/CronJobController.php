@@ -15,7 +15,7 @@ class CronJobController extends CRUDController
     public function queueAction(
         Request $request,
         CronJob $cronJob,
-        CronJobProcessor $cronJobProcessor
+        CronJobProcessor $cronJobProcessor,
     ): RedirectResponse {
         $cronJobProcessor->queue($cronJob, true);
 

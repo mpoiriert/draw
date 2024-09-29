@@ -24,7 +24,7 @@ class TagsController
     public function createAction(
         #[RequestBody]
         Tag $target,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Tag {
         $entityManager->persist($target);
         $entityManager->flush();
@@ -40,7 +40,7 @@ class TagsController
     public function editAction(
         #[RequestBody(propertiesMap: ['id' => 'id'])]
         Tag $target,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Tag {
         $entityManager->flush();
 
@@ -82,7 +82,7 @@ class TagsController
         #[OpenApi\QueryParameter]
         ?bool $active = null, // Keep query parameter as is for integration test
         #[OpenApi\QueryParameter(type: 'int')]
-        int $pageNumber = 0 // Keep query parameter as is for integration test
+        int $pageNumber = 0, // Keep query parameter as is for integration test
     ): array {
         if (null !== $active) {
             $entityHandler->findBy(

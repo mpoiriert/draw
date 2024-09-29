@@ -11,7 +11,7 @@ use Twig\TwigFilter;
 class EntityTwigExtension extends AbstractExtension
 {
     public function __construct(
-        private TranslatorInterface $translator
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -29,7 +29,7 @@ class EntityTwigExtension extends AbstractExtension
             return (string) $entity;
         }
 
-        return sprintf('%s:%s', ClassUtils::getClass($entity), spl_object_hash($entity));
+        return \sprintf('%s:%s', ClassUtils::getClass($entity), spl_object_hash($entity));
     }
 
     public function translateLabel(array|AdminAction $data): string

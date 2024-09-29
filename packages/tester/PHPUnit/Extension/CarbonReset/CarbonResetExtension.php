@@ -17,13 +17,13 @@ class CarbonResetExtension implements Runner\Extension\Extension
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         $facade->registerSubscribers(
-            new class() implements TestFinishedSubscriber {
+            new class implements TestFinishedSubscriber {
                 public function notify(TestFinished $event): void
                 {
                     Carbon::setTestNow(null);
                 }
             },
-            new class() implements TestSuiteFinishedSubscriber {
+            new class implements TestSuiteFinishedSubscriber {
                 public function notify(TestSuiteFinished $event): void
                 {
                     Carbon::setTestNow(null);

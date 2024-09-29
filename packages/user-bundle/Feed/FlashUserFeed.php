@@ -14,7 +14,7 @@ class FlashUserFeed implements UserFeedInterface
     public function __construct(
         private RequestStack $requestStack,
         private Security $security,
-        private ?TranslatorInterface $translator
+        private ?TranslatorInterface $translator,
     ) {
     }
 

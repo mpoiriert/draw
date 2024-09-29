@@ -12,7 +12,7 @@ class DoctrineTranslationColumnExtractor extends BaseColumnExtractor
 {
     public function __construct(
         private ManagerRegistry $managerRegistry,
-        private array $supportedLocales = []
+        private array $supportedLocales = [],
     ) {
     }
 
@@ -53,7 +53,7 @@ class DoctrineTranslationColumnExtractor extends BaseColumnExtractor
             }
 
             foreach ($this->supportedLocales as $locale) {
-                $options[] = sprintf('translation#%s.%s', $locale, $field);
+                $options[] = \sprintf('translation#%s.%s', $locale, $field);
             }
         }
 

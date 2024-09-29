@@ -23,7 +23,7 @@ class EmailComposer
 
     public function __construct(
         private ContainerInterface $serviceLocator,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         if ($translator instanceof LocaleAwareInterface) {
             $this->translator = $translator;
@@ -78,7 +78,7 @@ class EmailComposer
         string $emailClass,
         EmailWriterInterface|string $writer,
         string $writerMethod,
-        int $priority = 0
+        int $priority = 0,
     ): void {
         $this->writers[$emailClass][$priority][] = [$writer, $writerMethod];
         unset($this->sortedWriters[$emailClass]);

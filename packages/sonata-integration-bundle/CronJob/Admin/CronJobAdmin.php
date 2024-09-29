@@ -105,7 +105,7 @@ class CronJobAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->add('queue', sprintf('%s/queue', $this->getRouterIdParameter()));
+        $collection->add('queue', \sprintf('%s/queue', $this->getRouterIdParameter()));
     }
 
     protected function configureActionButtons(array $buttonList, string $action, ?object $object = null): array

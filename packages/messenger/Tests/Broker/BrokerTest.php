@@ -220,7 +220,7 @@ class BrokerTest extends TestCase
             ->method('create');
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             'You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.',
             NewConsumerProcessEvent::class.'::preventStart'
         ));

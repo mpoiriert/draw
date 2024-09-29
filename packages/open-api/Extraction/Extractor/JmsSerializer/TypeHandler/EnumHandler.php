@@ -10,7 +10,7 @@ class EnumHandler implements TypeToSchemaHandlerInterface
 {
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
-        ExtractionContextInterface $extractionContext
+        ExtractionContextInterface $extractionContext,
     ): ?Schema {
         if (null === ($type = $this->getEnumClassName($propertyMetadata))) {
             return null;

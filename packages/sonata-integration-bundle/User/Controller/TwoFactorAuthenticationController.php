@@ -28,7 +28,7 @@ class TwoFactorAuthenticationController extends CRUDController
     public function enable2faAction(
         Request $request,
         TotpAuthenticatorInterface $totpAuthenticator,
-        QrCodeGenerator $qrCodeGenerator
+        QrCodeGenerator $qrCodeGenerator,
     ): Response {
         $user = $this->loadUser($request);
 

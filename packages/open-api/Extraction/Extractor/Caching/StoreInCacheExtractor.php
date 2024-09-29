@@ -19,7 +19,7 @@ class StoreInCacheExtractor implements ExtractorInterface
     public function __construct(
         private FileTrackingExtractor $fileTrackingExtractor,
         private bool $debug,
-        private string $cacheDirectory
+        private string $cacheDirectory,
     ) {
     }
 

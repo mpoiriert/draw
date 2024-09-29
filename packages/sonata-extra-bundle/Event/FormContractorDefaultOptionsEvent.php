@@ -11,7 +11,7 @@ class FormContractorDefaultOptionsEvent extends Event
         private ?string $type,
         private FieldDescriptionInterface $fieldDescription,
         private array $formOptions,
-        private array $defaultOptions
+        private array $defaultOptions,
     ) {
     }
 

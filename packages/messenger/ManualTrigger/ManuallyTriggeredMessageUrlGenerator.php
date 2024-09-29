@@ -14,7 +14,7 @@ class ManuallyTriggeredMessageUrlGenerator
     public function __construct(
         private MessageBusInterface $messageBus,
         private UrlGeneratorInterface $urlGenerator,
-        private string $routeName = 'draw_messenger.message_click'
+        private string $routeName = 'draw_messenger.message_click',
     ) {
     }
 
@@ -26,7 +26,7 @@ class ManuallyTriggeredMessageUrlGenerator
     public function generateLink(
         ManuallyTriggeredInterface $message,
         \DateTimeInterface $expiration,
-        ?string $type = null
+        ?string $type = null,
     ): string {
         $parameters = [
             ClickMessageAction::MESSAGE_ID_PARAMETER_NAME => $this->messageBus

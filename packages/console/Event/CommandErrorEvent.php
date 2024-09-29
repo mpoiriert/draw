@@ -10,7 +10,7 @@ class CommandErrorEvent extends Event
 
     public function __construct(
         private string $executionId,
-        private string $outputString
+        private string $outputString,
     ) {
     }
 

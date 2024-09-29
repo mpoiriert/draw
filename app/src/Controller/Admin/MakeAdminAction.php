@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class MakeAdminAction
 {
     public function __invoke(
-        ObjectActionExecutioner $objectActionExecutioner
+        ObjectActionExecutioner $objectActionExecutioner,
     ): Response {
         return $objectActionExecutioner
             ->execute(

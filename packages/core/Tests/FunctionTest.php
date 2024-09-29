@@ -22,7 +22,7 @@ class FunctionTest extends TestCase
     {
         static::assertTrue(
             use_trait(
-                new class() {
+                new class {
                     use StubTrait;
                 },
                 StubTrait::class
@@ -34,7 +34,7 @@ class FunctionTest extends TestCase
     {
         static::assertTrue(
             use_trait(
-                new class() extends StubClass {
+                new class extends StubClass {
                 },
                 StubTrait::class
             )

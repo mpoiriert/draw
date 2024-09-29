@@ -145,7 +145,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 
         static::assertEmpty(
             $extraKeys = array_diff(array_keys($exceptionDetail), $expectedKeys),
-            sprintf(
+            \sprintf(
                 'Unexpected keys: %s',
                 implode(', ', $extraKeys)
             )
@@ -153,7 +153,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 
         static::assertEmpty(
             $missingKeys = array_diff($expectedKeys, array_keys($exceptionDetail)),
-            sprintf(
+            \sprintf(
                 'Missing keys: %s',
                 implode(', ', $missingKeys)
             )

@@ -73,7 +73,7 @@ class MigrateCommand extends BaseCommand
 
         $io->newLine();
 
-        $io->success(sprintf(
+        $io->success(\sprintf(
             'Migration %s processed for %d entities',
             $migration::getName(),
             $realCount

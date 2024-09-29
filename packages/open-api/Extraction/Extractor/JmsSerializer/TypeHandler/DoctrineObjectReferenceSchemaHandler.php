@@ -13,13 +13,13 @@ class DoctrineObjectReferenceSchemaHandler implements TypeToSchemaHandlerInterfa
 {
     public function __construct(
         private ManagerRegistry $managerRegistry,
-        private MetadataFactoryInterface $metadataFactory
+        private MetadataFactoryInterface $metadataFactory,
     ) {
     }
 
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
-        ExtractionContextInterface $extractionContext
+        ExtractionContextInterface $extractionContext,
     ): ?Schema {
         if (null === ($type = $this->getReferenceType($propertyMetadata))) {
             return null;

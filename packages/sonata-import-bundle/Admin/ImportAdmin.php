@@ -32,7 +32,7 @@ class ImportAdmin extends AbstractAdmin
     public function __construct(
         private ImporterInterface $importer,
         #[Autowire('%draw.sonata_import.classes%')]
-        private array $importableClassList
+        private array $importableClassList,
     ) {
         parent::__construct();
     }

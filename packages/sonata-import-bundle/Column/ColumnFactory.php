@@ -13,7 +13,7 @@ class ColumnFactory
          * @param iterable<ColumnExtractorInterface> $columnExtractors
          */
         #[TaggedIterator(ColumnExtractorInterface::class)]
-        private iterable $columnExtractors = []
+        private iterable $columnExtractors = [],
     ) {
     }
 

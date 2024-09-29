@@ -20,7 +20,7 @@ class ConstraintExpression extends Expression
     public function __construct(
         private ?string $path,
         private $constraints = null,
-        private $groups = null
+        private $groups = null,
     ) {
     }
 

@@ -46,7 +46,7 @@ class TemporaryUnlockedMessageTest extends TestCase
         static::assertNull($this->object->getUserIdentifier());
 
         $this->object->preSend(
-            new class() implements MessageHolderInterface,
+            new class implements MessageHolderInterface,
                 LockableUserInterface {
                 use LockableUserTrait;
                 use MessageHolderTrait;

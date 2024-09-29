@@ -50,12 +50,12 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
         ];
 
         yield 'stamp-manually-triggered' => [
-            new Envelope(new class() implements ManuallyTriggeredInterface {}),
+            new Envelope(new class implements ManuallyTriggeredInterface {}),
             1,
         ];
 
         yield 'already-stamp-manually-triggered' => [
-            new Envelope(new class() implements ManuallyTriggeredInterface {}, [new ManualTriggerStamp()]),
+            new Envelope(new class implements ManuallyTriggeredInterface {}, [new ManualTriggerStamp()]),
             1,
         ];
     }

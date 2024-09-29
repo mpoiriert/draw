@@ -29,7 +29,7 @@ class UnlockUserLockExtension extends AbstractAdminExtension
         AdminInterface $admin,
         array $list,
         string $action,
-        ?object $object = null
+        ?object $object = null,
     ): array {
         switch (true) {
             case !$object instanceof LockableUserInterface:

@@ -36,7 +36,7 @@ class UserRequestInterceptorListener implements EventSubscriberInterface
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
         private Security $security,
-        private ?FirewallMap $firewallMap
+        private ?FirewallMap $firewallMap,
     ) {
     }
 

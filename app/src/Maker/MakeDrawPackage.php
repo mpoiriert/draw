@@ -19,7 +19,7 @@ class MakeDrawPackage extends AbstractMaker
     public function __construct(
         #[Autowire('%kernel.project_dir%')]
         private string $kernelProjectDir,
-        private Environment $environment
+        private Environment $environment,
     ) {
     }
 
@@ -148,7 +148,7 @@ class MakeDrawPackage extends AbstractMaker
         $namespace = ucwords($namespace);
         $namespace = str_replace(' ', '', $namespace);
 
-        return sprintf(
+        return \sprintf(
             'Draw\%s\%s',
             'component' === $type ? 'Component' : 'Bundle',
             $namespace

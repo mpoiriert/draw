@@ -15,7 +15,7 @@ class PreventDelete
         private ?string $relatedClass = null,
         private ?string $path = null,
         private bool $preventDelete = true,
-        private ?array $metadata = []
+        private ?array $metadata = [],
     ) {
     }
 

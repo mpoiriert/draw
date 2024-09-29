@@ -10,7 +10,7 @@ class BrokerStartedEvent extends Event
     public function __construct(
         private Broker $broker,
         private int $concurrent,
-        private int $timeout
+        private int $timeout,
     ) {
     }
 

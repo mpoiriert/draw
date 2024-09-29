@@ -70,7 +70,7 @@ abstract class IntegrationTestCase extends TestCase
         array $configuration = [],
         array $services = [],
         array $extraAliases = [],
-        array $expectedParameters = []
+        array $expectedParameters = [],
     ): void {
         $container = new ContainerBuilder();
         $loader = new PhpFileLoader($container, new FileLocator([]));
@@ -134,7 +134,7 @@ abstract class IntegrationTestCase extends TestCase
     public static function assertContainerBuilderServices(
         array $services,
         ContainerBuilder $container,
-        array $extraAliases = []
+        array $extraAliases = [],
     ): void {
         $definedServiceIds = array_values(
             array_diff(
@@ -207,7 +207,7 @@ abstract class IntegrationTestCase extends TestCase
 
     public static function assertContainerBuilderParameters(
         array $expectedParameters,
-        ContainerBuilder $container
+        ContainerBuilder $container,
     ): void {
         static::assertSame(
             $expectedParameters,

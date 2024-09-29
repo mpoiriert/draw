@@ -15,7 +15,7 @@ class PreventDeleteRelationLoader
         private array $configuration,
         private bool $useManager = true,
         private bool $preventDeleteFromAllRelations = false,
-        private ?string $cacheDirectory = null
+        private ?string $cacheDirectory = null,
     ) {
     }
 

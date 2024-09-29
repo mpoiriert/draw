@@ -181,7 +181,7 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testPostFlushOnlyUninitializedProxy(): void
     {
         $this->addMessageHolder(
-            new class() implements Proxy,
+            new class implements Proxy,
                 MessageHolderInterface {
                 public function getOnHoldMessages(bool $clear): array
                 {

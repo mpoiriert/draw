@@ -19,7 +19,7 @@ class BatchAdminController extends AbstractAdminController
     public function batchAction(Request $request): Response
     {
         if (Request::METHOD_POST !== $restMethod = $request->getMethod()) {
-            throw new NotFoundHttpException(sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
+            throw new NotFoundHttpException(\sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));
         }
 
         $this->validateCsrfToken($request, 'sonata.batch');
@@ -35,7 +35,7 @@ class BatchAdminController extends AbstractAdminController
         try {
             $actionExecutable = $this->getBatchActionExecutable($action);
         } catch (\Throwable $error) {
-            $message = sprintf(
+            $message = \sprintf(
                 'You must define a valid `controller` configuration for your batch action `%s`.',
                 $action,
             );
@@ -112,7 +112,7 @@ class BatchAdminController extends AbstractAdminController
     }
 
     private function generateAskConfigurationResponse(
-        Request $request
+        Request $request,
     ): ?Response {
         $batchAction = $this->admin->getBatchActions()[$request->request->get('action')];
         $datagrid = $this->admin->getDatagrid();
@@ -147,7 +147,7 @@ class BatchAdminController extends AbstractAdminController
     {
         $batchActions = $this->admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
-            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+            throw new \RuntimeException(\sprintf('The `%s` batch action is not defined', $action));
         }
 
         $controller = $batchActions[$action]['controller'];
