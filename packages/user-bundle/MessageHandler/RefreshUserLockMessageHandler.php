@@ -30,11 +30,7 @@ class RefreshUserLockMessageHandler
         }
 
         if (!$user instanceof LockableUserInterface) {
-            throw new \UnexpectedValueException(\sprintf(
-                'Expected instance of [%s], instance of [%s] returned.',
-                LockableUserInterface::class,
-                $user::class
-            ));
+            throw new \UnexpectedValueException(\sprintf('Expected instance of [%s], instance of [%s] returned.', LockableUserInterface::class, $user::class));
         }
 
         $this->accountLocker->refreshUserLocks($user);

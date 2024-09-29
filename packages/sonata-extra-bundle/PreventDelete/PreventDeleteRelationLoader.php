@@ -195,7 +195,8 @@ class PreventDeleteRelationLoader
                 $associationMapping['sourceEntity'],
                 $associationMapping['fieldName']
             ))
-                ->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF);
+                ->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF)
+            ;
 
             if (\count($attributes) > 1) {
                 throw new \LogicException('Only one PreventDelete attribute is allowed per property. Repeatable is only allowed on class.');

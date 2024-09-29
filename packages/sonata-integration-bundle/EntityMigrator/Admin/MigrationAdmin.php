@@ -14,7 +14,8 @@ class MigrationAdmin extends AbstractAdmin
         $list
             ->addIdentifier('id')
             ->add('name')
-            ->add('state');
+            ->add('state')
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -22,7 +23,8 @@ class MigrationAdmin extends AbstractAdmin
         $show
             ->add('id')
             ->add('name')
-            ->add('state');
+            ->add('state')
+        ;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
@@ -30,6 +32,7 @@ class MigrationAdmin extends AbstractAdmin
         $collection
             ->remove('edit')
             ->remove('create')
-            ->remove('delete');
+            ->remove('delete')
+        ;
     }
 }

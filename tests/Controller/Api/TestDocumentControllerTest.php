@@ -9,6 +9,9 @@ use Draw\Bundle\TesterBundle\WebTestCase;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
+/**
+ * @internal
+ */
 class TestDocumentControllerTest extends WebTestCase implements AutowiredInterface
 {
     use MessengerTesterTrait;
@@ -22,15 +25,18 @@ class TestDocumentControllerTest extends WebTestCase implements AutowiredInterfa
             ->jsonRequest(
                 'POST',
                 '/api/test-documents',
-            );
+            )
+        ;
 
         static::assertResponseIsSuccessful();
 
         static::getJsonResponseDataTester()
             ->path('id')
-            ->assertIsString();
+            ->assertIsString()
+        ;
 
         static::getTransportTester('sync')
-            ->assertMessageMatch(NewTestDocumentMessage::class);
+            ->assertMessageMatch(NewTestDocumentMessage::class)
+        ;
     }
 }

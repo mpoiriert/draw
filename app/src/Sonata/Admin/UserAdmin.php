@@ -72,7 +72,8 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             )
             ->add(
                 'userTags.tag'
-            );
+            )
+        ;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -85,18 +86,21 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->add('userTags', 'list')
             ->add('tags', 'list')
             ->add('roles', 'list')
-            ->add('isLocked', 'boolean', ['inverse' => true]);
+            ->add('isLocked', 'boolean', ['inverse' => true])
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
     {
         /** @var TagAdmin $tagAdmin */
         $tagAdmin = $this->getConfigurationPool()
-            ->getAdminByClass(Tag::class);
+            ->getAdminByClass(Tag::class)
+        ;
 
         /** @var UserLockAdmin $userLockAdmin */
         $userLockAdmin = $this->getConfigurationPool()
-            ->getAdminByClass(UserLock::class);
+            ->getAdminByClass(UserLock::class)
+        ;
 
         $show
             ->add('id')
@@ -125,7 +129,8 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
                     'colspan' => true,
                     'fields' => $userLockAdmin->configureGridFields([]),
                 ]
-            );
+            )
+        ;
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -169,7 +174,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
                         ChoiceType::class,
                         [
                             'choices' => ['email' => 'email', 'totp' => 'totp'],
-                            'choice_label' => fn ($choice) => new TranslatableMessage('enabledProviders.choice.'.$choice),
+                            'choice_label' => static fn ($choice) => new TranslatableMessage('enabledProviders.choice.'.$choice),
                             'multiple' => true,
                             'expanded' => true,
                         ]
@@ -201,7 +206,8 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
                         ]
                     )
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     public function getActions(): array

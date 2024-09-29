@@ -33,7 +33,6 @@ class Importer implements ImporterInterface
         $options = [];
 
         foreach ($this->columnsExtractors as $mappedToOptionBuilder) {
-
             $options = $mappedToOptionBuilder->getOptions(
                 $column,
                 $options
@@ -109,7 +108,8 @@ class Importer implements ImporterInterface
                                 $line
                             )
                         )
-                    );
+                    )
+                ;
 
                 continue;
             }
@@ -133,7 +133,8 @@ class Importer implements ImporterInterface
                                 $exception->getMessage()
                             )
                         )
-                    );
+                    )
+                ;
                 continue;
             }
 
@@ -151,7 +152,8 @@ class Importer implements ImporterInterface
                             $saved
                         )
                     )
-                );
+                )
+            ;
 
             return true;
         } catch (\Throwable $error) {
@@ -163,7 +165,8 @@ class Importer implements ImporterInterface
                             $error->getMessage()
                         )
                     )
-                );
+                )
+            ;
 
             return false;
         }
@@ -214,7 +217,8 @@ class Importer implements ImporterInterface
 
             $relatedObject = $this->managerRegistry
                 ->getRepository($objectClass)
-                ->findOneBy($objectCriteria);
+                ->findOneBy($objectCriteria)
+            ;
 
             if (!$relatedObject) {
                 return null;

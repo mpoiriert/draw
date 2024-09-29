@@ -7,9 +7,6 @@ namespace Draw\Component\OpenApi\Schema;
  */
 class SecurityRequirement
 {
-    /**
-     * @var mixed
-     */
     private $data;
 
     public function getData()

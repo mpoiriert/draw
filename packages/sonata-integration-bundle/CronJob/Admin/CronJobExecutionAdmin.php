@@ -62,8 +62,8 @@ class CronJobExecutionAdmin extends AbstractAdmin
                 filterOptions: [
                     'show_filter' => true,
                 ]
-            );
-
+            )
+        ;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -95,7 +95,8 @@ class CronJobExecutionAdmin extends AbstractAdmin
                         'delete' => [],
                     ],
                 ]
-            );
+            )
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -109,7 +110,8 @@ class CronJobExecutionAdmin extends AbstractAdmin
             ->add('executionEndedAt')
             ->add('executionDelay')
             ->add('exitCode')
-            ->add('error');
+            ->add('error')
+        ;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

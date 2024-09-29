@@ -6,6 +6,9 @@ use Draw\Bundle\FrameworkExtraBundle\DependencyInjection\DrawFrameworkExtraExten
 use Draw\Component\Tester\Test\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 class DrawFrameworkExtraExtensionTest extends ExtensionTestCase
 {
     public function createExtension(): Extension

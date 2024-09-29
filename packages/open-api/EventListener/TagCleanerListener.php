@@ -29,7 +29,7 @@ class TagCleanerListener implements EventSubscriberInterface
         foreach ($schema->paths as $path) {
             foreach ($path->getOperations() as $operation) {
                 foreach ($operation->tags ?? [] as $index => $tag) {
-                    if (\in_array($tag, $this->tagsToClean)) {
+                    if (\in_array($tag, $this->tagsToClean, true)) {
                         unset($operation->tags[$index]);
                     }
                 }

@@ -24,7 +24,7 @@ class AliasesClassNamingFilter implements ClassNamingFilterInterface
                 continue;
             }
 
-            if ($class == $className) {
+            if ($class === $className) {
                 return $alias;
             }
         }

@@ -18,7 +18,8 @@ class DataAccessor
         if (null === self::$propertyAccessor) {
             self::$propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
                 ->enableExceptionOnInvalidIndex()
-                ->getPropertyAccessor();
+                ->getPropertyAccessor()
+            ;
         }
 
         return self::$propertyAccessor;
@@ -36,8 +37,6 @@ class DataAccessor
      * Return the data value of what is currently tested.
      *
      * @param $path null|string|PropertyPathInterface
-     *
-     * @return mixed
      */
     public function getData($path = null)
     {

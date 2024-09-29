@@ -6,6 +6,9 @@ use Draw\Component\Security\Http\Authenticator\Passport\Badge\RoleRestrictedBadg
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(RoleRestrictedBadge::class)]
 class RoleRestrictedBadgeTest extends TestCase
 {

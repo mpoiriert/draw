@@ -33,7 +33,7 @@ class CronJobIntegration implements IntegrationInterface, ContainerBuilderIntegr
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\CronJob\\',
+            $namespace = 'Draw\Component\CronJob\\',
             \dirname((new \ReflectionClass(CronJobProcessor::class))->getFileName())
         );
 

@@ -9,6 +9,9 @@ use Firebase\JWT\JWT;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ */
 class ConnectionTokensControllerTest extends WebTestCase implements AutowiredInterface
 {
     #[AutowireClient]
@@ -31,7 +34,8 @@ class ConnectionTokensControllerTest extends WebTestCase implements AutowiredInt
                 '/api/connection-tokens/refresh',
                 [],
                 ['Authorization' => 'Bearer '.$token]
-            );
+            )
+        ;
 
         static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }

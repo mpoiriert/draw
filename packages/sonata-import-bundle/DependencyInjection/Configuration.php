@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('classes')
                     ->beforeNormalization()
-                        ->always(function ($classes) {
+                        ->always(static function ($classes) {
                             $result = [];
                             foreach ($classes as $class => $configuration) {
                                 if (\is_string($configuration)) {
@@ -52,7 +52,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('handlers')
                     ->append($this->createDoctrineTranslationNode())
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }
@@ -75,6 +76,7 @@ class Configuration implements ConfigurationInterface
                         ->defaultValue([])
                         ->scalarPrototype()->end()
                     ->end()
-                ->end();
+                ->end()
+        ;
     }
 }

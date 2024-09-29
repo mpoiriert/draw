@@ -14,6 +14,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(RequestQueryParameterFetcherListener::class)]
 class RequestQueryParameterFetcherListenerTest extends TestCase
 {
@@ -52,7 +55,8 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         );
 
         $this->object
-            ->onKernelController($event);
+            ->onKernelController($event)
+        ;
 
         static::assertEmpty($request->attributes->all());
     }

@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(ExecuteCronJobMessageHandler::class)]
 class ExecuteCronJobMessageHandlerTest extends TestCase
 {
@@ -34,13 +37,14 @@ class ExecuteCronJobMessageHandlerTest extends TestCase
         $this->cronJobProcessor
             ->expects(static::once())
             ->method('process')
-            ->with($execution = (new CronJob())->newExecution());
+            ->with($execution = (new CronJob())->newExecution())
+        ;
 
         $this->handler->handleExecuteCronJobMessage(
             new ExecuteCronJobMessage($execution)
         );
 
-        static::assertEquals(CronJobExecution::STATE_REQUESTED, $execution->getState());
+        static::assertSame(CronJobExecution::STATE_REQUESTED, $execution->getState());
         static::assertNotNull($execution->getRequestedAt());
     }
 }

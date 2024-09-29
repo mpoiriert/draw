@@ -21,7 +21,7 @@ class PreventDeleteVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        if (!\in_array('SONATA_CAN_DELETE', $attributes)) {
+        if (!\in_array('SONATA_CAN_DELETE', $attributes, true)) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 

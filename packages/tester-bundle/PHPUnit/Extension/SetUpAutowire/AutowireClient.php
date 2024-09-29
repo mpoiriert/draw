@@ -37,13 +37,7 @@ class AutowireClient implements AutowireInterface
     public function autowire(TestCase $testCase, \ReflectionProperty $reflectionProperty): void
     {
         if (!$testCase instanceof SymfonyWebTestCase && !$testCase instanceof DrawWebTestCase) {
-            throw new \RuntimeException(
-                \sprintf(
-                    'AutowireClient attribute can only be used in %s or %s.',
-                    SymfonyWebTestCase::class,
-                    DrawWebTestCase::class
-                )
-            );
+            throw new \RuntimeException(\sprintf('AutowireClient attribute can only be used in %s or %s.', SymfonyWebTestCase::class, DrawWebTestCase::class));
         }
 
         // This is to ensure the kernel is not booted before calling createClient

@@ -37,12 +37,14 @@ trait JsonResponseAssertionsTrait
                     $file,
                     $propertyPathsCheck
                 )
-            );
+            )
+        ;
     }
 
     public static function getJsonResponseDataTester(): DataTester
     {
         return (new DataTester(static::getResponseContent()))
-            ->transform('json_decode');
+            ->transform('json_decode')
+        ;
     }
 }

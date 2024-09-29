@@ -7,6 +7,9 @@ use Draw\Bundle\TesterBundle\WebTestCase;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
+/**
+ * @internal
+ */
 class OpenApiControllerTest extends WebTestCase implements AutowiredInterface
 {
     #[AutowireClient]

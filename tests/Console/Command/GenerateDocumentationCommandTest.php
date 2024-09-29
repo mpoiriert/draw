@@ -13,6 +13,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * @internal
+ */
 #[CoversClass(GenerateDocumentationCommand::class)]
 class GenerateDocumentationCommandTest extends TestCase implements AutowiredInterface
 {
@@ -51,7 +54,7 @@ class GenerateDocumentationCommandTest extends TestCase implements AutowiredInte
         $filePath = tempnam(sys_get_temp_dir(), 'testExecute');
 
         register_shutdown_function(
-            function () use ($filePath): void {
+            static function () use ($filePath): void {
                 if (file_exists($filePath)) {
                     unlink($filePath);
                 }
@@ -66,7 +69,8 @@ class GenerateDocumentationCommandTest extends TestCase implements AutowiredInte
                         'Export completed',
                     ])
                     ->setExpectedErrorOutput(null)
-            );
+            )
+        ;
 
         if ($this->writeFile) {
             file_put_contents(

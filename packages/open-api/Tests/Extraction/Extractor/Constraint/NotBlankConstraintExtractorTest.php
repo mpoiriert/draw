@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+/**
+ * @internal
+ */
 #[CoversClass(NotBlankConstraintExtractor::class)]
 class NotBlankConstraintExtractorTest extends TestCase
 {

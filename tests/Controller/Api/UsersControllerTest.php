@@ -19,6 +19,9 @@ use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ */
 class UsersControllerTest extends WebTestCase implements AutowiredInterface
 {
     use TemplatedMailerAssertionsTrait;
@@ -45,13 +48,15 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
             ->andWhere('user.email = :email')
             ->setParameter('email', 'test@example.com')
             ->getQuery()
-            ->execute();
+            ->execute()
+        ;
     }
 
     public function testUsersAction(): void
     {
         $this->client
-            ->request('GET', '/api/users');
+            ->request('GET', '/api/users')
+        ;
 
         static::assertResponseIsSuccessful();
     }
@@ -71,7 +76,8 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
                         ['id' => 1],
                     ],
                 ]
-            );
+            )
+        ;
 
         static::assertResponseIsSuccessful();
 
@@ -94,13 +100,15 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
                 [
                     'tags' => [],
                 ]
-            );
+            )
+        ;
 
         static::assertResponseIsSuccessful();
 
         static::getJsonResponseDataTester()
             ->path('tags')
-            ->assertSame([]);
+            ->assertSame([])
+        ;
     }
 
     #[Depends('testUsersCreateAction')]
@@ -115,13 +123,15 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
                 [
                     ['id' => 1],
                 ]
-            );
+            )
+        ;
 
         static::assertResponseIsSuccessful();
 
         static::getJsonResponseDataTester()
             ->path('[0].id')
-            ->assertSame(1);
+            ->assertSame(1)
+        ;
     }
 
     #[Depends('testUsersCreateAction')]
@@ -132,7 +142,8 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
             ->jsonRequest(
                 'POST',
                 '/api/users/'.$user->id.'/reset-password-email',
-            );
+            )
+        ;
 
         static::assertResponseIsSuccessful();
 
@@ -157,7 +168,8 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
         $this->client->loginUser($this->user);
 
         $this->client
-            ->jsonRequest('DELETE', '/api/users/'.$user->id);
+            ->jsonRequest('DELETE', '/api/users/'.$user->id)
+        ;
 
         static::assertResponseStatusCodeSame(Response::HTTP_NO_CONTENT);
     }
@@ -172,7 +184,8 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
                 '/api/users',
                 server: ['CONTENT_TYPE' => 'application/xml'],
                 content: '<test />'
-            );
+            )
+        ;
 
         static::assertResponseStatusCodeSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
     }

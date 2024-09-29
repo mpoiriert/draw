@@ -8,6 +8,9 @@ use Draw\Component\Profiling\Sql\SqlMetric;
 use Draw\Component\Profiling\Sql\SqlMetricBuilder;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class SqlMetricBuilderTest extends TestCase
 {
     private SqlMetricBuilder $metricBuilder;
@@ -28,8 +31,8 @@ class SqlMetricBuilderTest extends TestCase
         $metric = $this->metricBuilder->build();
 
         static::assertInstanceOf(SqlMetric::class, $metric);
-        static::assertEquals(1, $metric->count);
-        static::assertEquals(
+        static::assertSame(1, $metric->count);
+        static::assertSame(
             ['query'],
             $metric->queries
         );

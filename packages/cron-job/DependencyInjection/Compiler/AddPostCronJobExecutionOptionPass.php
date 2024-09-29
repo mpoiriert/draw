@@ -29,7 +29,8 @@ class AddPostCronJobExecutionOptionPass implements CompilerPassInterface
                         InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                         'Queue does cron job by name after execution of the command.',
                     ]
-                );
+                )
+            ;
         }
     }
 }

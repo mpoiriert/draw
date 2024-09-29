@@ -6,6 +6,9 @@ use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 
+/**
+ * @internal
+ */
 class PreEncodeEventTest extends TestCase
 {
     private PreEncodeEvent $object;

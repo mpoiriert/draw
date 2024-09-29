@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 
+/**
+ * @internal
+ */
 class BaseSerializerEventTest extends TestCase
 {
     public static function provideTestConstruct(): iterable

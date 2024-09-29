@@ -14,7 +14,8 @@ class ConfigAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('id');
+            ->add('id')
+        ;
     }
 
     public function configureFormFields(FormMapper $form): void
@@ -27,17 +28,19 @@ class ConfigAdmin extends AbstractAdmin
                 [
                     'attr' => ['rows' => 20],
                 ]
-            );
+            )
+        ;
 
         $form->get('data')->addModelTransformer(new CallbackTransformer(
-            fn ($data) => null !== $data ? json_encode($data, \JSON_PRETTY_PRINT) : null,
-            fn ($data) => !empty($data) ? json_decode((string) $data, true, 512, \JSON_THROW_ON_ERROR) : null
+            static fn ($data) => null !== $data ? json_encode($data, \JSON_PRETTY_PRINT) : null,
+            static fn ($data) => !empty($data) ? json_decode((string) $data, true, 512, \JSON_THROW_ON_ERROR) : null
         ));
     }
 
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->addIdentifier('id');
+            ->addIdentifier('id')
+        ;
     }
 }

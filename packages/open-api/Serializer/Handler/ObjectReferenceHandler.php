@@ -51,7 +51,8 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
         $identifiers = $this->getManagerForClass($class)
             ->getMetadataFactory()
             ->getMetadataFor($class)
-            ->getIdentifierValues($value);
+            ->getIdentifierValues($value)
+        ;
 
         return current($identifiers);
     }
@@ -67,7 +68,8 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
         }
 
         return $this->getManagerForClass($type['params'][0]['name'])
-            ->find($type['params'][0]['name'], $value);
+            ->find($type['params'][0]['name'], $value)
+        ;
     }
 
     private function getManagerForClass(string $class): ObjectManager

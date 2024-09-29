@@ -24,7 +24,8 @@ class CompilerPass implements CompilerPassInterface
                 }
 
                 $container->getDefinition($serviceId)
-                    ->addMethodCall('addExtension', [new Reference(ImportExtension::class)]);
+                    ->addMethodCall('addExtension', [new Reference(ImportExtension::class)])
+                ;
 
                 break;
             }

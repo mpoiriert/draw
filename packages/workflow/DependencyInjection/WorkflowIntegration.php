@@ -24,7 +24,7 @@ class WorkflowIntegration implements IntegrationInterface
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Workflow\\',
+            $namespace = 'Draw\Component\Workflow\\',
             \dirname(
                 (new \ReflectionClass(AddTransitionNameToContextListener::class))->getFileName(),
                 2

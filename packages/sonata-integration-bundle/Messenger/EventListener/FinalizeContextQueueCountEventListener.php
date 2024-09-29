@@ -18,7 +18,6 @@ class FinalizeContextQueueCountEventListener implements EventSubscriberInterface
 
     public function __construct(private TransportRepositoryInterface $transportRepository)
     {
-
     }
 
     public function finalizeContext(FinalizeContextEvent $event): void

@@ -7,6 +7,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Route;
 
+/**
+ * @internal
+ */
 #[CoversClass(RouteDefaultApiRouteVersionMatcher::class)]
 class RouteDefaultApiRouteVersionMatcherTest extends TestCase
 {

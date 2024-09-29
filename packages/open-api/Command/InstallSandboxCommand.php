@@ -25,7 +25,8 @@ class InstallSandboxCommand extends Command
             ->setName('draw:open-api:install-sandbox')
             ->addArgument('path', InputArgument::REQUIRED, 'Path were to extract the zip')
             ->setDescription('Install Open Api Sandbox from downloaded zip base on tag version.')
-            ->addOption('tag', null, InputOption::VALUE_REQUIRED, 'Swagger UI tag to install (eg. "v3.52.5")', 'master');
+            ->addOption('tag', null, InputOption::VALUE_REQUIRED, 'Swagger UI tag to install (eg. "v3.52.5")', 'master')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

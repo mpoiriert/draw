@@ -16,6 +16,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 
+/**
+ * @internal
+ */
 #[CoversClass(RoleRestrictedAuthenticatorListener::class)]
 class RoleRestrictedAuthenticatorListenerTest extends TestCase
 {
@@ -54,14 +57,17 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
     {
         $this->roleHierarchy
             ->expects(static::never())
-            ->method('getReachableRoleNames');
+            ->method('getReachableRoleNames')
+        ;
 
         $this->user
             ->expects(static::never())
-            ->method('getRoles');
+            ->method('getRoles')
+        ;
 
         $this->service
-            ->checkPassport($this->createCheckPassportEvent());
+            ->checkPassport($this->createCheckPassportEvent())
+        ;
     }
 
     public function testCheckPassportRoleDoNotMatch(): void
@@ -69,19 +75,22 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
         $this->user
             ->expects(static::once())
             ->method('getRoles')
-            ->willReturn($roles = ['ROLE_USER']);
+            ->willReturn($roles = ['ROLE_USER'])
+        ;
 
         $this->roleHierarchy
             ->expects(static::once())
             ->method('getReachableRoleNames')
             ->with($roles)
-            ->willReturn($roles);
+            ->willReturn($roles)
+        ;
 
         $this->expectException(CustomUserMessageAuthenticationException::class);
         $this->expectExceptionMessage('Access denied.');
 
         $this->service
-            ->checkPassport($this->createCheckPassportEvent([new RoleRestrictedBadge(uniqid('ROLE_'))]));
+            ->checkPassport($this->createCheckPassportEvent([new RoleRestrictedBadge(uniqid('ROLE_'))]))
+        ;
     }
 
     public function testCheckPassportRoleMatch(): void
@@ -89,18 +98,21 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
         $this->user
             ->expects(static::once())
             ->method('getRoles')
-            ->willReturn($roles = ['ROLE_USER']);
+            ->willReturn($roles = ['ROLE_USER'])
+        ;
 
         $this->roleHierarchy
             ->expects(static::once())
             ->method('getReachableRoleNames')
             ->with($roles)
-            ->willReturn([...$roles, ...[$role = uniqid('ROLE_')]]);
+            ->willReturn([...$roles, ...[$role = uniqid('ROLE_')]])
+        ;
 
         $badge = new RoleRestrictedBadge($role);
 
         $this->service
-            ->checkPassport($this->createCheckPassportEvent([$badge]));
+            ->checkPassport($this->createCheckPassportEvent([$badge]))
+        ;
 
         static::assertTrue($badge->isResolved());
     }

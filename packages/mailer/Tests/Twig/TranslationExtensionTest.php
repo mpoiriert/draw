@@ -11,6 +11,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
+/**
+ * @internal
+ */
 #[CoversClass(TranslationExtension::class)]
 class TranslationExtensionTest extends TestCase
 {
@@ -73,7 +76,8 @@ class TranslationExtensionTest extends TestCase
                 $domain,
                 $locale
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         static::assertSame(
             $message,
@@ -104,7 +108,8 @@ class TranslationExtensionTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $message1,
                 $result = uniqid('result-')
-            );
+            )
+        ;
 
         static::assertSame(
             $result,

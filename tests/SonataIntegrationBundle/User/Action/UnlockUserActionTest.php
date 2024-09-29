@@ -15,6 +15,9 @@ use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ */
 class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
 {
     #[AutowireClient]

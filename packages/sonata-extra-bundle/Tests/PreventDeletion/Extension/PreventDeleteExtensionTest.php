@@ -14,6 +14,9 @@ use Sonata\AdminBundle\Builder\ShowBuilderInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+/**
+ * @internal
+ */
 class PreventDeleteExtensionTest extends TestCase
 {
     private PreventDeleteExtension $object;
@@ -43,11 +46,13 @@ class PreventDeleteExtensionTest extends TestCase
             ->expects(static::once())
             ->method('isGranted')
             ->with('ROLE_ADMIN')
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $this->preventDeleteRelationLoader
             ->expects(static::never())
-            ->method('getRelationsForObject');
+            ->method('getRelationsForObject')
+        ;
 
         $showMapper = new ShowMapper(
             $this->createMock(ShowBuilderInterface::class),

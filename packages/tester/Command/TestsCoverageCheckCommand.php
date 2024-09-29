@@ -16,7 +16,8 @@ class TestsCoverageCheckCommand extends Command
             ->setName('draw:tester:coverage-check')
             ->setDescription('Check the code coverage by the tests')
             ->addArgument('clover-xlm-file-path', InputArgument::REQUIRED, 'Clover report file path')
-            ->addArgument('coverage', InputArgument::REQUIRED, 'Required coverage in percentage');
+            ->addArgument('coverage', InputArgument::REQUIRED, 'Required coverage in percentage')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

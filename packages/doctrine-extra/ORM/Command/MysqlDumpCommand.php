@@ -22,13 +22,15 @@ class MysqlDumpCommand extends Command
         $this
             ->setDescription('Dump a mysql database to a file')
             ->addArgument('file', InputArgument::REQUIRED, 'The file path to dump')
-            ->addOption('connection', 'c', InputOption::VALUE_REQUIRED, 'The connection to use', 'default');
+            ->addOption('connection', 'c', InputOption::VALUE_REQUIRED, 'The connection to use', 'default')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $connectionParameter = $this->ormManagerRegistry->getConnection($input->getOption('connection'))
-            ->getParams()['primary'];
+            ->getParams()['primary']
+        ;
 
         Process::fromShellCommandline(
             \sprintf(

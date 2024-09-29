@@ -21,13 +21,15 @@ class UserTagAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('tag');
+            ->add('tag')
+        ;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
             ->remove('edit')
-            ->remove('show');
+            ->remove('show')
+        ;
     }
 }

@@ -15,6 +15,9 @@ use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class OperationExtractorTest extends TestCase
 {
     use MockTrait;
@@ -164,10 +167,11 @@ class PhpDocOperationExtractorStubClass
 class PhpDocOperationExtractorStubService
 {
     /**
-     * @throws \Exception                          When problem occur
+     * @return PhpDocOperationExtractorStubService
+     *
+     * @throws \Exception                    When problem occur
      * @throws \LengthException
      * @throws ExtractionImpossibleException
-     * @return PhpDocOperationExtractorStubService
      */
     public function operation(self $service, mixed $string, array $array)
     {

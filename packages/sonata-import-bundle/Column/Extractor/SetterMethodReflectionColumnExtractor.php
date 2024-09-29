@@ -53,7 +53,8 @@ class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
         $parameter = array_shift($parameters);
 
         $columnInfo = (new Column())
-            ->setMappedTo($headerName);
+            ->setMappedTo($headerName)
+        ;
 
         if ($this->isDate($parameter)) {
             $columnInfo->setIsDate(true);
@@ -90,7 +91,7 @@ class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
 
         $name = $type->getName();
 
-        if (!\in_array($name, ['int', 'float', 'string', 'bool', 'mixed']) && !$this->isDate($parameter)) {
+        if (!\in_array($name, ['int', 'float', 'string', 'bool', 'mixed'], true) && !$this->isDate($parameter)) {
             return false;
         }
 

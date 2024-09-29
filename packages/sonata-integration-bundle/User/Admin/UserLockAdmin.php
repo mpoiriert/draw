@@ -49,7 +49,8 @@ class UserLockAdmin extends AbstractAdmin
                         'edit' => [],
                     ],
                 ]
-            );
+            )
+        ;
     }
 
     public function configureFormFields(FormMapper $form): void
@@ -87,7 +88,8 @@ class UserLockAdmin extends AbstractAdmin
                 [
                     'required' => false,
                 ]
-            );
+            )
+        ;
     }
 
     public function configureShowFields(ShowMapper $show): void
@@ -107,7 +109,8 @@ class UserLockAdmin extends AbstractAdmin
                     'virtual_field' => true,
                     'template' => '@DrawSonataIntegration/UserLock/CRUD/show_reason_details.html.twig',
                 ]
-            );
+            )
+        ;
     }
 
     public function configureGridFields(array $fields): array

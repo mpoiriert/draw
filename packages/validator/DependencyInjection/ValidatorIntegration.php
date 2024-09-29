@@ -27,7 +27,7 @@ class ValidatorIntegration implements IntegrationInterface
 
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Validator\\Constraints\\',
+            $namespace = 'Draw\Component\Validator\Constraints\\',
             \dirname((new \ReflectionClass(ValueIsNotUsedValidator::class))->getFileName()).'/*Validator.php'
         );
 

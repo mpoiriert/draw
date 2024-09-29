@@ -20,7 +20,8 @@ class MigrateCommand extends BaseCommand
     protected function configure(): void
     {
         $this
-            ->addArgument('migration-name', null, 'The migration name to migrate');
+            ->addArgument('migration-name', null, 'The migration name to migrate')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -34,7 +35,8 @@ class MigrateCommand extends BaseCommand
 
         $migrationEntity = $this->managerRegistry
             ->getRepository(Migration::class)
-            ->findOneBy(['name' => $migration::getName()]);
+            ->findOneBy(['name' => $migration::getName()])
+        ;
 
         $count = $migration->countAllThatNeedMigration();
 

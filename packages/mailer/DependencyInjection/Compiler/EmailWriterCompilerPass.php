@@ -39,7 +39,8 @@ class EmailWriterCompilerPass implements CompilerPassInterface
 
                 foreach ($emailTypes as $emailType) {
                     $emailWriterListenerDefinition
-                        ->addMethodCall('addWriter', [$emailType, $id, $methodName, $priority]);
+                        ->addMethodCall('addWriter', [$emailType, $id, $methodName, $priority])
+                    ;
                 }
             }
         }
@@ -48,6 +49,7 @@ class EmailWriterCompilerPass implements CompilerPassInterface
             ->setArgument(
                 '$serviceLocator',
                 ServiceLocatorTagPass::register($container, $writers)
-            );
+            )
+        ;
     }
 }

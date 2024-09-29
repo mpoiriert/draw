@@ -18,7 +18,7 @@ class CompositeExpressionEvaluator extends ExpressionEvaluator
 
         $type = $expression->getType();
 
-        if (!\in_array($type, [CompositeExpression::TYPE_AND, CompositeExpression::TYPE_OR])) {
+        if (!\in_array($type, [CompositeExpression::TYPE_AND, CompositeExpression::TYPE_OR], true)) {
             throw new \InvalidArgumentException('Unsupported CompositeExpression type ['.$type.']');
         }
 

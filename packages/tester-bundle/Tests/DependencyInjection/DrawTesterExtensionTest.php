@@ -12,6 +12,9 @@ use Draw\Component\Profiling\ProfilerInterface;
 use Draw\Component\Tester\Test\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 class DrawTesterExtensionTest extends ExtensionTestCase
 {
     public function createExtension(): Extension

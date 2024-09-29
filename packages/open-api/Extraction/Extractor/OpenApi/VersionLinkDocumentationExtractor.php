@@ -59,7 +59,8 @@ class VersionLinkDocumentationExtractor implements ExtractorInterface
                     'draw_open_api.versioned_api_doc',
                     ['version' => $otherVersion],
                     UrlGeneratorInterface::ABSOLUTE_URL
-                );
+                )
+            ;
 
             $target->info->description .= 'Go to <a href="'.$otherVersionUrl.'">Version '.$otherVersion.'</a><br/>';
         }

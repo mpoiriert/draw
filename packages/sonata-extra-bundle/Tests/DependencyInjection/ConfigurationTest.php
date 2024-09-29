@@ -7,6 +7,9 @@ use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Draw\Component\Tester\Test\DependencyInjection\ConfigurationTestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * @internal
+ */
 class ConfigurationTest extends ConfigurationTestCase
 {
     public function createConfiguration(): ConfigurationInterface

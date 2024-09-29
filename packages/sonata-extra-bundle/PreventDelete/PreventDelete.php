@@ -77,7 +77,8 @@ class PreventDelete
         $query = $this->createQueryBuilder($managerRegistry, $subject)
             ->select('1')
             ->setMaxResults(1)
-            ->getQuery();
+            ->getQuery()
+        ;
 
         if (class_exists(CommentSqlWalker::class)) {
             CommentSqlWalker::addComment(
@@ -100,7 +101,8 @@ class PreventDelete
             ->select('DISTINCT(root)')
             ->setMaxResults($limit)
             ->getQuery()
-            ->execute();
+            ->execute()
+        ;
 
         if (!$ids) {
             return $ids;
@@ -112,7 +114,8 @@ class PreventDelete
 
         $idField = $entityManager
             ->getClassMetadata($this->getRelatedClass())
-            ->getIdentifierFieldNames()[0];
+            ->getIdentifierFieldNames()[0]
+        ;
 
         return $entityManager
             ->createQueryBuilder()
@@ -121,7 +124,8 @@ class PreventDelete
             ->andWhere('root.'.$idField.' IN (:ids)')
             ->setParameter('ids', $ids)
             ->getQuery()
-            ->execute();
+            ->execute()
+        ;
     }
 
     private function createQueryBuilder(ManagerRegistry $managerRegistry, object $subject): QueryBuilder
@@ -133,7 +137,8 @@ class PreventDelete
         $paths = explode('.', $this->getPath());
 
         $queryBuilder = $entityManager->createQueryBuilder()
-            ->from($this->getRelatedClass(), 'root');
+            ->from($this->getRelatedClass(), 'root')
+        ;
 
         $nextAlias = 'root';
         foreach ($paths as $index => $path) {
@@ -143,7 +148,8 @@ class PreventDelete
 
         $queryBuilder
             ->andWhere('path_'.(\count($paths) - 1).' = :subject')
-            ->setParameter('subject', $subject);
+            ->setParameter('subject', $subject)
+        ;
 
         return $queryBuilder;
     }

@@ -13,6 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @internal
+ */
 class PreObjectDeleteBatchEventEventListenerTest extends KernelTestCase implements AutowiredInterface
 {
     #[AutowireService]
@@ -28,7 +31,8 @@ class PreObjectDeleteBatchEventEventListenerTest extends KernelTestCase implemen
     {
         $user = $this->entityManager
             ->getRepository(User::class)
-            ->findOneBy(['email' => 'admin@example.com']);
+            ->findOneBy(['email' => 'admin@example.com'])
+        ;
 
         $this->connectUser($user);
 
@@ -49,7 +53,8 @@ class PreObjectDeleteBatchEventEventListenerTest extends KernelTestCase implemen
     {
         $user = $this->entityManager
             ->getRepository(User::class)
-            ->findOneBy(['email' => 'admin@example.com']);
+            ->findOneBy(['email' => 'admin@example.com'])
+        ;
 
         $this->connectUser($user);
 
@@ -82,6 +87,7 @@ class PreObjectDeleteBatchEventEventListenerTest extends KernelTestCase implemen
                         return null;
                     }
                 }
-            );
+            )
+        ;
     }
 }

@@ -8,6 +8,9 @@ use Draw\Component\Core\DateTimeUtils;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(Execution::class)]
 class ExecutionTest extends TestCase
 {
@@ -269,7 +272,8 @@ class ExecutionTest extends TestCase
         $event->expects(static::once())
             ->method('hasChangedField')
             ->with('updatedAt')
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $this->entity->updateTimestamp($event);
 

@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * @internal
+ */
 #[CoversClass(CloudWatchLogsDownloadCommand::class)]
 class CloudWatchLogsDownloadCommandTest extends TestCase
 {
@@ -29,7 +32,8 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
             ->disableOriginalConstructor()
             ->disableOriginalClone()
             ->onlyMethods(['__call'])
-            ->getMock();
+            ->getMock()
+        ;
 
         $this->command = new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
     }
@@ -124,7 +128,8 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
                     ],
                     'nextForwardToken' => 'next-token',
                 ]
-            );
+            )
+        ;
 
         $this->execute(
             compact('logGroupName', 'logStreamName', 'output')
@@ -133,9 +138,10 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
                 '--endTime' => $endTime->format('Y-m-d H:i:s'),
             ]
         )
-            ->test(CommandDataTester::create());
+            ->test(CommandDataTester::create())
+        ;
 
-        static::assertEquals(
+        static::assertSame(
             "Line 1\nLine 2\n",
             file_get_contents($output)
         );
@@ -173,7 +179,8 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
                     ],
                     'nextForwardToken' => null,
                 ]
-            );
+            )
+        ;
 
         $this->execute(
             compact('logGroupName', 'logStreamName', 'output')
@@ -183,9 +190,10 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
                 '--fileMode' => 'a+',
             ]
         )
-            ->test(CommandDataTester::create());
+            ->test(CommandDataTester::create())
+        ;
 
-        static::assertEquals(
+        static::assertSame(
             "Before\nLine 1\n",
             file_get_contents($output)
         );

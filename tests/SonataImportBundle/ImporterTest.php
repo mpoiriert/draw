@@ -11,6 +11,9 @@ use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @internal
+ */
 class ImporterTest extends KernelTestCase implements AutowiredInterface
 {
     #[AutowireService]
@@ -33,7 +36,8 @@ class ImporterTest extends KernelTestCase implements AutowiredInterface
 
         $import = (new Import())
             ->setEntityClass(Tag::class)
-            ->setInsertWhenNotFound(false);
+            ->setInsertWhenNotFound(false)
+        ;
 
         $this->importer->buildFromFile(
             $import,
@@ -41,7 +45,8 @@ class ImporterTest extends KernelTestCase implements AutowiredInterface
         );
 
         $this->importer
-            ->processImport($import);
+            ->processImport($import)
+        ;
 
         $tag = $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => $name]);
 
@@ -53,7 +58,8 @@ class ImporterTest extends KernelTestCase implements AutowiredInterface
         $import->setInsertWhenNotFound(true);
 
         $this->importer
-            ->processImport($import);
+            ->processImport($import)
+        ;
 
         $tag = $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => $name]);
 

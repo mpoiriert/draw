@@ -5,6 +5,9 @@ namespace Your\Project\Name;
 use Draw\Component\Tester\DataTester;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ExampleTest extends TestCase
 {
     public function test(): void
@@ -13,7 +16,8 @@ class ExampleTest extends TestCase
 
         $tester = new DataTester($dataToTest);
         $tester
-            ->assertSame('A string value');
+            ->assertSame('A string value')
+        ;
     }
 
     // example-end: TestClass
@@ -22,7 +26,8 @@ class ExampleTest extends TestCase
     {
         // example-start: ConciseNew
         (new DataTester('A string value'))
-            ->assertSame('A string value');
+            ->assertSame('A string value')
+        ;
         // example-end: ConciseNew
     }
 
@@ -31,7 +36,8 @@ class ExampleTest extends TestCase
         // example-start: TestPath
         (new DataTester((object) ['key' => 'value']))
             ->path('key')
-            ->assertSame('value');
+            ->assertSame('value')
+        ;
         // example-end: TestPath
     }
 
@@ -49,7 +55,8 @@ class ExampleTest extends TestCase
         // example-start: DeeperPathTest
         (new DataTester((object) ['level1' => (object) ['level2' => 'value']]))
             ->path('level1')
-            ->path('level2')->assertSame('value');
+            ->path('level2')->assertSame('value')
+        ;
         // example-end: DeeperPathTest
     }
 
@@ -58,10 +65,11 @@ class ExampleTest extends TestCase
         // example-start: EachTest
         (new DataTester(['value1', 'value2']))
             ->each(
-                function (DataTester $tester): void {
+                static function (DataTester $tester): void {
                     $tester->assertIsString();
                 }
-            );
+            )
+        ;
         // example-end: EachTest
     }
 
@@ -70,7 +78,8 @@ class ExampleTest extends TestCase
         // example-start: Transform
         (new DataTester('{"key":"value"}'))
             ->transform('json_decode')
-            ->path('key')->assertSame('value');
+            ->path('key')->assertSame('value')
+        ;
         // example-end: Transform
     }
 
@@ -80,7 +89,8 @@ class ExampleTest extends TestCase
         (new DataTester('{"key":"value"}'))
             ->assertJson()
             ->transform('json_decode')
-            ->path('key')->assertSame('value');
+            ->path('key')->assertSame('value')
+        ;
         // example-end: AssertTransform
     }
 
@@ -89,8 +99,9 @@ class ExampleTest extends TestCase
         // example-start: AssertTransformCustom
         (new DataTester('{"key":"value"}'))
             ->assertJson()
-            ->transform(fn ($data) => json_decode((string) $data, true, 512, \JSON_THROW_ON_ERROR))
-            ->path('[key]')->assertSame('value');
+            ->transform(static fn ($data) => json_decode((string) $data, true, 512, \JSON_THROW_ON_ERROR))
+            ->path('[key]')->assertSame('value')
+        ;
         // example-end: AssertTransformCustom
     }
 
@@ -100,10 +111,11 @@ class ExampleTest extends TestCase
         (new DataTester(null))
             ->ifPathIsReadable(
                 'notExistingPath',
-                function (DataTester $tester): void {
+                static function (DataTester $tester): void {
                     // Will not be call with current data to test
                 }
-            );
+            )
+        ;
         // example-end: IfPathIsReadable
         static::assertTrue(true); // This is to prevent PHPUnit to flag test as risky
     }
@@ -124,17 +136,18 @@ class ExampleTest extends TestCase
         ];
         (new DataTester($users))
             ->each(
-                function (DataTester $tester): void {
+                static function (DataTester $tester): void {
                     $tester->path('firstName')->assertIsString();
                     $tester->path('active')->assertIsBool();
                     $tester->ifPathIsReadable(
                         'referral',
-                        function (DataTester $tester): void {
+                        static function (DataTester $tester): void {
                             $tester->assertIsString();
                         }
                     );
                 }
-            );
+            )
+        ;
         // example-end: IfPathIsReadableAndEach
     }
 
@@ -148,7 +161,8 @@ class ExampleTest extends TestCase
         ];
 
         (new DataTester($user))
-            ->test(new UserDataTester());
+            ->test(new UserDataTester())
+        ;
         // example-end: TestWithClassCallable
     }
 
@@ -168,7 +182,8 @@ class ExampleTest extends TestCase
         ];
 
         (new DataTester($users))
-            ->each(new UserDataTester());
+            ->each(new UserDataTester())
+        ;
         // example-end: EachWithClassCallableEach
     }
 }
@@ -182,7 +197,7 @@ class UserDataTester
         $tester->path('active')->assertIsBool();
         $tester->ifPathIsReadable(
             'referral',
-            function (DataTester $tester): void {
+            static function (DataTester $tester): void {
                 $tester->assertIsString();
             }
         );

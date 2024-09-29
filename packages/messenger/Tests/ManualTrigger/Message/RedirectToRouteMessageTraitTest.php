@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(RedirectToRouteMessageTrait::class)]
 class RedirectToRouteMessageTraitTest extends TestCase
 {
@@ -28,7 +31,8 @@ class RedirectToRouteMessageTraitTest extends TestCase
                 $this->urlParameters,
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
-            ->willReturn($url = uniqid('url-'));
+            ->willReturn($url = uniqid('url-'))
+        ;
 
         $response = $this->getRedirectResponse($urlGenerator);
 

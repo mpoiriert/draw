@@ -7,6 +7,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
+/**
+ * @internal
+ */
 class DecoratedLoggerTest extends TestCase
 {
     private DecoratedLogger $object;
@@ -43,7 +46,8 @@ class DecoratedLoggerTest extends TestCase
                 $level = uniqid(),
                 str_replace('{message}', $message = uniqid(), $this->decorateMessage),
                 $this->defaultContext,
-            );
+            )
+        ;
 
         $this->object->log($level, $message);
     }
@@ -57,7 +61,8 @@ class DecoratedLoggerTest extends TestCase
                 $level = uniqid(),
                 str_replace('{message}', $message = uniqid(), $this->decorateMessage),
                 array_merge($this->defaultContext, $context = ['otherKey' => uniqid()]),
-            );
+            )
+        ;
 
         $this->object->log($level, $message, $context);
     }
@@ -77,7 +82,8 @@ class DecoratedLoggerTest extends TestCase
                 $level = uniqid(),
                 $this->decorateMessage.' '.$message = uniqid(),
                 $this->defaultContext,
-            );
+            )
+        ;
 
         $this->object->log($level, $message);
     }

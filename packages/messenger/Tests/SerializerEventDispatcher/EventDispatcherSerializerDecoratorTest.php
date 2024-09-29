@@ -13,6 +13,9 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @internal
+ */
 class EventDispatcherSerializerDecoratorTest extends TestCase
 {
     use MockTrait;
@@ -47,7 +50,8 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
             ->expects(static::once())
             ->method('decode')
             ->with($data)
-            ->willReturn($envelope = new Envelope((object) []));
+            ->willReturn($envelope = new Envelope((object) []))
+        ;
 
         $this->eventDispatcher
             ->expects(static::once())
@@ -55,7 +59,8 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
             ->with(
                 new PostDecodeEvent($envelope)
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         static::assertSame(
             $envelope,
@@ -76,13 +81,15 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
                     [new PostEncodeEvent($envelope)]
                 )
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         $this->serializer
             ->expects(static::once())
             ->method('encode')
             ->with($envelope)
-            ->willReturn($data = ['body' => '', 'headers' => '']);
+            ->willReturn($data = ['body' => '', 'headers' => ''])
+        ;
 
         static::assertSame(
             $data,

@@ -51,7 +51,7 @@ class DoctrineInheritanceExtension extends AbstractAdminExtension
                 continue;
             }
 
-            if (!\in_array($data['value'], $subClasses)) {
+            if (!\in_array($data['value'], $subClasses, true)) {
                 continue;
             }
 
@@ -86,7 +86,7 @@ class DoctrineInheritanceExtension extends AbstractAdminExtension
                 $forClasses = [$forClasses];
             }
 
-            if (!\in_array($subClass, $forClasses)) {
+            if (!\in_array($subClass, $forClasses, true)) {
                 $mapper->remove($key);
             }
         }

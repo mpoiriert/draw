@@ -8,6 +8,9 @@ use App\MessageHandler\NullMessageHandler;
 use Draw\Bundle\TesterBundle\Messenger\MessageHandlerAssertionTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @internal
+ */
 class NullMessageHandlerTest extends KernelTestCase
 {
     use MessageHandlerAssertionTrait;

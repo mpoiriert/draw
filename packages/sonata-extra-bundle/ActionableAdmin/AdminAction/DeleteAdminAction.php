@@ -15,6 +15,7 @@ class DeleteAdminAction extends AdminAction
             ->setLabel('execution.action.delete.label')
             ->setIcon('fas fa-times')
             ->setController(DeleteAction::class)
-            ->setTranslationDomain('DrawSonataExtraBundle');
+            ->setTranslationDomain('DrawSonataExtraBundle')
+        ;
     }
 }

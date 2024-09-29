@@ -10,6 +10,9 @@ use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * @internal
+ */
 class PropertyReferenceEncodingListenerTest extends TestCase
 {
     private PropertyReferenceEncodingListener $object;

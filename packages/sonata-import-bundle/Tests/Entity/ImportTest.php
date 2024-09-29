@@ -15,6 +15,9 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Validation;
 
+/**
+ * @internal
+ */
 class ImportTest extends TestCase
 {
     use MockTrait;

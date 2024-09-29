@@ -107,7 +107,8 @@ class ObjectActionExecutioner
             $this->totalCount = (clone $this->target)
                 ->select('COUNT(o.id)')
                 ->getQuery()
-                ->getSingleScalarResult();
+                ->getSingleScalarResult()
+            ;
         }
 
         return $this->totalCount;

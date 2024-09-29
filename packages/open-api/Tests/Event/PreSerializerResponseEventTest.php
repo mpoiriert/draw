@@ -8,6 +8,9 @@ use JMS\Serializer\SerializationContext;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(PreSerializerResponseEvent::class)]
 class PreSerializerResponseEventTest extends TestCase
 {

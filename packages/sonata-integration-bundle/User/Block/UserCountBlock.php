@@ -48,7 +48,8 @@ class UserCountBlock extends AbstractBlockService
                 $response
             )
             ->setTtl(0)
-            ->setPrivate();
+            ->setPrivate()
+        ;
     }
 
     public function getName(): string

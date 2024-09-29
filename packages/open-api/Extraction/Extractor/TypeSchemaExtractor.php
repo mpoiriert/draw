@@ -61,7 +61,7 @@ class TypeSchemaExtractor implements ExtractorInterface
 
         $target->type = $primitiveType['type'];
 
-        if ('array' == $target->type) {
+        if ('array' === $target->type) {
             $target->items = $itemsSchema = new Schema();
             if (isset($primitiveType['subType'])) {
                 $extractionContext->getOpenApi()->extract(
@@ -74,7 +74,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return;
         }
 
-        if ('generic' == $target->type) {
+        if ('generic' === $target->type) {
             $target->type = 'object';
             $reflectionClass = new \ReflectionClass($primitiveType['class']);
             $subContext = $extractionContext->createSubContext();
@@ -88,7 +88,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             return;
         }
 
-        if ('object' == $target->type) {
+        if ('object' === $target->type) {
             $target->type = null;
             $reflectionClass = new \ReflectionClass($primitiveType['class']);
             $rootSchema = $extractionContext->getRootSchema();
@@ -140,11 +140,11 @@ class TypeSchemaExtractor implements ExtractorInterface
             $this->definitionHashes[$modelName] = [];
         }
 
-        if (!\in_array($hash, $this->definitionHashes[$modelName])) {
+        if (!\in_array($hash, $this->definitionHashes[$modelName], true)) {
             $this->definitionHashes[$modelName][] = $hash;
         }
 
-        return array_search($hash, $this->definitionHashes[$modelName]);
+        return array_search($hash, $this->definitionHashes[$modelName], true);
     }
 
     public static function getPrimitiveType(mixed $type, ?ExtractionContextInterface $extractionContext = null): ?array
@@ -161,7 +161,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             $type = substr($type, 1);
         }
 
-        if ('generic' == $type) {
+        if ('generic' === $type) {
             $type = $extractionContext->getParameter('generic-template');
         }
 

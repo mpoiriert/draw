@@ -43,7 +43,8 @@ class AutowireEntity implements AutowireInterface
             ->get(ManagerRegistry::class)
             ->getManager()
             ->getRepository($class)
-            ->findOneBy($this->criteria);
+            ->findOneBy($this->criteria)
+        ;
 
         $reflectionProperty->setValue(
             $testCase,

@@ -7,6 +7,9 @@ use PhpCsFixer\Tokenizer\Tokens;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ClassStaticCallFixerTest extends TestCase
 {
     private ClassStaticCallFixer $object;

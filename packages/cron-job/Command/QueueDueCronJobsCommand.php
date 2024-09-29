@@ -26,7 +26,8 @@ class QueueDueCronJobsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Queues due cron jobs');
+            ->setDescription('Queues due cron jobs')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -36,7 +37,8 @@ class QueueDueCronJobsCommand extends Command
 
         $cronJobs = $this->managerRegistry
             ->getRepository(CronJob::class)
-            ->findBy(['active' => true]);
+            ->findBy(['active' => true])
+        ;
 
         foreach ($cronJobs as $cronJob) {
             if (!$cronJob->isDue()) {

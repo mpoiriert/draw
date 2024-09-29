@@ -30,7 +30,8 @@ class ValueIsNotUsedValidator extends ConstraintValidator
         $queryBuilder = $manager->createQueryBuilder()
             ->from($constraint->entityClass, 'root')
             ->andWhere('root.'.$constraint->field.' = :value')
-            ->setParameter('value', $value);
+            ->setParameter('value', $value)
+        ;
 
         $identifiers = $manager->getClassMetadata($constraint->entityClass)->getIdentifier();
 
@@ -41,7 +42,8 @@ class ValueIsNotUsedValidator extends ConstraintValidator
         $result = $queryBuilder
             ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
 
         if (0 === \count($result)) {
             return;
@@ -51,6 +53,7 @@ class ValueIsNotUsedValidator extends ConstraintValidator
             ->buildViolation($constraint->message)
             ->setParameter('{{ value }}', $value)
             ->setCode(ValueIsNotUsed::CODE)
-            ->addViolation();
+            ->addViolation()
+        ;
     }
 }

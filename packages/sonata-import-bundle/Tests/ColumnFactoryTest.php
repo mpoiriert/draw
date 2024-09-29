@@ -10,6 +10,9 @@ use Draw\Bundle\SonataImportBundle\Entity\Import;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[
     CoversClass(ColumnFactory::class),
     CoversClass(SetterMethodReflectionColumnExtractor::class),
@@ -32,14 +35,16 @@ class ColumnFactoryTest extends TestCase
     public function testGenerateColumnsDate(): void
     {
         $import = (new Import())
-            ->setEntityClass(Import::class);
+            ->setEntityClass(Import::class)
+        ;
 
         $this->columnFactory
             ->buildColumns(
                 $import,
                 ['createdAt'],
                 ['2018-10-10']
-            );
+            )
+        ;
 
         $columns = $import->getColumns()->toArray();
 

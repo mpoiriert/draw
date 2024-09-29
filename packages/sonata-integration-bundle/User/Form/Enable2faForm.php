@@ -36,7 +36,8 @@ final class Enable2faForm extends AbstractType
                     'label' => 'form.enable_2fa.field.submit',
                     'attr' => ['class' => 'btn-primary', 'style' => 'float: left;'],
                 ]
-            );
+            )
+        ;
 
         $user = $options['user'] ?? null;
 
@@ -53,7 +54,8 @@ final class Enable2faForm extends AbstractType
                         ],
                         'validation_groups' => false,
                     ]
-                );
+                )
+            ;
         }
     }
 
@@ -67,6 +69,7 @@ final class Enable2faForm extends AbstractType
                 'attr' => [
                     'novalidate' => 'novalidate',
                 ],
-            ]);
+            ])
+        ;
     }
 }

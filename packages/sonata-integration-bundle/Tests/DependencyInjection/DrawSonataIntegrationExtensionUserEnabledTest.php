@@ -10,6 +10,9 @@ use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminRuntime;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionUserEnabledTest extends DrawSonataIntegrationExtensionTest
 {

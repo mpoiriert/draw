@@ -11,6 +11,9 @@ use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+/**
+ * @internal
+ */
 class SystemMessengerAuthenticatorListenerTest extends TestCase
 {
     private SystemMessengerAuthenticatorListener $object;
@@ -50,11 +53,13 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects(static::once())
             ->method('getToken')
-            ->willReturn($this->createMock(TokenInterface::class));
+            ->willReturn($this->createMock(TokenInterface::class))
+        ;
 
         $this->tokenStorage
             ->expects(static::never())
-            ->method('setToken');
+            ->method('setToken')
+        ;
 
         $this->object->connectSystem();
     }
@@ -64,17 +69,20 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects(static::once())
             ->method('getToken')
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->tokenStorage
             ->expects(static::once())
             ->method('setToken')
-            ->with($token = $this->createMock(TokenInterface::class));
+            ->with($token = $this->createMock(TokenInterface::class))
+        ;
 
         $this->systemAuthenticator
             ->expects(static::once())
             ->method('getTokenForSystem')
-            ->willReturn($token);
+            ->willReturn($token)
+        ;
 
         $this->object->connectSystem();
     }

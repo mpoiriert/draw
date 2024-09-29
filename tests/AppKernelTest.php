@@ -5,6 +5,9 @@ namespace App\Tests;
 use Draw\Bundle\TesterBundle\EventDispatcher\EventDispatcherTesterTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @internal
+ */
 class AppKernelTest extends KernelTestCase
 {
     use EventDispatcherTesterTrait;

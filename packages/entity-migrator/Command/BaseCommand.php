@@ -40,7 +40,7 @@ abstract class BaseCommand extends Command
             $question = new ChoiceQuestion(
                 'Select which migration',
                 array_map(
-                    fn (Migration $migration) => $migration->getName(),
+                    static fn (Migration $migration) => $migration->getName(),
                     $this->managerRegistry->getRepository(Migration::class)->findAll()
                 )
             );

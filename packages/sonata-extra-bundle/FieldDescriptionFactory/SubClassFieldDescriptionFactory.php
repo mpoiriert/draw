@@ -30,7 +30,8 @@ class SubClassFieldDescriptionFactory implements FieldDescriptionFactoryInterfac
         }
 
         return $this->decorated
-            ->create($options['forClasses'][0] ?? $class, $name, $options);
+            ->create($options['forClasses'][0] ?? $class, $name, $options)
+        ;
     }
 
     private function getForClasses(ClassMetadataInfo $classMetadata, string $fieldName): ?array
@@ -45,7 +46,8 @@ class SubClassFieldDescriptionFactory implements FieldDescriptionFactoryInterfac
         foreach ($classMetadata->subClasses as $subClass) {
             $subClassMetadata = $this->managerRegistry
                 ->getManagerForClass($subClass)
-                ->getClassMetadata($subClass);
+                ->getClassMetadata($subClass)
+            ;
 
             \assert($subClassMetadata instanceof ClassMetadataInfo);
 

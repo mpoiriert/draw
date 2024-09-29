@@ -10,6 +10,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
+/**
+ * @internal
+ */
 #[CoversClass(AddCommandExecutionOptionsCompilerPass::class)]
 class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 {

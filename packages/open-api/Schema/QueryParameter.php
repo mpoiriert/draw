@@ -71,7 +71,8 @@ class QueryParameter extends Parameter
         $parameters = [];
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $attributes = $reflectionParameter
-                ->getAttributes(self::class, \ReflectionAttribute::IS_INSTANCEOF);
+                ->getAttributes(self::class, \ReflectionAttribute::IS_INSTANCEOF)
+            ;
 
             foreach ($attributes as $attribute) {
                 $attribute = $attribute->newInstance();

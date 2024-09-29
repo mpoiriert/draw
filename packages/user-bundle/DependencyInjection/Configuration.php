@@ -44,7 +44,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createEmailWritersNodes())
                 ->scalarNode('user_entity_class')
                     ->validate()
-                        ->ifTrue(fn ($value) => !class_exists($value))
+                        ->ifTrue(static fn ($value) => !class_exists($value))
                         ->thenInvalid('The class [%s] for the user entity must exists.')
                     ->end()
                     ->defaultValue(User::class)
@@ -55,7 +55,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('invite_create_account_route')
                     ->defaultValue('home')
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }
@@ -80,7 +81,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('to_user')
                     ->canBeDisabled()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createAccountLockerNode(): ArrayNodeDefinition
@@ -92,7 +94,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('entity')
                     ->canBeEnabled()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createNeedPasswordChangeEnforcerNode(): ArrayNodeDefinition
@@ -101,12 +104,14 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->children()
                 ->scalarNode('change_password_route')->defaultValue('admin_change_password')->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createOnboardingNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('onboarding'))
-            ->canBeEnabled();
+            ->canBeEnabled()
+        ;
     }
 }

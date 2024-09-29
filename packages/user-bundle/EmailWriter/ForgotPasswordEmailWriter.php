@@ -42,7 +42,8 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
     public function completeEmail(ForgotPasswordEmail $forgotPasswordEmail, ?SecurityUserInterface $user): void
     {
         $forgotPasswordEmail
-            ->to($forgotPasswordEmail->getEmailAddress());
+            ->to($forgotPasswordEmail->getEmailAddress())
+        ;
 
         if (null === $user) {
             $forgotPasswordEmail
@@ -53,7 +54,8 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
                         [],
                         UrlGeneratorInterface::ABSOLUTE_URL
                     )
-                );
+                )
+            ;
 
             return;
         }
@@ -70,6 +72,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
                     new \DateTimeImmutable('+ 1 day'),
                     'reset_password',
                 )
-            );
+            )
+        ;
     }
 }

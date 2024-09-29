@@ -19,7 +19,8 @@ class EntityMigrationRepository
         $entityMigrationClass = $entity::getEntityMigrationClass();
 
         $entityMigration = $this->managerRegistry->getRepository($entityMigrationClass)
-            ->findOneBy(['entity' => $entity, 'migration' => $migration]);
+            ->findOneBy(['entity' => $entity, 'migration' => $migration])
+        ;
 
         if (null === $entityMigration) {
             $entityMigration = new $entityMigrationClass($entity, $migration);

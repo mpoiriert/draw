@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
+/**
+ * @internal
+ */
 class HttpExceptionToHttpCodeConverterTest extends TestCase
 {
     private HttpExceptionToHttpCodeConverter $httpExceptionToHttpCodeConverter;

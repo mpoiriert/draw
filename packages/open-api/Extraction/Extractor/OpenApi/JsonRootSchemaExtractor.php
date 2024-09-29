@@ -34,7 +34,7 @@ class JsonRootSchemaExtractor implements ExtractorInterface
         }
 
         $schema = json_decode($source, true);
-        if (\JSON_ERROR_NONE != json_last_error()) {
+        if (\JSON_ERROR_NONE !== json_last_error()) {
             return false;
         }
 
@@ -42,7 +42,7 @@ class JsonRootSchemaExtractor implements ExtractorInterface
             return false;
         }
 
-        if ('2.0' != $schema['swagger']) {
+        if ('2.0' !== $schema['swagger']) {
             return false;
         }
 

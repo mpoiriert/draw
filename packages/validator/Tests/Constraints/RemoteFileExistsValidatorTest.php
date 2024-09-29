@@ -12,6 +12,9 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
+/**
+ * @internal
+ */
 #[CoversClass(RemoteFileExistsValidator::class)]
 class RemoteFileExistsValidatorTest extends TestCase
 {
@@ -63,6 +66,6 @@ class RemoteFileExistsValidatorTest extends TestCase
         $validator = Validation::createValidator();
 
         $violations = $validator->validate($file, [new RemoteFileExists()]);
-        static::assertEquals($violationsCount, $violations->count());
+        static::assertCount($violationsCount, $violations);
     }
 }

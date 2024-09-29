@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\EqualTo;
 
+/**
+ * @internal
+ */
 class EvaluatorTest extends TestCase
 {
     private const SAMPLE_DATA = [

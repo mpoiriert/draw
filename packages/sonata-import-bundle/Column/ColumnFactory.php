@@ -24,7 +24,8 @@ class ColumnFactory
             $column = (new Column())
                 ->setImport($import)
                 ->setIsDate(false)
-                ->setHeaderName($headerName);
+                ->setHeaderName($headerName)
+            ;
 
             $columnSamples = [];
 

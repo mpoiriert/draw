@@ -17,6 +17,7 @@ class ExcludeDoctrineEntitiesCompilerPass implements CompilerPassInterface
             ->addMethodCall(
                 'addExcludePaths',
                 [$container->getParameter('draw.user.orm.metadata_driver.exclude_paths')]
-            );
+            )
+        ;
     }
 }

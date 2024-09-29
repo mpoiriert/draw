@@ -18,11 +18,13 @@ class DrawTesterExtension extends Extension
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
         $container
             ->registerForAutoconfiguration(ProfilerInterface::class)
-            ->addTag(ProfilerInterface::class);
+            ->addTag(ProfilerInterface::class)
+        ;
 
         $container
             ->registerForAutoconfiguration(ExpressionEvaluator::class)
-            ->addTag(ExpressionEvaluator::class);
+            ->addTag(ExpressionEvaluator::class)
+        ;
 
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
         $fileLoader = new Loader\XmlFileLoader($container, $fileLocator);

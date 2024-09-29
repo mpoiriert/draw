@@ -35,11 +35,12 @@ class DoctrineExtraIntegration implements IntegrationInterface
         }
 
         $container
-            ->registerAliasForArgument('doctrine', ManagerRegistry::class, 'ormManagerRegistry');
+            ->registerAliasForArgument('doctrine', ManagerRegistry::class, 'ormManagerRegistry')
+        ;
 
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\DoctrineExtra\\ORM\\',
+            $namespace = 'Draw\DoctrineExtra\ORM\\',
             \dirname((new \ReflectionClass(EntityHandler::class))->getFileName()),
         );
 
@@ -63,7 +64,8 @@ class DoctrineExtraIntegration implements IntegrationInterface
         }
 
         $container
-            ->registerAliasForArgument('doctrine_mongodb', ManagerRegistry::class, 'odmManagerRegistry');
+            ->registerAliasForArgument('doctrine_mongodb', ManagerRegistry::class, 'odmManagerRegistry')
+        ;
     }
 
     public function addConfiguration(ArrayNodeDefinition $node): void
@@ -72,7 +74,8 @@ class DoctrineExtraIntegration implements IntegrationInterface
             ->children()
                 ->append($this->createORMNode())
                 ->append($this->createMongoODMNode())
-            ->end();
+            ->end()
+        ;
     }
 
     private function createMongoODMNode(): ArrayNodeDefinition

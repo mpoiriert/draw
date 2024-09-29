@@ -6,6 +6,9 @@ use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 class DrawSonataExtraExtensionSessionTimeoutEnabledTest extends DrawSonataExtraExtensionTest
 {
     public function createExtension(): Extension

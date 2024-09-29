@@ -12,6 +12,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
+/**
+ * @internal
+ */
 #[CoversClass(StampManuallyTriggeredEnvelopeListener::class)]
 class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
 {

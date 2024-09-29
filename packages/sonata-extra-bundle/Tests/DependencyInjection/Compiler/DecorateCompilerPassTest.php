@@ -8,6 +8,9 @@ use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescripti
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @internal
+ */
 class DecorateCompilerPassTest extends TestCase
 {
     private DecoratesCompilerPass $compilerPass;

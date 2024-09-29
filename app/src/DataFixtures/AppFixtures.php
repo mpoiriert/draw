@@ -63,7 +63,8 @@ class AppFixtures extends Fixture
             ->getTranslatable()
             ->translate('fr')
                 ->setLabel('Administrateur')
-            ->getTranslatable();
+            ->getTranslatable()
+        ;
 
         yield 'inactive' => (new Tag())
             ->setName('inactive')
@@ -73,7 +74,8 @@ class AppFixtures extends Fixture
             ->getTranslatable()
             ->translate('fr')
                 ->setLabel('Inactif')
-            ->getTranslatable();
+            ->getTranslatable()
+        ;
 
         yield 'not-use' => (new Tag())
             ->setName('not-use')
@@ -82,7 +84,8 @@ class AppFixtures extends Fixture
             ->getTranslatable()
             ->translate('fr')
                 ->setLabel('Non Utilisé')
-            ->getTranslatable();
+            ->getTranslatable()
+        ;
     }
 
     private function loadUsers(): iterable
@@ -107,38 +110,44 @@ class AppFixtures extends Fixture
                         (new Address())
                             ->setStreet('201 Secondary Acme')
                     )
-            );
+            )
+        ;
 
         yield (new User())
             ->setEmail('2fa-admin@example.com')
             ->setPlainPassword('2fa-admin')
             ->setLevel(User::LEVEL_ADMIN)
-            ->setRoles(['ROLE_2FA_ADMIN']);
+            ->setRoles(['ROLE_2FA_ADMIN'])
+        ;
 
         yield (new User())
             ->setEmail('need-change-password@example.com')
             ->setNeedChangePassword(true)
             ->setLevel(User::LEVEL_ADMIN)
-            ->setRoles(['ROLE_ADMIN']);
+            ->setRoles(['ROLE_ADMIN'])
+        ;
 
         yield (new User())
             ->setEmail('locked@example.com')
             ->setPlainPassword('locked')
             ->setLevel(User::LEVEL_ADMIN)
             ->setRoles(['ROLE_ADMIN'])
-            ->setManualLock(true);
+            ->setManualLock(true)
+        ;
 
         $inactiveTag = $this->getObjectReference(Tag::class, 'inactive');
 
         foreach (range(1, 4) as $number) {
             $user = (new User())
                 ->setEmail('user-'.str_pad((string) $number, 4, '0', \STR_PAD_LEFT).'@example.com')
-                ->setPlainPassword('password');
+                ->setPlainPassword('password')
+            ;
 
             if (1 === $number) {
                 $user
                     ->setTags([$inactiveTag])
-                    ->setPreferredLocale('fr');
+                    ->setPreferredLocale('fr')
+                ;
             }
 
             yield $user;
@@ -154,27 +163,32 @@ class AppFixtures extends Fixture
         $user
             ->setOnDeleteRestrict(
                 $objects[] = (new ChildObject2())->setAttribute2('on-delete-restrict')
-            );
+            )
+        ;
 
         $user
             ->setOnDeleteCascade(
                 $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade')
-            );
+            )
+        ;
 
         $user
             ->setOnDeleteSetNull(
                 $objects[] = (new ChildObject2())->setAttribute2('on-delete-set-null')
-            );
+            )
+        ;
 
         $user
             ->setOnDeleteCascadeConfigOverridden(
                 $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade-config-overridden')
-            );
+            )
+        ;
 
         $user
             ->setOnDeleteCascadeAttributeOverridden(
                 $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade-attribute-overridden')
-            );
+            )
+        ;
 
         yield from $objects;
     }

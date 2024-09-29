@@ -51,10 +51,11 @@ class DeleteAction
                             )
                         );
                     },
-                    'execution' => function ($object) use ($objectActionExecutioner): void {
+                    'execution' => static function ($object) use ($objectActionExecutioner): void {
                         $objectActionExecutioner->getAdmin()->delete($object);
                     },
                 ]
-            );
+            )
+        ;
     }
 }

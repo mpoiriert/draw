@@ -19,7 +19,8 @@ class GenerateAssertsDocumentationPageCommand extends Command
                 InputArgument::OPTIONAL,
                 'The file path where the methods configuration are.',
                 __DIR__.'/../Resources/config/assert_methods.json'
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -48,7 +49,7 @@ that is normally pass trough the **PHPUnit Assert** methods.
             }
 
             $file .= "
-$methodName
+{$methodName}
 ".str_pad('', \strlen($methodName), '^').'
 
 .. literalinclude:: ../AssertTrait.php

@@ -69,7 +69,8 @@ class BaseObjectAdmin extends AbstractAdmin
                 filterOptions: [
                     'show_filter' => true,
                 ]
-            );
+            )
+        ;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -83,7 +84,8 @@ class BaseObjectAdmin extends AbstractAdmin
                 ]
             )
             ->add('dateTimeImmutable')
-            ->add('attribute2');
+            ->add('attribute2')
+        ;
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -97,6 +99,7 @@ class BaseObjectAdmin extends AbstractAdmin
             ->ifEnd()
             ->ifTrue($subject instanceof ChildObject2)
                 ->add('attribute2')
-            ->ifEnd();
+            ->ifEnd()
+        ;
     }
 }

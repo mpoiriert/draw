@@ -28,7 +28,8 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createNotifierNode())
                 ->append($this->createPreventDeleteExtensionNode())
                 ->append($this->createSessionTimeoutNode())
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }
@@ -36,7 +37,8 @@ class Configuration implements ConfigurationInterface
     private function createAutoHelpNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('auto_help'))
-            ->canBeEnabled();
+            ->canBeEnabled()
+        ;
     }
 
     private function createBatchDeleteCheckNode(): ArrayNodeDefinition
@@ -53,7 +55,8 @@ class Configuration implements ConfigurationInterface
     private function createNotifierNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('notifier'))
-            ->canBeEnabled();
+            ->canBeEnabled()
+        ;
     }
 
     private function createPreventDeleteExtensionNode(): ArrayNodeDefinition
@@ -62,13 +65,15 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->children()
                 ->scalarNode('restrict_to_role')->defaultNull()->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createActionableAdminNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('actionable_admin'))
-            ->canBeEnabled();
+            ->canBeEnabled()
+        ;
     }
 
     private function createAutoActionNode(): ArrayNodeDefinition
@@ -86,7 +91,8 @@ class Configuration implements ConfigurationInterface
                         ->ignoreExtraKeys(false)
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createCanSecurityHandlerNode(): ArrayNodeDefinition
@@ -103,7 +109,7 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('prevent_delete_from_all_relations')->defaultFalse()->end()
                         ->arrayNode('entities')
                             ->beforeNormalization()
-                            ->always(function ($config) {
+                            ->always(static function ($config) {
                                 foreach (array_keys($config) as $class) {
                                     $config[$class]['class'] = $class;
                                 }
@@ -134,13 +140,15 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createFixMenuDepthNode(): ArrayNodeDefinition
     {
         return (new ArrayNodeDefinition('fix_menu_depth'))
-            ->canBeEnabled();
+            ->canBeEnabled()
+        ;
     }
 
     private function createListFieldPriorityNode(): ArrayNodeDefinition
@@ -151,7 +159,7 @@ class Configuration implements ConfigurationInterface
                 ->integerNode('default_max_field')->defaultNull()->end()
                 ->arrayNode('default_field_priorities')
                     ->beforeNormalization()
-                    ->always(function ($config) {
+                    ->always(static function ($config) {
                         foreach ($config as $name => $configuration) {
                             if (!\is_array($configuration)) {
                                 $config[$name] = [
@@ -174,7 +182,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createSessionTimeoutNode(): ArrayNodeDefinition
@@ -183,6 +192,7 @@ class Configuration implements ConfigurationInterface
             ->canBeEnabled()
             ->children()
                 ->integerNode('delay')->defaultValue(3600)->end()
-            ->end();
+            ->end()
+        ;
     }
 }

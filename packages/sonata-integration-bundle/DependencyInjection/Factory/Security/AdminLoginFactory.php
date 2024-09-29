@@ -38,7 +38,8 @@ class AdminLoginFactory extends FormLoginFactory
                 ->scalarNode('username_parameter')->defaultValue('admin_login_form[email]')->end()
                 ->scalarNode('password_parameter')->defaultValue('admin_login_form[password]')->end()
                 ->scalarNode('required_role')->defaultValue('ROLE_SONATA_ADMIN')->end()
-            ->end();
+            ->end()
+        ;
     }
 
     public function createAuthenticator(ContainerBuilder $container, string $firewallName, array $config, string $userProviderId): string

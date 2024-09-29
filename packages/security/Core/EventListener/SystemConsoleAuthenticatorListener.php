@@ -38,7 +38,8 @@ class SystemConsoleAuthenticatorListener implements EventSubscriberInterface
                 null,
                 InputOption::VALUE_NONE,
                 'Execute the current command connected as the system user.',
-            );
+            )
+        ;
     }
 
     public function connectSystem(ConsoleCommandEvent $consoleCommandEvent): void

@@ -6,6 +6,9 @@ use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
 use Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 class DrawSonataExtraExtensionFixMenuDeptEnabledTest extends DrawSonataExtraExtensionTest
 {
     public function createExtension(): Extension

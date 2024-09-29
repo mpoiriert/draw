@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ * @internal
+ */
 class RequestHeadersProcessorTest extends TestCase
 {
     public static function provideTestInvoke(): iterable
@@ -85,12 +88,14 @@ class RequestHeadersProcessorTest extends TestCase
             $requestStack
                 ->expects(static::once())
                 ->method('getMainRequest')
-                ->willReturn(null);
+                ->willReturn(null)
+            ;
         } else {
             $requestStack
                 ->expects(static::once())
                 ->method('getMainRequest')
-                ->willReturn($mainRequest = new Request());
+                ->willReturn($mainRequest = new Request())
+            ;
 
             $mainRequest->headers->replace($requestHeaders);
         }

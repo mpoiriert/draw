@@ -19,6 +19,8 @@ use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @property SecurityIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(SecurityIntegration::class)]
 class SecurityIntegrationTest extends IntegrationTestCase
@@ -100,7 +102,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         [
                             SystemConsoleAuthenticatorListener::class,
                         ],
-                        function (Definition $definition): void {
+                        static function (Definition $definition): void {
                             static::assertTrue(
                                 $definition->getArgument('$systemAutoLogin')
                             );
@@ -128,7 +130,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         [
                             JwtEncoder::class,
                         ],
-                        function (Definition $definition) use ($key): void {
+                        static function (Definition $definition) use ($key): void {
                             static::assertSame(
                                 $key,
                                 $definition->getArgument('$key')
@@ -181,7 +183,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                         [
                             SystemAuthenticator::class,
                         ],
-                        function (Definition $definition): void {
+                        static function (Definition $definition): void {
                             static::assertSame(
                                 ['ROLE_SYSTEM'],
                                 $definition->getArgument('$roles')

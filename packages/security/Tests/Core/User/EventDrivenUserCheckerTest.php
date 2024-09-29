@@ -12,6 +12,9 @@ use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(EventDrivenUserChecker::class)]
 class EventDrivenUserCheckerTest extends TestCase
 {
@@ -44,7 +47,8 @@ class EventDrivenUserCheckerTest extends TestCase
         $this->decoratedUserChecker
             ->expects(static::once())
             ->method('checkPreAuth')
-            ->with($user);
+            ->with($user)
+        ;
 
         $this->eventDispatcher
             ->expects(static::once())
@@ -59,7 +63,8 @@ class EventDrivenUserCheckerTest extends TestCase
                     return true;
                 })
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         $this->object->checkPreAuth($user);
     }
@@ -71,7 +76,8 @@ class EventDrivenUserCheckerTest extends TestCase
         $this->decoratedUserChecker
             ->expects(static::once())
             ->method('checkPostAuth')
-            ->with($user);
+            ->with($user)
+        ;
 
         $this->eventDispatcher
             ->expects(static::once())
@@ -86,7 +92,8 @@ class EventDrivenUserCheckerTest extends TestCase
                     return true;
                 })
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         $this->object->checkPostAuth($user);
     }

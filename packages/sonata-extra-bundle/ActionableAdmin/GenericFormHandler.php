@@ -31,7 +31,7 @@ class GenericFormHandler
 
         $previousExecution = $executions['execution'];
 
-        $executions['execution'] = function (object $object) use ($objectActionExecutioner, $previousExecution): void {
+        $executions['execution'] = static function (object $object) use ($objectActionExecutioner, $previousExecution): void {
             $previousExecution($object, $objectActionExecutioner->options['form.data']);
         };
 
@@ -68,7 +68,8 @@ class GenericFormHandler
             : $form->getData();
 
         return $objectActionExecutioner
-            ->execute($executions);
+            ->execute($executions)
+        ;
     }
 
     /**
@@ -97,7 +98,8 @@ class GenericFormHandler
             return $this->formFactory
                 ->createBuilder($formClass, $data)
                 ->setAction($admin->generateObjectUrl($action, $objectActionExecutioner->getSubject()))
-                ->getForm();
+                ->getForm()
+            ;
         }
 
         $formBuilder = $this->formFactory
@@ -126,7 +128,8 @@ class GenericFormHandler
                 [
                     'data' => 'ok',
                 ]
-            );
+            )
+        ;
 
         if ($this->csrfTokenManager) {
             $formBuilder->add(

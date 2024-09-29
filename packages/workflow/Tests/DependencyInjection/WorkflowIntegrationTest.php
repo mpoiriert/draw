@@ -12,6 +12,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @property WorkflowIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(WorkflowIntegration::class)]
 class WorkflowIntegrationTest extends IntegrationTestCase

@@ -200,7 +200,8 @@ class CronJobExecution implements \Stringable
         $this
             ->setState(self::STATE_RUNNING)
             ->setExecutionStartedAt(new \DateTimeImmutable())
-            ->setExecutionEndedAt(null);
+            ->setExecutionEndedAt(null)
+        ;
     }
 
     public function end(): static
@@ -211,7 +212,8 @@ class CronJobExecution implements \Stringable
             ->setExecutionEndedAt($executionEndedAt = new \DateTimeImmutable())
             ->setExecutionDelay(
                 $executionEndedAt->getTimestamp() - $this->getExecutionStartedAt()->getTimestamp()
-            );
+            )
+        ;
 
         return $this;
     }
@@ -222,7 +224,8 @@ class CronJobExecution implements \Stringable
             ->end()
             ->setState(self::STATE_ERRORED)
             ->setExitCode($exitCode)
-            ->setError($error);
+            ->setError($error)
+        ;
     }
 
     public function acknowledge(): void

@@ -34,7 +34,7 @@ class DoctrineFieldColumnExtractor extends BaseColumnExtractor
     #[\Override]
     public function extractDefaultValue(Column $column, array $samples): ?Column
     {
-        if (!\in_array($column->getHeaderName(), $this->getOptions($column, []))) {
+        if (!\in_array($column->getHeaderName(), $this->getOptions($column, []), true)) {
             return null;
         }
 
@@ -43,7 +43,8 @@ class DoctrineFieldColumnExtractor extends BaseColumnExtractor
 
         $classMetadata = $this->managerRegistry
             ->getManagerForClass($class)
-            ->getClassMetadata($class);
+            ->getClassMetadata($class)
+        ;
 
         \assert($classMetadata instanceof ClassMetadata);
 
@@ -51,7 +52,8 @@ class DoctrineFieldColumnExtractor extends BaseColumnExtractor
 
         $columnInfo = (new Column())
             ->setMappedTo($headerName)
-            ->setIsDate(str_starts_with($fieldMapping['type'], 'date'));
+            ->setIsDate(str_starts_with($fieldMapping['type'], 'date'))
+        ;
 
         if ($fieldMapping['id'] ?? false) {
             $columnInfo->setIsIdentifier(true);

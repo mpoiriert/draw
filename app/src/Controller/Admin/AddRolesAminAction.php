@@ -22,7 +22,7 @@ class AddRolesAminAction
                 $request,
                 AddRolesForm::class,
                 null,
-                function (User $user, array $data) use ($objectActionExecutioner): void {
+                static function (User $user, array $data) use ($objectActionExecutioner): void {
                     $roles = $data['roles'];
 
                     $missingRoles = array_diff($roles, $user->getRoles());
@@ -34,6 +34,7 @@ class AddRolesAminAction
                         $objectActionExecutioner->skip('all-roles-already-set');
                     }
                 }
-            );
+            )
+        ;
     }
 }

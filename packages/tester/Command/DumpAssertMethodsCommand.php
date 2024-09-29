@@ -15,7 +15,8 @@ class DumpAssertMethodsCommand extends Command
         $this
             ->setName('draw:tester:dump-assert-methods')
             ->setDescription('Dump all PHPUnit Assert Methods in a json file to use for generation ')
-            ->addArgument('filePath', InputArgument::REQUIRED, 'The file path where to dump.');
+            ->addArgument('filePath', InputArgument::REQUIRED, 'The file path where to dump.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -43,28 +44,28 @@ class DumpAssertMethodsCommand extends Command
             $guessParameter = null;
 
             switch (true) {
-                case \in_array('actual', $parameters):
+                case \in_array('actual', $parameters, true):
                     $guessParameter = 'actual';
                     break;
-                case \in_array('array', $parameters):
+                case \in_array('array', $parameters, true):
                     $guessParameter = 'array';
                     break;
-                case \in_array('haystack', $parameters):
+                case \in_array('haystack', $parameters, true):
                     $guessParameter = 'haystack';
                     break;
-                case \in_array('condition', $parameters):
+                case \in_array('condition', $parameters, true):
                     $guessParameter = 'condition';
                     break;
-                case \in_array('className', $parameters):
+                case \in_array('className', $parameters, true):
                     $guessParameter = 'className';
                     break;
-                case \in_array('object', $parameters):
+                case \in_array('object', $parameters, true):
                     $guessParameter = 'object';
                     break;
-                case \in_array('string', $parameters):
+                case \in_array('string', $parameters, true):
                     $guessParameter = 'string';
                     break;
-                case 2 == \count($parameters):
+                case 2 === \count($parameters):
                     $guessParameter = $parameters[0];
                     break;
                 default:

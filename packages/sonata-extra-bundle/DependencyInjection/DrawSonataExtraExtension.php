@@ -51,7 +51,8 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             $container
                 ->getDefinition(AutoActionExtension::class)
                 ->setArgument('$ignoreAdmins', $config['auto_action']['ignore_admins'])
-                ->setArgument('$actions', $config['auto_action']['actions']);
+                ->setArgument('$actions', $config['auto_action']['actions'])
+            ;
         }
 
         if (!($config['auto_help']['enabled'] ?? false)) {
@@ -71,7 +72,8 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         } else {
             $container
                 ->getDefinition(PreventDeleteExtension::class)
-                ->setArgument('$restrictToRole', $config['prevent_delete_extension']['restrict_to_role']);
+                ->setArgument('$restrictToRole', $config['prevent_delete_extension']['restrict_to_role'])
+            ;
         }
 
         if (!($config['notifier']['enabled'] ?? false)) {
@@ -105,10 +107,12 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                     ->setArgument(
                         '$preventDeleteFromAllRelations',
                         $config['can_security_handler']['prevent_delete_voter']['prevent_delete_from_all_relations']
-                    );
+                    )
+                ;
                 if (!$config['can_security_handler']['prevent_delete_voter']['use_cache']) {
                     $container->getDefinition(PreventDeleteRelationLoader::class)
-                        ->setArgument('$cacheDirectory', null);
+                        ->setArgument('$cacheDirectory', null)
+                    ;
                 }
             }
         }
@@ -127,7 +131,8 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 ->setArguments([
                     '$defaultMaxField' => $config['list_field_priority']['default_max_field'],
                     '$defaultFieldPriorities' => $defaultFieldPriorities,
-                ]);
+                ])
+            ;
         }
 
         if (!($config['session_timeout']['enabled'] ?? false)) {
@@ -135,7 +140,8 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         } else {
             $container
                 ->getDefinition(SessionTimeoutRequestListener::class)
-                ->setArgument('$delay', $config['session_timeout']['delay']);
+                ->setArgument('$delay', $config['session_timeout']['delay'])
+            ;
         }
 
         $container->removeDefinition(FinalizeContextEvent::class);
@@ -161,7 +167,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
 
         $this->registerClasses(
             $loader,
-            'Draw\\Bundle\\SonataExtraBundle\\ActionableAdmin\\',
+            'Draw\Bundle\SonataExtraBundle\ActionableAdmin\\',
             \dirname((new \ReflectionClass(AdminAction::class))->getFileName()),
         );
     }

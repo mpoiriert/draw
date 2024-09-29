@@ -7,6 +7,9 @@ use Draw\Component\Messenger\Transport\Entity\DrawMessageTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawMessageTrait::class)]
 class DrawMessageTraitTest extends TestCase
 {

@@ -13,6 +13,9 @@ use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Process\Process;
 
+/**
+ * @internal
+ */
 #[
     CoversClass(RetryFailedMessageMessage::class),
     CoversClass(RetryFailedMessageMessageHandler::class),
@@ -48,11 +51,13 @@ class RetryFailedMessageMessageHandlerTest extends TestCase
                     '--force',
                 ]
             )
-            ->willReturn($process = $this->createMock(Process::class));
+            ->willReturn($process = $this->createMock(Process::class))
+        ;
 
         $process
             ->expects(static::once())
-            ->method('mustRun');
+            ->method('mustRun')
+        ;
 
         $this->handler->handleRetryFailedMessageMessage(
             new RetryFailedMessageMessage($messageId)

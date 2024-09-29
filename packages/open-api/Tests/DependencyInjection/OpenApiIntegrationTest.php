@@ -76,6 +76,9 @@ use Metadata\MetadataFactoryInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @internal
+ */
 class OpenApiIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface
@@ -165,8 +168,8 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                             ],
                         ],
                         'definitionAliases' => [
-                            ['class' => 'App\\Entity\\', 'alias' => ''],
-                            ['class' => 'App\\DTO\\', 'alias' => ''],
+                            ['class' => 'App\Entity\\', 'alias' => ''],
+                            ['class' => 'App\DTO\\', 'alias' => ''],
                         ],
                         'classNamingFilters' => [
                             AliasesClassNamingFilter::class,
@@ -323,13 +326,12 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.extractor.php_doc.operation_extractor',
                     [OperationExtractor::class],
-                    function (Definition $definition): void {
+                    static function (Definition $definition): void {
                         static::assertSame(
                             [
                                 [
                                     'registerExceptionResponseCodes',
                                     [\Exception::class, 100],
-
                                 ],
                                 [
                                     'registerExceptionResponseCodes',
@@ -397,7 +399,7 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.controller.open_api_controller',
                     [OpenApiController::class],
-                    function (Definition $definition): void {
+                    static function (Definition $definition): void {
                         static::assertSame(
                             [
                                 'controller.service_arguments' => [[]],
@@ -430,11 +432,11 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.naming.aliases_class_naming_filter',
                     [AliasesClassNamingFilter::class],
-                    function (Definition $definition): void {
+                    static function (Definition $definition): void {
                         static::assertSame(
                             [
-                                ['class' => 'App\\Entity\\', 'alias' => ''],
-                                ['class' => 'App\\DTO\\', 'alias' => ''],
+                                ['class' => 'App\Entity\\', 'alias' => ''],
+                                ['class' => 'App\DTO\\', 'alias' => ''],
                             ],
                             $definition->getArgument('$definitionAliases')
                         );

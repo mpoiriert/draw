@@ -19,6 +19,8 @@ use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @property ConsoleIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(ConsoleIntegration::class)]
 class ConsoleIntegrationTest extends IntegrationTestCase
@@ -133,7 +135,7 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                     [
                         CommandFlowListener::class,
                     ],
-                    function (Definition $definition): void {
+                    static function (Definition $definition): void {
                         static::assertTrue(
                             $definition->getArgument('$ignoreDisabledCommand')
                         );
@@ -144,7 +146,7 @@ class ConsoleIntegrationTest extends IntegrationTestCase
                     [
                         DocumentationFilterCommandEventListener::class,
                     ],
-                    function (Definition $definition): void {
+                    static function (Definition $definition): void {
                         static::assertSame(
                             'out',
                             $definition->getArgument('$filter')

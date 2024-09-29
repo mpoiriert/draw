@@ -19,7 +19,8 @@ class BasicEnvelopeFactory implements EnvelopeFactoryInterface
         foreach ($messages as $message) {
             $envelopes[] = $this->eventDispatcher
                 ->dispatch(new EnvelopeCreatedEvent($messageHolder, new Envelope($message)))
-                ->getEnvelope();
+                ->getEnvelope()
+            ;
         }
 
         return $envelopes;

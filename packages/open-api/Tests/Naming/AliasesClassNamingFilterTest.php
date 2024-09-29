@@ -7,6 +7,9 @@ use Draw\Component\OpenApi\Naming\ClassNamingFilterInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(AliasesClassNamingFilter::class)]
 class AliasesClassNamingFilterTest extends TestCase
 {

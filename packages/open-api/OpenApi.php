@@ -44,16 +44,17 @@ class OpenApi
         if (null === $serializer) {
             $serializer = SerializerBuilder::create()
                 ->configureListeners(
-                    function (EventDispatcher $dispatcher): void {
+                    static function (EventDispatcher $dispatcher): void {
                         $dispatcher->addSubscriber(new OpenApiSubscriber());
                     }
                 )
                 ->configureHandlers(
-                    function (HandlerRegistry $handlerRegistry): void {
+                    static function (HandlerRegistry $handlerRegistry): void {
                         $handlerRegistry->registerSubscribingHandler(new OpenApiHandler());
                     }
                 )
-                ->build();
+                ->build()
+            ;
         }
 
         $this->eventDispatcher ??= new SymfonyEventDispatcher();
@@ -109,7 +110,8 @@ class OpenApi
         $result = Validation::createValidatorBuilder()
             ->enableAnnotationMapping()
             ->getValidator()
-            ->validate($schema, null, [Constraint::DEFAULT_GROUP]);
+            ->validate($schema, null, [Constraint::DEFAULT_GROUP])
+        ;
 
         if (\count($result)) {
             throw new ConstraintViolationListException($result);

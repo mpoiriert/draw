@@ -11,6 +11,9 @@ use Symfony\Component\Messenger\Exception\InvalidArgumentException;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawTransportFactory::class)]
 class DrawTransportFactoryTest extends TestCase
 {

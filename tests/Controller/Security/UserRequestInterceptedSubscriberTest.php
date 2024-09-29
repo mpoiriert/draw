@@ -10,6 +10,9 @@ use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @internal
+ */
 class UserRequestInterceptedSubscriberTest extends WebTestCase implements AutowiredInterface
 {
     #[AutowireClient(
@@ -33,6 +36,7 @@ class UserRequestInterceptedSubscriberTest extends WebTestCase implements Autowi
 
         static::getJsonResponseDataTester()
             ->path('message')
-            ->assertSame('User request intercepted: 2fa_need_enabling');
+            ->assertSame('User request intercepted: 2fa_need_enabling')
+        ;
     }
 }

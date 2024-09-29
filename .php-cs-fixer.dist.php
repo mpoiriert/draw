@@ -10,38 +10,27 @@ $finder = (new \PhpCsFixer\Finder)
 
 $config = (new \PhpCsFixer\Config())
     ->setRules([
-        '@PHP74Migration' => true,
-        '@PHP74Migration:risky' => true,
+        '@PHP80Migration:risky' => true,
+        '@PHP82Migration' => true,
+        '@PhpCsFixer' => true,
+        '@PhpCsFixer:risky' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
         '@PHPUnit57Migration:risky' => true,
         '@PHPUnit60Migration:risky' => true,
         '@PHPUnit75Migration:risky' => true,
         '@PHPUnit84Migration:risky' => true,
-        'array_indentation' => true,
-        'combine_consecutive_issets' => true,
-        'combine_consecutive_unsets' => true,
-        'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
-        'php_unit_test_case_static_method_calls' => true,
-        'phpdoc_order' => true,
-        'header_comment' => [
-            'header' => '',
-        ],
-        'logical_operators' => true,
-        'no_useless_return' => true,
-        'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
-        'list_syntax' => ['syntax' => 'short'],
-        'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
-        'no_extra_blank_lines' => true,
-        'no_superfluous_phpdoc_tags' => ['allow_unused_params' => true, 'allow_mixed' => true, 'remove_inheritdoc' => true],
-        'no_useless_else' => true,
-        'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
-        'phpdoc_add_missing_param_annotation' => ['only_untyped' => true],
-        'single_line_throw' => false,
-        '@DoctrineAnnotation' => true,
-        // Disabled risky for now
+        '@PHPUnit91Migration:risky' => true,
+        '@PHPUnit100Migration:risky' => true,
+        'header_comment' => ['header' => '',], // Make sure we remove any header comments
+        'phpdoc_add_missing_param_annotation' => ['only_untyped' => true], // @PhpCsFixer use default 'true', we don't want php doc that are already typed
+        'method_chaining_indentation' => false, // @PhpCsFixer use default 'true' impact readability on symfony configuration and sonata admin
+        'phpdoc_no_empty_return' => false, // @PhpCsFixer use default 'true' draw/open-api require empty phpdoc for documentation
+        'final_internal_class' => false, // All test case are made internal, but we do not want them to be final
+        // Disabled for now
+        'strict_comparison' => false, // @PhpCsFixer:risky change this, we do need to loosely compare 2 object at some places, might find a way to fix this.
+        'php_unit_test_class_requires_covers' => false, // @PhpCsFixer use default 'true' putting covers nothing by default
         'declare_strict_types' => false,
-        'phpdoc_separation' => false,
     ])
     ->setFinder($finder);
 ;

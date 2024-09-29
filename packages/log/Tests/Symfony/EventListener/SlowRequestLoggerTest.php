@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+/**
+ * @internal
+ */
 class SlowRequestLoggerTest extends TestCase
 {
     private SlowRequestLoggerListener $object;
@@ -67,7 +70,8 @@ class SlowRequestLoggerTest extends TestCase
             ->expects(static::exactly(2))
             ->method('matches')
             ->with($request = new Request())
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $event = new TerminateEvent(
             $this->createMock(HttpKernelInterface::class),
@@ -100,7 +104,8 @@ class SlowRequestLoggerTest extends TestCase
 
                     return true;
                 })
-            );
+            )
+        ;
 
         $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($this->durations) / 1000) - 1);
 
@@ -113,7 +118,8 @@ class SlowRequestLoggerTest extends TestCase
             ->expects(static::exactly(2))
             ->method('matches')
             ->with($request = new Request())
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $event = new TerminateEvent(
             $this->createMock(HttpKernelInterface::class),
@@ -123,7 +129,8 @@ class SlowRequestLoggerTest extends TestCase
 
         $this->logger
             ->expects(static::never())
-            ->method('log');
+            ->method('log')
+        ;
 
         $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($this->durations) / 1000) - 1);
 

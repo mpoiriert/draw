@@ -15,6 +15,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
+/**
+ * @internal
+ */
 class PostExecutionQueueCronJobListenerTest extends KernelTestCase implements AutowiredCompletionAwareInterface
 {
     #[AutowireService]
@@ -41,7 +44,8 @@ class PostExecutionQueueCronJobListenerTest extends KernelTestCase implements Au
                     '--draw-post-execution-queue-cron-job' => ['test', 'test'],
                 ]),
                 new NullOutput()
-            );
+            )
+        ;
 
         static::assertSame(
             Command::SUCCESS,
@@ -55,7 +59,8 @@ class PostExecutionQueueCronJobListenerTest extends KernelTestCase implements Au
                     'execution.cronJob.name' => 'test',
                 ]),
                 2
-            );
+            )
+        ;
     }
 
     public function testTriggerCronJobError(): void
@@ -68,7 +73,8 @@ class PostExecutionQueueCronJobListenerTest extends KernelTestCase implements Au
                     '--draw-post-execution-queue-cron-job' => ['test', 'test'],
                 ]),
                 new NullOutput()
-            );
+            )
+        ;
 
         static::assertSame(
             Command::FAILURE,
@@ -79,6 +85,7 @@ class PostExecutionQueueCronJobListenerTest extends KernelTestCase implements Au
             ->assertMessageMatch(
                 ExecuteCronJobMessage::class,
                 count: 0
-            );
+            )
+        ;
     }
 }

@@ -30,6 +30,7 @@ class RetryFailedMessageMessageHandler
                     '--force',
                 ]
             )
-            ->mustRun();
+            ->mustRun()
+        ;
     }
 }

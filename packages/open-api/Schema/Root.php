@@ -203,7 +203,8 @@ class Root implements VendorExtensionSupportInterface
                     $context->buildViolation('Duplicate operationId: '.$operationId)
                         ->atPath('paths.'.$path.'.'.$method.'.operationId')
                         ->setInvalidValue($operationId)
-                        ->addViolation();
+                        ->addViolation()
+                    ;
                 }
 
                 $operationsIds[] = $operationId;

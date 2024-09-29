@@ -14,6 +14,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(NewestInstanceRoleCheckListener::class)]
 class NewestInstanceRoleListenerCheckTest extends TestCase
 {
@@ -53,7 +56,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     {
         $this->imdsClient
             ->expects(static::never())
-            ->method('getCurrentInstanceId');
+            ->method('getCurrentInstanceId')
+        ;
 
         $this->service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
@@ -70,7 +74,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     {
         $this->imdsClient
             ->expects(static::never())
-            ->method('getCurrentInstanceId');
+            ->method('getCurrentInstanceId')
+        ;
 
         $this->service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
@@ -89,7 +94,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
-            ->willThrowException(new \Exception());
+            ->willThrowException(new \Exception())
+        ;
 
         $this->service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
@@ -108,7 +114,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
@@ -128,7 +135,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
-            ->willReturn(uniqid('instance-id-'));
+            ->willReturn(uniqid('instance-id-'))
+        ;
 
         $this->mockEc2ClientDescribeInstances(
             $role,
@@ -153,7 +161,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
-            ->willReturn($instanceId = uniqid('instance-id-'));
+            ->willReturn($instanceId = uniqid('instance-id-'))
+        ;
 
         $this->mockEc2ClientDescribeInstances(
             $role,
@@ -187,7 +196,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
-            ->willReturn(uniqid('instance-id-'));
+            ->willReturn(uniqid('instance-id-'))
+        ;
 
         $this->mockEc2ClientDescribeInstances(
             $role,
@@ -213,7 +223,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
             ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
-            ->willReturn($instanceId = uniqid('instance-id-'));
+            ->willReturn($instanceId = uniqid('instance-id-'))
+        ;
 
         $this->mockEc2ClientDescribeInstances(
             $role,
@@ -248,7 +259,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         $ec2Client = $this->getMockBuilder(Ec2Client::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['__call'])
-            ->getMock();
+            ->getMock()
+        ;
 
         ReflectionAccessor::setPropertyValue(
             $this->service,
@@ -276,7 +288,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
                         ],
                     ],
                 ]
-            );
+            )
+        ;
 
         if ($error) {
             $invocationMocker->willThrowException($error);
@@ -290,7 +303,8 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
                             ],
                         ],
                     ]
-                );
+                )
+            ;
         }
     }
 
@@ -301,17 +315,20 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         $input->expects(static::once())
             ->method('hasOption')
             ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
-            ->willReturn($hasOption);
+            ->willReturn($hasOption)
+        ;
 
         if ($hasOption) {
             $input->expects(static::once())
                 ->method('getOption')
                 ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
-                ->willReturn($optionValue);
+                ->willReturn($optionValue)
+            ;
         } else {
             $input->expects(static::never())
                 ->method('getOption')
-                ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE);
+                ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
+            ;
         }
 
         return $input;

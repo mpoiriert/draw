@@ -9,6 +9,9 @@ use Draw\Bundle\SonataImportBundle\Entity\Import;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(SetterMethodReflectionColumnExtractor::class)]
 class SetterMethodReflectionColumnExtractorTest extends TestCase
 {
@@ -115,7 +118,8 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
             ->setImport(
                 (new Import())
                     ->setEntityClass(SetterClassStub::class)
-            );
+            )
+        ;
     }
 }
 

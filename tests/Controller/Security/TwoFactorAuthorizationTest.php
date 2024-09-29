@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
+/**
+ * @internal
+ */
 class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterface
 {
     final public const ADMIN_URL = '/admin';

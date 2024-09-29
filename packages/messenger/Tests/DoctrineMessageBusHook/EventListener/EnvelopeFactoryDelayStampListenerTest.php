@@ -11,6 +11,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
+/**
+ * @internal
+ */
 #[CoversClass(EnvelopeFactoryDelayStampListener::class)]
 class EnvelopeFactoryDelayStampListenerTest extends TestCase
 {

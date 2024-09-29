@@ -47,7 +47,8 @@ final class AdminLoginForm extends AbstractType
                     'label' => 'form.authenticate.field.submit',
                     'attr' => ['class' => 'btn-primary'],
                 ]
-            );
+            )
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -55,6 +56,7 @@ final class AdminLoginForm extends AbstractType
         $resolver
             ->setDefaults([
                 'translation_domain' => 'DrawUserBundle',
-            ]);
+            ])
+        ;
     }
 }

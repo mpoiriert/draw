@@ -26,7 +26,8 @@ class ListFieldPriorityExtension extends AbstractAdminExtension
                 'defaultMaxField' => $this->defaultMaxField,
                 'defaultFieldPriorities' => [],
             ])
-            ->resolve($options);
+            ->resolve($options)
+        ;
     }
 
     public function configureListFields(ListMapper $list): void

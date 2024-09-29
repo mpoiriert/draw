@@ -46,7 +46,8 @@ class LoggerDecoratorPass implements CompilerPassInterface
                         }
 
                         $calls[$i][1][$index] = (clone $decoratorDefinition)
-                            ->setArgument('$logger', $argument);
+                            ->setArgument('$logger', $argument)
+                        ;
                     }
                 }
                 $definition->setMethodCalls($calls);
@@ -97,6 +98,7 @@ class LoggerDecoratorPass implements CompilerPassInterface
         return (new Definition(DecoratedLogger::class))
             ->setArgument('defaultContext', $tag)
             ->setArgument('decorateMessage', $message)
-            ->addTag('kernel.reset', ['method' => 'reset']);
+            ->addTag('kernel.reset', ['method' => 'reset'])
+        ;
     }
 }

@@ -12,6 +12,9 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 
+/**
+ * @internal
+ */
 #[CoversClass(EmailSubjectFromHtmlTitleListener::class)]
 class EmailSubjectFromHtmlTitleListenerTest extends TestCase
 {
@@ -58,11 +61,13 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message
             ->expects(static::once())
             ->method('getSubject')
-            ->willReturn('Subject');
+            ->willReturn('Subject')
+        ;
 
         $message
             ->expects(static::never())
-            ->method('subject');
+            ->method('subject')
+        ;
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
     }
@@ -74,11 +79,13 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message
             ->expects(static::once())
             ->method('getHtmlBody')
-            ->willReturn('');
+            ->willReturn('')
+        ;
 
         $message
             ->expects(static::never())
-            ->method('subject');
+            ->method('subject')
+        ;
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
     }
@@ -90,11 +97,13 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message
             ->expects(static::once())
             ->method('getHtmlBody')
-            ->willReturn('<div></div>');
+            ->willReturn('<div></div>')
+        ;
 
         $message
             ->expects(static::never())
-            ->method('subject');
+            ->method('subject')
+        ;
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
     }
@@ -106,11 +115,13 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message
             ->expects(static::once())
             ->method('getHtmlBody')
-            ->willReturn('<html lang="en"><head><title></title></head></html>');
+            ->willReturn('<html lang="en"><head><title></title></head></html>')
+        ;
 
         $message
             ->expects(static::never())
-            ->method('subject');
+            ->method('subject')
+        ;
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
     }
@@ -122,12 +133,14 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message
             ->expects(static::once())
             ->method('getHtmlBody')
-            ->willReturn('<html lang="en"><head><title>Title</title></head></html>');
+            ->willReturn('<html lang="en"><head><title>Title</title></head></html>')
+        ;
 
         $message
             ->expects(static::once())
             ->method('subject')
-            ->with('Title');
+            ->with('Title')
+        ;
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
     }

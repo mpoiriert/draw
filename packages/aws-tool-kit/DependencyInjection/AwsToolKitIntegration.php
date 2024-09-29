@@ -32,7 +32,7 @@ class AwsToolKitIntegration implements IntegrationInterface, ContainerBuilderInt
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\AwsToolKit\\',
+            $namespace = 'Draw\Component\AwsToolKit\\',
             \dirname(
                 (new \ReflectionClass(ImdsClientInterface::class))->getFileName(),
                 2
@@ -69,7 +69,7 @@ class AwsToolKitIntegration implements IntegrationInterface, ContainerBuilderInt
     {
         $node
             ->validate()
-                ->ifTrue(fn (array $config) => match (true) {
+                ->ifTrue(static fn (array $config) => match (true) {
                     !$config['newest_instance_role_check']['enabled'], null !== $config['imds_version'] => false,
                     default => true,
                 })
@@ -80,6 +80,7 @@ class AwsToolKitIntegration implements IntegrationInterface, ContainerBuilderInt
                 ->arrayNode('newest_instance_role_check')
                     ->canBeEnabled()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 }

@@ -30,6 +30,7 @@ class EnvelopeFactoryDelayStampListener implements EventSubscriberInterface
         $event
             ->setEnvelope(
                 $envelope->with(new DelayStamp($this->delay))
-            );
+            )
+        ;
     }
 }

@@ -17,7 +17,7 @@ class DocumentationFilterCommandEventListener
     #[AsEventListener]
     public function onGenerateDocumentationEvent(GenerateDocumentationEvent $event): void
     {
-        $match = \in_array($event->getCommand()->getName(), $this->commandNames);
+        $match = \in_array($event->getCommand()->getName(), $this->commandNames, true);
 
         if ($match && self::FILTER_OUT === $this->filter) {
             $event->ignore();

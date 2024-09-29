@@ -32,12 +32,14 @@ abstract class IntegrationTestCase extends TestCase
 
         $extension->expects(static::any())
             ->method('getAlias')
-            ->willReturn($name);
+            ->willReturn($name)
+        ;
 
         $extension
             ->expects(static::any())
             ->method('getNamespace')
-            ->willReturn($name);
+            ->willReturn($name)
+        ;
 
         return $extension;
     }
@@ -59,7 +61,7 @@ abstract class IntegrationTestCase extends TestCase
     {
         $config = $this->processConfiguration([[]]);
 
-        static::assertEquals(
+        static::assertEqualsCanonicalizing(
             $this->getDefaultConfiguration(),
             $config
         );
@@ -163,7 +165,7 @@ abstract class IntegrationTestCase extends TestCase
                 'Available service ids: '.implode(', ', $definedServiceIds)
             );
 
-            unset($definedServiceIds[array_search($service->getId(), $definedServiceIds)]);
+            unset($definedServiceIds[array_search($service->getId(), $definedServiceIds, true)]);
 
             static::assertSame(
                 $service->getAliases(),

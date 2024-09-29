@@ -22,7 +22,8 @@ class AutoConfigureSubClassesCompilerClass implements CompilerPassInterface
 
             $container
                 ->getDefinition($serviceId)
-                ->addMethodCall('setSubClasses', [$subClasses]);
+                ->addMethodCall('setSubClasses', [$subClasses])
+            ;
 
             foreach (array_unique($subClasses) as $subClass) {
                 $adminClasses[$subClass][] = $serviceId;

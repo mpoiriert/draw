@@ -5,6 +5,9 @@ namespace Draw\Bundle\UserBundle\Tests\Entity;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ConfigurationTrait;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ConfigurationTraitTest extends TestCase
 {
     use ConfigurationTrait;

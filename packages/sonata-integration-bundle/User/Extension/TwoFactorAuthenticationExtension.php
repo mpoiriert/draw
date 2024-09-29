@@ -81,7 +81,8 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
                 [
                     'translation_domain' => 'DrawUserBundle',
                 ]
-            );
+            )
+        ;
 
         if (false !== $index = array_search($before, $keys, true)) {
             array_splice($keys, $index, 0, 'totpAuthenticationEnabled');
@@ -106,7 +107,7 @@ class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 
     public function configureActionButtons(AdminInterface $admin, $list, $action, ?object $object = null): array
     {
-        if (!\in_array($action, ['edit', 'show'])) {
+        if (!\in_array($action, ['edit', 'show'], true)) {
             return $list;
         }
 

@@ -6,6 +6,9 @@ use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(ExtractionImpossibleException::class)]
 class ExtractionImpossibleExceptionTest extends TestCase
 {

@@ -9,6 +9,9 @@ use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQ
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Security\CanShowMessageVoter;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataIntegrationExtensionTest
 {

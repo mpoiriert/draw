@@ -20,7 +20,8 @@ class DecoratesCompilerPass implements CompilerPassInterface
             ->setDecoratedService('sonata.admin.builder.orm_form', 'sonata.admin.builder.orm_form.inner')
             ->setArgument('$decoratedFormContractor', new Reference('sonata.admin.builder.orm_form.inner'))
             ->setAutoconfigured(true)
-            ->setAutowired(true);
+            ->setAutowired(true)
+        ;
 
         $container->setDefinition(
             'draw.sonata.admin.field_description_factory.orm',
@@ -29,6 +30,7 @@ class DecoratesCompilerPass implements CompilerPassInterface
             ->setDecoratedService('sonata.admin.field_description_factory.orm', 'sonata.admin.field_description_factory.orm.inner')
             ->setArgument('$decorated', new Reference('sonata.admin.field_description_factory.orm.inner'))
             ->setAutoconfigured(true)
-            ->setAutowired(true);
+            ->setAutowired(true)
+        ;
     }
 }

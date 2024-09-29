@@ -15,6 +15,9 @@ use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 use Symfony\Component\Messenger\Worker;
 
+/**
+ * @internal
+ */
 #[CoversClass(StopOnNewVersionListener::class)]
 class StopOnNewVersionListenerTest extends TestCase implements VersionVerificationInterface
 {

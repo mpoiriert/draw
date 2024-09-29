@@ -23,7 +23,8 @@ class Kernel extends BaseKernel implements CompilerPassInterface
             $container
                 ->getDefinition('test.client')
                 ->setClass(TestKernelBrowser::class)
-                ->setAutowired(true);
+                ->setAutowired(true)
+            ;
         }
     }
 }

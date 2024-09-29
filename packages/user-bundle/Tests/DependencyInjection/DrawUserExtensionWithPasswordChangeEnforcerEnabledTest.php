@@ -5,6 +5,9 @@ namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 use Draw\Bundle\UserBundle\EventListener\PasswordChangeEnforcerListener;
 use Draw\Bundle\UserBundle\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler;
 
+/**
+ * @internal
+ */
 class DrawUserExtensionWithPasswordChangeEnforcerEnabledTest extends DrawUserExtensionTest
 {
     public function getConfiguration(): array

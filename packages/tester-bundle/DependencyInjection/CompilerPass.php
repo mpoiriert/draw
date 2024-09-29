@@ -26,13 +26,15 @@ class CompilerPass implements CompilerPassInterface
             ->setArgument(
                 '$serviceProvider',
                 ServiceLocatorTagPass::register($container, $expressionEvaluators)
-            );
+            )
+        ;
 
         foreach ($container->findTaggedServiceIds('messenger.receiver') as $receiverId => $tags) {
             $transportTester = (new Definition(TransportTester::class))
                 ->setArgument('$transport', new Reference($receiverId))
                 ->setArgument('$evaluator', new Reference('draw.tester.expression_filter'))
-                ->setPublic(true);
+                ->setPublic(true)
+            ;
 
             $container->setDefinition($receiverId.'.draw.tester', $transportTester);
         }

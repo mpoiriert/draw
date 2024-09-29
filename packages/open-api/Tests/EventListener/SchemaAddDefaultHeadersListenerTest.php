@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(SchemaAddDefaultHeadersListener::class)]
 class SchemaAddDefaultHeadersListenerTest extends TestCase
 {

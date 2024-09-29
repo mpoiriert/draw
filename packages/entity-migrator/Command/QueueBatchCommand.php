@@ -39,7 +39,8 @@ class QueueBatchCommand extends BaseCommand
     protected function configure(): void
     {
         $this
-            ->addArgument('migration-name', null, 'The migration name to migrate');
+            ->addArgument('migration-name', null, 'The migration name to migrate')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -67,15 +68,18 @@ class QueueBatchCommand extends BaseCommand
 
         $migrationEntity = $manager
             ->getRepository(Migration::class)
-            ->findOneBy(['name' => $migration::getName()]);
+            ->findOneBy(['name' => $migration::getName()])
+        ;
 
         $metadata = $manager
             ->getMetadataFactory()
-            ->getMetadataFor($migration::getTargetEntityClass());
+            ->getMetadataFor($migration::getTargetEntityClass())
+        ;
 
         $entityMigrationClass = $metadata->getReflectionClass()
             ->getMethod('getEntityMigrationClass')
-            ->invoke(null);
+            ->invoke(null)
+        ;
 
         $entityMigrationMetadata = $manager->getClassMetadata($entityMigrationClass);
 
@@ -88,7 +92,8 @@ class QueueBatchCommand extends BaseCommand
                 $queryBuilder->expr()->literal(date('Y-m-d H:i:s')).' as created_at',
             )
             ->getQuery()
-            ->getSQL();
+            ->getSQL()
+        ;
 
         $manager
             ->getConnection()
@@ -99,21 +104,24 @@ class QueueBatchCommand extends BaseCommand
                     $sql
                 ),
                 array_map(
-                    fn (Parameter $parameter) => $parameter->getValue(),
+                    static fn (Parameter $parameter) => $parameter->getValue(),
                     $queryBuilder->getParameters()->toArray()
                 )
-            );
+            )
+        ;
 
         $queryBuilder = $manager
             ->createQueryBuilder()
             ->from($entityMigrationClass, 'entity_migration')
             ->andWhere('entity_migration.state = :state')
-            ->setParameter('state', BaseEntityMigration::STATE_NEW);
+            ->setParameter('state', BaseEntityMigration::STATE_NEW)
+        ;
 
         $count = (int) (clone $queryBuilder)
             ->select('count(entity_migration.id)')
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
 
         if (0 === $count) {
             $io->warning('No new entity need migration');
@@ -124,7 +132,8 @@ class QueueBatchCommand extends BaseCommand
         $result = $queryBuilder
             ->select('entity_migration.id as id')
             ->getQuery()
-            ->toIterable();
+            ->toIterable()
+        ;
 
         $progress = $io->createProgressBar($count);
         $progress->setFormat(ProgressBar::FORMAT_DEBUG);

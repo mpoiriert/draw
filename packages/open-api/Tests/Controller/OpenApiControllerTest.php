@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @internal
+ */
 class OpenApiControllerTest extends TestCase
 {
     private OpenApiController $object;
@@ -49,7 +52,8 @@ class OpenApiControllerTest extends TestCase
     {
         $this->openApi
             ->expects(static::never())
-            ->method('dump');
+            ->method('dump')
+        ;
 
         $route = uniqid('route-');
 
@@ -63,7 +67,8 @@ class OpenApiControllerTest extends TestCase
                 ],
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
-            ->willReturn($url = uniqid('url-'));
+            ->willReturn($url = uniqid('url-'))
+        ;
 
         $request = new Request();
         $request->attributes->set('_route', $route);
@@ -94,7 +99,8 @@ class OpenApiControllerTest extends TestCase
                 ],
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
-            ->willReturn(uniqid('url-'));
+            ->willReturn(uniqid('url-'))
+        ;
 
         $request = new Request();
         $request->attributes->set('_route', $route);
@@ -112,17 +118,20 @@ class OpenApiControllerTest extends TestCase
             ->with(
                 static::isInstanceOf(ExtractionContextInterface::class)
             )
-            ->willReturn($rootSchema = new Root());
+            ->willReturn($rootSchema = new Root())
+        ;
 
         $this->openApi
             ->expects(static::once())
             ->method('dump')
             ->with($rootSchema)
-            ->willReturn($rootSchemaJson = json_encode(['version' => $version], \JSON_THROW_ON_ERROR));
+            ->willReturn($rootSchemaJson = json_encode(['version' => $version], \JSON_THROW_ON_ERROR))
+        ;
 
         $this->urlGenerator
             ->expects(static::never())
-            ->method('generate');
+            ->method('generate')
+        ;
 
         $request = new Request();
         $request->setRequestFormat('json');

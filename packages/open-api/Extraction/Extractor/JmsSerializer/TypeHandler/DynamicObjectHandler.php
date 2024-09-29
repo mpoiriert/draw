@@ -27,7 +27,7 @@ class DynamicObjectHandler implements TypeToSchemaHandlerInterface
     private function getDynamicObjectType(PropertyMetadata $item): ?string
     {
         return match (true) {
-            !isset($item->type['name']), !\in_array($item->type['name'], ['array', 'ArrayCollection']), !isset($item->type['params'][0]['name']), 'string' != $item->type['params'][0]['name'], !isset($item->type['params'][1]['name']) => null,
+            !isset($item->type['name']), !\in_array($item->type['name'], ['array', 'ArrayCollection'], true), !isset($item->type['params'][0]['name']), 'string' !== $item->type['params'][0]['name'], !isset($item->type['params'][1]['name']) => null,
             default => $item->type['params'][1]['name'],
         };
     }

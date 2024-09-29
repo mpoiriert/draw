@@ -11,6 +11,9 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
+/**
+ * @internal
+ */
 #[CoversClass(MigrateEntityCommand::class)]
 class MigrateEntityCommandTest extends TestCase
 {

@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\RequestMatcher\PortRequestMatcher;
 
 /**
  * @property LogIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(LogIntegration::class)]
 class LogIntegrationTest extends IntegrationTestCase
@@ -131,7 +133,7 @@ class LogIntegrationTest extends IntegrationTestCase
                     [
                         SlowRequestLoggerListener::class,
                     ],
-                    function (Definition $definition): void {
+                    static function (Definition $definition): void {
                         $chainRequestMatcherDefinitions = $definition->getArgument('$requestMatchers');
 
                         static::assertCount(2, $chainRequestMatcherDefinitions);

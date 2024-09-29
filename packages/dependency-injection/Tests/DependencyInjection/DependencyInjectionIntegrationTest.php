@@ -6,6 +6,9 @@ use Draw\Component\DependencyInjection\DependencyInjection\DependencyInjectionIn
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 
+/**
+ * @internal
+ */
 class DependencyInjectionIntegrationTest extends IntegrationTestCase
 {
     public function createIntegration(): IntegrationInterface

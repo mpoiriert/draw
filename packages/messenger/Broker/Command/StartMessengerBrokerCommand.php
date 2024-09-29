@@ -85,7 +85,8 @@ class StartMessengerBrokerCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'The timeout in seconds before sending a sig kill when stopping. Default to 10.',
                 10
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -124,10 +125,7 @@ class StartMessengerBrokerCommand extends Command
 
         $concurrent = (int) $concurrent;
         if ($concurrent <= 0) {
-            throw new InvalidOptionException(\sprintf(
-                'Concurrent value [%d] is invalid. Must be 1 or greater',
-                $concurrent
-            ));
+            throw new InvalidOptionException(\sprintf('Concurrent value [%d] is invalid. Must be 1 or greater', $concurrent));
         }
 
         return $concurrent;
@@ -137,18 +135,12 @@ class StartMessengerBrokerCommand extends Command
     {
         $processesPerCore = (float) $input->getOption('processes-per-core');
         if ($processesPerCore <= 0) {
-            throw new InvalidOptionException(\sprintf(
-                'Processes per core value [%f] is invalid. Must be greater than 0',
-                $processesPerCore
-            ));
+            throw new InvalidOptionException(\sprintf('Processes per core value [%f] is invalid. Must be greater than 0', $processesPerCore));
         }
 
         $minProcesses = (int) $input->getOption('minimum-processes');
         if ($minProcesses <= 0) {
-            throw new InvalidOptionException(\sprintf(
-                'Minimum processes value [%d] is invalid. Must be greater than 0',
-                $minProcesses
-            ));
+            throw new InvalidOptionException(\sprintf('Minimum processes value [%d] is invalid. Must be greater than 0', $minProcesses));
         }
 
         $process = max([$minProcesses, (int) round($processesPerCore * $this->cpuCounter->count())]);
@@ -159,10 +151,7 @@ class StartMessengerBrokerCommand extends Command
 
         $maxProcesses = (int) $input->getOption('maximum-processes');
         if ($maxProcesses <= 0) {
-            throw new InvalidOptionException(\sprintf(
-                'Maximum processes value [%d] is invalid. Must be greater than 0',
-                $maxProcesses
-            ));
+            throw new InvalidOptionException(\sprintf('Maximum processes value [%d] is invalid. Must be greater than 0', $maxProcesses));
         }
 
         return min([$maxProcesses, $process]);

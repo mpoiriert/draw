@@ -38,21 +38,24 @@ class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilde
     {
         $container
             ->registerForAutoconfiguration(MigrationInterface::class)
-            ->addTag(MigrationInterface::class);
+            ->addTag(MigrationInterface::class)
+        ;
 
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\EntityMigrator\\',
+            $namespace = 'Draw\Component\EntityMigrator\\',
             \dirname((new \ReflectionClass(Migrator::class))->getFileName()),
         );
 
         $container
             ->getDefinition(MigrateCommand::class)
-            ->setArgument('$servicesResetter', new Reference('services_resetter'));
+            ->setArgument('$servicesResetter', new Reference('services_resetter'))
+        ;
 
         $container
             ->getDefinition(QueueBatchCommand::class)
-            ->setArgument('$servicesResetter', new Reference('services_resetter'));
+            ->setArgument('$servicesResetter', new Reference('services_resetter'))
+        ;
 
         $this->renameDefinitions(
             $container,
@@ -66,7 +69,8 @@ class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilde
         $node
             ->children()
                 ->scalarNode('transport')->defaultValue('async_low_priority')->end()
-            ->end();
+            ->end()
+        ;
     }
 
     public function prepend(ContainerBuilder $container, array $config): void

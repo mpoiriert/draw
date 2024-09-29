@@ -118,6 +118,5 @@ trait DoctrineOrmTrait
                 return $this->entityManager;
             }
         };
-
     }
 }

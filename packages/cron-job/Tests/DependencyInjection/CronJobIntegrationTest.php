@@ -15,6 +15,9 @@ use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(CronJobIntegration::class)]
 class CronJobIntegrationTest extends IntegrationTestCase
 {

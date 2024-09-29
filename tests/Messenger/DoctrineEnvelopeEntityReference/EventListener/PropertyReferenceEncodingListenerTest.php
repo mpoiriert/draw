@@ -17,6 +17,9 @@ use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @internal
+ */
 class PropertyReferenceEncodingListenerTest extends KernelTestCase implements AutowiredInterface
 {
     #[AutowireService]

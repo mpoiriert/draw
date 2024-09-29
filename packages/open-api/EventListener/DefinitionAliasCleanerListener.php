@@ -41,7 +41,7 @@ class DefinitionAliasCleanerListener implements EventSubscriberInterface
                 function ($name, $index) use ($objectName, $rootSchema): void {
                     $replaceWith = $objectName.($index ? '?'.$index : '');
                     // If the replacement name is the same as the current index we do not do anything
-                    if ($replaceWith == $name) {
+                    if ($replaceWith === $name) {
                         return;
                     }
                     $rootSchema->definitions[$replaceWith] = $rootSchema->definitions[$name];

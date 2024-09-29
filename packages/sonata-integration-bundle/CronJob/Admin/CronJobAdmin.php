@@ -23,7 +23,8 @@ class CronJobAdmin extends AbstractAdmin
             ->add('id')
             ->add('name')
             ->add('command')
-            ->add('active');
+            ->add('active')
+        ;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -49,7 +50,8 @@ class CronJobAdmin extends AbstractAdmin
                         'delete' => [],
                     ],
                 ]
-            );
+            )
+        ;
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -72,7 +74,8 @@ class CronJobAdmin extends AbstractAdmin
             ->with('Queue Configuration', ['class' => 'col-md-4'])
                 ->add('timeToLive')
                 ->add('priority')
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -100,7 +103,8 @@ class CronJobAdmin extends AbstractAdmin
                         'fields' => $executionAdmin->configureGridFields([]),
                     ]
                 )
-            ->ifEnd();
+            ->ifEnd()
+        ;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

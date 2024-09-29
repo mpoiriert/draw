@@ -20,6 +20,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * @internal
+ */
 #[CoversClass(PropertiesExtractor::class)]
 class PropertiesExtractorTest extends TestCase
 {
@@ -129,6 +132,7 @@ class JmsExtractorStubModel
 
     /**
      * The simple enum.
+     *
      * @var JmsExtractorStubEnum
      */
     #[Serializer\Type('enum<\''.JmsExtractorStubEnum::class.'\'>')]
@@ -137,6 +141,7 @@ class JmsExtractorStubModel
 
     /**
      * The backed enum.
+     *
      * @var JmsExtractorStubEnum
      */
     #[Serializer\Type('enum<\''.JmsExtractorStubBackedEnum::class.'\'>')]
@@ -145,6 +150,7 @@ class JmsExtractorStubModel
 
     /**
      * The backed enum int.
+     *
      * @var JmsExtractorStubEnum
      */
     #[Serializer\Type('enum<\''.JmsExtractorStubBackedEnumInt::class.'\'>')]

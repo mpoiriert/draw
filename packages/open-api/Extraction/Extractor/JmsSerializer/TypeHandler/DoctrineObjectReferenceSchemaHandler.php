@@ -36,7 +36,7 @@ class DoctrineObjectReferenceSchemaHandler implements TypeToSchemaHandlerInterfa
     {
         switch (true) {
             case !isset($item->type['name']):
-            case 'ObjectReference' != $item->type['name']:
+            case 'ObjectReference' !== $item->type['name']:
             case !isset($item->type['params'][0]['name']):
                 return null;
         }
@@ -45,7 +45,8 @@ class DoctrineObjectReferenceSchemaHandler implements TypeToSchemaHandlerInterfa
 
         $metadataFor = $this->managerRegistry->getManagerForClass($class)
             ->getMetadataFactory()
-            ->getMetadataFor($class);
+            ->getMetadataFor($class)
+        ;
 
         return $this->getTypeFromJsmFactory(
             $class,

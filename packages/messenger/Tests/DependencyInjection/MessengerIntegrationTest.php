@@ -43,6 +43,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @property MessengerIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(MessengerIntegration::class)]
 class MessengerIntegrationTest extends IntegrationTestCase
@@ -225,7 +227,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
                     new ServiceConfiguration(
                         'draw.messenger.serializer_event_dispatcher0',
                         [],
-                        function (Definition $definition): void {
+                        static function (Definition $definition): void {
                             static::assertSame(
                                 ['messenger.transport.serializer', 'messenger.transport.serializer.inner', 0],
                                 $definition->getDecoratedService(),
@@ -295,7 +297,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         [
                             BrokerDefaultValuesListener::class,
                         ],
-                        function (Definition $definition): void {
+                        static function (Definition $definition): void {
                             static::assertSame(
                                 [
                                     'default' => [
@@ -339,7 +341,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         [
                             DoctrineBusMessageListener::class,
                         ],
-                        function (Definition $definition): void {
+                        static function (Definition $definition): void {
                             static::assertSame(
                                 [
                                     'doctrine.event_listener' => [
@@ -376,7 +378,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
                         [
                             EnvelopeFactoryDelayStampListener::class,
                         ],
-                        function (Definition $definition): void {
+                        static function (Definition $definition): void {
                             static::assertSame(
                                 [
                                     '$delay' => 5000,

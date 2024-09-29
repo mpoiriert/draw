@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(ImdsClientV2::class)]
 class ImdsClientV2Test extends TestCase
 {
@@ -33,14 +36,16 @@ class ImdsClientV2Test extends TestCase
             ->expects(static::once())
             ->method('getContent')
             ->with()
-            ->willReturn($token = uniqid('token-'));
+            ->willReturn($token = uniqid('token-'))
+        ;
 
         $instanceIdResponse = $this->createMock(ResponseInterface::class);
         $instanceIdResponse
             ->expects(static::once())
             ->method('getContent')
             ->with()
-            ->willReturn($instanceId = uniqid('instance-id-'));
+            ->willReturn($instanceId = uniqid('instance-id-'))
+        ;
 
         $this->httpClient
             ->expects(static::exactly(2))
@@ -70,7 +75,8 @@ class ImdsClientV2Test extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $tokenResponse,
                 $instanceIdResponse,
-            );
+            )
+        ;
 
         static::assertSame(
             $instanceId,

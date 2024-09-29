@@ -12,6 +12,9 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(MessageHolderTrait::class)]
 class LockableUserTraitTest extends TestCase
 {

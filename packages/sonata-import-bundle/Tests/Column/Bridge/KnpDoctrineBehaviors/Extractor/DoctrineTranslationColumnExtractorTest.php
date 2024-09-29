@@ -10,6 +10,9 @@ use Draw\Bundle\SonataImportBundle\Tests\Column\Bridge\KnpDoctrineBehaviors\Extr
 use Draw\Component\Tester\DoctrineOrmTrait;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class DoctrineTranslationColumnExtractorTest extends TestCase
 {
     use DoctrineOrmTrait;
@@ -89,6 +92,7 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
             ->setImport(
                 (new Import())
                     ->setEntityClass(TranslatableEntity::class)
-            );
+            )
+        ;
     }
 }

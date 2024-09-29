@@ -22,6 +22,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(ResponseSerializerListener::class)]
 class ResponseSerializerListenerTest extends TestCase
 {
@@ -73,7 +76,8 @@ class ResponseSerializerListenerTest extends TestCase
 
         $this->serializationContextFactory
             ->expects(static::never())
-            ->method('createSerializationContext');
+            ->method('createSerializationContext')
+        ;
 
         $this->object->onKernelView($event);
     }
@@ -91,7 +95,8 @@ class ResponseSerializerListenerTest extends TestCase
 
         $this->serializationContextFactory
             ->expects(static::never())
-            ->method('createSerializationContext');
+            ->method('createSerializationContext')
+        ;
 
         $this->object->onKernelView($event);
     }
@@ -109,7 +114,8 @@ class ResponseSerializerListenerTest extends TestCase
 
         $this->serializationContextFactory
             ->expects(static::never())
-            ->method('createSerializationContext');
+            ->method('createSerializationContext')
+        ;
 
         $this->object->onKernelView($event);
 
@@ -133,7 +139,8 @@ class ResponseSerializerListenerTest extends TestCase
         $this->serializationContextFactory
             ->expects(static::once())
             ->method('createSerializationContext')
-            ->willReturn($context = new SerializationContext());
+            ->willReturn($context = new SerializationContext())
+        ;
 
         $request->attributes->set(
             '_draw_open_api_serialization',
@@ -184,13 +191,15 @@ class ResponseSerializerListenerTest extends TestCase
                         return true;
                     }
                 )
-            );
+            )
+        ;
 
         $this->serializer
             ->expects(static::once())
             ->method('serialize')
             ->with($result, 'json', $context)
-            ->willReturn($jsonResult = json_encode(['key' => uniqid('value-')], \JSON_THROW_ON_ERROR));
+            ->willReturn($jsonResult = json_encode(['key' => uniqid('value-')], \JSON_THROW_ON_ERROR))
+        ;
 
         $this->object->onKernelView($event);
 
@@ -228,12 +237,14 @@ class ResponseSerializerListenerTest extends TestCase
         $responseHeaderBag
             ->expects(static::once())
             ->method('add')
-            ->with($headers);
+            ->with($headers)
+        ;
 
         $headerBag
             ->expects(static::once())
             ->method('allPreserveCase')
-            ->willReturn($headers);
+            ->willReturn($headers)
+        ;
 
         $this->object->onKernelResponse($responseEvent);
     }
@@ -266,7 +277,8 @@ class ResponseSerializerListenerTest extends TestCase
                 $key = uniqid('key-'),
                 $values = ['values'],
                 false
-            );
+            )
+        ;
 
         $this->object::setResponseHeader($request, $key, $values, false);
     }

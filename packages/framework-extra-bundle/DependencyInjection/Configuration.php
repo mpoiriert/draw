@@ -24,11 +24,13 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
-                ->scalarNode('symfony_console_path')->defaultNull()->end();
+                ->scalarNode('symfony_console_path')->defaultNull()->end()
+        ;
 
         foreach ($this->integrations as $integration) {
             $integrationNode = (new ArrayNodeDefinition($integration->getConfigSectionName()))
-                ->canBeEnabled();
+                ->canBeEnabled()
+            ;
 
             $integration->addConfiguration($integrationNode);
             $node->append($integrationNode);

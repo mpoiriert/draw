@@ -95,7 +95,8 @@ class OperationExtractor implements ExtractorInterface
             ->create(
                 $reflector,
                 $this->contextFactory->createFromReflector($reflector)
-            );
+            )
+        ;
     }
 
     private function getExceptionInformation(\Exception $exception): array
@@ -115,7 +116,7 @@ class OperationExtractor implements ExtractorInterface
         ExtractionContextInterface $extractionContext,
         \ReflectionMethod $source,
     ): int {
-        if (\in_array((string) $type, ['void', 'null'])) {
+        if (\in_array((string) $type, ['void', 'null'], true)) {
             return 204;
         }
 
@@ -247,7 +248,8 @@ class OperationExtractor implements ExtractorInterface
                                 (string) $paramTag->getType(),
                                 $parameter,
                                 $subContext
-                            );
+                            )
+                        ;
                     }
                 }
             }

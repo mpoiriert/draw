@@ -40,7 +40,7 @@ class ParameterExtractor implements ExtractorInterface
 
             $exists = false;
             foreach ($target->parameters as $index => $parameter) {
-                if ($parameter->name == $attribute->name) {
+                if ($parameter->name === $attribute->name) {
                     $exists = true;
                     $target->parameters[$index] = $attribute;
 

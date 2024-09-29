@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 
+/**
+ * @internal
+ */
 class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInterface
 {
     use MessengerTesterTrait;
@@ -63,7 +66,8 @@ class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInter
         static::assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         static::getTransportTester('async')
-            ->assertMessageMatch(RetryFailedMessageMessage::class);
+            ->assertMessageMatch(RetryFailedMessageMessage::class)
+        ;
 
         $this->client->followRedirect();
 

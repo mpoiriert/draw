@@ -15,6 +15,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * @internal
+ */
 #[CoversClass(PurgeExpiredMessageCommand::class)]
 class PurgeExpiredMessageCommandTest extends TestCase
 {
@@ -59,7 +62,8 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->expects(static::once())
             ->method('has')
             ->with($transport = uniqid('transport-invalid-'))
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(\sprintf('The "%s" transport does not exist.', $transport));
@@ -72,7 +76,8 @@ class PurgeExpiredMessageCommandTest extends TestCase
         $this->transportRepository
             ->expects(static::once())
             ->method('getTransportNames')
-            ->willReturn($transportNames = [uniqid('transport1-'), uniqid('transport2-')]);
+            ->willReturn($transportNames = [uniqid('transport1-'), uniqid('transport2-')])
+        ;
 
         $this->transportRepository
             ->expects(static::exactly(2))
@@ -86,7 +91,8 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $transport1 = $this->createMock(PurgeableTransportInterface::class),
                 $transport2 = $this->createMock(PurgeAwareTransportInterface::class)
-            );
+            )
+        ;
 
         $transport1
             ->expects(static::once())
@@ -94,11 +100,13 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->with(
                 static::equalToWithDelta(new \DateTime('- 1 month'), 1)
             )
-            ->willReturn($count = random_int(1, 10));
+            ->willReturn($count = random_int(1, 10))
+        ;
 
         $transport2
             ->expects(static::never())
-            ->method('purgeObsoleteMessages');
+            ->method('purgeObsoleteMessages')
+        ;
 
         $this->execute([], [])
             ->test(
@@ -116,7 +124,8 @@ class PurgeExpiredMessageCommandTest extends TestCase
                         ),
                     ]
                 )
-            );
+            )
+        ;
     }
 
     public function testExecuteWithInputs(): void
@@ -125,7 +134,8 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->expects(static::once())
             ->method('has')
             ->with($transportName = uniqid('transport-'))
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $this->transportRepository
             ->expects(static::once())
@@ -133,7 +143,8 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->with($transportName)
             ->willReturn(
                 $transport = $this->createMock(PurgeableTransportInterface::class),
-            );
+            )
+        ;
 
         $delay = '- 4 months';
 
@@ -143,7 +154,8 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->with(
                 static::equalToWithDelta(new \DateTime($delay), 1)
             )
-            ->willReturn($count = random_int(1, 10));
+            ->willReturn($count = random_int(1, 10))
+        ;
 
         $this->execute(['transport' => $transportName, '--delay' => $delay], [])
             ->test(
@@ -157,6 +169,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
                         ),
                     ]
                 )
-            );
+            )
+        ;
     }
 }

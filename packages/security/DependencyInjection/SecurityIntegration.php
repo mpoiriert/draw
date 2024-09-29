@@ -55,7 +55,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Security\\Core\\',
+            $namespace = 'Draw\Component\Security\Core\\',
             $directory = \dirname(
                 (new \ReflectionClass(SystemAuthenticatorInterface::class))->getFileName(),
                 2
@@ -71,13 +71,15 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
             $container->removeDefinition(SystemAuthenticator::class);
         } else {
             $container->getDefinition(SystemAuthenticator::class)
-                ->setArgument('$roles', $config['system_authentication']['roles']);
+                ->setArgument('$roles', $config['system_authentication']['roles'])
+            ;
 
             $container
                 ->setAlias(
                     SystemAuthenticatorInterface::class,
                     SystemAuthenticator::class
-                );
+                )
+            ;
         }
 
         if (!$this->isConfigEnabled($container, $config['messenger_authentication'])
@@ -90,7 +92,8 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
             $container->removeDefinition(SystemConsoleAuthenticatorListener::class);
         } else {
             $container->getDefinition(SystemConsoleAuthenticatorListener::class)
-                ->setArgument('$systemAutoLogin', $config['console_authentication']['system_auto_login']);
+                ->setArgument('$systemAutoLogin', $config['console_authentication']['system_auto_login'])
+            ;
         }
 
         $this->renameDefinitions(
@@ -104,7 +107,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Security\\Jwt\\',
+            $namespace = 'Draw\Component\Security\Jwt\\',
             \dirname((new \ReflectionClass(JwtEncoder::class))->getFileName())
         );
 
@@ -114,7 +117,8 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
             $container
                 ->getDefinition(JwtEncoder::class)
                 ->setArgument('$key', $config['jwt']['encoder']['key'])
-                ->setArgument('$algorithm', $config['jwt']['encoder']['algorithm']);
+                ->setArgument('$algorithm', $config['jwt']['encoder']['algorithm'])
+            ;
         }
 
         $this->renameDefinitions(
@@ -128,7 +132,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Security\\Core\\Authorization\\Voter\\',
+            $namespace = 'Draw\Component\Security\Core\Authorization\Voter\\',
             \dirname((new \ReflectionClass(AbstainRoleHierarchyVoter::class))->getFileName())
         );
 
@@ -136,7 +140,8 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
             $container->removeDefinition(AbstainRoleHierarchyVoter::class);
         } else {
             $container
-                ->setAlias('security.access.role_hierarchy_voter', AbstainRoleHierarchyVoter::class);
+                ->setAlias('security.access.role_hierarchy_voter', AbstainRoleHierarchyVoter::class)
+            ;
         }
 
         $this->renameDefinitions(
@@ -150,7 +155,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Security\\Http\\',
+            $namespace = 'Draw\Component\Security\Http\\',
             $directory = \dirname(
                 (new \ReflectionClass(JwtAuthenticator::class))->getFileName(),
                 2
@@ -213,6 +218,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
                             ->canBeEnabled()
                         ->end()
                     ->end()
-            ->end();
+            ->end()
+        ;
     }
 }

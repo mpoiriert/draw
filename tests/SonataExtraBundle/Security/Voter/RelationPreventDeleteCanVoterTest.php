@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
+/**
+ * @internal
+ */
 class RelationPreventDeleteCanVoterTest extends KernelTestCase
 {
     private PreventDeleteVoter $object;

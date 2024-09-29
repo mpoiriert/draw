@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(Broker::class)]
 class BrokerTest extends TestCase
 {
@@ -114,7 +117,8 @@ class BrokerTest extends TestCase
                     ],
                 )
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         $this->processFactory
             ->expects(static::exactly($concurrent))
@@ -130,16 +134,19 @@ class BrokerTest extends TestCase
                 null,
                 null
             )
-            ->willReturn($process = $this->createMock(Process::class));
+            ->willReturn($process = $this->createMock(Process::class))
+        ;
 
         $process
             ->expects(static::exactly($concurrent))
-            ->method('start');
+            ->method('start')
+        ;
 
         $process
             ->expects(static::exactly($concurrent))
             ->method('isRunning')
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $this->service->start($concurrent, $timeout);
     }
@@ -162,7 +169,8 @@ class BrokerTest extends TestCase
                     return true;
                 })
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         $this->processFactory
             ->expects(static::exactly($concurrent))
@@ -178,11 +186,13 @@ class BrokerTest extends TestCase
                 null,
                 null
             )
-            ->willReturn($process = $this->createMock(Process::class));
+            ->willReturn($process = $this->createMock(Process::class))
+        ;
 
         $process
             ->expects(static::exactly($concurrent))
-            ->method('start');
+            ->method('start')
+        ;
 
         $process
             ->expects(static::exactly(6)) // $concurrent * 3
@@ -194,19 +204,22 @@ class BrokerTest extends TestCase
                 true,
                 false,
                 true
-            );
+            )
+        ;
 
         $process
             ->expects(static::exactly($concurrent))
             ->method('signal')
             ->with(15)
-            ->willReturnSelf();
+            ->willReturnSelf()
+        ;
 
         $process
             ->expects(static::once())
             ->method('stop')
             ->with(0)
-            ->willReturn(0);
+            ->willReturn(0)
+        ;
 
         $this->service->start($concurrent, 0);
     }
@@ -217,7 +230,8 @@ class BrokerTest extends TestCase
 
         $this->processFactory
             ->expects(static::never())
-            ->method('create');
+            ->method('create')
+        ;
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(\sprintf(
@@ -254,7 +268,8 @@ class BrokerTest extends TestCase
                     return true;
                 })
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         $this->processFactory
             ->expects(static::exactly($concurrent))
@@ -277,16 +292,19 @@ class BrokerTest extends TestCase
                 null,
                 null
             )
-            ->willReturn($process = $this->createMock(Process::class));
+            ->willReturn($process = $this->createMock(Process::class))
+        ;
 
         $process
             ->expects(static::exactly($concurrent))
-            ->method('start');
+            ->method('start')
+        ;
 
         $process
             ->expects(static::exactly($concurrent))
             ->method('isRunning')
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $this->service->start($concurrent, $timeout);
     }

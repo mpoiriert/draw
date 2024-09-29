@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Type;
 
+/**
+ * @internal
+ */
 #[CoversClass(Strtotime::class)]
 class StrtotimeTest extends TestCase
 {

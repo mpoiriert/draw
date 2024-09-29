@@ -21,7 +21,8 @@ class SendTestEmailCommand extends Command
         $this
             ->setName('draw:mailer:send-test-email')
             ->setDescription('Send a test email.')
-            ->addArgument('to', InputArgument::REQUIRED, 'Email to send to');
+            ->addArgument('to', InputArgument::REQUIRED, 'Email to send to')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

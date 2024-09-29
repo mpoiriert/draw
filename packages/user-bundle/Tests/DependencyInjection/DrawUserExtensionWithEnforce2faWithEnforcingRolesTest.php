@@ -5,6 +5,9 @@ namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\RolesTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\TwoFactorAuthenticationEnforcerInterface;
 
+/**
+ * @internal
+ */
 class DrawUserExtensionWithEnforce2faWithEnforcingRolesTest extends DrawUserExtensionWithEnforce2faTest
 {
     public function getConfiguration(): array

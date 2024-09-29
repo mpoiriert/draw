@@ -7,6 +7,9 @@ use Doctrine\DBAL\DriverManager;
 use Doctrine\Persistence\ConnectionRegistry;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
+/**
+ * @internal
+ */
 class TestCase extends BaseTestCase implements ConnectionRegistry
 {
     private static ?Connection $connection = null;

@@ -12,6 +12,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Filesystem\Filesystem;
 
+/**
+ * @internal
+ */
 #[CoversClass(InstallSandboxCommand::class)]
 class InstallSandboxCommandTest extends TestCase
 {
@@ -50,7 +53,7 @@ class InstallSandboxCommandTest extends TestCase
     {
         $path = sys_get_temp_dir().'/sandbox';
 
-        register_shutdown_function(function () use ($path): void {
+        register_shutdown_function(static function () use ($path): void {
             if (is_dir($path)) {
                 (new Filesystem())->remove($path);
             }
@@ -69,7 +72,8 @@ class InstallSandboxCommandTest extends TestCase
                     "Downloading Swagger UI... Ok.\n".
                     "Extracting zip file... Ok.\n"
                 )
-            );
+            )
+        ;
 
         static::assertDirectoryExists($path);
     }
@@ -78,7 +82,7 @@ class InstallSandboxCommandTest extends TestCase
     {
         $path = sys_get_temp_dir().'/sandbox';
 
-        register_shutdown_function(function () use ($path): void {
+        register_shutdown_function(static function () use ($path): void {
             if (is_dir($path)) {
                 (new Filesystem())->remove($path);
             }
@@ -92,7 +96,8 @@ class InstallSandboxCommandTest extends TestCase
 
         $filesystem
             ->expects(static::once())
-            ->method('dumpFile');
+            ->method('dumpFile')
+        ;
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Cannot open zip file [/tmp/swagger-ui-v3.52.5.zip]. Error code [9].');
@@ -110,6 +115,7 @@ class InstallSandboxCommandTest extends TestCase
                     "Downloading Swagger UI... Ok.\n".
                     "Extracting zip file... Ok.\n"
                 )
-            );
+            )
+        ;
     }
 }

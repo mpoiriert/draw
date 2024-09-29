@@ -28,7 +28,7 @@ abstract class ExtensionTestCase extends TestCase
     protected static function removeProvidedService(array $idsToRemove, iterable $providedServices): iterable
     {
         foreach ($providedServices as $providedService) {
-            if (!\in_array($providedService[0], $idsToRemove)) {
+            if (!\in_array($providedService[0], $idsToRemove, true)) {
                 yield $providedService;
             }
         }
@@ -79,7 +79,7 @@ abstract class ExtensionTestCase extends TestCase
         );
 
         if ($aliasOf) {
-            static::assertEquals($aliasOf, self::$containerBuilder->getAlias($id));
+            static::assertSame($aliasOf, (string) self::$containerBuilder->getAlias($id));
         }
     }
 

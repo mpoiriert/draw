@@ -12,6 +12,9 @@ use Draw\Component\OpenApi\Schema\Schema;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class TypeSchemaExtractorTest extends TestCase
 {
     private TypeSchemaExtractor $object;

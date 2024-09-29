@@ -15,10 +15,10 @@ class MakeAdminAction
         return $objectActionExecutioner
             ->execute(
                 [
-                    'execution' => function (User $user) use ($objectActionExecutioner): void {
+                    'execution' => static function (User $user) use ($objectActionExecutioner): void {
                         $currentRoles = $user->getRoles();
 
-                        if (\in_array('ROLE_ADMIN', $currentRoles)) {
+                        if (\in_array('ROLE_ADMIN', $currentRoles, true)) {
                             $objectActionExecutioner->skip('already-admin');
 
                             return;
@@ -31,10 +31,11 @@ class MakeAdminAction
 
                         $objectActionExecutioner->getAdmin()->update($user);
                     },
-                    'onExecutionError' => function (ExecutionErrorEvent $event): void {
+                    'onExecutionError' => static function (ExecutionErrorEvent $event): void {
                         $event->setStopExecution(false);
                     },
                 ]
-            );
+            )
+        ;
     }
 }

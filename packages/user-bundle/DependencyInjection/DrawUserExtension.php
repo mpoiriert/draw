@@ -57,7 +57,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
                 new Definition(EntityRepository::class)
             )
             ->setFactory([new Reference('doctrine'), 'getRepository'])
-            ->setArgument(0, new Parameter('draw_user.user_entity_class'));
+            ->setArgument(0, new Parameter('draw_user.user_entity_class'))
+        ;
 
         $container->registerAliasForArgument(
             'draw_user.user_repository',
@@ -67,7 +68,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
         $definition = (new Definition())
             ->setAutowired(true)
-            ->setAutoconfigured(true);
+            ->setAutoconfigured(true)
+        ;
 
         $bundleDirectory = realpath(__DIR__.'/..');
 
@@ -90,26 +92,28 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
         $loader->registerClasses(
             $definition,
-            'Draw\\Bundle\\UserBundle\\',
+            'Draw\Bundle\UserBundle\\',
             $bundleDirectory,
             $exclude
         );
 
         $loader->registerClasses(
             $definition->addTag('controller.service_arguments'),
-            'Draw\\Bundle\\UserBundle\\Controller\\',
+            'Draw\Bundle\UserBundle\Controller\\',
             $bundleDirectory.'/Controller/'
         );
 
         $container
-            ->setAlias(UserFeedInterface::class, FlashUserFeed::class);
+            ->setAlias(UserFeedInterface::class, FlashUserFeed::class)
+        ;
 
         $container
             ->getDefinition(UserRequestInterceptorListener::class)
             ->setArgument(
                 '$firewallMap',
                 new Reference('security.firewall.map', ContainerInterface::NULL_ON_INVALID_REFERENCE)
-            );
+            )
+        ;
 
         $this->assignParameters($config, $container);
 
@@ -131,7 +135,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'preUpdate'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist'])
                 ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'postPersist'])
-                ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'postUpdate']);
+                ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'postUpdate'])
+            ;
         } else {
             $container->removeDefinition(EncryptPasswordUserEntityListener::class);
         }
@@ -177,11 +182,12 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         $definition = new Definition();
         $definition
             ->setAutowired(true)
-            ->setAutoconfigured(true);
+            ->setAutoconfigured(true)
+        ;
 
         $loader->registerClasses(
             $definition,
-            'Draw\\Bundle\\UserBundle\\EmailWriter\\',
+            'Draw\Bundle\UserBundle\EmailWriter\\',
             realpath(__DIR__.'/../EmailWriter'),
         );
 
@@ -190,7 +196,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         } else {
             $container->getDefinition(ForgotPasswordEmailWriter::class)
                 ->setArgument('$resetPasswordRoute', new Parameter('draw_user.reset_password_route'))
-                ->setArgument('$inviteCreateAccountRoute', new Parameter('draw_user.invite_create_account_route'));
+                ->setArgument('$inviteCreateAccountRoute', new Parameter('draw_user.invite_create_account_route'))
+            ;
         }
 
         if (!$config['onboarding']['enabled']) {
@@ -198,7 +205,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         } else {
             $container
                 ->getDefinition(UserOnboardingEmailWriter::class)
-                ->setArgument('$messageExpirationDelay', $config['onboarding']['expiration_delay']);
+                ->setArgument('$messageExpirationDelay', $config['onboarding']['expiration_delay'])
+            ;
         }
 
         if (!$config['password_change_requested']['enabled']) {
@@ -228,7 +236,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
         $containerBuilder
             ->getDefinition(AccountLockerListener::class)
-            ->setArgument('$accountLockedRoute', $config['account_locked_route']);
+            ->setArgument('$accountLockedRoute', $config['account_locked_route'])
+        ;
     }
 
     private function configureNeedPasswordChangeEnforcer(
@@ -245,7 +254,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
         $containerBuilder
             ->getDefinition(PasswordChangeEnforcerListener::class)
-            ->setArgument('$changePasswordRoute', $config['change_password_route']);
+            ->setArgument('$changePasswordRoute', $config['change_password_route'])
+        ;
     }
 
     private function configureOnBoarding(
@@ -279,12 +289,14 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         $containerBuilder
             ->getDefinition(TwoFactorAuthenticationEntityListener::class)
             ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'preUpdate'])
-            ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist']);
+            ->addTag('doctrine.orm.entity_listener', ['entity' => $userClass, 'event' => 'prePersist'])
+        ;
 
         $containerBuilder
             ->getDefinition(TwoFactorAuthenticationListener::class)
             ->setArgument('$enableRoute', $config['enable_route'])
-            ->setArgument('$allowedRoutes', $config['allowed_routes']);
+            ->setArgument('$allowedRoutes', $config['allowed_routes'])
+        ;
 
         if ($config['email']['enabled']) {
             $containerBuilder->setDefinition(
@@ -294,7 +306,8 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
                 ->setDecoratedService('scheb_two_factor.security.email.provider', 'draw.user.scheb_two_factor.security.email.provider.inner')
-                ->setArgument('$decorated', new Reference('draw.user.scheb_two_factor.security.email.provider.inner'));
+                ->setArgument('$decorated', new Reference('draw.user.scheb_two_factor.security.email.provider.inner'))
+            ;
         } else {
             $containerBuilder->removeDefinition(AuthCodeMailer::class);
             $containerBuilder->removeDefinition(EmailTwoFactorProvider::class);
@@ -303,20 +316,23 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         if ($config['enforcing_roles']) {
             $containerBuilder
                 ->getDefinition(RolesTwoFactorAuthenticationEnforcer::class)
-                ->setArgument('$enforcingRoles', $config['enforcing_roles']);
+                ->setArgument('$enforcingRoles', $config['enforcing_roles'])
+            ;
 
             $containerBuilder
                 ->setAlias(
                     TwoFactorAuthenticationEnforcerInterface::class,
                     RolesTwoFactorAuthenticationEnforcer::class
-                );
+                )
+            ;
         } else {
             $containerBuilder->removeDefinition(RolesTwoFactorAuthenticationEnforcer::class);
             $containerBuilder
                 ->setAlias(
                     TwoFactorAuthenticationEnforcerInterface::class,
                     IndecisiveTwoFactorAuthenticationEnforcer::class
-                );
+                )
+            ;
         }
     }
 

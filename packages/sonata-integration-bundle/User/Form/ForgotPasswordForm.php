@@ -36,7 +36,8 @@ final class ForgotPasswordForm extends AbstractType
                     'label' => 'form.forgot_password.field.submit',
                     'attr' => ['class' => 'btn-primary'],
                 ]
-            );
+            )
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -44,6 +45,7 @@ final class ForgotPasswordForm extends AbstractType
         $resolver
             ->setDefaults([
                 'translation_domain' => 'DrawUserBundle',
-            ]);
+            ])
+        ;
     }
 }

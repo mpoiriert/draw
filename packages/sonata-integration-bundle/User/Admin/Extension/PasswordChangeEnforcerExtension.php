@@ -44,6 +44,7 @@ class PasswordChangeEnforcerExtension extends AbstractAdminExtension
                 [
                     '_controller' => 'draw.sonata.user.action.request_password_change_action',
                 ]
-            );
+            )
+        ;
     }
 }

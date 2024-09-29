@@ -14,6 +14,9 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
+/**
+ * @internal
+ */
 #[CoversClass(PhpCallableValidator::class)]
 class PhpCallableValidatorTest extends TestCase
 {
@@ -69,7 +72,7 @@ class PhpCallableValidatorTest extends TestCase
             $value,
             [
                 new PhpCallable([
-                    'callable' => function ($value) {
+                    'callable' => static function ($value) {
                         if ($value instanceof \Exception) {
                             throw $value;
                         }
@@ -81,6 +84,6 @@ class PhpCallableValidatorTest extends TestCase
             ]
         );
 
-        static::assertEquals($violationsCount, $violations->count());
+        static::assertCount($violationsCount, $violations);
     }
 }

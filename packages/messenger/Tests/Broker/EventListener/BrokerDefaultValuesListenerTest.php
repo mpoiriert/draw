@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(BrokerDefaultValuesListener::class)]
 class BrokerDefaultValuesListenerTest extends TestCase
 {

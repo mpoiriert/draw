@@ -8,6 +8,9 @@ use Draw\Bundle\SonataIntegrationBundle\Console\Controller\ExecutionController;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionConsoleEnabledTest extends DrawSonataIntegrationExtensionTest
 {

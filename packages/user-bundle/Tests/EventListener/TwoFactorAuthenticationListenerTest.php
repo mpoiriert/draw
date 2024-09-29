@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @internal
+ */
 class TwoFactorAuthenticationListenerTest extends TestCase
 {
     private const ENABLE_ROUTE = 'route';
@@ -106,8 +109,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-two-factor-authentication-user' => [
             new UserRequestInterceptionEvent(
-                new class implements SecurityUserInterface,
-                    TwoFactorAuthenticationUserInterface {
+                new class implements SecurityUserInterface, TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
                         asOneTwoFActorAuthenticationProviderEnabled as originalAsOneProviderEnabled;
                     }
@@ -132,8 +134,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-as-one-provider-enable' => [
             new UserRequestInterceptionEvent(
-                new class implements SecurityUserInterface,
-                    TwoFactorAuthenticationUserInterface {
+                new class implements SecurityUserInterface, TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
                         asOneTwoFActorAuthenticationProviderEnabled as originalAsOneProviderEnabled;
                     }
@@ -158,8 +159,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-force-enabling-two-factor-authentication' => [
             new UserRequestInterceptionEvent(
-                new class implements SecurityUserInterface,
-                    TwoFactorAuthenticationUserInterface {
+                new class implements SecurityUserInterface, TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait;
                     use SecurityUserTrait;
 
@@ -176,8 +176,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-by-time-base-one-time-password' => [
             new UserRequestInterceptionEvent(
-                new class implements SecurityUserInterface,
-                    TwoFactorAuthenticationUserInterface {
+                new class implements SecurityUserInterface, TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
                         isForceEnablingTwoFactorAuthentication as originalIsForceEnablingTwoFactorAuthentication;
                     }
@@ -202,9 +201,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'enabled-route' => [
             new UserRequestInterceptionEvent(
-                new class implements SecurityUserInterface,
-                    TwoFactorAuthenticationUserInterface,
-                    ByTimeBaseOneTimePasswordInterface {
+                new class implements SecurityUserInterface, TwoFactorAuthenticationUserInterface, ByTimeBaseOneTimePasswordInterface {
                     use ByTimeBaseOneTimePasswordTrait {
                         isForceEnablingTwoFactorAuthentication as originalIsForceEnablingTwoFactorAuthentication;
                     }
@@ -229,9 +226,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-enabled-route' => [
             new UserRequestInterceptionEvent(
-                new class implements SecurityUserInterface,
-                    TwoFactorAuthenticationUserInterface,
-                    ByTimeBaseOneTimePasswordInterface {
+                new class implements SecurityUserInterface, TwoFactorAuthenticationUserInterface, ByTimeBaseOneTimePasswordInterface {
                     use ByTimeBaseOneTimePasswordTrait {
                         isForceEnablingTwoFactorAuthentication as originalIsForceEnablingTwoFactorAuthentication;
                     }
@@ -273,7 +268,8 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                     self::ENABLE_ROUTE,
                     ['id' => $user->getId()]
                 )
-                ->willReturn($url = uniqid('url'));
+                ->willReturn($url = uniqid('url'))
+            ;
         }
 
         $this->object->checkNeedToEnableTwoFactorAuthentication($event);
@@ -299,7 +295,8 @@ class TwoFactorAuthenticationListenerTest extends TestCase
             ->expects(static::once())
             ->method('isGranted')
             ->with('IS_AUTHENTICATED_2FA_IN_PROGRESS')
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $this->object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
             $event = new UserRequestInterceptionEvent(
@@ -317,7 +314,8 @@ class TwoFactorAuthenticationListenerTest extends TestCase
             ->expects(static::once())
             ->method('isGranted')
             ->with('IS_AUTHENTICATED_2FA_IN_PROGRESS')
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         $this->object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
             $event = new UserRequestInterceptionEvent(

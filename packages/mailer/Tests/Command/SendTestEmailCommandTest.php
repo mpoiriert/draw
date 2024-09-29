@@ -12,6 +12,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 
+/**
+ * @internal
+ */
 #[CoversClass(SendTestEmailCommand::class)]
 class SendTestEmailCommandTest extends TestCase
 {
@@ -60,9 +63,11 @@ class SendTestEmailCommandTest extends TestCase
                         return true;
                     }
                 )
-            );
+            )
+        ;
 
         $this->execute(['to' => $to])
-            ->test(CommandDataTester::create());
+            ->test(CommandDataTester::create())
+        ;
     }
 }

@@ -28,7 +28,8 @@ class QueueCronJobByNameCommand extends Command
     {
         $this
             ->setDescription('Queues cron job by name')
-            ->addArgument('name', InputArgument::REQUIRED, 'Cron job name');
+            ->addArgument('name', InputArgument::REQUIRED, 'Cron job name')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -37,7 +38,8 @@ class QueueCronJobByNameCommand extends Command
 
         $cronJob = $this->managerRegistry
             ->getRepository(CronJob::class)
-            ->findOneBy(['name' => $input->getArgument('name')]);
+            ->findOneBy(['name' => $input->getArgument('name')])
+        ;
 
         if (null === $cronJob) {
             $io->error('Cron job could not be found.');

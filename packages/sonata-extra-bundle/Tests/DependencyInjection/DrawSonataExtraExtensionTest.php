@@ -25,6 +25,8 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 /**
  * @method DrawSonataExtraExtension getExtension()
+ *
+ * @internal
  */
 class DrawSonataExtraExtensionTest extends ExtensionTestCase
 {
@@ -70,7 +72,8 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         $this->getExtension()->prepend($containerBuilder);
 
         $result = $containerBuilder
-            ->getExtensionConfig('twig');
+            ->getExtensionConfig('twig')
+        ;
 
         static::assertSame(
             [
@@ -84,7 +87,8 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         );
 
         $result = $containerBuilder
-            ->getExtensionConfig('sonata_doctrine_orm_admin');
+            ->getExtensionConfig('sonata_doctrine_orm_admin')
+        ;
 
         static::assertSame(
             [
@@ -109,7 +113,8 @@ class DrawSonataExtraExtensionTest extends ExtensionTestCase
         );
 
         $result = $containerBuilder
-            ->getExtensionConfig('sonata_admin');
+            ->getExtensionConfig('sonata_admin')
+        ;
 
         static::assertSame(
             [

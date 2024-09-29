@@ -72,7 +72,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             ->addMethodCall(
                 'setTranslationDomain',
                 ['DrawConfigurationSonata']
-            );
+            )
+        ;
     }
 
     private function configureConsole(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
@@ -90,7 +91,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 )
             )
             ->setAutowired(true)
-            ->setAutoconfigured(true);
+            ->setAutoconfigured(true)
+        ;
 
         $this->setControllerClassDefinition($config['admin'], $container);
 
@@ -100,7 +102,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 (new Definition(CommandRegistry::class))
                     ->setAutowired(true)
                     ->setAutoconfigured(true)
-            );
+            )
+        ;
 
         foreach ($config['commands'] as $configuration) {
             $definition->addMethodCall(
@@ -134,7 +137,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                     )
                 )
                 ->setAutowired(true)
-                ->setAutoconfigured(true);
+                ->setAutoconfigured(true)
+            ;
 
             $this->setControllerClassDefinition($config['admin'][$adminId], $container);
         }
@@ -153,7 +157,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                     (new Definition(FinalizeContextQueueCountEventListener::class))
                         ->setAutowired(true)
                         ->setAutoconfigured(true)
-                );
+                )
+            ;
         }
 
         if ($config['admin']['enabled']) {
@@ -173,7 +178,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 )
                 ->setBindings([
                     '$queueNames' => $config['queue_names'],
-                ]);
+                ])
+            ;
 
             $container
                 ->setDefinition(
@@ -181,7 +187,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                     (new Definition(CanShowMessageVoter::class))
                         ->setAutowired(true)
                         ->setAutoconfigured(true)
-                );
+                )
+            ;
 
             $this->setControllerClassDefinition($config['admin'], $container);
         }
@@ -202,7 +209,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 )
             )
             ->setAutowired(true)
-            ->setAutoconfigured(true);
+            ->setAutoconfigured(true)
+        ;
     }
 
     private function configureUser(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
@@ -220,7 +228,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             )
             ->setAutoconfigured(true)
             ->setAutowired(true)
-            ->addTag('controller.service_arguments');
+            ->addTag('controller.service_arguments')
+        ;
 
         $container
             ->setDefinition(
@@ -230,7 +239,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             ->setAutoconfigured(true)
             ->setAutowired(true)
             ->setArgument('$userAdminCode', new Parameter('draw_user.sonata.user_admin_code'))
-            ->addTag('sonata.block');
+            ->addTag('sonata.block')
+        ;
 
         $container
             ->setDefinition(
@@ -238,7 +248,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 new Definition(UserAdminExtension::class)
             )
             ->setAutoconfigured(true)
-            ->setAutowired(true);
+            ->setAutowired(true)
+        ;
 
         $container
             ->setDefinition(
@@ -247,7 +258,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             )
             ->setAutoconfigured(true)
             ->setAutowired(true)
-            ->setArgument('$userAdminCode', new Parameter('draw_user.sonata.user_admin_code'));
+            ->setArgument('$userAdminCode', new Parameter('draw_user.sonata.user_admin_code'))
+        ;
 
         $container
             ->setDefinition(
@@ -256,7 +268,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             )
             ->setAutoconfigured(true)
             ->setAutowired(true)
-            ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
+            ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']])
+        ;
 
         $container
             ->setDefinition(
@@ -265,7 +278,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             )
             ->setAutoconfigured(true)
             ->setAutowired(true)
-            ->addTag('controller.service_arguments');
+            ->addTag('controller.service_arguments')
+        ;
 
         $this->configureUserLock($config['user_lock'], $loader, $container);
 
@@ -285,7 +299,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 )
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
-                ->addTag('controller.service_arguments');
+                ->addTag('controller.service_arguments')
+            ;
         }
 
         $reflectionClass = new \ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
@@ -301,7 +316,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             ->setAutoconfigured(true)
             ->setAutowired(true)
             ->setArgument(0, $config['2fa']['field_positions'])
-            ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']]);
+            ->addTag('sonata.admin.extension', ['target' => $config['user_admin_code']])
+        ;
 
         $container
             ->setDefinition(
@@ -310,7 +326,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             )
             ->setAutoconfigured(true)
             ->setAutowired(true)
-            ->addTag('controller.service_arguments');
+            ->addTag('controller.service_arguments')
+        ;
     }
 
     private function configureUserLock(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
@@ -326,7 +343,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                     new Definition(UserLockAdmin::class),
                     $config['admin']
                 )
-            );
+            )
+        ;
 
         if ($config['unlock_user_lock_extension']['enabled']) {
             $container
@@ -339,7 +357,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 ->addTag(
                     'sonata.admin.extension',
                     ['target' => $container->getParameter('draw_user.sonata.user_admin_code')]
-                );
+                )
+            ;
 
             $container
                 ->setDefinition(
@@ -348,7 +367,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 )
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
-                ->addTag('controller.service_arguments');
+                ->addTag('controller.service_arguments')
+            ;
         }
 
         if ($config['refresh_user_lock_extension']['enabled']) {
@@ -362,7 +382,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 ->addTag(
                     'sonata.admin.extension',
                     ['target' => $container->getParameter('draw_user.sonata.user_admin_code')]
-                );
+                )
+            ;
 
             $container
                 ->setDefinition(
@@ -371,7 +392,8 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 )
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
-                ->addTag('controller.service_arguments');
+                ->addTag('controller.service_arguments')
+            ;
         }
     }
 

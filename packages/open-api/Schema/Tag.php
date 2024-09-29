@@ -3,7 +3,6 @@
 namespace Draw\Component\OpenApi\Schema;
 
 use JMS\Serializer\Annotation as JMS;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[\Attribute(\Attribute::TARGET_METHOD | \Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
