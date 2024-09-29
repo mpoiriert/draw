@@ -20,6 +20,9 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 
+/**
+ * @internal
+ */
 #[CoversClass(ResponseApiExceptionListener::class)]
 class ResponseApiExceptionListenerTest extends TestCase
 {
@@ -46,7 +49,8 @@ class ResponseApiExceptionListenerTest extends TestCase
         $this->request
             ->expects(static::any())
             ->method('getRequestFormat')
-            ->willReturn('json');
+            ->willReturn('json')
+        ;
     }
 
     /**
@@ -95,7 +99,8 @@ class ResponseApiExceptionListenerTest extends TestCase
         $this->request
             ->expects(static::any())
             ->method('getRequestFormat')
-            ->willReturn('html');
+            ->willReturn('html')
+        ;
 
         static::assertNull($this->onKernelException());
     }

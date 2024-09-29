@@ -15,6 +15,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @property AwsToolKitIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(AwsToolKitIntegration::class)]
 class AwsToolKitIntegrationTest extends IntegrationTestCase

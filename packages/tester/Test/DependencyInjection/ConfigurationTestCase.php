@@ -49,7 +49,7 @@ abstract class ConfigurationTestCase extends TestCase
     {
         $config = $this->processConfiguration([[]]);
 
-        static::assertEquals(
+        static::assertEqualsCanonicalizing(
             $this->getDefaultConfiguration(),
             $config
         );

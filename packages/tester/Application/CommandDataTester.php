@@ -23,7 +23,8 @@ final class CommandDataTester
     ): self {
         return (new self())->setExpectedStatusCode($expectedStatusCode)
             ->setExpectedDisplay($expectedDisplay)
-            ->setExpectedErrorOutput($expectedErrorOutput);
+            ->setExpectedErrorOutput($expectedErrorOutput)
+        ;
     }
 
     public function getExpectedDisplay(): array|string|null

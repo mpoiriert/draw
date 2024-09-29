@@ -13,6 +13,9 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * @internal
+ */
 #[CoversClass(PurgeExecutionCommand::class)]
 class PurgeExecutionCommandTest extends TestCase
 {
@@ -104,7 +107,8 @@ class PurgeExecutionCommandTest extends TestCase
                         ['record_count' => 1002],
                     ]
                 )
-            );
+            )
+        ;
 
         $this->connection->expects(static::exactly(2))
             ->method('executeStatement')
@@ -122,9 +126,11 @@ class PurgeExecutionCommandTest extends TestCase
                     ]
                 )
             )
-            ->willReturnOnConsecutiveCalls(1000, 2);
+            ->willReturnOnConsecutiveCalls(1000, 2)
+        ;
 
         $this->execute(['--delay' => $date, '--sleep' => 0])
-            ->test(CommandDataTester::create());
+            ->test(CommandDataTester::create())
+        ;
     }
 }

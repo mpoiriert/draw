@@ -13,6 +13,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @property ValidatorIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(ValidatorIntegration::class)]
 class ValidatorIntegrationTest extends IntegrationTestCase

@@ -6,6 +6,9 @@ use Draw\Component\Core\Reflection\ReflectionAccessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(ReflectionAccessor::class)]
 class ReflectionAccessorTest extends TestCase
 {

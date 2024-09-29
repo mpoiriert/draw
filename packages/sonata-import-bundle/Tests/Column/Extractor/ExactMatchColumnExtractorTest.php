@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(ExactMatchColumnExtractor::class)]
 class ExactMatchColumnExtractorTest extends TestCase
 {
@@ -55,7 +58,8 @@ class ExactMatchColumnExtractorTest extends TestCase
     {
         $this->importer
             ->expects(static::never())
-            ->method('getOptions');
+            ->method('getOptions')
+        ;
 
         static::assertNull(
             $this->object->extractDefaultValue(
@@ -72,7 +76,8 @@ class ExactMatchColumnExtractorTest extends TestCase
         $this->importer
             ->expects(static::once())
             ->method('getOptions')
-            ->willReturn(['headerName1', 'headerName2']);
+            ->willReturn(['headerName1', 'headerName2'])
+        ;
 
         static::assertNull(
             $this->object->extractDefaultValue(
@@ -88,10 +93,12 @@ class ExactMatchColumnExtractorTest extends TestCase
         $this->importer
             ->expects(static::once())
             ->method('getOptions')
-            ->willReturn(['headerName']);
+            ->willReturn(['headerName'])
+        ;
 
         $column = (new Column())
-            ->setHeaderName('headerName');
+            ->setHeaderName('headerName')
+        ;
 
         $column = $this->object->extractDefaultValue(
             $column,

@@ -6,6 +6,9 @@ use Draw\Component\Mailer\Email\CallToActionEmail;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(CallToActionEmail::class)]
 class CallToActionEmailTest extends TestCase
 {

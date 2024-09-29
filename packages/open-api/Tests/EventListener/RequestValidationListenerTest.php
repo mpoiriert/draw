@@ -22,6 +22,9 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(RequestValidationListener::class)]
 class RequestValidationListenerTest extends TestCase
 {
@@ -68,7 +71,8 @@ class RequestValidationListenerTest extends TestCase
 
         $this->validator
             ->expects(static::never())
-            ->method('validate');
+            ->method('validate')
+        ;
 
         $this->object->onKernelController($event);
     }
@@ -91,7 +95,8 @@ class RequestValidationListenerTest extends TestCase
             ->expects(static::once())
             ->method('validate')
             ->with($bodyObject, null, ['Default'])
-            ->willReturn($this->createMock(ConstraintViolationListInterface::class));
+            ->willReturn($this->createMock(ConstraintViolationListInterface::class))
+        ;
 
         $this->object->onKernelController($event);
     }
@@ -115,7 +120,8 @@ class RequestValidationListenerTest extends TestCase
             ->expects(static::once())
             ->method('validate')
             ->with($parameterObject, [], null)
-            ->willReturn($this->createMock(ConstraintViolationListInterface::class));
+            ->willReturn($this->createMock(ConstraintViolationListInterface::class))
+        ;
 
         $this->object->onKernelController($event);
     }
@@ -137,7 +143,8 @@ class RequestValidationListenerTest extends TestCase
 
         $this->validator
             ->expects(static::never())
-            ->method('validate');
+            ->method('validate')
+        ;
 
         $this->object->onKernelController($event);
     }
@@ -177,7 +184,8 @@ class RequestValidationListenerTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $bodyViolationList = new ConstraintViolationList(),
                 $parameterViolationList = new ConstraintViolationList(),
-            );
+            )
+        ;
 
         $bodyViolationList->add(
             $originalBodyViolation = new ConstraintViolation(

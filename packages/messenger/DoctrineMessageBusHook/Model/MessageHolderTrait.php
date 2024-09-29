@@ -13,7 +13,7 @@ trait MessageHolderTrait
     {
         $result = [];
 
-        array_walk_recursive($this->onHoldMessages, function ($event) use (&$result): void {
+        array_walk_recursive($this->onHoldMessages, static function ($event) use (&$result): void {
             $result[] = $event;
         });
 

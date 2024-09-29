@@ -10,6 +10,9 @@ use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Component\Tester\DoctrineOrmTrait;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class DoctrineAssociationColumnExtractorTest extends TestCase
 {
     use DoctrineOrmTrait;
@@ -73,13 +76,15 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
     public function testAssign(): void
     {
         $import = (new Import())
-            ->setEntityClass(\stdClass::class);
+            ->setEntityClass(\stdClass::class)
+        ;
 
         $this->entityManager->persist($import);
         $this->entityManager->flush();
 
         $column = $this->createColumn()
-            ->setMappedTo('import.id');
+            ->setMappedTo('import.id')
+        ;
 
         $object = new Column();
 
@@ -103,6 +108,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
             ->setImport(
                 (new Import())
                     ->setEntityClass(Column::class)
-            );
+            )
+        ;
     }
 }

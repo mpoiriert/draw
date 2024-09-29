@@ -20,6 +20,5 @@ class DrawFrameworkExtraBundle extends Bundle
                 $integration->buildContainer($container);
             }
         }
-
     }
 }

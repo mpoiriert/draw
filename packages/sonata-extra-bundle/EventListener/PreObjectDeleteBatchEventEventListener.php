@@ -17,7 +17,8 @@ class PreObjectDeleteBatchEventEventListener
     {
         $canDelete = $this->pool
             ->getAdminByClass($event->getClassName())
-            ->hasAccess('delete', $event->getObject());
+            ->hasAccess('delete', $event->getObject())
+        ;
 
         if (!$canDelete) {
             $event->preventDelete();

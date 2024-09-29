@@ -10,6 +10,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * @internal
+ */
 #[CoversClass(TestsCoverageCheckCommand::class)]
 class TestsCoverageCheckCommandTest extends TestCase
 {

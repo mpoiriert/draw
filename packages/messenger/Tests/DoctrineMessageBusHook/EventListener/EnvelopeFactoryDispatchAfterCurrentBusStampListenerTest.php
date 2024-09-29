@@ -11,6 +11,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
+/**
+ * @internal
+ */
 #[CoversClass(EnvelopeFactoryDispatchAfterCurrentBusStampListener::class)]
 class EnvelopeFactoryDispatchAfterCurrentBusStampListenerTest extends TestCase
 {

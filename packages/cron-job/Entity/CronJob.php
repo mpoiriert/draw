@@ -201,7 +201,8 @@ class CronJob implements \Stringable
                 Criteria::create()
                     ->orderBy(['requestedAt' => 'DESC'])
                     ->setMaxResults(10)
-            );
+            )
+        ;
     }
 
     public function isDue(): bool

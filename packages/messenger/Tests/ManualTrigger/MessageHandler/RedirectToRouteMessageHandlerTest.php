@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(RedirectToRouteMessageHandler::class)]
 class RedirectToRouteMessageHandlerTest extends TestCase
 {
@@ -31,7 +34,8 @@ class RedirectToRouteMessageHandlerTest extends TestCase
             ->expects(static::once())
             ->method('getRedirectResponse')
             ->with($this->urlGenerator)
-            ->willReturn($response = new RedirectResponse('/'));
+            ->willReturn($response = new RedirectResponse('/'))
+        ;
 
         static::assertSame(
             $response,

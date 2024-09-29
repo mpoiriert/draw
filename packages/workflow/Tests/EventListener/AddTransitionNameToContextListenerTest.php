@@ -9,6 +9,9 @@ use Symfony\Component\Workflow\Event\TransitionEvent;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
 
+/**
+ * @internal
+ */
 class AddTransitionNameToContextListenerTest extends TestCase
 {
     private AddTransitionNameToContextListener $object;

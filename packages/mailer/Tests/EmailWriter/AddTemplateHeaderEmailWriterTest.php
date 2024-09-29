@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
+/**
+ * @internal
+ */
 #[CoversClass(AddTemplateHeaderEmailWriter::class)]
 class AddTemplateHeaderEmailWriterTest extends TestCase
 {

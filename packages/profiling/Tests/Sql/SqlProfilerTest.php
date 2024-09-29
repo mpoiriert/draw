@@ -9,6 +9,9 @@ use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class SqlProfilerTest extends TestCase
 {
     use MockTrait;
@@ -20,7 +23,8 @@ class SqlProfilerTest extends TestCase
         $this->profiler = $this->createMock(SqlProfiler::class);
         $this->profiler
             ->method('getType')
-            ->willReturn(SqlProfiler::PROFILER_TYPE);
+            ->willReturn(SqlProfiler::PROFILER_TYPE)
+        ;
     }
 
     public function testGetType(): void

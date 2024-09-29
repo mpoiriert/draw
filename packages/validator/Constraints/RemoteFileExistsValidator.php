@@ -17,7 +17,8 @@ class RemoteFileExistsValidator extends ConstraintValidator
         if (!$this->remoteFileExists($value)) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 

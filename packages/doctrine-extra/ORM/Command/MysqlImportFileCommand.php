@@ -22,14 +22,16 @@ class MysqlImportFileCommand extends Command
         $this
             ->setDescription('Import a files in the database')
             ->addArgument('files', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The files to import', null)
-            ->addOption('connection', 'c', InputOption::VALUE_REQUIRED, 'The connection to use', 'default');
+            ->addOption('connection', 'c', InputOption::VALUE_REQUIRED, 'The connection to use', 'default')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $connectionParameter = $this->ormManagerRegistry
             ->getConnection($input->getOption('connection'))
-            ->getParams()['primary'];
+            ->getParams()['primary']
+        ;
 
         foreach ($input->getArgument('files') as $file) {
             Process::fromShellCommandline(

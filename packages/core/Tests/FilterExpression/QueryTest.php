@@ -8,6 +8,9 @@ use Draw\Component\Core\FilterExpression\Query;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(Query::class)]
 class QueryTest extends TestCase
 {

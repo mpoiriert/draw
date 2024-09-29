@@ -66,7 +66,8 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
                 new Definition($class)
             )
                 ->setAutowired(true)
-                ->setAutoconfigured(true);
+                ->setAutoconfigured(true)
+            ;
 
             $definition->addTag('monolog.processor');
             $container->setAlias($class, $serviceName);
@@ -96,7 +97,8 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
                 (new Definition(SlowRequestLoggerListener::class))
                     ->setAutowired(true)
                     ->setAutoconfigured(true)
-            );
+            )
+        ;
 
         $defaultDuration = $config['default_duration'];
         $requestMatchers = $config['request_matchers'] ?? [];
@@ -150,7 +152,8 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
 
         $container
             ->getDefinition(SlowRequestLoggerListener::class)
-            ->setArgument('$requestMatchers', $requestMatcherReferences);
+            ->setArgument('$requestMatchers', $requestMatcherReferences)
+        ;
 
         $this->renameDefinitions(
             $container,
@@ -216,7 +219,8 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createRequestMatcherNode(string $name, bool $multiple = true): ArrayNodeDefinition
@@ -239,18 +243,19 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
                 ->scalarNode('host')->defaultNull()->end()
                 ->integerNode('port')->defaultNull()->end()
                 ->arrayNode('schemes')
-                    ->beforeNormalization()->ifString()->then(fn ($v) => [$v])->end()
+                    ->beforeNormalization()->ifString()->then(static fn ($v) => [$v])->end()
                     ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('ips')
-                    ->beforeNormalization()->ifString()->then(fn ($v) => [$v])->end()
+                    ->beforeNormalization()->ifString()->then(static fn ($v) => [$v])->end()
                     ->prototype('scalar')->end()
                 ->end()
                 ->arrayNode('methods')
-                    ->beforeNormalization()->ifString()->then(fn ($v) => preg_split('/\s*,\s*/', (string) $v))->end()
+                    ->beforeNormalization()->ifString()->then(static fn ($v) => preg_split('/\s*,\s*/', (string) $v))->end()
                     ->prototype('scalar')->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $node;
     }

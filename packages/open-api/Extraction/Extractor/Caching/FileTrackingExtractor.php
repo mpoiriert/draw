@@ -20,7 +20,6 @@ class FileTrackingExtractor implements ExtractorInterface
 
     /**
      * @param \ReflectionMethod|\ReflectionClass $source
-     * @param mixed                              $target
      */
     public function extract($source, $target, ExtractionContextInterface $extractionContext): void
     {

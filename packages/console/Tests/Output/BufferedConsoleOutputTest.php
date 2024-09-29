@@ -11,6 +11,9 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(BufferedConsoleOutput::class)]
 class BufferedConsoleOutputTest extends TestCase
 {
@@ -41,12 +44,14 @@ class BufferedConsoleOutputTest extends TestCase
         $formatter
             ->expects(static::exactly(3))
             ->method('isDecorated')
-            ->willReturnOnConsecutiveCalls(false, true, true);
+            ->willReturnOnConsecutiveCalls(false, true, true)
+        ;
 
         $formatter
             ->expects(static::once())
             ->method('setDecorated')
-            ->with(true);
+            ->with(true)
+        ;
 
         $this->object->setDecorated(true);
 

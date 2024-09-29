@@ -33,6 +33,7 @@ class PhpCallableValidator extends ConstraintValidator
 
         $this->context->buildViolation($constraint->message)
             ->setParameter('{{ value }}', $this->formatValue($value))
-            ->addViolation();
+            ->addViolation()
+        ;
     }
 }

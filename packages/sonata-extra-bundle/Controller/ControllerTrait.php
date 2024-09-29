@@ -72,7 +72,8 @@ trait ControllerTrait
         }
 
         $valid = $this->container->get('security.csrf.token_manager')
-            ->isTokenValid(new CsrfToken($intention, $request->get('_sonata_csrf_token')));
+            ->isTokenValid(new CsrfToken($intention, $request->get('_sonata_csrf_token')))
+        ;
 
         if (!$valid) {
             throw new HttpException(Response::HTTP_BAD_REQUEST, 'The csrf token is not valid, CSRF attack?');
@@ -101,7 +102,8 @@ trait ControllerTrait
 
         return $this->admin
             ->getTemplateRegistry()
-            ->getTemplate($this->isXmlHttpRequest($request) ? 'ajax' : 'layout');
+            ->getTemplate($this->isXmlHttpRequest($request) ? 'ajax' : 'layout')
+        ;
     }
 
     final protected function trans(
@@ -116,7 +118,8 @@ trait ControllerTrait
                 $parameters,
                 $domain ?? $this->admin->getTranslationDomain(),
                 $locale
-            );
+            )
+        ;
     }
 
     final protected function redirectToList(): RedirectResponse
@@ -141,7 +144,8 @@ trait ControllerTrait
         $this->container
             ->get('twig')
             ->getRuntime(FormRenderer::class)
-            ->setTheme($formView, $theme);
+            ->setTheme($formView, $theme)
+        ;
     }
 
     final protected function renderWithExtraParams(

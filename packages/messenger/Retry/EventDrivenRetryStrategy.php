@@ -20,7 +20,8 @@ class EventDrivenRetryStrategy implements RetryStrategyInterface
     {
         $isRetryable = $this->eventDispatcher
             ->dispatch(new IsRetryableEvent($message, $throwable))
-            ->getIsRetryable();
+            ->getIsRetryable()
+        ;
 
         return $isRetryable ?? $this->fallbackRetryStrategy?->isRetryable($message) ?? false;
     }
@@ -29,7 +30,8 @@ class EventDrivenRetryStrategy implements RetryStrategyInterface
     {
         $waitingTime = $this->eventDispatcher
             ->dispatch(new GetWaitingTimeEvent($message, $throwable))
-            ->getWaitingTime();
+            ->getWaitingTime()
+        ;
 
         return $waitingTime ?? $this->fallbackRetryStrategy?->getWaitingTime($message) ?? 1000;
     }

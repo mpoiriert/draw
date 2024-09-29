@@ -21,6 +21,9 @@ use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @internal
+ */
 class DrawFrameworkExtraBundleTest extends TestCase
 {
     use MockTrait;
@@ -93,19 +96,22 @@ class DrawFrameworkExtraBundleTest extends TestCase
                     ],
                 )
             )
-            ->willReturnSelf();
+            ->willReturnSelf()
+        ;
 
         $containerBuilder
             ->expects(static::once())
             ->method('hasExtension')
             ->with('security')
-            ->willReturn(true);
+            ->willReturn(true)
+        ;
 
         $containerBuilder
             ->expects(static::once())
             ->method('getExtension')
             ->with('security')
-            ->willReturn($extension = $this->createMock(SecurityExtension::class));
+            ->willReturn($extension = $this->createMock(SecurityExtension::class))
+        ;
 
         $extension
             ->expects(static::exactly(2))
@@ -115,7 +121,8 @@ class DrawFrameworkExtraBundleTest extends TestCase
                     [static::isInstanceOf(JwtAuthenticatorFactory::class)],
                     [static::isInstanceOf(MessengerMessageAuthenticatorFactory::class)],
                 )
-            );
+            )
+        ;
 
         $this->bundle->build($containerBuilder);
     }

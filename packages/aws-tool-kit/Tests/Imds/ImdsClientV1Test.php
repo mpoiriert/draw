@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(ImdsClientV1::class)]
 class ImdsClientV1Test extends TestCase
 {
@@ -32,13 +35,15 @@ class ImdsClientV1Test extends TestCase
                 'GET',
                 'http://169.254.169.254/latest/meta-data/instance-id'
             )
-            ->willReturn($response = $this->createMock(ResponseInterface::class));
+            ->willReturn($response = $this->createMock(ResponseInterface::class))
+        ;
 
         $response
             ->expects(static::once())
             ->method('getContent')
             ->with()
-            ->willReturn($instanceId = uniqid('instance-id-'));
+            ->willReturn($instanceId = uniqid('instance-id-'))
+        ;
 
         static::assertSame(
             $instanceId,

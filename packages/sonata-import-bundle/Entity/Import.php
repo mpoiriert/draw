@@ -210,7 +210,8 @@ class Import implements GroupSequenceProviderInterface, \Stringable
                         ->buildViolation('Identifier column "{{ name }}" cannot be ignored.')
                         ->atPath('columns['.$key.']')
                         ->setParameter('{{ name }}', $column->getHeaderName())
-                        ->addViolation();
+                        ->addViolation()
+                    ;
                 }
             }
 
@@ -221,7 +222,8 @@ class Import implements GroupSequenceProviderInterface, \Stringable
             $context
                 ->buildViolation('You need a identifier column.')
                 ->atPath('columns')
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 
@@ -251,7 +253,8 @@ class Import implements GroupSequenceProviderInterface, \Stringable
     {
         $criteria = Criteria::create()
             ->andWhere(Criteria::expr()->neq('isIdentifier', true))
-            ->andWhere(Criteria::expr()->neq('isIgnored', true));
+            ->andWhere(Criteria::expr()->neq('isIgnored', true))
+        ;
 
         $mapping = [];
         foreach ($this->columns->matching($criteria) as $column) {
@@ -271,7 +274,8 @@ class Import implements GroupSequenceProviderInterface, \Stringable
                 Criteria::create()
                     ->andWhere(Criteria::expr()->eq('isIdentifier', true))
             )
-            ->toArray();
+            ->toArray()
+        ;
 
         if (\count($columns) > 0) {
             return $columns;

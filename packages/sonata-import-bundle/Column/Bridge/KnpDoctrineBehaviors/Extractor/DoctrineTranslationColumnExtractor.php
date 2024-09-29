@@ -37,7 +37,8 @@ class DoctrineTranslationColumnExtractor extends BaseColumnExtractor
 
         $metadata = $this->managerRegistry
             ->getManagerForClass($translationClass)
-            ->getClassMetadata($translationClass);
+            ->getClassMetadata($translationClass)
+        ;
 
         if (!$metadata instanceof ClassMetadata) {
             return $options;
@@ -63,7 +64,7 @@ class DoctrineTranslationColumnExtractor extends BaseColumnExtractor
     #[\Override]
     public function assign(object $object, Column $column, mixed $value): bool
     {
-        if (!\in_array($column->getMappedTo(), $this->getOptions($column, []))) {
+        if (!\in_array($column->getMappedTo(), $this->getOptions($column, []), true)) {
             return false;
         }
 

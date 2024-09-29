@@ -6,6 +6,9 @@ use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
 use Draw\Bundle\SonataExtraBundle\EventListener\AutoHelpListener;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 class DrawSonataExtraExtensionAutoHelpEnabledTest extends DrawSonataExtraExtensionTest
 {
     public function createExtension(): Extension

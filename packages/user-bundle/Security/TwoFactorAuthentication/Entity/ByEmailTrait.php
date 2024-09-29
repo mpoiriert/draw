@@ -16,7 +16,7 @@ trait ByEmailTrait
 
     public function isEmailAuthEnabled(): bool
     {
-        return \in_array('email', $this->getTwoFactorAuthenticationEnabledProviders()) && $this->getEmailAuthRecipient();
+        return \in_array('email', $this->getTwoFactorAuthenticationEnabledProviders(), true) && $this->getEmailAuthRecipient();
     }
 
     public function getEmailAuthRecipient(): string

@@ -7,6 +7,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(CheckPostAuthEvent::class)]
 class CheckPostAuthEventTest extends TestCase
 {

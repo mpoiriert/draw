@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
+/**
+ * @internal
+ */
 #[CoversClass(ConstraintViolationListException::class)]
 class ConstraintViolationListExceptionTest extends TestCase
 {

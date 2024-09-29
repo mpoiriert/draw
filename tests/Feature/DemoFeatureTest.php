@@ -5,6 +5,9 @@ namespace App\Tests\Feature;
 use App\Feature\DemoFeature;
 use App\Tests\TestCase;
 
+/**
+ * @internal
+ */
 class DemoFeatureTest extends TestCase
 {
     private DemoFeature $object;

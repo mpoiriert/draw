@@ -66,7 +66,7 @@ class GridExtension extends AbstractAdminExtension
                 );
             }
 
-            if (\in_array($fields[$key]->getType(), static::VIRTUAL_FIELD_TYPES)) {
+            if (\in_array($fields[$key]->getType(), static::VIRTUAL_FIELD_TYPES, true)) {
                 $fields[$key]->setOption('virtual_field', true);
             }
         }

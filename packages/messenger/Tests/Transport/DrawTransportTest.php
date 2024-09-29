@@ -28,6 +28,9 @@ use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
 use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawTransport::class)]
 #[NoTransaction]
 class DrawTransportTest extends TestCase
@@ -44,7 +47,8 @@ class DrawTransportTest extends TestCase
     {
         try {
             static::loadDefaultConnection()
-                ->executeStatement('DELETE FROM draw_messenger__message');
+                ->executeStatement('DELETE FROM draw_messenger__message')
+            ;
         } catch (\Throwable) {
             // Table may not exist we ignore it
         }
@@ -95,7 +99,8 @@ class DrawTransportTest extends TestCase
     public function testSetup(): void
     {
         static::loadDefaultConnection()
-            ->executeStatement('DROP TABLE IF EXISTS draw_messenger__message_tag, draw_messenger__message');
+            ->executeStatement('DROP TABLE IF EXISTS draw_messenger__message_tag, draw_messenger__message')
+        ;
 
         $this->service->setup();
         static::assertTrue(true);
@@ -112,7 +117,8 @@ class DrawTransportTest extends TestCase
 
         $driverConnection->expects(static::once())
             ->method('createQueryBuilder')
-            ->willThrowException(new \Exception($exceptionMessage = uniqid('exception-message-')));
+            ->willThrowException(new \Exception($exceptionMessage = uniqid('exception-message-')))
+        ;
 
         $this->expectException(TransportException::class);
         $this->expectExceptionMessage($exceptionMessage);
@@ -138,7 +144,8 @@ class DrawTransportTest extends TestCase
                 [
                     $id,
                 ]
-            )->fetchAllAssociative();
+            )->fetchAllAssociative()
+        ;
 
         static::assertEqualsWithDelta(
             strtotime('now - 10 seconds'),
@@ -198,7 +205,8 @@ class DrawTransportTest extends TestCase
         );
 
         $driverConnection->expects(static::never())
-            ->method('createQueryBuilder');
+            ->method('createQueryBuilder')
+        ;
 
         static::assertEmpty($this->service->findByTags([]));
     }

@@ -45,7 +45,7 @@ class OperationResponseExtractor implements ExtractorInterface
             return;
         }
 
-        if (\in_array($returnType->getName(), ['void', 'null'])) {
+        if (\in_array($returnType->getName(), ['void', 'null'], true)) {
             if (\array_key_exists(204, $target->responses)) {
                 return;
             }

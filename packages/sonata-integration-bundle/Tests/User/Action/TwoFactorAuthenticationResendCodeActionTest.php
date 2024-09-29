@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(TwoFactorAuthenticationResendCodeAction::class)]
 class TwoFactorAuthenticationResendCodeActionTest extends TestCase
 {
@@ -80,19 +83,22 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
         $this->codeGenerator
             ->expects(static::once())
             ->method('generateAndSend')
-            ->with($user);
+            ->with($user)
+        ;
 
         $this->urlGenerator
             ->expects(static::once())
             ->method('generate')
             ->with('admin_2fa_login', ['preferProvider' => 'email'])
-            ->willReturn($url = uniqid('https://'));
+            ->willReturn($url = uniqid('https://'))
+        ;
 
         $securityMock = $this->createMock(Security::class);
         $securityMock
             ->expects(static::once())
             ->method('getUser')
-            ->willReturn($user);
+            ->willReturn($user)
+        ;
 
         $result = \call_user_func(
             $this->object,

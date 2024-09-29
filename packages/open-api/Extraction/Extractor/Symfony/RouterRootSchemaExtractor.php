@@ -50,7 +50,7 @@ class RouterRootSchemaExtractor implements ExtractorInterface
 
         $versioning = $extractionContext->getParameter(PropertiesExtractor::CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY);
         foreach ($source->getRouteCollection() as $routeName => $route) {
-            /* @var Route $route */
+            /** @var Route $route */
             if (!($path = $route->getPath())) {
                 continue;
             }
@@ -69,7 +69,7 @@ class RouterRootSchemaExtractor implements ExtractorInterface
 
             $controller = explode('::', $controller);
 
-            if (2 != \count($controller)) {
+            if (2 !== \count($controller)) {
                 continue;
             }
 

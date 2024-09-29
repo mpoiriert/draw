@@ -118,7 +118,7 @@ final class ResponseApiExceptionListener
     {
         $errors = [];
         foreach ($exception->getViolationList() as $constraintViolation) {
-            /* @var $constraintViolation ConstraintViolationInterface */
+            /** @var ConstraintViolationInterface $constraintViolation */
             $errorData = [
                 'propertyPath' => $constraintViolation->getPropertyPath(),
                 'message' => $constraintViolation->getMessage(),

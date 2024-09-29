@@ -7,6 +7,9 @@ use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ErrorToHttpCo
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ConfigurableErrorToHttpCodeConverterTest extends TestCase
 {
     private ConfigurableErrorToHttpCodeConverter $errorToHttpCodeConverter;

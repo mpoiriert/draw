@@ -11,6 +11,9 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(TemporaryUnlockedMessage::class)]
 class TemporaryUnlockedMessageTest extends TestCase
 {
@@ -46,8 +49,7 @@ class TemporaryUnlockedMessageTest extends TestCase
         static::assertNull($this->object->getUserIdentifier());
 
         $this->object->preSend(
-            new class implements MessageHolderInterface,
-                LockableUserInterface {
+            new class implements MessageHolderInterface, LockableUserInterface {
                 use LockableUserTrait;
                 use MessageHolderTrait;
                 use SecurityUserTrait;

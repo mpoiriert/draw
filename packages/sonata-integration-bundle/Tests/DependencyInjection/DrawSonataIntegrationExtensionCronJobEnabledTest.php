@@ -12,6 +12,9 @@ use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegratio
 use Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection\DrawSonataIntegrationExtensionTest;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionCronJobEnabledTest extends DrawSonataIntegrationExtensionTest
 {

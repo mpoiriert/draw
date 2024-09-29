@@ -10,6 +10,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
+/**
+ * @internal
+ */
 #[CoversClass(AutoStampEnvelopeListener::class)]
 class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInterface
 {

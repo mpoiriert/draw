@@ -28,6 +28,7 @@ class AddRolesForm extends AbstractType
                 'submit',
                 SubmitType::class,
                 ['label' => 'submit']
-            );
+            )
+        ;
     }
 }

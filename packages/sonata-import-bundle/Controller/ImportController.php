@@ -19,7 +19,8 @@ class ImportController extends CRUDController
             ->makeDisposition(
                 ResponseHeaderBag::DISPOSITION_ATTACHMENT,
                 'import_'.$import->getId().'.csv'
-            );
+            )
+        ;
 
         $response->headers->set('Content-Disposition', $disposition);
 

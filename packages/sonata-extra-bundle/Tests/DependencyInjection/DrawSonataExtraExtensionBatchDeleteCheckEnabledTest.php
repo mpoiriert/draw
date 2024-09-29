@@ -7,6 +7,9 @@ use Draw\Bundle\SonataExtraBundle\EventListener\PreObjectDeleteBatchEventEventLi
 use Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection\DrawSonataExtraExtensionTest;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 class DrawSonataExtraExtensionBatchDeleteCheckEnabledTest extends DrawSonataExtraExtensionTest
 {
     public function createExtension(): Extension

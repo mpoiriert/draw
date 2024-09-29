@@ -20,7 +20,8 @@ class NullCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 'The exit code to return.',
                 Command::SUCCESS
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

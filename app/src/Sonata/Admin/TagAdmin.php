@@ -26,7 +26,8 @@ class TagAdmin extends AbstractAdmin
             ->addIdentifier('id')
             ->add('name')
             ->add('label')
-            ->add('active');
+            ->add('active')
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -35,7 +36,8 @@ class TagAdmin extends AbstractAdmin
             ->add('id')
             ->add('name')
             ->add('label')
-            ->add('active');
+            ->add('active')
+        ;
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -43,7 +45,8 @@ class TagAdmin extends AbstractAdmin
         $form
             ->add('name')
             ->add('label')
-            ->add('active');
+            ->add('active')
+        ;
     }
 
     public function configureGridFields(array $fields): array

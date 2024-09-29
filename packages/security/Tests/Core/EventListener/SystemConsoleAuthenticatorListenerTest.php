@@ -15,6 +15,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+/**
+ * @internal
+ */
 class SystemConsoleAuthenticatorListenerTest extends TestCase
 {
     private SystemConsoleAuthenticatorListener $object;
@@ -78,17 +81,20 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects(static::once())
             ->method('getToken')
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->systemAuthenticator
             ->expects(static::once())
             ->method('getTokenForSystem')
-            ->willReturn($token = $this->createMock(TokenInterface::class));
+            ->willReturn($token = $this->createMock(TokenInterface::class))
+        ;
 
         $this->tokenStorage
             ->expects(static::once())
             ->method('setToken')
-            ->with($token);
+            ->with($token)
+        ;
 
         $this->object->connectSystem($consoleCommandEvent);
     }
@@ -102,15 +108,18 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects(static::never())
             ->method('getToken')
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->systemAuthenticator
             ->expects(static::never())
-            ->method('getTokenForSystem');
+            ->method('getTokenForSystem')
+        ;
 
         $this->tokenStorage
             ->expects(static::never())
-            ->method('setToken');
+            ->method('setToken')
+        ;
 
         $this->object->connectSystem($consoleCommandEvent);
     }
@@ -124,15 +133,18 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects(static::once())
             ->method('getToken')
-            ->willReturn($this->createMock(TokenInterface::class));
+            ->willReturn($this->createMock(TokenInterface::class))
+        ;
 
         $this->systemAuthenticator
             ->expects(static::never())
-            ->method('getTokenForSystem');
+            ->method('getTokenForSystem')
+        ;
 
         $this->tokenStorage
             ->expects(static::never())
-            ->method('setToken');
+            ->method('setToken')
+        ;
 
         $this->object->connectSystem($consoleCommandEvent);
     }
@@ -148,17 +160,20 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects(static::once())
             ->method('getToken')
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->systemAuthenticator
             ->expects(static::once())
             ->method('getTokenForSystem')
-            ->willReturn($token = $this->createMock(TokenInterface::class));
+            ->willReturn($token = $this->createMock(TokenInterface::class))
+        ;
 
         $this->tokenStorage
             ->expects(static::once())
             ->method('setToken')
-            ->with($token);
+            ->with($token)
+        ;
 
         $this->object->connectSystem($consoleCommandEvent);
     }
@@ -174,17 +189,20 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects(static::once())
             ->method('getToken')
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->systemAuthenticator
             ->expects(static::once())
             ->method('getTokenForSystem')
-            ->willReturn($token = $this->createMock(TokenInterface::class));
+            ->willReturn($token = $this->createMock(TokenInterface::class))
+        ;
 
         $this->tokenStorage
             ->expects(static::once())
             ->method('setToken')
-            ->with($token);
+            ->with($token)
+        ;
 
         $this->object->connectSystem($consoleCommandEvent);
     }

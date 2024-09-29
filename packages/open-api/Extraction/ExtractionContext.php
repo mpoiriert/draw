@@ -44,9 +44,6 @@ class ExtractionContext implements ExtractionContextInterface
         return $this->parameters;
     }
 
-    /**
-     * @param mixed $value
-     */
     public function setParameter(string $name, $value): void
     {
         $this->parameters[$name] = $value;

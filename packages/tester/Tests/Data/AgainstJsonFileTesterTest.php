@@ -9,6 +9,9 @@ use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class AgainstJsonFileTesterTest extends TestCase
 {
     private static \stdClass $data;
@@ -21,7 +24,8 @@ class AgainstJsonFileTesterTest extends TestCase
     public function testInvoke(): void
     {
         (new DataTester(self::$data))
-            ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'));
+            ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'))
+        ;
     }
 
     public function testInvokeDoesNotMatch(): void
@@ -30,7 +34,8 @@ class AgainstJsonFileTesterTest extends TestCase
         $this->expectExceptionMessage('Failed asserting that two objects are equal.');
 
         (new DataTester((object) ['url' => 'toto']))
-            ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'));
+            ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'))
+        ;
     }
 
     public function testInvokePropertyPathChecksValue(): void
@@ -43,7 +48,8 @@ class AgainstJsonFileTesterTest extends TestCase
                         'url' => 'http://google.com',
                     ]
                 )
-            );
+            )
+        ;
     }
 
     public function testInvokePropertyPathChecksViaConstraint(): void
@@ -56,7 +62,8 @@ class AgainstJsonFileTesterTest extends TestCase
                         'url' => new IsType(IsType::TYPE_STRING),
                     ]
                 )
-            );
+            )
+        ;
     }
 
     public function testInvokePropertyPathChecksValueFail(): void
@@ -73,7 +80,8 @@ Failed asserting that two strings are equal.');
                         'url' => 'wrong-value',
                     ]
                 )
-            );
+            )
+        ;
     }
 
     public function testInvokePropertyPathChecksCallable(): void
@@ -84,7 +92,7 @@ Failed asserting that two strings are equal.');
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
-                        'url' => function (DataTester $dataTester) use (&$called): void {
+                        'url' => static function (DataTester $dataTester) use (&$called): void {
                             // Make sure the DataTester have the value of the path
                             $dataTester->assertEquals('http://google.com');
 
@@ -92,7 +100,8 @@ Failed asserting that two strings are equal.');
                         },
                     ]
                 )
-            );
+            )
+        ;
         static::assertTrue($called);
     }
 
@@ -105,13 +114,14 @@ Failed asserting that two strings are equal.');
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
                     [
-                        'url' => function (DataTester $dataTester): void {
+                        'url' => static function (DataTester $dataTester): void {
                             // Make sure the DataTester have the value of the path
                             $dataTester->assertEquals('wrong-value');
                         },
                     ]
                 )
-            );
+            )
+        ;
     }
 
     public function testInvokeFileNotFoundException(): void
@@ -131,6 +141,7 @@ Data:
         );
 
         (new DataTester(self::$data))
-            ->test(new AgainstJsonFileTester($filePath));
+            ->test(new AgainstJsonFileTester($filePath))
+        ;
     }
 }

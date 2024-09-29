@@ -11,6 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\Event\TransitionEvent;
 use Symfony\Component\Workflow\Marking;
 
+/**
+ * @internal
+ */
 class AddUserToContextListenerTest extends TestCase
 {
     private AddUserToContextListener $object;
@@ -73,7 +76,8 @@ class AddUserToContextListenerTest extends TestCase
         $this->security
             ->expects(static::once())
             ->method('getUser')
-            ->willReturn($user = $this->createMock(UserInterface::class));
+            ->willReturn($user = $this->createMock(UserInterface::class))
+        ;
 
         $this->object->addUserToContext($transitionEvent);
 

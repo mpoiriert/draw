@@ -5,6 +5,9 @@ namespace Draw\Component\OpenApi\Tests\EventListener;
 use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\EventListener\DefinitionAliasCleanerListener;
 
+/**
+ * @internal
+ */
 class DefinitionAliasCleanerListenerTest extends BaseCleanerTestCase
 {
     private DefinitionAliasCleanerListener $object;

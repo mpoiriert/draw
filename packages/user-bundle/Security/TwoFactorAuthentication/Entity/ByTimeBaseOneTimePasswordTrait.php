@@ -27,12 +27,12 @@ trait ByTimeBaseOneTimePasswordTrait
 
     public function isTotpAuthenticationEnabled(): bool
     {
-        return \in_array('totp', $this->getTwoFactorAuthenticationEnabledProviders()) && $this->totpSecret;
+        return \in_array('totp', $this->getTwoFactorAuthenticationEnabledProviders(), true) && $this->totpSecret;
     }
 
     public function needToEnableTotpAuthenticationEnabled(): bool
     {
-        return \in_array('totp', $this->getTwoFactorAuthenticationEnabledProviders()) && !$this->totpSecret;
+        return \in_array('totp', $this->getTwoFactorAuthenticationEnabledProviders(), true) && !$this->totpSecret;
     }
 
     public function getTotpAuthenticationUsername(): string

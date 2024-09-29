@@ -6,6 +6,9 @@ use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(JwtPayloadBadge::class)]
 class JwtPayloadBadgeTest extends TestCase
 {

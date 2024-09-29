@@ -29,7 +29,7 @@ class AdminActionLoader
 
             array_walk(
                 $actions,
-                function (AdminAction $adminAction) use ($admin): void {
+                static function (AdminAction $adminAction) use ($admin): void {
                     // Set default translation domain
                     $adminAction->setTranslationDomain($adminAction->getTranslationDomain() ?? $admin->getTranslationDomain());
                 }

@@ -25,7 +25,7 @@ class OpenApiController
     {
         $scope = $request->query->get('scope');
 
-        if ('json' != $request->getRequestFormat()) {
+        if ('json' !== $request->getRequestFormat()) {
             $parameters = ['_format' => 'json'];
             if ($version) {
                 $parameters['version'] = $version;
@@ -41,7 +41,8 @@ class OpenApiController
                     $currentRoute,
                     $parameters,
                     UrlGeneratorInterface::ABSOLUTE_URL
-                );
+                )
+            ;
 
             return new RedirectResponse($this->sandboxUrl.'/index.html?url='.urlencode($currentUrl));
         }

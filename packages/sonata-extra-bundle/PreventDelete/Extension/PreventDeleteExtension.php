@@ -59,7 +59,8 @@ class PreventDeleteExtension extends AbstractAdminExtension
         }
 
         $show
-            ->tab('prevent_deletions');
+            ->tab('prevent_deletions')
+        ;
 
         $configurationPool = $admin->getConfigurationPool();
 
@@ -118,11 +119,13 @@ class PreventDeleteExtension extends AbstractAdminExtension
                             'has_more' => $hasMore,
                         ]
                     )
-                ->end();
+                ->end()
+            ;
         }
 
         $show
-            ->end();
+            ->end()
+        ;
     }
 
     private function getFilterParameters(

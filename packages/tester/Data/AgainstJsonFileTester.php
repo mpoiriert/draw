@@ -30,14 +30,14 @@ class AgainstJsonFileTester
             foreach ($this->propertyPathsCheck as $path => $callable) {
                 if ($callable instanceof Constraint) {
                     $constraint = $callable;
-                    $callable = function (DataTester $dataTester) use ($constraint, $path): void {
+                    $callable = static function (DataTester $dataTester) use ($constraint, $path): void {
                         TestCase::assertThat($dataTester->getData(), $constraint, 'Path: '.$path);
                     };
                 }
 
                 if (!\is_callable($callable)) {
                     $value = $callable;
-                    $callable = function (DataTester $tester) use ($value, $path): void {
+                    $callable = static function (DataTester $tester) use ($value, $path): void {
                         $tester->assertEquals($value, 'Path: '.$path);
                     };
                 }

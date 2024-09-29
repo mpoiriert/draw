@@ -10,6 +10,9 @@ use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Messenger\Envelope;
 
+/**
+ * @internal
+ */
 class TransportTesterTest extends TestCase implements AutowiredInterface
 {
     #[AutowireTransportTester('memory')]

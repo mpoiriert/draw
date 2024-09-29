@@ -40,11 +40,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
             /** @var \Doctrine\DBAL\Connection $driverConnection */
             $driverConnection = $this->registry->getConnection($configuration['connection']);
         } catch (\InvalidArgumentException $error) {
-            throw new TransportException(
-                \sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn),
-                0,
-                $error
-            );
+            throw new TransportException(\sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn), 0, $error);
         }
 
         $connection = new Connection($configuration, $driverConnection);
@@ -81,21 +77,13 @@ class DrawTransportFactory extends DoctrineTransportFactory
         // check for extra keys in options
         $optionsExtraKeys = array_diff(array_keys($options), array_keys(self::DEFAULT_OPTIONS));
         if (0 < \count($optionsExtraKeys)) {
-            throw new InvalidArgumentException(\sprintf(
-                'Unknown option found : [%s]. Allowed options are [%s]',
-                implode(', ', $optionsExtraKeys),
-                implode(', ', array_keys(self::DEFAULT_OPTIONS))
-            ));
+            throw new InvalidArgumentException(\sprintf('Unknown option found : [%s]. Allowed options are [%s]', implode(', ', $optionsExtraKeys), implode(', ', array_keys(self::DEFAULT_OPTIONS))));
         }
 
         // check for extra keys in options
         $queryExtraKeys = array_diff(array_keys($query), array_keys(self::DEFAULT_OPTIONS));
         if (0 < \count($queryExtraKeys)) {
-            throw new InvalidArgumentException(\sprintf(
-                'Unknown option found in DSN: [%s]. Allowed options are [%s]',
-                implode(', ', $queryExtraKeys),
-                implode(', ', array_keys(self::DEFAULT_OPTIONS))
-            ));
+            throw new InvalidArgumentException(\sprintf('Unknown option found in DSN: [%s]. Allowed options are [%s]', implode(', ', $queryExtraKeys), implode(', ', array_keys(self::DEFAULT_OPTIONS))));
         }
 
         return $configuration;

@@ -18,12 +18,13 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
                     $propertyMetadata->type['name'].'<'.$genericType.'>',
                     $propertySchema = new Schema(),
                     $extractionContext
-                );
+                )
+            ;
 
             return $propertySchema;
         }
 
-        if (($propertyMetadata->type['name'] ?? null) != 'generic') {
+        if (($propertyMetadata->type['name'] ?? null) !== 'generic') {
             return null;
         }
 
@@ -38,7 +39,8 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
                 $genericTemplate,
                 $propertySchema = new Schema(),
                 $extractionContext
-            );
+            )
+        ;
 
         return $propertySchema;
     }
@@ -46,7 +48,7 @@ class GenericTemplateHandler implements TypeToSchemaHandlerInterface
     private function getGenericType(PropertyMetadata $item): ?string
     {
         return match (true) {
-            !isset($item->type['name']), \in_array($item->type['name'], ['array', 'ArrayCollection']), !class_exists($item->type['name']), !isset($item->type['params'][0]['name']), isset($item->type['params'][1]['name']) => null,
+            !isset($item->type['name']), \in_array($item->type['name'], ['array', 'ArrayCollection'], true), !class_exists($item->type['name']), !isset($item->type['params'][0]['name']), isset($item->type['params'][1]['name']) => null,
             default => $item->type['params'][0]['name'],
         };
     }

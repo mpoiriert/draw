@@ -7,6 +7,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 
+/**
+ * @internal
+ */
 #[CoversClass(RemoteFileExists::class)]
 class RemoteFileExistsTest extends TestCase
 {

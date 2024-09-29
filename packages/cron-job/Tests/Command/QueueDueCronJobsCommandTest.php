@@ -18,6 +18,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 
+/**
+ * @internal
+ */
 #[CoversClass(QueueDueCronJobsCommand::class)]
 class QueueDueCronJobsCommandTest extends TestCase
 {
@@ -62,7 +65,8 @@ class QueueDueCronJobsCommandTest extends TestCase
             ->expects(static::any())
             ->method('getRepository')
             ->with(CronJob::class)
-            ->willReturn($repository = $this->createMock(EntityRepository::class));
+            ->willReturn($repository = $this->createMock(EntityRepository::class))
+        ;
 
         $repository
             ->expects(static::once())
@@ -76,7 +80,8 @@ class QueueDueCronJobsCommandTest extends TestCase
                     ),
                     $rawCronJobs
                 )
-            );
+            )
+        ;
 
         $dueCronJobs = array_filter(
             $cronJobs,
@@ -86,7 +91,8 @@ class QueueDueCronJobsCommandTest extends TestCase
         if (0 === $numDueCronJobs = \count($dueCronJobs)) {
             $this->cronJobProcessor
                 ->expects(static::never())
-                ->method('queue');
+                ->method('queue')
+            ;
         } else {
             $this->cronJobProcessor
                 ->expects(static::exactly($numDueCronJobs))
@@ -96,7 +102,8 @@ class QueueDueCronJobsCommandTest extends TestCase
                         static fn (CronJob $cronJob): array => [$cronJob, false],
                         $dueCronJobs
                     ))
-                );
+                )
+            ;
         }
 
         $this
@@ -115,7 +122,8 @@ class QueueDueCronJobsCommandTest extends TestCase
                         ]
                     )
                 )
-            );
+            )
+        ;
     }
 
     public static function provideDataForTestExecute(): iterable
@@ -170,11 +178,13 @@ class QueueDueCronJobsCommandTest extends TestCase
         $cronJob
             ->expects(static::any())
             ->method('getName')
-            ->willReturn($name);
+            ->willReturn($name)
+        ;
         $cronJob
             ->expects(static::any())
             ->method('isDue')
-            ->willReturn($due);
+            ->willReturn($due)
+        ;
 
         return $cronJob;
     }

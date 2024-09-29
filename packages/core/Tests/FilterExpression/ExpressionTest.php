@@ -8,6 +8,9 @@ use Draw\Component\Core\FilterExpression\Expression\Expression;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\EqualTo;
 
+/**
+ * @internal
+ */
 class ExpressionTest extends TestCase
 {
     public function testEqual(): void

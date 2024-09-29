@@ -30,6 +30,7 @@ class TransportTester
 
     /**
      * @template T of object
+     *
      * @param class-string<T> $messageClass the name of the class
      *
      * @return array<T>
@@ -46,7 +47,8 @@ class TransportTester
         }
 
         $query = (new Query())
-            ->where(new ConstraintExpression(null, new Type($messageClass)));
+            ->where(new ConstraintExpression(null, new Type($messageClass)))
+        ;
 
         if ($expression) {
             $query = $query->andWhere($expression);

@@ -45,7 +45,8 @@ class ActionableAdminExtension extends AbstractAdminExtension
                     $action->getName(),
                     $pattern,
                     defaults: $defaults
-                );
+                )
+            ;
         }
     }
 

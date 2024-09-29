@@ -29,7 +29,8 @@ class AddNewestInstanceRoleCommandOptionPass implements CompilerPassInterface
                         InputOption::VALUE_REQUIRED,
                         'The instance role the server must be the newest of to run the command.',
                     ]
-                );
+                )
+            ;
         }
     }
 }

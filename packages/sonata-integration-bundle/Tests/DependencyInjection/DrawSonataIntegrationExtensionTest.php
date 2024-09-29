@@ -7,6 +7,9 @@ use Draw\Component\Tester\Test\DependencyInjection\ExtensionTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionTest extends ExtensionTestCase
 {

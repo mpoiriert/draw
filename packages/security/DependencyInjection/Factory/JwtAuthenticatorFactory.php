@@ -47,7 +47,8 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
                     ->setArgument('$algorithm', $config['algorithm'])
                     ->setArgument('$privateKey', $config['private_key'])
                     ->setArgument('$passphrase', $config['passphrase'])
-            );
+            )
+        ;
 
         if ($serviceAlias = $config['service_alias'] ?? null) {
             $container->setAlias($serviceAlias, $serviceId);
@@ -76,6 +77,7 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
                 ->scalarNode('service_alias')->defaultNull()->end()
                 ->scalarNode('user_identifier_payload_key')->defaultValue('userId')->end()
                 ->scalarNode('user_identifier_getter')->defaultValue('getId')->end()
-            ->end();
+            ->end()
+        ;
     }
 }

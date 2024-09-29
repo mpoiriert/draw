@@ -8,6 +8,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\Event;
 
+/**
+ * @internal
+ */
 #[CoversClass(BrokerStartedEvent::class)]
 class BrokerStartedEventTest extends TestCase
 {

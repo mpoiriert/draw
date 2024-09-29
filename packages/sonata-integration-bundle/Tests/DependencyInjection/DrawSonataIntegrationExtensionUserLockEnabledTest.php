@@ -10,6 +10,9 @@ use Draw\Bundle\SonataIntegrationBundle\User\Admin\UserLockAdmin;
 use Draw\Bundle\SonataIntegrationBundle\User\Controller\RefreshUserLockController;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionUserLockEnabledTest extends DrawSonataIntegrationExtensionUserEnabledTest
 {

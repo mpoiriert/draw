@@ -17,6 +17,9 @@ use Symfony\Component\Mime\Header\UnstructuredHeader;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\RawMessage;
 
+/**
+ * @internal
+ */
 #[CoversClass(EmailComposerListener::class)]
 class EmailComposerListenerTest extends TestCase
 {
@@ -37,7 +40,8 @@ class EmailComposerListenerTest extends TestCase
     {
         $this->emailComposer
             ->expects(static::never())
-            ->method('compose');
+            ->method('compose')
+        ;
 
         $this->object->composeMessage(
             $this->createMessageEvent(
@@ -50,14 +54,16 @@ class EmailComposerListenerTest extends TestCase
     {
         $this->emailComposer
             ->expects(static::never())
-            ->method('compose');
+            ->method('compose')
+        ;
 
         $message = $this->createMock(Message::class);
 
         $message
             ->expects(static::once())
             ->method('getHeaders')
-            ->willReturn($headers = new Headers());
+            ->willReturn($headers = new Headers())
+        ;
 
         $headers->add(new UnstructuredHeader('X-DrawEmail', '1'));
 
@@ -72,7 +78,8 @@ class EmailComposerListenerTest extends TestCase
 
         $this->emailComposer
             ->expects(static::once())
-            ->method('compose');
+            ->method('compose')
+        ;
 
         $this->object->composeMessage($event);
 
@@ -85,7 +92,8 @@ class EmailComposerListenerTest extends TestCase
     {
         $this->emailComposer
             ->expects(static::never())
-            ->method('compose');
+            ->method('compose')
+        ;
 
         $message = $this->createMock(Message::class);
 

@@ -37,7 +37,7 @@ class ConsoleIntegration implements IntegrationInterface, ContainerBuilderIntegr
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Console\\',
+            $namespace = 'Draw\Component\Console\\',
             $directory = \dirname(
                 (new \ReflectionClass(PurgeExecutionCommand::class))->getFileName(),
                 2
@@ -49,7 +49,8 @@ class ConsoleIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $container
             ->getDefinition(CommandFlowListener::class)
-            ->setArgument('$ignoreDisabledCommand', $config['ignore_disabled_command']);
+            ->setArgument('$ignoreDisabledCommand', $config['ignore_disabled_command'])
+        ;
 
         if (!$config['documentation']['command_names']) {
             $container->removeDefinition(DocumentationFilterCommandEventListener::class);
@@ -57,7 +58,8 @@ class ConsoleIntegration implements IntegrationInterface, ContainerBuilderIntegr
             $container
                 ->getDefinition(DocumentationFilterCommandEventListener::class)
                 ->setArgument('$commandNames', $config['documentation']['command_names'])
-                ->setArgument('$filter', $config['documentation']['filter']);
+                ->setArgument('$filter', $config['documentation']['filter'])
+            ;
         }
 
         $this->renameDefinitions(
@@ -74,7 +76,8 @@ class ConsoleIntegration implements IntegrationInterface, ContainerBuilderIntegr
             ->addMethodCall(
                 'register',
                 ['txt', new Reference(TextDescriptor::class)]
-            );
+            )
+        ;
 
         $container->setAlias(
             DescriptorHelper::class,
@@ -96,7 +99,8 @@ class ConsoleIntegration implements IntegrationInterface, ContainerBuilderIntegr
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     public function prepend(ContainerBuilder $container, array $config): void

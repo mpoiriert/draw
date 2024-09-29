@@ -16,6 +16,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * @property DoctrineExtraIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(DoctrineExtraIntegration::class)]
 class DoctrineExtraIntegrationTest extends IntegrationTestCase

@@ -26,7 +26,8 @@ class CloudWatchLogsDownloadCommand extends Command
             ->addArgument('output', InputArgument::REQUIRED, 'The output file name')
             ->addOption('startTime', null, InputOption::VALUE_REQUIRED, 'Since when the log need to be downloaded.', '- 1 days')
             ->addOption('endTime', null, InputOption::VALUE_REQUIRED, 'End time of the download.', 'now')
-            ->addOption('fileMode', null, InputOption::VALUE_REQUIRED, 'Mode in which the output file will be open to write to.', 'w+');
+            ->addOption('fileMode', null, InputOption::VALUE_REQUIRED, 'Mode in which the output file will be open to write to.', 'w+')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -56,7 +57,8 @@ class CloudWatchLogsDownloadCommand extends Command
 
             $events = $this
                 ->cloudWatchClient
-                ->getLogEvents($arguments);
+                ->getLogEvents($arguments)
+            ;
 
             foreach ($events['events'] as $event) {
                 fwrite($handle, $event['message'].\PHP_EOL);

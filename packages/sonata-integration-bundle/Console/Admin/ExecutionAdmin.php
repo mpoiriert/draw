@@ -87,7 +87,8 @@ class ExecutionAdmin extends AbstractAdmin
                         'choices' => array_combine($autoAcknowledgeReasons, $autoAcknowledgeReasons),
                     ],
                 ],
-            );
+            )
+        ;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -98,7 +99,8 @@ class ExecutionAdmin extends AbstractAdmin
             ->add('commandName')
             ->add('state')
             ->add('autoAcknowledgeReason')
-            ->add('createdAt');
+            ->add('createdAt')
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -119,14 +121,16 @@ class ExecutionAdmin extends AbstractAdmin
                     ->add('commandLine', 'text')
                     ->add('outputHtml', 'html')
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('command', null, ['attr' => ['readonly' => true]])
-            ->add('commandName', null, ['attr' => ['readonly' => true]]);
+            ->add('commandName', null, ['attr' => ['readonly' => true]])
+        ;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
@@ -136,7 +140,8 @@ class ExecutionAdmin extends AbstractAdmin
         } else {
             $collection
                 ->get('create')
-                ->setDefault('_controller', $collection->getBaseControllerName().'::myCreateAction');
+                ->setDefault('_controller', $collection->getBaseControllerName().'::myCreateAction')
+            ;
         }
 
         $collection->remove('edit');
@@ -146,7 +151,7 @@ class ExecutionAdmin extends AbstractAdmin
 
     public function configureActionButtons(array $buttonList, $action, $object = null): array
     {
-        if ('show' == $action && Execution::STATE_ERROR == $object->getState()) {
+        if ('show' === $action && Execution::STATE_ERROR === $object->getState()) {
             $buttonList['acknowledge']['template'] = '@DrawSonataIntegration/Console/Execution/button_acknowledge.html.twig';
         }
 
@@ -209,7 +214,8 @@ class ExecutionAdmin extends AbstractAdmin
             ->andWhere('e.autoAcknowledgeReason IS NOT NULL')
             ->groupBy('e.autoAcknowledgeReason')
             ->getQuery()
-            ->getResult(AbstractQuery::HYDRATE_SCALAR);
+            ->getResult(AbstractQuery::HYDRATE_SCALAR)
+        ;
 
         $result = array_column($result, 'autoAcknowledgeReason');
 

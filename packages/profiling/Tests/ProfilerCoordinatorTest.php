@@ -7,6 +7,9 @@ use Draw\Component\Profiling\ProfilerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ProfilerCoordinatorTest extends TestCase
 {
     private const PROFILER_TYPE = 'test';

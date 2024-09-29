@@ -54,12 +54,8 @@ class DeleteTemporaryEntityExtension implements Extension
                         \assert($temporaryEntityFactory instanceof TemporaryEntityCleanerInterface);
 
                         $temporaryEntityFactory->deleteTemporaryEntities();
-
                     } catch (\Throwable $error) {
-                        throw new \RuntimeException(
-                            'Failed to delete temporary entities in '.$class.'. '.$error->getMessage(),
-                            previous: $error
-                        );
+                        throw new \RuntimeException('Failed to delete temporary entities in '.$class.'. '.$error->getMessage(), previous: $error);
                     }
                 }
             }

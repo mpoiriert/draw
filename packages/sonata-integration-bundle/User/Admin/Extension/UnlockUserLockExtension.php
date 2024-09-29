@@ -35,7 +35,7 @@ class UnlockUserLockExtension extends AbstractAdminExtension
             case !$object instanceof LockableUserInterface:
             case !$object->isLocked():
             case !$admin->isGranted('unlock', $object):
-            case !\in_array($action, ['edit', 'show']):
+            case !\in_array($action, ['edit', 'show'], true):
                 break;
             default:
                 $list['unlock'] = [

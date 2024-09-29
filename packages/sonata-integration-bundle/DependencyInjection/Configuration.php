@@ -36,7 +36,8 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createEntityMigratorNode())
                 ->append($this->createMessengerNode())
                 ->append($this->createUserNode())
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }
@@ -49,7 +50,8 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->labelDefaultValue('config')
                     ->iconDefaultValue('fa fa-server')
-            );
+            )
+        ;
     }
 
     private function createConsoleNode(): ArrayNodeDefinition
@@ -66,7 +68,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->arrayNode('commands')
                     ->beforeNormalization()
-                        ->always(function ($commands) {
+                        ->always(static function ($commands) {
                             foreach ($commands as $name => $configuration) {
                                 if (!isset($configuration['name'])) {
                                     $commands[$name]['name'] = $name;
@@ -86,7 +88,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createCronJobNode(): ArrayNodeDefinition
@@ -115,7 +118,8 @@ class Configuration implements ConfigurationInterface
                             ->translationDomainDefaultValue('DrawCronJobAdmin')
                     )
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createEntityMigratorNode(): ArrayNodeDefinition
@@ -127,7 +131,8 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->labelDefaultValue('Migration')
                     ->iconDefaultValue('fa fa-cogs')
-            );
+            )
+        ;
     }
 
     private function createMessengerNode(): ArrayNodeDefinition
@@ -150,7 +155,8 @@ class Configuration implements ConfigurationInterface
                         ->translationDomainDefaultValue('DrawMessengerAdmin')
                         ->canBeDisabled()
                 )
-            ->end();
+            ->end()
+        ;
     }
 
     private function createUserNode(): ArrayNodeDefinition
@@ -182,7 +188,8 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createUserLockNode(): ArrayNodeDefinition
@@ -202,7 +209,8 @@ class Configuration implements ConfigurationInterface
                         ->iconDefaultValue('fas fa-ba')
                         ->labelDefaultValue('User lock')
                 )
-            ->end();
+            ->end()
+        ;
     }
 
     private function canBe(string $class, ArrayNodeDefinition $arrayNodeDefinition): ArrayNodeDefinition

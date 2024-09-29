@@ -34,7 +34,7 @@ class NotBlankConstraintExtractor extends BaseConstraintExtractor
             return;
         }
 
-        if (!$context->classSchema->required || !\in_array($context->propertyName, $context->classSchema->required)) {
+        if (!$context->classSchema->required || !\in_array($context->propertyName, $context->classSchema->required, true)) {
             $context->classSchema->required[] = $context->propertyName;
         }
     }

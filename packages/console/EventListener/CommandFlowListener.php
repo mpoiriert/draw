@@ -87,7 +87,7 @@ class CommandFlowListener implements EventSubscriberInterface
 
     public function checkIgnoredCommands(LoadExecutionIdEvent $event): void
     {
-        if (\in_array($event->getCommand()->getName(), $this->commandsToIgnore)) {
+        if (\in_array($event->getCommand()->getName(), $this->commandsToIgnore, true)) {
             $event->ignoreTracking();
         }
     }
@@ -126,7 +126,7 @@ class CommandFlowListener implements EventSubscriberInterface
         $parameters = $input->getArguments();
 
         // We want to keep 0 value
-        $options = array_filter($input->getOptions(), fn ($value) => false !== $value && null !== $value);
+        $options = array_filter($input->getOptions(), static fn ($value) => false !== $value && null !== $value);
 
         foreach ($options as $key => $value) {
             $parameters['--'.$key] = $value;
@@ -225,7 +225,8 @@ class CommandFlowListener implements EventSubscriberInterface
         }
 
         $commandErrorEvent = $this->eventDispatcher
-            ->dispatch(new CommandErrorEvent($executionId, $outputString));
+            ->dispatch(new CommandErrorEvent($executionId, $outputString))
+        ;
 
         $executionState = $commandErrorEvent->isAutoAcknowledge()
             ? Execution::STATE_AUTO_ACKNOWLEDGE
@@ -260,7 +261,8 @@ class CommandFlowListener implements EventSubscriberInterface
         if ($this->ignoreDisabledCommand && Execution::STATE_DISABLED === $state) {
             $this->connection
                 ->prepare('DELETE FROM command__execution WHERE id = :id')
-                ->executeStatement(['id' => $executionId]);
+                ->executeStatement(['id' => $executionId])
+            ;
 
             if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
                 $this->connection->ensureConnectedToReplica();
@@ -301,8 +303,8 @@ class CommandFlowListener implements EventSubscriberInterface
               command__execution
             SET
               updated_at = :updated_at,
-              $setOutput
-              $setAutoAcknowledgeReason
+              {$setOutput}
+              {$setAutoAcknowledgeReason}
               state = IF(state != 'error', :state, state)
             WHERE
             id = :id

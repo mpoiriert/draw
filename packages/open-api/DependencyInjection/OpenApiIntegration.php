@@ -77,14 +77,16 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                 ->append($this->createOpenApiNode())
                 ->append($this->createRequestNode())
                 ->append($this->createResponseNode())
-            ->end();
+            ->end()
+        ;
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         $container
             ->registerForAutoconfiguration(ReferenceCleanerInterface::class)
-            ->addTag('draw.open_api.reference_cleaner');
+            ->addTag('draw.open_api.reference_cleaner')
+        ;
 
         $this->configOpenApi($config['openApi'], $loader, $container);
         $this->configResponse($config['response'], $loader, $container);
@@ -110,19 +112,19 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $this->renameDefinitions(
             $container,
-            'Draw\\Component\\OpenApi\\Extraction\\Extractor\\',
+            'Draw\Component\OpenApi\Extraction\Extractor\\',
             'draw.open_api.extractor.'
         );
 
         $this->renameDefinitions(
             $container,
-            'Draw\\Component\\OpenApi\\Serializer\\',
+            'Draw\Component\OpenApi\Serializer\\',
             'draw.open_api.jms_serializer.'
         );
 
         $this->renameDefinitions(
             $container,
-            'Draw\\Component\\OpenApi\\',
+            'Draw\Component\OpenApi\\',
             'draw.open_api.'
         );
     }
@@ -147,11 +149,13 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $container
             ->registerForAutoconfiguration(ExtractorInterface::class)
-            ->addTag(ExtractorInterface::class);
+            ->addTag(ExtractorInterface::class)
+        ;
 
         $container
             ->registerForAutoconfiguration(TypeToSchemaHandlerInterface::class)
-            ->addTag(TypeToSchemaHandlerInterface::class);
+            ->addTag(TypeToSchemaHandlerInterface::class)
+        ;
 
         $directory = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
 
@@ -168,14 +172,14 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $this->registerClasses(
             $loader,
-            'Draw\\Component\\OpenApi\\',
+            'Draw\Component\OpenApi\\',
             $directory,
             $exclude,
         );
 
         $this->registerClasses(
             $loader,
-            'Draw\\Component\\OpenApi\\Controller\\',
+            'Draw\Component\OpenApi\Controller\\',
             $directory.'/Controller',
             prototype: (new Definition())
                 ->setAutowired(true)
@@ -185,19 +189,23 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $container
             ->getDefinition(TagCleanerListener::class)
-            ->setArgument('$tagsToClean', $config['tags_to_clean']);
+            ->setArgument('$tagsToClean', $config['tags_to_clean'])
+        ;
 
         $container
             ->getDefinition(UnReferenceCleanerListener::class)
-            ->setArgument('$referenceCleaners', new TaggedIteratorArgument('draw.open_api.reference_cleaner'));
+            ->setArgument('$referenceCleaners', new TaggedIteratorArgument('draw.open_api.reference_cleaner'))
+        ;
 
         if ($this->isConfigEnabled($container, $config['versioning'])) {
             $container
                 ->getDefinition(VersionLinkDocumentationExtractor::class)
-                ->setArgument('$versions', $config['versioning']['versions']);
+                ->setArgument('$versions', $config['versioning']['versions'])
+            ;
 
             $container
-                ->setAlias(RouteVersionMatcherInterface::class, RouteDefaultApiRouteVersionMatcher::class);
+                ->setAlias(RouteVersionMatcherInterface::class, RouteDefaultApiRouteVersionMatcher::class)
+            ;
         } else {
             $container->removeDefinition(VersionLinkDocumentationExtractor::class);
             $container->removeDefinition(RouteDefaultApiRouteVersionMatcher::class);
@@ -208,12 +216,14 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             foreach ($config['scoped']['scopes'] as $scope) {
                 $scopes[] = (new Definition(Scope::class))
                     ->setArgument('$name', $scope['name'])
-                    ->setArgument('$tags', $scope['tags'] ?: null);
+                    ->setArgument('$tags', $scope['tags'] ?: null)
+                ;
             }
 
             $container
                 ->getDefinition(OpenApi::class)
-                ->setArgument('$scopes', $scopes);
+                ->setArgument('$scopes', $scopes)
+            ;
         }
 
         if (!class_exists(DoctrineBundle::class)) {
@@ -226,14 +236,16 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                 new Definition(SymfonySchemaBuilder::class)
             )
             ->setAutowired(true)
-            ->setAutoconfigured(true);
+            ->setAutoconfigured(true)
+        ;
 
         $container
             ->addAliases(
                 [
                     SchemaBuilderInterface::class => SymfonySchemaBuilder::class,
                 ]
-            );
+            )
+        ;
 
         if ($config['caching_enabled']) {
             $arguments = [
@@ -243,31 +255,37 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
             $container
                 ->getDefinition(LoadFromCacheExtractor::class)
-                ->setArguments($arguments);
+                ->setArguments($arguments)
+            ;
 
             $container
                 ->getDefinition(StoreInCacheExtractor::class)
-                ->setArguments($arguments);
+                ->setArguments($arguments)
+            ;
         }
 
         $container
             ->getDefinition(OpenApi::class)
-            ->setArgument('$extractors', new TaggedIteratorArgument(ExtractorInterface::class));
+            ->setArgument('$extractors', new TaggedIteratorArgument(ExtractorInterface::class))
+        ;
 
         $container
             ->getDefinition(OpenApiController::class)
-            ->setArgument('$sandboxUrl', $config['sandbox_url']);
+            ->setArgument('$sandboxUrl', $config['sandbox_url'])
+        ;
 
         $container
             ->getDefinition(PropertiesExtractor::class)
-            ->setArgument('$typeToSchemaHandlers', new TaggedIteratorArgument(TypeToSchemaHandlerInterface::class));
+            ->setArgument('$typeToSchemaHandlers', new TaggedIteratorArgument(TypeToSchemaHandlerInterface::class))
+        ;
 
         if (!$config['headers']) {
             $container->removeDefinition(SchemaAddDefaultHeadersListener::class);
         } else {
             $container
                 ->getDefinition(SchemaAddDefaultHeadersListener::class)
-                ->setArgument('$headers', $config['headers']);
+                ->setArgument('$headers', $config['headers'])
+            ;
         }
 
         if (!$config['sort_schema']) {
@@ -280,7 +298,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             $config['classNamingFilters'][] = AliasesClassNamingFilter::class;
             $container
                 ->getDefinition(AliasesClassNamingFilter::class)
-                ->setArgument('$definitionAliases', $config['definitionAliases']);
+                ->setArgument('$definitionAliases', $config['definitionAliases'])
+            ;
         }
 
         $container
@@ -288,7 +307,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             ->setArgument(
                 '$fallbackConstructor',
                 new Reference('jms_serializer.unserialize_object_constructor')
-            );
+            )
+        ;
 
         $namingFilterServices = [];
         foreach (array_unique($config['classNamingFilters']) as $serviceName) {
@@ -297,7 +317,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $container
             ->getDefinition(TypeSchemaExtractor::class)
-            ->setArgument('$classNamingFilters', $namingFilterServices);
+            ->setArgument('$classNamingFilters', $namingFilterServices)
+        ;
 
         $container->setAlias(
             'jms_serializer.object_constructor',
@@ -320,11 +341,12 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $definition = (new Definition())
             ->setAutoconfigured(true)
-            ->setAutowired(true);
+            ->setAutowired(true)
+        ;
 
         $loader->registerClasses(
             $definition,
-            'Draw\\Component\\OpenApi\\EventListener\\',
+            'Draw\Component\OpenApi\EventListener\\',
             $openApiComponentDir.'/EventListener/{Response}*',
         );
 
@@ -332,7 +354,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $container
             ->getDefinition(ResponseSerializerListener::class)
-            ->setArgument('$serializeNull', new Parameter('draw_open_api.response.serialize_null'));
+            ->setArgument('$serializeNull', new Parameter('draw_open_api.response.serialize_null'))
+        ;
 
         $this->configResponseExceptionHandler($config['exceptionHandler'], $loader, $container);
     }
@@ -367,13 +390,15 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             ->setArgument(
                 '$violationKey',
                 $config['violationKey']
-            );
+            )
+        ;
 
         $container->getDefinition(ConfigurableErrorToHttpCodeConverter::class)
             ->setArgument(
                 '$errorCodes',
                 $codes
-            );
+            )
+        ;
 
         $operationExtractorDefinition = $container->getDefinition(OperationExtractor::class);
 
@@ -382,7 +407,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                 ->addMethodCall(
                     'registerExceptionResponseCodes',
                     [$exceptionClass, $code]
-                );
+                )
+            ;
         }
     }
 
@@ -396,17 +422,18 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
         $definition = (new Definition())
             ->setAutoconfigured(true)
-            ->setAutowired(true);
+            ->setAutowired(true)
+        ;
 
         $loader->registerClasses(
             $definition,
-            'Draw\\Component\\OpenApi\\EventListener\\',
+            'Draw\Component\OpenApi\EventListener\\',
             $openApiComponentDir.'/EventListener/{Request}*',
         );
 
         $loader->registerClasses(
             $definition,
-            'Draw\\Component\\OpenApi\\Request\\',
+            'Draw\Component\OpenApi\Request\\',
             $openApiComponentDir.'/Request',
         );
 
@@ -418,7 +445,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                 '$prefixes',
                 $config['validation']['pathPrefixes'] ??
                 ['query' => '$.query', 'body' => '$.body']
-            );
+            )
+        ;
 
         if (!$config['queryParameter']['enabled']) {
             $container->removeDefinition(RequestQueryParameterFetcherListener::class);
@@ -447,7 +475,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                 ->append($this->createHeadersNode())
                 ->append($this->createDefinitionAliasesNode())
                 ->append($this->createNamingFiltersNode())
-            ->end();
+            ->end()
+        ;
     }
 
     private function createVersioningNode(): ArrayNodeDefinition
@@ -459,7 +488,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                     ->defaultValue([])
                     ->scalarPrototype()->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createScopedNode(): ArrayNodeDefinition
@@ -470,7 +500,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                 ->arrayNode('scopes')
                     ->requiresAtLeastOneElement()
                     ->beforeNormalization()
-                    ->always(function ($config) {
+                    ->always(static function ($config) {
                         foreach ($config as $name => $configuration) {
                             if (!isset($configuration['name'])) {
                                 $config[$name]['name'] = $name;
@@ -485,7 +515,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                         ->children()
                             ->scalarNode('name')
                                 ->validate()
-                                    ->ifTrue(fn ($value) => \is_int($value))
+                                    ->ifTrue(static fn ($value) => \is_int($value))
                                     ->thenInvalid('You must specify a name for the scope. Can be via the attribute or the key.')
                                 ->end()
                                 ->isRequired()
@@ -496,7 +526,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                         ->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createRequestNode(): ArrayNodeDefinition
@@ -523,7 +554,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                 ->arrayNode('userRequestInterceptedException')
                     ->canBeEnabled()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createResponseNode(): ArrayNodeDefinition
@@ -547,7 +579,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                         ->scalarNode('violationKey')->defaultValue('errors')->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createDefinitionAliasesNode(): ArrayNodeDefinition
@@ -559,7 +592,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                     ->scalarNode('class')->isRequired()->end()
                     ->scalarNode('alias')->isRequired()->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createNamingFiltersNode(): ArrayNodeDefinition
@@ -567,7 +601,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
         return (new ArrayNodeDefinition('classNamingFilters'))
                 ->defaultValue([AliasesClassNamingFilter::class])
                 ->scalarPrototype()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createSchemaNode(): ArrayNodeDefinition
@@ -587,7 +622,8 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
                     ->end()
                 ->end()
                 ->scalarNode('basePath')->end()
-            ->end();
+            ->end()
+        ;
     }
 
     private function createHeadersNode(): ArrayNodeDefinition
@@ -596,6 +632,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             ->arrayPrototype()
                 ->normalizeKeys(false)
                 ->ignoreExtraKeys(false)
-            ->end();
+            ->end()
+        ;
     }
 }

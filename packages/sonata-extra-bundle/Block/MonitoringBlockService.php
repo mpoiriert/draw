@@ -51,7 +51,8 @@ class MonitoringBlockService implements BlockServiceInterface
                         ],
                     ],
                 ]
-            );
+            )
+        ;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
@@ -84,7 +85,8 @@ class MonitoringBlockService implements BlockServiceInterface
                 )
             )
                 ->setPrivate()
-                ->setTtl(0);
+                ->setTtl(0)
+        ;
     }
 
     private function findThresholdSetting(array $thresholds, ?int $count): array

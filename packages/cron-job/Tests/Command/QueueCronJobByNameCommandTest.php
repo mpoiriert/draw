@@ -17,6 +17,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
+/**
+ * @internal
+ */
 #[CoversClass(QueueCronJobByNameCommand::class)]
 class QueueCronJobByNameCommandTest extends TestCase
 {
@@ -35,7 +38,8 @@ class QueueCronJobByNameCommandTest extends TestCase
             ->expects(static::any())
             ->method('getRepository')
             ->with(CronJob::class)
-            ->willReturn($this->repository = $this->createMock(EntityRepository::class));
+            ->willReturn($this->repository = $this->createMock(EntityRepository::class))
+        ;
 
         $this->command = new QueueCronJobByNameCommand(
             $this->managerRegistry,
@@ -64,12 +68,14 @@ class QueueCronJobByNameCommandTest extends TestCase
             ->expects(static::once())
             ->method('findOneBy')
             ->with(['name' => $cronJobName = 'Existing Cron Job'])
-            ->willReturn($cronJob = new CronJob());
+            ->willReturn($cronJob = new CronJob())
+        ;
 
         $this->cronJobProcessor
             ->expects(static::once())
             ->method('queue')
-            ->with($cronJob, true);
+            ->with($cronJob, true)
+        ;
 
         $this
             ->execute(['name' => $cronJobName])
@@ -81,7 +87,8 @@ class QueueCronJobByNameCommandTest extends TestCase
                         'Cron job successfully queued.',
                     ]
                 )
-            );
+            )
+        ;
     }
 
     public function testExecuteWithoutExistingCronJob(): void
@@ -90,11 +97,13 @@ class QueueCronJobByNameCommandTest extends TestCase
             ->expects(static::once())
             ->method('findOneBy')
             ->with(['name' => $cronJobName = 'Invalid Cron Job'])
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->cronJobProcessor
             ->expects(static::never())
-            ->method('queue');
+            ->method('queue')
+        ;
 
         $this
             ->execute(['name' => $cronJobName])
@@ -105,6 +114,7 @@ class QueueCronJobByNameCommandTest extends TestCase
                         '[ERROR] Cron job could not be found.',
                     ]
                 )
-            );
+            )
+        ;
     }
 }

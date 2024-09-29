@@ -19,7 +19,7 @@ class SqlMetricBuilder implements MetricBuilderInterface
     public function build(): SqlMetric
     {
         $queries = array_map(
-            fn (SqlLog $log) => $log->query,
+            static fn (SqlLog $log) => $log->query,
             $this->logs
         );
 

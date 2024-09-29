@@ -25,6 +25,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(CronJobProcessor::class)]
 class CronJobProcessorTest extends TestCase
 {
@@ -47,7 +50,8 @@ class CronJobProcessorTest extends TestCase
             ->expects(static::any())
             ->method('getManagerForClass')
             ->with(CronJobExecution::class)
-            ->willReturn($this->entityManager = $this->createMock(EntityManagerInterface::class));
+            ->willReturn($this->entityManager = $this->createMock(EntityManagerInterface::class))
+        ;
 
         $this->cronJobProcessor = new CronJobProcessor(
             $managerRegistry,
@@ -68,22 +72,26 @@ class CronJobProcessorTest extends TestCase
             ->expects(static::any())
             ->method('newExecution')
             ->with($force)
-            ->willReturn($execution = $this->createCronJobExecution());
+            ->willReturn($execution = $this->createCronJobExecution())
+        ;
 
         $this->entityManager
             ->expects(static::once())
             ->method('persist')
-            ->with($execution);
+            ->with($execution)
+        ;
 
         $this->entityManager
             ->expects(static::once())
-            ->method('flush');
+            ->method('flush')
+        ;
 
         $this->messageBus
             ->expects(static::once())
             ->method('dispatch')
             ->with($message = new ExecuteCronJobMessage($execution))
-            ->willReturn(new Envelope($message, []));
+            ->willReturn(new Envelope($message, []))
+        ;
 
         $this->cronJobProcessor->queue($cronJob, $force);
     }
@@ -127,22 +135,26 @@ class CronJobProcessorTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $returnedPreCronJobExecutionEvent,
                 $postExecutionEvent
-            );
+            )
+        ;
 
         $this->entityManager
             ->expects(static::exactly(2))
-            ->method('flush');
+            ->method('flush')
+        ;
 
         $this->entityManager
             ->expects(static::once())
             ->method('getConnection')
             ->willReturn(
                 $connection = $this->createMock(Connection::class)
-            );
+            )
+        ;
 
         $connection
             ->expects(static::once())
-            ->method('close');
+            ->method('close')
+        ;
 
         $this->processFactory
             ->expects(static::once())
@@ -154,22 +166,24 @@ class CronJobProcessorTest extends TestCase
                 null,
                 $executionTimeout,
             )
-            ->willReturn($process = $this->createMock(Process::class));
+            ->willReturn($process = $this->createMock(Process::class))
+        ;
 
         $process
             ->expects(static::once())
-            ->method('mustRun');
+            ->method('mustRun')
+        ;
 
         $this->cronJobProcessor->process($execution);
 
-        static::assertEquals(CronJobExecution::STATE_TERMINATED, $execution->getState());
+        static::assertSame(CronJobExecution::STATE_TERMINATED, $execution->getState());
         static::assertNotNull($execution->getExecutionStartedAt());
         static::assertNotNull($execution->getExecutionEndedAt());
-        static::assertEquals(
+        static::assertSame(
             $execution->getExecutionEndedAt()->getTimestamp() - $execution->getExecutionStartedAt()->getTimestamp(),
             $execution->getExecutionDelay()
         );
-        static::assertEquals(0, $execution->getExitCode());
+        static::assertSame(0, $execution->getExitCode());
         static::assertNull($execution->getError());
     }
 
@@ -205,28 +219,33 @@ class CronJobProcessorTest extends TestCase
                     ]
                 )
             )
-            ->willReturnOnConsecutiveCalls($preExecutionEvent, $postExecutionEvent);
+            ->willReturnOnConsecutiveCalls($preExecutionEvent, $postExecutionEvent)
+        ;
 
         $this->entityManager
             ->expects(static::exactly(2))
-            ->method('flush');
+            ->method('flush')
+        ;
 
         $this->entityManager
             ->expects(static::once())
             ->method('getConnection')
             ->willReturn(
                 $connection = $this->createMock(Connection::class)
-            );
+            )
+        ;
 
         $connection
             ->expects(static::once())
-            ->method('close');
+            ->method('close')
+        ;
 
         $process = $this->createMock(Process::class);
         $process
             ->expects(static::any())
             ->method('getExitCode')
-            ->willReturn($exitCode = 127);
+            ->willReturn($exitCode = 127)
+        ;
         $process
             ->expects(static::any())
             ->method('mustRun')
@@ -235,7 +254,8 @@ class CronJobProcessorTest extends TestCase
                     'Exception while processing command.',
                     previous: new \Exception('Nested exception.')
                 )
-            );
+            )
+        ;
 
         $this->processFactory
             ->expects(static::once())
@@ -247,15 +267,16 @@ class CronJobProcessorTest extends TestCase
                 null,
                 $execution->getCronJob()->getExecutionTimeout()
             )
-            ->willReturn($process);
+            ->willReturn($process)
+        ;
 
         $this->cronJobProcessor->process($execution);
 
-        static::assertEquals(CronJobExecution::STATE_ERRORED, $execution->getState());
+        static::assertSame(CronJobExecution::STATE_ERRORED, $execution->getState());
         static::assertNotNull($execution->getExecutionStartedAt());
         static::assertNotNull($execution->getExecutionEndedAt());
         static::assertNotNull($execution->getExecutionDelay());
-        static::assertEquals($exitCode, $execution->getExitCode());
+        static::assertSame($exitCode, $execution->getExitCode());
         static::assertNotNull($execution->getError());
     }
 
@@ -263,15 +284,18 @@ class CronJobProcessorTest extends TestCase
     {
         $this->eventDispatcher
             ->expects(static::never())
-            ->method('dispatch');
+            ->method('dispatch')
+        ;
 
         $this->entityManager
             ->expects(static::once())
-            ->method('flush');
+            ->method('flush')
+        ;
 
         $this->processFactory
             ->expects(static::never())
-            ->method('createFromShellCommandLine');
+            ->method('createFromShellCommandLine')
+        ;
 
         $this->cronJobProcessor->process(
             $execution = (new CronJob())
@@ -279,7 +303,7 @@ class CronJobProcessorTest extends TestCase
                 ->newExecution()
         );
 
-        static::assertEquals(CronJobExecution::STATE_SKIPPED, $execution->getState());
+        static::assertSame(CronJobExecution::STATE_SKIPPED, $execution->getState());
     }
 
     public function testProcessWithCancelledExecution(): void
@@ -292,19 +316,22 @@ class CronJobProcessorTest extends TestCase
             )
             ->willReturn(
                 new PreCronJobExecutionEvent($execution, true)
-            );
+            )
+        ;
 
         $this->entityManager
             ->expects(static::once())
-            ->method('flush');
+            ->method('flush')
+        ;
 
         $this->processFactory
             ->expects(static::never())
-            ->method('createFromShellCommandLine');
+            ->method('createFromShellCommandLine')
+        ;
 
         $this->cronJobProcessor->process($execution);
 
-        static::assertEquals(CronJobExecution::STATE_SKIPPED, $execution->getState());
+        static::assertSame(CronJobExecution::STATE_SKIPPED, $execution->getState());
     }
 
     private function createCronJobExecution(string $command = 'bin/console draw:test:execute'): CronJobExecution

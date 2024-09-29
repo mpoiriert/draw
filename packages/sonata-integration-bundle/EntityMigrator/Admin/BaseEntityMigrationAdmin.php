@@ -51,7 +51,8 @@ abstract class BaseEntityMigrationAdmin extends AbstractAdmin
                     ],
                     'show_filter' => true,
                 ]
-            );
+            )
+        ;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -60,7 +61,8 @@ abstract class BaseEntityMigrationAdmin extends AbstractAdmin
             ->addIdentifier('id')
             ->add('entity')
             ->add('migration')
-            ->add('state');
+            ->add('state')
+        ;
     }
 
     protected function configureShowFields(ShowMapper $show): void
@@ -76,12 +78,14 @@ abstract class BaseEntityMigrationAdmin extends AbstractAdmin
                     'template' => '@DrawSonataIntegration/EntityMigrator/BaseEntityMigration/show_transition_logs.html.twig',
                 ]
             )
-            ->add('createdAt');
+            ->add('createdAt')
+        ;
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection
-            ->clearExcept(['list', 'show']);
+            ->clearExcept(['list', 'show'])
+        ;
     }
 }

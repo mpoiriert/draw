@@ -20,6 +20,7 @@ class EnvelopeFactoryDispatchAfterCurrentBusStampListener implements EventSubscr
         $event
             ->setEnvelope(
                 $event->getEnvelope()->with(new DispatchAfterCurrentBusStamp())
-            );
+            )
+        ;
     }
 }

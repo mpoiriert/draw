@@ -6,6 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 use function Draw\Component\Core\use_trait;
 
+/**
+ * @internal
+ */
 class FunctionTest extends TestCase
 {
     public function testUseTraitNotExistsTrait(): void

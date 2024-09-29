@@ -18,7 +18,8 @@ class BatchActionExtension extends AbstractAdminExtension
 
         $collection
             ->get('batch')
-            ->setDefault('_controller', BatchAdminController::class.'::batchAction');
+            ->setDefault('_controller', BatchAdminController::class.'::batchAction')
+        ;
     }
 
     public function configureBatchActions(AdminInterface $admin, array $actions): array

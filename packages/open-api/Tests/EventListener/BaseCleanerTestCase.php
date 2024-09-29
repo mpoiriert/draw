@@ -33,7 +33,7 @@ abstract class BaseCleanerTestCase extends TestCase
 
         $cleanedSchema = $event->getRootSchema();
 
-        static::assertEquals(
+        static::assertEqualsCanonicalizing(
             json_decode(file_get_contents($clean), true, 512, \JSON_THROW_ON_ERROR),
             json_decode($openApi->dump($cleanedSchema, false), true, 512, \JSON_THROW_ON_ERROR)
         );

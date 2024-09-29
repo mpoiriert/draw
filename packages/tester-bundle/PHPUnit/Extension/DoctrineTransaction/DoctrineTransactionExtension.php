@@ -75,6 +75,6 @@ final class DoctrineTransactionExtension implements Extension
 
         StaticDriver::setKeepStaticConnections(true);
 
-        static::begin();
+        self::begin();
     }
 }

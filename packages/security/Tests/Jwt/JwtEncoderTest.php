@@ -8,6 +8,9 @@ use Firebase\JWT\SignatureInvalidException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(JwtEncoder::class)]
 class JwtEncoderTest extends TestCase
 {

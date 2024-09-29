@@ -77,7 +77,8 @@ class MessengerMessageAdmin extends AbstractAdmin
             ->add(
                 'expiresAt',
                 RelativeDateTimeFilter::class,
-            );
+            )
+        ;
     }
 
     protected function configureListFields(ListMapper $list): void
@@ -103,7 +104,8 @@ class MessengerMessageAdmin extends AbstractAdmin
                         'delete' => [],
                     ],
                 ]
-            );
+            )
+        ;
     }
 
     public function dumpMessage(DrawMessageInterface $message): string
@@ -140,7 +142,8 @@ class MessengerMessageAdmin extends AbstractAdmin
                         \sprintf('%s.expiresAt IS NULL', $query->getRootAliases()[0]),
                     )
             )
-            ->setParameter('now', new \DateTimeImmutable());
+            ->setParameter('now', new \DateTimeImmutable())
+        ;
 
         return $query;
     }

@@ -48,7 +48,7 @@ class TranslationExtension extends AbstractExtension
             }
 
             $result = $this->translator->trans($message, $arguments, $domain, $locale);
-            if ($result != $message) {
+            if ($result !== $message) {
                 return $result;
             }
         }

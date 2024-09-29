@@ -39,7 +39,7 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Mailer\\',
+            $namespace = 'Draw\Component\Mailer\\',
             \dirname(
                 (new \ReflectionClass(EmailComposer::class))->getFileName(),
             ),
@@ -51,11 +51,13 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
                 'twig.mime_body_renderer',
                 'draw.mailer.body_renderer.localize_body_renderer.inner'
             )
-            ->setArgument('$bodyRenderer', new Reference('draw.mailer.body_renderer.localize_body_renderer.inner'));
+            ->setArgument('$bodyRenderer', new Reference('draw.mailer.body_renderer.localize_body_renderer.inner'))
+        ;
 
         $container
             ->registerForAutoconfiguration(EmailWriterInterface::class)
-            ->addTag(EmailWriterInterface::class);
+            ->addTag(EmailWriterInterface::class)
+        ;
 
         if (!$this->isConfigEnabled($container, $config['subject_from_html_title'])) {
             $container->removeDefinition(EmailSubjectFromHtmlTitleListener::class);
@@ -74,7 +76,8 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
                     '$defaultFrom',
                     (new Definition(Address::class))
                         ->setArguments([$config['default_from']['email'], $config['default_from']['name'] ?? ''])
-                );
+                )
+            ;
         }
 
         $this->renameDefinitions(
@@ -94,7 +97,7 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
                 ->arrayNode('css_inliner')
                     ->canBeEnabled()
                     ->validate()
-                        ->ifTrue(fn ($value) => $value['enabled'] && !class_exists(CssInliner::class))
+                        ->ifTrue(static fn ($value) => $value['enabled'] && !class_exists(CssInliner::class))
                         ->thenInvalid('The css inliner is base on the [pelago/emogrifier] package. Install it if you want to enable this feature.')
                     ->end()
                 ->end()
@@ -105,7 +108,8 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
                         ->scalarNode('name')->end()
                     ->end()
                 ->end()
-            ->end();
+            ->end()
+        ;
     }
 
     public function prepend(ContainerBuilder $container, array $config): void

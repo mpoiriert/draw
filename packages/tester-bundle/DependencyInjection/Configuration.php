@@ -18,7 +18,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('profiling')
                     ->{class_exists(ProfilerCoordinator::class) ? 'canBeDisabled' : 'canBeEnabled'}()
                 ->end()
-            ->end();
+            ->end()
+        ;
 
         return $treeBuilder;
     }

@@ -13,6 +13,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * @property ConsoleIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(ProcessIntegration::class)]
 class ProcessIntegrationTest extends IntegrationTestCase

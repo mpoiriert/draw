@@ -9,6 +9,9 @@ use Draw\Component\OpenApi\EventListener\ResponseApiExceptionListener;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @internal
+ */
 class ResponseApiExceptionListenerTest extends KernelTestCase implements AutowiredInterface
 {
     use EventListenerTestTrait;

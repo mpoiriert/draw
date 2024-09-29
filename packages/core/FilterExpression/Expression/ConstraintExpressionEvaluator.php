@@ -20,7 +20,8 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessorBuilder()
             ->enableExceptionOnInvalidPropertyPath()
             ->enableExceptionOnInvalidIndex()
-            ->getPropertyAccessor();
+            ->getPropertyAccessor()
+        ;
     }
 
     public function evaluate($data, Expression $expression): bool

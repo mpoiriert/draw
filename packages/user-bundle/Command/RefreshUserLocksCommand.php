@@ -26,7 +26,8 @@ class RefreshUserLocksCommand extends Command
             ->setDescription(
                 'Send a [RefreshUserLockMessage] for all user.'.\PHP_EOL.
                 'Configure you messenger routing properly otherwise it will be sync'
-            );
+            )
+        ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -40,7 +41,8 @@ class RefreshUserLocksCommand extends Command
         $rows = $this->drawUserEntityRepository->createQueryBuilder('user')
             ->select('user.id')
             ->getQuery()
-            ->execute();
+            ->execute()
+        ;
 
         foreach ($rows as $row) {
             $this->messageBus->dispatch(new RefreshUserLockMessage($row['id']));

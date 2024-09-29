@@ -155,7 +155,8 @@ class BatchAdminController extends AbstractAdminController
         // This is to trigger an exception if the controller is not found
         $this->container
             ->get('controller_resolver')
-            ->getController(new Request([], [], ['_controller' => $controller]));
+            ->getController(new Request([], [], ['_controller' => $controller]))
+        ;
 
         return function (ProxyQueryInterface $query, Request $request) use ($controller) {
             $request->attributes->set('_controller', $controller);

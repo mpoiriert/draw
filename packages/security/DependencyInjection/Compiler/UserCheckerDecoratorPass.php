@@ -23,6 +23,7 @@ class UserCheckerDecoratorPass implements CompilerPassInterface
             ->setAutoconfigured(true)
             ->setAutowired(true)
             ->setDecoratedService('security.user_checker', 'draw.security.core.user.event_driven_user_checker.inner')
-            ->setArgument('$decoratedUserChecker', new Reference('draw.security.core.user.event_driven_user_checker.inner'));
+            ->setArgument('$decoratedUserChecker', new Reference('draw.security.core.user.event_driven_user_checker.inner'))
+        ;
     }
 }

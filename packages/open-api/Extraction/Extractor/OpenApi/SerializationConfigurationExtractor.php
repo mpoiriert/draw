@@ -69,7 +69,8 @@ class SerializationConfigurationExtractor implements ExtractorInterface
     private function getSerialization(\ReflectionMethod $reflectionMethod): ?Serialization
     {
         $attribute = $reflectionMethod
-            ->getAttributes(Serialization::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null;
+            ->getAttributes(Serialization::class, \ReflectionAttribute::IS_INSTANCEOF)[0] ?? null
+        ;
 
         return $attribute?->newInstance();
     }

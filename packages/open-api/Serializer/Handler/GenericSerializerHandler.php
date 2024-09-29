@@ -21,7 +21,7 @@ class GenericSerializerHandler implements EventSubscriberInterface
 
     public function onPreSerialize(PreSerializeEvent $event): void
     {
-        if ('generic' != $event->getType()['name']) {
+        if ('generic' !== $event->getType()['name']) {
             return;
         }
 

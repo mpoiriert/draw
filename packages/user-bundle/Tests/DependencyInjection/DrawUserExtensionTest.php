@@ -16,6 +16,9 @@ use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 use Draw\Component\Tester\Test\DependencyInjection\ExtensionTestCase;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 class DrawUserExtensionTest extends ExtensionTestCase
 {
     public function createExtension(): Extension

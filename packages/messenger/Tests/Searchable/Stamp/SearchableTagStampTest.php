@@ -7,6 +7,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Stamp\StampInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(SearchableTagStamp::class)]
 class SearchableTagStampTest extends TestCase
 {

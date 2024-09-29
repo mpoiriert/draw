@@ -37,7 +37,8 @@ trait IntegrationTrait
     ): void {
         $prototype = $prototype ?: (new Definition())
             ->setAutowired(true)
-            ->setAutoconfigured(true);
+            ->setAutoconfigured(true)
+        ;
 
         foreach ($this->getDefaultExcludedDirectories() as $defaultExcludedDirectory) {
             $exclude[] = $directory.'/'.$defaultExcludedDirectory;
@@ -51,7 +52,8 @@ trait IntegrationTrait
         );
 
         $container = (new \ReflectionProperty($loader, 'container'))
-            ->getValue($loader);
+            ->getValue($loader)
+        ;
 
         \assert($container instanceof ContainerBuilder);
 
@@ -143,7 +145,7 @@ trait IntegrationTrait
     {
         $originalInput = $input;
         $input = str_replace('\\', '.', $input);
-        $input = preg_replace('~(?<=\\w)([A-Z])~u', '_$1', $input);
+        $input = preg_replace('~(?<=\w)([A-Z])~u', '_$1', $input);
 
         if (null === $input) {
             throw new \RuntimeException(\sprintf('preg_replace returned null for value "%s"', $originalInput));

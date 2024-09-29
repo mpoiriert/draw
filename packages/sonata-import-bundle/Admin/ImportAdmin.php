@@ -78,7 +78,8 @@ class ImportAdmin extends AbstractAdmin
         }
 
         $this->importer
-            ->buildFromFile($import, $file);
+            ->buildFromFile($import, $file)
+        ;
     }
 
     public function configureListFields(ListMapper $list): void
@@ -95,7 +96,8 @@ class ImportAdmin extends AbstractAdmin
             )
             ->add('insertWhenNotFound')
             ->add('state')
-            ->add('createdAt');
+            ->add('createdAt')
+        ;
     }
 
     public function configureFormFields(FormMapper $form): void
@@ -166,7 +168,8 @@ class ImportAdmin extends AbstractAdmin
                         'attr' => ['disabled' => true],
                     ]
                 )
-            ->ifEnd();
+            ->ifEnd()
+        ;
     }
 
     private function getEntityClassChoices(): array

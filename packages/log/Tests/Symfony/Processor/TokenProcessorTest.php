@@ -13,6 +13,9 @@ use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
+/**
+ * @internal
+ */
 class TokenProcessorTest extends TestCase
 {
     private TokenProcessor $service;
@@ -50,7 +53,8 @@ class TokenProcessorTest extends TestCase
             ->method('getToken')
             ->willReturn(
                 new NullToken()
-            );
+            )
+        ;
 
         static::assertSame(
             [
@@ -114,7 +118,8 @@ class TokenProcessorTest extends TestCase
                     uniqid(),
                     $roles = [uniqid()]
                 )
-            );
+            )
+        ;
 
         static::assertSame(
             [

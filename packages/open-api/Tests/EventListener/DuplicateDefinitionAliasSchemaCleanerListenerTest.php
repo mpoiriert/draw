@@ -6,6 +6,9 @@ use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\EventListener\DuplicateDefinitionAliasSchemaCleanerListener;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(DuplicateDefinitionAliasSchemaCleanerListener::class)]
 class DuplicateDefinitionAliasSchemaCleanerListenerTest extends BaseCleanerTestCase
 {

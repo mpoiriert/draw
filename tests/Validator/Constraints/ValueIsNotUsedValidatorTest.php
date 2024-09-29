@@ -11,6 +11,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * @internal
+ */
 class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowiredInterface
 {
     #[AutowireService]
@@ -20,7 +23,8 @@ class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowiredInt
     public function testValidate(mixed $value, string $entityClass, string $field, bool $expectError): void
     {
         $violations = $this->validator
-            ->validate($value, new ValueIsNotUsed(entityClass: $entityClass, field: $field));
+            ->validate($value, new ValueIsNotUsed(entityClass: $entityClass, field: $field))
+        ;
 
         if (!$expectError) {
             static::assertCount(0, $violations);

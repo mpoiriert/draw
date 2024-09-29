@@ -17,6 +17,9 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+/**
+ * @internal
+ */
 #[CoversClass(StartMessengerBrokerCommand::class)]
 class StartMessengerBrokerCommandTest extends TestCase
 {
@@ -230,11 +233,12 @@ class StartMessengerBrokerCommandTest extends TestCase
         $this
             ->cpuCounter
             ->method('count')
-            ->willReturn($numCpus);
+            ->willReturn($numCpus)
+        ;
 
         $this->eventDispatcher->addListener(
             BrokerStartedEvent::class,
-            function (BrokerStartedEvent $event) use ($concurrent): void {
+            static function (BrokerStartedEvent $event) use ($concurrent): void {
                 static::assertSame($concurrent, $event->getConcurrent());
 
                 $broker = $event->getBroker();
@@ -262,7 +266,8 @@ class StartMessengerBrokerCommandTest extends TestCase
                     '! [NOTE] Timeout 10',
                     '[OK] Broker stopped. ',
                 ]
-            ));
+            ))
+        ;
     }
 
     public static function provideDataForTestExecuteWithAutoConcurrent(): iterable

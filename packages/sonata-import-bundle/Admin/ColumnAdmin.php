@@ -59,7 +59,8 @@ class ColumnAdmin extends AbstractAdmin
             )
             ->add('isIdentifier')
             ->add('isDate')
-            ->add('isIgnored');
+            ->add('isIgnored')
+        ;
     }
 
     private function loadMappedToOptions(Column $column): array

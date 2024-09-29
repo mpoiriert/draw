@@ -9,6 +9,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class SqlAssertionBuilderTest extends TestCase
 {
     private SqlAssertionBuilder $assertionBuilder;
@@ -72,7 +75,8 @@ SELECT * FROM test2
 Failed asserting that 2 matches expected 0.');
 
         (new DataTester(new SqlMetric(['SELECT * FROM test', 'SELECT * FROM test2'])))
-            ->test(SqlAssertionBuilder::create(0));
+            ->test(SqlAssertionBuilder::create(0))
+        ;
     }
 
     public function testInvokeNoAssertionException(): void
@@ -81,7 +85,8 @@ Failed asserting that 2 matches expected 0.');
         $this->expectExceptionMessage('No assertion configured.');
 
         (new DataTester(new SqlMetric([])))
-            ->test(SqlAssertionBuilder::create());
+            ->test(SqlAssertionBuilder::create())
+        ;
     }
 
     private function invoke(DataTester $dataTester, $shouldFail): void

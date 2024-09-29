@@ -66,7 +66,8 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
             );
 
             $metadata = $this->getManagerForClass($object::class)
-                ->getClassMetadata($object::class);
+                ->getClassMetadata($object::class)
+            ;
 
             $stamps[] = new PropertyReferenceStamp(
                 $propertyName,

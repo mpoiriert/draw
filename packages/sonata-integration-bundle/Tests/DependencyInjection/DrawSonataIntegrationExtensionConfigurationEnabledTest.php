@@ -6,6 +6,9 @@ use Draw\Bundle\SonataIntegrationBundle\Configuration\Admin\ConfigAdmin;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionConfigurationEnabledTest extends DrawSonataIntegrationExtensionTest
 {

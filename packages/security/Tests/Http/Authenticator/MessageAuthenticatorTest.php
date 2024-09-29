@@ -24,6 +24,9 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
+/**
+ * @internal
+ */
 #[CoversClass(MessageAuthenticator::class)]
 class MessageAuthenticatorTest extends TestCase
 {
@@ -64,19 +67,22 @@ class MessageAuthenticatorTest extends TestCase
         $this->security
             ->expects(static::once())
             ->method('getUser')
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         $this->envelopeFinder
             ->expects(static::once())
             ->method('findById')
             ->with($messageId)
-            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
+            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))))
+        ;
 
         $this->userProvider
             ->expects(static::once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
-            ->willReturn($this->createMock(UserInterface::class));
+            ->willReturn($this->createMock(UserInterface::class))
+        ;
 
         static::assertTrue($this->service->supports($request));
     }
@@ -89,19 +95,22 @@ class MessageAuthenticatorTest extends TestCase
         $this->security
             ->expects(static::once())
             ->method('getUser')
-            ->willReturn($this->createMock(UserInterface::class));
+            ->willReturn($this->createMock(UserInterface::class))
+        ;
 
         $this->envelopeFinder
             ->expects(static::once())
             ->method('findById')
             ->with($messageId)
-            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
+            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))))
+        ;
 
         $this->userProvider
             ->expects(static::once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
-            ->willReturn($this->createMock(UserInterface::class));
+            ->willReturn($this->createMock(UserInterface::class))
+        ;
 
         static::assertTrue($this->service->supports($request));
     }
@@ -119,19 +128,22 @@ class MessageAuthenticatorTest extends TestCase
         $this->security
             ->expects(static::once())
             ->method('getUser')
-            ->willReturn($user = $this->createMock(UserInterface::class));
+            ->willReturn($user = $this->createMock(UserInterface::class))
+        ;
 
         $this->envelopeFinder
             ->expects(static::once())
             ->method('findById')
             ->with($messageId)
-            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
+            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))))
+        ;
 
         $this->userProvider
             ->expects(static::once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
-            ->willReturn($user);
+            ->willReturn($user)
+        ;
 
         static::assertFalse($this->service->supports($request));
     }
@@ -145,7 +157,8 @@ class MessageAuthenticatorTest extends TestCase
             ->expects(static::once())
             ->method('findById')
             ->with($messageId)
-            ->willThrowException(new MessageNotFoundException($messageId));
+            ->willThrowException(new MessageNotFoundException($messageId))
+        ;
 
         static::assertFalse($this->service->supports($request));
     }
@@ -159,7 +172,8 @@ class MessageAuthenticatorTest extends TestCase
             ->expects(static::once())
             ->method('findById')
             ->with($messageId)
-            ->willThrowException(new MessageNotFoundException($messageId));
+            ->willThrowException(new MessageNotFoundException($messageId))
+        ;
 
         $this->expectException(CustomUserMessageAuthenticationException::class);
         $this->expectExceptionMessage('Invalid message id.');
@@ -176,20 +190,23 @@ class MessageAuthenticatorTest extends TestCase
             ->expects(static::once())
             ->method('findById')
             ->with($messageId)
-            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))));
+            ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))))
+        ;
 
         $user = $this->createMock(UserInterface::class);
 
         $user
             ->expects(static::once())
             ->method('getUserIdentifier')
-            ->willReturn($userIdentifier);
+            ->willReturn($userIdentifier)
+        ;
 
         $this->userProvider
             ->expects(static::once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
-            ->willReturn($user);
+            ->willReturn($user)
+        ;
 
         $passport = $this->service->authenticate($request);
 
@@ -243,12 +260,14 @@ class MessageAuthenticatorTest extends TestCase
         $passport
             ->expects(static::any())
             ->method('getUser')
-            ->willReturn($user = $this->createMock(UserInterface::class));
+            ->willReturn($user = $this->createMock(UserInterface::class))
+        ;
 
         $user
             ->expects(static::any())
             ->method('getRoles')
-            ->willReturn($roles = [uniqid('ROLE_')]);
+            ->willReturn($roles = [uniqid('ROLE_')])
+        ;
 
         $token = $this->service->createToken(
             $passport,
@@ -282,7 +301,8 @@ class MessageAuthenticatorTest extends TestCase
 
         $message->expects(static::any())
             ->method('getUserIdentifier')
-            ->willReturn($userIdentifier);
+            ->willReturn($userIdentifier)
+        ;
 
         return $message;
     }

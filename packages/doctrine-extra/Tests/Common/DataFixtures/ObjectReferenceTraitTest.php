@@ -7,6 +7,9 @@ use Draw\DoctrineExtra\Common\DataFixtures\ObjectReferenceTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class ObjectReferenceTraitTest extends TestCase
 {
     /**
@@ -47,7 +50,8 @@ class ObjectReferenceTraitTest extends TestCase
                     $name = uniqid('name-')
                 ),
                 $object = new \stdClass()
-            );
+            )
+        ;
 
         $this->trait->addObjectReference($class, $name, $object);
     }
@@ -64,7 +68,8 @@ class ObjectReferenceTraitTest extends TestCase
                     $name = uniqid('name-')
                 )
             )
-            ->willReturn(false);
+            ->willReturn(false)
+        ;
 
         static::assertFalse(
             $this->trait->hasObjectReference($class, $name)
@@ -83,7 +88,8 @@ class ObjectReferenceTraitTest extends TestCase
                     $name = uniqid('name-')
                 )
             )
-            ->willReturn($object = new \stdClass());
+            ->willReturn($object = new \stdClass())
+        ;
 
         static::assertSame(
             $object,
@@ -103,7 +109,8 @@ class ObjectReferenceTraitTest extends TestCase
                     $name = uniqid('name-')
                 ),
                 $object = new \stdClass()
-            );
+            )
+        ;
 
         $this->trait->setObjectReference($class, $name, $object);
     }

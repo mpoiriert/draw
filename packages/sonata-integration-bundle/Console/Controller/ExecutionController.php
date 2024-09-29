@@ -60,7 +60,8 @@ class ExecutionController extends CRUDController
             ->setParameter('state', Execution::STATE_AUTO_ACKNOWLEDGE)
             ->groupBy('execution.autoAcknowledgeReason')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
 
         return $this->renderWithExtraParams(
             '@DrawSonataIntegration/Console/Execution/report.html.twig',

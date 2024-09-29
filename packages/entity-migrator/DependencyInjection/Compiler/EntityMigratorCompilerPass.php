@@ -24,7 +24,8 @@ class EntityMigratorCompilerPass implements CompilerPassInterface
         foreach (array_keys($container->findTaggedServiceIds(MigrationInterface::class)) as $id) {
             $name = $container
                 ->getDefinition($id)
-                ->getClass()::getName();
+                ->getClass()::getName()
+            ;
 
             $references[$name] = new Reference($id);
         }
@@ -38,6 +39,7 @@ class EntityMigratorCompilerPass implements CompilerPassInterface
             ->setArgument(
                 '$migrationNames',
                 array_keys($references)
-            );
+            )
+        ;
     }
 }

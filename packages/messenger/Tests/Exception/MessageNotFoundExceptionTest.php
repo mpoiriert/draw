@@ -6,6 +6,9 @@ use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(MessageNotFoundException::class)]
 class MessageNotFoundExceptionTest extends TestCase
 {

@@ -7,6 +7,9 @@ use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class DataTesterTest extends TestCase
 {
     public function testAssertPathIsNotReadable(): void
@@ -56,7 +59,8 @@ class DataTesterTest extends TestCase
         $tester->path('key1')->assertSame('value1');
         $tester
             ->path('key2')->assertCount(2)
-            ->path('[0]')->assertSame('arrayValue0');
+            ->path('[0]')->assertSame('arrayValue0')
+        ;
 
         $tester->path('key2[1]')->assertSame('arrayValue1');
     }
@@ -71,7 +75,7 @@ class DataTesterTest extends TestCase
             $tester,
             $tester->ifPathIsReadable(
                 'toto',
-                function (DataTester $tester) use (&$hasBeenCalled): void {
+                static function (DataTester $tester) use (&$hasBeenCalled): void {
                     // To remove the warning of the ide we use the variable
                     // assigning true would have been enough
                     $hasBeenCalled = null !== $tester;
@@ -100,7 +104,7 @@ class DataTesterTest extends TestCase
         static::assertSame(
             $tester,
             $tester->each(
-                function (DataTester $tester) use (&$callbackCount): void {
+                static function (DataTester $tester) use (&$callbackCount): void {
                     ++$callbackCount;
                 }
             )

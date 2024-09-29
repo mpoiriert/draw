@@ -44,7 +44,8 @@ class ExecutionNotifier implements ResetInterface
                         '%count%' => $count,
                     ],
                     'DrawSonataExtraBundle'
-                );
+                )
+            ;
 
             $this->notifier->send(
                 (new SonataNotification($subject))
@@ -56,7 +57,7 @@ class ExecutionNotifier implements ResetInterface
 
         $skipped = array_filter(
             $skipped,
-            fn ($value) => 0 !== $value
+            static fn ($value) => 0 !== $value
         );
 
         asort($skipped);
@@ -73,7 +74,8 @@ class ExecutionNotifier implements ResetInterface
                         '%reason%' => $this->translator->trans('execution.notification.skipped.reason.'.$reason, [], 'DrawSonataExtraBundle'),
                     ],
                     'DrawSonataExtraBundle'
-                );
+                )
+            ;
 
             $this->notifier->send(SonataNotification::info($subject));
         }
@@ -102,7 +104,8 @@ class ExecutionNotifier implements ResetInterface
                     '%error%' => $throwable->getMessage(),
                 ],
                 'DrawSonataExtraBundle'
-            );
+            )
+        ;
 
         $this->notifier->send(SonataNotification::error($subject));
     }
@@ -121,7 +124,8 @@ class ExecutionNotifier implements ResetInterface
                         $adminAction->getLabel(),
                         [],
                         $adminAction->getTranslationDomain()
-                    );
+                    )
+                ;
             }
 
             $label ??= $action;

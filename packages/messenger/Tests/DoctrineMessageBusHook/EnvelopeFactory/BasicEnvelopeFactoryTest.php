@@ -11,6 +11,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @internal
+ */
 class BasicEnvelopeFactoryTest extends TestCase
 {
     use MockTrait;
@@ -66,7 +69,8 @@ class BasicEnvelopeFactoryTest extends TestCase
                     ]
                 )
             )
-            ->willReturnArgument(0);
+            ->willReturnArgument(0)
+        ;
 
         $envelopes = $this->object->createEnvelopes($messageHolder, $messages);
 

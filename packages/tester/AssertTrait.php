@@ -5,9 +5,6 @@ namespace Draw\Component\Tester;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
-/**
- * @internal
- */
 trait AssertTrait
 {
     /**
@@ -20,8 +17,6 @@ trait AssertTrait
     // example-start: assertContains
     /**
      * Asserts that a haystack contains a needle.
-     *
-     * @param mixed $needle
      */
     public function assertContains($needle, string $message = ''): self
     {
@@ -34,8 +29,6 @@ trait AssertTrait
     // example-start: assertNotContains
     /**
      * Asserts that a haystack does not contain a needle.
-     *
-     * @param mixed $needle
      */
     public function assertNotContains($needle, string $message = ''): self
     {
@@ -108,8 +101,6 @@ trait AssertTrait
     // example-start: assertEquals
     /**
      * Asserts that two variables are equal.
-     *
-     * @param mixed $expected
      */
     public function assertEquals($expected, string $message = ''): self
     {
@@ -122,8 +113,6 @@ trait AssertTrait
     // example-start: assertNotEquals
     /**
      * Asserts that two variables are not equal.
-     *
-     * @param mixed $expected
      */
     public function assertNotEquals($expected, string $message = ''): self
     {
@@ -160,8 +149,6 @@ trait AssertTrait
     // example-start: assertGreaterThan
     /**
      * Asserts that a value is greater than another value.
-     *
-     * @param mixed $expected
      */
     public function assertGreaterThan($expected, string $message = ''): self
     {
@@ -174,8 +161,6 @@ trait AssertTrait
     // example-start: assertGreaterThanOrEqual
     /**
      * Asserts that a value is greater than or equal to another value.
-     *
-     * @param mixed $expected
      */
     public function assertGreaterThanOrEqual($expected, string $message = ''): self
     {
@@ -188,8 +173,6 @@ trait AssertTrait
     // example-start: assertLessThan
     /**
      * Asserts that a value is smaller than another value.
-     *
-     * @param mixed $expected
      */
     public function assertLessThan($expected, string $message = ''): self
     {
@@ -202,8 +185,6 @@ trait AssertTrait
     // example-start: assertLessThanOrEqual
     /**
      * Asserts that a value is smaller than or equal to another value.
-     *
-     * @param mixed $expected
      */
     public function assertLessThanOrEqual($expected, string $message = ''): self
     {
@@ -326,8 +307,6 @@ trait AssertTrait
      * Asserts that two variables have the same type and value.
      * Used on objects, it asserts that two variables reference
      * the same object.
-     *
-     * @param mixed $expected
      */
     public function assertSame($expected, string $message = ''): self
     {
@@ -342,8 +321,6 @@ trait AssertTrait
      * Asserts that two variables do not have the same type and value.
      * Used on objects, it asserts that two variables do not reference
      * the same object.
-     *
-     * @param mixed $expected
      */
     public function assertNotSame($expected, string $message = ''): self
     {
@@ -542,8 +519,6 @@ trait AssertTrait
     // example-start: assertEqualsCanonicalizing
     /**
      * Asserts that two variables are equal (canonicalizing).
-     *
-     * @param mixed $expected
      */
     public function assertEqualsCanonicalizing($expected, string $message = ''): self
     {
@@ -556,8 +531,6 @@ trait AssertTrait
     // example-start: assertEqualsIgnoringCase
     /**
      * Asserts that two variables are equal (ignoring case).
-     *
-     * @param mixed $expected
      */
     public function assertEqualsIgnoringCase($expected, string $message = ''): self
     {
@@ -570,8 +543,6 @@ trait AssertTrait
     // example-start: assertEqualsWithDelta
     /**
      * Asserts that two variables are equal (with delta).
-     *
-     * @param mixed $expected
      */
     public function assertEqualsWithDelta($expected, float $delta, string $message = ''): self
     {
@@ -584,8 +555,6 @@ trait AssertTrait
     // example-start: assertNotEqualsCanonicalizing
     /**
      * Asserts that two variables are not equal (canonicalizing).
-     *
-     * @param mixed $expected
      */
     public function assertNotEqualsCanonicalizing($expected, string $message = ''): self
     {
@@ -598,8 +567,6 @@ trait AssertTrait
     // example-start: assertNotEqualsIgnoringCase
     /**
      * Asserts that two variables are not equal (ignoring case).
-     *
-     * @param mixed $expected
      */
     public function assertNotEqualsIgnoringCase($expected, string $message = ''): self
     {
@@ -612,8 +579,6 @@ trait AssertTrait
     // example-start: assertNotEqualsWithDelta
     /**
      * Asserts that two variables are not equal (with delta).
-     *
-     * @param mixed $expected
      */
     public function assertNotEqualsWithDelta($expected, float $delta, string $message = ''): self
     {

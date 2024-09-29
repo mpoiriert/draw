@@ -7,13 +7,17 @@ use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
 use Symfony\Component\Messenger\Retry\MultiplierRetryStrategy;
 
+/**
+ * @internal
+ */
 class EventDrivenRetryStrategyTest extends TestCase
 {
     public function testRetry(): void
     {
         $service = static::getContainer()
             ->get('messenger.retry_strategy_locator')
-            ->get('async');
+            ->get('async')
+        ;
 
         static::assertInstanceOf(
             EventDrivenRetryStrategy::class,

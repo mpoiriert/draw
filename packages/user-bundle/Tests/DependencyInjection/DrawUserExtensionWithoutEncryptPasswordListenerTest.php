@@ -5,6 +5,9 @@ namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 use Draw\Bundle\UserBundle\EventListener\EncryptPasswordUserEntityListener;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 
+/**
+ * @internal
+ */
 class DrawUserExtensionWithoutEncryptPasswordListenerTest extends DrawUserExtensionTest
 {
     public function getConfiguration(): array

@@ -7,6 +7,9 @@ use Draw\Bundle\UserBundle\EventListener\TwoFactorAuthenticationListener;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\IndecisiveTwoFactorAuthenticationEnforcer;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Enforcer\TwoFactorAuthenticationEnforcerInterface;
 
+/**
+ * @internal
+ */
 class DrawUserExtensionWithEnforce2faTest extends DrawUserExtensionTest
 {
     public function getConfiguration(): array

@@ -8,9 +8,6 @@ class RefreshUserLockMessage
     {
     }
 
-    /**
-     * @return mixed
-     */
     public function getUserId()
     {
         return $this->userId;

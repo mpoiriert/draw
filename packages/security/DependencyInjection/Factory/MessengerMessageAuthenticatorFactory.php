@@ -39,7 +39,8 @@ class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterf
             ->setAutowired(true)
             ->setArgument('$userProvider', new Reference($userProviderId))
             ->setArgument('$envelopeFinder', new Reference(EnvelopeFinderInterface::class))
-            ->setArgument('$requestParameterKey', $config['request_parameter_key']);
+            ->setArgument('$requestParameterKey', $config['request_parameter_key'])
+        ;
 
         if ($serviceAlias = $config['service_alias'] ?? null) {
             $container->setAlias($serviceAlias, $serviceId);
@@ -58,6 +59,7 @@ class MessengerMessageAuthenticatorFactory implements AuthenticatorFactoryInterf
             ->children()
                 ->scalarNode('provider')->end()
                 ->scalarNode('request_parameter_key')->defaultValue(ClickMessageAction::MESSAGE_ID_PARAMETER_NAME)->end()
-            ->end();
+            ->end()
+        ;
     }
 }

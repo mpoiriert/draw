@@ -11,6 +11,9 @@ use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * @internal
+ */
 class NullCommandTest extends TestCase implements AutowiredInterface
 {
     use CommandTestTrait;
@@ -69,6 +72,7 @@ class NullCommandTest extends TestCase implements AutowiredInterface
             ->test(
                 CommandDataTester::create()
                     ->setExpectedDisplay('This does nothing.')
-            );
+            )
+        ;
     }
 }

@@ -33,7 +33,8 @@ class UnlockUserAction
                     'draw_user.account_locker.user_lock.unlock_success',
                     [],
                     'SonataAdminBundle'
-                );
+                )
+            ;
         } catch (\Throwable) {
             $this->userFeed
                 ->addToFeed(
@@ -42,7 +43,8 @@ class UnlockUserAction
                     'flash_edit_error',
                     ['%name%' => htmlspecialchars((string) $user)],
                     'SonataAdminBundle',
-                );
+                )
+            ;
         }
 
         return new RedirectResponse($admin->generateObjectUrl('show', $user));

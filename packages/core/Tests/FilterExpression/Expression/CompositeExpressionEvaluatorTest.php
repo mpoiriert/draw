@@ -11,6 +11,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(CompositeExpressionEvaluator::class)]
 class CompositeExpressionEvaluatorTest extends TestCase
 {
@@ -45,7 +48,8 @@ class CompositeExpressionEvaluatorTest extends TestCase
     {
         $this->evaluator
             ->expects(static::never())
-            ->method('evaluate');
+            ->method('evaluate')
+        ;
 
         static::assertTrue(
             $this->object->evaluate(null, new CompositeExpression(CompositeExpression::TYPE_AND, []))
@@ -61,7 +65,8 @@ class CompositeExpressionEvaluatorTest extends TestCase
 
         $this->evaluator
             ->expects(static::never())
-            ->method('evaluate');
+            ->method('evaluate')
+        ;
 
         static::assertTrue(
             $this->object->evaluate(null, new CompositeExpression($type, []))

@@ -8,6 +8,9 @@ use Draw\Component\Messenger\Broker\EventListener\StopBrokerOnSigtermSignalListe
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 #[CoversClass(StopBrokerOnSigtermSignalListener::class)]
 class StopBrokerOnSigtermSignalListenerTest extends TestCase
 {
@@ -34,7 +37,8 @@ class StopBrokerOnSigtermSignalListenerTest extends TestCase
         $event
             ->expects(static::once())
             ->method('getBroker')
-            ->willReturn($this->createMock(Broker::class));
+            ->willReturn($this->createMock(Broker::class))
+        ;
 
         $this->service->onBrokerStarted($event);
     }

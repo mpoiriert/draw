@@ -9,6 +9,9 @@ use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @internal
+ */
 class DrawSonataExtraExtensionCanSecurityHandlerEnabledTest extends DrawSonataExtraExtensionTest
 {
     public function createExtension(): Extension

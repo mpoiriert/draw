@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
+/**
+ * @internal
+ */
 #[CoversClass(MessengerPass::class)]
 class MessengerPassTest extends TestCase
 {

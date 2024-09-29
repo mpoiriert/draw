@@ -10,6 +10,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use Scheb\TwoFactorBundle\SchebTwoFactorBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionUser2faEnabledTest extends DrawSonataIntegrationExtensionUserEnabledTest
 {

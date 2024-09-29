@@ -11,6 +11,9 @@ use JMS\Serializer\SerializerBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class RootSchemaExtractorTest extends TestCase
 {
     use MockTrait;

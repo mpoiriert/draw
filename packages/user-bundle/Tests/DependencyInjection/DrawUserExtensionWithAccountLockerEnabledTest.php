@@ -9,6 +9,9 @@ use Draw\Bundle\UserBundle\MessageHandler\RefreshUserLockMessageHandler;
 use Draw\Bundle\UserBundle\MessageHandler\UserLockLifeCycleMessageHandler;
 use Draw\Bundle\UserBundle\Tests\Fixtures\Entity\User;
 
+/**
+ * @internal
+ */
 class DrawUserExtensionWithAccountLockerEnabledTest extends DrawUserExtensionTest
 {
     public function getConfiguration(): array

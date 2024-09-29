@@ -17,7 +17,7 @@ class ViolationListTester
 
         foreach ($this->violations as $index => $violation) {
             foreach ($violation as $property => $value) {
-                $tester->path("[$index].$property")->assertSame($value);
+                $tester->path("[{$index}].{$property}")->assertSame($value);
             }
         }
     }

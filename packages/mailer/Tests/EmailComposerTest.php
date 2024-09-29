@@ -18,6 +18,9 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Translation\Translator;
 
+/**
+ * @internal
+ */
 #[CoversClass(EmailComposer::class)]
 class EmailComposerTest extends TestCase
 {
@@ -87,7 +90,8 @@ class EmailComposerTest extends TestCase
             )
             ->willReturn(
                 $emailWriter = $this->createMock(EmailWriterStub::class)
-            );
+            )
+        ;
 
         $emailWriter
             ->expects(static::once())
@@ -95,7 +99,8 @@ class EmailComposerTest extends TestCase
             ->with(
                 $message,
                 $envelope
-            );
+            )
+        ;
 
         $emailWriter
             ->expects(static::once())
@@ -103,7 +108,8 @@ class EmailComposerTest extends TestCase
             ->with(
                 $message,
                 $envelope
-            );
+            )
+        ;
 
         $this->object->compose($message, $envelope);
     }
@@ -156,7 +162,8 @@ class EmailComposerTest extends TestCase
 
         $this->serviceLocator
             ->expects(static::never())
-            ->method('get');
+            ->method('get')
+        ;
 
         $this->object->compose($message, $envelope);
 
@@ -176,7 +183,8 @@ class EmailComposerTest extends TestCase
         $this->translator
             ->expects(static::once())
             ->method('getLocale')
-            ->willReturn('en');
+            ->willReturn('en')
+        ;
 
         $this->translator
             ->expects(static::exactly(2))
@@ -186,7 +194,8 @@ class EmailComposerTest extends TestCase
                     ['fr'],
                     ['en']
                 )
-            );
+            )
+        ;
 
         $this->object->compose(
             $message,

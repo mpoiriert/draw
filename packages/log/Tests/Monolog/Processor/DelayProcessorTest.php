@@ -7,6 +7,9 @@ use Monolog\Level;
 use Monolog\LogRecord;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class DelayProcessorTest extends TestCase
 {
     private DelayProcessor $delayProcessor;

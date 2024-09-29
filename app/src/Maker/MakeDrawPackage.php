@@ -33,7 +33,8 @@ class MakeDrawPackage extends AbstractMaker
         $command
             ->addArgument('type', InputArgument::REQUIRED, 'The type of the package:: (component|bundle)')
             ->addArgument('name', InputArgument::REQUIRED, 'The name of the package: Example: my-package')
-            ->addArgument('description', InputArgument::REQUIRED, 'The description of the package');
+            ->addArgument('description', InputArgument::REQUIRED, 'The description of the package')
+        ;
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void
@@ -45,7 +46,7 @@ class MakeDrawPackage extends AbstractMaker
         $type = $input->getArgument('type');
         $packageName = $input->getArgument('name');
 
-        if (!\in_array($type, ['component', 'bundle'])) {
+        if (!\in_array($type, ['component', 'bundle'], true)) {
             $io->error('Invalid package type');
 
             return;
@@ -85,25 +86,29 @@ class MakeDrawPackage extends AbstractMaker
                         'type' => $type,
                     ]
                 )
-            );
+            )
+        ;
 
         $generator
             ->dumpFile(
                 'packages/'.$packageName.'/phpunit.xml.dist',
                 file_get_contents(__DIR__.'/../Resources/skeleton/draw-package/phpunit.xml.dist')
-            );
+            )
+        ;
 
         $generator
             ->dumpFile(
                 $this->kernelProjectDir.'/composer.json',
                 $this->getNewComposerContents($packageName, $namespace)
-            );
+            )
+        ;
 
         $generator
             ->dumpFile(
                 $this->kernelProjectDir.'/.github/workflows/after_splitting_test.yaml',
                 $this->getNewGithubWorkflowsAfterSplittingTestContents($packageName)
-            );
+            )
+        ;
 
         $generator->writeChanges();
     }

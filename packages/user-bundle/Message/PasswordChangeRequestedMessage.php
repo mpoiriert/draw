@@ -20,9 +20,6 @@ class PasswordChangeRequestedMessage implements LifeCycleAwareMessageInterface
         $this->userId = $messageHolder->getId();
     }
 
-    /**
-     * @return mixed
-     */
     public function getUserId()
     {
         return $this->userId;

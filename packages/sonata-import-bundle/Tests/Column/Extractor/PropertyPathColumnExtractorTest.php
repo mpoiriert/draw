@@ -7,6 +7,9 @@ use Draw\Bundle\SonataImportBundle\Column\Extractor\PropertyPathColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class PropertyPathColumnExtractorTest extends TestCase
 {
     private PropertyPathColumnExtractor $object;

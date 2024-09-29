@@ -5,6 +5,9 @@ namespace Draw\Bundle\SonataIntegrationBundle\Tests\DependencyInjection;
 use Draw\Bundle\SonataIntegrationBundle\DependencyInjection\DrawSonataIntegrationExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
 
+/**
+ * @internal
+ */
 #[CoversClass(DrawSonataIntegrationExtension::class)]
 class DrawSonataIntegrationExtensionUser2faEnabledEmailEnabledTest extends DrawSonataIntegrationExtensionUser2faEnabledTest
 {

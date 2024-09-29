@@ -17,7 +17,8 @@ class DrawSonataImportExtension extends ConfigurableExtension
         $loader->load('services.yaml');
         $container
             ->registerForAutoconfiguration(ColumnExtractorInterface::class)
-            ->addTag('draw.sonata_import.extractor');
+            ->addTag('draw.sonata_import.extractor')
+        ;
 
         $container->setParameter('draw.sonata_import.classes', $mergedConfig['classes']);
 
@@ -34,6 +35,7 @@ class DrawSonataImportExtension extends ConfigurableExtension
 
         $container
             ->getDefinition(DoctrineTranslationColumnExtractor::class)
-            ->setArgument('$supportedLocales', $config['supported_locales']);
+            ->setArgument('$supportedLocales', $config['supported_locales'])
+        ;
     }
 }

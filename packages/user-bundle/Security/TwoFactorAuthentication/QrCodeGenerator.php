@@ -22,6 +22,7 @@ class QrCodeGenerator
             ->size(200)
             ->margin(0)
             ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
-            ->build();
+            ->build()
+        ;
     }
 }

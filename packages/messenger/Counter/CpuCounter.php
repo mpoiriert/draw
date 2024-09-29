@@ -11,7 +11,8 @@ class CpuCounter
     {
         try {
             return (new CpuCoreCounter())
-                ->getCount();
+                ->getCount()
+            ;
         } catch (NumberOfCpuCoreNotFound) {
             return 1;
         }

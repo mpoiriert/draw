@@ -17,6 +17,9 @@ use PHPUnit\Framework\Attributes\After;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 
+/**
+ * @internal
+ */
 class UserTest extends TestCase implements AutowiredInterface
 {
     #[AutowireService]
@@ -37,7 +40,8 @@ class UserTest extends TestCase implements AutowiredInterface
             ->where('user.email = :email')
             ->setParameter('email', 'test-lock@example.com')
             ->getQuery()
-            ->execute();
+            ->execute()
+        ;
     }
 
     public function testLock(): void

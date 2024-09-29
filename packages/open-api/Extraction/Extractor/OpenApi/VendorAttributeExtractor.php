@@ -58,16 +58,17 @@ class VendorAttributeExtractor implements ExtractorInterface
         if ($reflector instanceof \ReflectionMethod || $reflector instanceof \ReflectionProperty) {
             $classLevelAttributes = $reflector
                 ->getDeclaringClass()
-                ->getAttributes(Vendor::class, \ReflectionAttribute::IS_INSTANCEOF);
+                ->getAttributes(Vendor::class, \ReflectionAttribute::IS_INSTANCEOF)
+            ;
         }
 
         $classLevelAttributes = array_map(
-            fn (\ReflectionAttribute $attribute) => $attribute->newInstance(),
+            static fn (\ReflectionAttribute $attribute) => $attribute->newInstance(),
             $classLevelAttributes
         );
 
         $attributes = array_map(
-            fn (\ReflectionAttribute $attribute) => $attribute->newInstance(),
+            static fn (\ReflectionAttribute $attribute) => $attribute->newInstance(),
             $attributes
         );
 
@@ -88,7 +89,7 @@ class VendorAttributeExtractor implements ExtractorInterface
         );
 
         $classAttributes = array_map(
-            fn (Vendor $annotation) => clone $annotation,
+            static fn (Vendor $annotation) => clone $annotation,
             $classAttributes
         );
 

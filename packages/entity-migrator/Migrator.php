@@ -41,7 +41,8 @@ class Migrator
 
         $migration = $this->managerRegistry
             ->getRepository(Migration::class)
-            ->findOneBy(['name' => $migrationName]);
+            ->findOneBy(['name' => $migrationName])
+        ;
 
         if (null === $migration) {
             $this->entityMigratorLogger?->warning('Migration "{migration}" not found', ['migration' => $migrationName]);
@@ -93,7 +94,8 @@ class Migrator
             sleep(1); // Wait for database replication
             $this->managerRegistry
                 ->getManagerForClass($entityMigration::class)
-                ->refresh($entityMigration);
+                ->refresh($entityMigration)
+            ;
         }
 
         $transitionApplied = false;

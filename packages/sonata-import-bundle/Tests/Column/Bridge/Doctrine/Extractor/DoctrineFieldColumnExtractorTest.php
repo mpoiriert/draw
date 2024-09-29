@@ -9,6 +9,9 @@ use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Component\Tester\DoctrineOrmTrait;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class DoctrineFieldColumnExtractorTest extends TestCase
 {
     use DoctrineOrmTrait;
@@ -142,6 +145,7 @@ class DoctrineFieldColumnExtractorTest extends TestCase
             ->setImport(
                 (new Import())
                     ->setEntityClass(Column::class)
-            );
+            )
+        ;
     }
 }

@@ -12,7 +12,8 @@ use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
 interface ActionableAdminExtensionInterface
 {
     /**
-     * @param  array<string,AdminAction> $actions
+     * @param array<string,AdminAction> $actions
+     *
      * @return array<string,AdminAction>
      */
     public function getActions(array $actions): array;

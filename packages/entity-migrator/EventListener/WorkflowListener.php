@@ -53,7 +53,8 @@ class WorkflowListener
 
         $this
             ->getMigration($event)
-            ->migrate($subject->getEntity());
+            ->migrate($subject->getEntity())
+        ;
     }
 
     #[AsEventListener('workflow.entity_migration.completed.queue')]
@@ -70,7 +71,8 @@ class WorkflowListener
         $this->managerRegistry
             ->getManagerForClass(
                 $this->getSubject($event)->getEntity()::class
-            )->flush();
+            )->flush()
+        ;
     }
 
     private function getSubject(GuardEvent|Event $event): EntityMigrationInterface

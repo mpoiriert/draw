@@ -47,7 +47,8 @@ class PostExecutionQueueCronJobListener
 
         foreach ($cronJobNames as $cronJobName) {
             $cronJob = $cronJobRepository
-                ->findOneBy(['name' => $cronJobName]);
+                ->findOneBy(['name' => $cronJobName])
+            ;
 
             if (null === $cronJob) {
                 $this->logger->error(\sprintf('Cron job "%s" could not be found.', $cronJobName));

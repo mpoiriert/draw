@@ -4,6 +4,9 @@ namespace Draw\Bundle\UserBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\UserBundle\MessageHandler\NewUserSendEmailMessageHandler;
 
+/**
+ * @internal
+ */
 class DrawUserExtensionWithOnboardingEnabledTest extends DrawUserExtensionTest
 {
     public function getConfiguration(): array

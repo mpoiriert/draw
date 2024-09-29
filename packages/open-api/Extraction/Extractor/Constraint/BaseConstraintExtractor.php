@@ -28,11 +28,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
     protected function assertSupportConstraint(Constraint $constraint): void
     {
         if (!$this->supportConstraint($constraint)) {
-            throw new \InvalidArgumentException(\sprintf(
-                'The constraint of type [%s] is not supported by [%s]',
-                $constraint::class,
-                static::class
-            ));
+            throw new \InvalidArgumentException(\sprintf('The constraint of type [%s] is not supported by [%s]', $constraint::class, static::class));
         }
     }
 
@@ -87,10 +83,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
         $classMetadata = $this->validator->getMetadataFor($class);
 
         if (!$classMetadata instanceof ClassMetadataInterface) {
-            throw new \LogicException(\sprintf(
-                'Validator::getMetadataFor expect class return to be of type [%s]',
-                ClassMetadataInterface::class
-            ));
+            throw new \LogicException(\sprintf('Validator::getMetadataFor expect class return to be of type [%s]', ClassMetadataInterface::class));
         }
 
         foreach ($classMetadata->getConstrainedProperties() as $propertyName) {
@@ -101,8 +94,6 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
 
             $constraints[$propertyName] = [];
             foreach ($classMetadata->getPropertyMetadata($propertyName) as $propertyMetadata) {
-                /* @var $propertyMetadata */
-
                 $propertyConstraints = [];
                 foreach ($groups as $group) {
                     $propertyConstraints = array_merge(
@@ -114,7 +105,7 @@ abstract class BaseConstraintExtractor implements ConstraintExtractorInterface
                 $finalPropertyConstraints = [];
 
                 foreach ($propertyConstraints as $current) {
-                    if (!\in_array($current, $finalPropertyConstraints)) {
+                    if (!\in_array($current, $finalPropertyConstraints, true)) {
                         $finalPropertyConstraints[] = $current;
                     }
                 }

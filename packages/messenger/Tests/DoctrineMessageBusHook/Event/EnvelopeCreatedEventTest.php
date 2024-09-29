@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Contracts\EventDispatcher\Event;
 
+/**
+ * @internal
+ */
 #[CoversClass(EnvelopeCreatedEvent::class)]
 class EnvelopeCreatedEventTest extends TestCase
 {

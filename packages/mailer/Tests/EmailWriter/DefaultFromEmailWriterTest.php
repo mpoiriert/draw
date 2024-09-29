@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
+/**
+ * @internal
+ */
 #[CoversClass(DefaultFromEmailWriter::class)]
 class DefaultFromEmailWriterTest extends TestCase
 {

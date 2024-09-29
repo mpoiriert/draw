@@ -23,7 +23,7 @@ class ProcessIntegration implements IntegrationInterface
     {
         $this->registerClasses(
             $loader,
-            $namespace = 'Draw\\Component\\Process\\',
+            $namespace = 'Draw\Component\Process\\',
             \dirname((new \ReflectionClass(ProcessFactory::class))->getFileName()),
         );
 

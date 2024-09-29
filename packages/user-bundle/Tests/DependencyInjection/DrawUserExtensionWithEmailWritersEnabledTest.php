@@ -7,6 +7,9 @@ use Draw\Bundle\UserBundle\EmailWriter\PasswordChangeRequestedEmailWriter;
 use Draw\Bundle\UserBundle\EmailWriter\ToUserEmailWriter;
 use Draw\Bundle\UserBundle\EmailWriter\UserOnboardingEmailWriter;
 
+/**
+ * @internal
+ */
 class DrawUserExtensionWithEmailWritersEnabledTest extends DrawUserExtensionTest
 {
     public function getConfiguration(): array

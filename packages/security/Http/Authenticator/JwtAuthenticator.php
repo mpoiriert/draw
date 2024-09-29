@@ -114,7 +114,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         }
 
         return new SelfValidatingPassport(
-            new UserBadge($user->getUserIdentifier().'+jwt-token', fn () => $user),
+            new UserBadge($user->getUserIdentifier().'+jwt-token', static fn () => $user),
             $badges
         );
     }
@@ -126,11 +126,7 @@ class JwtAuthenticator extends AbstractAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        throw new HttpException(
-            Response::HTTP_FORBIDDEN,
-            $this->translate($exception->getMessageKey(), $exception->getMessageData()),
-            previous: $exception
-        );
+        throw new HttpException(Response::HTTP_FORBIDDEN, $this->translate($exception->getMessageKey(), $exception->getMessageData()), previous: $exception);
     }
 
     private function translate(string $message, array $data = []): string

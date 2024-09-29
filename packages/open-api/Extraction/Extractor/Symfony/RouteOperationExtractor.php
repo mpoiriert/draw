@@ -43,7 +43,7 @@ class RouteOperationExtractor implements ExtractorInterface
 
         foreach ($source->compile()->getPathVariables() as $pathVariable) {
             foreach ($target->parameters as $parameter) {
-                if ($parameter->name == $pathVariable) {
+                if ($parameter->name === $pathVariable) {
                     continue 2;
                 }
             }

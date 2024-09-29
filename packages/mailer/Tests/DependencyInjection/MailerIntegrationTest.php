@@ -22,6 +22,8 @@ use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * @property MailerIntegration $integration
+ *
+ * @internal
  */
 #[CoversClass(MailerIntegration::class)]
 class MailerIntegrationTest extends IntegrationTestCase
@@ -182,7 +184,7 @@ class MailerIntegrationTest extends IntegrationTestCase
                         [
                             DefaultFromEmailWriter::class,
                         ],
-                        function (Definition $definition): void {
+                        static function (Definition $definition): void {
                             $defaultFromDefinition = $definition->getArgument('$defaultFrom');
 
                             static::assertInstanceOf(

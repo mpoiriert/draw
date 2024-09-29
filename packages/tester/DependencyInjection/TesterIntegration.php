@@ -26,7 +26,8 @@ class TesterIntegration implements IntegrationInterface
             new Definition(TestsCoverageCheckCommand::class)
         )
             ->setAutoconfigured(true)
-            ->setAutowired(true);
+            ->setAutowired(true)
+        ;
 
         $container->setAlias(TestsCoverageCheckCommand::class, 'draw.tester.command.tests_coverage_check_command');
     }

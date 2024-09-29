@@ -14,6 +14,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(EnvelopeFinder::class)]
 class EnvelopeFinderTest extends TestCase
 {
@@ -40,13 +43,15 @@ class EnvelopeFinderTest extends TestCase
                     $transport = $this->createMock(ListableReceiverInterface::class),
                     $transport,
                 ]
-            );
+            )
+        ;
 
         $transport
             ->expects(static::exactly(\count($transports)))
             ->method('find')
             ->with($messageId = uniqid('message-id'))
-            ->willReturn(null);
+            ->willReturn(null)
+        ;
 
         static::expectException(MessageNotFoundException::class);
 
@@ -63,11 +68,13 @@ class EnvelopeFinderTest extends TestCase
                     $transport = $this->createMock(FindAwareTransportInterface::class),
                     $transport,
                 ]
-            );
+            )
+        ;
 
         $transport
             ->expects(static::never())
-            ->method('find');
+            ->method('find')
+        ;
 
         static::expectException(MessageNotFoundException::class);
 
@@ -83,13 +90,15 @@ class EnvelopeFinderTest extends TestCase
                 [
                     ($transportName = uniqid('transport-')) => $transport = $this->createMock(ListableReceiverInterface::class),
                 ]
-            );
+            )
+        ;
 
         $transport
             ->expects(static::once())
             ->method('find')
             ->with($messageId = uniqid('message-id-'))
-            ->willReturn(new Envelope((object) []));
+            ->willReturn(new Envelope((object) []))
+        ;
 
         static::assertNotNull($envelope = $this->service->findById($messageId));
 

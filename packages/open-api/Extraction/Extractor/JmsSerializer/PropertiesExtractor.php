@@ -108,7 +108,7 @@ class PropertiesExtractor implements ExtractorInterface
         foreach ($meta->propertyMetadata as $propertyMetadata) {
             // This is to prevent property of discriminator field name to not being complete
             if (isset($meta->discriminatorFieldName)
-                && $propertyMetadata->name == $meta->discriminatorFieldName
+                && $propertyMetadata->name === $meta->discriminatorFieldName
                 && !isset($propertyMetadata->type['name'])
             ) {
                 $propertyMetadata->type = ['name' => 'string', 'params' => []];

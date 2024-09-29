@@ -51,7 +51,8 @@ class PurgeExecutionCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'The delete loop will sleep this long in seconds between iteration.',
                 self::DEFAULT_WAIT_SECOND
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

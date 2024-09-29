@@ -14,16 +14,18 @@ class EntityHandler
 
     public function getManagerForClass(string $class): ?EntityManagerInterface
     {
-        /** @var ?EntityManagerInterface $manager */
         $manager = $this->managerRegistry->getManagerForClass($class);
+
+        \assert($manager instanceof EntityManagerInterface || null === $manager);
 
         return $manager;
     }
 
     public function getRepository(string $class): EntityRepository
     {
-        /** @var EntityRepository $repository */
         $repository = $this->managerRegistry->getRepository($class);
+
+        \assert($repository instanceof EntityRepository);
 
         return $repository;
     }

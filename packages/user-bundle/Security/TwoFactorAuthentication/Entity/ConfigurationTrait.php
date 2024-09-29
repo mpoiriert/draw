@@ -24,7 +24,7 @@ trait ConfigurationTrait
     {
         $this->twoFactorAuthenticationEnabledProviders = array_values(array_unique($providers));
 
-        if (!\in_array('totp', $this->twoFactorAuthenticationEnabledProviders) && $this instanceof ByTimeBaseOneTimePasswordInterface) {
+        if (!\in_array('totp', $this->twoFactorAuthenticationEnabledProviders, true) && $this instanceof ByTimeBaseOneTimePasswordInterface) {
             $this->setTotpSecret(null);
         }
     }
@@ -33,7 +33,7 @@ trait ConfigurationTrait
     {
         $enabledProviders = $this->getTwoFactorAuthenticationEnabledProviders();
 
-        if (!\in_array($enabledProviders, $this->twoFactorAuthenticationEnabledProviders)) {
+        if (!\in_array($enabledProviders, $this->twoFactorAuthenticationEnabledProviders, true)) {
             $enabledProviders[] = $provider;
 
             $this->setTwoFactorAuthenticationEnabledProviders($enabledProviders);

@@ -22,7 +22,6 @@ class UserSetCommentNullMigration implements BatchPrepareMigrationInterface
 
     public function __construct(private ManagerRegistry $managerRegistry)
     {
-
     }
 
     public static function getTargetEntityClass(): string
@@ -46,7 +45,8 @@ class UserSetCommentNullMigration implements BatchPrepareMigrationInterface
         \assert($manager instanceof EntityManagerInterface);
 
         $query = $manager
-            ->createQuery('SELECT user.id FROM '.User::class.' user WHERE user.comment != :comment');
+            ->createQuery('SELECT user.id FROM '.User::class.' user WHERE user.comment != :comment')
+        ;
 
         foreach ($query->toIterable(['comment' => ''], $query::HYDRATE_SCALAR) as $userId) {
             yield $manager->getReference(User::class, $userId['id']);
@@ -61,7 +61,8 @@ class UserSetCommentNullMigration implements BatchPrepareMigrationInterface
         return (int) $manager
             ->createQuery('SELECT count(user) FROM '.User::class.' user WHERE user.comment != :comment')
             ->setParameter('comment', '')
-            ->getSingleScalarResult();
+            ->getSingleScalarResult()
+        ;
     }
 
     public function migrationIsCompleted(): bool
@@ -75,7 +76,8 @@ class UserSetCommentNullMigration implements BatchPrepareMigrationInterface
             ->where('user.comment != ""')
             ->setMaxResults(1)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getOneOrNullResult()
+        ;
     }
 
     public function createSelectIdQueryBuilder(): QueryBuilder
@@ -88,6 +90,7 @@ class UserSetCommentNullMigration implements BatchPrepareMigrationInterface
             ->from(User::class, 'user')
             ->select('user.id as id')
             ->where('user.comment != :comment')
-            ->setParameter('comment', '');
+            ->setParameter('comment', '')
+        ;
     }
 }

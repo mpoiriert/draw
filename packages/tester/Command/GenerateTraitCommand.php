@@ -20,7 +20,8 @@ class GenerateTraitCommand extends Command
                 InputArgument::OPTIONAL,
                 'The file path where the methods configuration are.',
                 __DIR__.'/../Resources/config/assert_methods.json'
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

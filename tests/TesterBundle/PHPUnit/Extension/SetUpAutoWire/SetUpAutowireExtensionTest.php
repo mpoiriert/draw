@@ -16,6 +16,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @internal
+ */
 class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterface
 {
     #[

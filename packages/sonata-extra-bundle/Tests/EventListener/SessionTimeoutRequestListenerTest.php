@@ -23,6 +23,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @internal
+ */
 #[CoversClass(SessionTimeoutRequestListener::class)]
 class SessionTimeoutRequestListenerTest extends TestCase
 {
@@ -79,10 +82,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
         $session->expects(static::once())
             ->method('get')
             ->with('draw_sonata_integration_last_used')
-            ->willReturn(time() - 3601);
+            ->willReturn(time() - 3601)
+        ;
 
         $session->expects(static::once())
-            ->method('invalidate');
+            ->method('invalidate')
+        ;
 
         $this->object->onKernelRequestInvalidate($requestEvent);
     }
@@ -255,7 +260,8 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $this->security->expects(static::once())
             ->method('getUser')
-            ->willReturn($this->createMock(UserInterface::class));
+            ->willReturn($this->createMock(UserInterface::class))
+        ;
 
         $this->urlGenerator->expects(static::exactly(2))
             ->method('generate')
@@ -268,7 +274,8 @@ class SessionTimeoutRequestListenerTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 '/admin/keep-alive',
                 '/admin/login'
-            );
+            )
+        ;
 
         $this->object->onKernelResponseAddDialog($event);
 
@@ -367,10 +374,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
     ): void {
         $this->security->expects(static::once())
             ->method('getUser')
-            ->willReturn($user);
+            ->willReturn($user)
+        ;
 
         $this->urlGenerator->expects(static::never())
-            ->method('generate');
+            ->method('generate')
+        ;
 
         $previousContent = $response->getContent();
 

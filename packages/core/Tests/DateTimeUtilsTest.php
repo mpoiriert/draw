@@ -6,6 +6,9 @@ use Draw\Component\Core\DateTimeUtils;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ */
 class DateTimeUtilsTest extends TestCase
 {
     public static function provideTestIsSameTimestamp(): array

@@ -42,7 +42,8 @@ final class ChangePasswordForm extends AbstractType
                     'label' => 'form.change_password.field.submit',
                     'attr' => ['class' => 'btn-primary'],
                 ]
-            );
+            )
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

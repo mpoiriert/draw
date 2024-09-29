@@ -31,7 +31,7 @@ final class SchemaCleanRequiredReadOnlyListener implements EventSubscriberInterf
                 $definition->required = array_values(
                     array_filter(
                         $definition->required,
-                        fn ($requiredPropertyName) => $requiredPropertyName !== $propertyNane
+                        static fn ($requiredPropertyName) => $requiredPropertyName !== $propertyNane
                     )
                 );
             }

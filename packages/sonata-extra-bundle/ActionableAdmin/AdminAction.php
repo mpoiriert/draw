@@ -36,12 +36,14 @@ class AdminAction
         $this->access = (new UnicodeString($this->name))
             ->snake()
             ->upper()
-            ->toString();
+            ->toString()
+        ;
 
         $this->urlSuffix = (new UnicodeString($this->name))
             ->snake()
             ->replace('_', '-')
-            ->toString();
+            ->toString()
+        ;
     }
 
     public function getName(): string

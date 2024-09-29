@@ -33,7 +33,8 @@ class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
 
             $targetClassMetadata = $this->managerRegistry
                 ->getManagerForClass($associationMapping['targetEntity'])
-                ->getClassMetadata($associationMapping['targetEntity']);
+                ->getClassMetadata($associationMapping['targetEntity'])
+            ;
 
             if (!$targetClassMetadata instanceof ClassMetadata) {
                 continue;
@@ -54,7 +55,7 @@ class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
     #[\Override]
     public function assign(object $object, Column $column, mixed $value): bool
     {
-        if (!\in_array($column->getMappedTo(), $this->getOptions($column, []))) {
+        if (!\in_array($column->getMappedTo(), $this->getOptions($column, []), true)) {
             return false;
         }
 
@@ -62,7 +63,8 @@ class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
 
         $classMetadata = $this->managerRegistry
             ->getManagerForClass($class)
-            ->getClassMetadata($class);
+            ->getClassMetadata($class)
+        ;
 
         \assert($classMetadata instanceof ClassMetadata);
 
@@ -72,7 +74,8 @@ class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
 
         $targetEntity = $this->managerRegistry
             ->getRepository($targetEntityClass)
-            ->findOneBy([$field => $value]);
+            ->findOneBy([$field => $value])
+        ;
 
         if (null === $targetEntity) {
             return false;

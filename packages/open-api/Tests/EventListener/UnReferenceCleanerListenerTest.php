@@ -6,6 +6,9 @@ use Draw\Component\OpenApi\Cleaner\UnreferencedCleaner;
 use Draw\Component\OpenApi\Event\CleanEvent;
 use Draw\Component\OpenApi\EventListener\UnReferenceCleanerListener;
 
+/**
+ * @internal
+ */
 class UnReferenceCleanerListenerTest extends BaseCleanerTestCase
 {
     private UnReferenceCleanerListener $object;

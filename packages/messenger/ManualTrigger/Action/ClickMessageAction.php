@@ -53,7 +53,8 @@ class ClickMessageAction
         } catch (\Throwable $error) {
             $response = $this->eventDispatcher
                 ->dispatch(new MessageLinkErrorEvent($request, $dMUuid, $error))
-                ->getResponse();
+                ->getResponse()
+            ;
 
             if ($response) {
                 return $response;
@@ -80,9 +81,6 @@ class ClickMessageAction
         $session->getFlashBag()->add($type, $this->translator->trans($message, [], 'DrawMessenger'));
     }
 
-    /**
-     * @return mixed
-     */
     private function handle(Envelope $envelope)
     {
         $envelope = $this->messageBus->dispatch(
@@ -97,7 +95,7 @@ class ClickMessageAction
             $handlers = implode(
                 ', ',
                 array_map(
-                    fn (HandledStamp $stamp): string => \sprintf('"%s"', $stamp->getHandlerName()),
+                    static fn (HandledStamp $stamp): string => \sprintf('"%s"', $stamp->getHandlerName()),
                     $handledStamps
                 )
             );
@@ -107,7 +105,8 @@ class ClickMessageAction
 
         $this->transportRepository
             ->get($transportName)
-            ->ack($envelope);
+            ->ack($envelope)
+        ;
 
         return $handledStamps[0]->getResult();
     }

@@ -32,7 +32,8 @@ class PurgeExpiredMessageCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'Records older than this date (compatible with strtotime) will be deleted.',
                 self::DEFAULT_DELAY
-            );
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
