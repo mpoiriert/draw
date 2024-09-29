@@ -3,19 +3,17 @@
 namespace Draw\Bundle\TesterBundle\Tests\Messenger;
 
 use Draw\Bundle\TesterBundle\Messenger\TransportTester;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Bundle\TesterBundle\Tests\TestCase;
 use Draw\Component\Core\FilterExpression\Expression\Expression;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Messenger\Envelope;
 
-class TransportTesterTest extends TestCase
+class TransportTesterTest extends TestCase implements AutowiredInterface
 {
+    #[AutowireTransportTester('memory')]
     private TransportTester $transportTester;
-
-    protected function setUp(): void
-    {
-        $this->transportTester = static::getContainer()->get('messenger.transport.memory.draw.tester');
-    }
 
     public function testGetTransport(): void
     {

@@ -1,4 +1,0 @@
-test:
-    resource: '@DrawTesterBundle/Tests/Mock/Controller/TestController.php'
-    type: 'attribute'
-    format: 'json'

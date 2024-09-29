@@ -2,35 +2,51 @@
 
 namespace App\Tests\SonataIntegrationBundle\User\Action;
 
-use App\Tests\SonataIntegrationBundle\WebTestCaseTrait;
+use App\Entity\User;
+use App\Test\PHPUnit\Extension\SetUpAutowire\AutowireAdminUser;
+use App\Test\TestKernelBrowser;
+use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireEntity;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
 {
-    use WebTestCaseTrait;
+    #[AutowireClient]
+    private TestKernelBrowser $client;
+
+    #[AutowireService]
+    private EntityManagerInterface $entityManager;
+
+    #[AutowireAdminUser]
+    private User $admin;
+
+    #[AutowireEntity(['email' => 'locked@example.com'])]
+    private User $lockedUser;
 
     public function testUnlock(): void
     {
-        $this->login('admin@example.com');
+        $this->client->loginUserInAdmin($this->admin);
 
-        $user = $this->getUser('locked@example.com');
-
-        $userLock = $user->getLocks()['manual-lock'];
+        $userLock = $this->lockedUser->getLocks()['manual-lock'];
 
         $userLock->setUnlockUntil(null);
 
         $this->client->request(
             'GET',
-            \sprintf('/admin/app/user/%s/unlock', $user->getId())
+            \sprintf('/admin/app/user/%s/unlock', $this->lockedUser->getId())
         );
 
-        static::assertResponseStatusCodeSame(302);
+        static::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
         static::assertResponseHeaderSame(
             'Location',
-            \sprintf('/admin/app/user/%s/show', $user->getId())
+            \sprintf('/admin/app/user/%s/show', $this->lockedUser->getId())
         );
 
         $this->client->followRedirect();
@@ -50,15 +66,13 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
     #[Depends('testUnlock')]
     public function testNoAccess(): void
     {
-        $this->login('locked@example.com');
-
-        $user = $this->getUser('admin@example.com');
+        $this->client->loginUserInAdmin($this->lockedUser);
 
         $this->client->request(
             'GET',
-            \sprintf('/admin/app/user/%s/unlock', $user->getId())
+            \sprintf('/admin/app/user/%s/unlock', $this->admin->getId())
         );
 
-        static::assertResponseStatusCodeSame(403);
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 }

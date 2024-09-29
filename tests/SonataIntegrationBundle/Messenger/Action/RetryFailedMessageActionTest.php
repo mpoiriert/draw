@@ -2,26 +2,39 @@
 
 declare(strict_types=1);
 
-namespace SonataIntegrationBundle\Messenger\Action;
+namespace App\Tests\SonataIntegrationBundle\Messenger\Action;
 
 use App\Entity\MessengerMessage;
+use App\Entity\User;
 use App\Message\FailedMessage;
-use App\Tests\SonataIntegrationBundle\WebTestCaseTrait;
+use App\Test\PHPUnit\Extension\SetUpAutowire\AutowireAdminUser;
+use App\Test\TestKernelBrowser;
+use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\Messenger\MessengerTesterTrait;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Messenger\Message\RetryFailedMessageMessage;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
 
 class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInterface
 {
     use MessengerTesterTrait;
-    use WebTestCaseTrait;
+
+    #[AutowireClient]
+    private TestKernelBrowser $client;
 
     #[AutowireService]
     private MessageBusInterface $messageBus;
+
+    #[AutowireService]
+    private EntityManagerInterface $entityManager;
+
+    #[AutowireAdminUser]
+    private User $admin;
 
     public function testRetry(): void
     {
@@ -32,7 +45,7 @@ class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInter
             ]
         );
 
-        $this->login('admin@example.com');
+        $this->client->loginUserInAdmin($this->admin);
 
         static::assertInstanceOf(
             MessengerMessage::class,
@@ -47,7 +60,7 @@ class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInter
             \sprintf('/admin/app/messengermessage/%s/retry', $failedMessage->getId())
         );
 
-        static::assertResponseStatusCodeSame(302);
+        static::assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         static::getTransportTester('async')
             ->assertMessageMatch(RetryFailedMessageMessage::class);

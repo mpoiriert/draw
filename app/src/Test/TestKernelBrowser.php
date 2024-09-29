@@ -10,4 +10,9 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 class TestKernelBrowser extends KernelBrowser
 {
     use JWTLoginTrait;
+
+    public function loginUserInAdmin(object $user): static
+    {
+        return $this->loginUser($user, 'user');
+    }
 }

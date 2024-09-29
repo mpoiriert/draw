@@ -1,9 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/8.0/phpunit.xsd">
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.3/phpunit.xsd"
+        colors="true"
+>
+    <php>
+        <ini name="error_reporting" value="-1" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+        <server name="APP_ENV" value="test" force="true" />
+        <server name="SHELL_VERBOSITY" value="-1" />
+    </php>
+
     <testsuites>
-        <testsuite name="Main">
+        <testsuite name="all">
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>
+
+    <source>
+        <include>
+            <directory>.</directory>
+        </include>
+        <exclude>
+            <directory>./vendor</directory>
+            <directory>./Tests</directory>
+            <directory>./Resources</directory>
+        </exclude>
+    </source>
 </phpunit>

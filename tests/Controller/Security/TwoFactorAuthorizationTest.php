@@ -105,7 +105,7 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
     {
         $this->client->followRedirects();
 
-        $crawler = $this->loginToAdmin();
+        $this->loginToAdmin();
 
         $crawler = $this->client->submit(
             $this->client->getCrawler()

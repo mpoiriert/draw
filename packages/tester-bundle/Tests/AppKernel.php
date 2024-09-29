@@ -3,6 +3,7 @@
 namespace Draw\Bundle\TesterBundle\Tests;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
@@ -15,9 +16,30 @@ class AppKernel extends Kernel
         ];
     }
 
+    protected function build(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig(
+            'framework',
+            [
+                'test' => true,
+                'messenger' => [
+                    'transports' => [
+                        'memory' => 'in-memory://',
+                    ],
+                ],
+            ]
+        );
+
+        $container->prependExtensionConfig(
+            'draw_tester',
+            [
+                'profiling' => false,
+            ]
+        );
+    }
+
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__.'/fixtures/config/config.yaml');
     }
 
     public function getCacheDir(): string
