@@ -84,7 +84,7 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
     private function loadSlowRequest(
         array $config,
         PhpFileLoader $loader,
-        ContainerBuilder $container
+        ContainerBuilder $container,
     ): void {
         if (!$this->isConfigEnabled($container, $config)) {
             return;
@@ -136,7 +136,7 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
                 $requestMatcherClass = $requestMatcherClasses[$key] ?? null;
 
                 if (null === $requestMatcherClass) {
-                    throw new \InvalidArgumentException(sprintf('Unknown request matcher "%s".', $key));
+                    throw new \InvalidArgumentException(\sprintf('Unknown request matcher "%s".', $key));
                 }
 
                 $requestMatcherDefinitions[] = (new Definition($requestMatcherClass))->setArguments([$value]);

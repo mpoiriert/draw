@@ -13,7 +13,7 @@ class MessageLinkErrorEvent extends Event
     public function __construct(
         private Request $request,
         private string $messageId,
-        private \Throwable $error
+        private \Throwable $error,
     ) {
     }
 

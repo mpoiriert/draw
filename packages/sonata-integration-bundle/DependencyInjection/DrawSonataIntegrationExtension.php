@@ -55,7 +55,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
     private function configureConfiguration(
         array $config,
         Loader\FileLoader $loader,
-        ContainerBuilder $container
+        ContainerBuilder $container,
     ): void {
         if (!$config['enabled']) {
             return;
@@ -290,7 +290,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
 
         $reflectionClass = new \ReflectionClass($userEntityClass = $container->getParameter('draw_user.user_entity_class'));
         if (!$reflectionClass->implementsInterface(TwoFactorAuthenticationUserInterface::class)) {
-            throw new RuntimeException(sprintf('The class [%s] must implements [%s] to have 2FA enabled.', $userEntityClass, TwoFactorAuthenticationUserInterface::class));
+            throw new RuntimeException(\sprintf('The class [%s] must implements [%s] to have 2FA enabled.', $userEntityClass, TwoFactorAuthenticationUserInterface::class));
         }
 
         $container

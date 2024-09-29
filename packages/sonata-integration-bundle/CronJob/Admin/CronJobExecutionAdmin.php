@@ -114,7 +114,7 @@ class CronJobExecutionAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->add('acknowledge', sprintf('%s/acknowledge', $this->getRouterIdParameter()));
+        $collection->add('acknowledge', \sprintf('%s/acknowledge', $this->getRouterIdParameter()));
         $collection->remove('create');
         $collection->remove('edit');
     }

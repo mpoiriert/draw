@@ -11,7 +11,7 @@ class Security
 {
     public function __construct(
         private TokenStorageInterface $tokenStorage,
-        private AuthorizationCheckerInterface $authorizationChecker
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 

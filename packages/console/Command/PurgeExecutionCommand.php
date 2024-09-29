@@ -89,7 +89,7 @@ class PurgeExecutionCommand extends Command
     private function purge(
         \DateTime $before,
         int $batchSize = self::DEFAULT_BATCH_SIZE,
-        int $seconds = self::DEFAULT_WAIT_SECOND
+        int $seconds = self::DEFAULT_WAIT_SECOND,
     ): int {
         $total = 0;
         while ($affectedRows = $this->purgeBatch($before, $batchSize)) {

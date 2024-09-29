@@ -73,7 +73,7 @@ class TokenProcessorTest extends TestCase
 
     public function testInvokeIdentifiedToken(): void
     {
-        $user = new class() implements SecurityUserInterface {
+        $user = new class implements SecurityUserInterface {
             use SecurityUserTrait;
 
             private int $id;

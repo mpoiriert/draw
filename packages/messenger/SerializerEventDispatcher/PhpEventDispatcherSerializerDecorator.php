@@ -15,7 +15,7 @@ class PhpEventDispatcherSerializerDecorator extends PhpSerializer
 {
     public function __construct(
         private PhpSerializer $serializer,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

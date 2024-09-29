@@ -28,7 +28,7 @@ final class LoginController extends AbstractController
     #[Route(path: '/resetting/forgot-password', name: 'admin_forgot_password', methods: ['GET', 'POST'])]
     public function forgotPasswordAction(
         Request $request,
-        MailerInterface $mailer
+        MailerInterface $mailer,
     ): Response {
         $form = $this->createForm(
             ForgotPasswordForm::class,
@@ -96,7 +96,7 @@ final class LoginController extends AbstractController
     public function changePasswordAction(
         Request $request,
         UserFeedInterface $userFeed,
-        ManagerRegistry $managerRegistry
+        ManagerRegistry $managerRegistry,
     ): Response {
         $user = $this->getUser();
 

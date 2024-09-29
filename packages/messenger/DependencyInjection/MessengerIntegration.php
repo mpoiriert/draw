@@ -94,7 +94,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
             $this->registerClasses(
                 $loader,
-                sprintf('%s%s\\', $namespace, $dirname),
+                \sprintf('%s%s\\', $namespace, $dirname),
                 $directory,
                 $exclude
             );
@@ -217,7 +217,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
         if ($this->isConfigEnabled($container, $config['event_driven'])) {
             foreach ($config['event_driven']['transports'] as $transportName) {
-                $retryServiceId = sprintf('messenger.retry.multiplier_retry_strategy.%s', $transportName);
+                $retryServiceId = \sprintf('messenger.retry.multiplier_retry_strategy.%s', $transportName);
                 $decoratorServiceId = 'draw.'.$retryServiceId.'.event_driven.decorated';
                 $container->setDefinition(
                     $decoratorServiceId,

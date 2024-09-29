@@ -14,7 +14,7 @@ class DefaultActionExtension extends AbstractAdminExtension implements Actionabl
     private array $actions;
 
     public function __construct(
-        array $actions = []
+        array $actions = [],
     ) {
         $this->actions = array_values(
             array_intersect(

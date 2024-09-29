@@ -12,7 +12,7 @@ class SonataAdminNodeConfiguration extends ArrayNodeDefinition
         string $entityClass,
         string $group,
         string $name = 'sonata',
-        ?NodeParentInterface $parent = null
+        ?NodeParentInterface $parent = null,
     ) {
         parent::__construct($name, $parent);
 

@@ -13,7 +13,7 @@ class PasswordChangeEnforcerExtension extends AbstractAdminExtension
         AdminInterface $admin,
         array $list,
         string $action,
-        ?object $object = null
+        ?object $object = null,
     ): array {
         if ($object instanceof PasswordChangeUserInterface && 'edit' === $action) {
             $list['request_password_change'] = [

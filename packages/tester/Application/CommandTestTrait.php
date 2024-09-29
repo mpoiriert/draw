@@ -112,7 +112,7 @@ trait CommandTestTrait
         int $position,
         string $name,
         ?int $mode,
-        $default = null
+        $default = null,
     ): void {
         $definition = $command->getDefinition();
 
@@ -188,7 +188,7 @@ trait CommandTestTrait
         string $name,
         ?string $shortcut,
         ?int $mode,
-        $default = null
+        $default = null,
     ): void {
         $definition = $command->getDefinition();
 

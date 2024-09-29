@@ -20,7 +20,7 @@ class GenerateDocumentationCommand extends Command
 {
     public function __construct(
         private ?EventDispatcherInterface $eventDispatcher = null,
-        private ?DescriptorHelper $descriptorHelper = null
+        private ?DescriptorHelper $descriptorHelper = null,
     ) {
         parent::__construct();
     }

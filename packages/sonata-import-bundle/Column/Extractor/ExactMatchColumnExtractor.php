@@ -14,7 +14,7 @@ class ExactMatchColumnExtractor extends BaseColumnExtractor
     }
 
     public function __construct(
-        private Importer $importer
+        private Importer $importer,
     ) {
     }
 

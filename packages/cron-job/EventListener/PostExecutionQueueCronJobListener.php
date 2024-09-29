@@ -50,12 +50,12 @@ class PostExecutionQueueCronJobListener
                 ->findOneBy(['name' => $cronJobName]);
 
             if (null === $cronJob) {
-                $this->logger->error(sprintf('Cron job "%s" could not be found.', $cronJobName));
+                $this->logger->error(\sprintf('Cron job "%s" could not be found.', $cronJobName));
 
                 continue;
             }
 
-            $this->logger->info(sprintf('Queueing cron job "%s"...', $cronJob->getName()));
+            $this->logger->info(\sprintf('Queueing cron job "%s"...', $cronJob->getName()));
 
             $this->cronJobProcessor->queue($cronJob, true);
         }

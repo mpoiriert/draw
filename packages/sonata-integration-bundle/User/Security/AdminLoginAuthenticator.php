@@ -20,7 +20,7 @@ class AdminLoginAuthenticator extends FormLoginAuthenticator
         UserProviderInterface $userProvider,
         AuthenticationSuccessHandlerInterface $successHandler,
         AuthenticationFailureHandlerInterface $failureHandler,
-        array $options
+        array $options,
     ) {
         parent::__construct($httpUtils, $userProvider, $successHandler, $failureHandler, $options);
 

@@ -14,7 +14,7 @@ class AddRolesAminAction
     public function __invoke(
         ObjectActionExecutioner $objectActionExecutioner,
         Request $request,
-        GenericFormHandler $genericFormHandler
+        GenericFormHandler $genericFormHandler,
     ): Response {
         return $genericFormHandler
             ->execute(

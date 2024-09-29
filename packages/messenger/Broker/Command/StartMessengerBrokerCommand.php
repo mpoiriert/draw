@@ -44,7 +44,7 @@ class StartMessengerBrokerCommand extends Command
                 'concurrent',
                 null,
                 InputOption::VALUE_REQUIRED,
-                sprintf(
+                \sprintf(
                     'The number of concurrent consumers you want to run; use "%s" to use the auto calculation of CPU',
                     self::OPTION_VALUE_CONCURRENT_AUTO
                 ),
@@ -54,7 +54,7 @@ class StartMessengerBrokerCommand extends Command
                 'processes-per-core',
                 null,
                 InputOption::VALUE_REQUIRED,
-                sprintf(
+                \sprintf(
                     'The number of processes per CPU (used only if "concurrent" is set to "%s")',
                     self::OPTION_VALUE_CONCURRENT_AUTO
                 ),
@@ -64,7 +64,7 @@ class StartMessengerBrokerCommand extends Command
                 'minimum-processes',
                 null,
                 InputOption::VALUE_REQUIRED,
-                sprintf(
+                \sprintf(
                     'Minimum number of processes (used only if "concurrent" is set to "%s")',
                     self::OPTION_VALUE_CONCURRENT_AUTO
                 ),
@@ -74,7 +74,7 @@ class StartMessengerBrokerCommand extends Command
                 'maximum-processes',
                 null,
                 InputOption::VALUE_REQUIRED,
-                sprintf(
+                \sprintf(
                     'Maximum number of processes (used only if "concurrent" is set to "%s")',
                     self::OPTION_VALUE_CONCURRENT_AUTO
                 )
@@ -124,7 +124,7 @@ class StartMessengerBrokerCommand extends Command
 
         $concurrent = (int) $concurrent;
         if ($concurrent <= 0) {
-            throw new InvalidOptionException(sprintf(
+            throw new InvalidOptionException(\sprintf(
                 'Concurrent value [%d] is invalid. Must be 1 or greater',
                 $concurrent
             ));
@@ -137,7 +137,7 @@ class StartMessengerBrokerCommand extends Command
     {
         $processesPerCore = (float) $input->getOption('processes-per-core');
         if ($processesPerCore <= 0) {
-            throw new InvalidOptionException(sprintf(
+            throw new InvalidOptionException(\sprintf(
                 'Processes per core value [%f] is invalid. Must be greater than 0',
                 $processesPerCore
             ));
@@ -145,7 +145,7 @@ class StartMessengerBrokerCommand extends Command
 
         $minProcesses = (int) $input->getOption('minimum-processes');
         if ($minProcesses <= 0) {
-            throw new InvalidOptionException(sprintf(
+            throw new InvalidOptionException(\sprintf(
                 'Minimum processes value [%d] is invalid. Must be greater than 0',
                 $minProcesses
             ));
@@ -159,7 +159,7 @@ class StartMessengerBrokerCommand extends Command
 
         $maxProcesses = (int) $input->getOption('maximum-processes');
         if ($maxProcesses <= 0) {
-            throw new InvalidOptionException(sprintf(
+            throw new InvalidOptionException(\sprintf(
                 'Maximum processes value [%d] is invalid. Must be greater than 0',
                 $maxProcesses
             ));

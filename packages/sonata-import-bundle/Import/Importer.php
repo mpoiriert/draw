@@ -24,7 +24,7 @@ class Importer implements ImporterInterface
         private iterable $columnsExtractors,
         private ManagerRegistry $managerRegistry,
         private ColumnFactory $columnFactory,
-        private NotifierInterface $notifier
+        private NotifierInterface $notifier,
     ) {
     }
 
@@ -103,7 +103,7 @@ class Importer implements ImporterInterface
                 $this->notifier
                     ->send(
                         SonataNotification::error(
-                            sprintf(
+                            \sprintf(
                                 'Skipped Id [%s] cannot be found at line [%s]. Make sure you are using unique id value.',
                                 implode(', ', $criteria),
                                 $line
@@ -126,7 +126,7 @@ class Importer implements ImporterInterface
                 $this->notifier
                     ->send(
                         SonataNotification::error(
-                            sprintf(
+                            \sprintf(
                                 'Skipped Id [%s] at line [%s]. Error: %s',
                                 $id,
                                 $line,
@@ -146,7 +146,7 @@ class Importer implements ImporterInterface
             $this->notifier
                 ->send(
                     SonataNotification::success(
-                        sprintf(
+                        \sprintf(
                             'Entity saved: %s',
                             $saved
                         )
@@ -158,7 +158,7 @@ class Importer implements ImporterInterface
             $this->notifier
                 ->send(
                     SonataNotification::error(
-                        sprintf(
+                        \sprintf(
                             'Error saving data: %s',
                             $error->getMessage()
                         )

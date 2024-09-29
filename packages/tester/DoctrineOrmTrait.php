@@ -18,7 +18,7 @@ trait DoctrineOrmTrait
      */
     protected static function setUpMySqlWithAttributeDriver(
         array $entityDirectories,
-        ?string $dsn = null
+        ?string $dsn = null,
     ): ?EntityManagerInterface {
         $config = ORMSetup::createAttributeMetadataConfiguration(
             $entityDirectories,
@@ -51,7 +51,7 @@ trait DoctrineOrmTrait
     }
 
     protected static function createRegistry(
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): ManagerRegistry {
         return new class($entityManager) implements ManagerRegistry {
             public function __construct(private EntityManagerInterface $entityManager)

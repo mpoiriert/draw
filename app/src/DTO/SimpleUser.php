@@ -13,7 +13,7 @@ class SimpleUser
     public bool $needChangePassword;
 
     public function __construct(
-        User $user
+        User $user,
     ) {
         $this->id = $user->getId();
         $this->needChangePassword = $user->getNeedChangePassword();

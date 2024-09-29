@@ -29,7 +29,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
     public function __construct(
         private DBALConnection $driverConnection,
         private Connection $connection,
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
     ) {
         parent::__construct($connection, $serializer);
     }
@@ -76,7 +76,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         if ($this->driverConnection->getDatabasePlatform() instanceof MySQLPlatform) {
             $tableName = $this->connection->getConfiguration()['table_name'];
             $this->driverConnection->executeStatement(
-                sprintf(
+                \sprintf(
                     'DELETE FROM %s WHERE id = ? AND delivered_at >= ?',
                     $tableName
                 ),
@@ -140,7 +140,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         $now = new \DateTimeImmutable();
         $availableAt = null;
         if (null !== $delay) {
-            $availableAt = $now->modify(sprintf('%d seconds', $delay / 1000));
+            $availableAt = $now->modify(\sprintf('%d seconds', $delay / 1000));
         }
 
         $queryBuilder = $this->driverConnection->createQueryBuilder()

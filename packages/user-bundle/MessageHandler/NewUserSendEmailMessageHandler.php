@@ -17,7 +17,7 @@ class NewUserSendEmailMessageHandler
      */
     public function __construct(
         private EntityRepository $drawUserEntityRepository,
-        private MailerInterface $mailer
+        private MailerInterface $mailer,
     ) {
     }
 

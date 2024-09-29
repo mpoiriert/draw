@@ -108,7 +108,7 @@ trait ControllerTrait
         string $id,
         array $parameters = [],
         ?string $domain = null,
-        ?string $locale = null
+        ?string $locale = null,
     ): string {
         return $this->container->get('translator')
             ->trans(
@@ -147,7 +147,7 @@ trait ControllerTrait
     final protected function renderWithExtraParams(
         string $view,
         array $parameters = [],
-        ?Response $response = null
+        ?Response $response = null,
     ): Response {
         return $this->render($view, $this->addRenderExtraParams($parameters), $response);
     }

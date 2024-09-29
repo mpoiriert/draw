@@ -8,7 +8,7 @@ use PHPStan\Rules\Properties\ReadWritePropertiesExtension;
 class AutowireReadWritePropertiesExtension implements ReadWritePropertiesExtension
 {
     public function __construct(
-        private string $attribute
+        private string $attribute,
     ) {
     }
 

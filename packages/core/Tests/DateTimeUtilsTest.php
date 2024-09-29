@@ -53,7 +53,7 @@ class DateTimeUtilsTest extends TestCase
     public function testIsSameTimestamp(
         ?\DateTimeInterface $dateTime1,
         ?\DateTimeInterface $dateTime2,
-        bool $expected
+        bool $expected,
     ): void {
         static::assertSame(
             $expected,

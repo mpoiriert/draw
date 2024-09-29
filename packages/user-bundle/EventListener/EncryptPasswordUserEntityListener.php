@@ -11,7 +11,7 @@ class EncryptPasswordUserEntityListener
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private bool $autoGeneratePassword = true
+        private bool $autoGeneratePassword = true,
     ) {
     }
 

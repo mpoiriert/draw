@@ -14,7 +14,7 @@ class RequestBody
         public ?array $deserializationGroups = null,
         public ?array $propertiesMap = null,
         public array $deserializationContext = [],
-        public array $options = []
+        public array $options = [],
     ) {
     }
 }

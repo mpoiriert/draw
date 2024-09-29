@@ -70,7 +70,7 @@ class OperationResponseExtractor implements ExtractorInterface
         string $type,
         Response $response,
         ExtractionContextInterface $extractionContext,
-        \ReflectionMethod $source
+        \ReflectionMethod $source,
     ): int {
         $response->schema = $responseSchema = new Schema();
         $subContext = $extractionContext->createSubContext();

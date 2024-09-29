@@ -53,7 +53,7 @@ class OpenApiHandler implements SubscribingHandlerInterface
         JsonSerializationVisitor $visitor,
         SecurityRequirement $securityRequirement,
         array $type,
-        Context $context
+        Context $context,
     ) {
         return $securityRequirement->getData();
     }
@@ -62,7 +62,7 @@ class OpenApiHandler implements SubscribingHandlerInterface
         JsonDeserializationVisitor $visitor,
         $data,
         array $type,
-        Context $context
+        Context $context,
     ): SecurityRequirement {
         $securityRequirement = new SecurityRequirement();
         $securityRequirement->setData($data);
@@ -74,7 +74,7 @@ class OpenApiHandler implements SubscribingHandlerInterface
         JsonSerializationVisitor $visitor,
         MixedData $mixed,
         array $type,
-        Context $context
+        Context $context,
     ) {
         return $mixed->data;
     }
@@ -83,7 +83,7 @@ class OpenApiHandler implements SubscribingHandlerInterface
         JsonDeserializationVisitor $visitor,
         $data,
         array $type,
-        Context $context
+        Context $context,
     ) {
         return $data;
     }
@@ -92,7 +92,7 @@ class OpenApiHandler implements SubscribingHandlerInterface
         JsonSerializationVisitor $visitor,
         Vendor $vendor,
         array $type,
-        Context $context
+        Context $context,
     ) {
         return $vendor->value;
     }

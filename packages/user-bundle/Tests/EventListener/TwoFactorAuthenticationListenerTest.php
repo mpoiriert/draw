@@ -73,7 +73,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-security-user' => [
             new UserRequestInterceptionEvent(
-                new class() implements UserInterface {
+                new class implements UserInterface {
                     public function getRoles(): array
                     {
                         return [];
@@ -106,7 +106,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-two-factor-authentication-user' => [
             new UserRequestInterceptionEvent(
-                new class() implements SecurityUserInterface,
+                new class implements SecurityUserInterface,
                     TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
                         asOneTwoFActorAuthenticationProviderEnabled as originalAsOneProviderEnabled;
@@ -132,7 +132,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-as-one-provider-enable' => [
             new UserRequestInterceptionEvent(
-                new class() implements SecurityUserInterface,
+                new class implements SecurityUserInterface,
                     TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
                         asOneTwoFActorAuthenticationProviderEnabled as originalAsOneProviderEnabled;
@@ -158,7 +158,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-force-enabling-two-factor-authentication' => [
             new UserRequestInterceptionEvent(
-                new class() implements SecurityUserInterface,
+                new class implements SecurityUserInterface,
                     TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait;
                     use SecurityUserTrait;
@@ -176,7 +176,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-by-time-base-one-time-password' => [
             new UserRequestInterceptionEvent(
-                new class() implements SecurityUserInterface,
+                new class implements SecurityUserInterface,
                     TwoFactorAuthenticationUserInterface {
                     use ConfigurationTrait {
                         isForceEnablingTwoFactorAuthentication as originalIsForceEnablingTwoFactorAuthentication;
@@ -202,7 +202,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'enabled-route' => [
             new UserRequestInterceptionEvent(
-                new class() implements SecurityUserInterface,
+                new class implements SecurityUserInterface,
                     TwoFactorAuthenticationUserInterface,
                     ByTimeBaseOneTimePasswordInterface {
                     use ByTimeBaseOneTimePasswordTrait {
@@ -229,7 +229,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         yield 'not-enabled-route' => [
             new UserRequestInterceptionEvent(
-                new class() implements SecurityUserInterface,
+                new class implements SecurityUserInterface,
                     TwoFactorAuthenticationUserInterface,
                     ByTimeBaseOneTimePasswordInterface {
                     use ByTimeBaseOneTimePasswordTrait {
@@ -258,7 +258,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
     public function testCheckNeedToEnableTwoFactorAuthentication(
         UserRequestInterceptionEvent $event,
         bool $allowHandingRequest,
-        bool $redirect
+        bool $redirect,
     ): void {
         $url = null;
         if ($redirect) {

@@ -114,7 +114,7 @@ class EmailComposerTest extends TestCase
 
         $envelope = new Envelope(new Address('test@example.com'), [new Address('test@example.com')]);
 
-        $emailWriter = new class() implements EmailWriterInterface {
+        $emailWriter = new class implements EmailWriterInterface {
             public int $compose1CallCounter = 0;
 
             public int $compose2CallCounter = 0;
@@ -166,7 +166,7 @@ class EmailComposerTest extends TestCase
 
     public function testComposeLocalizeEmail(): void
     {
-        $message = new class() extends Email implements LocalizeEmailInterface {
+        $message = new class extends Email implements LocalizeEmailInterface {
             public function getLocale(): ?string
             {
                 return 'fr';

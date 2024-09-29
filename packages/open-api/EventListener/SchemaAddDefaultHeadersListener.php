@@ -18,7 +18,7 @@ final class SchemaAddDefaultHeadersListener implements EventSubscriberInterface
 
     public function __construct(
         private array $headers,
-        private ArrayTransformerInterface $arrayTransformer
+        private ArrayTransformerInterface $arrayTransformer,
     ) {
     }
 

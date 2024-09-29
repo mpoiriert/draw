@@ -16,7 +16,7 @@ trait MessageHandlerAssertionTrait
 
         TestCase::assertNotNull(
             $handlerConfiguration,
-            sprintf('"%s" is not registered as a message handler', $handlerClass)
+            \sprintf('"%s" is not registered as a message handler', $handlerClass)
         );
 
         $busses = $handleMessagesMappingProvider->getBussesNames();

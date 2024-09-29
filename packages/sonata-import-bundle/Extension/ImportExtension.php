@@ -13,7 +13,7 @@ class ImportExtension extends AbstractAdminExtension
         AdminInterface $admin,
         array $list,
         string $action,
-        ?object $object = null
+        ?object $object = null,
     ): array {
         if ('list' === $action) {
             $list['import']['template'] = '@DrawSonataImport\ImportAdmin\button_import.html.twig';

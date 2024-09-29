@@ -29,7 +29,7 @@ class RefreshUserLockExtension extends AbstractAdminExtension
         AdminInterface $admin,
         array $list,
         string $action,
-        ?object $object = null
+        ?object $object = null,
     ): array {
         switch (true) {
             case !$admin->isGranted('refresh-user-locks', $object):

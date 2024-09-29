@@ -16,7 +16,7 @@ class UserOnboardingEmailWriter implements EmailWriterInterface
 
     public function __construct(
         private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
-        private string $messageExpirationDelay = '+ 7 days'
+        private string $messageExpirationDelay = '+ 7 days',
     ) {
     }
 

@@ -26,7 +26,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         private string $userIdentifierPayloadKey,
         private string $userIdentifierGetter,
         private ?TranslatorInterface $translator = null,
-        private ?string $expiration = '+ 7 days'
+        private ?string $expiration = '+ 7 days',
     ) {
     }
 
@@ -87,10 +87,6 @@ class JwtAuthenticator extends AbstractAuthenticator
         }
 
         $token = $matches[1];
-
-        if (null === $token) {
-            return null;
-        }
 
         try {
             $this->encoder->decode($token);

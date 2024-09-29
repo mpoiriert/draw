@@ -61,7 +61,7 @@ class DefinitionAliasCleanerListener implements EventSubscriberInterface
     private function replaceSchemaReference(
         mixed $data,
         string $definitionToReplace,
-        string $definitionToReplaceWith
+        string $definitionToReplaceWith,
     ): void {
         if (!\is_object($data) && !\is_array($data)) {
             return;

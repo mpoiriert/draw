@@ -149,7 +149,7 @@ class Header
         ?int $minItems = null,
         ?bool $uniqueItems = null,
         ?array $enum = null,
-        ?int $multipleOf = null
+        ?int $multipleOf = null,
     ) {
         $this->name = $name;
         $this->description = $description;

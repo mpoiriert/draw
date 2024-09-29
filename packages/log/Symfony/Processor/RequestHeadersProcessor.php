@@ -18,7 +18,7 @@ class RequestHeadersProcessor
         private ?RequestStack $requestStack = null,
         array $onlyHeaders = [],
         array $ignoreHeaders = [],
-        private string $key = 'request_headers'
+        private string $key = 'request_headers',
     ) {
         $this->onlyHeaders = array_flip(array_map($this->normalizeHeaderName(...), $onlyHeaders));
         $this->ignoreHeaders = array_flip(array_map($this->normalizeHeaderName(...), $ignoreHeaders));

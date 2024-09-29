@@ -28,7 +28,7 @@ class DataAccessor
         /**
          * The root data that the asserts will be done on.
          */
-        private mixed $data
+        private mixed $data,
     ) {
     }
 

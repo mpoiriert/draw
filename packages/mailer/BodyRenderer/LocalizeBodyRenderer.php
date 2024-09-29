@@ -14,7 +14,7 @@ class LocalizeBodyRenderer implements BodyRendererInterface
 
     public function __construct(
         private BodyRendererInterface $bodyRenderer,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
     ) {
         if ($translator instanceof LocaleAwareInterface) {
             $this->translator = $translator;

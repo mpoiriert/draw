@@ -43,7 +43,7 @@ class PurgeExpiredMessageCommand extends Command
         // do we want to setup only one transport?
         if ($transportName = $input->getArgument('transport')) {
             if (!$this->transportRepository->has($transportName)) {
-                throw new \RuntimeException(sprintf('The "%s" transport does not exist.', $transportName));
+                throw new \RuntimeException(\sprintf('The "%s" transport does not exist.', $transportName));
             }
             $transportNames = [$transportName];
         } else {
@@ -54,9 +54,9 @@ class PurgeExpiredMessageCommand extends Command
             $transport = $this->transportRepository->get($transportName);
             if ($transport instanceof PurgeableTransportInterface) {
                 $count = $transport->purgeObsoleteMessages($delay);
-                $io->success(sprintf('The "%s" transport was purge successfully of "%s" message(s).', $transportName, $count));
+                $io->success(\sprintf('The "%s" transport was purge successfully of "%s" message(s).', $transportName, $count));
             } else {
-                $io->note(sprintf('The "%s" transport does not support purge obsolete messages.', $transportName));
+                $io->note(\sprintf('The "%s" transport does not support purge obsolete messages.', $transportName));
             }
         }
 

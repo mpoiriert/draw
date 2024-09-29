@@ -27,7 +27,7 @@ class ObjectActionExecutionerFactory
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
-        private ?LoggerInterface $logger
+        private ?LoggerInterface $logger,
     ) {
     }
 

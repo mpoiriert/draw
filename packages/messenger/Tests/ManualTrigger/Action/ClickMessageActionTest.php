@@ -97,7 +97,7 @@ class ClickMessageActionTest extends TestCase
     public function testClickEnvelopeError(
         ?Envelope $returnedEnveloped,
         string $exceptionClass,
-        ?string $translatedMessage
+        ?string $translatedMessage,
     ): void {
         $this->messageBus
             ->expects(static::never())

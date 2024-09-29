@@ -18,7 +18,7 @@ class RefreshUserLockMessageHandler
     public function __construct(
         private AccountLocker $accountLocker,
         private EntityManagerInterface $entityManager,
-        private EntityRepository $drawUserEntityRepository
+        private EntityRepository $drawUserEntityRepository,
     ) {
     }
 
@@ -30,7 +30,7 @@ class RefreshUserLockMessageHandler
         }
 
         if (!$user instanceof LockableUserInterface) {
-            throw new \UnexpectedValueException(sprintf(
+            throw new \UnexpectedValueException(\sprintf(
                 'Expected instance of [%s], instance of [%s] returned.',
                 LockableUserInterface::class,
                 $user::class

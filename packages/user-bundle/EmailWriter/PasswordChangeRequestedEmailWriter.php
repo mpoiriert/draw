@@ -18,7 +18,7 @@ class PasswordChangeRequestedEmailWriter implements EmailWriterInterface
 
     public function __construct(
         private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
-        private UserProviderInterface $userProvider
+        private UserProviderInterface $userProvider,
     ) {
     }
 

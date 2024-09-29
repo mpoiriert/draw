@@ -33,7 +33,7 @@ trait IntegrationTrait
         string $namespace,
         string $directory,
         array $exclude = [],
-        ?Definition $prototype = null
+        ?Definition $prototype = null,
     ): void {
         $prototype = $prototype ?: (new Definition())
             ->setAutowired(true)
@@ -65,13 +65,13 @@ trait IntegrationTrait
     protected function assertHasExtension(
         ContainerBuilder $container,
         string $extensionName,
-        ?string $exceptionMessage = null
+        ?string $exceptionMessage = null,
     ): void {
         if ($container->hasExtension($extensionName)) {
             return;
         }
 
-        throw new \Exception($exceptionMessage ?: sprintf('You must have the extension [%s] available to configuration [draw_framework_extra.%s]', $extensionName, $this->getConfigSectionName()));
+        throw new \Exception($exceptionMessage ?: \sprintf('You must have the extension [%s] available to configuration [draw_framework_extra.%s]', $extensionName, $this->getConfigSectionName()));
     }
 
     protected function isConfigEnabled(ContainerBuilder $container, array $config): bool
@@ -86,7 +86,7 @@ trait IntegrationTrait
     protected function renameDefinitions(
         ContainerBuilder $container,
         string $classOrNamespace,
-        string $namePrefix
+        string $namePrefix,
     ): void {
         if (class_exists($classOrNamespace, true)) {
             if (!$container->hasDefinition($classOrNamespace)) {
@@ -146,7 +146,7 @@ trait IntegrationTrait
         $input = preg_replace('~(?<=\\w)([A-Z])~u', '_$1', $input);
 
         if (null === $input) {
-            throw new \RuntimeException(sprintf('preg_replace returned null for value "%s"', $originalInput));
+            throw new \RuntimeException(\sprintf('preg_replace returned null for value "%s"', $originalInput));
         }
 
         return mb_strtolower($input);

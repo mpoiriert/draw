@@ -27,7 +27,7 @@ class InFilter extends Filter
 
         $parameterName = $this->getNewParameterName($query);
 
-        $this->applyWhere($query, sprintf('%s.%s IN (:%s)', $alias, $field, $parameterName));
+        $this->applyWhere($query, \sprintf('%s.%s IN (:%s)', $alias, $field, $parameterName));
         $query->getQueryBuilder()->setParameter($parameterName, $values);
     }
 

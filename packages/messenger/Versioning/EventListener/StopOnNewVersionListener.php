@@ -24,7 +24,7 @@ class StopOnNewVersionListener implements EventSubscriberInterface
 
     public function __construct(
         private VersionVerificationInterface $versionVerification,
-        private ?LoggerInterface $logger = null
+        private ?LoggerInterface $logger = null,
     ) {
     }
 

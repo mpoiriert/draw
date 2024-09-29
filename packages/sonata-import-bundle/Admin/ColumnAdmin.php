@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class ColumnAdmin extends AbstractAdmin
 {
     public function __construct(
-        private Importer $importer
+        private Importer $importer,
     ) {
         parent::__construct();
     }

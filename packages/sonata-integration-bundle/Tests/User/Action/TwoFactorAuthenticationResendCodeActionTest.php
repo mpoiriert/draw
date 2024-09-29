@@ -32,7 +32,7 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
 
     public function testInvoke(): void
     {
-        $user = new class() implements UserInterface, TwoFactorInterface {
+        $user = new class implements UserInterface, TwoFactorInterface {
             public function isEmailAuthEnabled(): bool
             {
                 return true;

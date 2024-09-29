@@ -56,7 +56,7 @@ class QueueBatchCommand extends BaseCommand
         $migration = $this->migrator->getMigration($input->getArgument('migration-name'));
 
         if (!$migration instanceof BatchPrepareMigrationInterface) {
-            $io->error(sprintf(
+            $io->error(\sprintf(
                 'Migration %s does not implement %s',
                 $migration::getName(),
                 BatchPrepareMigrationInterface::class
@@ -93,7 +93,7 @@ class QueueBatchCommand extends BaseCommand
         $manager
             ->getConnection()
             ->executeStatement(
-                sprintf(
+                \sprintf(
                     'INSERT IGNORE INTO `%s` (entity_id, migration_id, transition_logs, created_at) %s',
                     $entityMigrationMetadata->getTableName(),
                     $sql
@@ -145,7 +145,7 @@ class QueueBatchCommand extends BaseCommand
 
         $io->newLine();
 
-        $io->success(sprintf(
+        $io->success(\sprintf(
             'Migration %s queued for %d entities',
             $migration::getName(),
             $count

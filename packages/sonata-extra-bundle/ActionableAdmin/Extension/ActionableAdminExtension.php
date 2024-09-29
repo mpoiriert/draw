@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 class ActionableAdminExtension extends AbstractAdminExtension
 {
     public function __construct(
-        private AdminActionLoader $actionLoader
+        private AdminActionLoader $actionLoader,
     ) {
     }
 
@@ -115,7 +115,7 @@ class ActionableAdminExtension extends AbstractAdminExtension
         AdminInterface $admin,
         array $list,
         string $action,
-        ?object $object = null
+        ?object $object = null,
     ): array {
         foreach ($this->actionLoader->getActions($admin) as $adminAction) {
             if (!$adminAction->isForAction($action)) {

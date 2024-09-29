@@ -116,7 +116,7 @@ class StartMessengerBrokerCommandTest extends TestCase
     public function testExecuteInvalidProcessesPerCoreWithAutoConcurrent(): void
     {
         $processesPerCore = random_int(\PHP_INT_MIN, 0);
-        $this->expectExceptionObject(new InvalidOptionException(sprintf(
+        $this->expectExceptionObject(new InvalidOptionException(\sprintf(
             'Processes per core value [%f] is invalid. Must be greater than 0',
             $processesPerCore
         )));
@@ -130,7 +130,7 @@ class StartMessengerBrokerCommandTest extends TestCase
     public function testExecuteInvalidMinimumProcessesWithAutoConcurrent(): void
     {
         $minProcesses = random_int(\PHP_INT_MIN, 0);
-        $this->expectExceptionObject(new InvalidOptionException(sprintf(
+        $this->expectExceptionObject(new InvalidOptionException(\sprintf(
             'Minimum processes value [%d] is invalid. Must be greater than 0',
             $minProcesses
         )));
@@ -144,7 +144,7 @@ class StartMessengerBrokerCommandTest extends TestCase
     public function testExecuteInvalidMaximumProcessesWithAutoConcurrent(): void
     {
         $maxProcesses = random_int(\PHP_INT_MIN, 0);
-        $this->expectExceptionObject(new InvalidOptionException(sprintf(
+        $this->expectExceptionObject(new InvalidOptionException(\sprintf(
             'Maximum processes value [%d] is invalid. Must be greater than 0',
             $maxProcesses
         )));
@@ -225,7 +225,7 @@ class StartMessengerBrokerCommandTest extends TestCase
         float $processesPerCore,
         int $minProcesses,
         ?int $maxProcesses,
-        int $concurrent
+        int $concurrent,
     ): void {
         $this
             ->cpuCounter
@@ -258,7 +258,7 @@ class StartMessengerBrokerCommandTest extends TestCase
                 0,
                 [
                     '[OK] Broker starting.',
-                    sprintf('! [NOTE] Concurrency %d', $concurrent),
+                    \sprintf('! [NOTE] Concurrency %d', $concurrent),
                     '! [NOTE] Timeout 10',
                     '[OK] Broker stopped. ',
                 ]

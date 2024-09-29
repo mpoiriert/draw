@@ -121,7 +121,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
         $userClass = $container->getParameter('draw_user.user_entity_class');
         if (!class_exists($userClass)) {
-            throw new RuntimeException(sprintf('The class [%s] does not exists. Make sure you configured the [%s] node properly.', $userClass, 'draw_user.user_entity_class'));
+            throw new RuntimeException(\sprintf('The class [%s] does not exists. Make sure you configured the [%s] node properly.', $userClass, 'draw_user.user_entity_class'));
         }
 
         if ($config['encrypt_password_listener']['enabled']) {
@@ -164,7 +164,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
     private function configureEmailWriters(
         array $config,
         PhpFileLoader $loader,
-        ContainerBuilder $container
+        ContainerBuilder $container,
     ): void {
         if (!$config['enabled']) {
             return;
@@ -213,7 +213,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
     private function configureAccountLocker(
         array $config,
         PhpFileLoader $loader,
-        ContainerBuilder $containerBuilder
+        ContainerBuilder $containerBuilder,
     ): void {
         if (!$config['enabled']) {
             $containerBuilder->removeDefinition(RefreshUserLocksCommand::class);
@@ -234,7 +234,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
     private function configureNeedPasswordChangeEnforcer(
         array $config,
         PhpFileLoader $loader,
-        ContainerBuilder $containerBuilder
+        ContainerBuilder $containerBuilder,
     ): void {
         if (!$config['enabled']) {
             $containerBuilder->removeDefinition(PasswordChangeEnforcerListener::class);
@@ -251,7 +251,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
     private function configureOnBoarding(
         array $config,
         PhpFileLoader $loader,
-        ContainerBuilder $containerBuilder
+        ContainerBuilder $containerBuilder,
     ): void {
         if (!$config['enabled']) {
             $containerBuilder->removeDefinition(NewUserSendEmailMessageHandler::class);
@@ -261,7 +261,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
     private function configureEnforce2fa(
         array $config,
         PhpFileLoader $loader,
-        ContainerBuilder $containerBuilder
+        ContainerBuilder $containerBuilder,
     ): void {
         if (!$config['enabled']) {
             $containerBuilder->removeDefinition(IndecisiveTwoFactorAuthenticationEnforcer::class);

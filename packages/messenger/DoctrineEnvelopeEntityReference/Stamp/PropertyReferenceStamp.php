@@ -9,7 +9,7 @@ class PropertyReferenceStamp implements StampInterface
     public function __construct(
         private string $propertyName,
         private string $class,
-        private array $identifiers
+        private array $identifiers,
     ) {
     }
 

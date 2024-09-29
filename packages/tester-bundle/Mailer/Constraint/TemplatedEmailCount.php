@@ -12,13 +12,13 @@ final class TemplatedEmailCount extends Constraint
         private int $expectedValue,
         private string $type,
         private ?string $template = null,
-        private ?string $transport = null
+        private ?string $transport = null,
     ) {
     }
 
     public function toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%shas "%d" %s templated emails %s',
             $this->transport ? $this->transport.' ' : '',
             $this->expectedValue,
@@ -40,7 +40,7 @@ final class TemplatedEmailCount extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return sprintf('the Transport %s (%d)', $this->toString(), $this->countEmails($other));
+        return \sprintf('the Transport %s (%d)', $this->toString(), $this->countEmails($other));
     }
 
     private function countEmails(MessageEvents $events): int

@@ -16,7 +16,7 @@ class RolesTwoFactorAuthenticationEnforcer implements TwoFactorAuthenticationEnf
      */
     public function __construct(
         private RoleHierarchyInterface $roleHierarchy,
-        private array $enforcingRoles
+        private array $enforcingRoles,
     ) {
     }
 

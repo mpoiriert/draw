@@ -91,7 +91,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf(
+            \sprintf(
                 'QueryParameterFetcherSubscriber parameter conflicts with a path parameter [%s] for route [%s]',
                 $name,
                 $route
@@ -233,7 +233,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf('Unsupported collection format [%s]', 'multi')
+            \sprintf('Unsupported collection format [%s]', 'multi')
         );
 
         $this->object->onKernelController($controllerEvent);
@@ -241,13 +241,13 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public function __invoke(
         #[QueryParameter]
-        string $test
+        string $test,
     ): void {
     }
 
     public function multiAction(
         #[QueryParameter(type: 'array', collectionFormat: 'multi')]
-        string $test
+        string $test,
     ): void {
     }
 }

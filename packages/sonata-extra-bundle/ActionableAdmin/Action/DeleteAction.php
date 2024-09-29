@@ -13,7 +13,7 @@ use Twig\Environment;
 class DeleteAction
 {
     public function __construct(
-        private Environment $twig
+        private Environment $twig,
     ) {
     }
 

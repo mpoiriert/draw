@@ -31,7 +31,7 @@ final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
     {
         $versionInString = $this->getVersionDev($version);
 
-        $gitAddCommitCommand = sprintf(
+        $gitAddCommitCommand = \sprintf(
             'git add . && git commit --allow-empty -m "current %s" && git push origin master',
             $versionInString
         );
@@ -43,7 +43,7 @@ final class PushNextDevReleaseWorker implements ReleaseWorkerInterface
     {
         $versionInString = $this->getVersionDev($version);
 
-        return sprintf('Push "%s" open to remote repository', $versionInString);
+        return \sprintf('Push "%s" open to remote repository', $versionInString);
     }
 
     private function getVersionDev(Version $version): string

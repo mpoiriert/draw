@@ -31,7 +31,7 @@ class AccountLockerListener implements EventSubscriberInterface
         private AccountLocker $accountLocker,
         private UrlGeneratorInterface $urlGenerator,
         private UserFeedInterface $userFeed,
-        private string $accountLockedRoute = 'draw_user_account_locker_account_locked'
+        private string $accountLockedRoute = 'draw_user_account_locker_account_locked',
     ) {
     }
 

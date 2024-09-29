@@ -21,7 +21,7 @@ class CronJobExecutionTest extends TestCase
         int $timeToLive = 0,
         ?\DateTimeImmutable $requestedAt = null,
         \DateTimeImmutable $now = new \DateTimeImmutable(),
-        bool $forced = false
+        bool $forced = false,
     ): void {
         Carbon::setTestNow($now);
 

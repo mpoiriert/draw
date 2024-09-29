@@ -28,13 +28,13 @@ class ClickMessageAction
         private EnvelopeFinder $enveloperFinder,
         private EventDispatcherInterface $eventDispatcher,
         private TranslatorInterface $translator,
-        private TransportRepository $transportRepository
+        private TransportRepository $transportRepository,
     ) {
     }
 
     public function __invoke(
         string $dMUuid,
-        Request $request
+        Request $request,
     ): Response {
         try {
             $result = $this->handle(
@@ -97,12 +97,12 @@ class ClickMessageAction
             $handlers = implode(
                 ', ',
                 array_map(
-                    fn (HandledStamp $stamp): string => sprintf('"%s"', $stamp->getHandlerName()),
+                    fn (HandledStamp $stamp): string => \sprintf('"%s"', $stamp->getHandlerName()),
                     $handledStamps
                 )
             );
 
-            throw new LogicException(sprintf('Message of type "%s" was handled %d time(s). Only one handler is expected, got: %s.', get_debug_type($envelope->getMessage()), \count($handledStamps), $handlers));
+            throw new LogicException(\sprintf('Message of type "%s" was handled %d time(s). Only one handler is expected, got: %s.', get_debug_type($envelope->getMessage()), \count($handledStamps), $handlers));
         }
 
         $this->transportRepository

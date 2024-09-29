@@ -25,7 +25,7 @@ class ForgotPasswordEmailWriter implements EmailWriterInterface
         private ManuallyTriggeredMessageUrlGenerator $messageUrlGenerator,
         private UrlGeneratorInterface $urlGenerator,
         private string $resetPasswordRoute,
-        private string $inviteCreateAccountRoute
+        private string $inviteCreateAccountRoute,
     ) {
     }
 

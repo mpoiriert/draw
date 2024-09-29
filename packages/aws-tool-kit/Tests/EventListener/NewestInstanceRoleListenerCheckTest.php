@@ -243,7 +243,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     private function mockEc2ClientDescribeInstances(
         string $role,
         array $instances,
-        ?\Exception $error = null
+        ?\Exception $error = null,
     ): void {
         $ec2Client = $this->getMockBuilder(Ec2Client::class)
             ->disableOriginalConstructor()

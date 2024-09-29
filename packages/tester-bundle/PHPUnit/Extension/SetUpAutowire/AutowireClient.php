@@ -38,7 +38,7 @@ class AutowireClient implements AutowireInterface
     {
         if (!$testCase instanceof SymfonyWebTestCase && !$testCase instanceof DrawWebTestCase) {
             throw new \RuntimeException(
-                sprintf(
+                \sprintf(
                     'AutowireClient attribute can only be used in %s or %s.',
                     SymfonyWebTestCase::class,
                     DrawWebTestCase::class

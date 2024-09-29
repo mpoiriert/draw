@@ -41,7 +41,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
             $driverConnection = $this->registry->getConnection($configuration['connection']);
         } catch (\InvalidArgumentException $error) {
             throw new TransportException(
-                sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn),
+                \sprintf('Could not find Doctrine connection from Messenger DSN "%s".', $dsn),
                 0,
                 $error
             );
@@ -55,7 +55,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
     public static function buildConfiguration(string $dsn, array $options = []): array
     {
         if ((false === $components = parse_url($dsn)) || !isset($components['host'])) {
-            throw new InvalidArgumentException(sprintf('The given Draw Messenger DSN "%s" is invalid.', $dsn));
+            throw new InvalidArgumentException(\sprintf('The given Draw Messenger DSN "%s" is invalid.', $dsn));
         }
 
         $query = [];
@@ -81,7 +81,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
         // check for extra keys in options
         $optionsExtraKeys = array_diff(array_keys($options), array_keys(self::DEFAULT_OPTIONS));
         if (0 < \count($optionsExtraKeys)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 'Unknown option found : [%s]. Allowed options are [%s]',
                 implode(', ', $optionsExtraKeys),
                 implode(', ', array_keys(self::DEFAULT_OPTIONS))
@@ -91,7 +91,7 @@ class DrawTransportFactory extends DoctrineTransportFactory
         // check for extra keys in options
         $queryExtraKeys = array_diff(array_keys($query), array_keys(self::DEFAULT_OPTIONS));
         if (0 < \count($queryExtraKeys)) {
-            throw new InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(\sprintf(
                 'Unknown option found in DSN: [%s]. Allowed options are [%s]',
                 implode(', ', $queryExtraKeys),
                 implode(', ', array_keys(self::DEFAULT_OPTIONS))

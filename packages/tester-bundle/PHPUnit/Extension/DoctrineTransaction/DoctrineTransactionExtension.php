@@ -40,7 +40,7 @@ final class DoctrineTransactionExtension implements Extension
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         $facade->registerSubscribers(
-            new class() implements TestSuiteStartedSubscriber {
+            new class implements TestSuiteStartedSubscriber {
                 public function notify(TestSuiteStarted $event): void
                 {
                     $class = $event->testSuite()->name();
@@ -48,7 +48,7 @@ final class DoctrineTransactionExtension implements Extension
                     DoctrineTransactionExtension::startTransactionIfNeeded($class);
                 }
             },
-            new class() implements TestSuiteFinishedSubscriber {
+            new class implements TestSuiteFinishedSubscriber {
                 public function notify(TestSuiteFinished $event): void
                 {
                     DoctrineTransactionExtension::rollBack();

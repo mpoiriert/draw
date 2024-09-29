@@ -14,7 +14,7 @@ class SearchableTagStamp implements StampInterface
     public function __construct(
         array $tags,
         // Keep false as the default value since some stamp can be deserialized
-        private bool $enforceUniqueness = false
+        private bool $enforceUniqueness = false,
     ) {
         $this->tags = array_values(array_unique(array_filter($tags)));
     }

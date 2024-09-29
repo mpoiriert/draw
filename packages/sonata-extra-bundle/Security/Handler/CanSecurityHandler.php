@@ -10,7 +10,7 @@ class CanSecurityHandler implements SecurityHandlerInterface
 {
     public function __construct(
         private SecurityHandlerInterface $decoratedSecurityHandler,
-        private AuthorizationCheckerInterface $authorizationChecker
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 

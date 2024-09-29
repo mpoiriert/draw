@@ -20,7 +20,7 @@ class Migrator
         private ManagerRegistry $managerRegistry,
         private LockFactory $entityMigratorLockFactory,
         private ?LoggerInterface $entityMigratorLogger,
-        private array $migrationNames
+        private array $migrationNames,
     ) {
     }
 

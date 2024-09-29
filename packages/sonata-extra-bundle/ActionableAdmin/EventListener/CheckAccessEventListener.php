@@ -10,7 +10,7 @@ class CheckAccessEventListener
     public const CHECK_ACCESS = 'check_access.check';
 
     public function __construct(
-        private bool $defaultCheckAccess = true
+        private bool $defaultCheckAccess = true,
     ) {
     }
 

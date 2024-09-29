@@ -36,7 +36,7 @@ class TestController
         #[RequestBody(deserializationGroups: ['Included'])]
         TestClass $test,
         #[OpenApi\QueryParameter]
-        string $param1 = 'default'
+        string $param1 = 'default',
     ): TestClass {
         $test->setProperty($param1);
 
@@ -59,7 +59,7 @@ class TestController
             ],
             items: new OpenApi\Items(type: 'string')
         )]
-        ?array $param1
+        ?array $param1,
     ): ?array {
         return $param1;
     }

@@ -175,7 +175,7 @@ class UserLock implements \Stringable
     public function copyInto(self $userLock): void
     {
         if ($userLock->getReason() !== $this->getReason()) {
-            throw new \LogicException(sprintf('User lock for reason [%s] cannot be copied into user lock for reason [%s]', $this->getReason(), $userLock->getReason()));
+            throw new \LogicException(\sprintf('User lock for reason [%s] cannot be copied into user lock for reason [%s]', $this->getReason(), $userLock->getReason()));
         }
 
         $userLock->setLockOn($this->getLockOn());
@@ -185,7 +185,7 @@ class UserLock implements \Stringable
 
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s -> %s -> %s',
             $this->getUser(),
             $this->getReason(),

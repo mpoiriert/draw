@@ -15,7 +15,7 @@ class ExecutionErrorEvent extends Event
     public function __construct(
         private \Throwable $error,
         private object $object,
-        private ObjectActionExecutioner $objectActionExecutioner
+        private ObjectActionExecutioner $objectActionExecutioner,
     ) {
     }
 

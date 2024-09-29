@@ -18,7 +18,7 @@ class TransportTester
     public function __construct(TransportInterface $transport, private Evaluator $evaluator)
     {
         if (!$transport instanceof InMemoryTransport) {
-            throw new \RuntimeException(sprintf('TransportTester only support [%s]. Object of class [%s]', InMemoryTransport::class, $transport::class));
+            throw new \RuntimeException(\sprintf('TransportTester only support [%s]. Object of class [%s]', InMemoryTransport::class, $transport::class));
         }
         $this->transport = $transport;
     }
@@ -38,7 +38,7 @@ class TransportTester
         string $messageClass,
         ?Expression $expression = null,
         int $count = 1,
-        string $message = ''
+        string $message = '',
     ): array {
         $messages = [];
         foreach ($this->transport->getSent() as $envelope) {

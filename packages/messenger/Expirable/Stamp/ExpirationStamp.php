@@ -27,7 +27,7 @@ class ExpirationStamp implements StampInterface
 
     public static function createEnvelopeFilter(): EnvelopeFilterInterface
     {
-        return new class() implements EnvelopeFilterInterface {
+        return new class implements EnvelopeFilterInterface {
             public function __invoke(Envelope $envelope): bool
             {
                 if (null === $stamp = $envelope->last(ExpirationStamp::class)) {

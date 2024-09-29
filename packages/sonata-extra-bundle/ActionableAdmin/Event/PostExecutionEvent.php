@@ -10,7 +10,7 @@ class PostExecutionEvent extends Event
 {
     public function __construct(
         private ObjectActionExecutioner $objectActionExecutioner,
-        private ?Response $response = null
+        private ?Response $response = null,
     ) {
     }
 

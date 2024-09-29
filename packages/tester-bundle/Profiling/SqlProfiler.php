@@ -129,8 +129,8 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
             $className = $var::class;
 
             return method_exists($var, '__toString') ?
-                [sprintf('/* Object(%s): */"%s"', $className, $var->__toString()), false] :
-                [sprintf('/* Object(%s) */', $className), false];
+                [\sprintf('/* Object(%s): */"%s"', $className, $var->__toString()), false] :
+                [\sprintf('/* Object(%s) */', $className), false];
         }
 
         if (\is_array($var)) {
@@ -146,7 +146,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
         }
 
         if (\is_resource($var)) {
-            return [sprintf('/* Resource(%s) */', get_resource_type($var)), false];
+            return [\sprintf('/* Resource(%s) */', get_resource_type($var)), false];
         }
 
         return [$var, true];

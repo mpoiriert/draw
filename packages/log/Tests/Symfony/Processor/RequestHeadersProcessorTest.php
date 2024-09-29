@@ -72,7 +72,7 @@ class RequestHeadersProcessorTest extends TestCase
         ?array $requestHeaders,
         array $onlyHeaders,
         array $ignoreHeader,
-        ?array $expectedHeaders
+        ?array $expectedHeaders,
     ): void {
         $service = new RequestHeadersProcessor(
             $requestStack = $this->createMock(RequestStack::class),

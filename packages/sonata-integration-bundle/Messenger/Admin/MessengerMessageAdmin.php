@@ -122,7 +122,7 @@ class MessengerMessageAdmin extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-        $collection->add('retry', sprintf('%s/retry', $this->getRouterIdParameter()));
+        $collection->add('retry', \sprintf('%s/retry', $this->getRouterIdParameter()));
         $collection->remove('create');
         $collection->remove('edit');
     }
@@ -136,8 +136,8 @@ class MessengerMessageAdmin extends AbstractAdmin
             ->andWhere(
                 $query->expr()
                     ->orX(
-                        sprintf('%s.expiresAt <= :now', $query->getRootAliases()[0]),
-                        sprintf('%s.expiresAt IS NULL', $query->getRootAliases()[0]),
+                        \sprintf('%s.expiresAt <= :now', $query->getRootAliases()[0]),
+                        \sprintf('%s.expiresAt IS NULL', $query->getRootAliases()[0]),
                     )
             )
             ->setParameter('now', new \DateTimeImmutable());

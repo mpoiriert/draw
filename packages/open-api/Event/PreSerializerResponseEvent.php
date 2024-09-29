@@ -11,7 +11,7 @@ class PreSerializerResponseEvent extends Event
     public function __construct(
         private mixed $result,
         private ?Serialization $serialization,
-        private SerializationContext $context
+        private SerializationContext $context,
     ) {
     }
 

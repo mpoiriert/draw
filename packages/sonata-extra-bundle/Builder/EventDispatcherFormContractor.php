@@ -12,7 +12,7 @@ class EventDispatcherFormContractor implements FormContractorInterface
 {
     public function __construct(
         private FormContractorInterface $decoratedFormContractor,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -29,7 +29,7 @@ class EventDispatcherFormContractor implements FormContractorInterface
     public function getDefaultOptions(
         ?string $type,
         FieldDescriptionInterface $fieldDescription,
-        array $formOptions = []
+        array $formOptions = [],
     ): array {
         $defaultOptions = $this->decoratedFormContractor->getDefaultOptions($type, $fieldDescription, $formOptions);
 

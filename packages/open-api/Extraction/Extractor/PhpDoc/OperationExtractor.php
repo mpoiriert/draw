@@ -32,7 +32,7 @@ class OperationExtractor implements ExtractorInterface
     }
 
     public function __construct(
-        ?DocBlockFactoryInterface $docBlockFactory = null
+        ?DocBlockFactoryInterface $docBlockFactory = null,
     ) {
         $this->contextFactory = new ContextFactory();
         $this->docBlockFactory = $docBlockFactory ?: DocBlockFactory::createInstance();
@@ -113,7 +113,7 @@ class OperationExtractor implements ExtractorInterface
         ?Type $type,
         Response $response,
         ExtractionContextInterface $extractionContext,
-        \ReflectionMethod $source
+        \ReflectionMethod $source,
     ): int {
         if (\in_array((string) $type, ['void', 'null'])) {
             return 204;
@@ -184,7 +184,7 @@ class OperationExtractor implements ExtractorInterface
     private function extractParameters(
         DocBlock $docBlock,
         Operation $target,
-        ExtractionContextInterface $extractionContext
+        ExtractionContextInterface $extractionContext,
     ): void {
         $bodyParameter = $this->findBodyParameter($target);
 
@@ -220,7 +220,7 @@ class OperationExtractor implements ExtractorInterface
                     );
 
                     if (!isset($primitiveType['type'])) {
-                        throw new \RuntimeException(sprintf('No type found for parameter named [%s] for operation id [%s]', $paramTag->getVariableName(), $target->operationId));
+                        throw new \RuntimeException(\sprintf('No type found for parameter named [%s] for operation id [%s]', $paramTag->getVariableName(), $target->operationId));
                     }
 
                     $parameter->type = $primitiveType['type'];
@@ -258,7 +258,7 @@ class OperationExtractor implements ExtractorInterface
         DocBlock $docBlock,
         ExtractionContextInterface $extractionContext,
         \ReflectionMethod $source,
-        Operation $target
+        Operation $target,
     ): void {
         /** @var Type[] $types */
         $types = [];

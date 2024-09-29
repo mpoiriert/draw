@@ -18,7 +18,7 @@ class SymfonySchemaBuilder implements SchemaBuilderInterface
     public function __construct(
         private OpenApi $openApi,
         private RouterInterface $router,
-        private ParameterBagInterface $parameterBag
+        private ParameterBagInterface $parameterBag,
     ) {
     }
 

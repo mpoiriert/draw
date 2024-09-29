@@ -43,7 +43,7 @@ class QueueDueCronJobsCommand extends Command
                 continue;
             }
 
-            $io->note(sprintf('Queueing cron job "%s"...', $cronJob->getName()));
+            $io->note(\sprintf('Queueing cron job "%s"...', $cronJob->getName()));
 
             $this->cronJobProcessor->queue($cronJob, false);
         }

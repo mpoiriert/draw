@@ -19,7 +19,7 @@ class Broker
         private string $context,
         private string $consolePath,
         private ProcessFactoryInterface $processFactory,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -106,7 +106,7 @@ class Broker
             $this->eventDispatcher->dispatch($event = new NewConsumerProcessEvent($this->context));
 
             if (!$receivers = $event->getReceivers()) {
-                throw new \RuntimeException(sprintf('You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.', NewConsumerProcessEvent::class.'::preventStart'));
+                throw new \RuntimeException(\sprintf('You must have at least one receivers. If you do not want to prevent the consumer process to start use the [%s] event method.', NewConsumerProcessEvent::class.'::preventStart'));
             }
 
             $process = $this->processFactory->create(

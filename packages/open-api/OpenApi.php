@@ -119,7 +119,7 @@ class OpenApi
     public function extract(
         mixed $source,
         mixed $target = null,
-        ?ExtractionContextInterface $extractionContext = null
+        ?ExtractionContextInterface $extractionContext = null,
     ) {
         if (null === $target) {
             $target = new Schema();

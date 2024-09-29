@@ -19,7 +19,7 @@ class PasswordChangeEnforcerListener implements EventSubscriberInterface
 
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
-        private string $changePasswordRoute = 'admin_change_password'
+        private string $changePasswordRoute = 'admin_change_password',
     ) {
     }
 

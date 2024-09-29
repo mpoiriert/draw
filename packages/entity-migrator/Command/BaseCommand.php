@@ -19,7 +19,7 @@ abstract class BaseCommand extends Command
         protected Migrator $migrator,
         protected EntityMigrationRepository $entityMigrationRepository,
         protected ManagerRegistry $managerRegistry,
-        protected ?ServicesResetter $servicesResetter = null
+        protected ?ServicesResetter $servicesResetter = null,
     ) {
         parent::__construct();
     }

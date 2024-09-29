@@ -15,7 +15,7 @@ class AutoActionExtension extends AbstractAdminExtension
 
     public function __construct(
         private array $actions = self::DEFAULT_ACTIONS,
-        private array $ignoreAdmins = []
+        private array $ignoreAdmins = [],
     ) {
     }
 

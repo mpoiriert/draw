@@ -78,7 +78,7 @@ class GridExtension extends AbstractAdminExtension
         AdminInterface $admin,
         string $name,
         $type,
-        array $options = []
+        array $options = [],
     ): FieldDescriptionInterface {
         $fieldDescription = $this->newMinimalFieldDescription($admin, $name, $options);
 
@@ -115,7 +115,7 @@ class GridExtension extends AbstractAdminExtension
     private function newEmbeddedFieldDescriptionInstance(
         AdminInterface $admin,
         string $name,
-        array $options = []
+        array $options = [],
     ): FieldDescriptionInterface {
         $description = $admin->getFieldDescriptionFactory()->create($admin->getClass(), $name);
 
@@ -136,7 +136,7 @@ class GridExtension extends AbstractAdminExtension
     private function newMinimalFieldDescription(
         AdminInterface $admin,
         string $name,
-        array $options = []
+        array $options = [],
     ): FieldDescriptionInterface {
         $fieldFactory = $admin->getFieldDescriptionFactory();
         $description = $fieldFactory->create($admin->getClass(), $name);

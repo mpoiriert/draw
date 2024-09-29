@@ -12,7 +12,7 @@ class EventDrivenUserChecker implements UserCheckerInterface
 {
     public function __construct(
         private UserCheckerInterface $decoratedUserChecker,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

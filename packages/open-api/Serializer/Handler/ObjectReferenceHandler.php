@@ -33,7 +33,7 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
 
     public function __construct(
         private ?ManagerRegistry $ormManagerRegistry,
-        private ?ManagerRegistry $odmManagerRegistry
+        private ?ManagerRegistry $odmManagerRegistry,
     ) {
     }
 
@@ -41,7 +41,7 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
         JsonSerializationVisitor $visitor,
         $value,
         array $type,
-        Context $context
+        Context $context,
     ) {
         if (null === $value) {
             return null;
@@ -60,7 +60,7 @@ class ObjectReferenceHandler implements SubscribingHandlerInterface
         JsonDeserializationVisitor $deserializationVisitor,
         $value,
         array $type,
-        DeserializationContext $context
+        DeserializationContext $context,
     ): ?object {
         if (null === $value) {
             return null;

@@ -12,7 +12,7 @@ class EventDrivenRetryStrategy implements RetryStrategyInterface
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
-        private ?RetryStrategyInterface $fallbackRetryStrategy = null
+        private ?RetryStrategyInterface $fallbackRetryStrategy = null,
     ) {
     }
 

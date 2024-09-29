@@ -62,7 +62,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
             ->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage(sprintf('The "%s" transport does not exist.', $transport));
+        $this->expectExceptionMessage(\sprintf('The "%s" transport does not exist.', $transport));
 
         $this->execute(['transport' => $transport], []);
     }
@@ -105,12 +105,12 @@ class PurgeExpiredMessageCommandTest extends TestCase
                 CommandDataTester::create(
                     0,
                     [
-                        sprintf(
+                        \sprintf(
                             'The "%s" transport was purge successfully of "%s" message(s).',
                             $transportNames[0],
                             $count
                         ),
-                        sprintf(
+                        \sprintf(
                             'The "%s" transport does not support purge obsolete messages.',
                             $transportNames[1]
                         ),
@@ -150,7 +150,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
                 CommandDataTester::create(
                     0,
                     [
-                        sprintf(
+                        \sprintf(
                             'The "%s" transport was purge successfully of "%s" message(s).',
                             $transportName,
                             $count

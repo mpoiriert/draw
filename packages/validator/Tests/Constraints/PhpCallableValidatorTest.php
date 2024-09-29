@@ -36,7 +36,7 @@ class PhpCallableValidatorTest extends TestCase
     {
         $this->expectException(UnexpectedTypeException::class);
         $this->expectExceptionMessage(
-            sprintf(
+            \sprintf(
                 'Expected argument of type "%s", "%s" given',
                 PhpCallable::class,
                 NotNull::class

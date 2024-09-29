@@ -89,7 +89,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
     public static function provideTestOnKernelRequestInvalidateNotInvalidate(): iterable
     {
-        $request = new class() extends Request {
+        $request = new class extends Request {
             public function hasSession($skipIfUninitialized = false): bool
             {
                 return true;
@@ -106,7 +106,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             HttpKernelInterface::SUB_REQUEST,
         ];
 
-        $request = new class() extends Request {
+        $request = new class extends Request {
             public function hasSession($skipIfUninitialized = false): bool
             {
                 return true;
@@ -114,7 +114,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
             public function getSession(): SessionInterface
             {
-                return new class() extends Session {
+                return new class extends Session {
                     public function get($name, $default = null): mixed
                     {
                         if ('draw_sonata_integration_last_used' === $name) {
@@ -137,7 +137,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             HttpKernelInterface::MAIN_REQUEST,
         ];
 
-        $request = new class() extends Request {
+        $request = new class extends Request {
             public function hasSession($skipIfUninitialized = false): bool
             {
                 return false;
@@ -190,7 +190,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
     public static function provideTestOnKernelResponseSetLastUsedNoSet(): iterable
     {
-        $request = new class() extends Request {
+        $request = new class extends Request {
             public function hasSession($skipIfUninitialized = false): bool
             {
                 return true;
@@ -207,7 +207,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             HttpKernelInterface::SUB_REQUEST,
         ];
 
-        $request = new class() extends Request {
+        $request = new class extends Request {
             public function hasSession($skipIfUninitialized = false): bool
             {
                 return false;
@@ -228,7 +228,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
     #[DataProvider('provideTestOnKernelResponseSetLastUsedNoSet')]
     public function testOnKernelResponseSetLastUsedNoSet(
         Request $request,
-        int $requestType = HttpKernelInterface::MAIN_REQUEST
+        int $requestType = HttpKernelInterface::MAIN_REQUEST,
     ): void {
         $event = new ResponseEvent(
             $this->createMock(HttpKernelInterface::class),
@@ -289,7 +289,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
         $response->headers->set('Content-Type', 'text/html');
         $response->setContent('<meta data-sonata-admin/><title>value</title>');
 
-        $user = new class() implements UserInterface {
+        $user = new class implements UserInterface {
             public function getRoles(): array
             {
                 return [];
@@ -363,7 +363,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
     public function testOnKernelResponseAddDialogNoInjection(
         Response $response,
         ?UserInterface $user = null,
-        int $requestType = HttpKernelInterface::MAIN_REQUEST
+        int $requestType = HttpKernelInterface::MAIN_REQUEST,
     ): void {
         $this->security->expects(static::once())
             ->method('getUser')

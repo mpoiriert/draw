@@ -16,7 +16,7 @@ class SetUpAutowireExtension implements Extension
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         $facade->registerSubscribers(
-            new class() implements TestPreparedSubscriber {
+            new class implements TestPreparedSubscriber {
                 /**
                  * @var array<string, array<int, array{\ReflectionProperty, AutowireInterface}>>
                  */

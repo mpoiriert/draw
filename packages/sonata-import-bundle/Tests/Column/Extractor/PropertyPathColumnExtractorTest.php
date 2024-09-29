@@ -56,7 +56,7 @@ class PropertyPathColumnExtractorTest extends TestCase
 
     public function testAssign(): void
     {
-        $object = new class() {
+        $object = new class {
             public string $test;
         };
 
