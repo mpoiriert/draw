@@ -3,7 +3,6 @@
 namespace Draw\Bundle\FrameworkExtraBundle\DependencyInjection;
 
 use Draw\Component\Application\DependencyInjection\ConfigurationIntegration;
-use Draw\Component\Application\DependencyInjection\CronIntegration;
 use Draw\Component\Application\DependencyInjection\FeatureIntegration;
 use Draw\Component\Application\DependencyInjection\SystemMonitoringIntegration;
 use Draw\Component\Application\DependencyInjection\VersioningIntegration;
@@ -52,7 +51,6 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             AwsToolKitIntegration::class,
             ConfigurationIntegration::class,
             ConsoleIntegration::class,
-            CronIntegration::class,
             CronJobIntegration::class,
             DoctrineExtraIntegration::class,
             EntityMigratorIntegration::class,
