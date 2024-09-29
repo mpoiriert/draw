@@ -9,15 +9,15 @@
     ],
     "require": {
         "php": ">=8.2",
-        "draw/dependency-injection": "^0.11",
+        "draw/dependency-injection": "^0.12",
         "symfony/framework-bundle": "^6.4.0",
         "symfony/expression-language": "^6.4.0",
         "symfony/string": "^6.4.0"
     },
     "require-dev": {
         "cweagans/composer-patches": "^1.7",
-        "draw/tester": "^0.11",
-        "draw/security": "^0.11",
+        "draw/tester": "^0.12",
+        "draw/security": "^0.12",
         "phpunit/phpunit": "^11.3",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
@@ -37,7 +37,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.11-dev"
+            "dev-master": "0.12-dev"
         },
         "patches": {
             "sonata-project/doctrine-orm-admin-bundle": {
