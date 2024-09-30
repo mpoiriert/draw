@@ -4,35 +4,12 @@ namespace Draw\Component\EntityMigrator\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
+use Draw\Component\EntityMigrator\Workflow\EntityMigrationWorkflow;
 use Draw\Component\Log\Monolog\ErrorToArray;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class BaseEntityMigration implements EntityMigrationInterface, \Stringable
 {
-    public const STATE_NEW = 'new';
-
-    public const STATE_QUEUED = 'queued';
-
-    public const STATE_PROCESSING = 'processing';
-
-    public const STATE_FAILED = 'failed';
-
-    public const STATE_COMPLETED = 'completed';
-
-    public const STATE_PAUSED = 'paused';
-
-    public const STATE_SKIPPED = 'skipped';
-
-    public const STATES = [
-        self::STATE_NEW,
-        self::STATE_QUEUED,
-        self::STATE_PROCESSING,
-        self::STATE_FAILED,
-        self::STATE_COMPLETED,
-        self::STATE_PAUSED,
-        self::STATE_SKIPPED,
-    ];
-
     #[
         ORM\Id,
         ORM\GeneratedValue,
@@ -49,9 +26,9 @@ abstract class BaseEntityMigration implements EntityMigrationInterface, \Stringa
     protected Migration $migration;
 
     #[
-        ORM\Column(type: 'string', nullable: false, options: ['default' => self::STATE_NEW])
+        ORM\Column(type: 'string', nullable: false, options: ['default' => EntityMigrationWorkflow::PLACE_NEW])
     ]
-    protected string $state = self::STATE_NEW;
+    protected string $state = EntityMigrationWorkflow::PLACE_NEW;
 
     #[
         ORM\Column(type: 'json', nullable: true)

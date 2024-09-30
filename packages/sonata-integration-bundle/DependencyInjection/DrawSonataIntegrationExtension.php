@@ -217,7 +217,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
 
         $container
             ->setDefinition(
-                'draw.sonata_integration.extension.workflow.entity_migrator',
+                'draw.sonata_integration.extension.workflow.entity_migration_admin',
                 new Definition(WorkflowExtension::class),
             )
             ->setAutowired(true)
@@ -230,6 +230,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 ]
             )
             ->addTag('sonata.admin.extension', ['admin_instanceof' => BaseEntityMigrationAdmin::class])
+            ->addTag('sonata.admin.extension', ['admin_instanceof' => MigrationAdmin::class])
         ;
     }
 

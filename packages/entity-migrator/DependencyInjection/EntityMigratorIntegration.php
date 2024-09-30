@@ -6,19 +6,17 @@ use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationIn
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
-use Draw\Component\EntityMigrator\Command\MigrateCommand;
-use Draw\Component\EntityMigrator\Command\QueueBatchCommand;
 use Draw\Component\EntityMigrator\DependencyInjection\Compiler\EntityMigratorCompilerPass;
-use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
 use Draw\Component\EntityMigrator\MigrationInterface;
 use Draw\Component\EntityMigrator\Migrator;
+use Draw\Component\EntityMigrator\Workflow\EntityMigrationWorkflow;
+use Draw\Component\EntityMigrator\Workflow\MigrationWorkflow;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
-use Symfony\Component\DependencyInjection\Reference;
 
 class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface, PrependIntegrationInterface
 {
@@ -46,16 +44,6 @@ class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilde
             $namespace = 'Draw\Component\EntityMigrator\\',
             \dirname((new \ReflectionClass(Migrator::class))->getFileName()),
         );
-
-        $container
-            ->getDefinition(MigrateCommand::class)
-            ->setArgument('$servicesResetter', new Reference('services_resetter'))
-        ;
-
-        $container
-            ->getDefinition(QueueBatchCommand::class)
-            ->setArgument('$servicesResetter', new Reference('services_resetter'))
-        ;
 
         $this->renameDefinitions(
             $container,
@@ -130,7 +118,47 @@ class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilde
             'framework',
             [
                 'workflows' => [
-                    'entity_migration' => [
+                    MigrationWorkflow::NAME => [
+                        'type' => 'state_machine',
+                        'marking_store' => [
+                            'type' => 'method',
+                            'property' => 'state',
+                        ],
+                        'supports' => [
+                            Migration::class,
+                        ],
+                        'initial_marking' => MigrationWorkflow::PLACE_NEW,
+                        'places' => MigrationWorkflow::places(),
+                        'transitions' => [
+                            MigrationWorkflow::TRANSITION_PROCESS => [
+                                'from' => [
+                                    MigrationWorkflow::PLACE_NEW,
+                                ],
+                                'to' => MigrationWorkflow::PLACE_PROCESSING,
+                            ],
+                            MigrationWorkflow::TRANSITION_PAUSE => [
+                                'from' => [
+                                    MigrationWorkflow::PLACE_NEW,
+                                    MigrationWorkflow::PLACE_PROCESSING,
+                                ],
+                                'to' => MigrationWorkflow::PLACE_PAUSED,
+                            ],
+                            MigrationWorkflow::TRANSITION_COMPLETE => [
+                                'from' => [
+                                    MigrationWorkflow::PLACE_PROCESSING,
+                                    MigrationWorkflow::PLACE_ERROR,
+                                ],
+                                'to' => MigrationWorkflow::PLACE_COMPLETED,
+                            ],
+                            MigrationWorkflow::TRANSITION_ERROR => [
+                                'from' => [
+                                    MigrationWorkflow::PLACE_PROCESSING,
+                                ],
+                                'to' => MigrationWorkflow::PLACE_ERROR,
+                            ],
+                        ],
+                    ],
+                    EntityMigrationWorkflow::NAME => [
                         'type' => 'state_machine',
                         'marking_store' => [
                             'type' => 'method',
@@ -139,76 +167,68 @@ class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilde
                         'supports' => [
                             EntityMigrationInterface::class,
                         ],
-                        'initial_marking' => BaseEntityMigration::STATE_NEW,
-                        'places' => [
-                            BaseEntityMigration::STATE_NEW,
-                            BaseEntityMigration::STATE_QUEUED,
-                            BaseEntityMigration::STATE_PROCESSING,
-                            BaseEntityMigration::STATE_FAILED,
-                            BaseEntityMigration::STATE_COMPLETED,
-                            BaseEntityMigration::STATE_PAUSED,
-                            BaseEntityMigration::STATE_SKIPPED,
-                        ],
+                        'initial_marking' => EntityMigrationWorkflow::PLACE_NEW,
+                        'places' => EntityMigrationWorkflow::places(),
                         'transitions' => [
-                            'queue' => [
+                            EntityMigrationWorkflow::TRANSITION_QUEUE => [
                                 'from' => [
-                                    BaseEntityMigration::STATE_NEW,
+                                    EntityMigrationWorkflow::PLACE_NEW,
                                 ],
-                                'to' => BaseEntityMigration::STATE_QUEUED,
+                                'to' => EntityMigrationWorkflow::PLACE_QUEUED,
                             ],
-                            'pause' => [
+                            EntityMigrationWorkflow::TRANSITION_PAUSE => [
                                 'from' => [
-                                    BaseEntityMigration::STATE_NEW,
-                                    BaseEntityMigration::STATE_QUEUED,
+                                    EntityMigrationWorkflow::PLACE_NEW,
+                                    EntityMigrationWorkflow::PLACE_QUEUED,
                                 ],
-                                'to' => BaseEntityMigration::STATE_PAUSED,
+                                'to' => EntityMigrationWorkflow::PLACE_PAUSED,
                             ],
-                            'skip' => [
+                            EntityMigrationWorkflow::TRANSITION_SKIP => [
                                 'from' => [
-                                    BaseEntityMigration::STATE_NEW,
-                                    BaseEntityMigration::STATE_QUEUED,
+                                    EntityMigrationWorkflow::PLACE_NEW,
+                                    EntityMigrationWorkflow::PLACE_QUEUED,
                                 ],
-                                'to' => BaseEntityMigration::STATE_SKIPPED,
+                                'to' => EntityMigrationWorkflow::PLACE_SKIPPED,
                             ],
-                            'process' => [
+                            EntityMigrationWorkflow::TRANSITION_PROCESS => [
                                 'from' => [
-                                    BaseEntityMigration::STATE_NEW,
-                                    BaseEntityMigration::STATE_QUEUED,
+                                    EntityMigrationWorkflow::PLACE_NEW,
+                                    EntityMigrationWorkflow::PLACE_QUEUED,
                                 ],
-                                'to' => BaseEntityMigration::STATE_PROCESSING,
+                                'to' => EntityMigrationWorkflow::PLACE_PROCESSING,
                             ],
-                            'fail' => [
+                            EntityMigrationWorkflow::TRANSITION_FAIL => [
                                 'from' => [
-                                    BaseEntityMigration::STATE_PROCESSING,
+                                    EntityMigrationWorkflow::PLACE_PROCESSING,
                                 ],
-                                'to' => 'failed',
+                                'to' => EntityMigrationWorkflow::PLACE_FAILED,
                             ],
-                            'complete' => [
+                            EntityMigrationWorkflow::TRANSITION_COMPLETE => [
                                 'from' => [
-                                    BaseEntityMigration::STATE_PROCESSING,
+                                    EntityMigrationWorkflow::PLACE_PROCESSING,
                                 ],
-                                'to' => BaseEntityMigration::STATE_COMPLETED,
+                                'to' => EntityMigrationWorkflow::PLACE_COMPLETED,
                             ],
-                            'retry' => [
+                            EntityMigrationWorkflow::TRANSITION_RETRY => [
                                 'from' => [
-                                    'failed',
+                                    EntityMigrationWorkflow::PLACE_FAILED,
                                 ],
-                                'to' => BaseEntityMigration::STATE_QUEUED,
+                                'to' => EntityMigrationWorkflow::PLACE_QUEUED,
                             ],
-                            'reprocess' => [
+                            EntityMigrationWorkflow::TRANSITION_REPROCESS => [
                                 'from' => [
-                                    BaseEntityMigration::STATE_COMPLETED,
-                                    BaseEntityMigration::STATE_SKIPPED,
+                                    EntityMigrationWorkflow::PLACE_COMPLETED,
+                                    EntityMigrationWorkflow::PLACE_SKIPPED,
                                 ],
-                                'to' => BaseEntityMigration::STATE_QUEUED,
+                                'to' => EntityMigrationWorkflow::PLACE_QUEUED,
                             ],
-                            're_queue' => [
+                            EntityMigrationWorkflow::TRANSITION_REQUEUE => [
                                 'from' => [
-                                    BaseEntityMigration::STATE_PAUSED,
-                                    BaseEntityMigration::STATE_PROCESSING,
-                                    BaseEntityMigration::STATE_QUEUED,
+                                    EntityMigrationWorkflow::PLACE_PAUSED,
+                                    EntityMigrationWorkflow::PLACE_PROCESSING,
+                                    EntityMigrationWorkflow::PLACE_QUEUED,
                                 ],
-                                'to' => BaseEntityMigration::STATE_QUEUED,
+                                'to' => EntityMigrationWorkflow::PLACE_QUEUED,
                             ],
                         ],
                     ],

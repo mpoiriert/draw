@@ -2,26 +2,61 @@
 
 namespace Draw\Component\EntityMigrator\Command;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\EntityMigrator\Entity\Migration;
+use Draw\Component\EntityMigrator\Workflow\MigrationWorkflow;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Workflow\Registry;
 
 #[AsCommand(
     name: 'draw:entity-migrator:migrate',
     description: 'Migrate all entities',
 )]
-class MigrateCommand extends BaseCommand
+class MigrateCommand extends Command
 {
+    public function __construct(
+        private Registry $workflowRegistry,
+        private ManagerRegistry $managerRegistry,
+    ) {
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this
             ->addArgument('migration-name', null, 'The migration name to migrate')
         ;
+    }
+
+    protected function interact(InputInterface $input, OutputInterface $output): void
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        if (!$input->getArgument('migration-name')) {
+            $io->block(
+                'Which migration ?',
+                null,
+                'fg=white;bg=blue',
+                ' ',
+                true
+            );
+
+            $question = new ChoiceQuestion(
+                'Select which migration',
+                array_map(
+                    static fn (Migration $migration) => $migration->getName(),
+                    $this->managerRegistry->getRepository(Migration::class)->findAll()
+                )
+            );
+
+            $input->setArgument('migration-name', $io->askQuestion($question));
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -31,55 +66,30 @@ class MigrateCommand extends BaseCommand
             $output
         );
 
-        $migration = $this->migrator->getMigration($this->getMigrationName($input, $output));
-
-        $count = $migration->countAllThatNeedMigration();
-
-        if (0 === $count) {
-            $io->warning('No entity need migration');
-
-            return Command::SUCCESS;
-        }
-
         $migrationEntity = $this->managerRegistry
             ->getRepository(Migration::class)
-            ->findOneBy(['name' => $migration::getName()])
+            ->findOneBy(['name' => $input->getArgument('migration-name')])
         ;
 
-        $manager = $this->managerRegistry->getManagerForClass(Migration::class);
+        $workflow = $this->workflowRegistry->get($migrationEntity, MigrationWorkflow::NAME);
 
-        \assert($manager instanceof EntityManagerInterface);
+        $blockerList = $workflow->buildTransitionBlockerList($migrationEntity, MigrationWorkflow::TRANSITION_PROCESS);
 
-        $realCount = 0;
+        if (!$blockerList->isEmpty()) {
+            foreach ($blockerList as $blocker) {
+                $io->warning('Process is blocked: '.$blocker->getMessage());
+            }
 
-        $progress = $io->createProgressBar($count ?? 0);
-        $progress->setFormat(ProgressBar::FORMAT_DEBUG);
-        foreach ($migration->findAllThatNeedMigration() as $entity) {
-            $entityMigration = $this->entityMigrationRepository->load(
-                $entity,
-                $manager->getReference(Migration::class, $migrationEntity->getId())
-            );
-
-            $this->migrator->migrate($entityMigration);
-
-            ++$realCount;
-
-            $progress->advance();
-
-            $manager->clear();
-
-            $this->servicesResetter?->reset();
+            return Command::FAILURE;
         }
 
-        $progress->finish();
+        $progressBar = $io->createProgressBar();
+        $progressBar->setFormat(ProgressBar::FORMAT_DEBUG);
+
+        $workflow->apply($migrationEntity, MigrationWorkflow::TRANSITION_PROCESS, ['progressBar' => $progressBar]);
 
         $io->newLine();
-
-        $io->success(\sprintf(
-            'Migration %s processed for %d entities',
-            $migration::getName(),
-            $realCount
-        ));
+        $io->success('Migration started');
 
         return Command::SUCCESS;
     }

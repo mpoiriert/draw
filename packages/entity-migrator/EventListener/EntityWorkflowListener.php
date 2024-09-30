@@ -3,28 +3,33 @@
 namespace Draw\Component\EntityMigrator\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
-use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
 use Draw\Component\EntityMigrator\MigrationInterface;
 use Draw\Component\EntityMigrator\Migrator;
+use Draw\Component\EntityMigrator\Workflow\EntityMigrationWorkflow;
+use Draw\Component\EntityMigrator\Workflow\MigrationWorkflow;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Workflow\Attribute\AsCompletedListener;
 use Symfony\Component\Workflow\Attribute\AsEnteredListener;
 use Symfony\Component\Workflow\Attribute\AsGuardListener;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Event\GuardEvent;
+use Symfony\Component\Workflow\WorkflowInterface;
 
-class WorkflowListener
+class EntityWorkflowListener
 {
     public function __construct(
         private ManagerRegistry $managerRegistry,
         private Migrator $migrator,
         private MessageBusInterface $messageBus,
+        #[Autowire(service: MigrationWorkflow::STATE_MACHINE_NAME)]
+        private WorkflowInterface $migrationWorkflow,
     ) {
     }
 
-    #[AsGuardListener('entity_migration', 'pause')]
+    #[AsGuardListener(EntityMigrationWorkflow::NAME, EntityMigrationWorkflow::TRANSITION_PAUSE)]
     public function canBePaused(GuardEvent $event): void
     {
         if (!$this->getSubject($event)->getMigration()->isPaused()) {
@@ -32,7 +37,7 @@ class WorkflowListener
         }
     }
 
-    #[AsGuardListener('entity_migration', 'skip')]
+    #[AsGuardListener(EntityMigrationWorkflow::NAME, EntityMigrationWorkflow::TRANSITION_SKIP)]
     public function canBeSkip(GuardEvent $event): void
     {
         $subject = $this->getSubject($event);
@@ -43,13 +48,7 @@ class WorkflowListener
         }
     }
 
-    #[AsGuardListener('entity_migration', 'process')]
-    public function canBeProcess(GuardEvent $event): void
-    {
-        // lock the process using locker
-    }
-
-    #[AsEnteredListener('entity_migration', BaseEntityMigration::STATE_PROCESSING)]
+    #[AsEnteredListener(EntityMigrationWorkflow::NAME, EntityMigrationWorkflow::PLACE_PROCESSING)]
     public function process(Event $event): void
     {
         $subject = $this->getSubject($event);
@@ -60,7 +59,7 @@ class WorkflowListener
         ;
     }
 
-    #[AsEnteredListener('entity_migration', 'queued')]
+    #[AsEnteredListener(EntityMigrationWorkflow::NAME, EntityMigrationWorkflow::PLACE_QUEUED)]
     public function queued(Event $event): void
     {
         $this->messageBus->dispatch(
@@ -68,7 +67,7 @@ class WorkflowListener
         );
     }
 
-    #[AsCompletedListener('entity_migration')]
+    #[AsCompletedListener(EntityMigrationWorkflow::NAME)]
     public function flush(Event $event): void
     {
         $this->managerRegistry
@@ -78,7 +77,22 @@ class WorkflowListener
         ;
     }
 
-    private function getSubject(GuardEvent|Event $event): EntityMigrationInterface
+    #[AsCompletedListener(EntityMigrationWorkflow::NAME, priority: -255)]
+    public function updateState(Event $event): void
+    {
+        $entityMigration = $this->getSubject($event);
+        $migration = $entityMigration->getMigration();
+
+        foreach (MigrationWorkflow::finalTransitions() as $transition) {
+            if ($this->migrationWorkflow->can($migration, $transition)) {
+                $this->migrationWorkflow->apply($migration, $transition);
+
+                return;
+            }
+        }
+    }
+
+    private function getSubject(Event $event): EntityMigrationInterface
     {
         $subject = $event->getSubject();
 
@@ -87,7 +101,7 @@ class WorkflowListener
         return $subject;
     }
 
-    private function getMigration(GuardEvent|Event $event): MigrationInterface
+    private function getMigration(Event $event): MigrationInterface
     {
         return $this->migrator->getMigration($this->getSubject($event)->getMigration()->getName());
     }

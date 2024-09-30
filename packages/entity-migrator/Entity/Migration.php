@@ -3,6 +3,7 @@
 namespace Draw\Component\EntityMigrator\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Draw\Component\EntityMigrator\Workflow\MigrationWorkflow;
 
 #[
     ORM\Entity,
@@ -66,7 +67,7 @@ class Migration implements \Stringable
 
     public function isPaused(): bool
     {
-        return 'paused' === $this->state;
+        return MigrationWorkflow::PLACE_PAUSED === $this->state;
     }
 
     public function __toString(): string

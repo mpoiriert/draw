@@ -129,6 +129,7 @@ class Configuration implements ConfigurationInterface
             ->append(
                 (new SonataAdminNodeConfiguration(Migration::class, 'Entity Migrator', 'admin'))
                     ->addDefaultsIfNotSet()
+                    ->translationDomainDefaultValue('DrawEntityMigratorAdmin')
                     ->labelDefaultValue('Migration')
                     ->iconDefaultValue('fa fa-cogs')
             )

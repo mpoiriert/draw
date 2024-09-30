@@ -6,8 +6,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\EntityMigrator\Repository\EntityMigrationRepository;
+use Draw\Component\EntityMigrator\Workflow\EntityMigrationWorkflow;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Workflow\WorkflowInterface;
 
@@ -15,7 +17,8 @@ class Migrator
 {
     public function __construct(
         private ContainerInterface $migrations,
-        private WorkflowInterface $entityMigrationStateMachine,
+        #[Autowire(service: EntityMigrationWorkflow::STATE_MACHINE_NAME)]
+        private WorkflowInterface $workflow,
         private EntityMigrationRepository $entityMigrationRepository,
         private ManagerRegistry $managerRegistry,
         private LockFactory $entityMigratorLockFactory,
@@ -26,11 +29,14 @@ class Migrator
 
     public function queue(EntityMigrationInterface $entity): void
     {
-        if ($this->entityMigrationStateMachine->can($entity, 'queue')) {
-            $this->entityMigrationStateMachine->apply($entity, 'queue');
+        if ($this->workflow->can($entity, 'queue')) {
+            $this->workflow->apply($entity, 'queue');
         }
     }
 
+    /**
+     * This is called directly from a controller to do a just in time migration.
+     */
     public function migrateEntity(MigrationTargetEntityInterface $entity, string $migrationName): void
     {
         if (class_exists($migrationName)) {
@@ -55,10 +61,7 @@ class Migrator
         $this->migrate($entityMigration, true);
     }
 
-    /**
-     * @return bool true if a transition was applied, false if the entity is already being migrated
-     */
-    public function migrate(EntityMigrationInterface $entityMigration, bool $wait = false): bool
+    public function migrate(EntityMigrationInterface $entityMigration, bool $wait = false): void
     {
         $lock = $this->entityMigratorLockFactory->createLock(
             'entity-migrator-'.$entityMigration->getMigration()->getName().'-'.$entityMigration->getId()
@@ -76,7 +79,7 @@ class Migrator
         );
 
         if (!$acquired && !$wait) {
-            return false;
+            return;
         }
 
         if (!$acquired) {
@@ -98,34 +101,27 @@ class Migrator
             ;
         }
 
-        $transitionApplied = false;
-
-        foreach (['paused', 'skip', 'process'] as $transition) {
-            if (!$this->entityMigrationStateMachine->can($entityMigration, $transition)) {
+        foreach ([EntityMigrationWorkflow::TRANSITION_PAUSE, EntityMigrationWorkflow::TRANSITION_SKIP, EntityMigrationWorkflow::TRANSITION_PROCESS] as $transition) {
+            if (!$this->workflow->can($entityMigration, $transition)) {
                 continue;
             }
-
-            $transitionApplied = true;
             try {
-                $this->entityMigrationStateMachine->apply($entityMigration, $transition);
+                $this->workflow->apply($entityMigration, $transition);
 
                 break;
             } catch (\Throwable $error) {
-                $this->entityMigrationStateMachine->apply($entityMigration, 'fail', ['error' => $error]);
+                $this->workflow->apply($entityMigration, EntityMigrationWorkflow::TRANSITION_FAIL, ['error' => $error]);
 
-                return true;
+                return;
             }
         }
 
-        if ($this->entityMigrationStateMachine->can($entityMigration, 'complete')) {
-            $transitionApplied = true;
-            $this->entityMigrationStateMachine->apply($entityMigration, 'complete');
+        if ($this->workflow->can($entityMigration, EntityMigrationWorkflow::TRANSITION_COMPLETE)) {
+            $this->workflow->apply($entityMigration, EntityMigrationWorkflow::TRANSITION_COMPLETE);
         }
-
-        return $transitionApplied;
     }
 
-    public function getMigration(string $name): MigrationInterface|BatchPrepareMigrationInterface
+    public function getMigration(string $name): MigrationInterface
     {
         return $this->migrations->get($name);
     }
@@ -138,5 +134,15 @@ class Migrator
         foreach ($this->migrationNames as $name) {
             yield $name => $this->getMigration($name);
         }
+    }
+
+    /**
+     * @return class-string<EntityMigrationInterface>
+     */
+    public function getMigrationEntityClass(MigrationInterface $migration): string
+    {
+        $class = $migration::getTargetEntityClass();
+
+        return \call_user_func([$class, 'getEntityMigrationClass']);
     }
 }

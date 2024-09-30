@@ -95,7 +95,7 @@ class ConfigurationTest extends ConfigurationTestCase
                     'label' => 'Migration',
                     'pager_type' => 'default',
                     'show_in_dashboard' => true,
-                    'translation_domain' => 'SonataAdminBundle',
+                    'translation_domain' => 'DrawEntityMigratorAdmin',
                 ],
             ],
             'messenger' => [

@@ -2,9 +2,8 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Extension;
 
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction\WorkflowTransitionAdminAction;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension\ActionableAdminExtensionInterface;
-use Draw\Bundle\SonataExtraBundle\Controller\WorkflowTransitionAction;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
@@ -17,15 +16,6 @@ class WorkflowExtension extends \Yokai\SonataWorkflow\Admin\Extension\WorkflowEx
 
     public function getActions(array $actions): array
     {
-        $actions['workflow_apply_transition'] = (new AdminAction(
-            'workflow_apply_transition',
-            true,
-        ))
-            ->setController(WorkflowTransitionAction::class)
-            ->clearForActions()
-            ->setForEntityListAction(false)
-        ;
-
-        return $actions;
+        return $actions + ['workflow_apply_transition' => new WorkflowTransitionAdminAction()];
     }
 }
