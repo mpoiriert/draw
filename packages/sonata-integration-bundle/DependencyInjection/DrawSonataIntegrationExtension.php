@@ -3,12 +3,14 @@
 namespace Draw\Bundle\SonataIntegrationBundle\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
+use Draw\Bundle\SonataExtraBundle\Extension\WorkflowExtension;
 use Draw\Bundle\SonataIntegrationBundle\Configuration\Admin\ConfigAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Admin\ExecutionAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Command;
 use Draw\Bundle\SonataIntegrationBundle\Console\CommandRegistry;
 use Draw\Bundle\SonataIntegrationBundle\CronJob\Admin\CronJobAdmin;
 use Draw\Bundle\SonataIntegrationBundle\CronJob\Admin\CronJobExecutionAdmin;
+use Draw\Bundle\SonataIntegrationBundle\EntityMigrator\Admin\BaseEntityMigrationAdmin;
 use Draw\Bundle\SonataIntegrationBundle\EntityMigrator\Admin\MigrationAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\Admin\MessengerMessageAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Messenger\EventListener\FinalizeContextQueueCountEventListener;
@@ -36,6 +38,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Parameter;
+use Symfony\Component\DependencyInjection\Reference;
 
 class DrawSonataIntegrationExtension extends Extension implements PrependExtensionInterface
 {
@@ -210,6 +213,23 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             )
             ->setAutowired(true)
             ->setAutoconfigured(true)
+        ;
+
+        $container
+            ->setDefinition(
+                'draw.sonata_integration.extension.workflow.entity_migrator',
+                new Definition(WorkflowExtension::class),
+            )
+            ->setAutowired(true)
+            ->setAutoconfigured(true)
+            ->setArgument('$registry', new Reference('workflow.registry'))
+            ->setArgument(
+                '$options',
+                [
+                    'dropdown_transitions_label' => 'workflow.dropdown_transitions_label',
+                ]
+            )
+            ->addTag('sonata.admin.extension', ['admin_instanceof' => BaseEntityMigrationAdmin::class])
         ;
     }
 
@@ -417,6 +437,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
         );
 
         $this->prependUser($config['user'], $container);
+        $this->prependEntityMigrator($config['entity_migrator'], $container);
     }
 
     private function prependUser(array $config, ContainerBuilder $container): void
@@ -446,6 +467,20 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
                 ]
             );
         }
+    }
+
+    private function prependEntityMigrator(array $config, ContainerBuilder $container): void
+    {
+        if (!$config['enabled']) {
+            return;
+        }
+
+        $container->prependExtensionConfig(
+            'draw_sonata_extra',
+            [
+                'workflow' => true,
+            ]
+        );
     }
 
     private function setControllerClassDefinition(array $config, ContainerBuilder $container): void

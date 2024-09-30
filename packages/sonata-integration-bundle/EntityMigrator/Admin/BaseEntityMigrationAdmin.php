@@ -20,6 +20,7 @@ abstract class BaseEntityMigrationAdmin extends AbstractAdmin
         'pager_type' => 'simple',
         'group' => 'Entity Migrator',
         'icon' => 'fas fa-cogs',
+        'translation_domain' => 'DrawEntityMigratorAdmin',
     ];
 
     protected function configureDatagridFilters(DatagridMapper $filter): void

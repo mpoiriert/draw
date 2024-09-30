@@ -10,6 +10,7 @@
             <th>To</th>
             <th>Created At</th>
             <th>Delay</th>
+            <th>Error</th>
         </tr>
         </thead>
         <tbody>
@@ -24,6 +25,11 @@
                     {% if previousCreatedAt is defined %}
                         {{ entry['createdAt']|date('U') - previousCreatedAt|date('U') }} seconds
                     {% endif %}
+                </td>
+                <td>
+                    <div class="json-viewer"
+                         data-json='{{ entry['error']|default(null)|json_encode()|e('html_attr') }}'
+                    ></div>
                 </td>
             </tr>
             {% set previousCreatedAt = entry['createdAt'] %}

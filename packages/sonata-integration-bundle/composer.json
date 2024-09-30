@@ -14,7 +14,8 @@
         "symfony/framework-bundle": "^6.4.0",
         "symfony/expression-language": "^6.4.0",
         "sonata-project/admin-bundle": "^4.8",
-        "sonata-project/doctrine-orm-admin-bundle": "^4.2"
+        "sonata-project/doctrine-orm-admin-bundle": "^4.2",
+        "yokai/sonata-workflow": "^0.7.0"
     },
     "require-dev": {
         "draw/application": "^0.12",

@@ -73,7 +73,8 @@
         "symfony/validator": "^6.4.0",
         "symfony/workflow": "^6.4.0",
         "symfony/yaml": "^6.4.0",
-        "twig/twig": "^3.3"
+        "twig/twig": "^3.3",
+        "yokai/sonata-workflow": "^0.7.0"
     },
     "require-dev": {
         "aws/aws-sdk-php-symfony": "^2.2",
