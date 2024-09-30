@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->append($this->createNotifierNode())
                 ->append($this->createPreventDeleteExtensionNode())
                 ->append($this->createSessionTimeoutNode())
+                ->append($this->createWorkflowNode())
             ->end()
         ;
 
@@ -193,6 +194,13 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->integerNode('delay')->defaultValue(3600)->end()
             ->end()
+        ;
+    }
+
+    private function createWorkflowNode(): ArrayNodeDefinition
+    {
+        return (new ArrayNodeDefinition('workflow'))
+            ->canBeEnabled()
         ;
     }
 }
