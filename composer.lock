@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d601d4191257809fe0b434c1ca6073f",
+    "content-hash": "2e16170f5bfc04c02b26951a3ee44c06",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3789,16 +3789,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.2.0",
+            "version": "v5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb"
+                "reference": "3abf7425cd284141dc5d8d14a9ee444de3345d1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb",
-                "reference": "23c79fbbfb725fb92af9bcf41065c8e9a0d49ddb",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/3abf7425cd284141dc5d8d14a9ee444de3345d1a",
+                "reference": "3abf7425cd284141dc5d8d14a9ee444de3345d1a",
                 "shasum": ""
             },
             "require": {
@@ -3841,9 +3841,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.2.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.3.0"
             },
-            "time": "2024-09-15T16:40:33+00:00"
+            "time": "2024-09-29T13:56:26+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -12795,6 +12795,58 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "yokai/sonata-workflow",
+            "version": "v0.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yokai-php/sonata-workflow.git",
+                "reference": "71a156626dde23e0f4ba0498f38bf353e8627206"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yokai-php/sonata-workflow/zipball/71a156626dde23e0f4ba0498f38bf353e8627206",
+                "reference": "71a156626dde23e0f4ba0498f38bf353e8627206",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "sonata-project/admin-bundle": "^4.0",
+                "symfony/workflow": "^4.4|^5.0|^6.0"
+            },
+            "require-dev": {
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Yokai\\SonataWorkflow\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yann Eugoné",
+                    "email": "eugone.yann@gmail.com"
+                }
+            ],
+            "description": "Integrate Symfony workflow component in Sonata Admin",
+            "keywords": [
+                "admin",
+                "sonata",
+                "workflow"
+            ],
+            "support": {
+                "issues": "https://github.com/yokai-php/sonata-workflow/issues",
+                "source": "https://github.com/yokai-php/sonata-workflow/tree/v0.7.2"
+            },
+            "time": "2024-01-12T08:43:58+00:00"
         }
     ],
     "packages-dev": [
