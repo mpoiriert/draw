@@ -7,9 +7,7 @@ use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 /**
  * @internal
@@ -53,17 +51,6 @@ class MigrateEntityCommandTest extends TestCase
         static::assertSame(
             ['entity'],
             $this->object->getPropertiesWithDoctrineObject()
-        );
-    }
-
-    public function testStamp(): void
-    {
-        $envelope = $this->object->stamp(new Envelope(new \stdClass()));
-
-        static::assertEqualsWithDelta(
-            (strtotime('+1 minute') - time()) * 1000,
-            $envelope->last(DelayStamp::class)->getDelay(),
-            1000
         );
     }
 }

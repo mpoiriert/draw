@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\Controller;
+namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\Action;
 
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ObjectActionExecutioner;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -34,7 +34,7 @@ class WorkflowTransitionAction
                             throw new BadRequestHttpException(\sprintf('transition %s could not be applied to object %s', $transition, $admin->toString($object)));
                         }
 
-                        $marking = $workflow->apply($object, $transition);
+                        $workflow->apply($object, $transition);
 
                         $admin->update($object);
                     },

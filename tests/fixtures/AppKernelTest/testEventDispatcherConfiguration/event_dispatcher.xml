@@ -255,23 +255,36 @@
   <event name="sonata.admin.event.configure.menu.sidebar">
     <callable type="function" name="fixDepth" class="Draw\Bundle\SonataExtraBundle\EventListener\FixDepthMenuBuilderListener" priority="-255"/>
   </event>
-  <event name="workflow.entity_migration.completed">
-    <callable type="function" name="flush" class="Draw\Component\EntityMigrator\EventListener\WorkflowListener" priority="0"/>
+  <event name="workflow.entity_migrator_entity_migration.completed">
+    <callable type="function" name="flush" class="Draw\Component\EntityMigrator\EventListener\EntityWorkflowListener" priority="0"/>
+    <callable type="function" name="updateState" class="Draw\Component\EntityMigrator\EventListener\EntityWorkflowListener" priority="-255"/>
   </event>
-  <event name="workflow.entity_migration.completed.queue">
-    <callable type="function" name="queued" class="Draw\Component\EntityMigrator\EventListener\WorkflowListener" priority="0"/>
+  <event name="workflow.entity_migrator_entity_migration.entered.processing">
+    <callable type="function" name="process" class="Draw\Component\EntityMigrator\EventListener\EntityWorkflowListener" priority="0"/>
   </event>
-  <event name="workflow.entity_migration.entered.processing">
-    <callable type="function" name="process" class="Draw\Component\EntityMigrator\EventListener\WorkflowListener" priority="0"/>
+  <event name="workflow.entity_migrator_entity_migration.entered.queued">
+    <callable type="function" name="queued" class="Draw\Component\EntityMigrator\EventListener\EntityWorkflowListener" priority="0"/>
   </event>
-  <event name="workflow.entity_migration.guard.pause">
-    <callable type="function" name="canBePaused" class="Draw\Component\EntityMigrator\EventListener\WorkflowListener" priority="0"/>
+  <event name="workflow.entity_migrator_entity_migration.guard.pause">
+    <callable type="function" name="canBePaused" class="Draw\Component\EntityMigrator\EventListener\EntityWorkflowListener" priority="0"/>
   </event>
-  <event name="workflow.entity_migration.guard.process">
-    <callable type="function" name="canBeProcess" class="Draw\Component\EntityMigrator\EventListener\WorkflowListener" priority="0"/>
+  <event name="workflow.entity_migrator_entity_migration.guard.skip">
+    <callable type="function" name="canBeSkip" class="Draw\Component\EntityMigrator\EventListener\EntityWorkflowListener" priority="0"/>
   </event>
-  <event name="workflow.entity_migration.guard.skip">
-    <callable type="function" name="canBeSkip" class="Draw\Component\EntityMigrator\EventListener\WorkflowListener" priority="0"/>
+  <event name="workflow.entity_migrator_migration.completed">
+    <callable type="function" name="flush" class="Draw\Component\EntityMigrator\EventListener\MigrationWorkflowListener" priority="0"/>
+  </event>
+  <event name="workflow.entity_migrator_migration.entered.processing">
+    <callable type="function" name="process" class="Draw\Component\EntityMigrator\EventListener\MigrationWorkflowListener" priority="0"/>
+  </event>
+  <event name="workflow.entity_migrator_migration.guard.complete">
+    <callable type="function" name="canComplete" class="Draw\Component\EntityMigrator\EventListener\MigrationWorkflowListener" priority="0"/>
+  </event>
+  <event name="workflow.entity_migrator_migration.guard.error">
+    <callable type="function" name="canError" class="Draw\Component\EntityMigrator\EventListener\MigrationWorkflowListener" priority="0"/>
+  </event>
+  <event name="workflow.entity_migrator_migration.transition.process">
+    <callable type="function" name="prepareProcess" class="Draw\Component\EntityMigrator\EventListener\MigrationWorkflowListener" priority="0"/>
   </event>
   <event name="workflow.transition">
     <callable type="function" name="addTransitionToContext" class="Draw\Component\Workflow\EventListener\AddTransitionNameToContextListener" priority="0"/>

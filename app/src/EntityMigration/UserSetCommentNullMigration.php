@@ -7,13 +7,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Draw\Component\EntityMigrator\BatchPrepareMigrationInterface;
+use Draw\Component\EntityMigrator\MigrationInterface;
 use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
 
 /**
- * @template-implements  BatchPrepareMigrationInterface<User>
+ * @template-implements  MigrationInterface<User>
  */
-class UserSetCommentNullMigration implements BatchPrepareMigrationInterface
+class UserSetCommentNullMigration implements MigrationInterface
 {
     public static function getName(): string
     {

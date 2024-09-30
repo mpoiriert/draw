@@ -65,6 +65,9 @@ class ConfigurationTest extends ConfigurationTestCase
                 'enabled' => false,
                 'delay' => 3600,
             ],
+            'workflow' => [
+                'enabled' => false,
+            ],
         ];
     }
 

@@ -5,6 +5,7 @@ namespace Draw\Component\EntityMigrator\Command;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\EntityMigrator\Migrator;
+use Draw\Component\EntityMigrator\Workflow\MigrationWorkflow;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,7 +41,7 @@ class SetupCommand extends Command
             $manager->persist(
                 (new Migration())
                     ->setName($name)
-                    ->setState('new')
+                    ->setState(MigrationWorkflow::PLACE_NEW)
             );
 
             $manager->flush();

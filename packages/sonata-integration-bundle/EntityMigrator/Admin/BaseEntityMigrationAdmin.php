@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\SonataIntegrationBundle\EntityMigrator\Admin;
 
-use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
+use Draw\Component\EntityMigrator\Workflow\EntityMigrationWorkflow;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -46,8 +46,8 @@ abstract class BaseEntityMigrationAdmin extends AbstractAdmin
                     'field_options' => [
                         'multiple' => true,
                         'choices' => array_combine(
-                            BaseEntityMigration::STATES,
-                            BaseEntityMigration::STATES
+                            $places = EntityMigrationWorkflow::places(),
+                            $places
                         ),
                     ],
                     'show_filter' => true,

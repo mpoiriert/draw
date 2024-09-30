@@ -2,6 +2,8 @@
 
 namespace Draw\Component\EntityMigrator;
 
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * @template T of MigrationTargetEntityInterface
  */
@@ -9,6 +11,9 @@ interface MigrationInterface
 {
     public static function getName(): string;
 
+    /**
+     * @return class-string<T>
+     */
     public static function getTargetEntityClass(): string;
 
     /**
@@ -37,4 +42,6 @@ interface MigrationInterface
      * Return a boolean to indicate that no more entities need migration.
      */
     public function migrationIsCompleted(): bool;
+
+    public function createSelectIdQueryBuilder(): QueryBuilder;
 }

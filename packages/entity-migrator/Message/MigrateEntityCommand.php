@@ -3,13 +3,10 @@
 namespace Draw\Component\EntityMigrator\Message;
 
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
-use Draw\Component\Messenger\AutoStamp\Message\StampingAwareInterface;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Message\DoctrineReferenceAwareInterface;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
-use Symfony\Component\Messenger\Stamp\DelayStamp;
 
-class MigrateEntityCommand implements DoctrineReferenceAwareInterface, StampingAwareInterface
+class MigrateEntityCommand implements DoctrineReferenceAwareInterface
 {
     private ?EntityMigrationInterface $entity;
 
@@ -30,12 +27,5 @@ class MigrateEntityCommand implements DoctrineReferenceAwareInterface, StampingA
     public function getPropertiesWithDoctrineObject(): array
     {
         return ['entity'];
-    }
-
-    public function stamp(Envelope $envelope): Envelope
-    {
-        return $envelope->with(
-            DelayStamp::delayUntil(new \DateTimeImmutable('+1 minute'))
-        );
     }
 }
