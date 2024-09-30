@@ -4,6 +4,7 @@ namespace Draw\Component\EntityMigrator\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
+use Draw\Component\Log\Monolog\ErrorToArray;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class BaseEntityMigration implements EntityMigrationInterface, \Stringable
@@ -110,12 +111,15 @@ abstract class BaseEntityMigration implements EntityMigrationInterface, \Stringa
                 $createdBy = $user->getUserIdentifier();
             }
 
+            $error = $context['error'] ?? null;
+
             $this->transitionLogs[] = [
                 'transition' => $transitionName,
                 'from' => $previousState,
                 'to' => $state,
                 'createdAt' => time(),
                 'createdBy' => $createdBy,
+                'error' => $error ? ErrorToArray::convert($error) : null,
             ];
         }
 

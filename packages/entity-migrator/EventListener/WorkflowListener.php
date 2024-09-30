@@ -3,12 +3,15 @@
 namespace Draw\Component\EntityMigrator\EventListener;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Draw\Component\EntityMigrator\Entity\BaseEntityMigration;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
 use Draw\Component\EntityMigrator\MigrationInterface;
 use Draw\Component\EntityMigrator\Migrator;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Workflow\Attribute\AsCompletedListener;
+use Symfony\Component\Workflow\Attribute\AsEnteredListener;
+use Symfony\Component\Workflow\Attribute\AsGuardListener;
 use Symfony\Component\Workflow\Event\Event;
 use Symfony\Component\Workflow\Event\GuardEvent;
 
@@ -21,7 +24,7 @@ class WorkflowListener
     ) {
     }
 
-    #[AsEventListener('workflow.entity_migration.guard.pause')]
+    #[AsGuardListener('entity_migration', 'pause')]
     public function canBePaused(GuardEvent $event): void
     {
         if (!$this->getSubject($event)->getMigration()->isPaused()) {
@@ -29,7 +32,7 @@ class WorkflowListener
         }
     }
 
-    #[AsEventListener('workflow.entity_migration.guard.skip')]
+    #[AsGuardListener('entity_migration', 'skip')]
     public function canBeSkip(GuardEvent $event): void
     {
         $subject = $this->getSubject($event);
@@ -40,13 +43,13 @@ class WorkflowListener
         }
     }
 
-    #[AsEventListener('workflow.entity_migration.guard.process')]
+    #[AsGuardListener('entity_migration', 'process')]
     public function canBeProcess(GuardEvent $event): void
     {
         // lock the process using locker
     }
 
-    #[AsEventListener('workflow.entity_migration.entered.processing')]
+    #[AsEnteredListener('entity_migration', BaseEntityMigration::STATE_PROCESSING)]
     public function process(Event $event): void
     {
         $subject = $this->getSubject($event);
@@ -57,7 +60,7 @@ class WorkflowListener
         ;
     }
 
-    #[AsEventListener('workflow.entity_migration.completed.queue')]
+    #[AsEnteredListener('entity_migration', 'queued')]
     public function queued(Event $event): void
     {
         $this->messageBus->dispatch(
@@ -65,7 +68,7 @@ class WorkflowListener
         );
     }
 
-    #[AsEventListener('workflow.entity_migration.completed')]
+    #[AsCompletedListener('entity_migration')]
     public function flush(Event $event): void
     {
         $this->managerRegistry

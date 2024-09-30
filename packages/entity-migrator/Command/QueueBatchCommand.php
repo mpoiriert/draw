@@ -54,7 +54,7 @@ class QueueBatchCommand extends BaseCommand
 
         \assert($manager instanceof EntityManagerInterface);
 
-        $migration = $this->migrator->getMigration($input->getArgument('migration-name'));
+        $migration = $this->migrator->getMigration($this->getMigrationName($input, $output));
 
         if (!$migration instanceof BatchPrepareMigrationInterface) {
             $io->error(\sprintf(

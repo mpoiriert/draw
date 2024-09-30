@@ -198,6 +198,7 @@ class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilde
                             'reprocess' => [
                                 'from' => [
                                     BaseEntityMigration::STATE_COMPLETED,
+                                    BaseEntityMigration::STATE_SKIPPED,
                                 ],
                                 'to' => BaseEntityMigration::STATE_QUEUED,
                             ],
