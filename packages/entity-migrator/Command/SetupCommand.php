@@ -9,6 +9,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'draw:entity-migrator:setup',
@@ -25,11 +26,14 @@ class SetupCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $io = new SymfonyStyle($input, $output);
         $manager = $this->managerRegistry->getManagerForClass(Migration::class);
         $repository = $manager->getRepository(Migration::class);
 
         foreach ($this->migrator->getMigrations() as $name => $migration) {
+            $io->info('Setup of migration: '.$name);
             if ($repository->findOneBy(['name' => $name])) {
+                $io->note('Migration already exist');
                 continue;
             }
 
@@ -38,10 +42,14 @@ class SetupCommand extends Command
                     ->setName($name)
                     ->setState('new')
             );
+
+            $manager->flush();
+
+            $io->success('Migration created');
         }
 
-        $manager->flush();
+        $io->success('All migration setup');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

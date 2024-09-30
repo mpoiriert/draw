@@ -31,12 +31,7 @@ class MigrateCommand extends BaseCommand
             $output
         );
 
-        $migration = $this->migrator->getMigration($input->getArgument('migration-name'));
-
-        $migrationEntity = $this->managerRegistry
-            ->getRepository(Migration::class)
-            ->findOneBy(['name' => $migration::getName()])
-        ;
+        $migration = $this->migrator->getMigration($this->getMigrationName($input, $output));
 
         $count = $migration->countAllThatNeedMigration();
 
@@ -45,6 +40,11 @@ class MigrateCommand extends BaseCommand
 
             return Command::SUCCESS;
         }
+
+        $migrationEntity = $this->managerRegistry
+            ->getRepository(Migration::class)
+            ->findOneBy(['name' => $migration::getName()])
+        ;
 
         $manager = $this->managerRegistry->getManagerForClass(Migration::class);
 
