@@ -12,6 +12,7 @@ use Draw\Bundle\SonataExtraBundle\EventListener\PreObjectDeleteBatchEventEventLi
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
+use Draw\Bundle\SonataExtraBundle\Extension\WorkflowExtension;
 use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescriptionFactory;
 use Draw\Bundle\SonataExtraBundle\Notifier\Channel\SonataChannel;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Extension\PreventDeleteExtension;
@@ -142,6 +143,10 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 ->getDefinition(SessionTimeoutRequestListener::class)
                 ->setArgument('$delay', $config['session_timeout']['delay'])
             ;
+        }
+
+        if (!($config['workflow']['enabled'] ?? false)) {
+            $container->removeDefinition(WorkflowExtension::class);
         }
 
         $container->removeDefinition(FinalizeContextEvent::class);
