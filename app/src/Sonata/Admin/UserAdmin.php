@@ -4,6 +4,7 @@ namespace App\Sonata\Admin;
 
 use App\Controller\Admin\AddRolesAminAction;
 use App\Controller\Admin\MakeAdminAction;
+use App\Controller\Admin\SetPreferredLocaleAction;
 use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableAdminInterface;
@@ -108,6 +109,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->add('childObject2')
             ->add('email')
             ->add('dateOfBirth')
+            ->add('preferredLocale')
             ->add('roles', 'json')
             ->add('rolesList', 'list')
             ->add('static', 'static', ['virtual_field' => true, 'value' => 'Static value'])
@@ -220,6 +222,21 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             'addRoles' => (new AdminAction('addRoles', true))
                 ->setController(AddRolesAminAction::class)
                 ->setBatchController(AddRolesAminAction::class),
-        ];
+        ] + iterator_to_array($this->prepareSetPreferredLocaleActions());
+    }
+
+    private function prepareSetPreferredLocaleActions(): iterable
+    {
+        foreach (['en', 'fr'] as $locale) {
+            yield $name = \sprintf('setPreferredLocale%s', ucfirst($locale)) => (new AdminAction($name, true))
+                ->setLabel(strtoupper($locale))
+                ->setIcon('fa fa-language')
+                ->setController(SetPreferredLocaleAction::class)
+                ->setRoutePattern(
+                    \sprintf('%s/preferred-locale/{_locale}', $this->getRouterIdParameter())
+                )
+                ->addRouteParam('_locale', $locale)
+            ;
+        }
     }
 }
