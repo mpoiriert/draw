@@ -1,5 +1,5 @@
 <li>
-    <a class="sonata-action-element" href="{{ object is defined ? admin.generateObjectUrl(item.action.name, object) : admin.generateUrl(item.action.name) }}">
+    <a class="sonata-action-element" href="{{ item.action.generateUrl(admin, object) }}">
         {% if item.action.icon %}
             <i class="{{ item.action.icon }}" aria-hidden="true"></i>
         {% endif %}

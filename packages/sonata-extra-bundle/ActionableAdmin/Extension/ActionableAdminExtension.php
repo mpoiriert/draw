@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension;
 
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminActionLoader;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -36,14 +37,10 @@ class ActionableAdminExtension extends AbstractAdminExtension
                 $defaults['_controller'] = $action->getController();
             }
 
-            $pattern = $action->getTargetEntity()
-                ? $admin->getRouterIdParameter().'/'.$action->getUrlSuffix()
-                : $action->getUrlSuffix();
-
             $collection
                 ->add(
                     $action->getName(),
-                    $pattern,
+                    $this->getRoutePattern($admin, $action),
                     defaults: $defaults
                 )
             ;
@@ -143,5 +140,16 @@ class ActionableAdminExtension extends AbstractAdminExtension
         }
 
         return $list;
+    }
+
+    private function getRoutePattern(AdminInterface $admin, AdminAction $action): string
+    {
+        if (null !== $pattern = $action->getRoutePattern()) {
+            return $pattern;
+        }
+
+        return $action->getTargetEntity()
+            ? \sprintf('%s/%s', $admin->getRouterIdParameter(), $action->getUrlSuffix())
+            : $action->getUrlSuffix();
     }
 }
