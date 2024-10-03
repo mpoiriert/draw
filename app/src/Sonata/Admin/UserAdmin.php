@@ -213,7 +213,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
     public function getActions(): array
     {
         return [
-            'makeAdin' => (new AdminAction('makeAdmin', true))
+            'makeAdmin' => (new AdminAction('makeAdmin', true))
                 ->setController(MakeAdminAction::class)
                 ->setIcon('fa fa-user-plus')
                 ->setBatchController(MakeAdminAction::class),

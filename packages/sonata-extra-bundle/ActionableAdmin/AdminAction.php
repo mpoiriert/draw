@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\String\UnicodeString;
 
@@ -21,6 +22,10 @@ class AdminAction
     private ?string $icon = null;
 
     private string $urlSuffix;
+
+    private ?string $routePattern = null;
+
+    private array $routeParams = [];
 
     private string $access;
 
@@ -76,6 +81,30 @@ class AdminAction
     public function setUrlSuffix(string $urlSuffix): self
     {
         $this->urlSuffix = $urlSuffix;
+
+        return $this;
+    }
+
+    public function getRoutePattern(): ?string
+    {
+        return $this->routePattern;
+    }
+
+    public function setRoutePattern(?string $routePattern): self
+    {
+        $this->routePattern = $routePattern;
+
+        return $this;
+    }
+
+    public function getRouteParams(): array
+    {
+        return $this->routeParams;
+    }
+
+    public function addRouteParam(string $key, mixed $value): self
+    {
+        $this->routeParams[$key] = $value;
 
         return $this;
     }
@@ -196,5 +225,12 @@ class AdminAction
     public function isForAction(string $action): bool
     {
         return $this->forActions[$action] ?? $this->forActions['_default'];
+    }
+
+    public function generateUrl(AdminInterface $admin, mixed $subject = null): string
+    {
+        return null !== $subject
+            ? $admin->generateObjectUrl($this->name, $subject, $this->routeParams)
+            : $admin->generateUrl($this->name, $this->routeParams);
     }
 }
