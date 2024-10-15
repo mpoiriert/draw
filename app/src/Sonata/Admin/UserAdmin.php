@@ -222,21 +222,25 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             'addRoles' => (new AdminAction('addRoles', true))
                 ->setController(AddRolesAminAction::class)
                 ->setBatchController(AddRolesAminAction::class),
-        ] + iterator_to_array($this->prepareSetPreferredLocaleActions());
-    }
-
-    private function prepareSetPreferredLocaleActions(): iterable
-    {
-        foreach (['en', 'fr'] as $locale) {
-            yield $name = \sprintf('setPreferredLocale%s', ucfirst($locale)) => (new AdminAction($name, true))
-                ->setLabel(strtoupper($locale))
+            'setPreferredLocale' => (new AdminAction('setPreferredLocale', true))
                 ->setIcon('fa fa-language')
                 ->setController(SetPreferredLocaleAction::class)
                 ->setRoutePattern(
-                    \sprintf('%s/preferred-locale/{_locale}', $this->getRouterIdParameter())
+                    \sprintf(
+                        '%s/preferred-locale/{_locale}',
+                        $this->getRouterIdParameter(),
+                    )
                 )
-                ->addRouteParam('_locale', $locale)
-            ;
-        }
+                ->setActionsCallback(
+                    static function (AdminAction $action): iterable {
+                        foreach (['en', 'fr'] as $locale) {
+                            yield (clone $action)
+                                ->setLabel(strtoupper($locale))
+                                ->setRouteParameters(['_locale' => $locale])
+                            ;
+                        }
+                    }
+                ),
+        ];
     }
 }

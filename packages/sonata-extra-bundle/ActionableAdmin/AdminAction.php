@@ -25,12 +25,17 @@ class AdminAction
 
     private ?string $routePattern = null;
 
-    private array $routeParams = [];
+    private array $routeParameters = [];
 
     private string $access;
 
     private string|false|null $label;
     private string|false|null $translationDomain = null;
+
+    /**
+     * @var callable
+     */
+    private $actionsCallback;
 
     public function __construct(
         private string $name,
@@ -49,6 +54,8 @@ class AdminAction
             ->replace('_', '-')
             ->toString()
         ;
+
+        $this->actionsCallback = fn () => [$this];
     }
 
     public function getName(): string
@@ -93,18 +100,6 @@ class AdminAction
     public function setRoutePattern(?string $routePattern): self
     {
         $this->routePattern = $routePattern;
-
-        return $this;
-    }
-
-    public function getRouteParams(): array
-    {
-        return $this->routeParams;
-    }
-
-    public function addRouteParam(string $key, mixed $value): self
-    {
-        $this->routeParams[$key] = $value;
 
         return $this;
     }
@@ -227,10 +222,39 @@ class AdminAction
         return $this->forActions[$action] ?? $this->forActions['_default'];
     }
 
+    public function getActions(): iterable
+    {
+        return \call_user_func($this->actionsCallback, $this);
+    }
+
+    public function getActionsCallback(): callable
+    {
+        return $this->actionsCallback;
+    }
+
+    public function setActionsCallback(callable $actionsCallback): self
+    {
+        $this->actionsCallback = $actionsCallback;
+
+        return $this;
+    }
+
+    public function getRouteParameters(): array
+    {
+        return $this->routeParameters;
+    }
+
+    public function setRouteParameters(array $routeParameters): self
+    {
+        $this->routeParameters = $routeParameters;
+
+        return $this;
+    }
+
     public function generateUrl(AdminInterface $admin, mixed $subject = null): string
     {
         return null !== $subject
-            ? $admin->generateObjectUrl($this->name, $subject, $this->routeParams)
-            : $admin->generateUrl($this->name, $this->routeParams);
+            ? $admin->generateObjectUrl($this->name, $subject, $this->routeParameters)
+            : $admin->generateUrl($this->name, $this->routeParameters);
     }
 }
