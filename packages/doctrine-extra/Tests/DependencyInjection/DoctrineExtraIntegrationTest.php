@@ -8,6 +8,7 @@ use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
 use Draw\DoctrineExtra\DependencyInjection\DoctrineExtraIntegration;
+use Draw\DoctrineExtra\ORM\Command\GenerateGraphSchemaCommand;
 use Draw\DoctrineExtra\ORM\Command\MysqlDumpCommand;
 use Draw\DoctrineExtra\ORM\Command\MysqlImportFileCommand;
 use Draw\DoctrineExtra\ORM\EntityHandler;
@@ -74,6 +75,12 @@ class DoctrineExtraIntegrationTest extends IntegrationTestCase
                     'draw.doctrine_extra.orm.command.mysql_dump_command',
                     [
                         MysqlDumpCommand::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.doctrine_extra.orm.command.generate_graph_schema_command',
+                    [
+                        GenerateGraphSchemaCommand::class,
                     ]
                 ),
             ],

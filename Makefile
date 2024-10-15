@@ -31,3 +31,5 @@ composer-normalize:
 	sudo chmod a+x composer-normalize
 	docker-compose exec php php composer-normalize
 
+generate-artifact:
+	docker-compose exec php composer generate:artifact
