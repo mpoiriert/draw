@@ -4,6 +4,7 @@ namespace App\Sonata\Admin;
 
 use App\Controller\Admin\AddRolesAminAction;
 use App\Controller\Admin\MakeAdminAction;
+use App\Controller\Admin\SetPreferredLocaleAction;
 use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableAdminInterface;
@@ -108,6 +109,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->add('childObject2')
             ->add('email')
             ->add('dateOfBirth')
+            ->add('preferredLocale')
             ->add('roles', 'json')
             ->add('rolesList', 'list')
             ->add('static', 'static', ['virtual_field' => true, 'value' => 'Static value'])
@@ -213,13 +215,32 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
     public function getActions(): array
     {
         return [
-            'makeAdin' => (new AdminAction('makeAdmin', true))
+            'makeAdmin' => (new AdminAction('makeAdmin', true))
                 ->setController(MakeAdminAction::class)
                 ->setIcon('fa fa-user-plus')
                 ->setBatchController(MakeAdminAction::class),
             'addRoles' => (new AdminAction('addRoles', true))
                 ->setController(AddRolesAminAction::class)
                 ->setBatchController(AddRolesAminAction::class),
+            'setPreferredLocale' => (new AdminAction('setPreferredLocale', true))
+                ->setIcon('fa fa-language')
+                ->setController(SetPreferredLocaleAction::class)
+                ->setRoutePattern(
+                    \sprintf(
+                        '%s/preferred-locale/{_locale}',
+                        $this->getRouterIdParameter(),
+                    )
+                )
+                ->setActionsCallback(
+                    static function (AdminAction $action): iterable {
+                        foreach (['en', 'fr'] as $locale) {
+                            yield (clone $action)
+                                ->setLabel(strtoupper($locale))
+                                ->setRouteParameters(['_locale' => $locale])
+                            ;
+                        }
+                    }
+                ),
         ];
     }
 }

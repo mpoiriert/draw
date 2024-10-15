@@ -1,8 +1,10 @@
 {% if admin.hasAccess(actions.action.name, object) %}
-    <a class="btn btn-sm btn-default" href="{{ admin.generateObjectUrl(actions.action.name, object) }}">
-        {% if actions.action.icon %}
-            <i class="{{ actions.action.icon }}" aria-hidden="true"></i>
-        {% endif %}
-        {{ actions.action|translate_label }}
-    </a>
+    {% for action in actions.action.actions %}
+        <a class="btn btn-sm btn-default" href="{{ action.generateUrl(admin, object) }}">
+            {% if action.icon %}
+                <i class="{{ action.icon }}" aria-hidden="true"></i>
+            {% endif %}
+            {{ action|translate_label }}
+        </a>
+    {% endfor %}
 {% endif %}
