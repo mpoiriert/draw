@@ -293,6 +293,10 @@
         "test:run:coverage": [
             "Composer\\Config::disableProcessTimeout",
             "vendor/bin/phpunit --coverage-html ./tmp/phpunit/report"
+        ],
+        "generate:artifact": [
+            "Composer\\Config::disableProcessTimeout",
+            "bin/console draw:doctrine:generate-graph-schema | dot -Tsvg -o doc/databse.svg"
         ]
     },
     "minimum-stability": "dev",

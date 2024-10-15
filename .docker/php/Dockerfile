@@ -64,6 +64,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends default-mysql-c
 #MONGODB
 RUN pecl install mongodb-1.17.2 && docker-php-ext-enable mongodb
 
+#Graphviz
+RUN apt-get update && apt-get install -y --no-install-recommends graphviz
+
 ARG PUID=1000
 ARG PGID=1000
 
