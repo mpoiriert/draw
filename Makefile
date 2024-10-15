@@ -23,8 +23,8 @@ ifeq ($(run),1)
 endif
 	docker-compose exec php vendor-bin/monorepo/vendor/bin/monorepo-builder release $(version) $$DRY_RUN
 
-monorepo-release-patch:
-	docker-compose exec php vendor-bin/monorepo/vendor/bin/monorepo-builder release patch
+monorepo-release-minor:
+	docker-compose exec php vendor-bin/monorepo/vendor/bin/monorepo-builder release minor
 
 composer-normalize:
 	[ -f ./composer-normalize] && echo 'composer-normalizer available' || wget https://github.com/ergebnis/composer-normalize/releases/download/2.24.1/composer-normalize.phar -O composer-normalize
