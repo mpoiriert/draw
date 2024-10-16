@@ -22,7 +22,7 @@
         "doctrine/dbal": "^3.3",
         "doctrine/collections": "^1.0",
         "doctrine/data-fixtures": "^1.5",
-        "draw/dependency-injection": "^0.13",
+        "draw/dependency-injection": "^0.14",
         "phpunit/phpunit": "^11.3"
     },
     "minimum-stability": "dev",
@@ -34,7 +34,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.13-dev"
+            "dev-master": "0.14-dev"
         }
     }
 }
