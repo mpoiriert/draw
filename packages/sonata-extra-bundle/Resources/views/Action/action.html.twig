@@ -1,10 +1,11 @@
+{% set object = object|default(null) %}
 {% for action in item.action.actions %}
-<li>
-    <a class="sonata-action-element" href="{{ action.generateUrl(admin, object) }}">
-        {% if action.icon %}
-            <i class="{{ action.icon }}" aria-hidden="true"></i>
-        {% endif %}
-        {{ action|translate_label }}
-    </a>
-</li>
+    <li>
+        <a class="sonata-action-element" href="{{ action.generateUrl(admin, object) }}">
+            {% if action.icon %}
+                <i class="{{ action.icon }}" aria-hidden="true"></i>
+            {% endif %}
+            {{ action|translate_label }}
+        </a>
+    </li>
 {% endfor %}
