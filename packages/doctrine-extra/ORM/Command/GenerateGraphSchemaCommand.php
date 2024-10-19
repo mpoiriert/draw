@@ -2,11 +2,11 @@
 
 namespace Draw\DoctrineExtra\ORM\Command;
 
-use Doctrine\DBAL\Schema\Visitor\Graphviz;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Tools\SchemaTool;
+use Draw\DoctrineExtra\ORM\GraphSchema\Context;
+use Draw\DoctrineExtra\ORM\GraphSchema\GraphGenerator;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -14,8 +14,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class GenerateGraphSchemaCommand extends Command
 {
     public function __construct(
-        private EntityManagerInterface $entityManager)
-    {
+        private EntityManagerInterface $entityManager,
+        private GraphGenerator $graphGenerator,
+    ) {
         parent::__construct();
     }
 
@@ -23,6 +24,7 @@ class GenerateGraphSchemaCommand extends Command
     {
         $this
             ->setName('draw:doctrine:generate-graph-schema')
+            ->addArgument('context-name', InputArgument::OPTIONAL, 'The context name to use.', 'default')
             ->setDescription('Get dot from database schema.')
             ->setHelp(\sprintf('Usage: bin/console %s | dot -Tsvg -o /tmp/databse.svg', $this->getName()))
         ;
@@ -31,45 +33,13 @@ class GenerateGraphSchemaCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $io->writeln($this->getDot());
+        $io->writeln(
+            $this->graphGenerator
+                ->generate(
+                    new Context($this->entityManager, $input->getArgument('context-name'))
+                )
+        );
 
         return Command::SUCCESS;
-    }
-
-    /**
-     * Get dot from database schema.
-     */
-    protected function getDot(): string
-    {
-        /** @var array<int, ClassMetadata<object>> $metadata */
-        $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
-
-        usort($metadata, static fn (ClassMetadata $a, ClassMetadata $b): int => $a->getTableName() <=> $b->getTableName());
-
-        $tool = new SchemaTool($this->entityManager);
-        $schema = $tool->getSchemaFromMetadata($metadata);
-
-        $visitor = new Graphviz();
-
-        $visitor->acceptSchema($schema);
-
-        foreach ($schema->getTables() as $table) {
-            $visitor->acceptTable($table);
-            foreach ($table->getColumns() as $column) {
-                $visitor->acceptColumn($table, $column);
-            }
-            foreach ($table->getIndexes() as $index) {
-                $visitor->acceptIndex($table, $index);
-            }
-            foreach ($table->getForeignKeys() as $foreignKey) {
-                $visitor->acceptForeignKey($table, $foreignKey);
-            }
-        }
-
-        foreach ($schema->getSequences() as $sequence) {
-            $visitor->acceptSequence($sequence);
-        }
-
-        return $visitor->getOutput();
     }
 }
