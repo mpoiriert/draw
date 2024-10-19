@@ -47,11 +47,9 @@ abstract class ConfigurationTestCase extends TestCase
 
     public function testDefault(): void
     {
-        $config = $this->processConfiguration([[]]);
-
-        static::assertEqualsCanonicalizing(
-            $this->getDefaultConfiguration(),
-            $config
+        static::assertJsonStringEqualsJsonString(
+            json_encode($this->getDefaultConfiguration()),
+            json_encode($this->processConfiguration([[]]))
         );
     }
 
