@@ -59,11 +59,9 @@ abstract class IntegrationTestCase extends TestCase
 
     public function testDefaultConfiguration(): void
     {
-        $config = $this->processConfiguration([[]]);
-
-        static::assertEqualsCanonicalizing(
-            $this->getDefaultConfiguration(),
-            $config
+        static::assertJsonStringEqualsJsonString(
+            json_encode($this->processConfiguration()),
+            json_encode($this->getDefaultConfiguration()),
         );
     }
 
