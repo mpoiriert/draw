@@ -296,7 +296,8 @@
         ],
         "generate:artifact": [
             "Composer\\Config::disableProcessTimeout",
-            "bin/console draw:doctrine:generate-graph-schema | dot -Tsvg -o doc/databse.svg"
+            "bin/console draw:doctrine:generate-graph-schema | dot -Tsvg -o doc/database.svg",
+            "bin/console draw:doctrine:generate-graph-schema user | dot -Tsvg -o doc/user.svg"
         ]
     },
     "minimum-stability": "dev",

@@ -12,10 +12,16 @@ class AppKernelTest extends KernelTestCase
 {
     use EventDispatcherTesterTrait;
 
+    private bool $resetFile = false;
+
     public function testEventDispatcherConfiguration(): void
     {
-        $this->assertEventDispatcherConfiguration(
-            __DIR__.'/fixtures/AppKernelTest/testEventDispatcherConfiguration/event_dispatcher.xml'
-        );
+        $path = __DIR__.'/fixtures/AppKernelTest/testEventDispatcherConfiguration/event_dispatcher.xml';
+
+        if ($this->resetFile && file_exists($path)) {
+            unlink($path);
+        }
+
+        $this->assertEventDispatcherConfiguration($path);
     }
 }

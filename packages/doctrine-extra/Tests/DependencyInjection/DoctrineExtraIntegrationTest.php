@@ -12,6 +12,7 @@ use Draw\DoctrineExtra\ORM\Command\GenerateGraphSchemaCommand;
 use Draw\DoctrineExtra\ORM\Command\MysqlDumpCommand;
 use Draw\DoctrineExtra\ORM\Command\MysqlImportFileCommand;
 use Draw\DoctrineExtra\ORM\EntityHandler;
+use Draw\DoctrineExtra\ORM\GraphSchema\GraphGenerator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -81,6 +82,12 @@ class DoctrineExtraIntegrationTest extends IntegrationTestCase
                     'draw.doctrine_extra.orm.command.generate_graph_schema_command',
                     [
                         GenerateGraphSchemaCommand::class,
+                    ]
+                ),
+                new ServiceConfiguration(
+                    'draw.doctrine_extra.orm.graph_schema.graph_generator',
+                    [
+                        GraphGenerator::class,
                     ]
                 ),
             ],

@@ -9,6 +9,7 @@ use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\DoctrineExtra\ORM\Command\GenerateGraphSchemaCommand;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * @internal
@@ -27,7 +28,11 @@ class GenerateGraphSchemaCommandTest extends KernelTestCase implements Autowired
 
     public static function provideTestArgument(): iterable
     {
-        return [];
+        yield [
+            'context-name',
+            InputArgument::OPTIONAL,
+            'default',
+        ];
     }
 
     public static function provideTestOption(): iterable
@@ -42,7 +47,7 @@ class GenerateGraphSchemaCommandTest extends KernelTestCase implements Autowired
      */
     public function testExecute(): void
     {
-        $this->execute([])
+        $this->execute(['context-name' => 'user'])
             ->test(
                 CommandDataTester::create()
                     ->setExpectedDisplay(null)

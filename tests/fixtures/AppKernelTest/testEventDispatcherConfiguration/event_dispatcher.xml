@@ -89,6 +89,9 @@
   <event name="Draw\Component\Security\Core\Event\CheckPreAuthEvent">
     <callable type="function" name="handlerCheckPreAuthEvent" class="Draw\Bundle\UserBundle\EventListener\AccountLockerListener" priority="0"/>
   </event>
+  <event name="Draw\DoctrineExtra\ORM\GraphSchema\Event\PrepareContextEvent">
+    <callable type="function" name="prepareImport" class="App\GraphGenerator\ContextPreparator" priority="0"/>
+  </event>
   <event name="Sonata\DoctrineORMAdminBundle\Event\PreObjectDeleteBatchEvent">
     <callable type="function" name="handlePreObjectDeleteBatchEvent" class="Draw\Bundle\SonataExtraBundle\EventListener\PreObjectDeleteBatchEventEventListener" priority="0"/>
   </event>
