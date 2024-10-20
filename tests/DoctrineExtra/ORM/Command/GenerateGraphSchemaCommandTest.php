@@ -18,6 +18,8 @@ class GenerateGraphSchemaCommandTest extends KernelTestCase implements Autowired
 {
     use FilteredCommandTestTrait;
 
+    private bool $resetFile = false;
+
     #[AutowireService(GenerateGraphSchemaCommand::class)]
     protected ?Command $command = null;
 
@@ -47,11 +49,23 @@ class GenerateGraphSchemaCommandTest extends KernelTestCase implements Autowired
      */
     public function testExecute(): void
     {
-        $this->execute(['context-name' => 'user'])
+        $display = $this->execute(['context-name' => 'user'])
             ->test(
                 CommandDataTester::create()
                     ->setExpectedDisplay(null)
             )
+            ->getData('display')
         ;
+
+        $file = __DIR__.'/fixtures/GenerateGraphSchemaCommandTest/testExecute.dot';
+
+        if ($this->resetFile) {
+            file_put_contents($file, $display);
+        }
+
+        static::assertStringEqualsFile(
+            $file,
+            $display
+        );
     }
 }
