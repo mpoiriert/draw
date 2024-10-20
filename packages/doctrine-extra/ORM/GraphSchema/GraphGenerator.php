@@ -2,9 +2,12 @@
 
 namespace Draw\DoctrineExtra\ORM\GraphSchema;
 
-use Doctrine\DBAL\Schema\Visitor\Graphviz;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Tools\SchemaTool;
+use Draw\Component\Graphviz\Edge;
+use Draw\Component\Graphviz\Graph;
+use Draw\Component\Graphviz\Node;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class GraphGenerator
@@ -28,9 +31,16 @@ class GraphGenerator
         $tool = new SchemaTool($entityManager);
         $schema = $tool->getSchemaFromMetadata($metadata);
 
-        $visitor = new Graphviz();
-
-        $visitor->acceptSchema($schema);
+        $graph = new Graph(
+            $schema->getName(),
+            [
+                'splines' => 'true',
+                'overlap' => 'false',
+                'outputorder' => 'edgesfirst',
+                'mindist' => '0.6',
+                'sep' => '0.2',
+            ]
+        );
 
         $ignoreTables = $this->buildIgnoreTables($context);
 
@@ -39,23 +49,39 @@ class GraphGenerator
                 continue;
             }
 
-            $visitor->acceptTable($table);
-            foreach ($table->getColumns() as $column) {
-                $visitor->acceptColumn($table, $column);
-            }
-            foreach ($table->getIndexes() as $index) {
-                $visitor->acceptIndex($table, $index);
-            }
+            $graph->addNode(
+                new Node(
+                    $table->getName(),
+                    [
+                        'label' => $this->createTableLabel($table),
+                        'shape' => 'plaintext',
+                    ]
+                )
+            );
+
             foreach ($table->getForeignKeys() as $foreignKey) {
-                $visitor->acceptForeignKey($table, $foreignKey);
+                $label = [];
+                if ($foreignKey->onDelete()) {
+                    $label[] = 'on delete: '.$foreignKey->onDelete();
+                }
+                if ($foreignKey->onUpdate()) {
+                    $label[] = 'on update: '.$foreignKey->onUpdate();
+                }
+                $graph
+                    ->addEdge(
+                        new Edge(
+                            $foreignKey->getLocalTableName().':column_'.current($foreignKey->getLocalColumns()),
+                            $foreignKey->getForeignTableName().':column_'.current($foreignKey->getForeignColumns()),
+                            array_filter([
+                                'label' => implode("\n", $label),
+                            ]),
+                        )
+                    )
+                ;
             }
         }
 
-        foreach ($schema->getSequences() as $sequence) {
-            $visitor->acceptSequence($sequence);
-        }
-
-        return $visitor->getOutput();
+        return (string) $graph;
     }
 
     private function buildIgnoreTables(Context $context): array
@@ -101,5 +127,43 @@ class GraphGenerator
         }
 
         return array_values($ignoreTables);
+    }
+
+    private function createTableLabel(Table $table): string
+    {
+        // Start the table
+        $label = <<<TABLE
+            <
+            <table cellspacing="0" border="1" align="left">
+            <tr>
+            <td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+            <font color="#2e3436" face="Helvetica">{$table->getName()}</font>
+            </td></tr>
+            TABLE;
+
+        // The attributes block
+        foreach ($table->getColumns() as $column) {
+            $type = strtolower($column->getType()->getName());
+            $primaryKeyMarker = \in_array($column->getName(), $table->getPrimaryKey()?->getColumns() ?? [], true)
+                ? "\xe2\x9c\xb7"
+                : '';
+
+            $label .= <<<TABLE
+                <tr>
+                <td border="0" align="left" bgcolor="#eeeeec">
+                <font color="#2e3436" face="Helvetica">{$column->getName()}</font>
+                </td>
+                <td border="0" align="left" bgcolor="#eeeeec">
+                <font color="#2e3436" face="Helvetica">{$type}</font>
+                </td>
+                <td border="0" align="right" bgcolor="#eeeeec" port="column_{$column->getName()}">{$primaryKeyMarker}</td>
+                </tr>
+                TABLE;
+        }
+
+        // End the table
+        $label .= '</table> >';
+
+        return $label;
     }
 }

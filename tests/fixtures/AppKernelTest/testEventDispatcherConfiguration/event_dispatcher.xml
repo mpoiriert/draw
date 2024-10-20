@@ -90,6 +90,7 @@
     <callable type="function" name="handlerCheckPreAuthEvent" class="Draw\Bundle\UserBundle\EventListener\AccountLockerListener" priority="0"/>
   </event>
   <event name="Draw\DoctrineExtra\ORM\GraphSchema\Event\PrepareContextEvent">
+    <callable type="function" name="prepareUser" class="App\GraphGenerator\ContextPreparator" priority="0"/>
     <callable type="function" name="prepareImport" class="App\GraphGenerator\ContextPreparator" priority="0"/>
   </event>
   <event name="Sonata\DoctrineORMAdminBundle\Event\PreObjectDeleteBatchEvent">

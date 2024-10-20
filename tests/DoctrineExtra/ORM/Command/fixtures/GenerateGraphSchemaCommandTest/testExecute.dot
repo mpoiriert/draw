@@ -1,0 +1,625 @@
+digraph draw {
+  graph [
+    splines="true",
+    overlap="false",
+    outputorder="edgesfirst",
+    mindist="0.6",
+    sep="0.2"
+  ];
+
+  acme__user_address [
+    label=<
+<table cellspacing="0" border="1" align="left">
+<tr>
+<td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+<font color="#2e3436" face="Helvetica">acme__user_address</font>
+</td></tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">user_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_user_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">position</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_position"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">address_street</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_address_street"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">address_postal_code</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_address_postal_code"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">address_city</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_address_city"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">address_country</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_address_country"></td>
+</tr></table> >,
+    shape="plaintext"
+  ];
+
+  acme__user_tag [
+    label=<
+<table cellspacing="0" border="1" align="left">
+<tr>
+<td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+<font color="#2e3436" face="Helvetica">acme__user_tag</font>
+</td></tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">user_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_user_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">tag_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">bigint</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_tag_id"></td>
+</tr></table> >,
+    shape="plaintext"
+  ];
+
+  draw_acme__base_object [
+    label=<
+<table cellspacing="0" border="1" align="left">
+<tr>
+<td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+<font color="#2e3436" face="Helvetica">draw_acme__base_object</font>
+</td></tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">discriminator_type</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_discriminator_type"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">attribute_1</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_attribute_1"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">date_time_immutable</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_date_time_immutable"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">attribute_2</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_attribute_2"></td>
+</tr></table> >,
+    shape="plaintext"
+  ];
+
+  draw_acme__tag [
+    label=<
+<table cellspacing="0" border="1" align="left">
+<tr>
+<td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+<font color="#2e3436" face="Helvetica">draw_acme__tag</font>
+</td></tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">bigint</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">name</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_name"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">active</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">boolean</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_active"></td>
+</tr></table> >,
+    shape="plaintext"
+  ];
+
+  draw_acme__user [
+    label=<
+<table cellspacing="0" border="1" align="left">
+<tr>
+<td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+<font color="#2e3436" face="Helvetica">draw_acme__user</font>
+</td></tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">child_object1_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_child_object1_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">child_object2_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_child_object2_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_restrict_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_restrict_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_cascade_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_set_null_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_set_null_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_cascade_config_overridden_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_config_overridden_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_cascade_attribute_overridden_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_attribute_overridden_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">roles</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">json</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_roles"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">level</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_level"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">date_of_birth</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_date_of_birth"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">comment</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">text</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_comment"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">preferred_locale</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_preferred_locale"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">email_auth_code</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_email_auth_code"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">email_auth_code_generated_at</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_email_auth_code_generated_at"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">two_factor_authentication_enabled_providers</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">json</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_two_factor_authentication_enabled_providers"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">force_enabling_two_factor_authentication</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">boolean</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_force_enabling_two_factor_authentication"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">totp_secret</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_totp_secret"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">manual_lock</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">boolean</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_manual_lock"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">need_change_password</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">boolean</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_need_change_password"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">email</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_email"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">password</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_password"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">last_password_updated_at</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_last_password_updated_at"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">address_street</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_address_street"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">address_postal_code</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_address_postal_code"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">address_city</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_address_city"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">address_country</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_address_country"></td>
+</tr></table> >,
+    shape="plaintext"
+  ];
+
+  user_tag [
+    label=<
+<table cellspacing="0" border="1" align="left">
+<tr>
+<td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+<font color="#2e3436" face="Helvetica">user_tag</font>
+</td></tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">user_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_user_id">✷</td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">tag_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">bigint</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_tag_id">✷</td>
+</tr></table> >,
+    shape="plaintext"
+  ];
+
+  draw_user__user_lock [
+    label=<
+<table cellspacing="0" border="1" align="left">
+<tr>
+<td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+<font color="#2e3436" face="Helvetica">draw_user__user_lock</font>
+</td></tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">user_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_user_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">reason</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_reason"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">created_at</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_created_at"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">lock_on</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_lock_on"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">expires_at</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_expires_at"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">unlock_until</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_unlock_until"></td>
+</tr></table> >,
+    shape="plaintext"
+  ];
+
+  user_migration [
+    label=<
+<table cellspacing="0" border="1" align="left">
+<tr>
+<td border="1" colspan="3" align="center" bgcolor="#fcaf3e">
+<font color="#2e3436" face="Helvetica">user_migration</font>
+</td></tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">bigint</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">entity_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_entity_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">migration_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_migration_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">state</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">string</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_state"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">transition_logs</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">json</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_transition_logs"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">created_at</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">datetime_immutable</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_created_at"></td>
+</tr></table> >,
+    shape="plaintext"
+  ];
+
+  acme__user_address:column_user_id -> draw_acme__user:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  acme__user_tag:column_user_id -> draw_acme__user:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  acme__user_tag:column_tag_id -> draw_acme__tag:column_id;
+
+  draw_acme__user:column_child_object1_id -> draw_acme__base_object:column_id [
+    label="on delete: SET NULL"
+  ];
+
+  draw_acme__user:column_child_object2_id -> draw_acme__base_object:column_id [
+    label="on delete: SET NULL"
+  ];
+
+  draw_acme__user:column_on_delete_restrict_id -> draw_acme__base_object:column_id;
+
+  draw_acme__user:column_on_delete_cascade_id -> draw_acme__base_object:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  draw_acme__user:column_on_delete_set_null_id -> draw_acme__base_object:column_id [
+    label="on delete: SET NULL"
+  ];
+
+  draw_acme__user:column_on_delete_cascade_config_overridden_id -> draw_acme__base_object:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  draw_acme__user:column_on_delete_cascade_attribute_overridden_id -> draw_acme__base_object:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  user_tag:column_user_id -> draw_acme__user:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  user_tag:column_tag_id -> draw_acme__tag:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  draw_user__user_lock:column_user_id -> draw_acme__user:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  user_migration:column_entity_id -> draw_acme__user:column_id [
+    label="on delete: CASCADE"
+  ];
+
+  user_migration:column_migration_id -> draw_entity_migrator__migration:column_id [
+    label="on delete: CASCADE"
+  ];
+}
