@@ -25,6 +25,7 @@ jobs:
           - entity-migrator
           - fixer
           - framework-extra-bundle
+          - graphviz
           - log
           - mailer
           - messenger
