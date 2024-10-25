@@ -15,10 +15,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Workflow\Attribute\AsCompletedListener;
 use Symfony\Component\Workflow\Attribute\AsEnteredListener;
 use Symfony\Component\Workflow\Attribute\AsGuardListener;
-use Symfony\Component\Workflow\Attribute\AsTransitionListener;
 use Symfony\Component\Workflow\Event\EnteredEvent;
 use Symfony\Component\Workflow\Event\GuardEvent;
-use Symfony\Component\Workflow\Event\TransitionEvent;
 
 class MigrationWorkflowListener
 {
@@ -102,22 +100,6 @@ class MigrationWorkflowListener
             ->getQuery()
             ->getOneOrNullResult()
         ;
-    }
-
-    #[AsTransitionListener(MigrationWorkflow::NAME, MigrationWorkflow::TRANSITION_PROCESS)]
-    public function prepareProcess(TransitionEvent $event): void
-    {
-        $subject = $event->getSubject();
-
-        \assert($subject instanceof Migration);
-
-        $migration = $this->migrator->getMigration($subject->getName());
-
-        $context = $event->getContext();
-
-        $context['total'] = $migration->countAllThatNeedMigration();
-
-        $event->setContext($context);
     }
 
     #[AsCompletedListener(MigrationWorkflow::NAME)]
