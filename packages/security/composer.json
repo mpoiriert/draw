@@ -18,11 +18,11 @@
         "php": ">=8.2"
     },
     "require-dev": {
-        "draw/core": "^0.14",
-        "draw/dependency-injection": "^0.14",
-        "draw/framework-extra-bundle": "^0.14",
-        "draw/messenger": "^0.14",
-        "draw/tester": "^0.14",
+        "draw/core": "^0.15",
+        "draw/dependency-injection": "^0.15",
+        "draw/framework-extra-bundle": "^0.15",
+        "draw/messenger": "^0.15",
+        "draw/tester": "^0.15",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^11.3",
         "symfony/console": "^6.4.0",
@@ -40,7 +40,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.14-dev"
+            "dev-master": "0.15-dev"
         }
     }
 }
