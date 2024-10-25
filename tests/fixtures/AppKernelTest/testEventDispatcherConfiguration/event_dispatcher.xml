@@ -287,9 +287,6 @@
   <event name="workflow.entity_migrator_migration.guard.error">
     <callable type="function" name="canError" class="Draw\Component\EntityMigrator\EventListener\MigrationWorkflowListener" priority="0"/>
   </event>
-  <event name="workflow.entity_migrator_migration.transition.process">
-    <callable type="function" name="prepareProcess" class="Draw\Component\EntityMigrator\EventListener\MigrationWorkflowListener" priority="0"/>
-  </event>
   <event name="workflow.transition">
     <callable type="function" name="addTransitionToContext" class="Draw\Component\Workflow\EventListener\AddTransitionNameToContextListener" priority="0"/>
     <callable type="function" name="addUserToContext" class="Draw\Component\Workflow\EventListener\AddUserToContextListener" priority="0"/>
