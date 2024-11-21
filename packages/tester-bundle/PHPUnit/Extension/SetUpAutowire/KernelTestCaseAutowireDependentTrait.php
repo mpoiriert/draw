@@ -3,8 +3,8 @@
 namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trait KernelTestCaseAutowireDependentTrait
 {

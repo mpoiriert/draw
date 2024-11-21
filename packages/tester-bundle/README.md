@@ -108,11 +108,13 @@ namespace App\Tests;
 use App\AServiceInterface;
 use App\Entity\User;
 use App\MyService;
+use App\MyOtherService;
 use Draw\Bundle\TesterBundle\Messenger\TransportTester;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireEntity;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireLoggerTester;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireParameter;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireServiceMock;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMock;
@@ -148,6 +150,11 @@ class MyTest extends KernelTestCase implements AutowiredInterface
    
    #[AutowireEntity(['email' => 'test@example.com'])]
    private User $user;
+   
+   // Will create a mock object of MyOtherService and call container->set(MyOtherService::class, $mockObject)
+   // You can also set the service id to use in the container as the first parameter of the attribute.
+   #[AutowireServiceMock]
+   private MyOtherService&MockObject $myOtherService;
 }
 ```
 
