@@ -38,18 +38,6 @@ class UserSetCommentNullMigration implements MigrationInterface
         return '' !== $entity->getComment();
     }
 
-    public function countAllThatNeedMigration(): ?int
-    {
-        $manager = $this->managerRegistry->getManagerForClass(User::class);
-        \assert($manager instanceof EntityManagerInterface);
-
-        return (int) $manager
-            ->createQuery('SELECT count(user) FROM '.User::class.' user WHERE user.comment != :comment')
-            ->setParameter('comment', '')
-            ->getSingleScalarResult()
-        ;
-    }
-
     public function createSelectIdQueryBuilder(): QueryBuilder
     {
         $manager = $this->managerRegistry->getManagerForClass(User::class);
