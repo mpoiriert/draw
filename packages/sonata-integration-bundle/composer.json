@@ -28,7 +28,7 @@
         "phpunit/phpunit": "^11.3",
         "scheb/2fa-bundle": "^6.0",
         "scheb/2fa-email": "^6.0",
-        "endroid/qr-code": "^5.0",
+        "endroid/qr-code": "^6.0",
         "scheb/2fa-totp": "^6.0"
     },
     "minimum-stability": "dev",

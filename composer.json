@@ -86,7 +86,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.5",
         "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/sql-formatter": "^1.1",
-        "endroid/qr-code": "^5.0",
+        "endroid/qr-code": "^6.0",
         "ext-pcntl": "*",
         "firebase/php-jwt": "^6.1",
         "monolog/monolog": "^3.5.0",

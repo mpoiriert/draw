@@ -29,7 +29,7 @@
         "draw/messenger": "^0.15",
         "draw/security": "^0.15",
         "draw/tester": "^0.15",
-        "endroid/qr-code": "^5.0",
+        "endroid/qr-code": "^6.0",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^11.3",
         "scheb/2fa-bundle": "^6.0",
