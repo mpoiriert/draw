@@ -15,11 +15,11 @@
         }
     ],
     "require": {
-        "draw/contracts": "^0.15",
+        "draw/contracts": "^0.16",
         "symfony/process": "^6.4.0"
     },
     "require-dev": {
-        "draw/dependency-injection": "^0.15",
+        "draw/dependency-injection": "^0.16",
         "phpunit/phpunit": "^11.3"
     },
     "minimum-stability": "dev",
@@ -31,7 +31,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.15-dev"
+            "dev-master": "0.16-dev"
         }
     }
 }
