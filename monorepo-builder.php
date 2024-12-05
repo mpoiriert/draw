@@ -21,7 +21,7 @@ return static function (MBConfig $mbConfig): void {
             'bamarni/composer-bin-plugin' => '^1.4',
             'composer/semver' => '^3.2',
             'doctrine/doctrine-migrations-bundle' => '^3.1',
-            'doctrine/doctrine-fixtures-bundle' => '^3.5',
+            'doctrine/doctrine-fixtures-bundle' => '^3.7',
             'doctrine/sql-formatter' => '^1.1',
             'nelmio/cors-bundle' => '^2.0',
             'pelago/emogrifier' => '^7.0',

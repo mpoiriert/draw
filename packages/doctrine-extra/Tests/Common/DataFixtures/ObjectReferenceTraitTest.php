@@ -66,7 +66,8 @@ class ObjectReferenceTraitTest extends TestCase
                     '%s.%s',
                     $class = uniqid('class-'),
                     $name = uniqid('name-')
-                )
+                ),
+                $class
             )
             ->willReturn(false)
         ;
@@ -86,7 +87,8 @@ class ObjectReferenceTraitTest extends TestCase
                     '%s.%s',
                     $class = uniqid('class-'),
                     $name = uniqid('name-')
-                )
+                ),
+                $class
             )
             ->willReturn($object = new \stdClass())
         ;
