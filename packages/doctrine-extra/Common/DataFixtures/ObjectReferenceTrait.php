@@ -12,22 +12,34 @@ trait ObjectReferenceTrait
 {
     public function addObjectReference(string $class, string $name, object $object): void
     {
-        $this->referenceRepository->addReference($class.'.'.$name, $object);
+        $this->referenceRepository->addReference(
+            $this->buildReferenceName($class, $name),
+            $object
+        );
     }
 
     public function hasObjectReference(string $class, string $name): bool
     {
-        return $this->referenceRepository->hasReference($class.'.'.$name);
+        return $this->referenceRepository->hasReference(
+            $this->buildReferenceName($class, $name),
+            $class
+        );
     }
 
     public function getObjectReference(string $class, string $name): object
     {
-        return $this->referenceRepository->getReference($class.'.'.$name);
+        return $this->referenceRepository->getReference(
+            $this->buildReferenceName($class, $name),
+            $class
+        );
     }
 
     public function setObjectReference(string $class, string $name, object $object): void
     {
-        $this->referenceRepository->setReference($class.'.'.$name, $object);
+        $this->referenceRepository->setReference(
+            $this->buildReferenceName($class, $name),
+            $object
+        );
     }
 
     public function persistAndFlush(ObjectManager $objectManager, iterable $entities): void
@@ -41,5 +53,10 @@ trait ObjectReferenceTrait
         }
 
         $objectManager->flush();
+    }
+
+    private function buildReferenceName(string $class, string $name): string
+    {
+        return \sprintf('%s.%s', $class, $name);
     }
 }

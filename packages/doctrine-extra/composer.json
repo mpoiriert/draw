@@ -21,7 +21,7 @@
         "doctrine/orm": "^2.11",
         "doctrine/dbal": "^3.3",
         "doctrine/collections": "^1.0",
-        "doctrine/data-fixtures": "^1.5",
+        "doctrine/data-fixtures": "^2.0",
         "draw/dependency-injection": "^0.16",
         "draw/graphviz": "^0.16",
         "phpunit/phpunit": "^11.3"
