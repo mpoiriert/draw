@@ -3,22 +3,23 @@
 namespace Draw\Component\EntityMigrator\Message;
 
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
+use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Exception\ObjectNotFoundException;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Message\DoctrineReferenceAwareInterface;
-use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
+use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Stamp\PropertyReferenceStamp;
 
 class MigrateEntityCommand implements DoctrineReferenceAwareInterface
 {
-    private ?EntityMigrationInterface $entity;
+    private PropertyReferenceStamp|EntityMigrationInterface|null $entity;
 
     public function __construct(EntityMigrationInterface $entity)
     {
         $this->entity = $entity;
     }
 
-    public function getEntity(): ?EntityMigrationInterface
+    public function getEntity(): EntityMigrationInterface
     {
-        if (null === $this->entity) {
-            throw new UnrecoverableMessageHandlingException('Entity not found');
+        if (!$this->entity instanceof EntityMigrationInterface) {
+            throw new ObjectNotFoundException($this->entity?->getClass() ?? EntityMigrationInterface::class, $this->entity);
         }
 
         return $this->entity;
