@@ -5,9 +5,10 @@ namespace Draw\Component\EntityMigrator\Tests\Message;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
+use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Exception\ObjectNotFoundException;
+use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Stamp\PropertyReferenceStamp;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
 /**
  * @internal
@@ -36,11 +37,11 @@ class MigrateEntityCommandTest extends TestCase
         ReflectionAccessor::setPropertyValue(
             $this->object,
             'entity',
-            null
+            $stamp = new PropertyReferenceStamp('entity', EntityMigrationInterface::class, ['id' => 1])
         );
 
         static::expectExceptionObject(
-            new UnrecoverableMessageHandlingException('Entity not found')
+            new ObjectNotFoundException(EntityMigrationInterface::class, $stamp)
         );
 
         $this->object->getEntity();
