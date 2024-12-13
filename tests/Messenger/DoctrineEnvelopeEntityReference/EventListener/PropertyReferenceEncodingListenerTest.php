@@ -9,13 +9,14 @@ use App\Message\NewUserMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Exception\ObjectNotFoundException;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -25,23 +26,25 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
     #[AutowireService]
     private EnvelopeFinderInterface $envelopeFinder;
 
+    #[AutowireService]
+    private EntityManagerInterface $entityManager;
+
+    #[AutowireService]
+    private EventDispatcherInterface $eventDispatcher;
+
     private bool $preEncodeEventCalled = false;
 
     private bool $postEncodeEventCalled = false;
 
-    private static string $email;
+    private static User $user;
 
     public function testSend(): void
     {
-        $container = static::getContainer();
+        self::$user = (new User())
+            ->setEmail(uniqid().'@example.com')
+        ;
 
-        $entityManager = $container->get(EntityManagerInterface::class);
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-
-        $user = new User();
-        $user->setEmail(self::$email = uniqid().'@example.com');
-
-        $eventDispatcher->addListener(
+        $this->eventDispatcher->addListener(
             PreEncodeEvent::class,
             function (PreEncodeEvent $event): void {
                 $message = $event->getEnvelope()->getMessage();
@@ -62,9 +65,9 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
             -1
         );
 
-        $eventDispatcher->addListener(
+        $this->eventDispatcher->addListener(
             PostEncodeEvent::class,
-            function (PostEncodeEvent $event) use ($user): void {
+            function (PostEncodeEvent $event): void {
                 $message = $event->getEnvelope()->getMessage();
                 if (!$message instanceof NewUserMessage) {
                     return;
@@ -73,7 +76,7 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
                 $this->postEncodeEventCalled = true;
 
                 static::assertSame(
-                    $user,
+                    self::$user,
                     ReflectionAccessor::getPropertyValue(
                         $message,
                         'user'
@@ -84,9 +87,9 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
             -1
         );
 
-        $entityManager->persist($user);
+        $this->entityManager->persist(self::$user);
 
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         static::assertTrue($this->preEncodeEventCalled);
 
@@ -96,16 +99,43 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
     #[Depends('testSend')]
     public function testLoad(): void
     {
-        $envelope = $this->envelopeFinder->findByTags([self::$email])[0];
+        $envelope = $this->envelopeFinder->findByTags([self::$user->getEmail()])[0];
 
         $message = $envelope->getMessage();
 
         static::assertInstanceOf(NewUserMessage::class, $message);
 
         static::assertSame(
-            self::$email,
+            self::$user->getEmail(),
             $message->getUser()->getEmail()
         );
+    }
+
+    #[Depends('testSend')]
+    public function testLoadNotFound(): void
+    {
+        $this->entityManager
+            ->getConnection()
+            ->delete('draw_acme__user', ['email' => self::$user->getEmail()])
+        ;
+
+        $envelope = $this->envelopeFinder->findByTags([self::$user->getEmail()])[0];
+
+        $message = $envelope->getMessage();
+
+        static::assertInstanceOf(NewUserMessage::class, $message);
+
+        $this->expectException(ObjectNotFoundException::class);
+
+        $this->expectExceptionMessage(
+            \sprintf(
+                'Object of class [%s] not found. Identifiers [%s]',
+                User::class,
+                json_encode(['id' => self::$user->getId()]),
+            )
+        );
+
+        $message->getUser();
     }
 
     public function testODM(): void
