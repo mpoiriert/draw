@@ -15,7 +15,7 @@ final class ReflectionAccessor
 
     public static function getPropertyValue(object|string $objectOrClass, string $propertyName)
     {
-        $property = self::createAccessiblePropertyReflection($objectOrClass, $propertyName);
+        $property = self::getPropertyReflection($objectOrClass, $propertyName);
 
         return $property->isStatic()
             ? $property->getValue()
@@ -24,7 +24,7 @@ final class ReflectionAccessor
 
     public static function setPropertyValue(object|string $objectOrClass, string $propertyName, mixed $value): void
     {
-        $property = self::createAccessiblePropertyReflection($objectOrClass, $propertyName);
+        $property = self::getPropertyReflection($objectOrClass, $propertyName);
 
         $property->isStatic()
             ? $property->setValue($value)
@@ -59,7 +59,7 @@ final class ReflectionAccessor
         }
     }
 
-    private static function createAccessiblePropertyReflection($objectOrClass, string $propertyName): \ReflectionProperty
+    public static function getPropertyReflection($objectOrClass, string $propertyName): \ReflectionProperty
     {
         $class = \is_object($objectOrClass) ? $objectOrClass::class : $objectOrClass;
 
