@@ -5,32 +5,25 @@ namespace Draw\Component\Messenger\DoctrineEnvelopeEntityReference\EventListener
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use Draw\Component\Core\Reflection\ReflectionExtractor;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Message\DoctrineReferenceAwareInterface;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Stamp\PropertyReferenceStamp;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\BaseSerializerEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\Messenger\Stamp\SentToFailureTransportStamp;
 
-class PropertyReferenceEncodingListener implements EventSubscriberInterface
+class PropertyReferenceEncodingListener
 {
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            PreEncodeEvent::class => 'createPropertyReferenceStamps',
-            PostEncodeEvent::class => 'restoreDoctrineObjects',
-            PostDecodeEvent::class => 'restoreDoctrineObjects',
-        ];
-    }
-
     public function __construct(
         private ?ManagerRegistry $ormManagerRegistry,
         private ?ManagerRegistry $odmManagerRegistry,
     ) {
     }
 
+    #[AsEventListener]
     public function createPropertyReferenceStamps(PreEncodeEvent $event): void
     {
         $envelope = $event->getEnvelope();
@@ -79,6 +72,10 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
         $event->setEnvelope($envelope->with(...$stamps));
     }
 
+    #[
+        AsEventListener(event: PostEncodeEvent::class),
+        AsEventListener(event: PostDecodeEvent::class)
+    ]
     public function restoreDoctrineObjects(BaseSerializerEvent $event): void
     {
         $message = $event->getEnvelope()->getMessage();
@@ -90,11 +87,35 @@ class PropertyReferenceEncodingListener implements EventSubscriberInterface
         $stamps = $event->getEnvelope()->all(PropertyReferenceStamp::class);
 
         foreach ($stamps as $stamp) {
+            $object = $this->getManagerForClass($stamp->getClass())
+                ->find($stamp->getClass(), $stamp->getIdentifiers())
+            ;
+
+            if ($object) {
+                ReflectionAccessor::setPropertyValue(
+                    $message,
+                    $stamp->getPropertyName(),
+                    $object
+                );
+
+                continue;
+            }
+
+            $propertyReflection = ReflectionAccessor::getPropertyReflection(
+                $message,
+                $stamp->getPropertyName(),
+            );
+
+            $classes = ReflectionExtractor::getClasses($propertyReflection->getType());
+
+            if (!\in_array(PropertyReferenceStamp::class, $classes, true)) {
+                continue;
+            }
+
             ReflectionAccessor::setPropertyValue(
                 $message,
                 $stamp->getPropertyName(),
-                $this->getManagerForClass($stamp->getClass())
-                    ->find($stamp->getClass(), $stamp->getIdentifiers())
+                $stamp,
             );
         }
     }
