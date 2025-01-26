@@ -144,8 +144,10 @@ class MigrationWorkflowListener
             ->getConnection()
             ->executeStatement(
                 \sprintf(
-                    'INSERT IGNORE INTO `%s` (entity_id, migration_id, transition_logs, created_at) %s',
+                    'INSERT IGNORE INTO `%s` (entity_id, migration_id, %s, %s) %s',
                     $entityMigrationMetadata->getTableName(),
+                    $entityMigrationMetadata->getColumnName('transitionLogs'),
+                    $entityMigrationMetadata->getColumnName('createdAt'),
                     $sql
                 ),
                 array_map(
