@@ -152,7 +152,11 @@ class MigrationWorkflowListener
                 ),
                 array_map(
                     static fn (Parameter $parameter) => $parameter->getValue(),
-                    $queryBuilder->getParameters()->toArray()
+                    $parameters = $queryBuilder->getParameters()->toArray()
+                ),
+                array_map(
+                    static fn (Parameter $parameter) => $parameter->getType(),
+                    $parameters
                 )
             )
         ;
