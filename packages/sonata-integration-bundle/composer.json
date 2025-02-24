@@ -26,10 +26,10 @@
         "draw/user-bundle": "^0.19",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^11.3",
-        "scheb/2fa-bundle": "^6.0",
-        "scheb/2fa-email": "^6.0",
+        "scheb/2fa-bundle": "^7.6",
+        "scheb/2fa-email": "^7.6",
         "endroid/qr-code": "^6.0",
-        "scheb/2fa-totp": "^6.0"
+        "scheb/2fa-totp": "^7.6"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

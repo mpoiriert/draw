@@ -32,8 +32,8 @@
         "endroid/qr-code": "^6.0",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^11.3",
-        "scheb/2fa-bundle": "^6.0",
-        "scheb/2fa-totp": "^6.0"
+        "scheb/2fa-bundle": "^7.6",
+        "scheb/2fa-totp": "^7.6"
     },
     "suggest": {
         "draw/messenger": "By using this bundle 'call to action' link will be generated. Other wise you need to do it by hand",
