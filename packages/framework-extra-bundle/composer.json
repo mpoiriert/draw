@@ -18,32 +18,32 @@
     "require": {
         "php": ">=8.2",
         "ext-json": "*",
-        "draw/core": "^0.19",
-        "draw/dependency-injection": "^0.19",
+        "draw/core": "^0.20",
+        "draw/dependency-injection": "^0.20",
         "symfony/config": "^6.4.0",
         "symfony/dependency-injection": "^6.4.0",
         "symfony/http-kernel": "^6.4.0"
     },
     "require-dev": {
-        "draw/application": "^0.19",
-        "draw/aws-tool-kit": "^0.19",
-        "draw/console": "^0.19",
-        "draw/contracts": "^0.19",
-        "draw/cron-job": "^0.19",
-        "draw/doctrine-extra": "^0.19",
-        "draw/entity-migrator": "^0.19",
-        "draw/log": "^0.19",
-        "draw/mailer": "^0.19",
-        "draw/messenger": "^0.19",
-        "draw/open-api": "^0.19",
-        "draw/process": "^0.19",
-        "draw/sonata-integration-bundle": "^0.19",
-        "draw/security": "^0.19",
-        "draw/tester": "^0.19",
-        "draw/tester-bundle": "^0.19",
-        "draw/user-bundle": "^0.19",
-        "draw/validator": "^0.19",
-        "draw/workflow": "^0.19",
+        "draw/application": "^0.20",
+        "draw/aws-tool-kit": "^0.20",
+        "draw/console": "^0.20",
+        "draw/contracts": "^0.20",
+        "draw/cron-job": "^0.20",
+        "draw/doctrine-extra": "^0.20",
+        "draw/entity-migrator": "^0.20",
+        "draw/log": "^0.20",
+        "draw/mailer": "^0.20",
+        "draw/messenger": "^0.20",
+        "draw/open-api": "^0.20",
+        "draw/process": "^0.20",
+        "draw/sonata-integration-bundle": "^0.20",
+        "draw/security": "^0.20",
+        "draw/tester": "^0.20",
+        "draw/tester-bundle": "^0.20",
+        "draw/user-bundle": "^0.20",
+        "draw/validator": "^0.20",
+        "draw/workflow": "^0.20",
         "monolog/monolog": "^3.5.0",
         "pelago/emogrifier": "^7.0",
         "phpunit/phpunit": "^11.3",
@@ -63,7 +63,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.19-dev"
+            "dev-master": "0.20-dev"
         }
     }
 }
