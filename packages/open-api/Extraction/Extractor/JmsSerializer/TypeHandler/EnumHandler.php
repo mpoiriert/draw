@@ -24,11 +24,9 @@ class EnumHandler implements TypeToSchemaHandlerInterface
             : 'string';
 
         $prop->enum = array_map(
-            static function (\ReflectionEnumBackedCase|\ReflectionEnumUnitCase $value) {
-                return $value instanceof \ReflectionEnumBackedCase
+            static fn (\ReflectionEnumBackedCase|\ReflectionEnumUnitCase $value) => $value instanceof \ReflectionEnumBackedCase
                     ? $value->getBackingValue()
-                    : $value->getName();
-            },
+                    : $value->getName(),
             $type->getCases()
         );
 
