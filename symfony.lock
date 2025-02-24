@@ -192,9 +192,6 @@
     "knplabs/knp-menu-bundle": {
         "version": "v3.1.0"
     },
-    "laminas/laminas-diactoros": {
-        "version": "2.8.0"
-    },
     "monolog/monolog": {
         "version": "2.3.5"
     },
@@ -221,9 +218,6 @@
     },
     "paragonie/constant_time_encoding": {
         "version": "v2.4.0"
-    },
-    "pdeans/http": {
-        "version": "v1.2.1"
     },
     "pelago/emogrifier": {
         "version": "v6.0.0"
@@ -733,6 +727,20 @@
     },
     "symfony/service-contracts": {
         "version": "v2.4.0"
+    },
+    "symfony/stimulus-bundle": {
+        "version": "2.23",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.13",
+            "ref": "6acd9ff4f7fd5626d2962109bd4ebab351d43c43"
+        },
+        "files": [
+            "assets/bootstrap.js",
+            "assets/controllers.json",
+            "assets/controllers/hello_controller.js"
+        ]
     },
     "symfony/stopwatch": {
         "version": "v5.3.4"
