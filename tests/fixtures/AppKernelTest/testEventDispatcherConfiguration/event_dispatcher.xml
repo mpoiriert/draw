@@ -159,6 +159,7 @@
     <callable type="function" name="checkNewestInstance" class="Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener" priority="50"/>
     <callable type="function" name="configureOptions" class="Draw\Component\Console\EventListener\CommandFlowListener" priority="1"/>
     <callable type="function" name="addCommandData" class="Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor" priority="1"/>
+    <callable type="function" name="onConsoleCommand" class="Doctrine\Bundle\MigrationsBundle\EventListener\SchemaFilterListener" priority="0"/>
     <callable type="function" name="logCommandStart" class="Draw\Component\Console\EventListener\CommandFlowListener" priority="0"/>
     <callable type="function" name="connectSystem" class="Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener" priority="0"/>
   </event>

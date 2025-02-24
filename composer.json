@@ -31,11 +31,11 @@
         "jms/serializer": "^3.11",
         "jms/serializer-bundle": "^5.4.0",
         "knplabs/doctrine-behaviors": "*",
-        "nesbot/carbon": "^2.0",
+        "nesbot/carbon": "^3.8",
         "php": ">=8.2",
         "phpdocumentor/reflection-docblock": "^5.2",
         "phpunit/phpunit": "^11.3",
-        "psr/http-message": "^1.0",
+        "psr/http-message": "^1.0 || ^2.0",
         "psr/log": "^3",
         "ramsey/uuid": "^4.2",
         "sensiolabs/ansi-to-html": "^1.2",
@@ -74,7 +74,7 @@
         "symfony/workflow": "^6.4.0",
         "symfony/yaml": "^6.4.0",
         "twig/twig": "^3.3",
-        "yokai/sonata-workflow": "^0.7.0"
+        "yokai/sonata-workflow": "^0.8.0"
     },
     "require-dev": {
         "aws/aws-sdk-php-symfony": "^2.2",
@@ -91,15 +91,14 @@
         "firebase/php-jwt": "^6.1",
         "monolog/monolog": "^3.5.0",
         "nelmio/cors-bundle": "^2.0",
-        "pdeans/http": "^1.1",
         "pelago/emogrifier": "^7.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^1.7",
         "phpstan/phpstan-phpunit": "^1.1",
         "phpstan/phpstan-symfony": "^1.2",
-        "scheb/2fa-bundle": "^6.0",
-        "scheb/2fa-email": "^6.0",
-        "scheb/2fa-totp": "^6.0",
+        "scheb/2fa-bundle": "^v7.6",
+        "scheb/2fa-email": "^7.6",
+        "scheb/2fa-totp": "^7.6",
         "symfony/asset": "^6.4.0",
         "symfony/cache": "^6.4.0",
         "symfony/debug-bundle": "^6.4.0",
@@ -233,7 +232,7 @@
         },
         "patches": {
             "sonata-project/doctrine-orm-admin-bundle": {
-                "Batch model delete check": "https://github.com/mpoiriert/SonataDoctrineORMAdminBundle/commit/9f9768c99d63020e3b9168d4456edf2a3dc97cca.patch"
+                "Batch model delete check": "https://github.com/mpoiriert/SonataDoctrineORMAdminBundle/commit/04f8a0e301bf09a1272b8f9d8535829ca870fb08.patch"
             }
         },
         "src-dir": "app/src"
