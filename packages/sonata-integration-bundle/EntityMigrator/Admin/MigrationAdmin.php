@@ -3,12 +3,20 @@
 namespace Draw\Bundle\SonataIntegrationBundle\EntityMigrator\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class MigrationAdmin extends AbstractAdmin
 {
+    protected function configureDatagridFilters(DatagridMapper $filter): void
+    {
+        $filter
+            ->add('name')
+        ;
+    }
+
     protected function configureListFields(ListMapper $list): void
     {
         $list
