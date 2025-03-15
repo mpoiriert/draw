@@ -83,7 +83,7 @@ class PropertiesExtractorTest extends TestCase
     {
         $reflectionClass = new \ReflectionClass(__NAMESPACE__.'\JmsExtractorStubModel');
 
-        // Need to be there to validate that JMS extract it's type properly
+        // Need to be there to validate that JMS extract his type properly
         $context = $this->getExtractionContext([
             new TypeSchemaExtractor(),
             $this->jmsExtractor,
@@ -135,7 +135,7 @@ class JmsExtractorStubModel
      *
      * @var JmsExtractorStubEnum
      */
-    #[Serializer\Type('enum<\''.JmsExtractorStubEnum::class.'\'>')]
+    #[Serializer\Type('enum<'.JmsExtractorStubEnum::class.'>')]
     #[Serializer\Groups(['test'])]
     public $genericEnum;
 
@@ -144,16 +144,34 @@ class JmsExtractorStubModel
      *
      * @var JmsExtractorStubEnum
      */
-    #[Serializer\Type('enum<\''.JmsExtractorStubBackedEnum::class.'\'>')]
+    #[Serializer\Type('enum<'.JmsExtractorStubBackedEnum::class.'>')]
     #[Serializer\Groups(['test'])]
     public $backedEnum;
+
+    /**
+     * The backed enum by name.
+     *
+     * @var JmsExtractorStubEnum
+     */
+    #[Serializer\Type('enum<'.JmsExtractorStubBackedEnum::class.",'name'>")]
+    #[Serializer\Groups(['test'])]
+    public $backedEnumName;
+
+    /**
+     * Array be backed enum by name.
+     *
+     * @var array<JmsExtractorStubEnum>
+     */
+    #[Serializer\Type('array<enum<'.JmsExtractorStubBackedEnum::class.",'name'>>")]
+    #[Serializer\Groups(['test'])]
+    public $arrayBackedEnumName;
 
     /**
      * The backed enum int.
      *
      * @var JmsExtractorStubEnum
      */
-    #[Serializer\Type('enum<\''.JmsExtractorStubBackedEnumInt::class.'\'>')]
+    #[Serializer\Type('enum<'.JmsExtractorStubBackedEnumInt::class.'>')]
     #[Serializer\Groups(['test'])]
     public $backedEnumInt;
 

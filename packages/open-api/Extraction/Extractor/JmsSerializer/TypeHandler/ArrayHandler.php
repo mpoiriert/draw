@@ -9,6 +9,11 @@ use JMS\Serializer\Metadata\PropertyMetadata;
 
 class ArrayHandler implements TypeToSchemaHandlerInterface
 {
+    public function __construct(
+        private EnumHandler $enumHandler,
+    ) {
+    }
+
     public function extractSchemaFromType(
         PropertyMetadata $propertyMetadata,
         ExtractionContextInterface $extractionContext,
@@ -19,7 +24,9 @@ class ArrayHandler implements TypeToSchemaHandlerInterface
 
         $propertySchema = new Schema();
         $propertySchema->type = 'array';
-        $propertySchema->items = PropertiesExtractor::extractTypeSchema($type, $extractionContext, $propertyMetadata);
+        $propertySchema->items = 'enum' === $type
+            ? $this->enumHandler->createSchemaFromType($propertyMetadata->type['params'][0])
+            : PropertiesExtractor::extractTypeSchema($type, $extractionContext, $propertyMetadata);
 
         return $propertySchema;
     }

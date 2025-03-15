@@ -153,10 +153,6 @@ class TypeSchemaExtractor implements ExtractorInterface
             return null;
         }
 
-        if (null === self::$typeResolver) {
-            self::$typeResolver = new TypeResolver();
-        }
-
         if (str_starts_with($type, '?')) {
             $type = substr($type, 1);
         }
@@ -165,7 +161,7 @@ class TypeSchemaExtractor implements ExtractorInterface
             $type = $extractionContext->getParameter('generic-template');
         }
 
-        $result = self::$typeResolver->resolve($type);
+        $result = (self::$typeResolver ??= new TypeResolver())->resolve($type);
 
         if ($result instanceof Collection) {
             return [

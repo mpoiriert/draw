@@ -32,6 +32,25 @@
           ],
           "type": "integer"
         },
+        "backed_enum_name": {
+          "description": "The backed enum by name.",
+          "enum": [
+            "ABC",
+            "DEF"
+          ],
+          "type": "string"
+        },
+        "array_backed_enum_name": {
+          "description": "Array be backed enum by name.",
+          "items": {
+            "enum": [
+              "ABC",
+              "DEF"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
         "backed_enum": {
           "description": "The backed enum.",
           "enum": [

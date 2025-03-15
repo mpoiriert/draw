@@ -48,11 +48,13 @@ class PropertiesExtractor implements ExtractorInterface
 
     public static function getDefaultHandlers(): array
     {
+        $enumHandler = new EnumHandler();
+
         return [
             new DynamicObjectHandler(),
-            new ArrayHandler(),
+            new ArrayHandler($enumHandler),
             new GenericTemplateHandler(),
-            new EnumHandler(),
+            $enumHandler,
         ];
     }
 
