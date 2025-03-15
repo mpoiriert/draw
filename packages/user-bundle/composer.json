@@ -15,8 +15,8 @@
         "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.11",
-        "draw/contracts": "^0.21",
-        "draw/core": "^0.21",
+        "draw/contracts": "^0.22",
+        "draw/core": "^0.22",
         "ramsey/uuid": "^4.2",
         "symfony/framework-bundle": "^6.4.0",
         "symfony/security-core": "^6.4.0",
@@ -24,11 +24,11 @@
         "symfony/yaml": "^6.4.0"
     },
     "require-dev": {
-        "draw/framework-extra-bundle": "^0.21",
-        "draw/mailer": "^0.21",
-        "draw/messenger": "^0.21",
-        "draw/security": "^0.21",
-        "draw/tester": "^0.21",
+        "draw/framework-extra-bundle": "^0.22",
+        "draw/mailer": "^0.22",
+        "draw/messenger": "^0.22",
+        "draw/security": "^0.22",
+        "draw/tester": "^0.22",
         "endroid/qr-code": "^6.0",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^11.3",
@@ -52,7 +52,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.21-dev"
+            "dev-master": "0.22-dev"
         }
     }
 }
