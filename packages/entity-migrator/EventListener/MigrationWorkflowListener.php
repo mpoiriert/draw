@@ -3,7 +3,7 @@
 namespace Draw\Component\EntityMigrator\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\Parameter;
+use Doctrine\ORM\Query\Parser;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\EntityMigrator\Entity\Migration;
 use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
@@ -130,15 +130,33 @@ class MigrationWorkflowListener
 
         $queryBuilder = $migration->createSelectIdQueryBuilder();
 
-        $sql = $queryBuilder
+        $query = $queryBuilder
             ->addSelect(
                 $queryBuilder->expr()->literal($subject->getId()).' as migration_id',
                 $queryBuilder->expr()->literal('{}').' as transition_logs',
                 $queryBuilder->expr()->literal(date('Y-m-d H:i:s')).' as created_at',
             )
             ->getQuery()
-            ->getSQL()
         ;
+
+        $mappings = array_keys((new Parser($query))->parse()->getParameterMappings());
+
+        $parameters = [];
+        $parameterTypes = [];
+
+        foreach ($queryBuilder->getParameters() as $parameter) {
+            $index = array_search($parameter->getName(), $mappings, true);
+
+            if (false === $index) {
+                throw new \RuntimeException(\sprintf('Parameter [%s] not found in mappings.', $parameter->getName()));
+            }
+
+            $parameters[$index] = $parameter->getValue();
+            $parameterTypes[$index] = $parameter->getType();
+        }
+
+        ksort($parameters);
+        ksort($parameterTypes);
 
         $manager
             ->getConnection()
@@ -148,16 +166,10 @@ class MigrationWorkflowListener
                     $entityMigrationMetadata->getTableName(),
                     $entityMigrationMetadata->getColumnName('transitionLogs'),
                     $entityMigrationMetadata->getColumnName('createdAt'),
-                    $sql
+                    $query->getSQL()
                 ),
-                array_map(
-                    static fn (Parameter $parameter) => $parameter->getValue(),
-                    $parameters = $queryBuilder->getParameters()->toArray()
-                ),
-                array_map(
-                    static fn (Parameter $parameter) => $parameter->getType(),
-                    $parameters
-                )
+                $parameters,
+                $parameterTypes
             )
         ;
 
