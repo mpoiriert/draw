@@ -72,8 +72,22 @@ class PreventDelete
         return $this->metadata ?? [];
     }
 
+    private function isNew(ManagerRegistry $managerRegistry, object $subject): bool
+    {
+        $metadata = $managerRegistry
+            ->getManagerForClass($subject::class)
+            ->getClassMetadata($subject::class)
+        ;
+
+        return [] === $metadata->getIdentifierValues($subject);
+    }
+
     public function exists(ManagerRegistry $managerRegistry, object $subject): bool
     {
+        if ($this->isNew($managerRegistry, $subject)) {
+            return false;
+        }
+
         $query = $this->createQueryBuilder($managerRegistry, $subject)
             ->select('1')
             ->setMaxResults(1)
@@ -97,6 +111,10 @@ class PreventDelete
 
     public function getEntities(ManagerRegistry $managerRegistry, object $subject, int $limit = 10): array
     {
+        if ($this->isNew($managerRegistry, $subject)) {
+            return [];
+        }
+
         $ids = $this->createQueryBuilder($managerRegistry, $subject)
             ->select('DISTINCT(root)')
             ->setMaxResults($limit)
