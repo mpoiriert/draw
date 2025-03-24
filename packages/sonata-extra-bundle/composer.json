@@ -41,6 +41,9 @@
             "dev-master": "0.23-dev"
         },
         "patches": {
+            "sonata-project/admin-bundle": {
+                "support for operator in ModelAutocompleteType": "https://github.com/DumitracheAdrian/SonataAdminBundle/commit/fcbe6fa405b3d7f8590a231c19baa4821fcc081f.patch"
+            },
             "sonata-project/doctrine-orm-admin-bundle": {
                 "Batch model delete check": "https://github.com/mpoiriert/SonataDoctrineORMAdminBundle/commit/04f8a0e301bf09a1272b8f9d8535829ca870fb08.patch"
             }
