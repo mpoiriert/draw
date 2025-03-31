@@ -9,6 +9,7 @@ $finder = (new \PhpCsFixer\Finder)
 ;
 
 $config = (new \PhpCsFixer\Config())
+    ->setCacheFile(__DIR__ . '/var/.php-cs-fixer.cache')
     ->setRules([
         '@PHP80Migration:risky' => true,
         '@PHP82Migration' => true,

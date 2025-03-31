@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Draw\Component\DataSynchronizer\Metadata\EntitySynchronizationMetadata;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
 use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,6 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\Entity,
     ORM\Table(name: 'tag_translation')
 ]
+#[EntitySynchronizationMetadata(
+    lookUpFields: ['locale', 'translatable'],
+    excludeFields: ['id'],
+)]
 class TagTranslation implements TranslationInterface
 {
     use TranslationTrait;

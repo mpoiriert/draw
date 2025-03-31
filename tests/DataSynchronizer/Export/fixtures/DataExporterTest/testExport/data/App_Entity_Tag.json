@@ -1,0 +1,16 @@
+{
+    "App\\Entity\\Tag": [
+        {
+            "name": "admin",
+            "active": true
+        },
+        {
+            "name": "inactive",
+            "active": false
+        },
+        {
+            "name": "not-use",
+            "active": true
+        }
+    ]
+}
