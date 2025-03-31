@@ -5,6 +5,11 @@ namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension\ActionableAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
+/**
+ * @template T of object
+ *
+ * @template-extends AdminInterface<T>
+ */
 interface ActionableAdminInterface extends AdminInterface
 {
     /**
