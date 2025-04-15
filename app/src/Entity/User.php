@@ -31,9 +31,25 @@ use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'draw_acme__user')]
-#[ORM\HasLifecycleCallbacks]
+#[
+    ORM\Entity,
+    ORM\Table(name: 'draw_acme__user'),
+    ORM\HasLifecycleCallbacks
+]
+#[
+    PreventDelete(
+        class: ChildObject2::class,
+        path: 'onDeleteCascadeAttributeOverridden'
+    ),
+    PreventDelete(
+        class: Tag::class,
+        path: 'userTags.tag',
+        metadata: [
+            'max_results' => 1,
+            'path_label' => 'User tags',
+        ]
+    )
+]
 #[UniqueEntity(fields: ['email'])]
 class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAuthenticationUserInterface, PasswordChangeUserInterface, LockableUserInterface, TwoFactorInterface, ByEmailInterface, ByTimeBaseOneTimePasswordInterface, MigrationTargetEntityInterface, LocalizationAwareInterface
 {
@@ -140,7 +156,6 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         ORM\ManyToOne(targetEntity: ChildObject2::class),
         ORM\JoinColumn(onDelete: 'CASCADE')
     ]
-    #[PreventDelete]
     private ?ChildObject2 $onDeleteCascadeAttributeOverridden = null;
 
     #[
@@ -207,7 +222,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
         $this->roles = array_values(
             array_filter(
                 $roles,
-                static fn ($role) => \is_string($role) && '' !== $role && 'ROLE_USER' !== $role
+                static fn($role) => \is_string($role) && '' !== $role && 'ROLE_USER' !== $role
             )
         );
 
