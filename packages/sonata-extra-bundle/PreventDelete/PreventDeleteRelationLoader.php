@@ -143,45 +143,74 @@ class PreventDeleteRelationLoader
      */
     private function getRelationsFromManager(ManagerRegistry $managerRegistry): array
     {
-        $relations = [];
+        $metadatas = [];
+        $associationIdentifiers = [];
+
         foreach ($managerRegistry->getManagers() as $manager) {
             foreach ($manager->getMetadataFactory()->getAllMetadata() as $metadata) {
                 if (!$metadata instanceof ClassMetadata) {
                     continue;
                 }
 
-                $relations = array_merge(
-                    $relations,
-                    $this->preventDeleteFromClassAttributes($metadata->getReflectionClass())
-                );
+                $metadatas[] = $metadata;
 
-                foreach ($metadata->associationMappings as $associationMapping) {
-                    // We want foreign key only
-                    if (!$associationMapping['isOwningSide']) {
-                        continue;
-                    }
-
-                    $preventDeleteFromAttribute = $this->preventDeleteFromPropertyAttribute($associationMapping);
-
-                    // Not preventing delete from attribute as precedence over preventing delete from association
-                    if ($preventDeleteFromAttribute && !$preventDeleteFromAttribute->getPreventDelete()) {
-                        continue;
-                    }
-
-                    if (
-                        !$this->preventDeleteFromAssociation($associationMapping)
-                        && null === $preventDeleteFromAttribute
-                    ) {
-                        continue;
-                    }
-
-                    $relations[] = new PreventDelete(
-                        $associationMapping['targetEntity'],
-                        $metadata->getName(),
-                        $associationMapping['fieldName'],
-                        metadata: $preventDeleteFromAttribute?->getMetadata() ?? []
-                    );
+                foreach ($metadata->associationMappings as $key => $associationMapping) {
+                    $associationIdentifiers[self::getAssociationIdentifier($metadata->getName(), $key)] = true;
                 }
+            }
+        }
+
+        $relations = [];
+
+        foreach ($metadatas as $metadata) {
+            if ($metadata->isMappedSuperclass) {
+                continue;
+            }
+
+            $relations = array_merge(
+                $relations,
+                $this->preventDeleteFromClassAttributes($metadata->getReflectionClass())
+            );
+
+            foreach ($metadata->associationMappings as $associationMapping) {
+                // We want foreign key only
+                if (!$associationMapping['isOwningSide']) {
+                    continue;
+                }
+
+                $parentClass = $associationMapping['inherited'] ?? null;
+
+                // Associations defined in parent classes will be taken into account
+                if (
+                    null !== $parentClass
+                    && \array_key_exists(
+                        self::getAssociationIdentifier($parentClass, $associationMapping['fieldName']),
+                        $associationIdentifiers
+                    )
+                ) {
+                    continue;
+                }
+
+                $preventDeleteFromAttribute = $this->preventDeleteFromPropertyAttribute($associationMapping);
+
+                // Not preventing delete from attribute as precedence over preventing delete from association
+                if ($preventDeleteFromAttribute && !$preventDeleteFromAttribute->getPreventDelete()) {
+                    continue;
+                }
+
+                if (
+                    !$this->preventDeleteFromAssociation($associationMapping)
+                    && null === $preventDeleteFromAttribute
+                ) {
+                    continue;
+                }
+
+                $relations[] = new PreventDelete(
+                    $associationMapping['targetEntity'],
+                    $metadata->getName(),
+                    $associationMapping['fieldName'],
+                    metadata: $preventDeleteFromAttribute?->getMetadata() ?? []
+                );
             }
         }
 
@@ -213,18 +242,40 @@ class PreventDeleteRelationLoader
      */
     private function preventDeleteFromClassAttributes(\ReflectionClass $reflectionClass): array
     {
+        $reflectionClassName = $reflectionClass->getName();
+
+        $attributes = array_merge(
+            $reflectionClass->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF),
+            $this->getPreventDeleteAttributesFromTrait($reflectionClass)
+        );
+
+        while (false !== $parentReflectionClass = $reflectionClass->getParentClass()) {
+            $attributes = array_merge(
+                $attributes,
+                $parentReflectionClass->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF),
+                $this->getPreventDeleteAttributesFromTrait($parentReflectionClass)
+            );
+
+            $reflectionClass = $parentReflectionClass;
+        }
+
         $preventDeletes = [];
-        $attributes = $reflectionClass->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF);
+
         foreach ($attributes as $attribute) {
             $preventDelete = $attribute->newInstance();
-
             \assert($preventDelete instanceof PreventDelete);
 
             if (!$preventDelete->getPreventDelete()) {
                 continue;
             }
 
-            $preventDelete->setClass($reflectionClass->getName());
+            if (null === $preventDelete->getClass()) {
+                $preventDelete->setClass($reflectionClassName);
+            }
+
+            if (null === $preventDelete->getRelatedClass()) {
+                $preventDelete->setRelatedClass($reflectionClassName);
+            }
 
             $preventDeletes[] = $preventDelete;
         }
@@ -261,5 +312,28 @@ class PreventDeleteRelationLoader
         }
 
         return true;
+    }
+
+    /**
+     * @return array<\ReflectionAttribute>
+     */
+    private function getPreventDeleteAttributesFromTrait(\ReflectionClass $reflectionClass): array
+    {
+        $attributes = [];
+
+        foreach ($reflectionClass->getTraits() as $reflectionTraitClass) {
+            $attributes = array_merge(
+                $attributes,
+                $reflectionTraitClass->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF),
+                $this->getPreventDeleteAttributesFromTrait($reflectionTraitClass)
+            );
+        }
+
+        return $attributes;
+    }
+
+    private static function getAssociationIdentifier(string $class, string $associationName): string
+    {
+        return \sprintf('%s::%s', $class, $associationName);
     }
 }

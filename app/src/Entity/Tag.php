@@ -16,14 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     ORM\HasLifecycleCallbacks
 ]
 #[UniqueEntity(fields: ['name'])]
-#[PreventDelete(
-    relatedClass: User::class,
-    path: 'userTags.tag',
-    metadata: [
-        'max_results' => 1,
-        'path_label' => 'User tags',
-    ]
-)]
 #[Serializer\ExclusionPolicy('all')]
 class Tag implements \Stringable, TranslatableInterface
 {
