@@ -1,0 +1,15 @@
+App\Entity\Tag:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: false
+            type: integer
+        name:
+            expose: true
+            type: string
+        active:
+            expose: true
+            type: boolean
+        exportable:
+            expose: false
+            type: boolean
