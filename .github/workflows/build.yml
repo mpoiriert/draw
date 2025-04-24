@@ -51,6 +51,7 @@ jobs:
           tools: composer
           coverage: none
           ini-values: memory_limit=4G
+          extensions: mongodb-1.17.3
       - name: Setup MySQL
         uses: shogo82148/actions-setup-mysql@v1
         with:
