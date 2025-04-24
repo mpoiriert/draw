@@ -31,9 +31,7 @@ class GenericFormHandler
 
         $previousExecution = $executions['execution'];
 
-        $executions['execution'] = static function (object $object) use ($objectActionExecutioner, $previousExecution): void {
-            $previousExecution($object, $objectActionExecutioner->options['form.data']);
-        };
+        $executions['execution'] = static fn (object $object): mixed => $previousExecution($object, $objectActionExecutioner->options['form.data']);
 
         $form = $this->getForm($objectActionExecutioner, $formClass, $data, $request);
 
