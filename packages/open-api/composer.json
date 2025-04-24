@@ -14,9 +14,9 @@
     },
     "require-dev": {
         "ext-zip": "*",
-        "draw/core": "^0.26",
-        "draw/dependency-injection": "^0.26",
-        "draw/tester": "^0.26",
+        "draw/core": "^0.27",
+        "draw/dependency-injection": "^0.27",
+        "draw/tester": "^0.27",
         "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^2.11",
@@ -34,7 +34,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.26-dev"
+            "dev-master": "0.27-dev"
         }
     }
 }
