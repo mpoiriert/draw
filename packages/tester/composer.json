@@ -17,7 +17,7 @@
     ],
     "require": {
         "ext-simplexml": "*",
-        "draw/core": "^0.27",
+        "draw/core": "^0.28",
         "guzzlehttp/psr7": "^1.8 || ^2.0",
         "phpunit/phpunit": "^11.3",
         "psr/http-message": "^1.0 || ^2.0",
@@ -26,7 +26,7 @@
     "require-dev": {
         "nesbot/carbon": "^3.8",
         "doctrine/orm": "^2.11",
-        "draw/dependency-injection": "^0.27",
+        "draw/dependency-injection": "^0.28",
         "symfony/console": "^6.4.0",
         "symfony/dependency-injection": "^6.4.0"
     },
@@ -43,7 +43,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.27-dev"
+            "dev-master": "0.28-dev"
         }
     }
 }

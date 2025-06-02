@@ -18,32 +18,32 @@
     "require": {
         "php": ">=8.2",
         "ext-json": "*",
-        "draw/core": "^0.27",
-        "draw/dependency-injection": "^0.27",
+        "draw/core": "^0.28",
+        "draw/dependency-injection": "^0.28",
         "symfony/config": "^6.4.0",
         "symfony/dependency-injection": "^6.4.0",
         "symfony/http-kernel": "^6.4.0"
     },
     "require-dev": {
-        "draw/application": "^0.27",
-        "draw/aws-tool-kit": "^0.27",
-        "draw/console": "^0.27",
-        "draw/contracts": "^0.27",
-        "draw/cron-job": "^0.27",
-        "draw/doctrine-extra": "^0.27",
-        "draw/entity-migrator": "^0.27",
-        "draw/log": "^0.27",
-        "draw/mailer": "^0.27",
-        "draw/messenger": "^0.27",
-        "draw/open-api": "^0.27",
-        "draw/process": "^0.27",
-        "draw/sonata-integration-bundle": "^0.27",
-        "draw/security": "^0.27",
-        "draw/tester": "^0.27",
-        "draw/tester-bundle": "^0.27",
-        "draw/user-bundle": "^0.27",
-        "draw/validator": "^0.27",
-        "draw/workflow": "^0.27",
+        "draw/application": "^0.28",
+        "draw/aws-tool-kit": "^0.28",
+        "draw/console": "^0.28",
+        "draw/contracts": "^0.28",
+        "draw/cron-job": "^0.28",
+        "draw/doctrine-extra": "^0.28",
+        "draw/entity-migrator": "^0.28",
+        "draw/log": "^0.28",
+        "draw/mailer": "^0.28",
+        "draw/messenger": "^0.28",
+        "draw/open-api": "^0.28",
+        "draw/process": "^0.28",
+        "draw/sonata-integration-bundle": "^0.28",
+        "draw/security": "^0.28",
+        "draw/tester": "^0.28",
+        "draw/tester-bundle": "^0.28",
+        "draw/user-bundle": "^0.28",
+        "draw/validator": "^0.28",
+        "draw/workflow": "^0.28",
         "monolog/monolog": "^3.5.0",
         "pelago/emogrifier": "^7.0",
         "phpunit/phpunit": "^11.3",
@@ -63,7 +63,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.27-dev"
+            "dev-master": "0.28-dev"
         }
     }
 }
