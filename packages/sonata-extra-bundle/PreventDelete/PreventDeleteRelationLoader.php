@@ -249,16 +249,6 @@ class PreventDeleteRelationLoader
             $this->getPreventDeleteAttributesFromTrait($reflectionClass)
         );
 
-        while (false !== $parentReflectionClass = $reflectionClass->getParentClass()) {
-            $attributes = array_merge(
-                $attributes,
-                $parentReflectionClass->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF),
-                $this->getPreventDeleteAttributesFromTrait($parentReflectionClass)
-            );
-
-            $reflectionClass = $parentReflectionClass;
-        }
-
         $preventDeletes = [];
 
         foreach ($attributes as $attribute) {

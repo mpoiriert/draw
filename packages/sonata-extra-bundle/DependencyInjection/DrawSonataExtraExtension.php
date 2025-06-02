@@ -18,6 +18,7 @@ use Draw\Bundle\SonataExtraBundle\Notifier\Channel\SonataChannel;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Extension\PreventDeleteExtension;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\RelationsDumper;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter\PreventDeleteVoter;
 use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
@@ -86,6 +87,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             $container->removeDefinition(DefaultCanVoter::class);
             $container->removeDefinition(PreventDeleteVoter::class);
             $container->removeDefinition(PreventDeleteRelationLoader::class);
+            $container->removeDefinition(RelationsDumper::class);
         } else {
             if (!$config['can_security_handler']['grant_by_default']) {
                 $container->removeDefinition(DefaultCanVoter::class);
@@ -95,6 +97,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                 $container->removeDefinition(PreventDeleteVoter::class);
                 $container->removeDefinition(PreventDeleteRelationLoader::class);
                 $container->removeDefinition(PreventDeleteExtension::class);
+                $container->removeDefinition(RelationsDumper::class);
             } else {
                 $container->getDefinition(PreventDeleteRelationLoader::class)
                     ->setArgument(
@@ -110,6 +113,12 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                         $config['can_security_handler']['prevent_delete_voter']['prevent_delete_from_all_relations']
                     )
                 ;
+
+                $container
+                    ->getDefinition(RelationsDumper::class)
+                    ->setPublic(true)
+                ;
+
                 if (!$config['can_security_handler']['prevent_delete_voter']['use_cache']) {
                     $container->getDefinition(PreventDeleteRelationLoader::class)
                         ->setArgument('$cacheDirectory', null)
