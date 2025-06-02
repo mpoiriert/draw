@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataExtraBundle\Tests\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\DependencyInjection\DrawSonataExtraExtension;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
+use Draw\Bundle\SonataExtraBundle\PreventDelete\RelationsDumper;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter\PreventDeleteVoter;
 use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
@@ -39,6 +40,7 @@ class DrawSonataExtraExtensionCanSecurityHandlerEnabledTest extends DrawSonataEx
         yield [DefaultCanVoter::class];
         yield [PreventDeleteVoter::class];
         yield [PreventDeleteRelationLoader::class];
+        yield [RelationsDumper::class];
     }
 
     public function testCanSecurityHandlerDefinition(): void

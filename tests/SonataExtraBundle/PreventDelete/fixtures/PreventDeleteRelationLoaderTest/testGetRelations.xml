@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<relations>
+  <relation class="App\Entity\ChildObject2" related-class="App\Entity\User" path="onDeleteCascadeAttributeOverridden"/>
+  <relation class="App\Entity\ChildObject2" related-class="App\Entity\User" path="onDeleteCascadeConfigOverridden"/>
+  <relation class="App\Entity\ChildObject2" related-class="App\Entity\User" path="onDeleteRestrict"/>
+  <relation class="App\Entity\Tag" related-class="App\Entity\User" path="tags">
+    <metadata key="max_results" value="1"/>
+  </relation>
+  <relation class="App\Entity\Tag" related-class="App\Entity\User" path="userTags.tag">
+    <metadata key="max_results" value="1"/>
+    <metadata key="path_label" value="User tags"/>
+  </relation>
+</relations>
