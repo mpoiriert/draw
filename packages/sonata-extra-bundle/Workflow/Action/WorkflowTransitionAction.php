@@ -1,6 +1,6 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\Action;
+namespace Draw\Bundle\SonataExtraBundle\Workflow\Action;
 
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ObjectActionExecutioner;
 use Sonata\AdminBundle\Admin\AdminInterface;

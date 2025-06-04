@@ -3,7 +3,7 @@
 namespace Draw\Bundle\SonataIntegrationBundle\DependencyInjection;
 
 use Draw\Bundle\SonataExtraBundle\Configuration\SonataAdminNodeConfiguration;
-use Draw\Bundle\SonataExtraBundle\Extension\WorkflowExtension;
+use Draw\Bundle\SonataExtraBundle\Workflow\Extension\WorkflowExtension;
 use Draw\Bundle\SonataIntegrationBundle\Configuration\Admin\ConfigAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Admin\ExecutionAdmin;
 use Draw\Bundle\SonataIntegrationBundle\Console\Command;
