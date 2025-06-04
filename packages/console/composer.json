@@ -9,7 +9,7 @@
     ],
     "require": {
         "doctrine/dbal": "^3.3",
-        "draw/core": "^0.29",
+        "draw/core": "^0.30",
         "psr/log": "^3",
         "ramsey/uuid": "^4.2",
         "sensiolabs/ansi-to-html": "^1.2",
@@ -18,8 +18,8 @@
     },
     "require-dev": {
         "doctrine/orm": "^2.11",
-        "draw/dependency-injection": "^0.29",
-        "draw/tester": "^0.29",
+        "draw/dependency-injection": "^0.30",
+        "draw/tester": "^0.30",
         "phpunit/phpunit": "^11.3",
         "symfony/cache": "^6.4.0"
     },
@@ -32,7 +32,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.29-dev"
+            "dev-master": "0.30-dev"
         }
     }
 }

@@ -13,9 +13,9 @@
         "symfony/event-dispatcher": "^6.4.0"
     },
     "require-dev": {
-        "draw/core": "^0.29",
-        "draw/dependency-injection": "^0.29",
-        "draw/tester": "^0.29",
+        "draw/core": "^0.30",
+        "draw/dependency-injection": "^0.30",
+        "draw/tester": "^0.30",
         "phpunit/phpunit": "^11.3",
         "symfony/cache": "^6.4.0",
         "symfony/http-client": "^6.4.0",
@@ -36,7 +36,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.29-dev"
+            "dev-master": "0.30-dev"
         }
     }
 }
