@@ -96,11 +96,44 @@ sonata_admin:
                 - admin.pull_request
 ```
 
+Or by creating a service that extends the `Draw\Bundle\SonataExtraBundle\Workflow\Extension\WorkflowExtension` class.
+
+```php
+namespace App\Admin\Extension;
+
+use App\Admin\PullRequestAdmin;
+use App\Integration\FirstNameRequest\Api\Admin\FirstNameRequestAdmin;
+use Draw\Bundle\SonataExtraBundle\Workflow\Extension\WorkflowExtension;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+use Symfony\Component\Workflow\Registry;
+
+#[AutoconfigureTag(
+    'sonata.admin.extension',
+    [
+        'target' => PullRequestAdmin::class,
+    ]
+)]
+class PullRequestWorkflowExtension extends WorkflowExtension
+{
+    public function __construct(
+        Registry $registry,
+    ) {
+        parent::__construct(
+            $registry,
+            [
+                'render_actions' => ['show']
+                /* ... */
+            ]
+        );
+    }
+}
+```
+
 What are these options ?
 
 - `render_actions` : Admin action names on which the extension should render its menu (defaults to `[show, edit]`)
 - `workflow_name` : The name of the Workflow to handle (defaults to `null`)
-- `no_transition_display` : Whether or not to display a button when no transition is enabled (defaults to `false`)
+- `no_transition_display` : Whether to display a button when no transition is enabled (defaults to `false`)
 - `no_transition_label` : The button label when no transition is enabled (defaults to `workflow_transitions_empty`)
 - `no_transition_icon` : The button icon when no transition is enabled (defaults to `fa fa-code-fork`)
 - `dropdown_transitions_label` : The dropdown button label when there is transitions enabled (defaults to `workflow_transitions`)
@@ -108,4 +141,5 @@ What are these options ?
 - `transitions_default_icon` : The default transition icon for all transition (defaults to `null` : no icon)
 - `transitions_icons` : A hash with transition name as key and icon as value (defaults to `[]`)
 - `ignore_transitions` : A list of transitions to ignore even if they are available (defaults to `[]`)
-- `action_class` : The controller class to use for the action (defaults to `Draw\Bundle\SonataExtraBundle\Workflow\Action\WorkflowTransitionAction`)
+- `admin_action_class` : The admin action (defaults to `Draw\Bundle\SonataExtraBundle\Workflow\Action\WorkflowTransitionAction`)
+- `controller` : The controller to use for the transition (defaults to `Draw\Bundle\SonataExtraBundle\Workflow\Action\WorkflowTransitionAction`)

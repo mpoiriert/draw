@@ -275,12 +275,12 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
             }
         }
 
-        if (($config['workflow']['enabled'] ?? false) && \count($config['workflow']['extensions_configuration'])) {
+        if (($config['workflow']['enabled'] ?? false) && \count($config['workflow']['sonata_admin_extensions'])) {
             $container->prependExtensionConfig(
                 'sonata_admin',
                 [
                     'extensions' => [
-                        WorkflowExtension::class => $config['workflow']['extensions_configuration'],
+                        WorkflowExtension::class => $config['workflow']['sonata_admin_extensions'],
                     ],
                 ]
             );

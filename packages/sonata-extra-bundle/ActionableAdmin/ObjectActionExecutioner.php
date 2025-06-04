@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Allow to execute action logic on an object or a batch of objects.
  *
+ * @template A of AdminInterface
  * @template T of object
  */
 #[Exclude]
@@ -48,6 +49,9 @@ class ObjectActionExecutioner
         return $this->action;
     }
 
+    /**
+     * @return A
+     */
     public function getAdmin(): AdminInterface
     {
         return $this->admin;
