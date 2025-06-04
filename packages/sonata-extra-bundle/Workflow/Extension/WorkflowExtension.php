@@ -2,7 +2,9 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Workflow\Extension;
 
+use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension\ActionableAdminExtensionInterface;
+use Draw\Bundle\SonataExtraBundle\Workflow\Action\WorkflowTransitionAction;
 use Draw\Bundle\SonataExtraBundle\Workflow\AdminAction\WorkflowTransitionAdminAction;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
@@ -38,7 +40,8 @@ class WorkflowExtension extends AbstractAdminExtension implements ActionableAdmi
                 'transitions_icons' => [],
                 'view_transitions_role' => 'EDIT',
                 'apply_transitions_role' => 'EDIT',
-                'action_class' => WorkflowTransitionAdminAction::class,
+                'controller' => WorkflowTransitionAction::class,
+                'admin_action_class' => WorkflowTransitionAdminAction::class,
                 'ignore_transitions' => [],
             ])
             ->setAllowedTypes('render_actions', ['string[]'])
@@ -52,7 +55,8 @@ class WorkflowExtension extends AbstractAdminExtension implements ActionableAdmi
             ->setAllowedTypes('transitions_icons', ['array'])
             ->setAllowedTypes('view_transitions_role', ['string'])
             ->setAllowedTypes('apply_transitions_role', ['string'])
-            ->setAllowedTypes('action_class', ['string'])
+            ->setAllowedTypes('controller', ['string'])
+            ->setAllowedTypes('admin_action_class', ['string'])
             ->setAllowedTypes('ignore_transitions', ['array'])
         ;
     }
@@ -186,8 +190,16 @@ class WorkflowExtension extends AbstractAdminExtension implements ActionableAdmi
 
     public function getActions(array $actions): array
     {
-        $actionClass = $this->options['action_class'];
+        $actionClass = $this->options['admin_action_class'];
 
-        return $actions + ['workflow_apply_transition' => new $actionClass()];
+        $adminAction = new $actionClass();
+
+        if (!$adminAction instanceof AdminAction) {
+            throw new \LogicException(\sprintf('The action class "%s" must implement "%s".', $this->options['action_class'], AdminAction::class));
+        }
+
+        $adminAction->setController($this->options['controller']);
+
+        return $actions + ['workflow_apply_transition' => $adminAction];
     }
 }
