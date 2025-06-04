@@ -12,7 +12,6 @@ use Draw\Bundle\SonataExtraBundle\EventListener\PreObjectDeleteBatchEventEventLi
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension;
 use Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension;
-use Draw\Bundle\SonataExtraBundle\Extension\WorkflowExtension;
 use Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory\SubClassFieldDescriptionFactory;
 use Draw\Bundle\SonataExtraBundle\Notifier\Channel\SonataChannel;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Extension\PreventDeleteExtension;
@@ -22,6 +21,9 @@ use Draw\Bundle\SonataExtraBundle\PreventDelete\RelationsDumper;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter\PreventDeleteVoter;
 use Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler;
 use Draw\Bundle\SonataExtraBundle\Security\Voter\DefaultCanVoter;
+use Draw\Bundle\SonataExtraBundle\Workflow\Action\WorkflowTransitionAction;
+use Draw\Bundle\SonataExtraBundle\Workflow\AdminAction\WorkflowTransitionAdminAction;
+use Draw\Bundle\SonataExtraBundle\Workflow\Extension\WorkflowExtension;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -156,6 +158,8 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
 
         if (!($config['workflow']['enabled'] ?? false)) {
             $container->removeDefinition(WorkflowExtension::class);
+            $container->removeDefinition(WorkflowTransitionAction::class);
+            $container->removeDefinition(WorkflowTransitionAdminAction::class);
         }
 
         $container->removeDefinition(FinalizeContextEvent::class);
@@ -269,6 +273,17 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                     ]
                 );
             }
+        }
+
+        if (($config['workflow']['enabled'] ?? false) && \count($config['workflow']['extensions_configuration'])) {
+            $container->prependExtensionConfig(
+                'sonata_admin',
+                [
+                    'extensions' => [
+                        WorkflowExtension::class => $config['workflow']['extensions_configuration'],
+                    ],
+                ]
+            );
         }
     }
 }

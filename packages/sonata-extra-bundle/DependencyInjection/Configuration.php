@@ -201,6 +201,9 @@ class Configuration implements ConfigurationInterface
     {
         return (new ArrayNodeDefinition('workflow'))
             ->canBeEnabled()
+            ->children()
+                ->variableNode('sonata_admin_extensions')->defaultValue([])->end()
+            ->end()
         ;
     }
 }

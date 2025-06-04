@@ -1,9 +1,9 @@
 <?php
 
-namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
+namespace Draw\Bundle\SonataExtraBundle\Workflow\AdminAction;
 
-use Draw\Bundle\SonataExtraBundle\ActionableAdmin\Action\WorkflowTransitionAction;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
+use Draw\Bundle\SonataExtraBundle\Workflow\Action\WorkflowTransitionAction;
 
 class WorkflowTransitionAdminAction extends AdminAction
 {

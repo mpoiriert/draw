@@ -67,6 +67,7 @@ class ConfigurationTest extends ConfigurationTestCase
             ],
             'workflow' => [
                 'enabled' => false,
+                'sonata_admin_extensions' => [],
             ],
         ];
     }
