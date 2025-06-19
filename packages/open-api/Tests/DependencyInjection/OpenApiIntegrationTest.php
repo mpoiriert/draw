@@ -68,6 +68,7 @@ use Draw\Component\OpenApi\Serializer\Construction\SimpleObjectConstructor;
 use Draw\Component\OpenApi\Serializer\Handler\GenericSerializerHandler;
 use Draw\Component\OpenApi\Serializer\Handler\ObjectReferenceHandler;
 use Draw\Component\OpenApi\Serializer\Handler\OpenApiHandler;
+use Draw\Component\OpenApi\Serializer\Subscriber\BasicUnionDeserializerSubscriber;
 use Draw\Component\OpenApi\Serializer\Subscriber\OpenApiSubscriber;
 use Draw\Component\OpenApi\Versioning\RouteDefaultApiRouteVersionMatcher;
 use Draw\Component\OpenApi\Versioning\RouteVersionMatcherInterface;
@@ -387,6 +388,10 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 new ServiceConfiguration(
                     'draw.open_api.jms_serializer.handler.open_api_handler',
                     [OpenApiHandler::class]
+                ),
+                new ServiceConfiguration(
+                    'draw.open_api.jms_serializer.subscriber.basic_union_deserializer_subscriber',
+                    [BasicUnionDeserializerSubscriber::class]
                 ),
                 new ServiceConfiguration(
                     'draw.open_api.jms_serializer.subscriber.open_api_subscriber',

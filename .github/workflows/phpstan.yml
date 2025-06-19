@@ -25,6 +25,7 @@ jobs:
         with:
           php-version: '8.2'
           tools: composer
+          extensions: mongodb-1.17.3
       - name: Composer
         run: composer install
       - name: Composer for vendor-bin

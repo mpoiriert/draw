@@ -13,9 +13,11 @@ use Draw\Component\OpenApi\Extraction\ExtractorInterface;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\Root as Schema;
 use Draw\Component\OpenApi\Serializer\Handler\OpenApiHandler;
+use Draw\Component\OpenApi\Serializer\Subscriber\BasicUnionDeserializerSubscriber;
 use Draw\Component\OpenApi\Serializer\Subscriber\OpenApiSubscriber;
 use JMS\Serializer\EventDispatcher\EventDispatcher;
 use JMS\Serializer\Handler\HandlerRegistry;
+use JMS\Serializer\Handler\UnionHandler;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
@@ -46,11 +48,13 @@ class OpenApi
                 ->configureListeners(
                     static function (EventDispatcher $dispatcher): void {
                         $dispatcher->addSubscriber(new OpenApiSubscriber());
+                        $dispatcher->addSubscriber(new BasicUnionDeserializerSubscriber());
                     }
                 )
                 ->configureHandlers(
                     static function (HandlerRegistry $handlerRegistry): void {
                         $handlerRegistry->registerSubscribingHandler(new OpenApiHandler());
+                        $handlerRegistry->registerSubscribingHandler(new UnionHandler());
                     }
                 )
                 ->build()
