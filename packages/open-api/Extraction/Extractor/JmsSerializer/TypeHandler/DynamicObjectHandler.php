@@ -16,12 +16,23 @@ class DynamicObjectHandler implements TypeToSchemaHandlerInterface
             return null;
         }
 
-        $propertySchema = new Schema();
-        $propertySchema->type = 'object';
-        $propertySchema->additionalProperties = new Schema();
-        $propertySchema->additionalProperties->type = $type;
+        if ('mixed' === $type) {
+            $propertySchema = true;
+        } else {
+            $extractionContext->getOpenApi()
+                ->extract(
+                    $type,
+                    $propertySchema = new Schema(),
+                    $extractionContext
+                )
+            ;
+        }
 
-        return $propertySchema;
+        $schema = new Schema();
+        $schema->type = 'object';
+        $schema->additionalProperties = $propertySchema;
+
+        return $schema;
     }
 
     private function getDynamicObjectType(PropertyMetadata $item): ?string

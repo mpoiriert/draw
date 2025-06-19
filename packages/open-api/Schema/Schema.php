@@ -83,9 +83,14 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
     #[JMS\Type('array<string,'.self::class.'>')]
     public ?array $properties = null;
 
-    #[Assert\Valid]
-    #[JMS\SerializedName('additionalProperties')]
-    public ?Schema $additionalProperties = null;
+    #[
+        JMS\SerializedName('additionalProperties'),
+    ]
+    #[
+        Assert\Type(type: ['bool', self::class]),
+        Assert\Valid(groups: ['AdditionalProperties']),
+    ]
+    public Schema|bool|null $additionalProperties = null;
 
     /**
      * Adds support for polymorphism.
@@ -146,6 +151,10 @@ class Schema implements GroupSequenceProviderInterface, VendorExtensionSupportIn
             $groups[] = 'Type';
         } else {
             $groups[] = 'Ref';
+        }
+
+        if ($this->additionalProperties instanceof self) {
+            $groups[] = 'AdditionalProperties';
         }
 
         return $groups;
