@@ -152,7 +152,6 @@
     <callable type="function" name="onLogout" class="Symfony\Component\Security\Http\EventListener\CsrfTokenClearingLogoutListener" priority="0"/>
   </event>
   <event name="console.command">
-    <callable type="function" name="initialize" class="Symfony\Bundle\FrameworkBundle\EventListener\ConsoleProfilerListener" priority="4096"/>
     <callable type="function" name="configure" class="Symfony\Component\HttpKernel\EventListener\DebugHandlersListener" priority="2048"/>
     <callable type="function" name="configure" class="Symfony\Component\HttpKernel\EventListener\DumpListener" priority="1024"/>
     <callable type="function" name="addOptions" class="Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener" priority="255"/>
@@ -167,16 +166,11 @@
     <callable type="function" name="onConsoleError" class="Symfony\Bundle\FrameworkBundle\EventListener\SuggestMissingPackageSubscriber" priority="0"/>
     <callable type="function" name="logCommandError" class="Draw\Component\Console\EventListener\CommandFlowListener" priority="0"/>
     <callable type="function" name="onConsoleError" class="Symfony\Component\Console\EventListener\ErrorListener" priority="-128"/>
-    <callable type="function" name="catch" class="Symfony\Bundle\FrameworkBundle\EventListener\ConsoleProfilerListener" priority="-2048"/>
   </event>
   <event name="console.terminate">
     <callable type="function" name="logCommandTerminate" class="Draw\Component\Console\EventListener\CommandFlowListener" priority="0"/>
     <callable type="function" name="onConsoleTerminate" class="Symfony\Component\Console\EventListener\ErrorListener" priority="-128"/>
     <callable type="function" name="triggerCronJob" class="Draw\Component\CronJob\EventListener\PostExecutionQueueCronJobListener" priority="-1000"/>
-    <callable type="function" name="profile" class="Symfony\Bundle\FrameworkBundle\EventListener\ConsoleProfilerListener" priority="-4096"/>
-  </event>
-  <event name="debug.security.authorization.vote">
-    <callable type="function" name="onVoterVote" class="Symfony\Bundle\SecurityBundle\EventListener\VoteListener" priority="0"/>
   </event>
   <event name="kernel.controller">
     <callable type="function" name="onKernelController" class="Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener" priority="5"/>
@@ -205,7 +199,7 @@
   <event name="kernel.finish_request">
     <callable type="function" name="onKernelFinishRequest" class="Symfony\Component\HttpKernel\EventListener\LocaleListener" priority="0"/>
     <callable type="function" name="onKernelFinishRequest" class="Symfony\Component\HttpKernel\EventListener\RouterListener" priority="0"/>
-    <callable type="function" name="onKernelFinishRequest" class="Symfony\Bundle\SecurityBundle\Debug\TraceableFirewallListener" priority="0"/>
+    <callable type="function" name="onKernelFinishRequest" class="Symfony\Bundle\SecurityBundle\EventListener\FirewallListener" priority="0"/>
     <callable type="function" name="onKernelFinishRequest" class="Symfony\Component\HttpKernel\EventListener\LocaleAwareListener" priority="-15"/>
   </event>
   <event name="kernel.request">
@@ -218,8 +212,8 @@
     <callable type="function" name="onKernelRequest" class="Symfony\Component\HttpKernel\EventListener\LocaleListener" priority="16"/>
     <callable type="function" name="onKernelRequest" class="Symfony\Component\HttpKernel\EventListener\LocaleAwareListener" priority="15"/>
     <callable type="function" name="onKernelRequestInvalidate" class="Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener" priority="9"/>
-    <callable type="function" name="configureLogoutUrlGenerator" class="Symfony\Bundle\SecurityBundle\Debug\TraceableFirewallListener" priority="8"/>
-    <callable type="function" name="onKernelRequest" class="Symfony\Bundle\SecurityBundle\Debug\TraceableFirewallListener" priority="8"/>
+    <callable type="function" name="configureLogoutUrlGenerator" class="Symfony\Bundle\SecurityBundle\EventListener\FirewallListener" priority="8"/>
+    <callable type="function" name="onKernelRequest" class="Symfony\Bundle\SecurityBundle\EventListener\FirewallListener" priority="8"/>
     <callable type="function" name="onKernelRequest" class="Scheb\TwoFactorBundle\Security\TwoFactor\Event\TwoFactorFormListener" priority="0"/>
     <callable type="function" name="handleRequestEvent" class="Draw\Bundle\UserBundle\EventListener\UserRequestInterceptorListener" priority="0"/>
   </event>
@@ -235,7 +229,6 @@
     <callable type="function" name="onKernelResponse" class="Symfony\Component\HttpKernel\EventListener\CacheAttributeListener" priority="-10"/>
     <callable type="function" name="onKernelResponse" class="Symfony\Component\HttpKernel\EventListener\ProfilerListener" priority="-100"/>
     <callable type="function" name="removeCspHeader" class="Symfony\Component\HttpKernel\EventListener\ErrorListener" priority="-128"/>
-    <callable type="function" name="onResponse" class="Symfony\Component\HttpKernel\EventListener\DisallowRobotsIndexingListener" priority="-255"/>
     <callable type="function" name="onKernelResponse" class="Symfony\Component\HttpKernel\EventListener\SessionListener" priority="-1000"/>
     <callable type="function" name="onKernelResponseAddDialog" class="Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener" priority="-2000"/>
   </event>

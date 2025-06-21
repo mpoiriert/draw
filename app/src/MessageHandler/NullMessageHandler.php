@@ -11,7 +11,10 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
  */
 class NullMessageHandler
 {
-    #[AsMessageHandler]
+    #[
+        AsMessageHandler,
+        AsMessageHandler(fromTransport: 'test', priority: 10)
+    ]
     public function handleNewUserMessage(NewUserMessage $message): void
     {
     }

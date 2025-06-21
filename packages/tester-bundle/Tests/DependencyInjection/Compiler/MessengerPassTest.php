@@ -4,6 +4,7 @@ namespace Draw\Bundle\TesterBundle\Tests\DependencyInjection\Compiler;
 
 use Draw\Bundle\TesterBundle\DependencyInjection\Compiler\MessengerPass;
 use Draw\Bundle\TesterBundle\Messenger\HandleMessagesMappingProvider;
+use Draw\Bundle\TesterBundle\Messenger\HandlerConfigurationDumper;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -41,14 +42,24 @@ class MessengerPassTest extends TestCase
 
         $containerBuilder->setDefinition(
             HandleMessagesMappingProvider::class,
-            $definition = new Definition()
+            $handleMessagesMappingProviderDefinition = new Definition()
+        );
+
+        $containerBuilder->setDefinition(
+            HandlerConfigurationDumper::class,
+            $handlerConfigurationDumperDefinition = new Definition()
         );
 
         $this->compilerPass->process($containerBuilder);
 
         static::assertSame(
             $argument,
-            $definition->getArgument(0)
+            $handleMessagesMappingProviderDefinition->getArgument(0)
+        );
+
+        static::assertSame(
+            $argument,
+            $handlerConfigurationDumperDefinition->getArgument(0)
         );
     }
 }
