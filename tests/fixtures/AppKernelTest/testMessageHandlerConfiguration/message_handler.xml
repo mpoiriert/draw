@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<busses>
+  <bus name="messenger.bus.default">
+    <message name="App\Message\NewTestDocumentMessage">
+      <handler service="App\MessageHandler\NullMessageHandler" method="handleNewTestDocumentMessage"/>
+    </message>
+    <message name="App\Message\NewUserMessage">
+      <handler service="App\MessageHandler\NullMessageHandler" method="handleNewUserMessage" from_transport="test" priority="10"/>
+      <handler service="App\MessageHandler\NullMessageHandler" method="handleNewUserMessage"/>
+    </message>
+    <message name="Draw\Bundle\UserBundle\Message\NewUserLockMessage">
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\UserLockLifeCycleMessageHandler" method="handleNewUserLockMessage"/>
+    </message>
+    <message name="Draw\Bundle\UserBundle\Message\NewUserMessage">
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\NewUserSendEmailMessageHandler" method="handleNewUserMessage"/>
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler" method="nothing"/>
+    </message>
+    <message name="Draw\Bundle\UserBundle\Message\PasswordChangeRequestedMessage">
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\PasswordChangeRequestedSendEmailMessageHandler" method="handlePasswordChangeRequestedMessage"/>
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler" method="nothing"/>
+    </message>
+    <message name="Draw\Bundle\UserBundle\Message\RefreshUserLockMessage">
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\RefreshUserLockMessageHandler" method="handleRefreshUserLockMessage"/>
+    </message>
+    <message name="Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage">
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler" method="nothing"/>
+    </message>
+    <message name="Draw\Bundle\UserBundle\Message\UserLockActivatedMessage">
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\PreventNotHandleMessageHandler" method="nothing"/>
+    </message>
+    <message name="Draw\Bundle\UserBundle\Message\UserLockDelayedActivationMessage">
+      <handler service="Draw\Bundle\UserBundle\MessageHandler\UserLockLifeCycleMessageHandler" method="handleUserLockDelayedActivationMessage"/>
+    </message>
+    <message name="Draw\Component\CronJob\Message\ExecuteCronJobMessage">
+      <handler service="draw.cron_job.message_handler.execute_cron_job_message_handler" method="handleExecuteCronJobMessage"/>
+    </message>
+    <message name="Draw\Component\EntityMigrator\Message\MigrateEntityCommand">
+      <handler service="draw.entity_migrator.message_handler.migrate_entity_command_handler" method="_invoke"/>
+    </message>
+    <message name="Draw\Component\Messenger\ManualTrigger\Message\RedirectToRouteMessageInterface">
+      <handler service="draw.messenger.manual_trigger.message_handler.redirect_to_route_message_handler" method="handleRedirectToRouteMessage"/>
+    </message>
+    <message name="Draw\Component\Messenger\Message\RetryFailedMessageMessage">
+      <handler service="draw.messenger.message_handler.retry_failed_message_message_handler" method="handleRetryFailedMessageMessage"/>
+    </message>
+    <message name="Symfony\Component\Console\Messenger\RunCommandMessage">
+      <handler service="console.messenger.execute_command_handler" method="_invoke"/>
+    </message>
+    <message name="Symfony\Component\HttpClient\Messenger\PingWebhookMessage">
+      <handler service="http_client.messenger.ping_webhook_handler" method="_invoke"/>
+    </message>
+    <message name="Symfony\Component\Mailer\Messenger\SendEmailMessage">
+      <handler service="mailer.messenger.message_handler" method="_invoke"/>
+    </message>
+    <message name="Symfony\Component\Messenger\Message\RedispatchMessage">
+      <handler service="messenger.redispatch_message_handler" method="_invoke"/>
+    </message>
+    <message name="Symfony\Component\Notifier\Message\ChatMessage">
+      <handler service="chatter.messenger.chat_handler" method="_invoke"/>
+    </message>
+    <message name="Symfony\Component\Notifier\Message\PushMessage">
+      <handler service="texter.messenger.push_handler" method="_invoke"/>
+    </message>
+    <message name="Symfony\Component\Notifier\Message\SmsMessage">
+      <handler service="texter.messenger.sms_handler" method="_invoke"/>
+    </message>
+    <message name="Symfony\Component\Process\Messenger\RunProcessMessage">
+      <handler service="process.messenger.process_message_handler" method="_invoke"/>
+    </message>
+  </bus>
+</busses>

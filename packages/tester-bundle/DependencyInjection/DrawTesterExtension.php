@@ -3,6 +3,7 @@
 namespace Draw\Bundle\TesterBundle\DependencyInjection;
 
 use Draw\Bundle\TesterBundle\Messenger\HandleMessagesMappingProvider;
+use Draw\Bundle\TesterBundle\Messenger\HandlerConfigurationDumper;
 use Draw\Component\Core\FilterExpression\Expression\ExpressionEvaluator;
 use Draw\Component\Profiling\ProfilerInterface;
 use Symfony\Component\Config\FileLocator;
@@ -36,6 +37,11 @@ class DrawTesterExtension extends Extension
         $container->setDefinition(
             HandleMessagesMappingProvider::class,
             new Definition(HandleMessagesMappingProvider::class)
+        )->setPublic(true);
+
+        $container->setDefinition(
+            HandlerConfigurationDumper::class,
+            new Definition(HandlerConfigurationDumper::class)
         )->setPublic(true);
     }
 

@@ -2,6 +2,9 @@
 
 namespace Draw\Bundle\TesterBundle\Messenger;
 
+/**
+ * @deprecated
+ */
 class HandleMessagesMappingProvider
 {
     private array $mappingByMessage;
