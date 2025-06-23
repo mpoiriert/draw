@@ -19,9 +19,9 @@
         "php": ">=8.2",
         "doctrine/orm": "^2.11",
         "dragonmantank/cron-expression": "^3.3",
-        "draw/core": "^0.32",
-        "draw/messenger": "^0.32",
-        "draw/process": "^0.32",
+        "draw/core": "^0.33",
+        "draw/messenger": "^0.33",
+        "draw/process": "^0.33",
         "symfony/amqp-messenger": "^6.4.0",
         "symfony/console": "^6.4.0",
         "symfony/dependency-injection": "^6.4.0",
@@ -30,8 +30,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^11.3",
-        "draw/dependency-injection": "^0.32",
-        "draw/tester": "^0.32",
+        "draw/dependency-injection": "^0.33",
+        "draw/tester": "^0.33",
         "nesbot/carbon": "^3.8"
     },
     "minimum-stability": "dev",
@@ -43,7 +43,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.32-dev"
+            "dev-master": "0.33-dev"
         }
     }
 }
