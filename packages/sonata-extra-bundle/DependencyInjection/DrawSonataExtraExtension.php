@@ -25,6 +25,7 @@ use Draw\Bundle\SonataExtraBundle\Workflow\Action\WorkflowTransitionAction;
 use Draw\Bundle\SonataExtraBundle\Workflow\AdminAction\WorkflowTransitionAdminAction;
 use Draw\Bundle\SonataExtraBundle\Workflow\Extension\WorkflowExtension;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -222,9 +223,17 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
                                 'list' => '@DrawSonataExtra/CRUD/show_list.html.twig',
                                 'static' => '@DrawSonataExtra/CRUD/show_static.html.twig',
                                 'url' => '@DrawSonataExtra/CRUD/show_url.html.twig',
+                                FieldDescriptionInterface::TYPE_MANY_TO_MANY => '@DrawSonataExtra/CRUD/Association/show_many_to_many.html.twig',
+                                FieldDescriptionInterface::TYPE_MANY_TO_ONE => '@DrawSonataExtra/CRUD/Association/show_many_to_one.html.twig',
+                                FieldDescriptionInterface::TYPE_ONE_TO_MANY => '@DrawSonataExtra/CRUD/Association/show_one_to_many.html.twig',
+                                FieldDescriptionInterface::TYPE_ONE_TO_ONE => '@DrawSonataExtra/CRUD/Association/show_one_to_one.html.twig',
                             ],
                             'list' => [
                                 'list' => '@DrawSonataExtra/CRUD/list_list.html.twig',
+                                FieldDescriptionInterface::TYPE_MANY_TO_MANY => '@DrawSonataExtra/CRUD/Association/list_many_to_many.html.twig',
+                                FieldDescriptionInterface::TYPE_MANY_TO_ONE => '@DrawSonataExtra/CRUD/Association/list_many_to_one.html.twig',
+                                FieldDescriptionInterface::TYPE_ONE_TO_MANY => '@DrawSonataExtra/CRUD/Association/list_one_to_many.html.twig',
+                                FieldDescriptionInterface::TYPE_ONE_TO_ONE => '@DrawSonataExtra/CRUD/Association/list_one_to_one.html.twig',
                             ],
                         ],
                     ],
