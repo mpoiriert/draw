@@ -1,4 +1,8 @@
-{% set object = object|default(null) %}
+{% if object is defined %}
+    {% set object = object %}
+{% else %}
+    {% set object = null %}
+{% endif %}
 {% if admin.hasAccess(actions.action.name, object) %}
     {% for action in actions.action.actions %}
         <a class="btn btn-sm btn-default" href="{{ action.generateUrl(admin, object) }}">

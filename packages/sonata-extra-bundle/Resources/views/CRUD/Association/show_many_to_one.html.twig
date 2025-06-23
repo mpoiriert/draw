@@ -1,0 +1,10 @@
+
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% import '@DrawSonataExtra/CRUD/Association/macro_links.html.twig' as macros %}
+
+{% block field %}
+    {% if value %}
+        {{ macros.association_links(field_description, value, value|render_relation_element(field_description), []) }}
+    {% endif %}
+{% endblock %}

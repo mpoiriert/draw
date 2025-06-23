@@ -1,4 +1,8 @@
-{% set object = object|default(null) %}
+{% if object is defined %}
+    {% set object = object %}
+{% else %}
+    {% set object = null %}
+{% endif %}
 {% for action in item.action.actions %}
     <li>
         <a class="sonata-action-element" href="{{ action.generateUrl(admin, object) }}">

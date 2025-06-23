@@ -1,0 +1,28 @@
+{% macro association_links(field_description, value, label, route_parameters = {}) %}
+    {% import _self as self %}
+
+    {% if field_description.hasAssociationAdmin
+        and field_description.associationadmin.id(value) is not null %}
+        {% set admin = field_description.associationadmin %}
+
+        {% if admin.hasRoute('show') and admin.hasAccess('show', value) %}
+            <a href="{{ admin.generateObjectUrl('show', value, route_parameters) }}">
+                {{ label }}
+            </a>
+        {% else %}
+            {{ label }}
+        {% endif %}
+
+        {% if admin.hasRoute('edit')
+            and admin.hasAccess('edit', value) %}
+            <div class="btn-group btn-group-xs" role="group">
+                <a href="{{ admin.generateObjectUrl('edit', value, route_parameters) }}"
+                   class="btn btn-default">
+                   <i class="fa fa-pencil"></i>
+                </a>
+            </div>
+        {% endif %}
+    {% else %}
+        {{ label }}
+    {% endif %}
+{% endmacro %}

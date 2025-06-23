@@ -1,0 +1,11 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% import '@DrawSonataExtra/CRUD/Association/macro_links.html.twig' as macros %}
+
+{% block field %}
+    <ul class="sonata-ba-show-one-to-many">
+    {% for element in value %}
+        <li>{{ macros.association_links(field_description, element, element|render_relation_element(field_description), []) }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

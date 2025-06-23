@@ -16,6 +16,8 @@ class AgainstJsonFileTester
 
     public function __invoke(DataTester $tester): void
     {
+        // file_put_contents($this->fullJsonFilePath, json_encode($tester->getData(), \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_THROW_ON_ERROR));
+
         if (!file_exists($this->fullJsonFilePath)) {
             Assert::fail(
                 "Fail path does not exists to validate data.\nFile path: ".$this->fullJsonFilePath."\nData:\n".

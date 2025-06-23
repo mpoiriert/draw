@@ -1,0 +1,11 @@
+{% extends get_admin_template('base_list_field', admin.code) %}
+
+{% import '@DrawSonataExtra/CRUD/Association/macro_links.html.twig' as macros %}
+
+{% block field %}
+    <ul class="sonata-ba-list-many-to-many">
+        {% for element in value %}
+            <li>{{ macros.association_links(field_description, element, element|render_relation_element(field_description), []) }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -85,7 +85,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->add('childObject1')
             ->add('childObject2')
             ->add('userTags', 'list')
-            ->add('tags', 'list')
+            ->add('tags')
             ->add('roles', 'list')
             ->add('isLocked', 'boolean', ['inverse' => true])
         ;
@@ -113,15 +113,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
             ->add('roles', 'json')
             ->add('rolesList', 'list')
             ->add('static', 'static', ['virtual_field' => true, 'value' => 'Static value'])
-            ->add(
-                'tags',
-                'grid',
-                [
-                    'fieldValueOnly' => false,
-                    'colspan' => true,
-                    'fields' => $tagAdmin->configureGridFields([]),
-                ]
-            )
+            ->add('tags')
             ->add('isLocked', 'boolean', ['inverse' => true])
             ->add(
                 'userLocks',
