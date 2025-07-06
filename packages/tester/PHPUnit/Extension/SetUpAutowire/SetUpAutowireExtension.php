@@ -16,11 +16,16 @@ class SetUpAutowireExtension implements Extension
     public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void
     {
         $facade->registerSubscribers(
-            new class implements TestPreparedSubscriber {
+            new class($parameters) implements TestPreparedSubscriber {
                 /**
                  * @var array<string, array<int, array{\ReflectionProperty, AutowireInterface}>>
                  */
                 private array $propertyAttributes = [];
+
+                public function __construct(
+                    private ParameterCollection $parameters,
+                ) {
+                }
 
                 public function notify(TestPrepared $event): void
                 {
@@ -47,6 +52,10 @@ class SetUpAutowireExtension implements Extension
 
                     foreach ($this->getPropertyAttributes($testCase) as [$property, $autowire]) {
                         \assert($autowire instanceof AutowireInterface);
+
+                        if ($autowire instanceof AutowireConfigurableInterface) {
+                            $autowire->configure($this->parameters);
+                        }
 
                         $autowire->autowire($testCase, $property);
                     }
