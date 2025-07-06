@@ -11,11 +11,6 @@ class AutowireServiceMock extends AutowireMock
 {
     use KernelTestCaseAutowireDependentTrait;
 
-    public static function getPriority(): int
-    {
-        return 0;
-    }
-
     public function __construct(private ?string $serviceId = null)
     {
     }
