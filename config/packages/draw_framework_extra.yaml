@@ -34,20 +34,6 @@ draw_framework_extra:
       name: 'Example - Support'
     subject_from_html_title: ~
 
-  messenger:
-    async_routing_configuration: true
-    broker:
-      contexts:
-        default:
-          receivers: [ 'async' ]
-    doctrine_message_bus_hook: ~
-    retry:
-      event_driven:
-        transports: [ 'async' ]
-
-    serializer_event_dispatcher: ~
-    versioning: ~
-
   open_api:
 
     request:

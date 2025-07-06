@@ -28,6 +28,7 @@ use Draw\Component\Messenger\Message\AsyncLowPriorityMessageInterface;
 use Draw\Component\Messenger\Message\AsyncMessageInterface;
 use Draw\Component\Messenger\MessageHandler\RetryFailedMessageMessageHandler;
 use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
+use Draw\Component\Messenger\Retry\EventListener\SelfAwareMessageRetryableListener;
 use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
@@ -149,6 +150,12 @@ class MessengerIntegrationTest extends IntegrationTestCase
                 'draw.messenger.manual_trigger.manually_triggered_message_url_generator',
                 [
                     ManuallyTriggeredMessageUrlGenerator::class,
+                ]
+            ),
+            new ServiceConfiguration(
+                'draw.messenger.retry.event_listener.self_aware_message_retryable_listener',
+                [
+                    SelfAwareMessageRetryableListener::class,
                 ]
             ),
             new ServiceConfiguration(
