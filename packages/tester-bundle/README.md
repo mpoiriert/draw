@@ -113,7 +113,7 @@ use Draw\Bundle\TesterBundle\Messenger\TransportTester;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireEntity;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireLoggerTester;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireParameter;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireReloadedEntity;use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireServiceMock;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
@@ -124,37 +124,43 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class MyTest extends KernelTestCase implements AutowiredInterface
 {
-   // From d
-   #[AutowireMock]
-   private AServiceInterface&MockObject $aService
-   
-   // Will hook MyService from the test container. Your test need to extend KernelTestCase.
-   //
-   // The AutowireMockProperty will replace the aService property of $myService. 
-   // By defaults, it will use the same property name in the current test case but you can specify a different one using the second parameter.
-   #[AutowireService]
-   #[AutowireMockProperty('aService')]
-   private MyService $myService;
-   
-   // Will hook the parameter from the container using ParameterBagInterface::resolveValue
-   #[AutowireParameter('%my_parameter%')]
-   private string $parameter;
-   
-   // Will hook the transport tester from the container.
-   #[AutowireTransportTester('async')]
-   private TransportTester $transportTester;
-   
-   // Rely on the 'monolog.handler.testing' service to be available in the container.
-   #[AutowireLoggerTester]
-   private TestHandler $loggerTester;
-   
-   #[AutowireEntity(['email' => 'test@example.com'])]
-   private User $user;
-   
-   // Will create a mock object of MyOtherService and call container->set(MyOtherService::class, $mockObject)
-   // You can also set the service id to use in the container as the first parameter of the attribute.
-   #[AutowireServiceMock]
-   private MyOtherService&MockObject $myOtherService;
+    // Will fetch the entity via doctrine base on it,s primary if proper is set.
+    // Useful if one of your test create the entity and you want to use it in another test.
+    // Will not work if property is not static since it will always be null on next test.
+    #[AutowireReloadedEntity]
+    static private ?User $user = null; 
+
+    // Create a mock of an interface
+    #[AutowireMock]
+    private AServiceInterface&MockObject $aService
+    
+    // Will hook MyService from the test container. Your test need to extend KernelTestCase.
+    //
+    // The AutowireMockProperty will replace the aService property of $myService. 
+    // By defaults, it will use the same property name in the current test case but you can specify a different one using the second parameter.
+    #[AutowireService]
+    #[AutowireMockProperty('aService')]
+    private MyService $myService;
+    
+    // Will hook the parameter from the container using ParameterBagInterface::resolveValue
+    #[AutowireParameter('%my_parameter%')]
+    private string $parameter;
+    
+    // Will hook the transport tester from the container.
+    #[AutowireTransportTester('async')]
+    private TransportTester $transportTester;
+    
+    // Rely on the 'monolog.handler.testing' service to be available in the container.
+    #[AutowireLoggerTester]
+    private TestHandler $loggerTester;
+    
+    #[AutowireEntity(['email' => 'test@example.com'])]
+    private User $user;
+    
+    // Will create a mock object of MyOtherService and call container->set(MyOtherService::class, $mockObject)
+    // You can also set the service id to use in the container as the first parameter of the attribute.
+    #[AutowireServiceMock]
+    private MyOtherService&MockObject $myOtherService;
 }
 ```
 
