@@ -7,10 +7,10 @@ namespace App\Tests\SonataIntegrationBundle\Messenger\Action;
 use App\Entity\MessengerMessage;
 use App\Entity\User;
 use App\Message\FailedMessage;
-use App\Test\PHPUnit\Extension\SetUpAutowire\AutowireAdminUser;
 use App\Test\TestKernelBrowser;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\Messenger\MessengerTesterTrait;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireAdminUserEntity;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Messenger\Message\RetryFailedMessageMessage;
@@ -36,7 +36,7 @@ class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInter
     #[AutowireService]
     private EntityManagerInterface $entityManager;
 
-    #[AutowireAdminUser]
+    #[AutowireAdminUserEntity]
     private User $admin;
 
     public function testRetry(): void

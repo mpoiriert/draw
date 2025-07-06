@@ -44,7 +44,9 @@
             <parameter name="ignoreMissingService" value="1" />
         </bootstrap>
         <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\CarbonReset\CarbonResetExtension"/>
-        <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\SetUpAutowireExtension"/>
+        <bootstrap class="Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\SetUpAutowireExtension">
+            <parameter name="DrawAutowireAdminUserEntityJsonCriteria" value='{"email":"admin@example.com"}'/>
+        </bootstrap>
         <bootstrap class="Draw\Bundle\TesterBundle\PHPUnit\Extension\KernelShutdown\KernelShutdownExtension"/>
     </extensions>
 </phpunit>

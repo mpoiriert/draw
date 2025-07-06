@@ -3,9 +3,9 @@
 namespace App\Tests\SonataIntegrationBundle\User\Action;
 
 use App\Entity\User;
-use App\Test\PHPUnit\Extension\SetUpAutowire\AutowireAdminUser;
 use App\Test\TestKernelBrowser;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireAdminUserEntity;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireEntity;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
@@ -26,7 +26,7 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
     #[AutowireService]
     private EntityManagerInterface $entityManager;
 
-    #[AutowireAdminUser]
+    #[AutowireAdminUserEntity]
     private User $admin;
 
     #[AutowireEntity(['email' => 'locked@example.com'])]

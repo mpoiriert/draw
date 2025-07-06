@@ -3,9 +3,9 @@
 namespace App\Tests\Controller\Api;
 
 use App\Entity\User;
-use App\Test\PHPUnit\Extension\SetUpAutowire\AutowireAdminUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\Mailer\TemplatedMailerAssertionsTrait;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireAdminUserEntity;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireLoggerTester;
 use Draw\Bundle\TesterBundle\WebTestCase;
@@ -32,7 +32,7 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
     #[AutowireLoggerTester]
     private TestHandler $loggerTester;
 
-    #[AutowireAdminUser]
+    #[AutowireAdminUserEntity]
     private User $user;
 
     #[
