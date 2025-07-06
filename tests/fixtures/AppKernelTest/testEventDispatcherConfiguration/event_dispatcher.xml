@@ -63,6 +63,12 @@
   <event name="Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent">
     <callable type="function" name="handleEnvelopeCreatedEvent" class="Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\EnvelopeFactoryDispatchAfterCurrentBusStampListener" priority="0"/>
   </event>
+  <event name="Draw\Component\Messenger\Retry\Event\GetWaitingTimeEvent">
+    <callable type="function" name="onGetWaitingTimeEvent" class="Draw\Component\Messenger\Retry\EventListener\SelfAwareMessageRetryableListener" priority="1"/>
+  </event>
+  <event name="Draw\Component\Messenger\Retry\Event\IsRetryableEvent">
+    <callable type="function" name="onIsRetryableEvent" class="Draw\Component\Messenger\Retry\EventListener\SelfAwareMessageRetryableListener" priority="1"/>
+  </event>
   <event name="Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent">
     <callable type="function" name="restoreDoctrineObjects" class="Draw\Component\Messenger\DoctrineEnvelopeEntityReference\EventListener\PropertyReferenceEncodingListener" priority="0"/>
   </event>
