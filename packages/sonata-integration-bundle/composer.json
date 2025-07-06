@@ -9,20 +9,20 @@
     ],
     "require": {
         "php": ">=8.2",
-        "draw/framework-extra-bundle": "^0.33",
-        "draw/sonata-extra-bundle": "^0.33",
+        "draw/framework-extra-bundle": "^0.34",
+        "draw/sonata-extra-bundle": "^0.34",
         "symfony/framework-bundle": "^6.4.0",
         "symfony/expression-language": "^6.4.0",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2"
     },
     "require-dev": {
-        "draw/application": "^0.33",
-        "draw/console": "^0.33",
-        "draw/messenger": "^0.33",
-        "draw/security": "^0.33",
-        "draw/tester": "^0.33",
-        "draw/user-bundle": "^0.33",
+        "draw/application": "^0.34",
+        "draw/console": "^0.34",
+        "draw/messenger": "^0.34",
+        "draw/security": "^0.34",
+        "draw/tester": "^0.34",
+        "draw/user-bundle": "^0.34",
         "firebase/php-jwt": "^6.1",
         "phpunit/phpunit": "^11.3",
         "scheb/2fa-bundle": "^7.6",
@@ -39,7 +39,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.33-dev"
+            "dev-master": "0.34-dev"
         }
     }
 }
