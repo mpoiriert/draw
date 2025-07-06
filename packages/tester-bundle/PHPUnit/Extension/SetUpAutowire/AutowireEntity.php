@@ -25,6 +25,11 @@ class AutowireEntity implements AutowireInterface
         return 0;
     }
 
+    protected function setCriteria(array $criteria): void
+    {
+        $this->criteria = $criteria;
+    }
+
     public function autowire(TestCase $testCase, \ReflectionProperty $reflectionProperty): void
     {
         $class = $this->class;
