@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataExtraBundle\ActionableAdmin\Extension;
 
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction\DeleteAdminAction;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
+use Sonata\AdminBundle\Admin\AdminInterface;
 
 class DefaultActionExtension extends AbstractAdminExtension implements ActionableAdminExtensionInterface
 {
@@ -24,7 +25,7 @@ class DefaultActionExtension extends AbstractAdminExtension implements Actionabl
         );
     }
 
-    public function getActions(array $actions): array
+    public function getActions(AdminInterface $admin, array $actions): array
     {
         foreach ($this->actions as $action) {
             if (\array_key_exists($action, $actions)) {

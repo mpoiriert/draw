@@ -188,7 +188,7 @@ class WorkflowExtension extends AbstractAdminExtension implements ActionableAdmi
             ?? $this->options['transitions_default_icon'];
     }
 
-    public function getActions(array $actions): array
+    public function getActions(AdminInterface $admin, array $actions): array
     {
         $actionClass = $this->options['admin_action_class'];
 

@@ -24,7 +24,7 @@ class AdminActionLoader
                     continue;
                 }
 
-                $actions = $extension->getActions($actions);
+                $actions = $extension->getActions($admin, $actions);
             }
 
             array_walk(
