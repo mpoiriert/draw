@@ -19,9 +19,9 @@ class DrawUserExtensionWithOnboardingEnabledTest extends DrawUserExtensionTest
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [NewUserSendEmailMessageHandler::class];
     }
 }

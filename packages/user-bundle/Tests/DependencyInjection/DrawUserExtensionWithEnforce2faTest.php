@@ -24,9 +24,9 @@ class DrawUserExtensionWithEnforce2faTest extends DrawUserExtensionTest
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [TwoFactorAuthenticationEntityListener::class];
         yield [TwoFactorAuthenticationListener::class];
         yield [TwoFactorAuthenticationEnforcerInterface::class, IndecisiveTwoFactorAuthenticationEnforcer::class];

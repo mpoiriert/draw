@@ -64,7 +64,7 @@ class CronJobProcessorTest extends TestCase
         );
     }
 
-    #[DataProvider('provideDataForTestQueue')]
+    #[DataProvider('provideQueueCases')]
     public function testQueue(bool $force): void
     {
         $cronJob = $this->createMock(CronJob::class);
@@ -96,14 +96,14 @@ class CronJobProcessorTest extends TestCase
         $this->cronJobProcessor->queue($cronJob, $force);
     }
 
-    public static function provideDataForTestQueue(): iterable
+    public static function provideQueueCases(): iterable
     {
         yield 'normal' => ['force' => false];
 
         yield 'forced' => ['force' => true];
     }
 
-    #[DataProvider('provideDataForTestProcess')]
+    #[DataProvider('provideProcessCases')]
     public function testProcess(
         string $command,
         ?string $overwrittenCommand,
@@ -187,7 +187,7 @@ class CronJobProcessorTest extends TestCase
         static::assertNull($execution->getError());
     }
 
-    public static function provideDataForTestProcess(): iterable
+    public static function provideProcessCases(): iterable
     {
         yield 'original command' => [
             'command' => 'bin/console draw:test:successfully',

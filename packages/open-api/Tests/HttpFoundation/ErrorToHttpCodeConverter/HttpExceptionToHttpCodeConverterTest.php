@@ -29,7 +29,7 @@ class HttpExceptionToHttpCodeConverterTest extends TestCase
         );
     }
 
-    #[DataProvider('provideConvertToHttpCode')]
+    #[DataProvider('provideConvertToHttpCodeCases')]
     public function testConvertToHttpCode(\Throwable $throwable, ?int $expectedErrorCode): void
     {
         static::assertSame(
@@ -38,7 +38,7 @@ class HttpExceptionToHttpCodeConverterTest extends TestCase
         );
     }
 
-    public static function provideConvertToHttpCode(): iterable
+    public static function provideConvertToHttpCodeCases(): iterable
     {
         yield 'Default' => [
             new \Exception(),

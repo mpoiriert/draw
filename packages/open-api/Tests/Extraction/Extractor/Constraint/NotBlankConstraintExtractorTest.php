@@ -26,7 +26,13 @@ class NotBlankConstraintExtractorTest extends TestCase
         $this->object = new NotBlankConstraintExtractor();
     }
 
-    public static function provideTestSupport(): iterable
+    #[DataProvider('provideSupportCases')]
+    public function testSupport(Constraint $constraint, bool $expected): void
+    {
+        static::assertSame($expected, $this->object->supportConstraint($constraint));
+    }
+
+    public static function provideSupportCases(): iterable
     {
         yield 'other-constraint' => [
             new IsNull(),
@@ -37,12 +43,6 @@ class NotBlankConstraintExtractorTest extends TestCase
             new NotBlank(),
             true,
         ];
-    }
-
-    #[DataProvider('provideTestSupport')]
-    public function testSupport(Constraint $constraint, bool $expected): void
-    {
-        static::assertSame($expected, $this->object->supportConstraint($constraint));
     }
 
     public function testExtractConstraintBaseParameter(): void

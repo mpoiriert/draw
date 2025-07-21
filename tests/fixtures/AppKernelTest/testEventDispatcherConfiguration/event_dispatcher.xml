@@ -246,6 +246,12 @@
     <callable type="function" name="onKernelView" class="Draw\Component\OpenApi\EventListener\ResponseSerializerListener" priority="30"/>
     <callable type="function" name="onKernelView" class="Symfony\Bridge\Twig\EventListener\TemplateAttributeListener" priority="-128"/>
   </event>
+  <event name="scheb_two_factor.authentication.check">
+    <callable type="function" name="checkForCodeReuse" class="Scheb\TwoFactorBundle\Security\Http\EventListener\CheckTwoFactorCodeReuseListener" priority="0"/>
+  </event>
+  <event name="scheb_two_factor.authentication.code_reused">
+    <callable type="function" name="handle" class="Scheb\TwoFactorBundle\Security\Http\EventListener\ThrowExceptionOnTwoFactorCodeReuseListener" priority="-256"/>
+  </event>
   <event name="scheb_two_factor.authentication.form">
     <callable type="function" name="onTwoFactorForm" class="Scheb\TwoFactorBundle\Security\TwoFactor\Provider\TwoFactorProviderPreparationListener" priority="0"/>
   </event>

@@ -21,7 +21,7 @@ class DrawFrameworkExtraExtensionTest extends ExtensionTestCase
         return [];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield [null];
     }

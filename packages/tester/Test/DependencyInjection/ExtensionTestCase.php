@@ -23,8 +23,6 @@ abstract class ExtensionTestCase extends TestCase
      */
     abstract public function getConfiguration(): array;
 
-    abstract public static function provideTestHasServiceDefinition(): iterable;
-
     protected static function removeProvidedService(array $idsToRemove, iterable $providedServices): iterable
     {
         foreach ($providedServices as $providedService) {
@@ -52,7 +50,7 @@ abstract class ExtensionTestCase extends TestCase
     /**
      * @param ?string $aliasOf If the id is a alias it's a alias of which service ?
      */
-    #[DataProvider('provideTestHasServiceDefinition')]
+    #[DataProvider('provideServiceDefinitionCases')]
     public function testServiceDefinition(?string $id, ?string $aliasOf = null): void
     {
         if (!$id) {
@@ -61,6 +59,8 @@ abstract class ExtensionTestCase extends TestCase
 
         $this->assertServiceDefinition($id, $aliasOf);
     }
+
+    abstract public static function provideServiceDefinitionCases(): iterable;
 
     private function assertServiceDefinition(string $id, ?string $aliasOf = null): void
     {

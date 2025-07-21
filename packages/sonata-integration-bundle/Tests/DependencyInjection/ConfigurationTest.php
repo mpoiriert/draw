@@ -154,7 +154,7 @@ class ConfigurationTest extends ConfigurationTestCase
         ];
     }
 
-    public static function provideTestInvalidConfiguration(): iterable
+    public static function provideInvalidConfigurationCases(): iterable
     {
         yield [
             ['messenger' => ['queue_names' => 'test']],

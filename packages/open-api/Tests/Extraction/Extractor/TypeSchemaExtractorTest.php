@@ -24,7 +24,23 @@ class TypeSchemaExtractorTest extends TestCase
         $this->object = new TypeSchemaExtractor();
     }
 
-    public static function provideTestCanExtract(): iterable
+    #[DataProvider('provideCanExtractCases')]
+    public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
+    {
+        $context = $this->createMock(ExtractionContextInterface::class);
+
+        static::assertSame(
+            $canBeExtract,
+            $this->object->canExtract($source, $type, $context)
+        );
+
+        if (!$canBeExtract) {
+            $this->expectExceptionObject(new ExtractionImpossibleException());
+            $this->object->extract($source, $type, $context);
+        }
+    }
+
+    public static function provideCanExtractCases(): iterable
     {
         yield 'invalid-target' => [
             'string',
@@ -55,22 +71,6 @@ class TypeSchemaExtractorTest extends TestCase
             new Schema(),
             true,
         ];
-    }
-
-    #[DataProvider('provideTestCanExtract')]
-    public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
-    {
-        $context = $this->createMock(ExtractionContextInterface::class);
-
-        static::assertSame(
-            $canBeExtract,
-            $this->object->canExtract($source, $type, $context)
-        );
-
-        if (!$canBeExtract) {
-            $this->expectExceptionObject(new ExtractionImpossibleException());
-            $this->object->extract($source, $type, $context);
-        }
     }
 
     public function testExtract(): void

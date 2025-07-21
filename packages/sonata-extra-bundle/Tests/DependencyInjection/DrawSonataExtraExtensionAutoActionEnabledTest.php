@@ -26,9 +26,9 @@ class DrawSonataExtraExtensionAutoActionEnabledTest extends DrawSonataExtraExten
         ];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [AutoActionExtension::class];
     }
 }

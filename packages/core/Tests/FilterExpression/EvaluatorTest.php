@@ -27,7 +27,21 @@ class EvaluatorTest extends TestCase
         $this->object = new Evaluator();
     }
 
-    public static function provideExecute(): iterable
+    #[DataProvider('provideExecuteCases')]
+    public function testExecute(Query $query, int $expectedCount): void
+    {
+        static::assertCount(
+            $expectedCount,
+            iterator_to_array(
+                $this->object->execute(
+                    $query,
+                    self::SAMPLE_DATA
+                )
+            )
+        );
+    }
+
+    public static function provideExecuteCases(): iterable
     {
         yield 'simple-match' => [
             (new Query())->where(new ConstraintExpression('[property1]', new EqualTo('value1'))),
@@ -71,19 +85,5 @@ class EvaluatorTest extends TestCase
                 ->andWhere(new ConstraintExpression('[property2]', new EqualTo('value4'))),
             0,
         ];
-    }
-
-    #[DataProvider('provideExecute')]
-    public function testExecute(Query $query, int $expectedCount): void
-    {
-        static::assertCount(
-            $expectedCount,
-            iterator_to_array(
-                $this->object->execute(
-                    $query,
-                    self::SAMPLE_DATA
-                )
-            )
-        );
     }
 }

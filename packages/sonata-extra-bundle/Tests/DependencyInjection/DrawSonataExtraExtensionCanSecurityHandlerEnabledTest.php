@@ -33,9 +33,9 @@ class DrawSonataExtraExtensionCanSecurityHandlerEnabledTest extends DrawSonataEx
         ];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [CanSecurityHandler::class];
         yield [DefaultCanVoter::class];
         yield [PreventDeleteVoter::class];

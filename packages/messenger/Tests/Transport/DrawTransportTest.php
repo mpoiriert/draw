@@ -228,7 +228,26 @@ class DrawTransportTest extends TestCase
         static::assertNull($this->service->find($foundEnvelope->last(TransportMessageIdStamp::class)->getId()));
     }
 
-    public static function provideTestSendSearchableMessage(): iterable
+    /**
+     * @param array|Envelope[] $insertEnvelopes
+     * @param array|string[]   $searchTags
+     */
+    #[
+        Depends('testSetup'),
+        DataProvider('provideSendSearchableMessageCases')
+    ]
+    public function testSendSearchableMessage(array $insertEnvelopes, array $searchTags, int $resultCount): void
+    {
+        static::cleanUp();
+
+        foreach ($insertEnvelopes as $envelope) {
+            $this->service->send($envelope);
+        }
+
+        static::assertCount($resultCount, $this->service->findByTags($searchTags));
+    }
+
+    public static function provideSendSearchableMessageCases(): iterable
     {
         yield 'uniqueness' => [
             [
@@ -297,25 +316,6 @@ class DrawTransportTest extends TestCase
             ['tag2'],
             1,
         ];
-    }
-
-    /**
-     * @param array|Envelope[] $insertEnvelopes
-     * @param array|string[]   $searchTags
-     */
-    #[
-        Depends('testSetup'),
-        DataProvider('provideTestSendSearchableMessage')
-    ]
-    public function testSendSearchableMessage(array $insertEnvelopes, array $searchTags, int $resultCount): void
-    {
-        static::cleanUp();
-
-        foreach ($insertEnvelopes as $envelope) {
-            $this->service->send($envelope);
-        }
-
-        static::assertCount($resultCount, $this->service->findByTags($searchTags));
     }
 
     #[Depends('testSetup')]

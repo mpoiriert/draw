@@ -11,7 +11,19 @@ use PHPUnit\Framework\TestCase;
  */
 class DateTimeUtilsTest extends TestCase
 {
-    public static function provideTestIsSameTimestamp(): array
+    #[DataProvider('provideIsSameTimestampCases')]
+    public function testIsSameTimestamp(
+        ?\DateTimeInterface $dateTime1,
+        ?\DateTimeInterface $dateTime2,
+        bool $expected,
+    ): void {
+        static::assertSame(
+            $expected,
+            DateTimeUtils::isSameTimestamp($dateTime1, $dateTime2)
+        );
+    }
+
+    public static function provideIsSameTimestampCases(): iterable
     {
         return [
             'both-null' => [
@@ -52,27 +64,6 @@ class DateTimeUtilsTest extends TestCase
         ];
     }
 
-    #[DataProvider('provideTestIsSameTimestamp')]
-    public function testIsSameTimestamp(
-        ?\DateTimeInterface $dateTime1,
-        ?\DateTimeInterface $dateTime2,
-        bool $expected,
-    ): void {
-        static::assertSame(
-            $expected,
-            DateTimeUtils::isSameTimestamp($dateTime1, $dateTime2)
-        );
-    }
-
-    public static function provideTestToDateTimeX(): array
-    {
-        return [
-            'null' => [null],
-            'date-time' => [new \DateTime()],
-            'date-time-immutable' => [new \DateTimeImmutable()],
-        ];
-    }
-
     #[DataProvider('provideTestToDateTimeX')]
     public function testToDateTimeImmutable(?\DateTimeInterface $dateTimeInterface): void
     {
@@ -103,17 +94,16 @@ class DateTimeUtilsTest extends TestCase
         static::assertNotSame($dateTimeInterface, $dateTime);
     }
 
-    public static function provideTestMillisecondDiff(): array
+    public static function provideTestToDateTimeX(): iterable
     {
         return [
-            'now compare' => ['now', null, 0],
-            '5 seconds ago' => ['- 5 seconds', null, -5000],
-            '5 seconds in the future' => ['+ 5 seconds', null, 5000],
-            'specifying a compare to date' => ['+ 5 seconds', '+ 5 seconds', 0],
+            'null' => [null],
+            'date-time' => [new \DateTime()],
+            'date-time-immutable' => [new \DateTimeImmutable()],
         ];
     }
 
-    #[DataProvider('provideTestMillisecondDiff')]
+    #[DataProvider('provideMillisecondDiffCases')]
     public function testMillisecondDiff(string $delay, ?string $compareToDelay, int $expected): void
     {
         static::assertSame(
@@ -123,5 +113,15 @@ class DateTimeUtilsTest extends TestCase
                 $compareToDelay ? new \DateTimeImmutable($compareToDelay) : null
             )
         );
+    }
+
+    public static function provideMillisecondDiffCases(): iterable
+    {
+        return [
+            'now compare' => ['now', null, 0],
+            '5 seconds ago' => ['- 5 seconds', null, -5000],
+            '5 seconds in the future' => ['+ 5 seconds', null, 5000],
+            'specifying a compare to date' => ['+ 5 seconds', '+ 5 seconds', 0],
+        ];
     }
 }

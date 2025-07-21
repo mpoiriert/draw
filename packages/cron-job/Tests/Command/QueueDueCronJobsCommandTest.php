@@ -58,7 +58,7 @@ class QueueDueCronJobsCommandTest extends TestCase
      * @param array{name: string, due: bool}[] $rawCronJobs
      * @param string[]                         $expectedDisplay
      */
-    #[DataProvider('provideDataForTestExecute')]
+    #[DataProvider('provideExecuteCases')]
     public function testExecute(array $rawCronJobs, array $expectedDisplay): void
     {
         $this->managerRegistry
@@ -126,7 +126,7 @@ class QueueDueCronJobsCommandTest extends TestCase
         ;
     }
 
-    public static function provideDataForTestExecute(): iterable
+    public static function provideExecuteCases(): iterable
     {
         yield [
             'rawCronJobs' => [],

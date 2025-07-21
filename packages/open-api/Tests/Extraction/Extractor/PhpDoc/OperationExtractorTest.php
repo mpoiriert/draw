@@ -29,19 +29,7 @@ class OperationExtractorTest extends TestCase
         $this->phpDocOperationExtractor = new OperationExtractor();
     }
 
-    public static function provideTestCanExtract(): iterable
-    {
-        $reflectionMethod = new \ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', 'operation');
-
-        return [
-            [null, null, false],
-            [null, new Operation(), false],
-            [$reflectionMethod, null, false],
-            [$reflectionMethod, new Operation(), true],
-        ];
-    }
-
-    #[DataProvider('provideTestCanExtract')]
+    #[DataProvider('provideCanExtractCases')]
     public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
         static::assertSame(
@@ -59,6 +47,18 @@ class OperationExtractorTest extends TestCase
 
         $this->expectException(ExtractionImpossibleException::class);
         $this->phpDocOperationExtractor->extract($source, $type, $context);
+    }
+
+    public static function provideCanExtractCases(): iterable
+    {
+        $reflectionMethod = new \ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', 'operation');
+
+        return [
+            [null, null, false],
+            [null, new Operation(), false],
+            [$reflectionMethod, null, false],
+            [$reflectionMethod, new Operation(), true],
+        ];
     }
 
     public function testExtract(): void

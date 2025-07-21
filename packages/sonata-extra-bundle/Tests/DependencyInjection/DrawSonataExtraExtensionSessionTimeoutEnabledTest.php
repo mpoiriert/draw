@@ -27,9 +27,9 @@ class DrawSonataExtraExtensionSessionTimeoutEnabledTest extends DrawSonataExtraE
         ];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [SessionTimeoutRequestListener::class];
     }
 

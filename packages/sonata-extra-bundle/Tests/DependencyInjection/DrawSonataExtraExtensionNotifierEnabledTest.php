@@ -27,9 +27,9 @@ class DrawSonataExtraExtensionNotifierEnabledTest extends DrawSonataExtraExtensi
         ];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [SonataChannel::class];
     }
 }

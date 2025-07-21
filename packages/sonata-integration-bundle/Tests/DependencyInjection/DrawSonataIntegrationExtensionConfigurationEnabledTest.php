@@ -23,7 +23,7 @@ class DrawSonataIntegrationExtensionConfigurationEnabledTest extends DrawSonataI
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield [ConfigAdmin::class];
     }

@@ -24,9 +24,9 @@ class DrawUserExtensionWithAccountLockerEnabledTest extends DrawUserExtensionTes
         ];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [AccountLocker::class];
         yield [AccountLockerListener::class];
         yield [RefreshUserLocksCommand::class];

@@ -21,7 +21,7 @@ class ConfigurationTest extends ConfigurationTestCase
         return ['profiling' => ['enabled' => true]];
     }
 
-    public static function provideTestInvalidConfiguration(): iterable
+    public static function provideInvalidConfigurationCases(): iterable
     {
         yield [
             ['invalid' => true],

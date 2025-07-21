@@ -15,7 +15,7 @@ class DrawTesterExtensionWithoutProfilingTest extends DrawTesterExtensionTest
         return ['profiling' => ['enabled' => false]];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield from static::removeProvidedService(
             [
@@ -23,7 +23,7 @@ class DrawTesterExtensionWithoutProfilingTest extends DrawTesterExtensionTest
                 \Draw\Component\Profiling\Sql\SqlProfiler::class,
                 ProfilerCoordinator::class,
             ],
-            parent::provideTestHasServiceDefinition()
+            parent::provideServiceDefinitionCases()
         );
     }
 }

@@ -23,7 +23,7 @@
         "draw/dependency-injection": "^0.35",
         "draw/tester": "^0.35",
         "pelago/emogrifier": "^7.0",
-        "phpunit/phpunit": "^11.3"
+        "phpunit/phpunit": "^11.3 || ^12.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

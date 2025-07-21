@@ -24,20 +24,20 @@ class OpenApiTest extends TestCase
         $this->object = new OpenApi();
     }
 
-    public static function provideTestExtractSwaggerSchema(): iterable
-    {
-        foreach (glob(__DIR__.'/fixture/schema/*.json') as $file) {
-            yield basename($file) => [$file];
-        }
-    }
-
-    #[DataProvider('provideTestExtractSwaggerSchema')]
+    #[DataProvider('provideExtractSwaggerSchemaCases')]
     public function testExtractSwaggerSchema(string $file): void
     {
         $schema = $this->object->extract(file_get_contents($file));
         static::assertInstanceOf(Root::class, $schema);
 
         static::assertJsonStringEqualsJsonString(file_get_contents($file), $this->object->dump($schema, false));
+    }
+
+    public static function provideExtractSwaggerSchemaCases(): iterable
+    {
+        foreach (glob(__DIR__.'/fixture/schema/*.json') as $file) {
+            yield basename($file) => [$file];
+        }
     }
 
     public function testValidateError(): void

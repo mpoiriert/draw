@@ -30,7 +30,7 @@ class DrawSonataIntegrationExtensionUserEnabledTest extends DrawSonataIntegratio
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield [LoginController::class];
         yield [UserCountBlock::class];

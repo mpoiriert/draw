@@ -26,9 +26,9 @@ class DrawSonataExtraExtensionFixMenuDeptEnabledTest extends DrawSonataExtraExte
         ];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [FixDepthMenuBuilderListener::class];
     }
 }

@@ -16,14 +16,12 @@ abstract class ConfigurationTestCase extends TestCase
 
     abstract public function getDefaultConfiguration(): array;
 
-    abstract public static function provideTestInvalidConfiguration(): iterable;
-
     protected function setUp(): void
     {
         $this->configuration = $this->createConfiguration();
     }
 
-    #[DataProvider('provideTestInvalidConfiguration')]
+    #[DataProvider('provideInvalidConfigurationCases')]
     public function testInvalidConfiguration(array $configuration, string $expectedMessage): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -44,6 +42,8 @@ abstract class ConfigurationTestCase extends TestCase
             throw $error;
         }
     }
+
+    abstract public static function provideInvalidConfigurationCases(): iterable;
 
     public function testDefault(): void
     {

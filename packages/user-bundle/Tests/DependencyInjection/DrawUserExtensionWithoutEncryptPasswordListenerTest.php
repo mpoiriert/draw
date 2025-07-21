@@ -18,13 +18,13 @@ class DrawUserExtensionWithoutEncryptPasswordListenerTest extends DrawUserExtens
         ];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield from static::removeProvidedService(
             [
                 EncryptPasswordUserEntityListener::class,
             ],
-            parent::provideTestHasServiceDefinition()
+            parent::provideServiceDefinitionCases()
         );
     }
 }

@@ -69,7 +69,47 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         );
     }
 
-    public static function provideTestCheckNeedToEnableTwoFactorAuthentication(): iterable
+    #[DataProvider('provideCheckNeedToEnableTwoFactorAuthenticationCases')]
+    public function testCheckNeedToEnableTwoFactorAuthentication(
+        UserRequestInterceptionEvent $event,
+        bool $allowHandingRequest,
+        bool $redirect,
+    ): void {
+        $url = null;
+        if ($redirect) {
+            $user = $event->getUser();
+
+            static::assertInstanceOf(SecurityUserInterface::class, $user);
+
+            $this->urlGenerator
+                ->expects(static::once())
+                ->method('generate')
+                ->with(
+                    self::ENABLE_ROUTE,
+                    ['id' => $user->getId()]
+                )
+                ->willReturn($url = uniqid('url'))
+            ;
+        }
+
+        $this->object->checkNeedToEnableTwoFactorAuthentication($event);
+
+        static::assertSame($allowHandingRequest, $event->getAllowHandlingRequest());
+
+        $response = $event->getResponse();
+
+        if (!$redirect) {
+            static::assertNull($response);
+
+            return;
+        }
+
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame($url, $response->getTargetUrl());
+        static::assertSame('2fa_need_enabling', $event->getReason());
+    }
+
+    public static function provideCheckNeedToEnableTwoFactorAuthenticationCases(): iterable
     {
         $request = new Request();
         $request->attributes->set('_route', self::ENABLE_ROUTE);
@@ -247,46 +287,6 @@ class TwoFactorAuthenticationListenerTest extends TestCase
             false,
             true,
         ];
-    }
-
-    #[DataProvider('provideTestCheckNeedToEnableTwoFactorAuthentication')]
-    public function testCheckNeedToEnableTwoFactorAuthentication(
-        UserRequestInterceptionEvent $event,
-        bool $allowHandingRequest,
-        bool $redirect,
-    ): void {
-        $url = null;
-        if ($redirect) {
-            $user = $event->getUser();
-
-            static::assertInstanceOf(SecurityUserInterface::class, $user);
-
-            $this->urlGenerator
-                ->expects(static::once())
-                ->method('generate')
-                ->with(
-                    self::ENABLE_ROUTE,
-                    ['id' => $user->getId()]
-                )
-                ->willReturn($url = uniqid('url'))
-            ;
-        }
-
-        $this->object->checkNeedToEnableTwoFactorAuthentication($event);
-
-        static::assertSame($allowHandingRequest, $event->getAllowHandlingRequest());
-
-        $response = $event->getResponse();
-
-        if (!$redirect) {
-            static::assertNull($response);
-
-            return;
-        }
-
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame($url, $response->getTargetUrl());
-        static::assertSame('2fa_need_enabling', $event->getReason());
     }
 
     public function testAllowHandlingRequestWhenTwoFactorAuthenticationInProgressTrue(): void

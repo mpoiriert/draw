@@ -15,62 +15,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class RequestHeadersProcessorTest extends TestCase
 {
-    public static function provideTestInvoke(): iterable
-    {
-        $requestHeaders = [
-            $header1 = uniqid('header1-') => [
-                uniqid('header1-value1-'),
-                uniqid('header1-value2-'),
-            ],
-            $header2 = uniqid('header2-') => [
-                uniqid('header2-value1-'),
-            ],
-        ];
-
-        yield 'all' => [
-            $requestHeaders,
-            [],
-            [],
-            $requestHeaders,
-        ];
-
-        yield 'no-request' => [
-            null,
-            [],
-            [],
-            null,
-        ];
-
-        yield 'only' => [
-            $requestHeaders,
-            [$header2],
-            [],
-            [$header2 => $requestHeaders[$header2]],
-        ];
-
-        yield 'ignore' => [
-            $requestHeaders,
-            [],
-            [$header2],
-            [$header1 => $requestHeaders[$header1]],
-        ];
-
-        yield 'only-and-ignore' => [
-            $requestHeaders,
-            [$header1],
-            [$header2],
-            [$header1 => $requestHeaders[$header1]],
-        ];
-
-        yield 'only-and-ignore-exclude-all' => [
-            $requestHeaders,
-            [$header2],
-            [$header2],
-            [],
-        ];
-    }
-
-    #[DataProvider('provideTestInvoke')]
+    #[DataProvider('provideInvokeCases')]
     public function testInvoke(
         ?array $requestHeaders,
         array $onlyHeaders,
@@ -126,6 +71,61 @@ class RequestHeadersProcessorTest extends TestCase
             [$key => $expectedHeaders],
             $logRecord->toArray()['extra']
         );
+    }
+
+    public static function provideInvokeCases(): iterable
+    {
+        $requestHeaders = [
+            $header1 = uniqid('header1-') => [
+                uniqid('header1-value1-'),
+                uniqid('header1-value2-'),
+            ],
+            $header2 = uniqid('header2-') => [
+                uniqid('header2-value1-'),
+            ],
+        ];
+
+        yield 'all' => [
+            $requestHeaders,
+            [],
+            [],
+            $requestHeaders,
+        ];
+
+        yield 'no-request' => [
+            null,
+            [],
+            [],
+            null,
+        ];
+
+        yield 'only' => [
+            $requestHeaders,
+            [$header2],
+            [],
+            [$header2 => $requestHeaders[$header2]],
+        ];
+
+        yield 'ignore' => [
+            $requestHeaders,
+            [],
+            [$header2],
+            [$header1 => $requestHeaders[$header1]],
+        ];
+
+        yield 'only-and-ignore' => [
+            $requestHeaders,
+            [$header1],
+            [$header2],
+            [$header1 => $requestHeaders[$header1]],
+        ];
+
+        yield 'only-and-ignore-exclude-all' => [
+            $requestHeaders,
+            [$header2],
+            [$header2],
+            [],
+        ];
     }
 
     public function testInvokeNoRequestStack(): void

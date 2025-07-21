@@ -19,7 +19,7 @@ class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowiredInt
     #[AutowireService]
     protected ValidatorInterface $validator;
 
-    #[DataProvider('provideTestValidate')]
+    #[DataProvider('provideValidateCases')]
     public function testValidate(mixed $value, string $entityClass, string $field, bool $expectError): void
     {
         $violations = $this->validator
@@ -37,7 +37,7 @@ class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowiredInt
         static::assertSame('VALUE_ALREADY_TAKEN', $violations->get(0)->getCode());
     }
 
-    public static function provideTestValidate(): iterable
+    public static function provideValidateCases(): iterable
     {
         yield 'invalid' => [
             'admin@example.com',

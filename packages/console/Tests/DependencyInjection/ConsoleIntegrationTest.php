@@ -91,7 +91,7 @@ class ConsoleIntegrationTest extends IntegrationTestCase
         );
     }
 
-    public static function provideTestLoad(): iterable
+    public static function provideLoadCases(): iterable
     {
         yield [
             [

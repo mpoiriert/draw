@@ -18,19 +18,7 @@ class RootSchemaExtractorTest extends TestCase
 {
     use MockTrait;
 
-    public static function provideTestCanExtract(): array
-    {
-        return [
-            [[], new Root(), false],
-            ['toto', new Root(), false],
-            ['{}', new Root(), false],
-            ['{"swagger":"1.0"}', new Root(), false],
-            ['{"swagger":"2.0"}', '', false],
-            ['{"swagger":"2.0"}', new \stdClass(), false],
-        ];
-    }
-
-    #[DataProvider('provideTestCanExtract')]
+    #[DataProvider('provideCanExtractCases')]
     public function testCanExtract(mixed $source, mixed $type, bool $expected): void
     {
         $extractor = new JsonRootSchemaExtractor(SerializerBuilder::create()->build());
@@ -55,5 +43,17 @@ class RootSchemaExtractorTest extends TestCase
                 static::assertTrue(true);
             }
         }
+    }
+
+    public static function provideCanExtractCases(): iterable
+    {
+        return [
+            [[], new Root(), false],
+            ['toto', new Root(), false],
+            ['{}', new Root(), false],
+            ['{"swagger":"1.0"}', new Root(), false],
+            ['{"swagger":"2.0"}', '', false],
+            ['{"swagger":"2.0"}', new \stdClass(), false],
+        ];
     }
 }

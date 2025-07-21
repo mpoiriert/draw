@@ -27,9 +27,9 @@ class DrawSonataIntegrationExtensionUser2faEnabledTest extends DrawSonataIntegra
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
 
         yield [TwoFactorAuthenticationExtension::class];
         yield [TwoFactorAuthenticationController::class];

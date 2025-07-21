@@ -39,7 +39,7 @@ class DrawSonataIntegrationExtensionTest extends ExtensionTestCase
         ];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield [null];
     }

@@ -21,7 +21,14 @@ class SqlAssertionBuilderTest extends TestCase
         $this->assertionBuilder = new SqlAssertionBuilder();
     }
 
-    public static function provideTestAssertCountEquals(): iterable
+    #[DataProvider('provideProvideAssertCountEqualsCases')]
+    public function testProvideAssertCountEquals(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
+    {
+        $this->assertionBuilder->assertCountEquals($expectedCount);
+        $this->invoke($dataTester, $shouldFail);
+    }
+
+    public static function provideProvideAssertCountEqualsCases(): iterable
     {
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [1, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
@@ -29,14 +36,14 @@ class SqlAssertionBuilderTest extends TestCase
         yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), true];
     }
 
-    #[DataProvider('provideTestAssertCountEquals')]
-    public function testProvideAssertCountEquals(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
+    #[DataProvider('provideAssertCountGreaterThanOrEqualCases')]
+    public function testAssertCountGreaterThanOrEqual(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
     {
-        $this->assertionBuilder->assertCountEquals($expectedCount);
+        $this->assertionBuilder->assertCountGreaterThanOrEqual($expectedCount);
         $this->invoke($dataTester, $shouldFail);
     }
 
-    public static function provideTestAssertCountGreaterThanOrEqual(): \Generator
+    public static function provideAssertCountGreaterThanOrEqualCases(): iterable
     {
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
@@ -44,26 +51,19 @@ class SqlAssertionBuilderTest extends TestCase
         yield [1, new DataTester((object) ['sql' => new SqlMetric([])]), true];
     }
 
-    #[DataProvider('provideTestAssertCountGreaterThanOrEqual')]
-    public function testAssertCountGreaterThanOrEqual(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
+    #[DataProvider('provideAssertCountLessThanOrEqualCases')]
+    public function testAssertCountLessThanOrEqual(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
     {
-        $this->assertionBuilder->assertCountGreaterThanOrEqual($expectedCount);
+        $this->assertionBuilder->assertCountLessThanOrEqual($expectedCount);
         $this->invoke($dataTester, $shouldFail);
     }
 
-    public static function provideTestAssertCountLessThanOrEqual(): \Generator
+    public static function provideAssertCountLessThanOrEqualCases(): iterable
     {
         yield [1, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [0, new DataTester((object) ['sql' => new SqlMetric([])]), false];
         yield [1, new DataTester((object) ['sql' => new SqlMetric(['query'])]), false];
         yield [0, new DataTester((object) ['sql' => new SqlMetric(['query'])]), true];
-    }
-
-    #[DataProvider('provideTestAssertCountLessThanOrEqual')]
-    public function testAssertCountLessThanOrEqual(int $expectedCount, DataTester $dataTester, bool $shouldFail): void
-    {
-        $this->assertionBuilder->assertCountLessThanOrEqual($expectedCount);
-        $this->invoke($dataTester, $shouldFail);
     }
 
     public function testInvokeFailMessage(): void

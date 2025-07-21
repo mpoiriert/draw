@@ -49,21 +49,7 @@ class PhpCallableValidatorTest extends TestCase
         $this->object->validate(null, new NotNull());
     }
 
-    /**
-     * @return array<string, array{0: mixed, ?Constraint, int}>
-     */
-    public static function provideTestValidate(): array
-    {
-        return [
-            'execution-only' => [null, null, 0],
-            'null' => [null, new IsTrue(), 0],
-            'exception' => [new \Exception(), new IsTrue(), 1],
-            'match-return-value-constraint' => [true, new IsTrue(), 0],
-            'does-not-match-return-value-constraint' => [false, new IsTrue(), 1],
-        ];
-    }
-
-    #[DataProvider('provideTestValidate')]
+    #[DataProvider('provideValidateCases')]
     public function testValidate(mixed $value, ?Constraint $returnValueConstraint, int $violationsCount): void
     {
         $validator = Validation::createValidator();
@@ -85,5 +71,19 @@ class PhpCallableValidatorTest extends TestCase
         );
 
         static::assertCount($violationsCount, $violations);
+    }
+
+    /**
+     * @return array<string, array{0: mixed, ?Constraint, int}>
+     */
+    public static function provideValidateCases(): iterable
+    {
+        return [
+            'execution-only' => [null, null, 0],
+            'null' => [null, new IsTrue(), 0],
+            'exception' => [new \Exception(), new IsTrue(), 1],
+            'match-return-value-constraint' => [true, new IsTrue(), 0],
+            'does-not-match-return-value-constraint' => [false, new IsTrue(), 1],
+        ];
     }
 }

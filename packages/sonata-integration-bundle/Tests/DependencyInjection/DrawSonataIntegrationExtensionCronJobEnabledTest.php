@@ -29,7 +29,7 @@ class DrawSonataIntegrationExtensionCronJobEnabledTest extends DrawSonataIntegra
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield [CronJobAdmin::class];
         yield [CronJobExecutionAdmin::class];
