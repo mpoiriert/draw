@@ -22,8 +22,8 @@
         "doctrine/dbal": "^3.3",
         "doctrine/collections": "^1.0",
         "doctrine/data-fixtures": "^2.0",
-        "draw/dependency-injection": "^0.35",
-        "draw/graphviz": "^0.35",
+        "draw/dependency-injection": "^0.36",
+        "draw/graphviz": "^0.36",
         "phpunit/phpunit": "^11.3 || ^12.0"
     },
     "suggest": {
@@ -38,7 +38,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.35-dev"
+            "dev-master": "0.36-dev"
         }
     }
 }

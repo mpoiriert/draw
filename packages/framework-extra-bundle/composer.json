@@ -18,32 +18,32 @@
     "require": {
         "php": ">=8.2",
         "ext-json": "*",
-        "draw/core": "^0.35",
-        "draw/dependency-injection": "^0.35",
+        "draw/core": "^0.36",
+        "draw/dependency-injection": "^0.36",
         "symfony/config": "^6.4.0",
         "symfony/dependency-injection": "^6.4.0",
         "symfony/http-kernel": "^6.4.0"
     },
     "require-dev": {
-        "draw/application": "^0.35",
-        "draw/aws-tool-kit": "^0.35",
-        "draw/console": "^0.35",
-        "draw/contracts": "^0.35",
-        "draw/cron-job": "^0.35",
-        "draw/doctrine-extra": "^0.35",
-        "draw/entity-migrator": "^0.35",
-        "draw/log": "^0.35",
-        "draw/mailer": "^0.35",
-        "draw/messenger": "^0.35",
-        "draw/open-api": "^0.35",
-        "draw/process": "^0.35",
-        "draw/sonata-integration-bundle": "^0.35",
-        "draw/security": "^0.35",
-        "draw/tester": "^0.35",
-        "draw/tester-bundle": "^0.35",
-        "draw/user-bundle": "^0.35",
-        "draw/validator": "^0.35",
-        "draw/workflow": "^0.35",
+        "draw/application": "^0.36",
+        "draw/aws-tool-kit": "^0.36",
+        "draw/console": "^0.36",
+        "draw/contracts": "^0.36",
+        "draw/cron-job": "^0.36",
+        "draw/doctrine-extra": "^0.36",
+        "draw/entity-migrator": "^0.36",
+        "draw/log": "^0.36",
+        "draw/mailer": "^0.36",
+        "draw/messenger": "^0.36",
+        "draw/open-api": "^0.36",
+        "draw/process": "^0.36",
+        "draw/sonata-integration-bundle": "^0.36",
+        "draw/security": "^0.36",
+        "draw/tester": "^0.36",
+        "draw/tester-bundle": "^0.36",
+        "draw/user-bundle": "^0.36",
+        "draw/validator": "^0.36",
+        "draw/workflow": "^0.36",
         "monolog/monolog": "^3.5.0",
         "pelago/emogrifier": "^7.0",
         "phpunit/phpunit": "^11.3 || ^12.0",
@@ -63,7 +63,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.35-dev"
+            "dev-master": "0.36-dev"
         }
     }
 }
