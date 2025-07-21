@@ -30,7 +30,7 @@ class ConfigurableErrorToHttpCodeConverterTest extends TestCase
     /**
      * @param array<string,int> $errorCodes
      */
-    #[DataProvider('provideConvertToHttpCode')]
+    #[DataProvider('provideConvertToHttpCodeCases')]
     public function testConvertToHttpCode(\Throwable $throwable, array $errorCodes, int $errorCode): void
     {
         $this->errorToHttpCodeConverter = new ConfigurableErrorToHttpCodeConverter($errorCodes);
@@ -41,7 +41,7 @@ class ConfigurableErrorToHttpCodeConverterTest extends TestCase
         );
     }
 
-    public static function provideConvertToHttpCode(): iterable
+    public static function provideConvertToHttpCodeCases(): iterable
     {
         yield 'Default' => [
             new \Exception(),

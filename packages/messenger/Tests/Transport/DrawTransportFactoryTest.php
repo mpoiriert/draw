@@ -88,7 +88,21 @@ class DrawTransportFactoryTest extends TestCase
         $this->service::buildConfiguration($dsn, []);
     }
 
-    public static function provideTestBuildConfiguration(): iterable
+    #[DataProvider('provideBuildConfigurationCases')]
+    public function testBuildConfiguration(string $dsn, array $options, array $expectedResult): void
+    {
+        $result = $this->service::buildConfiguration($dsn, $options);
+
+        ksort($expectedResult);
+        ksort($result);
+
+        static::assertSame(
+            $expectedResult,
+            $result
+        );
+    }
+
+    public static function provideBuildConfigurationCases(): iterable
     {
         yield 'default' => [
             'draw://default',
@@ -244,21 +258,16 @@ class DrawTransportFactoryTest extends TestCase
         ];
     }
 
-    #[DataProvider('provideTestBuildConfiguration')]
-    public function testBuildConfiguration(string $dsn, array $options, array $expectedResult): void
+    #[DataProvider('provideSupportsCases')]
+    public function testSupports(string $dsn, bool $support): void
     {
-        $result = $this->service::buildConfiguration($dsn, $options);
-
-        ksort($expectedResult);
-        ksort($result);
-
         static::assertSame(
-            $expectedResult,
-            $result
+            $support,
+            $this->service->supports($dsn, [])
         );
     }
 
-    public static function provideTestSupports(): iterable
+    public static function provideSupportsCases(): iterable
     {
         yield 'draw' => [
             'draw://',
@@ -279,14 +288,5 @@ class DrawTransportFactoryTest extends TestCase
             uniqid('draw').'://',
             false,
         ];
-    }
-
-    #[DataProvider('provideTestSupports')]
-    public function testSupports(string $dsn, bool $support): void
-    {
-        static::assertSame(
-            $support,
-            $this->service->supports($dsn, [])
-        );
     }
 }

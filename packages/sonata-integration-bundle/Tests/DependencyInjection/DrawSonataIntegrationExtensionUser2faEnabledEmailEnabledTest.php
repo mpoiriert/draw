@@ -22,9 +22,9 @@ class DrawSonataIntegrationExtensionUser2faEnabledEmailEnabledTest extends DrawS
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
 
         yield ['draw.sonata.user.action.two_factor_authentication_resend_code_action'];
     }

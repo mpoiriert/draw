@@ -21,9 +21,9 @@ class DrawUserExtensionWithPasswordChangeEnforcerEnabledTest extends DrawUserExt
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [PasswordChangeEnforcerListener::class];
         yield [PasswordChangeRequestedSendEmailMessageHandler::class];
     }

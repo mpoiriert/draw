@@ -30,16 +30,6 @@ class PropertiesExtractorTest extends TestCase
 
     private PropertiesExtractor $jmsExtractor;
 
-    public static function provideTestCanExtract(): iterable
-    {
-        return [
-            [null, null, false],
-            [null, new Schema(), false],
-            [__NAMESPACE__.'\JmsExtractorStubModel', null, false],
-            [__NAMESPACE__.'\JmsExtractorStubModel', new Schema(), true],
-        ];
-    }
-
     protected function setUp(): void
     {
         $serializer = SerializerBuilder::create()->build();
@@ -53,7 +43,7 @@ class PropertiesExtractorTest extends TestCase
         );
     }
 
-    #[DataProvider('provideTestCanExtract')]
+    #[DataProvider('provideCanExtractCases')]
     public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
         if (null !== $source) {
@@ -77,6 +67,16 @@ class PropertiesExtractorTest extends TestCase
                 static::assertTrue(true);
             }
         }
+    }
+
+    public static function provideCanExtractCases(): iterable
+    {
+        return [
+            [null, null, false],
+            [null, new Schema(), false],
+            [__NAMESPACE__.'\JmsExtractorStubModel', null, false],
+            [__NAMESPACE__.'\JmsExtractorStubModel', new Schema(), true],
+        ];
     }
 
     public function testExtract(): void

@@ -27,9 +27,9 @@ class DrawSonataIntegrationExtensionUserLockEnabledTest extends DrawSonataIntegr
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
-        yield from parent::provideTestHasServiceDefinition();
+        yield from parent::provideServiceDefinitionCases();
         yield [UserLockAdmin::class];
         yield [RefreshUserLockController::class];
         yield ['draw.sonata.user.action.unlock_user_action'];

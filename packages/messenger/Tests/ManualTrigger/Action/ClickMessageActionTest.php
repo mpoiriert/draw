@@ -75,28 +75,7 @@ class ClickMessageActionTest extends TestCase
         );
     }
 
-    public static function provideTestClickEnvelopeError(): iterable
-    {
-        yield 'not-found' => [
-            null,
-            MessageNotFoundException::class,
-            'link.invalid',
-        ];
-
-        yield 'error-queue' => [
-            new Envelope((object) [], [new SentToFailureTransportStamp(uniqid())]),
-            MessageNotFoundException::class,
-            'link.invalid',
-        ];
-
-        yield 'expired' => [
-            new Envelope((object) [], [new ExpirationStamp(new \DateTimeImmutable('- 1 second'))]),
-            MessageNotFoundException::class,
-            'link.invalid',
-        ];
-    }
-
-    #[DataProvider('provideTestClickEnvelopeError')]
+    #[DataProvider('provideClickEnvelopeErrorCases')]
     public function testClickEnvelopeError(
         ?Envelope $returnedEnveloped,
         string $exceptionClass,
@@ -179,6 +158,27 @@ class ClickMessageActionTest extends TestCase
             '/',
             $response->getTargetUrl()
         );
+    }
+
+    public static function provideClickEnvelopeErrorCases(): iterable
+    {
+        yield 'not-found' => [
+            null,
+            MessageNotFoundException::class,
+            'link.invalid',
+        ];
+
+        yield 'error-queue' => [
+            new Envelope((object) [], [new SentToFailureTransportStamp(uniqid())]),
+            MessageNotFoundException::class,
+            'link.invalid',
+        ];
+
+        yield 'expired' => [
+            new Envelope((object) [], [new ExpirationStamp(new \DateTimeImmutable('- 1 second'))]),
+            MessageNotFoundException::class,
+            'link.invalid',
+        ];
     }
 
     public function testClick(): void

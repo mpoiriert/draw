@@ -222,7 +222,7 @@ class StartMessengerBrokerCommandTest extends TestCase
         );
     }
 
-    #[DataProvider('provideDataForTestExecuteWithAutoConcurrent')]
+    #[DataProvider('provideExecuteWithAutoConcurrentCases')]
     public function testExecuteWithAutoConcurrent(
         int $numCpus,
         float $processesPerCore,
@@ -270,7 +270,7 @@ class StartMessengerBrokerCommandTest extends TestCase
         ;
     }
 
-    public static function provideDataForTestExecuteWithAutoConcurrent(): iterable
+    public static function provideExecuteWithAutoConcurrentCases(): iterable
     {
         yield 'integer multiplier' => [
             'numCpus' => 4,

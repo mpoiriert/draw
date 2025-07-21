@@ -24,8 +24,6 @@ abstract class IntegrationTestCase extends TestCase
 
     abstract public function getDefaultConfiguration(): array;
 
-    abstract public static function provideTestLoad(): iterable;
-
     protected function mockExtension(string $name): ExtensionInterface
     {
         $extension = $this->createMock(ExtensionInterface::class);
@@ -65,7 +63,7 @@ abstract class IntegrationTestCase extends TestCase
         );
     }
 
-    #[DataProvider('provideTestLoad')]
+    #[DataProvider('provideLoadCases')]
     public function testLoad(
         array $configuration = [],
         array $services = [],
@@ -94,6 +92,8 @@ abstract class IntegrationTestCase extends TestCase
             $container,
         );
     }
+
+    abstract public static function provideLoadCases(): iterable;
 
     protected function processConfiguration(array $configs = [[]]): array
     {

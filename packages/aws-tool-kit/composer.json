@@ -16,7 +16,7 @@
         "draw/core": "^0.35",
         "draw/dependency-injection": "^0.35",
         "draw/tester": "^0.35",
-        "phpunit/phpunit": "^11.3",
+        "phpunit/phpunit": "^11.3 || ^12.0",
         "symfony/cache": "^6.4.0",
         "symfony/http-client": "^6.4.0",
         "symfony/http-client-contracts": "^3.4"

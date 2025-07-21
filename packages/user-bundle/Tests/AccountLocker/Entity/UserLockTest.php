@@ -35,7 +35,13 @@ class UserLockTest extends TestCase
         static::assertNull($this->entity->getUnlockUntil(), 'Unlock until must be null');
     }
 
-    public static function provideTestIsActive(): array
+    #[DataProvider('provideIsActiveCases')]
+    public function testIsActive(UserLock $userLock, bool $expected): void
+    {
+        static::assertSame($expected, $userLock->isActive());
+    }
+
+    public static function provideIsActiveCases(): iterable
     {
         return [
             'default' => [
@@ -67,11 +73,5 @@ class UserLockTest extends TestCase
                 false,
             ],
         ];
-    }
-
-    #[DataProvider('provideTestIsActive')]
-    public function testIsActive(UserLock $userLock, bool $expected): void
-    {
-        static::assertSame($expected, $userLock->isActive());
     }
 }

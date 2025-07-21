@@ -19,7 +19,7 @@
         "cweagans/composer-patches": "^1.7",
         "draw/tester": "^0.35",
         "draw/security": "^0.35",
-        "phpunit/phpunit": "^11.3",
+        "phpunit/phpunit": "^11.3 || ^12.0",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
         "symfony/notifier": "^6.4.0"

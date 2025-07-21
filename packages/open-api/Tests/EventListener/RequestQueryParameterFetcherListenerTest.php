@@ -105,21 +105,6 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         $this->object->onKernelController($event);
     }
 
-    public static function provideOnKernelController(): iterable
-    {
-        foreach ((new \ReflectionClass(static::class))->getMethods() as $reflectionMethod) {
-            if (str_starts_with($reflectionMethod->getName(), 'actionTest')) {
-                $parameters = $reflectionMethod->getParameters();
-
-                yield $reflectionMethod->getName() => [
-                    $reflectionMethod->getName(),
-                    $parameters[0]->getDefaultValue(),
-                    $parameters[1]->getDefaultValue(),
-                ];
-            }
-        }
-    }
-
     public function actionTestDefault(
         mixed $value = 'expected-value',
         #[QueryParameter]
@@ -204,7 +189,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     ): void {
     }
 
-    #[DataProvider('provideOnKernelController')]
+    #[DataProvider('provideOnKernelControllerCases')]
     public function testOnKernelController(string $methodName, mixed $value, mixed $expectedValue): void
     {
         $controllerEvent = new ControllerEvent(
@@ -222,6 +207,21 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
             $expectedValue,
             $request->attributes->get('expectedValue')
         );
+    }
+
+    public static function provideOnKernelControllerCases(): iterable
+    {
+        foreach ((new \ReflectionClass(static::class))->getMethods() as $reflectionMethod) {
+            if (str_starts_with($reflectionMethod->getName(), 'actionTest')) {
+                $parameters = $reflectionMethod->getParameters();
+
+                yield $reflectionMethod->getName() => [
+                    $reflectionMethod->getName(),
+                    $parameters[0]->getDefaultValue(),
+                    $parameters[1]->getDefaultValue(),
+                ];
+            }
+        }
     }
 
     public function testOnKernelControllerInvalidArrayCollectionFormat(): void

@@ -45,7 +45,18 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
         );
     }
 
-    public static function provideTestHandleManuallyTriggeredMessage(): iterable
+    #[DataProvider('provideHandleManuallyTriggeredMessageCases')]
+    public function testHandleManuallyTriggeredMessage(Envelope $envelope, int $expectedCount): void
+    {
+        $this->service->handleManuallyTriggeredMessage($event = new SendMessageToTransportsEvent($envelope, []));
+
+        static::assertCount(
+            $expectedCount,
+            $event->getEnvelope()->all(ManualTriggerStamp::class)
+        );
+    }
+
+    public static function provideHandleManuallyTriggeredMessageCases(): iterable
     {
         yield 'no-stamp-message-object' => [
             new Envelope((object) []),
@@ -61,16 +72,5 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
             new Envelope(new class implements ManuallyTriggeredInterface {}, [new ManualTriggerStamp()]),
             1,
         ];
-    }
-
-    #[DataProvider('provideTestHandleManuallyTriggeredMessage')]
-    public function testHandleManuallyTriggeredMessage(Envelope $envelope, int $expectedCount): void
-    {
-        $this->service->handleManuallyTriggeredMessage($event = new SendMessageToTransportsEvent($envelope, []));
-
-        static::assertCount(
-            $expectedCount,
-            $event->getEnvelope()->all(ManualTriggerStamp::class)
-        );
     }
 }

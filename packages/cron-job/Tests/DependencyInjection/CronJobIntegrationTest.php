@@ -36,7 +36,7 @@ class CronJobIntegrationTest extends IntegrationTestCase
         return [];
     }
 
-    public static function provideTestLoad(): iterable
+    public static function provideLoadCases(): iterable
     {
         yield [
             [],

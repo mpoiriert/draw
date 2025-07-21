@@ -29,7 +29,7 @@ class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataInteg
         return $configuration;
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield [MessengerMessageAdmin::class];
         yield [MessageController::class];

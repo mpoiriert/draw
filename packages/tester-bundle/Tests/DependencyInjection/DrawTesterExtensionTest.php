@@ -28,7 +28,7 @@ class DrawTesterExtensionTest extends ExtensionTestCase
         return [];
     }
 
-    public static function provideTestHasServiceDefinition(): iterable
+    public static function provideServiceDefinitionCases(): iterable
     {
         yield [SqlProfiler::class];
         yield [\Draw\Component\Profiling\Sql\SqlProfiler::class, SqlProfiler::class];

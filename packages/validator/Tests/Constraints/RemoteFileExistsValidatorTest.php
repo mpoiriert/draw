@@ -47,10 +47,19 @@ class RemoteFileExistsValidatorTest extends TestCase
         $this->object->validate(null, new NotNull());
     }
 
+    #[DataProvider('provideValidateCases')]
+    public function testValidate(string $file, int $violationsCount): void
+    {
+        $validator = Validation::createValidator();
+
+        $violations = $validator->validate($file, [new RemoteFileExists()]);
+        static::assertCount($violationsCount, $violations);
+    }
+
     /**
      * @return array<string, array{0: string, 1: int}>
      */
-    public static function provideFiles(): array
+    public static function provideValidateCases(): iterable
     {
         return [
             'url' => ['https://github.com', 0],
@@ -58,14 +67,5 @@ class RemoteFileExistsValidatorTest extends TestCase
             'not-exist-url' => ['https://github-01.com', 1],
             'not-exist-image' => ['https://github.githubassets.com/images/modules/open_graph/github-logo-not-exist.png', 1],
         ];
-    }
-
-    #[DataProvider('provideFiles')]
-    public function testValidate(string $file, int $violationsCount): void
-    {
-        $validator = Validation::createValidator();
-
-        $violations = $validator->validate($file, [new RemoteFileExists()]);
-        static::assertCount($violationsCount, $violations);
     }
 }

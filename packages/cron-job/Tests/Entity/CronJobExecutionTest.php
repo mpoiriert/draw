@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(CronJobExecution::class)]
 class CronJobExecutionTest extends TestCase
 {
-    #[DataProvider('provideDataForTestIsExecutable')]
+    #[DataProvider('provideIsExecutableCases')]
     public function testIsExecutable(
         bool $expectedExecutable,
         bool $active,
@@ -39,7 +39,7 @@ class CronJobExecutionTest extends TestCase
         static::assertSame($expectedExecutable, $execution->isExecutable(Carbon::now()->toDateTimeImmutable()));
     }
 
-    public static function provideDataForTestIsExecutable(): iterable
+    public static function provideIsExecutableCases(): iterable
     {
         yield 'inactive' => [
             'expectedExecutable' => false,

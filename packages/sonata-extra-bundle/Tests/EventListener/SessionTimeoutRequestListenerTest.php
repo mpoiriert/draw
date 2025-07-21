@@ -92,7 +92,20 @@ class SessionTimeoutRequestListenerTest extends TestCase
         $this->object->onKernelRequestInvalidate($requestEvent);
     }
 
-    public static function provideTestOnKernelRequestInvalidateNotInvalidate(): iterable
+    #[DoesNotPerformAssertions]
+    #[DataProvider('provideOnKernelRequestInvalidateNotInvalidateCases')]
+    public function testOnKernelRequestInvalidateNotInvalidate(Request $request, int $requestType): void
+    {
+        $requestEvent = new RequestEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            $requestType
+        );
+
+        $this->object->onKernelRequestInvalidate($requestEvent);
+    }
+
+    public static function provideOnKernelRequestInvalidateNotInvalidateCases(): iterable
     {
         $request = new class extends Request {
             public function hasSession($skipIfUninitialized = false): bool
@@ -160,19 +173,6 @@ class SessionTimeoutRequestListenerTest extends TestCase
         ];
     }
 
-    #[DoesNotPerformAssertions]
-    #[DataProvider('provideTestOnKernelRequestInvalidateNotInvalidate')]
-    public function testOnKernelRequestInvalidateNotInvalidate(Request $request, int $requestType): void
-    {
-        $requestEvent = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
-            $request,
-            $requestType
-        );
-
-        $this->object->onKernelRequestInvalidate($requestEvent);
-    }
-
     public function testOnKernelResponseSetLastUsed(): void
     {
         $event = new ResponseEvent(
@@ -193,7 +193,23 @@ class SessionTimeoutRequestListenerTest extends TestCase
         );
     }
 
-    public static function provideTestOnKernelResponseSetLastUsedNoSet(): iterable
+    #[DoesNotPerformAssertions]
+    #[DataProvider('provideOnKernelResponseSetLastUsedNoSetCases')]
+    public function testOnKernelResponseSetLastUsedNoSet(
+        Request $request,
+        int $requestType = HttpKernelInterface::MAIN_REQUEST,
+    ): void {
+        $event = new ResponseEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            $requestType,
+            new Response()
+        );
+
+        $this->object->onKernelResponseSetLastUsed($event);
+    }
+
+    public static function provideOnKernelResponseSetLastUsedNoSetCases(): iterable
     {
         $request = new class extends Request {
             public function hasSession($skipIfUninitialized = false): bool
@@ -227,22 +243,6 @@ class SessionTimeoutRequestListenerTest extends TestCase
         yield 'no-session' => [
             $request,
         ];
-    }
-
-    #[DoesNotPerformAssertions]
-    #[DataProvider('provideTestOnKernelResponseSetLastUsedNoSet')]
-    public function testOnKernelResponseSetLastUsedNoSet(
-        Request $request,
-        int $requestType = HttpKernelInterface::MAIN_REQUEST,
-    ): void {
-        $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
-            $request,
-            $requestType,
-            new Response()
-        );
-
-        $this->object->onKernelResponseSetLastUsed($event);
     }
 
     public function testOnKernelResponseAddDialog(): void
@@ -290,7 +290,39 @@ class SessionTimeoutRequestListenerTest extends TestCase
         );
     }
 
-    public static function provideTestOnKernelResponseAddDialogNoInjection(): iterable
+    #[DataProvider('provideOnKernelResponseAddDialogNoInjectionCases')]
+    public function testOnKernelResponseAddDialogNoInjection(
+        Response $response,
+        ?UserInterface $user = null,
+        int $requestType = HttpKernelInterface::MAIN_REQUEST,
+    ): void {
+        $this->security->expects(static::once())
+            ->method('getUser')
+            ->willReturn($user)
+        ;
+
+        $this->urlGenerator->expects(static::never())
+            ->method('generate')
+        ;
+
+        $previousContent = $response->getContent();
+
+        $this->object->onKernelResponseAddDialog(
+            new ResponseEvent(
+                $this->createMock(HttpKernelInterface::class),
+                new Request(),
+                $requestType,
+                $response
+            )
+        );
+
+        static::assertSame(
+            $previousContent,
+            $response->getContent()
+        );
+    }
+
+    public static function provideOnKernelResponseAddDialogNoInjectionCases(): iterable
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'text/html');
@@ -364,37 +396,5 @@ class SessionTimeoutRequestListenerTest extends TestCase
             $newResponse,
             $user,
         ];
-    }
-
-    #[DataProvider('provideTestOnKernelResponseAddDialogNoInjection')]
-    public function testOnKernelResponseAddDialogNoInjection(
-        Response $response,
-        ?UserInterface $user = null,
-        int $requestType = HttpKernelInterface::MAIN_REQUEST,
-    ): void {
-        $this->security->expects(static::once())
-            ->method('getUser')
-            ->willReturn($user)
-        ;
-
-        $this->urlGenerator->expects(static::never())
-            ->method('generate')
-        ;
-
-        $previousContent = $response->getContent();
-
-        $this->object->onKernelResponseAddDialog(
-            new ResponseEvent(
-                $this->createMock(HttpKernelInterface::class),
-                new Request(),
-                $requestType,
-                $response
-            )
-        );
-
-        static::assertSame(
-            $previousContent,
-            $response->getContent()
-        );
     }
 }
