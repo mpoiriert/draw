@@ -4,13 +4,18 @@ namespace Draw\Bundle\SonataImportBundle\Column\Extractor;
 
 use Draw\Bundle\SonataImportBundle\Column\BaseColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
+use Draw\Bundle\SonataImportBundle\Exception\EntityClassNotSetException;
 
 class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
 {
     #[\Override]
     public function getOptions(Column $column, array $options): array
     {
-        $class = $column->getImport()->getEntityClass();
+        try {
+            $class = $this->getEntityClass($column);
+        } catch (EntityClassNotSetException) {
+            return [];
+        }
 
         $reflectionClass = new \ReflectionClass($class);
 

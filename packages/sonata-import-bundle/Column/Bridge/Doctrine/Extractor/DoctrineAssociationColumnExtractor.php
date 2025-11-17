@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\SonataImportBundle\Column\BaseColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
+use Draw\Bundle\SonataImportBundle\Exception\EntityClassNotSetException;
 
 class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
 {
@@ -18,7 +19,11 @@ class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
     #[\Override]
     public function getOptions(Column $column, array $options): array
     {
-        $class = $column->getImport()->getEntityClass();
+        try {
+            $class = $this->getEntityClass($column);
+        } catch (EntityClassNotSetException) {
+            return [];
+        }
 
         $metadata = $this->managerRegistry->getManagerForClass($class)->getClassMetadata($class);
 
