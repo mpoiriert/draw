@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.2-fpm-bookworm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends vim curl debconf subversion git apt-transport-https apt-utils \
@@ -57,15 +57,15 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen
 
-#MYSQL
-RUN apt-get update && apt-get install -y --no-install-recommends default-mysql-client && \
-    rm -rf /var/lib/apt
-
 #MONGODB
 RUN pecl install mongodb-1.17.2 && docker-php-ext-enable mongodb
 
 #Graphviz
 RUN apt-get update && apt-get install -y --no-install-recommends graphviz
+
+#MYSQL
+RUN apt-get update && apt-get install -y --no-install-recommends default-mysql-client && \
+    rm -rf /var/lib/apt
 
 ARG PUID=1000
 ARG PGID=1000

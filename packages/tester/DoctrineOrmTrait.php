@@ -2,10 +2,12 @@
 
 namespace Draw\Component\Tester;
 
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -25,17 +27,17 @@ trait DoctrineOrmTrait
             true
         );
 
-        $entityManager = EntityManager::create(
+        $connection = DriverManager::getConnection(
             [
                 'driver' => 'pdo_mysql',
                 'url' => $dsn ?: getenv('DATABASE_URL'),
             ],
-            $config,
+            $config
         );
 
-        $helperSet = ConsoleRunner::createHelperSet($entityManager);
+        $entityManager = new EntityManager($connection, $config);
 
-        $console = ConsoleRunner::createApplication($helperSet);
+        $console = ConsoleRunner::createApplication(new SingleManagerProvider($entityManager));
         $console->setAutoExit(false);
         $console->setCatchExceptions(false);
 

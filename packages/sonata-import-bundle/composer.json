@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": ">=8.2",
+        "doctrine/orm": "^2.11",
         "draw/sonata-extra-bundle": "^0.36",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
