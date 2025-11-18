@@ -10,18 +10,18 @@ $finder = (new \PhpCsFixer\Finder)
 
 $config = (new \PhpCsFixer\Config())
     ->setRules([
-        '@PHP80Migration:risky' => true,
-        '@PHP82Migration' => true,
+        '@PHP8x0Migration:risky' => true,
+        '@PHP8x2Migration' => true,
         '@PhpCsFixer' => true,
         '@PhpCsFixer:risky' => true,
         '@Symfony' => true,
         '@Symfony:risky' => true,
-        '@PHPUnit57Migration:risky' => true,
-        '@PHPUnit60Migration:risky' => true,
-        '@PHPUnit75Migration:risky' => true,
-        '@PHPUnit84Migration:risky' => true,
-        '@PHPUnit91Migration:risky' => true,
-        '@PHPUnit100Migration:risky' => true,
+        '@PHPUnit5x7Migration:risky' => true,
+        '@PHPUnit6x0Migration:risky' => true,
+        '@PHPUnit7x5Migration:risky' => true,
+        '@PHPUnit8x4Migration:risky' => true,
+        '@PHPUnit9x1Migration:risky' => true,
+        '@PHPUnit10x0Migration:risky' => true,
         'header_comment' => ['header' => '',], // Make sure we remove any header comments
         'phpdoc_add_missing_param_annotation' => ['only_untyped' => true], // @PhpCsFixer use default 'true', we don't want php doc that are already typed
         'method_chaining_indentation' => false, // @PhpCsFixer use default 'true' impact readability on symfony configuration and sonata admin
