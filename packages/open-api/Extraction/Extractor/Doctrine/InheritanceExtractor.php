@@ -2,7 +2,7 @@
 
 namespace Draw\Component\OpenApi\Extraction\Extractor\Doctrine;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Component\OpenApi\Cleaner\UnreferencedCleaner;
 use Draw\Component\OpenApi\Exception\ExtractionImpossibleException;
@@ -50,7 +50,7 @@ class InheritanceExtractor implements ExtractorInterface
         }
 
         $metaData = $this->managerRegistry->getManagerForClass($source->name)->getClassMetadata($source->name);
-        if (!$metaData instanceof ClassMetadataInfo) {
+        if (!$metaData instanceof ClassMetadata) {
             return;
         }
 
