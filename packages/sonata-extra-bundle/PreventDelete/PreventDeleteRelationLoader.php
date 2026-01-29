@@ -167,31 +167,31 @@ class PreventDeleteRelationLoader
                 continue;
             }
 
-            $relations = array_merge(
-                $relations,
-                $this->preventDeleteFromClassAttributes($metadata->getReflectionClass())
-            );
+            array_push($relations, ...$this->preventDeleteFromClassAttributes($metadata->getReflectionClass()));
 
             foreach ($metadata->associationMappings as $associationMapping) {
                 // We want foreign key only
-                if (!$associationMapping['isOwningSide']) {
+                if (!$associationMapping->isOwningSide()) {
                     continue;
                 }
 
-                $parentClass = $associationMapping['inherited'] ?? null;
+                $parentClass = $associationMapping->inherited;
 
                 // Associations defined in parent classes will be taken into account
                 if (
                     null !== $parentClass
                     && \array_key_exists(
-                        self::getAssociationIdentifier($parentClass, $associationMapping['fieldName']),
+                        self::getAssociationIdentifier($parentClass, $associationMapping->fieldName),
                         $associationIdentifiers
                     )
                 ) {
                     continue;
                 }
 
-                $preventDeleteFromAttribute = $this->preventDeleteFromPropertyAttribute($associationMapping);
+                $preventDeleteFromAttribute = $this->preventDeleteFromPropertyAttribute(
+                    $associationMapping->sourceEntity,
+                    $associationMapping->fieldName
+                );
 
                 // Not preventing delete from attribute as precedence over preventing delete from association
                 if ($preventDeleteFromAttribute && !$preventDeleteFromAttribute->getPreventDelete()) {
@@ -206,9 +206,9 @@ class PreventDeleteRelationLoader
                 }
 
                 $relations[] = new PreventDelete(
-                    $associationMapping['targetEntity'],
+                    $associationMapping->targetEntity,
                     $metadata->getName(),
-                    $associationMapping['fieldName'],
+                    $associationMapping->fieldName,
                     metadata: $preventDeleteFromAttribute?->getMetadata() ?? []
                 );
             }
@@ -217,13 +217,10 @@ class PreventDeleteRelationLoader
         return $relations;
     }
 
-    private function preventDeleteFromPropertyAttribute(array $associationMapping): ?PreventDelete
+    private function preventDeleteFromPropertyAttribute(string $sourceEntity, string $fieldName): ?PreventDelete
     {
         try {
-            $attributes = (new \ReflectionProperty(
-                $associationMapping['sourceEntity'],
-                $associationMapping['fieldName']
-            ))
+            $attributes = (new \ReflectionProperty($sourceEntity, $fieldName))
                 ->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF)
             ;
 
@@ -273,7 +270,7 @@ class PreventDeleteRelationLoader
         return $preventDeletes;
     }
 
-    private function preventDeleteFromAssociation(array $associationMapping): bool
+    private function preventDeleteFromAssociation(object $associationMapping): bool
     {
         if (!$this->useManager) {
             return false;
@@ -283,20 +280,18 @@ class PreventDeleteRelationLoader
             return true;
         }
 
-        if ($associationMapping['isOnDeleteCascade'] ?? false) {
-            return false;
-        }
+        $joinColumns = $associationMapping->joinColumns ?? $associationMapping->joinTable?->joinColumns ?? [];
 
-        foreach ($associationMapping['joinColumns'] ?? [] as $joinColumn) {
-            if (!isset($joinColumn['onDelete'])) {
+        foreach ($joinColumns as $joinColumn) {
+            if (null === $joinColumn->onDelete) {
                 continue;
             }
 
-            if ('SET NULL' === $joinColumn['onDelete']) {
+            if ('SET NULL' === $joinColumn->onDelete) {
                 return false;
             }
 
-            if ('CASCADE' === $joinColumn['onDelete']) {
+            if ('CASCADE' === $joinColumn->onDelete) {
                 return false;
             }
         }
@@ -312,10 +307,10 @@ class PreventDeleteRelationLoader
         $attributes = [];
 
         foreach ($reflectionClass->getTraits() as $reflectionTraitClass) {
-            $attributes = array_merge(
+            array_push(
                 $attributes,
-                $reflectionTraitClass->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF),
-                $this->getPreventDeleteAttributesFromTrait($reflectionTraitClass)
+                ...$reflectionTraitClass->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF),
+                ...$this->getPreventDeleteAttributesFromTrait($reflectionTraitClass)
             );
         }
 

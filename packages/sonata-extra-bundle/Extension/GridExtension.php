@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\Extension;
 
+use Doctrine\ORM\Mapping\AssociationMapping;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -119,10 +120,11 @@ class GridExtension extends AbstractAdminExtension
     ): FieldDescriptionInterface {
         $description = $admin->getFieldDescriptionFactory()->create($admin->getClass(), $name);
 
-        foreach ($description->getParentAssociationMappings() as $mapping) {
-            $admin = $admin->getConfigurationPool()->getAdminByClass($mapping['targetEntity']);
+        /** @var AssociationMapping|null $mapping */
+        $mapping = $description->getParentAssociationMappings()[0] ?? null;
+        if (null !== $mapping && null !== $mapping->targetEntity) {
+            $admin = $admin->getConfigurationPool()->getAdminByClass($mapping->targetEntity);
             $name = explode('.', $name)[1];
-            break;
         }
 
         $options = array_merge(
@@ -141,10 +143,11 @@ class GridExtension extends AbstractAdminExtension
         $fieldFactory = $admin->getFieldDescriptionFactory();
         $description = $fieldFactory->create($admin->getClass(), $name);
 
-        foreach ($description->getParentAssociationMappings() as $mapping) {
-            $admin = $admin->getConfigurationPool()->getAdminByClass($mapping['targetEntity']);
+        /** @var AssociationMapping|null $mapping */
+        $mapping = $description->getParentAssociationMappings()[0] ?? null;
+        if (null !== $mapping && null !== $mapping->targetEntity) {
+            $admin = $admin->getConfigurationPool()->getAdminByClass($mapping->targetEntity);
             $name = explode('.', $name)[1];
-            break;
         }
 
         $fieldDescription = $fieldFactory->create(
