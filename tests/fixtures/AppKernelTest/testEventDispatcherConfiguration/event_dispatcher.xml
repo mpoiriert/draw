@@ -231,8 +231,8 @@
     <callable type="function" name="onKernelResponse" class="Symfony\Component\HttpKernel\EventListener\ResponseListener" priority="0"/>
     <callable type="function" name="onKernelResponse" class="Symfony\Component\HttpKernel\DataCollector\RequestDataCollector" priority="0"/>
     <callable type="function" name="onKernelResponseSetLastUsed" class="Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener" priority="0"/>
-    <callable type="function" name="onResponse" class="Nelmio\CorsBundle\EventListener\CacheableResponseVaryListener" priority="-10"/>
     <callable type="function" name="onKernelResponse" class="Symfony\Component\HttpKernel\EventListener\CacheAttributeListener" priority="-10"/>
+    <callable type="function" name="onResponse" class="Nelmio\CorsBundle\EventListener\CacheableResponseVaryListener" priority="-15"/>
     <callable type="function" name="onKernelResponse" class="Symfony\Component\HttpKernel\EventListener\ProfilerListener" priority="-100"/>
     <callable type="function" name="removeCspHeader" class="Symfony\Component\HttpKernel\EventListener\ErrorListener" priority="-128"/>
     <callable type="function" name="onKernelResponse" class="Symfony\Component\HttpKernel\EventListener\SessionListener" priority="-1000"/>

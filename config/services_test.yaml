@@ -3,6 +3,9 @@ services:
     autowire: true      # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+  Draw\DoctrineExtra\ORM\EntityHandler:
+    public: true
+
   scheb_two_factor.security.totp_authenticator: '@App\Security\TotpAuthenticatorMock'
 
   Draw\Bundle\TesterBundle\PHPUnit\Extension\DeleteTemporaryEntity\TemporaryEntityCleanerInterface: '@Draw\Bundle\TesterBundle\PHPUnit\Extension\DeleteTemporaryEntity\BaseTemporaryEntityCleaner'

@@ -8,6 +8,7 @@ use Cron\CronExpression;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\ReadableCollection;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -64,8 +65,8 @@ class CronJob implements \Stringable
      */
     #[
         ORM\OneToMany(
-            mappedBy: 'cronJob',
             targetEntity: CronJobExecution::class,
+            mappedBy: 'cronJob',
             cascade: ['persist'],
             fetch: 'EXTRA_LAZY',
             orphanRemoval: true,
@@ -192,9 +193,9 @@ class CronJob implements \Stringable
     }
 
     /**
-     * @return Selectable&Collection<CronJobExecution>
+     * @return ReadableCollection<array-key, CronJobExecution>&Selectable<array-key, CronJobExecution>
      */
-    public function getRecentExecutions(): Selectable&Collection
+    public function getRecentExecutions(): ReadableCollection&Selectable
     {
         return $this->executions
             ->matching(
