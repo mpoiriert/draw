@@ -2,7 +2,7 @@
 
 namespace Draw\Component\EntityMigrator\EventListener;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Draw\Component\EntityMigrator\Entity\EntityMigrationInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
@@ -19,7 +19,7 @@ class DoctrineSchemaListener
     {
         $metadata = $eventArgs->getClassMetadata();
 
-        if (!$metadata instanceof ClassMetadataInfo) {
+        if (!$metadata instanceof ClassMetadata) {
             return;
         }
 
