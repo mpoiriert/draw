@@ -52,14 +52,14 @@ class DoctrineFieldColumnExtractor extends BaseColumnExtractor
 
         $columnInfo = (new Column())
             ->setMappedTo($headerName)
-            ->setIsDate(str_starts_with($fieldMapping['type'], 'date'))
+            ->setIsDate(str_starts_with($fieldMapping->type, 'date'))
         ;
 
-        if ($fieldMapping['id'] ?? false) {
+        if ($classMetadata->isIdentifier($headerName)) {
             $columnInfo->setIsIdentifier(true);
         }
 
-        if (null === $column->getIsIdentifier() && ($fieldMapping['unique'] ?? false)) {
+        if (null === $column->getIsIdentifier() && ($fieldMapping->unique ?? false)) {
             $columnInfo->setIsIdentifier(true);
         }
 

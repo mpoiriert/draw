@@ -3,7 +3,6 @@
 namespace Draw\Bundle\SonataImportBundle\Column\Bridge\Doctrine\Extractor;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\SonataImportBundle\Column\BaseColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
@@ -27,13 +26,13 @@ class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
         }
 
         foreach ($metadata->associationMappings as $name => $associationMapping) {
-            if (!($associationMapping['type'] & ClassMetadataInfo::TO_ONE)) {
+            if (!($associationMapping->type() & ClassMetadata::TO_ONE)) {
                 continue;
             }
 
             $targetClassMetadata = $this->managerRegistry
-                ->getManagerForClass($associationMapping['targetEntity'])
-                ->getClassMetadata($associationMapping['targetEntity'])
+                ->getManagerForClass($associationMapping->targetEntity)
+                ->getClassMetadata($associationMapping->targetEntity)
             ;
 
             if (!$targetClassMetadata instanceof ClassMetadata) {
@@ -41,7 +40,7 @@ class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
             }
 
             foreach ($targetClassMetadata->fieldMappings as $fieldName => $fieldMapping) {
-                if (!($fieldMapping['id'] ?? false) && !($fieldMapping['unique'] ?? false)) {
+                if (!$targetClassMetadata->isIdentifier($fieldName) && !($fieldMapping->unique ?? false)) {
                     continue;
                 }
 
@@ -70,7 +69,7 @@ class DoctrineAssociationColumnExtractor extends BaseColumnExtractor
 
         [$relation, $field] = explode('.', $column->getMappedTo());
 
-        $targetEntityClass = $classMetadata->associationMappings[$relation]['targetEntity'];
+        $targetEntityClass = $classMetadata->associationMappings[$relation]->targetEntity;
 
         $targetEntity = $this->managerRegistry
             ->getRepository($targetEntityClass)

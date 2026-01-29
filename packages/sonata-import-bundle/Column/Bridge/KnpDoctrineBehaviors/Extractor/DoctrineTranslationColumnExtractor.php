@@ -45,7 +45,7 @@ class DoctrineTranslationColumnExtractor extends BaseColumnExtractor
         }
 
         foreach ($metadata->fieldMappings as $field => $fieldMapping) {
-            if ($fieldMapping['id'] ?? false) {
+            if ($metadata->isIdentifier($field)) {
                 continue;
             }
 
