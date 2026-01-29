@@ -4,6 +4,7 @@ namespace Draw\Component\Messenger\Tests;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\Persistence\ConnectionRegistry;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
@@ -21,9 +22,17 @@ class TestCase extends BaseTestCase implements ConnectionRegistry
 
     public static function loadDefaultConnection(): Connection
     {
-        if (null === self::$connection) {
-            self::$connection = DriverManager::getConnection(['url' => getenv('DATABASE_URL')]);
+        if (null !== self::$connection) {
+            return self::$connection;
         }
+
+        $url = getenv('DATABASE_URL');
+        if (!$url) {
+            throw new \RuntimeException('DATABASE_URL environment variable is not set');
+        }
+
+        $dsnParser = new DsnParser(['mysql' => 'pdo_mysql', 'postgresql' => 'pdo_pgsql']);
+        self::$connection = DriverManager::getConnection($dsnParser->parse($url));
 
         return self::$connection;
     }

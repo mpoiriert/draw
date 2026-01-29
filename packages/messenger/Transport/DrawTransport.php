@@ -4,7 +4,7 @@ namespace Draw\Component\Messenger\Transport;
 
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
-use Doctrine\DBAL\Schema\Comparator;
+use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Draw\Component\Core\DateTimeUtils;
@@ -122,7 +122,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         $tags = [];
         /** @var SearchableTagStamp $stamp */
         foreach ($envelope->all(SearchableTagStamp::class) as $stamp) {
-            $tags = array_merge($stamp->getTags(), $tags);
+            array_push($tags, ...$stamp->getTags());
         }
 
         return array_values(array_unique($tags));
@@ -156,9 +156,9 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
                 'expires_at' => '?',
             ])
         ;
-        $this->driverConnection
-            ->prepare($queryBuilder->getSQL())
-            ->executeStatement([
+        $this->driverConnection->executeStatement(
+            $queryBuilder->getSQL(),
+            [
                 $id,
                 $messageClass ? substr($messageClass, -255) : null,
                 $body,
@@ -167,19 +167,18 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
                 self::formatDateTime($now),
                 self::formatDateTime($availableAt),
                 self::formatDateTime($expiresAt),
-            ])
-        ;
+            ]);
 
         if ($tags) {
             $queryBuilder = $this->driverConnection->createQueryBuilder()
                 ->insert($this->connection->getConfiguration()['tag_table_name'])
                 ->values(['message_id' => '?', 'name' => '?'])
             ;
-            $statement = $this->driverConnection
-                ->prepare($queryBuilder->getSQL())
-            ;
             foreach ($tags as $tag) {
-                $statement->executeStatement([$id, $tag]);
+                $this->driverConnection->executeStatement(
+                    $queryBuilder->getSQL(),
+                    [$id, $tag]
+                );
             }
         }
 
@@ -196,15 +195,19 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         $configuration = $this->driverConnection->getConfiguration();
 
         $assetFilter = $configuration->getSchemaAssetsFilter();
-        $configuration->setSchemaAssetsFilter();
+        $configuration->setSchemaAssetsFilter(static fn (): bool => true);
 
-        $comparator = new Comparator();
+        $schemaManager = $this->driverConnection->createSchemaManager();
+        $comparator = $schemaManager->createComparator();
         $schemaDiff = $comparator->compareSchemas(
-            $this->driverConnection->createSchemaManager()->createSchema(),
+            $schemaManager->introspectSchema(),
             $this->getSchema()
         );
 
-        foreach ($schemaDiff->toSaveSql($this->driverConnection->getDatabasePlatform()) as $sql) {
+        $platform = $this->driverConnection->getDatabasePlatform();
+        $sqls = $platform->getAlterSchemaSQL($schemaDiff);
+
+        foreach ($sqls as $sql) {
             $this->driverConnection->executeStatement($sql);
         }
 
@@ -307,7 +310,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->setNotnull(true)
         ;
         $messageTable
-            ->addColumn('message_class', Types::STRING)
+            ->addColumn('message_class', Types::STRING, ['length' => 255])
             ->setNotnull(false)
         ;
         $messageTable
@@ -319,7 +322,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->setNotnull(true)
         ;
         $messageTable
-            ->addColumn('queue_name', Types::STRING)
+            ->addColumn('queue_name', Types::STRING, ['length' => 255])
             ->setNotnull(true)
         ;
         $messageTable
@@ -338,7 +341,11 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->addColumn('expires_at', Types::DATETIME_IMMUTABLE)
             ->setNotnull(false)
         ;
-        $messageTable->setPrimaryKey(['id']);
+        $messageTable->addPrimaryKeyConstraint(
+            PrimaryKeyConstraint::editor()
+                ->setUnquotedColumnNames('id')
+                ->create()
+        );
         $messageTable->addIndex(['message_class', 'available_at']);
         $messageTable->addIndex(['queue_name', 'available_at']);
         $messageTable->addIndex(['available_at']);
@@ -352,10 +359,14 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
             ->setNotnull(true)
         ;
         $tagTable
-            ->addColumn('name', Types::STRING)
+            ->addColumn('name', Types::STRING, ['length' => 255])
             ->setNotnull(true)
         ;
-        $tagTable->setPrimaryKey(['message_id', 'name']);
+        $tagTable->addPrimaryKeyConstraint(
+            PrimaryKeyConstraint::editor()
+                ->setUnquotedColumnNames('message_id', 'name')
+                ->create()
+        );
         $tagTable->addIndex(['name']);
         $tagTable->addForeignKeyConstraint($messagesTableName, ['message_id'], ['id'], ['onDelete' => 'CASCADE']);
 
