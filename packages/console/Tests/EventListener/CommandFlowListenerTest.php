@@ -3,8 +3,8 @@
 namespace Draw\Component\Console\Tests\EventListener;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
-use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Schema\MySQLSchemaManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
@@ -298,7 +298,7 @@ class CommandFlowListenerTest extends TestCase
         $connection
             ->expects(static::once())
             ->method('createSchemaManager')
-            ->willThrowException(new DBALException())
+            ->willThrowException(new ConnectionException())
         ;
 
         $this->object->checkTableExist($event);
