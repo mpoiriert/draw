@@ -143,30 +143,16 @@ class DoctrineBusMessageListenerTest extends TestCase
         );
     }
 
-    public function testOnClearSpecific(): void
-    {
-        $this->addMessageHolder(
-            $messageHolder = $this->createMock(MessageHolderInterface::class)
-        );
-
-        $this->object->onClear(new OnClearEventArgs($this->entityManager, $messageHolder::class));
-
-        static::assertCount(
-            0,
-            $this->object->getFlattenMessageHolders()
-        );
-    }
-
-    public function testOnClearOther(): void
+    public function testOnClear(): void
     {
         $this->addMessageHolder(
             $this->createMock(MessageHolderInterface::class)
         );
 
-        $this->object->onClear(new OnClearEventArgs($this->entityManager, \stdClass::class));
+        $this->object->onClear(new OnClearEventArgs($this->entityManager));
 
         static::assertCount(
-            1,
+            0,
             $this->object->getFlattenMessageHolders()
         );
     }

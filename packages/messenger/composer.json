@@ -19,7 +19,7 @@
     "require": {
         "php": ">=8.2",
         "ext-json": "*",
-        "doctrine/dbal": "^3.3",
+        "doctrine/dbal": "^4.4",
         "doctrine/persistence": "^2.2 || ^3.0",
         "draw/contracts": "^0.37",
         "draw/core": "^0.37",
@@ -36,7 +36,7 @@
     "require-dev": {
         "ext-pcntl": "*",
         "colinodell/psr-testlogger": "^1.1",
-        "doctrine/orm": "^2.11",
+        "doctrine/orm": "^3.6",
         "draw/dependency-injection": "^0.37",
         "draw/tester": "^0.37",
         "phpunit/phpunit": "^11.3 || ^12.0",

@@ -36,12 +36,6 @@ class DoctrineBusMessageListener implements ResetInterface
 
     public function onClear(OnClearEventArgs $args): void
     {
-        if (method_exists($args, 'getEntityClass') && null !== $args->getEntityClass()) {
-            $this->messageHolders[$args->getEntityClass()] = [];
-
-            return;
-        }
-
         $this->messageHolders = [];
     }
 
