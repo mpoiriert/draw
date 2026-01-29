@@ -10,7 +10,10 @@
         <service id="Draw\Component\Profiling\ProfilerCoordinator" public="true">
             <argument type="tagged" tag="Draw\Component\Profiling\ProfilerInterface" />
         </service>
-
+        <service id="Draw\Bundle\TesterBundle\Profiling\Sql\QueryCollector" />
+        <service id="Draw\Bundle\TesterBundle\Profiling\Sql\ProfilingMiddleware">
+            <tag name="doctrine.middleware" />
+        </service>
         <service id="Draw\Bundle\TesterBundle\Profiling\SqlProfiler" />
         <service id="Draw\Component\Profiling\Sql\SqlProfiler" alias="Draw\Bundle\TesterBundle\Profiling\SqlProfiler"/>
     </services>

@@ -3,12 +3,15 @@
 namespace Draw\Component\Tester;
 
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -27,12 +30,9 @@ trait DoctrineOrmTrait
             true
         );
 
+        $dsnParser = new DsnParser(['mysql' => 'pdo_mysql']);
         $connection = DriverManager::getConnection(
-            [
-                'driver' => 'pdo_mysql',
-                'url' => $dsn ?: getenv('DATABASE_URL'),
-            ],
-            $config
+            $dsnParser->parse($dsn ?: getenv('DATABASE_URL'))
         );
 
         $entityManager = new EntityManager($connection, $config);
@@ -65,57 +65,52 @@ trait DoctrineOrmTrait
                 return 'default';
             }
 
-            public function getConnection($name = null)
+            public function getConnection(?string $name = null): object
             {
                 return $this->entityManager->getConnection();
             }
 
-            public function getConnections()
+            public function getConnections(): array
             {
                 return ['default' => $this->getConnection()];
             }
 
-            public function getConnectionNames()
+            public function getConnectionNames(): array
             {
                 return ['default' => 'default'];
             }
 
-            public function getDefaultManagerName()
+            public function getDefaultManagerName(): string
             {
                 return 'default';
             }
 
-            public function getManager($name = null)
+            public function getManager(?string $name = null): ObjectManager
             {
                 return $this->entityManager;
             }
 
-            public function getManagers()
+            public function getManagers(): array
             {
                 return ['default' => $this->entityManager];
             }
 
-            public function resetManager($name = null)
+            public function resetManager(?string $name = null): ObjectManager
             {
                 return $this->entityManager;
             }
 
-            public function getAliasNamespace($alias)
-            {
-                return $alias;
-            }
-
-            public function getManagerNames()
+            public function getManagerNames(): array
             {
                 return ['default' => 'manager.default'];
             }
 
-            public function getRepository($persistentObject, $persistentManagerName = null)
+            public function getRepository(string $persistentObject, ?string $persistentManagerName = null): ObjectRepository
             {
                 return $this->entityManager->getRepository($persistentObject);
             }
 
-            public function getManagerForClass($class)
+            public function getManagerForClass(string $class): ?ObjectManager
             {
                 return $this->entityManager;
             }
