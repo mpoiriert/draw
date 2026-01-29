@@ -72,8 +72,12 @@ cert-generate:
 .PHONY: cert-install
 # Install self-signed certificate
 cert-install:
-	sudo ln -s "$(pwd)/.docker/nginx/certs/$(DOMAIN).crt" /usr/local/share/ca-certificates/$(DOMAIN).crt
-	sudo update-ca-certificates
+	@if [ "$(shell uname)" = "Darwin" ]; then \
+		sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain .docker/nginx/certs/$(DOMAIN).crt || true; \
+	else \
+		sudo ln -s "$(pwd)/.docker/nginx/certs/$(DOMAIN).crt" /usr/local/share/ca-certificates/$(DOMAIN).crt; \
+		sudo update-ca-certificates; \
+	fi
 
 .PHONY: soup
 # Run soup
