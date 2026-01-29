@@ -2,7 +2,7 @@
 
 namespace Draw\Bundle\SonataExtraBundle\FieldDescriptionFactory;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
@@ -20,8 +20,8 @@ class SubClassFieldDescriptionFactory implements FieldDescriptionFactoryInterfac
         if (!isset($options['forClasses'])) {
             $clasMetadata = $this->managerRegistry->getManagerForClass($class)->getClassMetadata($class);
             if (
-                $clasMetadata instanceof ClassMetadataInfo
-                && ClassMetadataInfo::INHERITANCE_TYPE_NONE !== $clasMetadata->inheritanceType
+                $clasMetadata instanceof ClassMetadata
+                && ClassMetadata::INHERITANCE_TYPE_NONE !== $clasMetadata->inheritanceType
             ) {
                 if ($forClasses = $this->getForClasses($clasMetadata, $name)) {
                     $options['forClasses'] = $forClasses;
@@ -34,7 +34,7 @@ class SubClassFieldDescriptionFactory implements FieldDescriptionFactoryInterfac
         ;
     }
 
-    private function getForClasses(ClassMetadataInfo $classMetadata, string $fieldName): ?array
+    private function getForClasses(ClassMetadata $classMetadata, string $fieldName): ?array
     {
         $fieldName = explode('.', $fieldName)[0];
 
@@ -49,7 +49,7 @@ class SubClassFieldDescriptionFactory implements FieldDescriptionFactoryInterfac
                 ->getClassMetadata($subClass)
             ;
 
-            \assert($subClassMetadata instanceof ClassMetadataInfo);
+            \assert($subClassMetadata instanceof ClassMetadata);
 
             if ($this->isPropertyAvailable($subClassMetadata, $fieldName)) {
                 $forClasses[] = $subClassMetadata->getName();
@@ -59,7 +59,7 @@ class SubClassFieldDescriptionFactory implements FieldDescriptionFactoryInterfac
         return $forClasses ?: null;
     }
 
-    private function isPropertyAvailable(ClassMetadataInfo $classMetadata, string $property): bool
+    private function isPropertyAvailable(ClassMetadata $classMetadata, string $property): bool
     {
         return $classMetadata->hasField($property)
             || $classMetadata->hasAssociation($property);
