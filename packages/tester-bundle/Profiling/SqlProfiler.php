@@ -2,12 +2,10 @@
 
 namespace Draw\Bundle\TesterBundle\Profiling;
 
-use Doctrine\DBAL\Logging\DebugStack;
-use Doctrine\DBAL\Logging\LoggerChain;
-use Doctrine\DBAL\Logging\SQLLogger;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
+use Draw\Bundle\TesterBundle\Profiling\Sql\QueryCollector;
 use Draw\Component\Profiling\Sql\SqlLog;
 use Draw\Component\Profiling\Sql\SqlMetric;
 
@@ -16,39 +14,23 @@ use Draw\Component\Profiling\Sql\SqlMetric;
  */
 class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
 {
-    private ?SQLLogger $logger = null;
-
-    private ?DebugStack $debugLogger = null;
-
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private QueryCollector $queryCollector,
+    ) {
     }
 
     public function start(): void
     {
-        $configuration = $this->entityManager->getConnection()->getConfiguration();
-        $this->logger = $configuration->getSQLLogger();
-
-        $this->debugLogger = new DebugStack();
-
-        if (null === $this->logger) {
-            $configuration->setSQLLogger($this->debugLogger);
-
-            return;
-        }
-
-        $configuration->setSQLLogger(
-            new LoggerChain([
-                $this->debugLogger,
-                $this->logger,
-            ])
-        );
+        $this->queryCollector->reset();
+        $this->queryCollector->start();
     }
 
     public function stop(): SqlMetric
     {
+        $this->queryCollector->stop();
         $metricBuilder = $this->getMetricBuilder();
-        foreach ($this->debugLogger->queries as $query) {
+        foreach ($this->queryCollector->getQueries() as $query) {
             $query = $this->sanitizeQuery($query);
             $sql = $query['sql'];
             if ($query['explainable']) {
@@ -67,8 +49,6 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
             }
             $metricBuilder->addLog(new SqlLog($sql));
         }
-
-        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger($this->logger);
 
         return parent::stop();
     }
@@ -95,9 +75,11 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
                     $type = Type::getType($type);
                 }
                 if ($type instanceof Type) {
-                    $query['types'][$j] = $type->getBindingType();
                     try {
-                        $param = $type->convertToDatabaseValue($param, $this->entityManager->getConnection()->getDatabasePlatform());
+                        $param = $type->convertToDatabaseValue(
+                            $param,
+                            $this->entityManager->getConnection()->getDatabasePlatform()
+                        );
                     } catch (\TypeError) {
                         // Error thrown while processing params, query is not explainable.
                         $query['explainable'] = false;
