@@ -61,17 +61,17 @@ class Context
         $this->forEntities[] = $entity;
 
         foreach ($this->entityManager->getClassMetadata($entity)->getAssociationMappings() as $associationMapping) {
-            $this->forEntity($associationMapping['targetEntity']);
+            $this->forEntity($associationMapping->targetEntity);
         }
 
         if ($includeReverseRelation) {
             foreach ($this->entityManager->getMetadataFactory()->getAllMetadata() as $metadata) {
                 foreach ($metadata->getAssociationMappings() as $associationMapping) {
-                    if ($associationMapping['targetEntity'] !== $entity) {
+                    if ($associationMapping->targetEntity !== $entity) {
                         continue;
                     }
 
-                    $this->forEntity($associationMapping['sourceEntity']);
+                    $this->forEntity($associationMapping->sourceEntity);
                 }
             }
         }

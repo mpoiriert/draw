@@ -18,9 +18,9 @@
         "php": ">=8.2"
     },
     "require-dev": {
-        "doctrine/orm": "^2.11",
-        "doctrine/dbal": "^3.3",
-        "doctrine/collections": "^1.0",
+        "doctrine/orm": "^3.6",
+        "doctrine/dbal": "^4.4",
+        "doctrine/collections": "^2.2",
         "doctrine/data-fixtures": "^2.0",
         "draw/dependency-injection": "^0.37",
         "draw/graphviz": "^0.37",
