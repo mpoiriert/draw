@@ -28,6 +28,8 @@ class CommandFlowListener implements EventSubscriberInterface
         'help',
         'doctrine:database:drop',
         'doctrine:database:create',
+        'doctrine:migrations:migrate',
+        'messenger:setup-transports',
         'cache:clear',
     ];
 
@@ -259,10 +261,10 @@ class CommandFlowListener implements EventSubscriberInterface
         $reconnectToSlave = $this->mustReconnectToSlave();
 
         if ($this->ignoreDisabledCommand && Execution::STATE_DISABLED === $state) {
-            $this->connection
-                ->prepare('DELETE FROM command__execution WHERE id = :id')
-                ->executeStatement(['id' => $executionId])
-            ;
+            $this->connection->executeStatement(
+                'DELETE FROM command__execution WHERE id = :id',
+                ['id' => $executionId]
+            );
 
             if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
                 $this->connection->ensureConnectedToReplica();
@@ -310,7 +312,7 @@ class CommandFlowListener implements EventSubscriberInterface
             id = :id
             SQL;
 
-        $this->connection->prepare($query)->executeStatement($parameters);
+        $this->connection->executeStatement($query, $parameters);
 
         if ($reconnectToSlave && $this->connection instanceof PrimaryReadReplicaConnection) {
             $this->connection->ensureConnectedToReplica();
