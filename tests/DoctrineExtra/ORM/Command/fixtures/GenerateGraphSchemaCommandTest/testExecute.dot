@@ -23,14 +23,6 @@ digraph draw {
 <td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
 </tr><tr>
 <td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">user_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">guid</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_user_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
 <font color="#2e3436" face="Helvetica">position</font>
 </td>
 <td border="0" align="left" bgcolor="#eeeeec">
@@ -69,6 +61,14 @@ digraph draw {
 <font color="#2e3436" face="Helvetica">string</font>
 </td>
 <td border="0" align="right" bgcolor="#eeeeec" port="column_address_country"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">user_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_user_id"></td>
 </tr></table> >,
     shape="plaintext"
   ];
@@ -205,62 +205,6 @@ digraph draw {
 <font color="#2e3436" face="Helvetica">guid</font>
 </td>
 <td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">child_object1_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">integer</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_child_object1_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">child_object2_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">integer</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_child_object2_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">on_delete_restrict_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">integer</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_restrict_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">on_delete_cascade_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">integer</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">on_delete_set_null_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">integer</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_set_null_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">on_delete_cascade_config_overridden_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">integer</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_config_overridden_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">on_delete_cascade_attribute_overridden_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">integer</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_attribute_overridden_id"></td>
 </tr><tr>
 <td border="0" align="left" bgcolor="#eeeeec">
 <font color="#2e3436" face="Helvetica">roles</font>
@@ -413,6 +357,62 @@ digraph draw {
 <font color="#2e3436" face="Helvetica">string</font>
 </td>
 <td border="0" align="right" bgcolor="#eeeeec" port="column_address_country"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">child_object1_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_child_object1_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">child_object2_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_child_object2_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_restrict_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_restrict_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_cascade_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_set_null_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_set_null_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_cascade_config_overridden_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_config_overridden_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">on_delete_cascade_attribute_overridden_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_on_delete_cascade_attribute_overridden_id"></td>
 </tr></table> >,
     shape="plaintext"
   ];
@@ -459,14 +459,6 @@ digraph draw {
 <td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
 </tr><tr>
 <td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">user_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">guid</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_user_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
 <font color="#2e3436" face="Helvetica">reason</font>
 </td>
 <td border="0" align="left" bgcolor="#eeeeec">
@@ -505,6 +497,14 @@ digraph draw {
 <font color="#2e3436" face="Helvetica">datetime_immutable</font>
 </td>
 <td border="0" align="right" bgcolor="#eeeeec" port="column_unlock_until"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">user_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_user_id"></td>
 </tr></table> >,
     shape="plaintext"
   ];
@@ -523,22 +523,6 @@ digraph draw {
 <font color="#2e3436" face="Helvetica">bigint</font>
 </td>
 <td border="0" align="right" bgcolor="#eeeeec" port="column_id">✷</td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">entity_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">guid</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_entity_id"></td>
-</tr><tr>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">migration_id</font>
-</td>
-<td border="0" align="left" bgcolor="#eeeeec">
-<font color="#2e3436" face="Helvetica">integer</font>
-</td>
-<td border="0" align="right" bgcolor="#eeeeec" port="column_migration_id"></td>
 </tr><tr>
 <td border="0" align="left" bgcolor="#eeeeec">
 <font color="#2e3436" face="Helvetica">state</font>
@@ -563,6 +547,22 @@ digraph draw {
 <font color="#2e3436" face="Helvetica">datetime_immutable</font>
 </td>
 <td border="0" align="right" bgcolor="#eeeeec" port="column_created_at"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">entity_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">guid</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_entity_id"></td>
+</tr><tr>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">migration_id</font>
+</td>
+<td border="0" align="left" bgcolor="#eeeeec">
+<font color="#2e3436" face="Helvetica">integer</font>
+</td>
+<td border="0" align="right" bgcolor="#eeeeec" port="column_migration_id"></td>
 </tr></table> >,
     shape="plaintext"
   ];
@@ -575,7 +575,9 @@ digraph draw {
     label="on delete: CASCADE"
   ];
 
-  acme__user_tag:column_tag_id -> draw_acme__tag:column_id;
+  acme__user_tag:column_tag_id -> draw_acme__tag:column_id [
+    label="on delete: RESTRICT"
+  ];
 
   draw_acme__user:column_child_object1_id -> draw_acme__base_object:column_id [
     label="on delete: SET NULL"
@@ -585,7 +587,9 @@ digraph draw {
     label="on delete: SET NULL"
   ];
 
-  draw_acme__user:column_on_delete_restrict_id -> draw_acme__base_object:column_id;
+  draw_acme__user:column_on_delete_restrict_id -> draw_acme__base_object:column_id [
+    label="on delete: RESTRICT"
+  ];
 
   draw_acme__user:column_on_delete_cascade_id -> draw_acme__base_object:column_id [
     label="on delete: CASCADE"

@@ -24,7 +24,7 @@ class BigIntType extends Type
         return $platform->getBigIntTypeDeclarationSQL($column);
     }
 
-    public function getBindingType(): int
+    public function getBindingType(): ParameterType
     {
         return ParameterType::INTEGER;
     }
