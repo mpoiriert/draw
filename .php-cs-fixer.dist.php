@@ -31,6 +31,7 @@ $config = (new \PhpCsFixer\Config())
         'strict_comparison' => false, // @PhpCsFixer:risky change this, we do need to loosely compare 2 object at some places, might find a way to fix this.
         'php_unit_test_class_requires_covers' => false, // @PhpCsFixer use default 'true' putting covers nothing by default
         'declare_strict_types' => false,
+        'attribute_block_no_spaces' => false,
     ])
     ->setFinder($finder);
 ;
