@@ -17,7 +17,7 @@
     "require": {
         "php": ">=8.2",
         "doctrine/orm": "^3.6",
-        "draw/sonata-extra-bundle": "^0.37",
+        "draw/sonata-extra-bundle": "^0.38",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
         "symfony/event-dispatcher": "^6.4.0",
@@ -25,7 +25,7 @@
         "symfony/validator": "^6.4.0"
     },
     "require-dev": {
-        "draw/tester": "^0.37",
+        "draw/tester": "^0.38",
         "knplabs/doctrine-behaviors": "*",
         "phpunit/phpunit": "^11.3 || ^12.0"
     },
@@ -38,7 +38,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.37-dev"
+            "dev-master": "0.38-dev"
         }
     }
 }
