@@ -1,0 +1,15 @@
+App\Entity\TagTranslation:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: false
+            type: integer
+        label:
+            expose: true
+            type: string
+        locale:
+            expose: true
+            type: string
+        translatable:
+            expose: true
+            type: 'ExtractionReference<translatable,App\Entity\Tag>'
