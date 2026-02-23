@@ -64,6 +64,7 @@ class RequestBodyValueResolver implements ValueResolverInterface
 
                 break;
             case str_starts_with($contentType, 'multipart/form-data'):
+            case str_starts_with($contentType, 'application/x-www-form-urlencoded'):
                 $requestData = $request->request->all();
                 break;
             default:
