@@ -60,7 +60,7 @@ Add the package to the autoload section:
     }
   ],
   "require": {
-    "php": ">=8.2"
+    "php": ">=8.5"
   },
   "require-dev": {
     "phpunit/phpunit": "^11.3"
