@@ -25,10 +25,8 @@ class DBALConnectionStatusProvider implements ConnectionStatusProviderInterface
     {
         \assert($connection instanceof Connection);
 
-        $dummySql = $connection->getDatabasePlatform()->getDummySelectSQL();
-
         try {
-            $connection->executeQuery($dummySql);
+            $connection->executeQuery('SELECT 1');
 
             yield new ServiceStatus(
                 'Connection',

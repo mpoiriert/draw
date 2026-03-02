@@ -24,11 +24,9 @@ class DBALPrimaryReadReplicaConnectionStatusProvider implements ConnectionStatus
 
         $previousConnectionToPrimary = $connection->isConnectedToPrimary();
 
-        $dummySql = $connection->getDatabasePlatform()->getDummySelectSQL();
-
         try {
             $connection->ensureConnectedToPrimary();
-            $connection->executeQuery($dummySql);
+            $connection->executeQuery('SELECT 1');
 
             yield new ServiceStatus(
                 'Primary Connection',
@@ -44,7 +42,7 @@ class DBALPrimaryReadReplicaConnectionStatusProvider implements ConnectionStatus
 
         try {
             $connection->ensureConnectedToReplica();
-            $connection->executeQuery($dummySql);
+            $connection->executeQuery('SELECT 1');
 
             yield new ServiceStatus(
                 'Replica Connection',
