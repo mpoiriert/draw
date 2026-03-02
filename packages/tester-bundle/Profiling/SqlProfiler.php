@@ -53,6 +53,8 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
             $metricBuilder->addLog(new SqlLog($sql));
         }
 
+        $this->queryCollector->reset();
+
         return parent::stop();
     }
 

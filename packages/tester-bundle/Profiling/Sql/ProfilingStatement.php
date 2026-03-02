@@ -15,7 +15,7 @@ final class ProfilingStatement extends AbstractStatementMiddleware
     /** @var array<int|string, mixed> */
     private array $params = [];
 
-    /** @var array<int|string, ParameterType|int> */
+    /** @var array<int|string, ParameterType> */
     private array $types = [];
 
     public function __construct(
@@ -26,22 +26,28 @@ final class ProfilingStatement extends AbstractStatementMiddleware
         parent::__construct($statement);
     }
 
-    public function bindValue($param, $value, $type = ParameterType::STRING): void
+    public function bindValue(int|string $param, mixed $value, ParameterType $type = ParameterType::STRING): void
     {
-        $this->params[$param] = $value;
-        $this->types[$param] = $type;
+        if ($this->queryCollector->isEnabled()) {
+            $this->params[$param] = $value;
+            $this->types[$param] = $type;
+        }
 
         parent::bindValue($param, $value, $type);
     }
 
     public function execute(): Result
     {
-        $this->queryCollector->startQuery($this->sql, $this->params, $this->types);
+        if ($this->queryCollector->isEnabled()) {
+            $this->queryCollector->startQuery($this->sql, $this->params, $this->types);
+        }
 
         try {
             return parent::execute();
         } finally {
-            $this->queryCollector->stopQuery();
+            if ($this->queryCollector->isEnabled()) {
+                $this->queryCollector->stopQuery();
+            }
         }
     }
 }
