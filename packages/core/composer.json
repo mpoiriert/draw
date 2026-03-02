@@ -4,7 +4,7 @@
     "license": "MIT",
     "type": "library",
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.5",
         "symfony/dependency-injection": "^6.4.0",
         "symfony/property-access": "^6.4.0",
         "symfony/validator": "^6.4.0"

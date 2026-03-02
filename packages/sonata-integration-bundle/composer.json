@@ -8,7 +8,7 @@
         "sonata"
     ],
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.5",
         "draw/framework-extra-bundle": "^0.38",
         "draw/sonata-extra-bundle": "^0.38",
         "symfony/framework-bundle": "^6.4.0",

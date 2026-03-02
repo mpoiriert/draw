@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.5",
         "doctrine/orm": "^3.6",
         "dragonmantank/cron-expression": "^3.3",
         "draw/core": "^0.38",
