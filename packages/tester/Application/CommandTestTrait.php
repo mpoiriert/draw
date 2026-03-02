@@ -35,7 +35,11 @@ trait CommandTestTrait
 
         if (null === $this->application) {
             $this->application = new Application();
-            $this->application->add($command);
+            if (method_exists($this->application, 'addCommand')) {
+                $this->application->addCommand($command);
+            } else {
+                $this->application->add($command);
+            }
         }
 
         return $command;
