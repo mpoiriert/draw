@@ -205,7 +205,10 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         );
 
         $platform = $this->driverConnection->getDatabasePlatform();
-        $sqls = $platform->getAlterSchemaSQL($schemaDiff);
+        $sqls = array_filter(
+            $platform->getAlterSchemaSQL($schemaDiff),
+            static fn (string $sql): bool => !preg_match('/^DROP\s+TABLE\s/i', $sql)
+        );
 
         foreach ($sqls as $sql) {
             $this->driverConnection->executeStatement($sql);

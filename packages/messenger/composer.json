@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.5",
         "ext-json": "*",
         "doctrine/dbal": "^4.4",
         "doctrine/persistence": "^2.2 || ^3.0",
