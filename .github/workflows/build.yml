@@ -39,7 +39,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ['8.2', '8.3']
+        php-versions: ['8.5']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
           tools: composer
           coverage: none
           ini-values: memory_limit=4G
-          extensions: mongodb-1.17.3
+          extensions: amqp, mongodb
       - name: Setup MySQL
         uses: shogo82148/actions-setup-mysql@v1
         with:
@@ -62,7 +62,7 @@ jobs:
         id: composer-cache
         run: echo "dir=$(composer config cache-files-dir)" >> "${GITHUB_OUTPUT}"
       - name: Composer Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-v3-${{ hashFiles('**/composer.lock') }}
