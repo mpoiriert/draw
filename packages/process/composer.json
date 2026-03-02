@@ -15,11 +15,11 @@
         }
     ],
     "require": {
-        "draw/contracts": "^0.38",
+        "draw/contracts": "^0.39",
         "symfony/process": "^6.4.0"
     },
     "require-dev": {
-        "draw/dependency-injection": "^0.38",
+        "draw/dependency-injection": "^0.39",
         "phpunit/phpunit": "^11.3 || ^12.0"
     },
     "minimum-stability": "dev",
