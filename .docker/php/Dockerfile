@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-bookworm
+FROM php:8.5-fpm-bookworm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends vim curl debconf subversion git apt-transport-https apt-utils \
@@ -14,8 +14,8 @@ RUN docker-php-ext-configure gd --with-jpeg
 RUN docker-php-ext-install pdo pdo_mysql gd zip pcntl
 
 COPY php.ini /usr/local/etc/php/php.ini
-COPY php.ini /etc/php/8.2/php.ini
-COPY php-fpm-pool.conf /etc/php/8.2/pool.d/www.conf
+COPY php.ini /etc/php/8.5/php.ini
+COPY php-fpm-pool.conf /etc/php/8.5/pool.d/www.conf
 
 #COMPOSER
 RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
@@ -34,17 +34,13 @@ RUN apt-get install -y --no-install-recommends awscli
 #XDEBUG
 ARG xdebug
 RUN if [ $xdebug = "1" ] ; then \
-    pecl install -f xdebug-3.3.1 \
+    pecl install -f xdebug \
     && docker-php-ext-enable xdebug \
     ; fi
 
-#OPCACHE
-RUN docker-php-ext-configure opcache --enable-opcache \
-    && docker-php-ext-install opcache
-
 #AMQP
 RUN apt-get -y install --no-install-recommends gcc make autoconf libc-dev pkg-config librabbitmq-dev --fix-missing
-RUN pecl install amqp-1.11.0 && docker-php-ext-enable amqp
+RUN pecl install amqp && docker-php-ext-enable amqp
 
 #INTL
 RUN apt-get update \
@@ -58,7 +54,7 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen
 
 #MONGODB
-RUN pecl install mongodb-1.17.2 && docker-php-ext-enable mongodb
+RUN pecl install mongodb && docker-php-ext-enable mongodb
 
 #Graphviz
 RUN apt-get update && apt-get install -y --no-install-recommends graphviz
