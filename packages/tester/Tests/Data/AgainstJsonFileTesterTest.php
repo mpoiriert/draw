@@ -5,7 +5,6 @@ namespace Draw\Component\Tester\Tests\Data;
 use Draw\Component\Tester\Data\AgainstJsonFileTester;
 use Draw\Component\Tester\DataTester;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -59,7 +58,7 @@ class AgainstJsonFileTesterTest extends TestCase
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest_testInvoke_propertyPathChecks_equal.json',
                     [
-                        'url' => new IsType(IsType::TYPE_STRING),
+                        'url' => static::isString(),
                     ]
                 )
             )
