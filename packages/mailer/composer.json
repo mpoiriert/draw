@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": ">=8.5",
-        "draw/core": "^0.38",
+        "draw/core": "^0.39",
         "symfony/dom-crawler": "^6.4.0",
         "symfony/css-selector": "^6.4.0",
         "symfony/console": "^6.4.0",
@@ -20,8 +20,8 @@
         "twig/twig": "^3.3"
     },
     "require-dev": {
-        "draw/dependency-injection": "^0.38",
-        "draw/tester": "^0.38",
+        "draw/dependency-injection": "^0.39",
+        "draw/tester": "^0.39",
         "pelago/emogrifier": "^8.0",
         "phpunit/phpunit": "^11.3 || ^12.0"
     },

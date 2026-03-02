@@ -14,9 +14,9 @@
     },
     "require-dev": {
         "ext-zip": "*",
-        "draw/core": "^0.38",
-        "draw/dependency-injection": "^0.38",
-        "draw/tester": "^0.38",
+        "draw/core": "^0.39",
+        "draw/dependency-injection": "^0.39",
+        "draw/tester": "^0.39",
         "doctrine/common": "^3.1",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/orm": "^3.6",
