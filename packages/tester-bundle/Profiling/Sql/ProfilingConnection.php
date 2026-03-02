@@ -30,23 +30,31 @@ final class ProfilingConnection extends AbstractConnectionMiddleware
 
     public function query(string $sql): Result
     {
-        $this->queryCollector->startQuery($sql);
+        if ($this->queryCollector->isEnabled()) {
+            $this->queryCollector->startQuery($sql);
+        }
 
         try {
             return parent::query($sql);
         } finally {
-            $this->queryCollector->stopQuery();
+            if ($this->queryCollector->isEnabled()) {
+                $this->queryCollector->stopQuery();
+            }
         }
     }
 
-    public function exec(string $sql): int
+    public function exec(string $sql): int|string
     {
-        $this->queryCollector->startQuery($sql);
+        if ($this->queryCollector->isEnabled()) {
+            $this->queryCollector->startQuery($sql);
+        }
 
         try {
             return parent::exec($sql);
         } finally {
-            $this->queryCollector->stopQuery();
+            if ($this->queryCollector->isEnabled()) {
+                $this->queryCollector->stopQuery();
+            }
         }
     }
 }
