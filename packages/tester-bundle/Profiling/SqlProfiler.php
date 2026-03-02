@@ -4,6 +4,7 @@ namespace Draw\Bundle\TesterBundle\Profiling;
 
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\TypeRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\Profiling\Sql\QueryCollector;
 use Draw\Component\Profiling\Sql\SqlLog;
@@ -17,7 +18,9 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
     public function __construct(
         private EntityManagerInterface $entityManager,
         private QueryCollector $queryCollector,
+        private ?TypeRegistry $typeRegistry = null,
     ) {
+        $this->typeRegistry ??= Type::getTypeRegistry();
     }
 
     public function start(): void
@@ -72,7 +75,7 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
                 // Transform the param according to the type
                 $type = $query['types'][$j];
                 if (\is_string($type)) {
-                    $type = Type::getType($type);
+                    $type = $this->typeRegistry->get($type);
                 }
                 if ($type instanceof Type) {
                     try {
