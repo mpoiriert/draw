@@ -21,7 +21,7 @@ class AutowireServiceMock extends AutowireMock
 
         $value = $reflectionProperty->getValue($testCase);
 
-        $this->getContainer($testCase)->set(
+        $this->getPublicContainer($testCase)->set(
             $this->getServiceId($reflectionProperty),
             $value
         );
