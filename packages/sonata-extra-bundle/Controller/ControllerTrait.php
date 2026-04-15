@@ -39,7 +39,7 @@ trait ControllerTrait
         return [
             'sonata.admin.pool' => Pool::class,
             'sonata.admin.audit.manager' => AuditManagerInterface::class,
-            'sonata.admin.object.manipulator.acl.admin' => AdminObjectAclManipulator::class,
+            'sonata.admin.object.manipulator.acl.admin' => '?'.AdminObjectAclManipulator::class,
             'sonata.admin.request.fetcher' => AdminFetcherInterface::class,
             'sonata.exporter.exporter' => '?'.Exporter::class,
             'sonata.admin.admin_exporter' => '?'.AdminExporter::class,
