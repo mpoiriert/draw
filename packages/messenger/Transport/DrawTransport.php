@@ -4,8 +4,10 @@ namespace Draw\Component\Messenger\Transport;
 
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Schema\AbstractAsset;
 use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\Types;
 use Draw\Component\Core\DateTimeUtils;
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
@@ -192,25 +194,40 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
 
     public function setup(): void
     {
+        $schema = $this->getSchema();
+
+        $tableNames = array_map(
+            static fn (Table $table): string => $table->getName(),
+            $schema->getTables()
+        );
+
         $configuration = $this->driverConnection->getConfiguration();
 
         $assetFilter = $configuration->getSchemaAssetsFilter();
-        $configuration->setSchemaAssetsFilter(static fn (): bool => true);
+        $configuration->setSchemaAssetsFilter(
+            static function ($tableName) use ($tableNames): bool {
+                if ($tableName instanceof AbstractAsset) {
+                    $tableName = $tableName->getName();
+                }
+
+                if (!\is_string($tableName)) {
+                    throw new \TypeError(\sprintf('The table name must be an instance of "%s" or a string ("%s" given).', AbstractAsset::class, get_debug_type($tableName)));
+                }
+
+                return \in_array($tableName, $tableNames, true);
+            }
+        );
 
         $schemaManager = $this->driverConnection->createSchemaManager();
         $comparator = $schemaManager->createComparator();
         $schemaDiff = $comparator->compareSchemas(
             $schemaManager->introspectSchema(),
-            $this->getSchema()
+            $schema
         );
 
         $platform = $this->driverConnection->getDatabasePlatform();
-        $sqls = array_filter(
-            $platform->getAlterSchemaSQL($schemaDiff),
-            static fn (string $sql): bool => !preg_match('/^DROP\s+TABLE\s/i', $sql)
-        );
 
-        foreach ($sqls as $sql) {
+        foreach ($platform->getAlterSchemaSQL($schemaDiff) as $sql) {
             $this->driverConnection->executeStatement($sql);
         }
 
