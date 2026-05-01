@@ -99,7 +99,15 @@ class ImporterTest extends TestCase
         static::assertSame('', $extractor->lastValue);
     }
 
-    public static function provideNonSkipValues(): array
+    #[DataProvider('provideIsSkipValueRejectsNonExactMatchesCases')]
+    public function testIsSkipValueRejectsNonExactMatches(mixed $value): void
+    {
+        $importer = $this->createImporter();
+
+        static::assertFalse($importer->isSkipValue($value));
+    }
+
+    public static function provideIsSkipValueRejectsNonExactMatchesCases(): iterable
     {
         return [
             'empty string' => [''],
@@ -113,14 +121,6 @@ class ImporterTest extends TestCase
         ];
     }
 
-    #[DataProvider('provideNonSkipValues')]
-    public function testIsSkipValueRejectsNonExactMatches(mixed $value): void
-    {
-        $importer = $this->createImporter();
-
-        static::assertFalse($importer->isSkipValue($value));
-    }
-
     /**
      * @param iterable<ColumnExtractorInterface> $extractors
      */
@@ -128,9 +128,9 @@ class ImporterTest extends TestCase
     {
         return new Importer(
             $extractors,
-            $this->createStub(\Doctrine\Persistence\ManagerRegistry::class),
-            $this->createStub(ColumnFactory::class),
-            $this->createStub(NotifierInterface::class),
+            static::createStub(\Doctrine\Persistence\ManagerRegistry::class),
+            static::createStub(ColumnFactory::class),
+            static::createStub(NotifierInterface::class),
             $skipValue,
         );
     }
