@@ -16,6 +16,12 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class Importer implements ImporterInterface
 {
+    /**
+     * Default sentinel value that, when present in a CSV cell, skips assignment for that
+     * (row, column) pair so the existing value on the entity is preserved.
+     */
+    final public const DEFAULT_SKIP_VALUE = '_SKIP_';
+
     public function __construct(
         /**
          * @var iterable<ColumnExtractorInterface>
@@ -25,7 +31,18 @@ class Importer implements ImporterInterface
         private ManagerRegistry $managerRegistry,
         private ColumnFactory $columnFactory,
         private NotifierInterface $notifier,
+        private string $skipValue = self::DEFAULT_SKIP_VALUE,
     ) {
+    }
+
+    public function getSkipValue(): string
+    {
+        return $this->skipValue;
+    }
+
+    public function isSkipValue(mixed $value): bool
+    {
+        return \is_string($value) && $value === $this->skipValue;
     }
 
     public function getOptions(Column $column): array
@@ -174,6 +191,10 @@ class Importer implements ImporterInterface
 
     private function assignValue(object $object, Column $column, mixed $value): void
     {
+        if ($this->isSkipValue($value)) {
+            return;
+        }
+
         if ($column->getIsDate()) {
             $value = new \DateTime($value);
         }

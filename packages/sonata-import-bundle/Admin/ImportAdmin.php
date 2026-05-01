@@ -33,6 +33,8 @@ class ImportAdmin extends AbstractAdmin
         private ImporterInterface $importer,
         #[Autowire('%draw.sonata_import.classes%')]
         private array $importableClassList,
+        #[Autowire('%draw.sonata_import.skip_value%')]
+        private string $skipValue = '_SKIP_',
     ) {
         parent::__construct();
     }
@@ -119,7 +121,10 @@ class ImportAdmin extends AbstractAdmin
                     FileType::class,
                     [
                         'mapped' => false,
-                        'help' => 'CSV File with column headers.',
+                        'help' => \sprintf(
+                            'CSV File with column headers. Use the cell value "%s" to keep the existing value on the entity for that column (only meaningful when updating existing records).',
+                            $this->skipValue
+                        ),
                     ]
                 )
             ->ifEnd()

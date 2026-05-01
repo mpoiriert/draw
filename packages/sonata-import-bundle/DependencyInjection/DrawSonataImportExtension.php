@@ -4,6 +4,7 @@ namespace Draw\Bundle\SonataImportBundle\DependencyInjection;
 
 use Draw\Bundle\SonataImportBundle\Column\Bridge\KnpDoctrineBehaviors\Extractor\DoctrineTranslationColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
+use Draw\Bundle\SonataImportBundle\Import\Importer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -21,6 +22,12 @@ class DrawSonataImportExtension extends ConfigurableExtension
         ;
 
         $container->setParameter('draw.sonata_import.classes', $mergedConfig['classes']);
+        $container->setParameter('draw.sonata_import.skip_value', $mergedConfig['skip_value']);
+
+        $container
+            ->getDefinition(Importer::class)
+            ->setArgument('$skipValue', $mergedConfig['skip_value'])
+        ;
 
         $this->loadDoctrineTranslationHandler($mergedConfig['handlers']['doctrine_translation'], $container);
     }

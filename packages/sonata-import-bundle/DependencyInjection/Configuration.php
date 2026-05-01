@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataImportBundle\DependencyInjection;
 
+use Draw\Bundle\SonataImportBundle\Import\Importer;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -21,6 +22,11 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->scalarNode('skip_value')
+                    ->info('Sentinel value that, when present in a CSV cell, preserves the existing value on the entity for that (row, column) pair instead of overwriting it. The check runs before any type coercion (date, etc.).')
+                    ->defaultValue(Importer::DEFAULT_SKIP_VALUE)
+                    ->cannotBeEmpty()
+                ->end()
                 ->arrayNode('classes')
                     ->beforeNormalization()
                         ->always(static function ($classes) {
