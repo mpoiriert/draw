@@ -2,11 +2,11 @@
 
 namespace Draw\Bundle\SonataImportBundle\Tests\Import;
 
-use Draw\Bundle\SonataImportBundle\Column\BaseColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Column\ColumnFactory;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Import\Importer;
+use Draw\Bundle\SonataImportBundle\Tests\Import\Fixtures\CallTrackingColumnExtractor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +43,7 @@ class ImporterTest extends TestCase
 
     public function testAssignValueSkipsExtractorsForMarker(): void
     {
-        $extractor = $this->createCallTrackingExtractor();
+        $extractor = new CallTrackingColumnExtractor();
         $importer = $this->createImporter([$extractor]);
 
         $object = new \stdClass();
@@ -57,7 +57,7 @@ class ImporterTest extends TestCase
 
     public function testAssignValueSkipsBeforeDateCoercion(): void
     {
-        $extractor = $this->createCallTrackingExtractor();
+        $extractor = new CallTrackingColumnExtractor();
         $importer = $this->createImporter([$extractor]);
 
         $object = new \stdClass();
@@ -73,7 +73,7 @@ class ImporterTest extends TestCase
 
     public function testAssignValueRunsExtractorsForRegularValue(): void
     {
-        $extractor = $this->createCallTrackingExtractor();
+        $extractor = new CallTrackingColumnExtractor();
         $importer = $this->createImporter([$extractor]);
 
         $object = new \stdClass();
@@ -87,7 +87,7 @@ class ImporterTest extends TestCase
 
     public function testAssignValueEmptyStringIsNotASkip(): void
     {
-        $extractor = $this->createCallTrackingExtractor();
+        $extractor = new CallTrackingColumnExtractor();
         $importer = $this->createImporter([$extractor]);
 
         $object = new \stdClass();
@@ -133,24 +133,6 @@ class ImporterTest extends TestCase
             static::createStub(NotifierInterface::class),
             $skipValue,
         );
-    }
-
-    private function createCallTrackingExtractor(): BaseColumnExtractor
-    {
-        return new class extends BaseColumnExtractor {
-            public int $callCount = 0;
-
-            public mixed $lastValue = null;
-
-            #[\Override]
-            public function assign(object $object, Column $column, mixed $value): bool
-            {
-                ++$this->callCount;
-                $this->lastValue = $value;
-
-                return true;
-            }
-        };
     }
 
     private function invokeAssign(Importer $importer, object $object, Column $column, mixed $value): void
