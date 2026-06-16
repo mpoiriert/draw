@@ -6,7 +6,6 @@ use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
@@ -26,14 +25,6 @@ class EmailCssInlinerListenerTest extends TestCase
         $this->object = new EmailCssInlinerListener();
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
-    }
-
     public function testGetSubscribedEvents(): void
     {
         static::assertSame(
@@ -47,7 +38,7 @@ class EmailCssInlinerListenerTest extends TestCase
     public function testInlineEmailCssNotEmail(): void
     {
         $event = new MessageEvent(
-            $this->createMock(RawMessage::class),
+            static::createStub(RawMessage::class),
             new Envelope(new Address('test@example.com'), [new Address('test@example.com')]),
             uniqid('transport-')
         );
@@ -74,6 +65,7 @@ class EmailCssInlinerListenerTest extends TestCase
         $message
             ->expects(static::never())
             ->method('html')
+            ->seal()
         ;
 
         $this->object->inlineEmailCss($event);
@@ -102,6 +94,7 @@ class EmailCssInlinerListenerTest extends TestCase
             ->with('<!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title></title></head><body><div class="body" style="background: maroon;"></div></body></html>
 ')
+            ->seal()
         ;
 
         $this->object->inlineEmailCss($event);

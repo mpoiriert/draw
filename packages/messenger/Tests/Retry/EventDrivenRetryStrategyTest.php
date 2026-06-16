@@ -5,7 +5,7 @@ namespace Draw\Component\Messenger\Tests\Retry;
 use Draw\Component\Messenger\Retry\Event\GetWaitingTimeEvent;
 use Draw\Component\Messenger\Retry\Event\IsRetryableEvent;
 use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -17,7 +17,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class EventDrivenRetryStrategyTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private EventDrivenRetryStrategy $object;
 
@@ -27,14 +27,6 @@ class EventDrivenRetryStrategyTest extends TestCase
     {
         $this->object = new EventDrivenRetryStrategy(
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            RetryStrategyInterface::class,
-            $this->object
         );
     }
 
@@ -52,6 +44,7 @@ class EventDrivenRetryStrategyTest extends TestCase
                     return $event;
                 }
             )
+            ->seal()
         ;
 
         static::assertFalse($this->object->isRetryable($envelope));
@@ -73,6 +66,7 @@ class EventDrivenRetryStrategyTest extends TestCase
                     return $event;
                 }
             )
+            ->seal()
         ;
 
         static::assertTrue($this->object->isRetryable($envelope));
@@ -94,6 +88,7 @@ class EventDrivenRetryStrategyTest extends TestCase
                     return $event;
                 }
             )
+            ->seal()
         ;
 
         static::assertFalse($this->object->isRetryable($envelope));
@@ -113,6 +108,7 @@ class EventDrivenRetryStrategyTest extends TestCase
                     return $event;
                 }
             )
+            ->seal()
         ;
 
         $this->mockProperty(
@@ -124,6 +120,7 @@ class EventDrivenRetryStrategyTest extends TestCase
             ->method('isRetryable')
             ->with($envelope)
             ->willReturn(true)
+            ->seal()
         ;
 
         static::assertTrue($this->object->isRetryable($envelope));
@@ -143,6 +140,7 @@ class EventDrivenRetryStrategyTest extends TestCase
                     return $event;
                 }
             )
+            ->seal()
         ;
 
         static::assertSame(
@@ -167,6 +165,7 @@ class EventDrivenRetryStrategyTest extends TestCase
                     return $event;
                 }
             )
+            ->seal()
         ;
 
         static::assertSame(
@@ -189,6 +188,7 @@ class EventDrivenRetryStrategyTest extends TestCase
                     return $event;
                 }
             )
+            ->seal()
         ;
 
         $this->mockProperty(
@@ -200,6 +200,7 @@ class EventDrivenRetryStrategyTest extends TestCase
             ->method('getWaitingTime')
             ->with($envelope)
             ->willReturn(5000)
+            ->seal()
         ;
 
         static::assertSame(

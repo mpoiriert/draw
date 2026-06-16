@@ -29,7 +29,7 @@ class PreventDeleteExtensionTest extends TestCase
     {
         $this->object = new PreventDeleteExtension(
             $this->preventDeleteRelationLoader = $this->createMock(PreventDeleteRelationLoader::class),
-            $this->createMock(ManagerRegistry::class),
+            static::createStub(ManagerRegistry::class),
             $this->security = $this->createMock(Security::class),
         );
     }
@@ -47,17 +47,19 @@ class PreventDeleteExtensionTest extends TestCase
             ->method('isGranted')
             ->with('ROLE_ADMIN')
             ->willReturn(false)
+            ->seal()
         ;
 
         $this->preventDeleteRelationLoader
             ->expects(static::never())
             ->method('getRelationsForObject')
+            ->seal()
         ;
 
         $showMapper = new ShowMapper(
-            $this->createMock(ShowBuilderInterface::class),
+            static::createStub(ShowBuilderInterface::class),
             new FieldDescriptionCollection(),
-            $this->createMock(AdminInterface::class),
+            static::createStub(AdminInterface::class),
         );
 
         $this->object->configureShowFields($showMapper);

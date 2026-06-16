@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -25,14 +24,6 @@ class PhpCallableValidatorTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new PhpCallableValidator();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ConstraintValidatorInterface::class,
-            $this->object
-        );
     }
 
     public function testValidateInvalidConstraint(): void

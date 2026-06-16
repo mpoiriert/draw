@@ -7,12 +7,15 @@ use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 
-trait MockTrait
+trait DoubleTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
     abstract protected function createMock(string $originalClassName): MockObject;
+
+    abstract protected static function createStub(string $type): Stub;
 
     /**
      * @template T of object
@@ -30,6 +33,17 @@ trait MockTrait
         );
 
         return $mock;
+    }
+
+    public function stubProperty(object $object, string $property, string $type): Stub
+    {
+        ReflectionAccessor::setPropertyValue(
+            $object,
+            $property,
+            $stub = static::createStub($type)
+        );
+
+        return $stub;
     }
 
     public static function withConsecutive(array $firstCallArguments, array ...$consecutiveCallsArguments): iterable

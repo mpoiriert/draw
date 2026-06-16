@@ -4,14 +4,12 @@ namespace Draw\Component\Messenger\Tests\Transport;
 
 use Doctrine\DBAL\Connection;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\DoctrineTransaction\NoTransaction;
-use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
-use Draw\Component\Messenger\Searchable\SearchableTransportInterface;
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -22,11 +20,7 @@ use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
-use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
-use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
-use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 
 /**
  * @internal
@@ -35,7 +29,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 #[NoTransaction]
 class DrawTransportTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private DrawTransport $service;
 
@@ -63,39 +57,6 @@ class DrawTransportTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            TransportInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            PurgeableTransportInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            SearchableTransportInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            SetupableTransportInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            MessageCountAwareInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            ListableReceiverInterface::class,
-            $this->service
-        );
-    }
-
     public function testSetup(): void
     {
         static::loadDefaultConnection()
@@ -118,6 +79,7 @@ class DrawTransportTest extends TestCase
         $driverConnection->expects(static::once())
             ->method('createQueryBuilder')
             ->willThrowException(new \Exception($exceptionMessage = uniqid('exception-message-')))
+            ->seal()
         ;
 
         $this->expectException(TransportException::class);
@@ -206,6 +168,7 @@ class DrawTransportTest extends TestCase
 
         $driverConnection->expects(static::never())
             ->method('createQueryBuilder')
+            ->seal()
         ;
 
         static::assertEmpty($this->service->findByTags([]));

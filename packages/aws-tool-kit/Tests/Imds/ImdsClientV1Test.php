@@ -36,6 +36,7 @@ class ImdsClientV1Test extends TestCase
                 'http://169.254.169.254/latest/meta-data/instance-id'
             )
             ->willReturn($response = $this->createMock(ResponseInterface::class))
+            ->seal()
         ;
 
         $response
@@ -43,6 +44,7 @@ class ImdsClientV1Test extends TestCase
             ->method('getContent')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'))
+            ->seal()
         ;
 
         static::assertSame(

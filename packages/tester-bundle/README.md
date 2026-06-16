@@ -114,12 +114,13 @@ use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireEntity;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireLoggerTester;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireParameter;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireReloadedEntity;use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireServiceMock;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireServiceDouble;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
-use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMock;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireDouble;
 use Monolog\Handler\TestHandler;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class MyTest extends KernelTestCase implements AutowiredInterface
@@ -131,15 +132,15 @@ class MyTest extends KernelTestCase implements AutowiredInterface
     static private ?User $user = null; 
 
     // Create a mock of an interface
-    #[AutowireMock]
+    #[AutowireDouble]
     private AServiceInterface&MockObject $aService
     
     // Will hook MyService from the test container. Your test need to extend KernelTestCase.
     //
-    // The AutowireMockProperty will replace the aService property of $myService. 
+    // The AutowireDoubleProperty will replace the aService property of $myService.
     // By defaults, it will use the same property name in the current test case but you can specify a different one using the second parameter.
     #[AutowireService]
-    #[AutowireMockProperty('aService')]
+    #[AutowireDoubleProperty('aService')]
     private MyService $myService;
     
     // Will hook the parameter from the container using ParameterBagInterface::resolveValue
@@ -157,10 +158,10 @@ class MyTest extends KernelTestCase implements AutowiredInterface
     #[AutowireEntity(['email' => 'test@example.com'])]
     private User $user;
     
-    // Will create a mock object of MyOtherService and call container->set(MyOtherService::class, $mockObject)
+    // Will create a stub of MyOtherService and call container->set(MyOtherService::class, $stub)
     // You can also set the service id to use in the container as the first parameter of the attribute.
-    #[AutowireServiceMock]
-    private MyOtherService&MockObject $myOtherService;
+    #[AutowireServiceDouble]
+    private MyOtherService&Stub $myOtherService;
 }
 ```
 
@@ -174,7 +175,10 @@ created before the other service preventing the exception:
 ```php
 namespace App\Tests;
 
-use App\MyService;use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;use Symfony\Bundle\FrameworkBundle\KernelBrowser;use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class MyTest extends WebTestCase implements AutowiredInterface
 {

@@ -6,9 +6,7 @@ use Draw\Component\Application\Versioning\Event\FetchRunningVersionEvent;
 use Draw\Component\Application\Versioning\VersionManager;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
-use Draw\Contracts\Application\VersionVerificationInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -18,56 +16,37 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 #[CoversClass(VersionManager::class)]
 class VersionManagerTest extends TestCase
 {
-    private VersionManager $service;
-
-    private ConfigurationRegistryInterface&MockObject $configurationRegistry;
-
-    private MockObject&EventDispatcherInterface $eventDispatcher;
-
-    protected function setUp(): void
-    {
-        $this->service = new VersionManager(
-            $this->configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
-            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
-        );
-    }
-
-    public function testConstant(): void
-    {
-        static::assertSame(
-            'draw-application-deployed-version',
-            $this->service::CONFIG
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            VersionVerificationInterface::class,
-            $this->service
-        );
-    }
-
     public function testGetRunningVersionNotFound(): void
     {
-        $this->eventDispatcher
+        $service = new VersionManager(
+            static::createStub(ConfigurationRegistryInterface::class),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class)
+        );
+
+        $eventDispatcher
             ->expects(static::once())
             ->method('dispatch')
             ->with(static::isInstanceOf(FetchRunningVersionEvent::class))
             ->willReturnArgument(0)
+            ->seal()
         ;
 
-        static::assertNull($this->service->getRunningVersion());
+        static::assertNull($service->getRunningVersion());
 
         // Multiple call will not trigger multiple event
-        static::assertNull($this->service->getRunningVersion());
+        static::assertNull($service->getRunningVersion());
     }
 
     public function testGetRunningVersion(): void
     {
+        $service = new VersionManager(
+            static::createStub(ConfigurationRegistryInterface::class),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class)
+        );
+
         $version = uniqid('version-');
 
-        $this->eventDispatcher
+        $eventDispatcher
             ->expects(static::once())
             ->method('dispatch')
             ->with(
@@ -78,81 +57,106 @@ class VersionManagerTest extends TestCase
                 })
             )
             ->willReturnArgument(0)
+            ->seal()
         ;
 
         static::assertSame(
             $version,
-            $this->service->getRunningVersion()
+            $service->getRunningVersion()
         );
     }
 
     public function testUpdateDeployedVersion(): void
     {
+        $service = new VersionManager(
+            $configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
+            static::createStub(EventDispatcherInterface::class)
+        );
+
         $version = uniqid('version-');
 
         ReflectionAccessor::setPropertyValue(
-            $this->service,
+            $service,
             'runningVersion',
             $version
         );
 
-        $this->configurationRegistry
+        $configurationRegistry
             ->expects(static::once())
             ->method('set')
-            ->with($this->service::CONFIG, $version)
+            ->with($service::CONFIG, $version)
+            ->seal()
         ;
 
-        $this->service->updateDeployedVersion();
+        $service->updateDeployedVersion();
     }
 
     public function testGetDeployedVersion(): void
     {
-        $this->configurationRegistry
+        $service = new VersionManager(
+            $configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
+            static::createStub(EventDispatcherInterface::class)
+        );
+
+        $configurationRegistry
             ->expects(static::once())
             ->method('get')
-            ->with($this->service::CONFIG)
+            ->with($service::CONFIG)
             ->willReturn($version = uniqid('version-'))
+            ->seal()
         ;
 
         static::assertSame(
             $version,
-            $this->service->getDeployedVersion()
+            $service->getDeployedVersion()
         );
     }
 
     public function testIsUpToDate(): void
     {
-        $this->configurationRegistry
+        $service = new VersionManager(
+            $configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
+            static::createStub(EventDispatcherInterface::class)
+        );
+
+        $configurationRegistry
             ->expects(static::once())
             ->method('get')
-            ->with($this->service::CONFIG)
+            ->with($service::CONFIG)
             ->willReturn($version = uniqid('version-'))
+            ->seal()
         ;
 
         ReflectionAccessor::setPropertyValue(
-            $this->service,
+            $service,
             'runningVersion',
             $version
         );
 
-        static::assertTrue($this->service->isUpToDate());
+        static::assertTrue($service->isUpToDate());
     }
 
     public function testIsUpToDateFalse(): void
     {
-        $this->configurationRegistry
+        $service = new VersionManager(
+            $configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
+            static::createStub(EventDispatcherInterface::class)
+        );
+
+        $configurationRegistry
             ->expects(static::once())
             ->method('get')
-            ->with($this->service::CONFIG)
+            ->with($service::CONFIG)
             ->willReturn(uniqid('version-'))
+            ->seal()
         ;
 
         ReflectionAccessor::setPropertyValue(
-            $this->service,
+            $service,
             'runningVersion',
             uniqid('version-')
         );
 
-        static::assertFalse($this->service->isUpToDate());
+        static::assertFalse($service->isUpToDate());
     }
 }

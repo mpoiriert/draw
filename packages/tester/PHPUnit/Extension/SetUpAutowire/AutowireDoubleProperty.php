@@ -6,7 +6,7 @@ use Draw\Component\Core\Reflection\ReflectionAccessor;
 use PHPUnit\Framework\TestCase;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
-class AutowireMockProperty implements AutowireInterface
+class AutowireDoubleProperty implements AutowireInterface
 {
     public static function getPriority(): int
     {

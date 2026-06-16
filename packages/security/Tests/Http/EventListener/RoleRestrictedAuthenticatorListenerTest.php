@@ -5,9 +5,7 @@ namespace Draw\Component\Security\Tests\Http\EventListener;
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\RoleRestrictedBadge;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,109 +20,114 @@ use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 #[CoversClass(RoleRestrictedAuthenticatorListener::class)]
 class RoleRestrictedAuthenticatorListenerTest extends TestCase
 {
-    private RoleRestrictedAuthenticatorListener $service;
-
-    private RoleHierarchyInterface&MockObject $roleHierarchy;
-
-    private UserInterface&MockObject $user;
-
-    protected function setUp(): void
-    {
-        $this->user = $this->createMock(UserInterface::class);
-
-        $this->service = new RoleRestrictedAuthenticatorListener(
-            $this->roleHierarchy = $this->createMock(RoleHierarchyInterface::class),
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->service
-        );
-    }
-
     public function testGetSubscribedEvents(): void
     {
+        $service = new RoleRestrictedAuthenticatorListener(
+            static::createStub(RoleHierarchyInterface::class),
+        );
+
         static::assertSame(
             [CheckPassportEvent::class => ['checkPassport', -1]],
-            $this->service::getSubscribedEvents()
+            $service::getSubscribedEvents()
         );
     }
 
     public function testCheckPassportNoRoleRestrictedBadge(): void
     {
-        $this->roleHierarchy
+        $user = $this->createMock(UserInterface::class);
+
+        $service = new RoleRestrictedAuthenticatorListener(
+            $roleHierarchy = $this->createMock(RoleHierarchyInterface::class),
+        );
+
+        $roleHierarchy
             ->expects(static::never())
             ->method('getReachableRoleNames')
+            ->seal()
         ;
 
-        $this->user
+        $user
             ->expects(static::never())
             ->method('getRoles')
+            ->seal()
         ;
 
-        $this->service
-            ->checkPassport($this->createCheckPassportEvent())
+        $service
+            ->checkPassport($this->createCheckPassportEvent($user))
         ;
     }
 
     public function testCheckPassportRoleDoNotMatch(): void
     {
-        $this->user
+        $user = $this->createMock(UserInterface::class);
+
+        $service = new RoleRestrictedAuthenticatorListener(
+            $roleHierarchy = $this->createMock(RoleHierarchyInterface::class),
+        );
+
+        $user
             ->expects(static::once())
             ->method('getRoles')
             ->willReturn($roles = ['ROLE_USER'])
+            ->seal()
         ;
 
-        $this->roleHierarchy
+        $roleHierarchy
             ->expects(static::once())
             ->method('getReachableRoleNames')
             ->with($roles)
             ->willReturn($roles)
+            ->seal()
         ;
 
         $this->expectException(CustomUserMessageAuthenticationException::class);
         $this->expectExceptionMessage('Access denied.');
 
-        $this->service
-            ->checkPassport($this->createCheckPassportEvent([new RoleRestrictedBadge(uniqid('ROLE_'))]))
+        $service
+            ->checkPassport($this->createCheckPassportEvent($user, [new RoleRestrictedBadge(uniqid('ROLE_'))]))
         ;
     }
 
     public function testCheckPassportRoleMatch(): void
     {
-        $this->user
+        $user = $this->createMock(UserInterface::class);
+
+        $service = new RoleRestrictedAuthenticatorListener(
+            $roleHierarchy = $this->createMock(RoleHierarchyInterface::class),
+        );
+
+        $user
             ->expects(static::once())
             ->method('getRoles')
             ->willReturn($roles = ['ROLE_USER'])
+            ->seal()
         ;
 
-        $this->roleHierarchy
+        $roleHierarchy
             ->expects(static::once())
             ->method('getReachableRoleNames')
             ->with($roles)
             ->willReturn([...$roles, ...[$role = uniqid('ROLE_')]])
+            ->seal()
         ;
 
         $badge = new RoleRestrictedBadge($role);
 
-        $this->service
-            ->checkPassport($this->createCheckPassportEvent([$badge]))
+        $service
+            ->checkPassport($this->createCheckPassportEvent($user, [$badge]))
         ;
 
         static::assertTrue($badge->isResolved());
     }
 
-    private function createCheckPassportEvent(array $badges = []): CheckPassportEvent
+    private function createCheckPassportEvent(UserInterface $user, array $badges = []): CheckPassportEvent
     {
         return new CheckPassportEvent(
-            $this->createMock(AuthenticatorInterface::class),
+            static::createStub(AuthenticatorInterface::class),
             new SelfValidatingPassport(
                 new UserBadge(
                     uniqid('user-identifier-'),
-                    fn () => $this->user
+                    static fn (): UserInterface => $user
                 ),
                 $badges
             )

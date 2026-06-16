@@ -60,12 +60,12 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
                 return [];
             }
 
-            public function getPassword(): ?string
+            public function getPassword(): null
             {
                 return null;
             }
 
-            public function getSalt(): ?string
+            public function getSalt(): null
             {
                 return null;
             }
@@ -84,6 +84,7 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
             ->expects(static::once())
             ->method('generateAndSend')
             ->with($user)
+            ->seal()
         ;
 
         $this->urlGenerator
@@ -91,6 +92,7 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
             ->method('generate')
             ->with('admin_2fa_login', ['preferProvider' => 'email'])
             ->willReturn($url = uniqid('https://'))
+            ->seal()
         ;
 
         $securityMock = $this->createMock(Security::class);
@@ -98,6 +100,7 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
             ->expects(static::once())
             ->method('getUser')
             ->willReturn($user)
+            ->seal()
         ;
 
         $result = \call_user_func(

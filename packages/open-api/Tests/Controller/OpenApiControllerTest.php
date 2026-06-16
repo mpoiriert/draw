@@ -7,7 +7,6 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,45 +18,31 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class OpenApiControllerTest extends TestCase
 {
-    private OpenApiController $object;
-
-    /**
-     * @var OpenApi&MockObject
-     */
-    private OpenApi $openApi;
-
-    /**
-     * @var SchemaBuilderInterface&MockObject
-     */
-    private SchemaBuilderInterface $schemaBuilder;
-
-    /**
-     * @var UrlGeneratorInterface&MockObject
-     */
-    private UrlGeneratorInterface $urlGenerator;
-
     private string $sandboxUrl;
 
     protected function setUp(): void
     {
-        $this->object = new OpenApiController(
-            $this->openApi = $this->createMock(OpenApi::class),
-            $this->schemaBuilder = $this->createMock(SchemaBuilderInterface::class),
-            $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class),
-            $this->sandboxUrl = uniqid('/path/').'/sandbox'
-        );
+        $this->sandboxUrl = uniqid('/path/').'/sandbox';
     }
 
     public function testApiDocAction(): void
     {
-        $this->openApi
+        $object = new OpenApiController(
+            $openApi = $this->createMock(OpenApi::class),
+            static::createStub(SchemaBuilderInterface::class),
+            $urlGenerator = $this->createMock(UrlGeneratorInterface::class),
+            $this->sandboxUrl
+        );
+
+        $openApi
             ->expects(static::never())
             ->method('dump')
+            ->seal()
         ;
 
         $route = uniqid('route-');
 
-        $this->urlGenerator
+        $urlGenerator
             ->expects(static::once())
             ->method('generate')
             ->with(
@@ -68,12 +53,13 @@ class OpenApiControllerTest extends TestCase
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
             ->willReturn($url = uniqid('url-'))
+            ->seal()
         ;
 
         $request = new Request();
         $request->attributes->set('_route', $route);
 
-        $response = $this->object->apiDocAction($request);
+        $response = $object->apiDocAction($request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
 
@@ -85,10 +71,17 @@ class OpenApiControllerTest extends TestCase
 
     public function testApiDocActionVersioned(): void
     {
+        $object = new OpenApiController(
+            static::createStub(OpenApi::class),
+            static::createStub(SchemaBuilderInterface::class),
+            $urlGenerator = $this->createMock(UrlGeneratorInterface::class),
+            $this->sandboxUrl
+        );
+
         $route = uniqid('route-');
         $version = uniqid('version-');
 
-        $this->urlGenerator
+        $urlGenerator
             ->expects(static::once())
             ->method('generate')
             ->with(
@@ -100,43 +93,54 @@ class OpenApiControllerTest extends TestCase
                 UrlGeneratorInterface::ABSOLUTE_URL
             )
             ->willReturn(uniqid('url-'))
+            ->seal()
         ;
 
         $request = new Request();
         $request->attributes->set('_route', $route);
 
-        $this->object->apiDocAction($request, $version);
+        $object->apiDocAction($request, $version);
     }
 
     public function testApiDocActionJson(): void
     {
+        $object = new OpenApiController(
+            $openApi = $this->createMock(OpenApi::class),
+            $schemaBuilder = $this->createMock(SchemaBuilderInterface::class),
+            $urlGenerator = $this->createMock(UrlGeneratorInterface::class),
+            $this->sandboxUrl
+        );
+
         $version = uniqid('version-');
 
-        $this->schemaBuilder
+        $schemaBuilder
             ->expects(static::once())
             ->method('build')
             ->with(
                 static::isInstanceOf(ExtractionContextInterface::class)
             )
             ->willReturn($rootSchema = new Root())
+            ->seal()
         ;
 
-        $this->openApi
+        $openApi
             ->expects(static::once())
             ->method('dump')
             ->with($rootSchema)
             ->willReturn($rootSchemaJson = json_encode(['version' => $version], \JSON_THROW_ON_ERROR))
+            ->seal()
         ;
 
-        $this->urlGenerator
+        $urlGenerator
             ->expects(static::never())
             ->method('generate')
+            ->seal()
         ;
 
         $request = new Request();
         $request->setRequestFormat('json');
 
-        $response = $this->object->apiDocAction($request, $version);
+        $response = $object->apiDocAction($request, $version);
 
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(200, $response->getStatusCode());

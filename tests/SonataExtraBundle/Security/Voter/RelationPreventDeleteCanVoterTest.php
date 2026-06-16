@@ -31,7 +31,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
         static::assertSame(
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
-                $this->createMock(TokenInterface::class),
+                static::createStub(TokenInterface::class),
                 null,
                 ['SONATA_CAN_DELETE']
             )
@@ -43,7 +43,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
         static::assertSame(
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
-                $this->createMock(TokenInterface::class),
+                static::createStub(TokenInterface::class),
                 new User(),
                 ['SONATA_CAN_DELETE']
             )
@@ -55,7 +55,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
         static::assertSame(
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
-                $this->createMock(TokenInterface::class),
+                static::createStub(TokenInterface::class),
                 $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => 'admin']),
                 ['SONATA_CAN_CREATE']
             )
@@ -67,7 +67,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
         static::assertSame(
             VoterInterface::ACCESS_DENIED,
             $this->object->vote(
-                $this->createMock(TokenInterface::class),
+                static::createStub(TokenInterface::class),
                 $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => 'admin']),
                 ['SONATA_CAN_DELETE']
             )
@@ -79,7 +79,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
         static::assertSame(
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
-                $this->createMock(TokenInterface::class),
+                static::createStub(TokenInterface::class),
                 $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => 'NotUse']),
                 ['SONATA_CAN_DELETE']
             )

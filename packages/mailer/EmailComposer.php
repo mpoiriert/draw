@@ -48,8 +48,8 @@ class EmailComposer
                 }
             }
         } finally {
-            if ($currentLocale) {
-                $this->translator?->setLocale($currentLocale);
+            if ($this->translator && $currentLocale) {
+                $this->translator->setLocale($currentLocale);
             }
         }
     }

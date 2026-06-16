@@ -5,7 +5,7 @@ namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\EnvelopeFactory;
 use Draw\Component\Messenger\DoctrineMessageBusHook\EnvelopeFactory\BasicEnvelopeFactory;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -16,13 +16,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class BasicEnvelopeFactoryTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
+
     private BasicEnvelopeFactory $object;
 
-    /**
-     * @var EventDispatcherInterface&MockObject
-     */
-    private EventDispatcherInterface $eventDispatcher;
+    private EventDispatcherInterface&MockObject $eventDispatcher;
 
     protected function setUp(): void
     {
@@ -33,7 +31,7 @@ class BasicEnvelopeFactoryTest extends TestCase
 
     public function testCreateEnvelopes(): void
     {
-        $messageHolder = $this->createMock(MessageHolderInterface::class);
+        $messageHolder = static::createStub(MessageHolderInterface::class);
         $messages = [
             (object) [],
             (object) [],
@@ -70,6 +68,7 @@ class BasicEnvelopeFactoryTest extends TestCase
                 )
             )
             ->willReturnArgument(0)
+            ->seal()
         ;
 
         $envelopes = $this->object->createEnvelopes($messageHolder, $messages);

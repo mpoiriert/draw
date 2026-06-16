@@ -5,23 +5,25 @@ namespace App\Tests\TesterBundle\PHPUnit\Extension\SetUpAutoWire;
 use App\Entity\User;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireClient;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
-use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireServiceMock;
+use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireServiceDouble;
 use Draw\Bundle\TesterBundle\WebTestCase;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AsMock;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 /**
  * @internal
  */
-class AutowireServiceMockTest extends WebTestCase implements AutowiredInterface
+class AutowireServiceDoubleTest extends WebTestCase implements AutowiredInterface
 {
     #[AutowireClient]
     private KernelBrowser $client;
 
-    #[AutowireServiceMock]
-    private EntityHandler&MockObject $entityHandlerMock;
+    #[AutowireServiceDouble]
+    private EntityHandler&Stub $entityHandlerDouble;
 
     #[AutowireService]
     private EntityHandler $entityHandler;
@@ -29,18 +31,22 @@ class AutowireServiceMockTest extends WebTestCase implements AutowiredInterface
     public function testInstanceOfEntityHandler(): void
     {
         static::assertSame(
-            $this->entityHandlerMock,
+            $this->entityHandlerDouble,
             $this->entityHandler
         );
     }
 
+    #[AsMock('entityHandlerDouble')]
     public function testUsersAction(): void
     {
-        $this->entityHandlerMock
+        \assert($this->entityHandlerDouble instanceof MockObject);
+
+        $this->entityHandlerDouble
             ->expects(static::once())
             ->method('findAll')
             ->with(User::class)
             ->willReturn([])
+            ->seal()
         ;
 
         $this->client

@@ -6,7 +6,6 @@ use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Messenger\Tests\Stub\Transport\FindAwareTransportInterface;
-use Draw\Component\Tester\MockTrait;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,8 +19,6 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 #[CoversClass(EnvelopeFinder::class)]
 class EnvelopeFinderTest extends TestCase
 {
-    use MockTrait;
-
     private EnvelopeFinder $service;
 
     private TransportRepository&MockObject $transportRepository;
@@ -44,6 +41,7 @@ class EnvelopeFinderTest extends TestCase
                     $transport,
                 ]
             )
+            ->seal()
         ;
 
         $transport
@@ -51,6 +49,7 @@ class EnvelopeFinderTest extends TestCase
             ->method('find')
             ->with($messageId = uniqid('message-id'))
             ->willReturn(null)
+            ->seal()
         ;
 
         static::expectException(MessageNotFoundException::class);
@@ -69,11 +68,13 @@ class EnvelopeFinderTest extends TestCase
                     $transport,
                 ]
             )
+            ->seal()
         ;
 
         $transport
             ->expects(static::never())
             ->method('find')
+            ->seal()
         ;
 
         static::expectException(MessageNotFoundException::class);
@@ -91,6 +92,7 @@ class EnvelopeFinderTest extends TestCase
                     ($transportName = uniqid('transport-')) => $transport = $this->createMock(ListableReceiverInterface::class),
                 ]
             )
+            ->seal()
         ;
 
         $transport
@@ -98,9 +100,10 @@ class EnvelopeFinderTest extends TestCase
             ->method('find')
             ->with($messageId = uniqid('message-id-'))
             ->willReturn(new Envelope((object) []))
+            ->seal()
         ;
 
-        static::assertNotNull($envelope = $this->service->findById($messageId));
+        $envelope = $this->service->findById($messageId);
 
         static::assertNotNull(
             $stamp = $envelope->last(FoundFromTransportStamp::class)

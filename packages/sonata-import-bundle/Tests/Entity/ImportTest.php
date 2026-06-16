@@ -2,17 +2,14 @@
 
 namespace Draw\Bundle\SonataImportBundle\Tests\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Persistence\ObjectManager;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
-use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -20,18 +17,11 @@ use Symfony\Component\Validator\Validation;
  */
 class ImportTest extends TestCase
 {
-    use MockTrait;
-
     private Import $entity;
 
     protected function setUp(): void
     {
         $this->entity = new Import();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(GroupSequenceProviderInterface::class, $this->entity);
     }
 
     public function testIdMutator(): void
@@ -82,7 +72,7 @@ class ImportTest extends TestCase
 
     public function testColumnsMutator(): void
     {
-        static::assertInstanceOf(Collection::class, $collection = $this->entity->getColumns());
+        $collection = $this->entity->getColumns();
         static::assertCount(0, $collection);
 
         static::assertSame(
@@ -134,7 +124,7 @@ class ImportTest extends TestCase
         $this->entity->updateTimestamp(
             new LifecycleEventArgs(
                 $this->entity,
-                $this->createMock(EntityManagerInterface::class)
+                static::createStub(EntityManagerInterface::class)
             )
         );
 
@@ -144,17 +134,18 @@ class ImportTest extends TestCase
         $this->entity->updateTimestamp(
             new LifecycleEventArgs(
                 $this->entity,
-                $this->createMock(ObjectManager::class)
+                static::createStub(ObjectManager::class)
             )
         );
 
         static::assertNotSame($dateTime, $dateTime = $this->entity->getUpdatedAt());
 
+        /** @var array<string, array<mixed>> $changeSet */
         $changeSet = ['updatedAt' => []];
         $this->entity->updateTimestamp(
             new PreUpdateEventArgs(
                 $this->entity,
-                $this->createMock(EntityManagerInterface::class),
+                static::createStub(EntityManagerInterface::class),
                 $changeSet
             )
         );

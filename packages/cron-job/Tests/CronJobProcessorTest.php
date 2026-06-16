@@ -13,11 +13,10 @@ use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\CronJob\Event\PostCronJobExecutionEvent;
 use Draw\Component\CronJob\Event\PreCronJobExecutionEvent;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\Messenger\Envelope;
@@ -31,69 +30,59 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 #[CoversClass(CronJobProcessor::class)]
 class CronJobProcessorTest extends TestCase
 {
-    use MockTrait;
-
-    private CronJobProcessor $cronJobProcessor;
-
-    private EventDispatcherInterface&MockObject $eventDispatcher;
-
-    private ProcessFactoryInterface&MockObject $processFactory;
-
-    private MessageBusInterface&MockObject $messageBus;
-
-    private EntityManagerInterface&MockObject $entityManager;
-
-    protected function setUp(): void
-    {
-        $managerRegistry = $this->createMock(ManagerRegistry::class);
-        $managerRegistry
-            ->expects(static::any())
-            ->method('getManagerForClass')
-            ->with(CronJobExecution::class)
-            ->willReturn($this->entityManager = $this->createMock(EntityManagerInterface::class))
-        ;
-
-        $this->cronJobProcessor = new CronJobProcessor(
-            $managerRegistry,
-            new ParameterBag([
-                'kernel.cache_dir' => '/var/cache',
-            ]),
-            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
-            $this->processFactory = $this->createMock(ProcessFactoryInterface::class),
-            $this->messageBus = $this->createMock(MessageBusInterface::class)
-        );
-    }
+    use DoubleTrait;
 
     #[DataProvider('provideQueueCases')]
     public function testQueue(bool $force): void
     {
+        $cronJobProcessor = new CronJobProcessor(
+            $managerRegistry = $this->createMock(ManagerRegistry::class),
+            new ParameterBag([
+                'kernel.cache_dir' => '/var/cache',
+            ]),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(ProcessFactoryInterface::class),
+            $messageBus = $this->createMock(MessageBusInterface::class)
+        );
+
+        $managerRegistry
+            ->expects(static::once())
+            ->method('getManagerForClass')
+            ->with(CronJobExecution::class)
+            ->willReturn($entityManager = $this->createMock(EntityManagerInterface::class))
+            ->seal()
+        ;
+
         $cronJob = $this->createMock(CronJob::class);
         $cronJob
-            ->expects(static::any())
+            ->expects(static::once())
             ->method('newExecution')
             ->with($force)
             ->willReturn($execution = $this->createCronJobExecution())
+            ->seal()
         ;
 
-        $this->entityManager
+        $entityManager
             ->expects(static::once())
             ->method('persist')
             ->with($execution)
         ;
 
-        $this->entityManager
+        $entityManager
             ->expects(static::once())
             ->method('flush')
+            ->seal()
         ;
 
-        $this->messageBus
+        $messageBus
             ->expects(static::once())
             ->method('dispatch')
             ->with($message = new ExecuteCronJobMessage($execution))
             ->willReturn(new Envelope($message, []))
+            ->seal()
         ;
 
-        $this->cronJobProcessor->queue($cronJob, $force);
+        $cronJobProcessor->queue($cronJob, $force);
     }
 
     public static function provideQueueCases(): iterable
@@ -109,6 +98,24 @@ class CronJobProcessorTest extends TestCase
         ?string $overwrittenCommand,
         string $expectedProcessCommand,
     ): void {
+        $cronJobProcessor = new CronJobProcessor(
+            $managerRegistry = $this->createMock(ManagerRegistry::class),
+            new ParameterBag([
+                'kernel.cache_dir' => '/var/cache',
+            ]),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            $processFactory = $this->createMock(ProcessFactoryInterface::class),
+            static::createStub(MessageBusInterface::class)
+        );
+
+        $managerRegistry
+            ->expects(static::once())
+            ->method('getManagerForClass')
+            ->with(CronJobExecution::class)
+            ->willReturn($entityManager = $this->createMock(EntityManagerInterface::class))
+            ->seal()
+        ;
+
         $returnedPreCronJobExecutionEvent = new PreCronJobExecutionEvent(
             $execution = $this->createCronJobExecution($command)
         );
@@ -119,7 +126,7 @@ class CronJobProcessorTest extends TestCase
 
         $execution->getCronJob()->setExecutionTimeout($executionTimeout = random_int(1, 100));
 
-        $this->eventDispatcher
+        $eventDispatcher
             ->expects(static::exactly(2))
             ->method('dispatch')
             ->with(
@@ -136,27 +143,30 @@ class CronJobProcessorTest extends TestCase
                 $returnedPreCronJobExecutionEvent,
                 $postExecutionEvent
             )
+            ->seal()
         ;
 
-        $this->entityManager
+        $entityManager
             ->expects(static::exactly(2))
             ->method('flush')
         ;
 
-        $this->entityManager
+        $entityManager
             ->expects(static::once())
             ->method('getConnection')
             ->willReturn(
                 $connection = $this->createMock(Connection::class)
             )
+            ->seal()
         ;
 
         $connection
             ->expects(static::once())
             ->method('close')
+            ->seal()
         ;
 
-        $this->processFactory
+        $processFactory
             ->expects(static::once())
             ->method('createFromShellCommandLine')
             ->with(
@@ -167,14 +177,16 @@ class CronJobProcessorTest extends TestCase
                 $executionTimeout,
             )
             ->willReturn($process = $this->createMock(Process::class))
+            ->seal()
         ;
 
         $process
             ->expects(static::once())
             ->method('mustRun')
+            ->seal()
         ;
 
-        $this->cronJobProcessor->process($execution);
+        $cronJobProcessor->process($execution);
 
         static::assertSame(CronJobExecution::STATE_TERMINATED, $execution->getState());
         static::assertNotNull($execution->getExecutionStartedAt());
@@ -204,7 +216,25 @@ class CronJobProcessorTest extends TestCase
 
     public function testProcessWithError(): void
     {
-        $this->eventDispatcher
+        $cronJobProcessor = new CronJobProcessor(
+            $managerRegistry = $this->createMock(ManagerRegistry::class),
+            new ParameterBag([
+                'kernel.cache_dir' => '/var/cache',
+            ]),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            $processFactory = $this->createMock(ProcessFactoryInterface::class),
+            static::createStub(MessageBusInterface::class)
+        );
+
+        $managerRegistry
+            ->expects(static::once())
+            ->method('getManagerForClass')
+            ->with(CronJobExecution::class)
+            ->willReturn($entityManager = $this->createMock(EntityManagerInterface::class))
+            ->seal()
+        ;
+
+        $eventDispatcher
             ->expects(static::exactly(2))
             ->method('dispatch')
             ->with(
@@ -220,34 +250,38 @@ class CronJobProcessorTest extends TestCase
                 )
             )
             ->willReturnOnConsecutiveCalls($preExecutionEvent, $postExecutionEvent)
+            ->seal()
         ;
 
-        $this->entityManager
+        $entityManager
             ->expects(static::exactly(2))
             ->method('flush')
         ;
 
-        $this->entityManager
+        $entityManager
             ->expects(static::once())
             ->method('getConnection')
             ->willReturn(
                 $connection = $this->createMock(Connection::class)
             )
+            ->seal()
         ;
 
         $connection
             ->expects(static::once())
             ->method('close')
+            ->seal()
         ;
 
         $process = $this->createMock(Process::class);
         $process
-            ->expects(static::any())
+            ->expects(static::once())
             ->method('getExitCode')
             ->willReturn($exitCode = 127)
         ;
+
         $process
-            ->expects(static::any())
+            ->expects(static::once())
             ->method('mustRun')
             ->willThrowException(
                 new \Exception(
@@ -257,7 +291,18 @@ class CronJobProcessorTest extends TestCase
             )
         ;
 
-        $this->processFactory
+        $process
+            ->expects(static::once())
+            ->method('getOutput')
+        ;
+
+        $process
+            ->expects(static::once())
+            ->method('getErrorOutput')
+            ->seal()
+        ;
+
+        $processFactory
             ->expects(static::once())
             ->method('createFromShellCommandLine')
             ->with(
@@ -268,9 +313,10 @@ class CronJobProcessorTest extends TestCase
                 $execution->getCronJob()->getExecutionTimeout()
             )
             ->willReturn($process)
+            ->seal()
         ;
 
-        $this->cronJobProcessor->process($execution);
+        $cronJobProcessor->process($execution);
 
         static::assertSame(CronJobExecution::STATE_ERRORED, $execution->getState());
         static::assertNotNull($execution->getExecutionStartedAt());
@@ -282,22 +328,43 @@ class CronJobProcessorTest extends TestCase
 
     public function testProcessWithInactiveCronJob(): void
     {
-        $this->eventDispatcher
+        $cronJobProcessor = new CronJobProcessor(
+            $managerRegistry = $this->createMock(ManagerRegistry::class),
+            new ParameterBag([
+                'kernel.cache_dir' => '/var/cache',
+            ]),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            $processFactory = $this->createMock(ProcessFactoryInterface::class),
+            static::createStub(MessageBusInterface::class)
+        );
+
+        $managerRegistry
+            ->expects(static::once())
+            ->method('getManagerForClass')
+            ->with(CronJobExecution::class)
+            ->willReturn($entityManager = $this->createMock(EntityManagerInterface::class))
+            ->seal()
+        ;
+
+        $eventDispatcher
             ->expects(static::never())
             ->method('dispatch')
+            ->seal()
         ;
 
-        $this->entityManager
+        $entityManager
             ->expects(static::once())
             ->method('flush')
+            ->seal()
         ;
 
-        $this->processFactory
+        $processFactory
             ->expects(static::never())
             ->method('createFromShellCommandLine')
+            ->seal()
         ;
 
-        $this->cronJobProcessor->process(
+        $cronJobProcessor->process(
             $execution = (new CronJob())
                 ->setActive(false)
                 ->newExecution()
@@ -308,7 +375,25 @@ class CronJobProcessorTest extends TestCase
 
     public function testProcessWithCancelledExecution(): void
     {
-        $this->eventDispatcher
+        $cronJobProcessor = new CronJobProcessor(
+            $managerRegistry = $this->createMock(ManagerRegistry::class),
+            new ParameterBag([
+                'kernel.cache_dir' => '/var/cache',
+            ]),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            $processFactory = $this->createMock(ProcessFactoryInterface::class),
+            static::createStub(MessageBusInterface::class)
+        );
+
+        $managerRegistry
+            ->expects(static::once())
+            ->method('getManagerForClass')
+            ->with(CronJobExecution::class)
+            ->willReturn($entityManager = $this->createMock(EntityManagerInterface::class))
+            ->seal()
+        ;
+
+        $eventDispatcher
             ->expects(static::once())
             ->method('dispatch')
             ->with(
@@ -317,19 +402,22 @@ class CronJobProcessorTest extends TestCase
             ->willReturn(
                 new PreCronJobExecutionEvent($execution, true)
             )
+            ->seal()
         ;
 
-        $this->entityManager
+        $entityManager
             ->expects(static::once())
             ->method('flush')
+            ->seal()
         ;
 
-        $this->processFactory
+        $processFactory
             ->expects(static::never())
             ->method('createFromShellCommandLine')
+            ->seal()
         ;
 
-        $this->cronJobProcessor->process($execution);
+        $cronJobProcessor->process($execution);
 
         static::assertSame(CronJobExecution::STATE_SKIPPED, $execution->getState());
     }

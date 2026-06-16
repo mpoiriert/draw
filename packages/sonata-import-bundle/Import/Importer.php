@@ -65,10 +65,10 @@ class Importer implements ImporterInterface
 
         $handle = fopen($file->getRealPath(), 'r');
 
-        $headers = fgetcsv($handle);
+        $headers = fgetcsv($handle, escape: '\\');
         $samples = [];
         for ($i = 0; $i < 10; ++$i) {
-            $row = fgetcsv($handle);
+            $row = fgetcsv($handle, escape: '\\');
             if (!$row) {
                 break;
             }
@@ -90,7 +90,7 @@ class Importer implements ImporterInterface
         file_put_contents($file, $import->getFileContent());
         register_shutdown_function('unlink', $file);
         $handle = fopen($file, 'r+');
-        $headers = fgetcsv($handle);
+        $headers = fgetcsv($handle, escape: '\\');
 
         $identifierHeaderName = $import->getIdentifierHeaderName();
         $columnMapping = $import->getColumnMapping();
@@ -104,7 +104,7 @@ class Importer implements ImporterInterface
             $identifierHeaderNames[$column->getHeaderName()] = $column->getMappedTo();
         }
 
-        while (($row = fgetcsv($handle)) !== false) {
+        while (($row = fgetcsv($handle, escape: '\\')) !== false) {
             ++$line;
             $data = array_combine($headers, $row);
             $id = $data[$identifierHeaderName];

@@ -3,7 +3,6 @@
 namespace Draw\Bundle\SonataImportBundle\Tests\Column\Bridge\Doctrine\Extractor;
 
 use Draw\Bundle\SonataImportBundle\Column\Bridge\Doctrine\Extractor\DoctrineFieldColumnExtractor;
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Component\Tester\DoctrineOrmTrait;
@@ -26,14 +25,6 @@ class DoctrineFieldColumnExtractorTest extends TestCase
                     \dirname((new \ReflectionClass(Column::class))->getFileName()),
                 ])
             )
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
         );
     }
 

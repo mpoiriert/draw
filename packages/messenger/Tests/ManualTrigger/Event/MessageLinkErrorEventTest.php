@@ -7,7 +7,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @internal
@@ -29,14 +28,6 @@ class MessageLinkErrorEventTest extends TestCase
             $this->request = new Request(),
             $this->messageId = uniqid('message-id-'),
             $this->error = new \Exception()
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            Event::class,
-            $this->event
         );
     }
 

@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataImportBundle\Tests\Column\Extractor;
 
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Column\Extractor\PropertyPathColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use PHPUnit\Framework\TestCase;
@@ -17,14 +16,6 @@ class PropertyPathColumnExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new PropertyPathColumnExtractor();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
-        );
     }
 
     public function testGetDefaultPriority(): void

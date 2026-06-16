@@ -42,7 +42,7 @@ class DataTesterTest extends TestCase
             'Return value of path must be a new object.'
         );
 
-        static::assertInstanceOf(DataTester::class, $tester);
+        static::assertInstanceOf(DataTester::class, $newTester);
         static::assertSame('value', $newTester->getData());
     }
 

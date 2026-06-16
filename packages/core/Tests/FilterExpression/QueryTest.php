@@ -25,7 +25,7 @@ class QueryTest extends TestCase
     {
         static::assertSame(
             $this->object,
-            $this->object->where($expression = $this->createMock(Expression::class))
+            $this->object->where($expression = static::createStub(Expression::class))
         );
 
         static::assertSame(
@@ -38,7 +38,7 @@ class QueryTest extends TestCase
     {
         static::assertSame(
             $this->object,
-            $this->object->andWhere($expression = $this->createMock(Expression::class))
+            $this->object->andWhere($expression = static::createStub(Expression::class))
         );
 
         static::assertSame(
@@ -49,8 +49,8 @@ class QueryTest extends TestCase
 
     public function testAndWhere(): void
     {
-        $this->object->andWhere($expression1 = $this->createMock(Expression::class));
-        $this->object->andWhere($expression2 = $this->createMock(Expression::class));
+        $this->object->andWhere($expression1 = static::createStub(Expression::class));
+        $this->object->andWhere($expression2 = static::createStub(Expression::class));
 
         /** @var CompositeExpression $expression */
         $expression = $this->object->getExpression();
@@ -75,7 +75,7 @@ class QueryTest extends TestCase
     {
         static::assertSame(
             $this->object,
-            $this->object->orWhere($expression = $this->createMock(Expression::class))
+            $this->object->orWhere($expression = static::createStub(Expression::class))
         );
 
         static::assertSame(
@@ -86,8 +86,8 @@ class QueryTest extends TestCase
 
     public function testOrWhere(): void
     {
-        $this->object->orWhere($expression1 = $this->createMock(Expression::class));
-        $this->object->orWhere($expression2 = $this->createMock(Expression::class));
+        $this->object->orWhere($expression1 = static::createStub(Expression::class));
+        $this->object->orWhere($expression2 = static::createStub(Expression::class));
 
         $expression = $this->object->getExpression();
 

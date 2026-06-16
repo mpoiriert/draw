@@ -2,7 +2,6 @@
 
 namespace Draw\Component\Validator\Tests\Constraints;
 
-use Draw\Component\Validator\Constraints\PhpCallable;
 use Draw\Component\Validator\Constraints\Strtotime;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -19,11 +18,6 @@ class StrtotimeTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new Strtotime();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(PhpCallable::class, $this->object);
     }
 
     public function testCallable(): void

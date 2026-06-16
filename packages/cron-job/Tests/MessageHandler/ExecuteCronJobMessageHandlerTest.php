@@ -38,6 +38,7 @@ class ExecuteCronJobMessageHandlerTest extends TestCase
             ->expects(static::once())
             ->method('process')
             ->with($execution = (new CronJob())->newExecution())
+            ->seal()
         ;
 
         $this->handler->handleExecuteCronJobMessage(

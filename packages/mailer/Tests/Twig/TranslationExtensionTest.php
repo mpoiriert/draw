@@ -3,12 +3,10 @@
 namespace Draw\Component\Mailer\Tests\Twig;
 
 use Draw\Component\Mailer\Twig\TranslationExtension;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
@@ -17,30 +15,15 @@ use Twig\TwigFilter;
 #[CoversClass(TranslationExtension::class)]
 class TranslationExtensionTest extends TestCase
 {
-    use MockTrait;
-
-    private TranslationExtension $object;
-
-    private TranslatorInterface&MockObject $translator;
-
-    protected function setUp(): void
-    {
-        $this->object = new TranslationExtension(
-            $this->translator = $this->createMock(TranslatorInterface::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            AbstractExtension::class,
-            $this->object
-        );
-    }
+    use DoubleTrait;
 
     public function testGetFilters(): void
     {
-        $filters = $this->object->getFilters();
+        $object = new TranslationExtension(
+            static::createStub(TranslatorInterface::class)
+        );
+
+        $filters = $object->getFilters();
 
         static::assertCount(1, $filters);
 
@@ -54,20 +37,24 @@ class TranslationExtensionTest extends TestCase
         );
 
         static::assertSame(
-            [$this->object, 'trans'],
+            [$object, 'trans'],
             $filter->getCallable()
         );
     }
 
     public function testTrans(): void
     {
+        $object = new TranslationExtension(
+            $translator = $this->createMock(TranslatorInterface::class)
+        );
+
         $message = uniqid('message-');
         $arguments = ['key' => uniqid('value-')];
         $domain = uniqid('domain-');
         $locale = uniqid('locale-');
         $count = random_int(0, \PHP_INT_MAX);
 
-        $this->translator
+        $translator
             ->expects(static::once())
             ->method('trans')
             ->with(
@@ -77,11 +64,12 @@ class TranslationExtensionTest extends TestCase
                 $locale
             )
             ->willReturnArgument(0)
+            ->seal()
         ;
 
         static::assertSame(
             $message,
-            $this->object->trans(
+            $object->trans(
                 $message,
                 $arguments,
                 $domain,
@@ -93,10 +81,14 @@ class TranslationExtensionTest extends TestCase
 
     public function testTransMultipleMessage(): void
     {
+        $object = new TranslationExtension(
+            $translator = $this->createMock(TranslatorInterface::class)
+        );
+
         $message1 = uniqid('message-');
         $message2 = uniqid('message-');
 
-        $this->translator
+        $translator
             ->expects(static::exactly(2))
             ->method('trans')
             ->with(
@@ -109,11 +101,12 @@ class TranslationExtensionTest extends TestCase
                 $message1,
                 $result = uniqid('result-')
             )
+            ->seal()
         ;
 
         static::assertSame(
             $result,
-            $this->object->trans(
+            $object->trans(
                 [$message1, $message2, uniqid('message-not-use-')],
             )
         );

@@ -51,6 +51,7 @@ class ObjectReferenceTraitTest extends TestCase
                 ),
                 $object = new \stdClass()
             )
+            ->seal()
         ;
 
         $this->trait->addObjectReference($class, $name, $object);
@@ -70,6 +71,7 @@ class ObjectReferenceTraitTest extends TestCase
                 $class
             )
             ->willReturn(false)
+            ->seal()
         ;
 
         static::assertFalse(
@@ -91,6 +93,7 @@ class ObjectReferenceTraitTest extends TestCase
                 $class
             )
             ->willReturn($object = new \stdClass())
+            ->seal()
         ;
 
         static::assertSame(
@@ -112,6 +115,7 @@ class ObjectReferenceTraitTest extends TestCase
                 ),
                 $object = new \stdClass()
             )
+            ->seal()
         ;
 
         $this->trait->setObjectReference($class, $name, $object);

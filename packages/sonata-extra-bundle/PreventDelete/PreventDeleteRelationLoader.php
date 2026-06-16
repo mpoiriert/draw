@@ -26,7 +26,10 @@ class PreventDeleteRelationLoader
     {
         $relations = [];
         foreach ($this->getRelations() as $relation) {
-            $class = $relation->getClass();
+            if (null === $class = $relation->getClass()) {
+                continue;
+            }
+
             if ($object instanceof $class) {
                 $relations[] = $relation;
             }

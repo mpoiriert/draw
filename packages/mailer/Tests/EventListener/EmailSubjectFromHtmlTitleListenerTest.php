@@ -5,7 +5,6 @@ namespace Draw\Component\Mailer\Tests\EventListener;
 use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
@@ -25,14 +24,6 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $this->object = new EmailSubjectFromHtmlTitleListener();
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
-    }
-
     public function testGetSubscribedEvents(): void
     {
         static::assertSame(
@@ -47,7 +38,7 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
     {
         $this->object->assignSubjectFromHtmlTitle(
             $this->createMessageEvent(
-                $this->createMock(RawMessage::class)
+                static::createStub(RawMessage::class)
             )
         );
 
@@ -67,6 +58,7 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message
             ->expects(static::never())
             ->method('subject')
+            ->seal()
         ;
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
@@ -87,6 +79,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
             ->method('subject')
         ;
 
+        $message
+            ->expects(static::once())
+            ->method('getSubject')
+            ->seal()
+        ;
+
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
     }
 
@@ -103,6 +101,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
         $message
             ->expects(static::never())
             ->method('subject')
+        ;
+
+        $message
+            ->expects(static::once())
+            ->method('getSubject')
+            ->seal()
         ;
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
@@ -123,6 +127,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
             ->method('subject')
         ;
 
+        $message
+            ->expects(static::once())
+            ->method('getSubject')
+            ->seal()
+        ;
+
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));
     }
 
@@ -140,6 +150,12 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
             ->expects(static::once())
             ->method('subject')
             ->with('Title')
+        ;
+
+        $message
+            ->expects(static::once())
+            ->method('getSubject')
+            ->seal()
         ;
 
         $this->object->assignSubjectFromHtmlTitle($this->createMessageEvent($message));

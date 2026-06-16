@@ -10,9 +10,9 @@ use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireParameter;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTester;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
-use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMock;
-use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMockProperty;
-use PHPUnit\Framework\MockObject\MockObject;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireDouble;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireDoubleProperty;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -23,12 +23,12 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
 {
     #[
         AutowireService,
-        AutowireMockProperty('managerRegistry')
+        AutowireDoubleProperty('managerRegistry')
     ]
     private UserSetCommentNullMigration $userSetCommentNullMigration;
 
-    #[AutowireMock]
-    private ManagerRegistry&MockObject $managerRegistry;
+    #[AutowireDouble]
+    private ManagerRegistry&Stub $managerRegistry;
 
     #[AutowireClient]
     private KernelBrowser $client;
@@ -55,7 +55,7 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
         );
     }
 
-    public function testAutowiredMock(): void
+    public function testAutowiredDouble(): void
     {
         static::assertInstanceOf(
             ManagerRegistry::class,
@@ -63,15 +63,15 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
         );
 
         static::assertInstanceOf(
-            MockObject::class,
+            Stub::class,
             $this->managerRegistry
         );
     }
 
-    public function testAutowireMockProperty(): void
+    public function testAutowireDoubleProperty(): void
     {
         static::assertSame(
-            (new \ReflectionProperty($this->userSetCommentNullMigration, 'managerRegistry'))
+            new \ReflectionProperty($this->userSetCommentNullMigration, 'managerRegistry')
                 ->getValue($this->userSetCommentNullMigration),
             $this->managerRegistry
         );

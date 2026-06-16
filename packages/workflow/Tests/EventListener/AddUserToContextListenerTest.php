@@ -4,9 +4,7 @@ namespace Draw\Component\Workflow\Tests\EventListener;
 
 use Draw\Component\Security\Core\Security;
 use Draw\Component\Workflow\EventListener\AddUserToContextListener;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Workflow\Event\TransitionEvent;
 use Symfony\Component\Workflow\Marking;
@@ -16,45 +14,34 @@ use Symfony\Component\Workflow\Marking;
  */
 class AddUserToContextListenerTest extends TestCase
 {
-    private AddUserToContextListener $object;
-
-    private MockObject&Security $security;
-
-    protected function setUp(): void
-    {
-        $this->object = new AddUserToContextListener(
-            $this->security = $this->createMock(Security::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
-    }
-
     public function testGetSubscribedEvents(): void
     {
+        $object = new AddUserToContextListener(
+            static::createStub(Security::class)
+        );
+
         static::assertSame(
             ['workflow.transition' => 'addUserToContext'],
-            $this->object::getSubscribedEvents()
+            $object::getSubscribedEvents()
         );
     }
 
     public function testAddUserToContextNoUser(): void
     {
+        $object = new AddUserToContextListener(
+            static::createStub(Security::class)
+        );
+
         $transitionEvent = new TransitionEvent(
             new \stdClass(),
-            $this->createMock(Marking::class),
+            static::createStub(Marking::class),
         );
 
         $transitionEvent->setContext($originalContext = [
             uniqid('key-') => uniqid('value-'),
         ]);
 
-        $this->object->addUserToContext($transitionEvent);
+        $object->addUserToContext($transitionEvent);
 
         static::assertSame(
             $originalContext,
@@ -64,22 +51,27 @@ class AddUserToContextListenerTest extends TestCase
 
     public function testAddUserToContextProperUser(): void
     {
+        $object = new AddUserToContextListener(
+            $security = $this->createMock(Security::class)
+        );
+
         $transitionEvent = new TransitionEvent(
             new \stdClass(),
-            $this->createMock(Marking::class),
+            static::createStub(Marking::class),
         );
 
         $transitionEvent->setContext($originalContext = [
             uniqid('key-') => uniqid('value-'),
         ]);
 
-        $this->security
+        $security
             ->expects(static::once())
             ->method('getUser')
-            ->willReturn($user = $this->createMock(UserInterface::class))
+            ->willReturn($user = static::createStub(UserInterface::class))
+            ->seal()
         ;
 
-        $this->object->addUserToContext($transitionEvent);
+        $object->addUserToContext($transitionEvent);
 
         static::assertSame(
             array_merge(

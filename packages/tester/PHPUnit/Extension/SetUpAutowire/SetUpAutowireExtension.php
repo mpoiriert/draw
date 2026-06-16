@@ -22,6 +22,11 @@ class SetUpAutowireExtension implements Extension
                  */
                 private array $propertyAttributes = [];
 
+                /**
+                 * @var array<string, array<string, mixed>>
+                 */
+                private array $propertyOptionsMap = [];
+
                 public function __construct(
                     private ParameterCollection $parameters,
                 ) {
@@ -50,11 +55,17 @@ class SetUpAutowireExtension implements Extension
                         return;
                     }
 
+                    $propertyOptionsMap = $this->getPropertyOptionsMap($testCase, $test->methodName());
+
                     foreach ($this->getPropertyAttributes($testCase) as [$property, $autowire]) {
                         \assert($autowire instanceof AutowireInterface);
 
                         if ($autowire instanceof AutowireConfigurableInterface) {
                             $autowire->configure($this->parameters);
+                        }
+
+                        if ($autowire instanceof OptionAwareAutowireInterface) {
+                            $autowire->setOptions($propertyOptionsMap[$property->getName()] ?? []);
                         }
 
                         $autowire->autowire($testCase, $property);
@@ -75,11 +86,11 @@ class SetUpAutowireExtension implements Extension
                     if (!\array_key_exists($className, $this->propertyAttributes)) {
                         $autowireAttributes = [];
 
-                        foreach ((new \ReflectionObject($testCase))->getProperties() as $property) {
+                        foreach (new \ReflectionObject($testCase)->getProperties() as $property) {
                             foreach ($property->getAttributes() as $attribute) {
-                                $attributeClass = $attribute->getName();
+                                $reflectionClass = new \ReflectionClass($attribute->getName());
 
-                                if (!(new \ReflectionClass($attributeClass))->implementsInterface(AutowireInterface::class)) {
+                                if (!$reflectionClass->implementsInterface(AutowireInterface::class)) {
                                     continue;
                                 }
 
@@ -96,6 +107,44 @@ class SetUpAutowireExtension implements Extension
                     foreach ($this->propertyAttributes[$className] as $property) {
                         yield $property;
                     }
+                }
+
+                /**
+                 * @return iterable<string, array<string, mixed>>
+                 */
+                private function getPropertyOptionsMap(AutowiredInterface $testCase, string $methodName): iterable
+                {
+                    $key = $testCase::class.'::'.$methodName;
+
+                    if (!\array_key_exists($key, $this->propertyOptionsMap)) {
+                        $reflectionClass = new \ReflectionClass($testCase);
+                        $reflectionMethod = $reflectionClass->getMethod($methodName);
+
+                        $optionsMap = [];
+
+                        foreach ($reflectionMethod->getAttributes() as $attribute) {
+                            $attributeInstance = $attribute->newInstance();
+
+                            if (!$attributeInstance instanceof PropertyOptionAwareMethodAttributeInterface) {
+                                continue;
+                            }
+
+                            foreach ($attributeInstance->getPropertyNames() as $propertyName) {
+                                if (!\array_key_exists($propertyName, $optionsMap)) {
+                                    $optionsMap[$propertyName] = [];
+                                }
+
+                                $optionsMap[$propertyName] = array_merge(
+                                    $optionsMap[$propertyName],
+                                    $attributeInstance->getOptions()
+                                );
+                            }
+                        }
+
+                        $this->propertyOptionsMap[$key] = $optionsMap;
+                    }
+
+                    return $this->propertyOptionsMap[$key];
                 }
             },
         );

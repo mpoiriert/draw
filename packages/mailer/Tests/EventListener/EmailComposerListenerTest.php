@@ -4,7 +4,6 @@ namespace Draw\Component\Mailer\Tests\EventListener;
 
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EventListener\EmailComposerListener;
-use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,8 +22,6 @@ use Symfony\Component\Mime\RawMessage;
 #[CoversClass(EmailComposerListener::class)]
 class EmailComposerListenerTest extends TestCase
 {
-    use MockTrait;
-
     private EmailComposerListener $object;
 
     private EmailComposer&MockObject $emailComposer;
@@ -41,11 +38,12 @@ class EmailComposerListenerTest extends TestCase
         $this->emailComposer
             ->expects(static::never())
             ->method('compose')
+            ->seal()
         ;
 
         $this->object->composeMessage(
             $this->createMessageEvent(
-                $this->createMock(RawMessage::class)
+                static::createStub(RawMessage::class)
             )
         );
     }
@@ -55,6 +53,7 @@ class EmailComposerListenerTest extends TestCase
         $this->emailComposer
             ->expects(static::never())
             ->method('compose')
+            ->seal()
         ;
 
         $message = $this->createMock(Message::class);
@@ -63,6 +62,7 @@ class EmailComposerListenerTest extends TestCase
             ->expects(static::once())
             ->method('getHeaders')
             ->willReturn($headers = new Headers())
+            ->seal()
         ;
 
         $headers->add(new UnstructuredHeader('X-DrawEmail', '1'));
@@ -79,6 +79,7 @@ class EmailComposerListenerTest extends TestCase
         $this->emailComposer
             ->expects(static::once())
             ->method('compose')
+            ->seal()
         ;
 
         $this->object->composeMessage($event);
@@ -93,9 +94,10 @@ class EmailComposerListenerTest extends TestCase
         $this->emailComposer
             ->expects(static::never())
             ->method('compose')
+            ->seal()
         ;
 
-        $message = $this->createMock(Message::class);
+        $message = static::createStub(Message::class);
 
         $this->object->composeMessage($this->createMessageEvent($message, true));
     }

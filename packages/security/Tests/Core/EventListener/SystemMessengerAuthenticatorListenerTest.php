@@ -4,9 +4,7 @@ namespace Draw\Component\Security\Tests\Core\EventListener;
 
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -16,74 +14,70 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class SystemMessengerAuthenticatorListenerTest extends TestCase
 {
-    private SystemMessengerAuthenticatorListener $object;
-
-    private MockObject&TokenStorageInterface $tokenStorage;
-
-    private MockObject&SystemAuthenticatorInterface $systemAuthenticator;
-
-    protected function setUp(): void
-    {
-        $this->object = new SystemMessengerAuthenticatorListener(
-            $this->tokenStorage = $this->createMock(TokenStorageInterface::class),
-            $this->systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
-    }
-
     public function testGetSubscribedEvents(): void
     {
+        $object = new SystemMessengerAuthenticatorListener(
+            static::createStub(TokenStorageInterface::class),
+            static::createStub(SystemAuthenticatorInterface::class)
+        );
+
         static::assertSame(
             [
                 WorkerMessageReceivedEvent::class => 'connectSystem',
             ],
-            $this->object::getSubscribedEvents()
+            $object::getSubscribedEvents()
         );
     }
 
     public function testConnectSystemAlreadyConnected(): void
     {
-        $this->tokenStorage
+        $object = new SystemMessengerAuthenticatorListener(
+            $tokenStorage = $this->createMock(TokenStorageInterface::class),
+            static::createStub(SystemAuthenticatorInterface::class)
+        );
+
+        $tokenStorage
             ->expects(static::once())
             ->method('getToken')
-            ->willReturn($this->createMock(TokenInterface::class))
+            ->willReturn(static::createStub(TokenInterface::class))
         ;
 
-        $this->tokenStorage
+        $tokenStorage
             ->expects(static::never())
             ->method('setToken')
+            ->seal()
         ;
 
-        $this->object->connectSystem();
+        $object->connectSystem();
     }
 
     public function testConnectSystemNotConnected(): void
     {
-        $this->tokenStorage
+        $object = new SystemMessengerAuthenticatorListener(
+            $tokenStorage = $this->createMock(TokenStorageInterface::class),
+            $systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class)
+        );
+
+        $tokenStorage
             ->expects(static::once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
-        $this->tokenStorage
+        $tokenStorage
             ->expects(static::once())
             ->method('setToken')
-            ->with($token = $this->createMock(TokenInterface::class))
+            ->with($token = static::createStub(TokenInterface::class))
+            ->seal()
         ;
 
-        $this->systemAuthenticator
+        $systemAuthenticator
             ->expects(static::once())
             ->method('getTokenForSystem')
             ->willReturn($token)
+            ->seal()
         ;
 
-        $this->object->connectSystem();
+        $object->connectSystem();
     }
 }

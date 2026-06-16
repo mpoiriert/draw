@@ -21,61 +21,8 @@ class ExecutionTest extends TestCase
         $this->entity = new Execution();
     }
 
-    public function testConstants(): void
-    {
-        static::assertSame(
-            'initialized',
-            $this->entity::STATE_INITIALIZED
-        );
-
-        static::assertSame(
-            'started',
-            $this->entity::STATE_STARTED
-        );
-
-        static::assertSame(
-            'error',
-            $this->entity::STATE_ERROR
-        );
-
-        static::assertSame(
-            'terminated',
-            $this->entity::STATE_TERMINATED
-        );
-
-        static::assertSame(
-            'disabled',
-            $this->entity::STATE_DISABLED
-        );
-
-        static::assertSame(
-            'acknowledge',
-            $this->entity::STATE_ACKNOWLEDGE
-        );
-
-        static::assertSame(
-            'auto_acknowledge',
-            $this->entity::STATE_AUTO_ACKNOWLEDGE
-        );
-
-        static::assertSame(
-            [
-                $this->entity::STATE_INITIALIZED,
-                $this->entity::STATE_STARTED,
-                $this->entity::STATE_DISABLED,
-                $this->entity::STATE_ERROR,
-                $this->entity::STATE_TERMINATED,
-                $this->entity::STATE_ACKNOWLEDGE,
-                $this->entity::STATE_AUTO_ACKNOWLEDGE,
-            ],
-            $this->entity::STATES,
-        );
-    }
-
     public function testIdMutator(): void
     {
-        static::assertNotNull($this->entity->getId());
-
         static::assertSame(
             $this->entity,
             $this->entity->setId($value = uniqid('id-'))
@@ -241,7 +188,7 @@ class ExecutionTest extends TestCase
 
     public function testUpdateTimestampNotSet(): void
     {
-        $this->entity->updateTimestamp($this->createMock(PreUpdateEventArgs::class));
+        $this->entity->updateTimestamp(static::createStub(PreUpdateEventArgs::class));
 
         static::assertEqualsWithDelta(
             $this->entity->getCreatedAt(),
@@ -254,7 +201,7 @@ class ExecutionTest extends TestCase
     {
         $this->entity->setUpdatedAt($value = new \DateTimeImmutable('- 1 days'));
 
-        $this->entity->updateTimestamp($this->createMock(PreUpdateEventArgs::class));
+        $this->entity->updateTimestamp(static::createStub(PreUpdateEventArgs::class));
 
         static::assertNotEqualsWithDelta(
             $value,
@@ -273,6 +220,7 @@ class ExecutionTest extends TestCase
             ->method('hasChangedField')
             ->with('updatedAt')
             ->willReturn(true)
+            ->seal()
         ;
 
         $this->entity->updateTimestamp($event);

@@ -2,7 +2,6 @@
 
 namespace Draw\Component\OpenApi\Tests\HttpFoundation\ErrorToHttpCodeConverter;
 
-use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ErrorToHttpCodeConverterInterface;
 use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\HttpExceptionToHttpCodeConverter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -19,14 +18,6 @@ class HttpExceptionToHttpCodeConverterTest extends TestCase
     protected function setUp(): void
     {
         $this->httpExceptionToHttpCodeConverter = new HttpExceptionToHttpCodeConverter();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ErrorToHttpCodeConverterInterface::class,
-            $this->httpExceptionToHttpCodeConverter
-        );
     }
 
     #[DataProvider('provideConvertToHttpCodeCases')]

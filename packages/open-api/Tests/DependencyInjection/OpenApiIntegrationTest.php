@@ -106,11 +106,9 @@ class OpenApiIntegrationTest extends IntegrationTestCase
                 ],
                 'versioning' => [
                     'enabled' => false,
-                    'versions' => [
-                    ],
+                    'versions' => [],
                 ],
-                'definitionAliases' => [
-                ],
+                'definitionAliases' => [],
                 'classNamingFilters' => [
                     0 => AliasesClassNamingFilter::class,
                 ],

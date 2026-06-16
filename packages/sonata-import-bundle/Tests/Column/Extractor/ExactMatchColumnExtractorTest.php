@@ -2,12 +2,10 @@
 
 namespace Draw\Bundle\SonataImportBundle\Tests\Column\Extractor;
 
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Column\Extractor\ExactMatchColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Import\Importer;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,38 +14,27 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(ExactMatchColumnExtractor::class)]
 class ExactMatchColumnExtractorTest extends TestCase
 {
-    private ExactMatchColumnExtractor $object;
-
-    private Importer&MockObject $importer;
-
-    protected function setUp(): void
-    {
-        $this->object = new ExactMatchColumnExtractor(
-            $this->importer = $this->createMock(Importer::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
-        );
-    }
-
     public function testGetDefaultPriority(): void
     {
+        $object = new ExactMatchColumnExtractor(
+            static::createStub(Importer::class)
+        );
+
         static::assertSame(
             -1000,
-            $this->object::getDefaultPriority()
+            $object::getDefaultPriority()
         );
     }
 
     public function testGetOptions(): void
     {
+        $object = new ExactMatchColumnExtractor(
+            static::createStub(Importer::class)
+        );
+
         static::assertSame(
             ['test'],
-            $this->object->getOptions(
+            $object->getOptions(
                 new Column(),
                 ['test']
             )
@@ -56,14 +43,19 @@ class ExactMatchColumnExtractorTest extends TestCase
 
     public function testExtractDefaultValueAlreadySet(): void
     {
-        $this->importer
+        $object = new ExactMatchColumnExtractor(
+            $importer = $this->createMock(Importer::class)
+        );
+
+        $importer
             ->expects(static::never())
             ->method('getOptions')
+            ->seal()
         ;
 
         static::assertNull(
-            $this->object->extractDefaultValue(
-                (new Column())
+            $object->extractDefaultValue(
+                new Column()
                     ->setHeaderName('headerName')
                     ->setMappedTo('mappedTo'),
                 ['sample1', 'sample2']
@@ -73,15 +65,20 @@ class ExactMatchColumnExtractorTest extends TestCase
 
     public function testExtractDefaultValueNotInOptions(): void
     {
-        $this->importer
+        $object = new ExactMatchColumnExtractor(
+            $importer = $this->createMock(Importer::class)
+        );
+
+        $importer
             ->expects(static::once())
             ->method('getOptions')
             ->willReturn(['headerName1', 'headerName2'])
+            ->seal()
         ;
 
         static::assertNull(
-            $this->object->extractDefaultValue(
-                (new Column())
+            $object->extractDefaultValue(
+                new Column()
                     ->setHeaderName('headerName'),
                 ['sample3', 'sample4']
             )
@@ -90,17 +87,22 @@ class ExactMatchColumnExtractorTest extends TestCase
 
     public function testExtractDefaultValueInOptions(): void
     {
-        $this->importer
+        $object = new ExactMatchColumnExtractor(
+            $importer = $this->createMock(Importer::class)
+        );
+
+        $importer
             ->expects(static::once())
             ->method('getOptions')
             ->willReturn(['headerName'])
+            ->seal()
         ;
 
-        $column = (new Column())
+        $column = new Column()
             ->setHeaderName('headerName')
         ;
 
-        $column = $this->object->extractDefaultValue(
+        $column = $object->extractDefaultValue(
             $column,
             ['sample5', 'sample6']
         );

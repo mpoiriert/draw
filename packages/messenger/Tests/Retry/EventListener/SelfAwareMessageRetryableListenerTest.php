@@ -8,7 +8,6 @@ use Draw\Component\Messenger\Retry\EventListener\SelfAwareMessageRetryableListen
 use Draw\Component\Messenger\Retry\Message\SelfAwareRetryableMessageInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @internal
@@ -20,14 +19,6 @@ class SelfAwareMessageRetryableListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new SelfAwareMessageRetryableListener();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ResetInterface::class,
-            $this->object
-        );
     }
 
     public function testOnIsRetryableEventNoSelfAwareMessage(): void
@@ -49,6 +40,7 @@ class SelfAwareMessageRetryableListenerTest extends TestCase
         $message->expects(static::once())
             ->method('getRetryWaitingTime')
             ->willReturn(null)
+            ->seal()
         ;
 
         $envelope = new Envelope($message);
@@ -73,6 +65,7 @@ class SelfAwareMessageRetryableListenerTest extends TestCase
                 0 // Assuming this is the first retry
             )
             ->willReturn(1000)
+            ->seal()
         ;
 
         $envelope = new Envelope($message);
@@ -103,6 +96,7 @@ class SelfAwareMessageRetryableListenerTest extends TestCase
         $message->expects(static::once())
             ->method('getRetryWaitingTime')
             ->willReturn(1000)
+            ->seal()
         ;
 
         $envelope = new Envelope($message);
@@ -124,6 +118,7 @@ class SelfAwareMessageRetryableListenerTest extends TestCase
         $message->expects(static::once())
             ->method('getRetryWaitingTime')
             ->willReturn(1000)
+            ->seal()
         ;
 
         $envelope = new Envelope($message);

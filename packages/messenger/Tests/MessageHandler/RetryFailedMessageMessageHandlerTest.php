@@ -52,11 +52,13 @@ class RetryFailedMessageMessageHandlerTest extends TestCase
                 ]
             )
             ->willReturn($process = $this->createMock(Process::class))
+            ->seal()
         ;
 
         $process
             ->expects(static::once())
             ->method('mustRun')
+            ->seal()
         ;
 
         $this->handler->handleRetryFailedMessageMessage(

@@ -76,7 +76,8 @@ Once this is done, your test need to implement the `AutowiredInterface` interfac
 ```php
 namespace App\Tests;
 
-use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class MyTest extends KernelTestCase implements AutowiredInterface
 {
@@ -94,23 +95,23 @@ use App\MyInterface;
 use App\MyObject;
 use App\MySecondObject;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
-use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMock;
-use PHPUnit\Framework\MockObject\MockObject;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireDouble;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 class MyTest extends TestCase implements AutowiredInterface
 {
-   // Will create a mock object of MyInterface and assigned it to property.
-   // This can be used in conjunction with the AutowireMockProperty (see below).
-   #[AutowireMock]
-   private MyInterface&MockObject $aService
+   // Will create a stub of MyInterface and assigned it to property.
+   // This can be used in conjunction with the AutowireDoubleProperty (see below).
+   #[AutowireDouble]
+   private MyInterface&Stub $aService
    
-   // The AutowireMockProperty will replace the aService property of $myObject. 
-   #[AutowireMockProperty('aService')]
+   // The AutowireDoubleProperty will replace the aService property of $myObject.
+   #[AutowireDoubleProperty('aService')]
    private MyObject $myObject;
    
    // By defaults, it will use the same property name in the current test case, but you can specify a different one using the second parameter.
-   #[AutowireMockProperty('aService', 'anotherProperty')]
+   #[AutowireDoubleProperty('aService', 'anotherProperty')]
    private MySecondObject $mySecondObject;
    
    public function setUp(): void
@@ -130,11 +131,14 @@ If you need to access those property in your `setUp` method, you can use the `Au
 ```php
 namespace App\Tests;
 
-use App\MyService;use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredCompletionAwareInterface;use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredCompletionAwareInterface;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireDouble;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class MyTest extends KernelTestCase implements AutowiredCompletionAwareInterface
 {
-   #[AutowireMock]
+   #[AutowireDouble]
    private MyInterface&MockObject $aService
    
     public function postAutowire(): void
@@ -143,6 +147,87 @@ class MyTest extends KernelTestCase implements AutowiredCompletionAwareInterface
             ->expects(static::any())
             ->method('someMethod')
             ->willReturn('someValue');
+    }
+}
+```
+
+#### Handling test doubles (Stubs vs. Mocks)
+
+PHPUnit 13 introduces a strict distinction between **Stubs** and **Mocks**. If you use a `MockObject` but do not configure any
+expectations on it, PHPUnit will throw a deprecation warning:
+> *No expectations were configured for the mock object for App\MyInterface. Consider refactoring your test code to use a test stub
+> instead. The #[AllowMockObjectsWithoutExpectations] attribute can be used to opt out of this check.*
+
+To prevent this warning, this extension allows a property defined as a `Stub` to dynamically morph into a `MockObject` on a per-test
+basis.
+
+The extension automatically looks at the intersection type of your property to decide whether to call `createStub` or `createMock`:
+
+```php
+namespace App\Tests;
+
+use App\MyInterface;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireDouble;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\TestCase;
+
+class MyTest extends TestCase implements AutowiredInterface
+{
+    // The extension detects `&Stub` and initializes a PHPUnit Stub
+    #[AutowireDouble]
+    private MyInterface&Stub $aService;
+
+    // The extension detects `&MockObject` and initializes a PHPUnit MockObject
+    #[AutowireDouble]
+    private MyInterface&MockObject $anotherService;
+}
+```
+
+For dependencies that act as a `Stub` in most tests but require expectations in a few, type-hint the property with `&Stub`.
+This ensures it safely stays a lightweight Stub by default, protecting you from PHPUnit warning mentioned above. When a 
+specific test method requires it to be a Mock, add the `#[AsMock]` attribute to that method. Inside the test, use native
+PHP `assert` to instantly unlock full IDE autocomplete for `expects()`:
+
+```php
+namespace App\Tests;
+
+use App\MyInterface;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AsMock;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireDouble;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\TestCase;
+
+class MyTest extends TestCase implements AutowiredInterface
+{
+    #[AutowireDouble]
+    private MyInterface&Stub $aService;
+
+    public function test1(): void
+    {
+        $this->aService
+            ->method('method1')
+            ->willReturn(1)
+        ;
+
+        // assertions
+    }
+
+    #[AsMock('aService')]
+    public function test2(): void
+    {
+        \assert($this->aService instanceof MockObject);
+
+        $this->aService
+            ->expects(self::once())
+            ->method('method1')
+            ->willReturn(2)
+        ;
+
+        // assertions
     }
 }
 ```
@@ -156,7 +241,8 @@ You just need to create an attribute that implement the `AutowireInterface` inte
 ```php
 namespace App\Test\PHPUnit\SetUpAutowire;
 
-use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireInterface;use PHPUnit\Framework\TestCase;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireInterface;
+use PHPUnit\Framework\TestCase;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class AutowireRandomInt implements AutowireInterface

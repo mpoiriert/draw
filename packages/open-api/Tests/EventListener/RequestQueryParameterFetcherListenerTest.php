@@ -7,7 +7,6 @@ use Draw\Component\OpenApi\Schema\QueryParameter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -27,14 +26,6 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
         $this->object = new RequestQueryParameterFetcherListener();
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
-    }
-
     public function testSubscribedEvents(): void
     {
         static::assertSame(
@@ -48,7 +39,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerUnParsableController(): void
     {
         $event = new ControllerEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             'gettype',
             $request = new Request(),
             null
@@ -64,7 +55,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerInvoke(): void
     {
         $event = new ControllerEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             $this,
             $request = new Request(),
             null
@@ -80,7 +71,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerAttributeConflict(): void
     {
         $event = new ControllerEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             $this,
             $request = new Request(),
             null
@@ -193,7 +184,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelController(string $methodName, mixed $value, mixed $expectedValue): void
     {
         $controllerEvent = new ControllerEvent(
-            $this->createMock(KernelInterface::class),
+            static::createStub(KernelInterface::class),
             [$this, $methodName],
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST
@@ -227,7 +218,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerInvalidArrayCollectionFormat(): void
     {
         $controllerEvent = new ControllerEvent(
-            $this->createMock(KernelInterface::class),
+            static::createStub(KernelInterface::class),
             [$this, 'multiAction'],
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST

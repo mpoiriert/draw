@@ -22,14 +22,8 @@ class UserLockTest extends TestCase
 
     public function testConstructorDefault(): void
     {
-        static::assertNotNull($this->entity->getId(), 'Id will always have a value');
         static::assertNull($this->entity->getUser(), 'User must be null');
         static::assertNull($this->entity->getReason(), 'Reason must be null');
-        static::assertInstanceOf(
-            \DateTimeInterface::class,
-            $this->entity->getCreatedAt(),
-            'Created at must be a datetime interface'
-        );
         static::assertNull($this->entity->getLockOn(), 'Lock on must be null');
         static::assertNull($this->entity->getExpiresAt(), 'Expires at must be null');
         static::assertNull($this->entity->getUnlockUntil(), 'Unlock until must be null');

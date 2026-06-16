@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Tests\ManualTrigger\MessageHandler;
 use Draw\Component\Messenger\ManualTrigger\Message\RedirectToRouteMessageInterface;
 use Draw\Component\Messenger\ManualTrigger\MessageHandler\RedirectToRouteMessageHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -17,12 +18,12 @@ class RedirectToRouteMessageHandlerTest extends TestCase
 {
     private RedirectToRouteMessageHandler $service;
 
-    private UrlGeneratorInterface $urlGenerator;
+    private UrlGeneratorInterface&Stub $urlGenerator;
 
     protected function setUp(): void
     {
         $this->service = new RedirectToRouteMessageHandler(
-            $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class)
+            $this->urlGenerator = static::createStub(UrlGeneratorInterface::class)
         );
     }
 
@@ -35,6 +36,7 @@ class RedirectToRouteMessageHandlerTest extends TestCase
             ->method('getRedirectResponse')
             ->with($this->urlGenerator)
             ->willReturn($response = new RedirectResponse('/'))
+            ->seal()
         ;
 
         static::assertSame(

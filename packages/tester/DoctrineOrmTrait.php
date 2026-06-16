@@ -110,7 +110,7 @@ trait DoctrineOrmTrait
                 return $this->entityManager->getRepository($persistentObject);
             }
 
-            public function getManagerForClass(string $class): ?ObjectManager
+            public function getManagerForClass(string $class): ObjectManager
             {
                 return $this->entityManager;
             }

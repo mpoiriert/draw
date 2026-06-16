@@ -24,12 +24,21 @@ class RemoteFileExistsValidator extends ConstraintValidator
 
     public function remoteFileExists(string $url): bool
     {
-        if ($handle = @fopen($url, 'r')) {
-            fclose($handle);
+        $ch = curl_init($url);
 
-            return true;
-        }
+        curl_setopt($ch, \CURLOPT_NOBODY, true);
+        curl_setopt($ch, \CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, \CURLOPT_CONNECTTIMEOUT, 3);
+        curl_setopt($ch, \CURLOPT_TIMEOUT, 3);
+        curl_setopt($ch, \CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, \CURLOPT_MAXREDIRS, 3);
 
-        return false;
+        curl_exec($ch);
+
+        $httpCode = curl_getinfo($ch, \CURLINFO_HTTP_CODE);
+
+        unset($ch);
+
+        return $httpCode >= 200 && $httpCode < 300;
     }
 }

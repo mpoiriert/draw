@@ -2,12 +2,12 @@
 
 namespace Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire;
 
-use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMock;
+use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireDouble;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class AutowireServiceMock extends AutowireMock
+class AutowireServiceDouble extends AutowireDouble
 {
     use KernelTestCaseAutowireDependentTrait;
 

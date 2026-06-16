@@ -6,7 +6,6 @@ use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Mailer\MailerInterface;
@@ -20,12 +19,10 @@ class SendTestEmailCommandTest extends TestCase
 {
     use CommandTestTrait;
 
-    private MailerInterface&MockObject $mailer;
-
     protected function setUp(): void
     {
         $this->command = new SendTestEmailCommand(
-            $this->mailer = $this->createMock(MailerInterface::class)
+            static::createStub(MailerInterface::class)
         );
     }
 
@@ -49,8 +46,12 @@ class SendTestEmailCommandTest extends TestCase
 
     public function testExecute(): void
     {
+        $this->command = new SendTestEmailCommand(
+            $mailer = $this->createMock(MailerInterface::class)
+        );
+
         $to = uniqid('email-').'@example.com';
-        $this->mailer
+        $mailer
             ->expects(static::once())
             ->method('send')
             ->with(
@@ -64,6 +65,7 @@ class SendTestEmailCommandTest extends TestCase
                     }
                 )
             )
+            ->seal()
         ;
 
         $this->execute(['to' => $to])

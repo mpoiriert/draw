@@ -3,7 +3,7 @@
 namespace Draw\Component\AwsToolKit\Tests\Imds;
 
 use Draw\Component\AwsToolKit\Imds\ImdsClientV2;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +16,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 #[CoversClass(ImdsClientV2::class)]
 class ImdsClientV2Test extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private ImdsClientV2 $imdsClientV1;
 
@@ -37,6 +37,7 @@ class ImdsClientV2Test extends TestCase
             ->method('getContent')
             ->with()
             ->willReturn($token = uniqid('token-'))
+            ->seal()
         ;
 
         $instanceIdResponse = $this->createMock(ResponseInterface::class);
@@ -45,6 +46,7 @@ class ImdsClientV2Test extends TestCase
             ->method('getContent')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'))
+            ->seal()
         ;
 
         $this->httpClient
@@ -76,6 +78,7 @@ class ImdsClientV2Test extends TestCase
                 $tokenResponse,
                 $instanceIdResponse,
             )
+            ->seal()
         ;
 
         static::assertSame(

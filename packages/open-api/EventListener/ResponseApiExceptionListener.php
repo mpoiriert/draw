@@ -27,7 +27,9 @@ final class ResponseApiExceptionListener
         private bool $debug = false,
         private string $violationKey = 'errors',
     ) {
-        $this->errorToHttpCodeConverters ??= new ConfigurableErrorToHttpCodeConverter();
+        if (empty($this->errorToHttpCodeConverters)) {
+            $this->errorToHttpCodeConverters[] = new ConfigurableErrorToHttpCodeConverter();
+        }
     }
 
     #[AsEventListener]

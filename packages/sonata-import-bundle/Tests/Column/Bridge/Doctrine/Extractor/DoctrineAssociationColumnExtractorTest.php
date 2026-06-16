@@ -4,7 +4,6 @@ namespace Draw\Bundle\SonataImportBundle\Tests\Column\Bridge\Doctrine\Extractor;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\SonataImportBundle\Column\Bridge\Doctrine\Extractor\DoctrineAssociationColumnExtractor;
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Component\Tester\DoctrineOrmTrait;
@@ -29,14 +28,6 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
                     \dirname((new \ReflectionClass(Column::class))->getFileName()),
                 ])
             )
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
         );
     }
 

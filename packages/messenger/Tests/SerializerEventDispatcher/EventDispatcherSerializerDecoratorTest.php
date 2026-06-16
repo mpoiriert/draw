@@ -6,7 +6,7 @@ use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -18,7 +18,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class EventDispatcherSerializerDecoratorTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private EventDispatcherSerializerDecorator $object;
 
@@ -34,14 +34,6 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            SerializerInterface::class,
-            $this->object
-        );
-    }
-
     public function testDecode(): void
     {
         $data = ['body' => '', 'headers' => ''];
@@ -51,6 +43,7 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
             ->method('decode')
             ->with($data)
             ->willReturn($envelope = new Envelope((object) []))
+            ->seal()
         ;
 
         $this->eventDispatcher
@@ -60,6 +53,7 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
                 new PostDecodeEvent($envelope)
             )
             ->willReturnArgument(0)
+            ->seal()
         ;
 
         static::assertSame(
@@ -82,6 +76,7 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
                 )
             )
             ->willReturnArgument(0)
+            ->seal()
         ;
 
         $this->serializer
@@ -89,6 +84,7 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
             ->method('encode')
             ->with($envelope)
             ->willReturn($data = ['body' => '', 'headers' => ''])
+            ->seal()
         ;
 
         static::assertSame(

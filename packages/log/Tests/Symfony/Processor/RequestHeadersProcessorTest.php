@@ -34,12 +34,14 @@ class RequestHeadersProcessorTest extends TestCase
                 ->expects(static::once())
                 ->method('getMainRequest')
                 ->willReturn(null)
+                ->seal()
             ;
         } else {
             $requestStack
                 ->expects(static::once())
                 ->method('getMainRequest')
                 ->willReturn($mainRequest = new Request())
+                ->seal()
             ;
 
             $mainRequest->headers->replace($requestHeaders);

@@ -11,7 +11,6 @@ use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -20,8 +19,6 @@ use PHPUnit\Framework\TestCase;
  */
 class OperationExtractorTest extends TestCase
 {
-    use MockTrait;
-
     private OperationExtractor $phpDocOperationExtractor;
 
     protected function setUp(): void
@@ -37,7 +34,7 @@ class OperationExtractorTest extends TestCase
             $this->phpDocOperationExtractor->canExtract(
                 $source,
                 $type,
-                $context = $this->createMock(ExtractionContextInterface::class)
+                $context = static::createStub(ExtractionContextInterface::class)
             )
         );
 

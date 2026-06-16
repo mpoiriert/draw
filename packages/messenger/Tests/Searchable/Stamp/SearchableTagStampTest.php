@@ -5,7 +5,6 @@ namespace Draw\Component\Messenger\Tests\Searchable\Stamp;
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @internal
@@ -24,14 +23,6 @@ class SearchableTagStampTest extends TestCase
                 uniqid('tag-1'),
                 uniqid('tag-2'),
             ]
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            StampInterface::class,
-            $this->entity
         );
     }
 

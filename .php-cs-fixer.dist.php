@@ -22,6 +22,7 @@ $config = (new \PhpCsFixer\Config())
         '@PHPUnit8x4Migration:risky' => true,
         '@PHPUnit9x1Migration:risky' => true,
         '@PHPUnit10x0Migration:risky' => true,
+        '@PHPUnit11x0Migration:risky' => true,
         'header_comment' => ['header' => '',], // Make sure we remove any header comments
         'phpdoc_add_missing_param_annotation' => ['only_untyped' => true], // @PhpCsFixer use default 'true', we don't want php doc that are already typed
         'method_chaining_indentation' => false, // @PhpCsFixer use default 'true' impact readability on symfony configuration and sonata admin

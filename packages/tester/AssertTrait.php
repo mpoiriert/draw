@@ -38,18 +38,6 @@ trait AssertTrait
     }
     // example-end: assertNotContains
 
-    // example-start: assertContainsOnly
-    /**
-     * Asserts that a haystack contains only values of a given type.
-     */
-    public function assertContainsOnly(string $type, ?bool $isNativeType = null, string $message = ''): self
-    {
-        Assert::assertContainsOnly($type, $this->getData(), $isNativeType, $message);
-
-        return $this;
-    }
-    // example-end: assertContainsOnly
-
     // example-start: assertContainsOnlyInstancesOf
     /**
      * Asserts that a haystack contains only instances of a given class name.
@@ -61,18 +49,6 @@ trait AssertTrait
         return $this;
     }
     // example-end: assertContainsOnlyInstancesOf
-
-    // example-start: assertNotContainsOnly
-    /**
-     * Asserts that a haystack does not contain only values of a given type.
-     */
-    public function assertNotContainsOnly(string $type, ?bool $isNativeType = null, string $message = ''): self
-    {
-        Assert::assertNotContainsOnly($type, $this->getData(), $isNativeType, $message);
-
-        return $this;
-    }
-    // example-end: assertNotContainsOnly
 
     // example-start: assertCount
     /**
@@ -395,18 +371,6 @@ trait AssertTrait
         return $this;
     }
     // example-end: assertStringMatchesFormat
-
-    // example-start: assertStringNotMatchesFormat
-    /**
-     * Asserts that a string does not match a given format string.
-     */
-    public function assertStringNotMatchesFormat(string $format, string $message = ''): self
-    {
-        Assert::assertStringNotMatchesFormat($format, $this->getData(), $message);
-
-        return $this;
-    }
-    // example-end: assertStringNotMatchesFormat
 
     // example-start: assertStringStartsWith
     /**

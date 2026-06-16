@@ -7,7 +7,6 @@ use Draw\Component\Application\Versioning\EventListener\FetchRunningVersionListe
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @internal
@@ -30,15 +29,9 @@ class FetchRunningVersionListenerTest extends TestCase
 
     protected function tearDown(): void
     {
-        @unlink($this->projectDirectory.'/public/version.txt');
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->service
-        );
+        if (file_exists($file = $this->projectDirectory.'/public/version.txt')) {
+            @unlink($file);
+        }
     }
 
     public function testGetSubscribedEvents(): void

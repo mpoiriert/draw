@@ -4,12 +4,10 @@ namespace Draw\Component\AwsToolKit\Tests\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
 use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
-use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -21,21 +19,11 @@ use Symfony\Component\Console\Input\InputOption;
 class CloudWatchLogsDownloadCommandTest extends TestCase
 {
     use CommandTestTrait;
-    use MockTrait;
-
-    private CloudWatchLogsClient&MockObject $cloudWatchLogsClient;
+    use DoubleTrait;
 
     protected function setUp(): void
     {
-        $this->cloudWatchLogsClient = $this
-            ->getMockBuilder(CloudWatchLogsClient::class)
-            ->disableOriginalConstructor()
-            ->disableOriginalClone()
-            ->onlyMethods(['__call'])
-            ->getMock()
-        ;
-
-        $this->command = new CloudWatchLogsDownloadCommand($this->cloudWatchLogsClient);
+        $this->command = new CloudWatchLogsDownloadCommand(static::createStub(CloudWatchLogsClient::class));
     }
 
     public function getCommandName(): string
@@ -64,11 +52,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
 
     public function testExecuteNoCloudWatchLogsClientService(): void
     {
-        ReflectionAccessor::setPropertyValue(
-            $this->command,
-            'cloudWatchClient',
-            null
-        );
+        $this->command = new CloudWatchLogsDownloadCommand(null);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Service [Aws\CloudWatchLogs\CloudWatchLogsClient] is required for command [Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand] to run.');
@@ -82,6 +66,10 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
 
     public function testExecuteNewFile(): void
     {
+        $this->command = new CloudWatchLogsDownloadCommand(
+            $cloudWatchLogsClient = $this->createMock(CloudWatchLogsClient::class)
+        );
+
         $logGroupName = 'group-name';
         $logStreamName = 'stream-name';
         $startTime = new \DateTimeImmutable('2001-01-01 00:00:00');
@@ -90,7 +78,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);
 
-        $this->cloudWatchLogsClient
+        $cloudWatchLogsClient
             ->expects(static::exactly(2))
             ->method('__call')
             ->with(
@@ -129,6 +117,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
                     'nextForwardToken' => 'next-token',
                 ]
             )
+            ->seal()
         ;
 
         $this->execute(
@@ -149,6 +138,10 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
 
     public function testExecuteAppendFile(): void
     {
+        $this->command = new CloudWatchLogsDownloadCommand(
+            $cloudWatchLogsClient = $this->createMock(CloudWatchLogsClient::class)
+        );
+
         $logGroupName = 'group-name';
         $logStreamName = 'stream-name';
         $startTime = new \DateTimeImmutable('2001-01-01 00:00:00');
@@ -157,7 +150,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         file_put_contents($output, "Before\n");
         register_shutdown_function('unlink', $output);
 
-        $this->cloudWatchLogsClient
+        $cloudWatchLogsClient
             ->expects(static::once())
             ->method('__call')
             ->with(
@@ -180,6 +173,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
                     'nextForwardToken' => null,
                 ]
             )
+            ->seal()
         ;
 
         $this->execute(
