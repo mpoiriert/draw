@@ -1,0 +1,46 @@
+{
+    "App\\Entity\\TagTranslation": [
+        {
+            "label": "Admin",
+            "locale": "en",
+            "translatable": {
+                "name": "admin"
+            }
+        },
+        {
+            "label": "Administrateur",
+            "locale": "fr",
+            "translatable": {
+                "name": "admin"
+            }
+        },
+        {
+            "label": "Inactive",
+            "locale": "en",
+            "translatable": {
+                "name": "inactive"
+            }
+        },
+        {
+            "label": "Inactif",
+            "locale": "fr",
+            "translatable": {
+                "name": "inactive"
+            }
+        },
+        {
+            "label": "NotUse",
+            "locale": "en",
+            "translatable": {
+                "name": "not-use"
+            }
+        },
+        {
+            "label": "Non Utilisé",
+            "locale": "fr",
+            "translatable": {
+                "name": "not-use"
+            }
+        }
+    ]
+}

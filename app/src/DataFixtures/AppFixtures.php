@@ -86,6 +86,11 @@ class AppFixtures extends Fixture
                 ->setLabel('Non Utilisé')
             ->getTranslatable()
         ;
+
+        yield 'not-exportable' => (new Tag())
+            ->setName('not-exportable')
+            ->setExportable(false)
+        ;
     }
 
     private function loadUsers(): iterable

@@ -9,6 +9,7 @@ use Draw\Component\Application\DependencyInjection\VersioningIntegration;
 use Draw\Component\AwsToolKit\DependencyInjection\AwsToolKitIntegration;
 use Draw\Component\Console\DependencyInjection\ConsoleIntegration;
 use Draw\Component\CronJob\DependencyInjection\CronJobIntegration;
+use Draw\Component\DataSynchronizer\DependencyInjection\DataSynchronizerIntegration;
 use Draw\Component\DependencyInjection\DependencyInjection\DependencyInjectionIntegration;
 use Draw\Component\DependencyInjection\Integration\ExtendableExtensionTrait;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
@@ -52,6 +53,7 @@ class DrawFrameworkExtraExtension extends Extension implements PrependExtensionI
             ConfigurationIntegration::class,
             ConsoleIntegration::class,
             CronJobIntegration::class,
+            DataSynchronizerIntegration::class,
             DoctrineExtraIntegration::class,
             EntityMigratorIntegration::class,
             FeatureIntegration::class,
