@@ -11,7 +11,6 @@ use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,14 +42,6 @@ class ResponseSerializerListenerTest extends TestCase
             $this->serializationContextFactory = $this->createMock(SerializationContextFactoryInterface::class),
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
             false
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
         );
     }
 

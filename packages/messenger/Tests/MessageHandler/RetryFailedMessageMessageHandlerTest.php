@@ -22,7 +22,7 @@ use Symfony\Component\Process\Process;
 ]
 class RetryFailedMessageMessageHandlerTest extends TestCase
 {
-    private const CONSOLE_PATH = 'bin/console';
+    private const string CONSOLE_PATH = 'bin/console';
 
     private RetryFailedMessageMessageHandler $handler;
 

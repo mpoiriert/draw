@@ -19,21 +19,21 @@ use Symfony\Component\Console\Input\ArrayInput;
 #[ORM\HasLifecycleCallbacks]
 class Execution implements \Stringable
 {
-    final public const STATE_INITIALIZED = 'initialized';
+    final public const string STATE_INITIALIZED = 'initialized';
 
-    final public const STATE_STARTED = 'started';
+    final public const string STATE_STARTED = 'started';
 
-    final public const STATE_ERROR = 'error';
+    final public const string STATE_ERROR = 'error';
 
-    final public const STATE_TERMINATED = 'terminated';
+    final public const string STATE_TERMINATED = 'terminated';
 
-    final public const STATE_DISABLED = 'disabled';
+    final public const string STATE_DISABLED = 'disabled';
 
-    final public const STATE_ACKNOWLEDGE = 'acknowledge';
+    final public const string STATE_ACKNOWLEDGE = 'acknowledge';
 
-    final public const STATE_AUTO_ACKNOWLEDGE = 'auto_acknowledge';
+    final public const string STATE_AUTO_ACKNOWLEDGE = 'auto_acknowledge';
 
-    final public const STATES = [
+    final public const array STATES = [
         self::STATE_INITIALIZED,
         self::STATE_STARTED,
         self::STATE_DISABLED,

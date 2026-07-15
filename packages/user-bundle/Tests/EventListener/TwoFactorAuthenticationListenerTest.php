@@ -14,7 +14,6 @@ use Draw\Component\Security\Core\Security;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -25,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class TwoFactorAuthenticationListenerTest extends TestCase
 {
-    private const ENABLE_ROUTE = 'route';
+    private const string ENABLE_ROUTE = 'route';
 
     private TwoFactorAuthenticationListener $object;
 
@@ -45,14 +44,6 @@ class TwoFactorAuthenticationListenerTest extends TestCase
             $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class),
             $this->security = $this->createMock(Security::class),
             self::ENABLE_ROUTE
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
         );
     }
 
@@ -122,12 +113,12 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                         return [];
                     }
 
-                    public function getPassword(): ?string
+                    public function getPassword(): null
                     {
                         return null;
                     }
 
-                    public function getSalt(): ?string
+                    public function getSalt(): null
                     {
                         return null;
                     }

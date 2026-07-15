@@ -139,7 +139,7 @@ class MigrationWorkflowListener
             ->getQuery()
         ;
 
-        $mappings = array_keys((new Parser($query))->parse()->getParameterMappings());
+        $mappings = array_keys(new Parser($query)->parse()->getParameterMappings());
 
         $parameters = [];
         $parameterTypes = [];

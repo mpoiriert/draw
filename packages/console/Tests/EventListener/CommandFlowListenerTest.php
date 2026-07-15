@@ -31,7 +31,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -56,7 +55,7 @@ class CommandFlowListenerTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$entityManager = static::setUpMySqlWithAttributeDriver(
-            [\dirname((new \ReflectionClass(Execution::class))->getFileName())],
+            [\dirname(new \ReflectionClass(Execution::class)->getFileName())],
         );
     }
 
@@ -71,14 +70,6 @@ class CommandFlowListenerTest extends TestCase
         if ($this->execution) {
             self::$entityManager->refresh($this->execution);
         }
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
     }
 
     public function testGetSubscribedEvents(): void

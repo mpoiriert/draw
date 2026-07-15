@@ -7,7 +7,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,14 +42,6 @@ class SlowRequestLoggerTest extends TestCase
                 ($this->durations[] = 5000) => [$this->requestMatcher],
                 ($this->durations[] = 2000) => [$this->requestMatcher],
             ]
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
         );
     }
 

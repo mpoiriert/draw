@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
-use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -48,14 +47,6 @@ class MessageAuthenticatorTest extends TestCase
             $this->envelopeFinder = $this->createMock(EnvelopeFinder::class),
             $this->userProvider,
             $this->security = $this->createMock(Security::class),
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            AuthenticatorInterface::class,
-            $this->service
         );
     }
 

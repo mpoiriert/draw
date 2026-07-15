@@ -49,12 +49,12 @@ class EntityMigrationWorkflow
      */
     public static function places(): array
     {
-        $reflection = new \ReflectionClass(__CLASS__);
+        $reflection = new \ReflectionClass(self::class);
 
         return array_values(
             array_filter(
                 $reflection->getConstants(),
-                static fn ($constant) => str_starts_with($constant, 'PLACE_'),
+                static fn ($constant) => str_starts_with((string) $constant, 'PLACE_'),
                 \ARRAY_FILTER_USE_KEY
             )
         );

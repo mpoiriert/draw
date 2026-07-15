@@ -6,7 +6,7 @@ use Draw\Component\OpenApi\Schema\Root;
 
 class UnreferencedCleaner implements ReferenceCleanerInterface
 {
-    final public const VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
+    final public const string VENDOR_DATA_KEEP = 'x-draw-open-api-keep';
 
     public function cleanReferences(Root $rootSchema): bool
     {

@@ -62,11 +62,11 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     use PasswordChangeEnforcerUserTrait;
     use SecurityUserTrait;
 
-    final public const LEVEL_USER = 'user';
+    final public const string LEVEL_USER = 'user';
 
-    final public const LEVEL_ADMIN = 'admin';
+    final public const string LEVEL_ADMIN = 'admin';
 
-    final public const LEVELS = [
+    final public const array LEVELS = [
         self::LEVEL_USER,
         self::LEVEL_ADMIN,
     ];

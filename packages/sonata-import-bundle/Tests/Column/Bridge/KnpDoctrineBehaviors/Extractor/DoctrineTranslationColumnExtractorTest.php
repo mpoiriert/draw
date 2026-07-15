@@ -3,7 +3,6 @@
 namespace Draw\Bundle\SonataImportBundle\Tests\Column\Bridge\KnpDoctrineBehaviors\Extractor;
 
 use Draw\Bundle\SonataImportBundle\Column\Bridge\KnpDoctrineBehaviors\Extractor\DoctrineTranslationColumnExtractor;
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Bundle\SonataImportBundle\Tests\Column\Bridge\KnpDoctrineBehaviors\Extractor\Fixtures\TranslatableEntity;
@@ -28,14 +27,6 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
                 )
             ),
             ['en', 'fr']
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
         );
     }
 
@@ -88,9 +79,9 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
 
     private function createColumn(): Column
     {
-        return (new Column())
+        return new Column()
             ->setImport(
-                (new Import())
+                new Import()
                     ->setEntityClass(TranslatableEntity::class)
             )
         ;

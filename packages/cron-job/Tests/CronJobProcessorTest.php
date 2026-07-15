@@ -298,7 +298,7 @@ class CronJobProcessorTest extends TestCase
         ;
 
         $this->cronJobProcessor->process(
-            $execution = (new CronJob())
+            $execution = new CronJob()
                 ->setActive(false)
                 ->newExecution()
         );
@@ -337,7 +337,7 @@ class CronJobProcessorTest extends TestCase
     private function createCronJobExecution(string $command = 'bin/console draw:test:execute'): CronJobExecution
     {
         return new CronJobExecution(
-            (new CronJob())
+            new CronJob()
                 ->setActive(true)
                 ->setCommand($command),
             new \DateTimeImmutable(),

@@ -20,13 +20,13 @@ class CarbonResetExtension implements Runner\Extension\Extension
             new class implements TestFinishedSubscriber {
                 public function notify(TestFinished $event): void
                 {
-                    Carbon::setTestNow(null);
+                    Carbon::setTestNow();
                 }
             },
             new class implements TestSuiteFinishedSubscriber {
                 public function notify(TestSuiteFinished $event): void
                 {
-                    Carbon::setTestNow(null);
+                    Carbon::setTestNow();
                 }
             }
         );

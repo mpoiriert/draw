@@ -3,7 +3,6 @@
 namespace Draw\Component\Mailer\Tests\EmailWriter;
 
 use Draw\Component\Mailer\EmailWriter\DefaultFromEmailWriter;
-use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\Address;
@@ -23,14 +22,6 @@ class DefaultFromEmailWriterTest extends TestCase
     {
         $this->object = new DefaultFromEmailWriter(
             $this->address = new Address(uniqid('test@').'.com')
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EmailWriterInterface::class,
-            $this->object
         );
     }
 

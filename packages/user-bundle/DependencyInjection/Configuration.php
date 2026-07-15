@@ -63,7 +63,7 @@ class Configuration implements ConfigurationInterface
 
     private function createEmailWritersNodes(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('email_writers'))
+        return new ArrayNodeDefinition('email_writers')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('forgot_password')
@@ -87,7 +87,7 @@ class Configuration implements ConfigurationInterface
 
     private function createAccountLockerNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('account_locker'))
+        return new ArrayNodeDefinition('account_locker')
             ->canBeEnabled()
             ->children()
                 ->scalarNode('account_locked_route')->defaultValue('draw_user_account_locker_account_locked')->end()
@@ -100,7 +100,7 @@ class Configuration implements ConfigurationInterface
 
     private function createNeedPasswordChangeEnforcerNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('password_change_enforcer'))
+        return new ArrayNodeDefinition('password_change_enforcer')
             ->canBeEnabled()
             ->children()
                 ->scalarNode('change_password_route')->defaultValue('admin_change_password')->end()
@@ -110,7 +110,7 @@ class Configuration implements ConfigurationInterface
 
     private function createOnboardingNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('onboarding'))
+        return new ArrayNodeDefinition('onboarding')
             ->canBeEnabled()
         ;
     }

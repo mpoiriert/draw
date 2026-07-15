@@ -29,14 +29,6 @@ class DecoratedLoggerTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            LoggerInterface::class,
-            $this->object
-        );
-    }
-
     public function testLog(): void
     {
         $this->logger

@@ -6,7 +6,6 @@ use Draw\Component\Mailer\EventListener\EmailCssInlinerListener;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
@@ -24,14 +23,6 @@ class EmailCssInlinerListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new EmailCssInlinerListener();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
     }
 
     public function testGetSubscribedEvents(): void

@@ -40,7 +40,7 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
 
     public function testSend(): void
     {
-        self::$user = (new User())
+        self::$user = new User()
             ->setEmail(uniqid().'@example.com')
         ;
 

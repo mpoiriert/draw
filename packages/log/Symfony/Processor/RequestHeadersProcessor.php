@@ -10,9 +10,9 @@ class RequestHeadersProcessor
     protected const UPPER = '_ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     protected const LOWER = '-abcdefghijklmnopqrstuvwxyz';
 
-    private ?array $onlyHeaders;
+    private array $onlyHeaders;
 
-    private ?array $ignoreHeaders;
+    private array $ignoreHeaders;
 
     public function __construct(
         private ?RequestStack $requestStack = null,

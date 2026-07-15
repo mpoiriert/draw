@@ -28,7 +28,7 @@ class AutowireParameter implements AutowireInterface
     {
         \assert($testCase instanceof KernelTestCase);
 
-        $container = (new \ReflectionMethod($testCase, 'getContainer'))->invoke($testCase);
+        $container = new \ReflectionMethod($testCase, 'getContainer')->invoke($testCase);
 
         $reflectionProperty->setValue(
             $testCase,

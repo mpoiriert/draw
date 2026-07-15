@@ -11,6 +11,7 @@ use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\DoctrineExtra\ORM\EntityHandler;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @internal
@@ -44,7 +45,7 @@ class AutowireServiceMockTest extends WebTestCase implements AutowiredInterface
         ;
 
         $this->client
-            ->request('GET', '/api/users')
+            ->request(Request::METHOD_GET, '/api/users')
         ;
 
         static::assertResponseIsSuccessful();

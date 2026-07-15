@@ -3,7 +3,6 @@
 namespace Draw\Component\Mailer\Tests\EmailWriter;
 
 use Draw\Component\Mailer\EmailWriter\AddTemplateHeaderEmailWriter;
-use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -19,14 +18,6 @@ class AddTemplateHeaderEmailWriterTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new AddTemplateHeaderEmailWriter();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EmailWriterInterface::class,
-            $this->object
-        );
     }
 
     public function testGetForEmails(): void

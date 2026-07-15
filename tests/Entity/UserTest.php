@@ -63,7 +63,7 @@ class UserTest extends TestCase implements AutowiredInterface
         $user->setEmail('test-lock@example.com');
 
         $user->lock(
-            $userLock = (new UserLock(uniqid('reason-')))
+            $userLock = new UserLock(uniqid('reason-'))
                 ->setLockOn(new \DateTimeImmutable('+ 5 minutes'))
         );
 

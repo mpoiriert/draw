@@ -65,7 +65,7 @@ class EmailComposer
             }
 
             $emailTypes = ReflectionExtractor::getClasses(
-                (new \ReflectionMethod($class, $methodName))->getParameters()[0]->getType()
+                new \ReflectionMethod($class, $methodName)->getParameters()[0]->getType()
             );
 
             foreach ($emailTypes as $emailType) {

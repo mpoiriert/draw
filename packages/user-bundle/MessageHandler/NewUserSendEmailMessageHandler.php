@@ -31,7 +31,7 @@ class NewUserSendEmailMessageHandler
         }
 
         $this->mailer->send(
-            (new UserOnboardingEmail())
+            new UserOnboardingEmail()
                 ->setUserId($message->getUserId())
                 ->setLocale(
                     $user instanceof LocalizationAwareInterface ?

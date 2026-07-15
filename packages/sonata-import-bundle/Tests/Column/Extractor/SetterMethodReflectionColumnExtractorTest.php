@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataImportBundle\Tests\Column\Extractor;
 
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Column\Extractor\SetterMethodReflectionColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
@@ -20,14 +19,6 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new SetterMethodReflectionColumnExtractor();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
-        );
     }
 
     public function testGetDefaultPriority(): void
@@ -114,9 +105,9 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
 
     private function createColumn(): Column
     {
-        return (new Column())
+        return new Column()
             ->setImport(
-                (new Import())
+                new Import()
                     ->setEntityClass(SetterClassStub::class)
             )
         ;
@@ -125,14 +116,14 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
 
 class SetterClassStub
 {
-    private function setPrivate(string $test): void
+    private function setPrivate(): void
     {
     }
 
     protected function setProtected(string $test): void
     {
         // This is only to prevent phpstan to complain about unused method
-        $this->setPrivate($test);
+        $this->setPrivate();
     }
 
     public static function setStatic(string $test): void

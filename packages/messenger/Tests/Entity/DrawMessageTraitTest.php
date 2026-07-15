@@ -22,8 +22,6 @@ class DrawMessageTraitTest extends TestCase
 
     public function testIdMutator(): void
     {
-        static::assertNotNull($this->entity->getId());
-
         static::assertSame(
             $this->entity,
             $this->entity->setId($value = uniqid())

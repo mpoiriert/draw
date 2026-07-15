@@ -6,7 +6,6 @@ use Draw\Component\Process\ProcessFactory;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Process\Process;
 
 /**
  * @internal
@@ -24,19 +23,9 @@ class ProcessFactoryTest extends TestCase
         $this->service = new ProcessFactory();
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ProcessFactoryInterface::class,
-            $this->service
-        );
-    }
-
     public function testCreateDefault(): void
     {
         $process = $this->service->create(['cd']);
-
-        static::assertInstanceOf(Process::class, $process);
 
         static::assertSame(
             "'cd'",
@@ -72,8 +61,6 @@ class ProcessFactoryTest extends TestCase
             $timeout = 5.0
         );
 
-        static::assertInstanceOf(Process::class, $process);
-
         static::assertSame(
             "'cd'",
             $process->getCommandLine()
@@ -104,7 +91,6 @@ class ProcessFactoryTest extends TestCase
     {
         $process = $this->service->createFromShellCommandLine('ls -lah | grep test');
 
-        static::assertInstanceOf(Process::class, $process);
         static::assertSame('ls -lah | grep test', $process->getCommandLine());
         static::assertSame(getcwd(), $process->getWorkingDirectory());
         static::assertEmpty($process->getEnv());
@@ -122,7 +108,6 @@ class ProcessFactoryTest extends TestCase
             $timeout = 5.0
         );
 
-        static::assertInstanceOf(Process::class, $process);
         static::assertSame('ls -lah | grep test', $process->getCommandLine());
         static::assertSame($workingDirectory, $process->getWorkingDirectory());
         static::assertSame($env, $process->getEnv());

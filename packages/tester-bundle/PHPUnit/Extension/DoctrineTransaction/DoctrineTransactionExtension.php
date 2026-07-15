@@ -64,7 +64,7 @@ final class DoctrineTransactionExtension implements Extension
             return false;
         }
 
-        return (bool) \count((new \ReflectionClass($class))->getAttributes(NoTransaction::class));
+        return (bool) \count(new \ReflectionClass($class)->getAttributes(NoTransaction::class));
     }
 
     public static function startTransactionIfNeeded(string $class): void

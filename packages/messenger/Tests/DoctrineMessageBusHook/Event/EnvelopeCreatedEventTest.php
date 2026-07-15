@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @internal
@@ -27,14 +26,6 @@ class EnvelopeCreatedEventTest extends TestCase
         $this->object = new EnvelopeCreatedEvent(
             $this->messageHolder = $this->createMock(MessageHolderInterface::class),
             $this->envelope = new Envelope((object) [])
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            Event::class,
-            $this->object
         );
     }
 

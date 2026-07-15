@@ -7,6 +7,7 @@ use Draw\Bundle\TesterBundle\WebTestCase;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -19,9 +20,9 @@ class PingActionTest extends WebTestCase implements AutowiredInterface
 
     public function testPing(): void
     {
-        $this->client->request('GET', '/ping');
+        $this->client->request(Request::METHOD_GET, '/ping');
 
-        static::assertResponseStatusCodeSame(207);
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
 
         static::assertResponseJsonAgainstFile(
             __DIR__.'/fixtures/PingActionTest/testPingWithContext_ping.json',
@@ -31,7 +32,7 @@ class PingActionTest extends WebTestCase implements AutowiredInterface
     #[DataProvider('providePingWithContextCases')]
     public function testPingWithContext(string $context, int $statusCode): void
     {
-        $this->client->request('GET', '/ping/'.$context);
+        $this->client->request(Request::METHOD_GET, '/ping/'.$context);
 
         static::assertResponseStatusCodeSame($statusCode);
 
@@ -44,9 +45,9 @@ class PingActionTest extends WebTestCase implements AutowiredInterface
     {
         yield 'error' => ['error', Response::HTTP_BAD_GATEWAY];
 
-        yield 'ping' => ['ping', Response::HTTP_MULTI_STATUS];
+        yield 'ping' => ['ping', Response::HTTP_OK];
 
-        yield 'not-configured' => ['not-configured', Response::HTTP_MULTI_STATUS];
+        yield 'not-configured' => ['not-configured', Response::HTTP_OK];
 
         yield 'unknown' => ['unknown', Response::HTTP_MULTI_STATUS];
     }

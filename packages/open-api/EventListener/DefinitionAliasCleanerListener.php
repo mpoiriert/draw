@@ -32,7 +32,7 @@ class DefinitionAliasCleanerListener implements EventSubscriberInterface
         // Rename aliases in case of skip to be cleaner (e.g.: [User?3, User?6] => [User, User?1])
         $definitionsToRename = [];
         foreach ($rootSchema->definitions as $name => $definitionSchema) {
-            $definitionsToRename[parse_url($name)['path']][] = $name;
+            $definitionsToRename[parse_url((string) $name)['path']][] = $name;
         }
 
         foreach ($definitionsToRename as $objectName => $names) {

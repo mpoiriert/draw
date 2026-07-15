@@ -6,7 +6,6 @@ use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
 use Draw\Component\Messenger\Broker\EventListener\BrokerDefaultValuesListener;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @internal
@@ -36,14 +35,6 @@ class BrokerDefaultValuesListenerTest extends TestCase
                     ],
                 ],
             ]
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->service
         );
     }
 

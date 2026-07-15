@@ -10,7 +10,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -42,14 +41,6 @@ class SessionTimeoutRequestListenerTest extends TestCase
         $this->object = new SessionTimeoutRequestListener(
             $this->security = $this->createMock(Security::class),
             $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class),
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
         );
     }
 
@@ -334,12 +325,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
                 return [];
             }
 
-            public function getPassword(): ?string
+            public function getPassword(): null
             {
                 return null;
             }
 
-            public function getSalt(): ?string
+            public function getSalt(): null
             {
                 return null;
             }
@@ -348,7 +339,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             {
             }
 
-            public function getUsername(): ?string
+            public function getUsername(): null
             {
                 return null;
             }

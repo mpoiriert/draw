@@ -8,7 +8,7 @@ use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\DoctrineExtra\ORM\EntityHandler;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[OpenApi\Tag(name: 'Tags')]
 #[OpenApi\Tag(name: 'Tag2s')]

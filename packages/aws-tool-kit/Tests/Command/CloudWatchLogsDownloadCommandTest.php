@@ -88,7 +88,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         $endTime = new \DateTimeImmutable('2001-01-02 00:00:01');
         $output = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($output, "Before\n");
-        register_shutdown_function('unlink', $output);
+        register_shutdown_function(unlink(...), $output);
 
         $this->cloudWatchLogsClient
             ->expects(static::exactly(2))
@@ -155,7 +155,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         $endTime = new \DateTimeImmutable('2001-01-02 00:00:01');
         $output = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($output, "Before\n");
-        register_shutdown_function('unlink', $output);
+        register_shutdown_function(unlink(...), $output);
 
         $this->cloudWatchLogsClient
             ->expects(static::once())

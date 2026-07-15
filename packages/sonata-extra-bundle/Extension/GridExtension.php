@@ -13,7 +13,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class GridExtension extends AbstractAdminExtension
 {
-    final public const VIRTUAL_FIELD_TYPES = [
+    final public const array VIRTUAL_FIELD_TYPES = [
         ListMapper::TYPE_ACTIONS,
         ListMapper::TYPE_BATCH,
         ListMapper::TYPE_SELECT,

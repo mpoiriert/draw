@@ -6,7 +6,6 @@ use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * @internal
@@ -22,14 +21,6 @@ class ConstraintViolationListExceptionTest extends TestCase
     {
         $this->object = new ConstraintViolationListException(
             $this->constraintViolationList = new ConstraintViolationList()
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ValidatorException::class,
-            $this->object
         );
     }
 

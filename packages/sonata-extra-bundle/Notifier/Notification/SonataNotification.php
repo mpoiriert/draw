@@ -10,17 +10,17 @@ class SonataNotification extends Notification implements SonataNotificationInter
 
     public static function success(string $message): self
     {
-        return (new self($message))->setSonataFlashType('success');
+        return new self($message)->setSonataFlashType('success');
     }
 
     public static function info(string $message): self
     {
-        return (new self($message))->setSonataFlashType('info');
+        return new self($message)->setSonataFlashType('info');
     }
 
     public static function error(string $message): self
     {
-        return (new self($message))->setSonataFlashType('error');
+        return new self($message)->setSonataFlashType('error');
     }
 
     public function __construct(string $subject = '', array $channels = ['sonata'])

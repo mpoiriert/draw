@@ -5,7 +5,6 @@ namespace Draw\Component\Application\Tests\Versioning\Event;
 use Draw\Component\Application\Versioning\Event\FetchRunningVersionEvent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @internal
@@ -18,14 +17,6 @@ class FetchRunningVersionEventTest extends TestCase
     protected function setUp(): void
     {
         $this->event = new FetchRunningVersionEvent();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            Event::class,
-            $this->event
-        );
     }
 
     public function testRunningVersionMutator(): void

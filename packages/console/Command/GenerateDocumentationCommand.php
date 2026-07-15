@@ -15,7 +15,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-#[AsCommand(name: 'draw:console:generate-documentation')]
+#[AsCommand(
+    name: 'draw:console:generate-documentation',
+    description: 'Generate a documentation for all the command of the application.',
+)]
 class GenerateDocumentationCommand extends Command
 {
     public function __construct(
@@ -28,7 +31,6 @@ class GenerateDocumentationCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Generate a documentation for all the command of the application.')
             ->addArgument('path', InputArgument::REQUIRED, 'The path where the documentation will be generated.')
             ->addOption('format', 'f', InputArgument::OPTIONAL, 'The format of the documentation (txt|md|json|xml).', 'txt')
         ;
@@ -44,7 +46,7 @@ class GenerateDocumentationCommand extends Command
 
         $filesystem = new Filesystem();
 
-        $directoryPath = \dirname($filePath);
+        $directoryPath = \dirname((string) $filePath);
 
         if (!$filesystem->exists($directoryPath)) {
             $filesystem->mkdir($directoryPath);

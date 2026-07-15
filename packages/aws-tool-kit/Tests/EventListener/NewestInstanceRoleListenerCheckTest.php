@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @internal
@@ -29,14 +28,6 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         $this->service = new NewestInstanceRoleCheckListener(
             $this->createMock(Ec2Client::class),
             $this->imdsClient = $this->createMock(ImdsClientInterface::class),
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->service
         );
     }
 

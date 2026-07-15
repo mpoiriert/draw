@@ -5,7 +5,6 @@ namespace Draw\Component\Mailer\Tests\EventListener;
 use Draw\Component\Mailer\EventListener\EmailSubjectFromHtmlTitleListener;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mime\Address;
@@ -23,14 +22,6 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new EmailSubjectFromHtmlTitleListener();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
     }
 
     public function testGetSubscribedEvents(): void

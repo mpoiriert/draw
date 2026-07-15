@@ -22,7 +22,7 @@ class ConnectionTokensControllerTest extends WebTestCase implements AutowiredInt
         $token = JWT::encode(
             [
                 'userId' => 'invalid',
-                'exp' => (new \DateTime('+ 7 days'))->getTimestamp(),
+                'exp' => new \DateTime('+ 7 days')->getTimestamp(),
             ],
             'acme',
             'HS256'

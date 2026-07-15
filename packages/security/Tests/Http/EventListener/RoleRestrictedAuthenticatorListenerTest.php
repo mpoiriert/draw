@@ -7,7 +7,6 @@ use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListen
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,14 +33,6 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
 
         $this->service = new RoleRestrictedAuthenticatorListener(
             $this->roleHierarchy = $this->createMock(RoleHierarchyInterface::class),
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->service
         );
     }
 

@@ -8,7 +8,6 @@ use Draw\Component\Messenger\Retry\EventListener\SelfAwareMessageRetryableListen
 use Draw\Component\Messenger\Retry\Message\SelfAwareRetryableMessageInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
-use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @internal
@@ -20,14 +19,6 @@ class SelfAwareMessageRetryableListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new SelfAwareMessageRetryableListener();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ResetInterface::class,
-            $this->object
-        );
     }
 
     public function testOnIsRetryableEventNoSelfAwareMessage(): void

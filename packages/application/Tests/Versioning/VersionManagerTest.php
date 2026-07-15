@@ -6,7 +6,6 @@ use Draw\Component\Application\Versioning\Event\FetchRunningVersionEvent;
 use Draw\Component\Application\Versioning\VersionManager;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Contracts\Application\ConfigurationRegistryInterface;
-use Draw\Contracts\Application\VersionVerificationInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -29,22 +28,6 @@ class VersionManagerTest extends TestCase
         $this->service = new VersionManager(
             $this->configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
-        );
-    }
-
-    public function testConstant(): void
-    {
-        static::assertSame(
-            'draw-application-deployed-version',
-            $this->service::CONFIG
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            VersionVerificationInterface::class,
-            $this->service
         );
     }
 

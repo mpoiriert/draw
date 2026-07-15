@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ProfilerCoordinatorTest extends TestCase
 {
-    private const PROFILER_TYPE = 'test';
+    private const string PROFILER_TYPE = 'test';
 
     private ProfilerCoordinator $object;
 

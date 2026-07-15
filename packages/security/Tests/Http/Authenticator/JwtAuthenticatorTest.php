@@ -20,7 +20,6 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
-use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -57,14 +56,6 @@ class JwtAuthenticatorTest extends TestCase
             $this->userIdentifierPayloadKey = uniqid('key'),
             self::$userIdentifierGetter,
             $this->translator = $this->createMock(TranslatorInterface::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            AuthenticatorInterface::class,
-            $this->object
         );
     }
 

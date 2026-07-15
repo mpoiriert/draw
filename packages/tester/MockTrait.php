@@ -32,6 +32,9 @@ trait MockTrait
         return $mock;
     }
 
+    /**
+     * @return iterable<int, Callback>
+     */
     public static function withConsecutive(array $firstCallArguments, array ...$consecutiveCallsArguments): iterable
     {
         foreach ($consecutiveCallsArguments as $consecutiveCallArguments) {
@@ -47,8 +50,9 @@ trait MockTrait
         $numberOfArguments = \count($firstCallArguments);
         $mockedMethodCall = 0;
         $callbackCall = 0;
+
         foreach (array_keys($firstCallArguments) as $index) {
-            yield new Callback(
+            yield $index => new Callback(
                 static function (mixed $actualArgument) use ($allConsecutiveCallsArguments, &$mockedMethodCall, &$callbackCall, $index, $numberOfArguments): bool {
                     $previousMockedMethodCall = $mockedMethodCall;
                     ++$callbackCall;

@@ -23,7 +23,7 @@ class InFilter extends Filter
         }
 
         $values = explode(',', $value);
-        $values = array_filter(array_map('trim', $values));
+        $values = array_filter(array_map(trim(...), $values));
 
         $parameterName = $this->getNewParameterName($query);
 

@@ -34,7 +34,7 @@ class AwsToolKitIntegration implements IntegrationInterface, ContainerBuilderInt
             $loader,
             $namespace = 'Draw\Component\AwsToolKit\\',
             \dirname(
-                (new \ReflectionClass(ImdsClientInterface::class))->getFileName(),
+                new \ReflectionClass(ImdsClientInterface::class)->getFileName(),
                 2
             )
         );

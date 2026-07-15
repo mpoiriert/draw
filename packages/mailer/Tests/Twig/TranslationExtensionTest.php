@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 /**
@@ -27,14 +26,6 @@ class TranslationExtensionTest extends TestCase
     {
         $this->object = new TranslationExtension(
             $this->translator = $this->createMock(TranslatorInterface::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            AbstractExtension::class,
-            $this->object
         );
     }
 

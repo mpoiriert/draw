@@ -157,7 +157,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             ->addTag(TypeToSchemaHandlerInterface::class)
         ;
 
-        $directory = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
+        $directory = \dirname(new \ReflectionClass(OpenApi::class)->getFileName());
 
         $exclude = [
             $directory.'/EventListener/{Request,Response}*',
@@ -181,7 +181,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             $loader,
             'Draw\Component\OpenApi\Controller\\',
             $directory.'/Controller',
-            prototype: (new Definition())
+            prototype: new Definition()
                 ->setAutowired(true)
                 ->setAutoconfigured(true)
                 ->addTag('controller.service_arguments'),
@@ -214,7 +214,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
         if ($this->isConfigEnabled($container, $config['scoped'])) {
             $scopes = [];
             foreach ($config['scoped']['scopes'] as $scope) {
-                $scopes[] = (new Definition(Scope::class))
+                $scopes[] = new Definition(Scope::class)
                     ->setArgument('$name', $scope['name'])
                     ->setArgument('$tags', $scope['tags'] ?: null)
                 ;
@@ -337,9 +337,9 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             return;
         }
 
-        $openApiComponentDir = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
+        $openApiComponentDir = \dirname(new \ReflectionClass(OpenApi::class)->getFileName());
 
-        $definition = (new Definition())
+        $definition = new Definition()
             ->setAutoconfigured(true)
             ->setAutowired(true)
         ;
@@ -357,10 +357,10 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             ->setArgument('$serializeNull', new Parameter('draw_open_api.response.serialize_null'))
         ;
 
-        $this->configResponseExceptionHandler($config['exceptionHandler'], $loader, $container);
+        $this->configResponseExceptionHandler($config['exceptionHandler'], $container);
     }
 
-    private function configResponseExceptionHandler(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    private function configResponseExceptionHandler(array $config, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             $container->removeDefinition(ResponseApiExceptionListener::class);
@@ -418,9 +418,9 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             return;
         }
 
-        $openApiComponentDir = \dirname((new \ReflectionClass(OpenApi::class))->getFileName());
+        $openApiComponentDir = \dirname(new \ReflectionClass(OpenApi::class)->getFileName());
 
-        $definition = (new Definition())
+        $definition = new Definition()
             ->setAutoconfigured(true)
             ->setAutowired(true)
         ;
@@ -459,7 +459,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createOpenApiNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('openApi'))
+        return new ArrayNodeDefinition('openApi')
             ->canBeDisabled()
             ->children()
                 ->scalarNode('sandbox_url')->defaultValue('/open-api/sandbox')->end()
@@ -481,7 +481,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createVersioningNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('versioning'))
+        return new ArrayNodeDefinition('versioning')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('versions')
@@ -494,7 +494,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createScopedNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('scoped'))
+        return new ArrayNodeDefinition('scoped')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('scopes')
@@ -532,7 +532,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createRequestNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('request'))
+        return new ArrayNodeDefinition('request')
             ->canBeDisabled()
             ->children()
                 ->arrayNode('validation')
@@ -560,7 +560,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createResponseNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('response'))
+        return new ArrayNodeDefinition('response')
             ->canBeDisabled()
             ->children()
                 ->booleanNode('serializeNull')->defaultTrue()->end()
@@ -585,7 +585,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createDefinitionAliasesNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('definitionAliases'))
+        return new ArrayNodeDefinition('definitionAliases')
             ->defaultValue([])
             ->arrayPrototype()
                 ->children()
@@ -598,7 +598,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createNamingFiltersNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('classNamingFilters'))
+        return new ArrayNodeDefinition('classNamingFilters')
                 ->defaultValue([AliasesClassNamingFilter::class])
                 ->scalarPrototype()
             ->end()
@@ -607,7 +607,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createSchemaNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('schema'))
+        return new ArrayNodeDefinition('schema')
             ->normalizeKeys(false)
             ->ignoreExtraKeys(false)
             ->children()
@@ -628,7 +628,7 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
 
     private function createHeadersNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('headers'))
+        return new ArrayNodeDefinition('headers')
             ->arrayPrototype()
                 ->normalizeKeys(false)
                 ->ignoreExtraKeys(false)

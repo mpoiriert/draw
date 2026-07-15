@@ -100,6 +100,6 @@ abstract class BaseParameter
             }
         }
 
-        return strcasecmp($this->name, $parameter->name);
+        return strcasecmp((string) $this->name, (string) $parameter->name);
     }
 }

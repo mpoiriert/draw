@@ -91,10 +91,11 @@
         "monolog/monolog": "^3.5.0",
         "nelmio/cors-bundle": "^2.0",
         "pelago/emogrifier": "^8.0",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^1.7",
-        "phpstan/phpstan-phpunit": "^1.1",
-        "phpstan/phpstan-symfony": "^1.2",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.2",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
+        "rector/rector": "^2.5",
         "scheb/2fa-bundle": "^v7.6",
         "scheb/2fa-email": "^7.6",
         "scheb/2fa-totp": "^7.6",
@@ -255,7 +256,8 @@
         },
         "linter": [
             "@linter:php-cs-fixer",
-            "@linter:phpstan"
+            "@linter:phpstan",
+            "@linter:rector"
         ],
         "linter:php-cs-fixer": [
             "Composer\\Config::disableProcessTimeout",
@@ -263,6 +265,9 @@
         ],
         "linter:phpstan": [
             "vendor/bin/phpstan analyse"
+        ],
+        "linter:rector": [
+            "vendor/bin/rector process"
         ],
         "phpstan:generate-baseline": [
             "Composer\\Config::disableProcessTimeout",

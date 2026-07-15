@@ -21,7 +21,7 @@ final class CommandDataTester
         string|array|null $expectedDisplay = '',
         string|array|null $expectedErrorOutput = '',
     ): self {
-        return (new self())->setExpectedStatusCode($expectedStatusCode)
+        return new self()->setExpectedStatusCode($expectedStatusCode)
             ->setExpectedDisplay($expectedDisplay)
             ->setExpectedErrorOutput($expectedErrorOutput)
         ;

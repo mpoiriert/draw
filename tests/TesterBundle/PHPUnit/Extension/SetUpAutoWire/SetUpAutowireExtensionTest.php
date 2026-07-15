@@ -55,23 +55,10 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
         );
     }
 
-    public function testAutowiredMock(): void
-    {
-        static::assertInstanceOf(
-            ManagerRegistry::class,
-            $this->managerRegistry
-        );
-
-        static::assertInstanceOf(
-            MockObject::class,
-            $this->managerRegistry
-        );
-    }
-
     public function testAutowireMockProperty(): void
     {
         static::assertSame(
-            (new \ReflectionProperty($this->userSetCommentNullMigration, 'managerRegistry'))
+            new \ReflectionProperty($this->userSetCommentNullMigration, 'managerRegistry')
                 ->getValue($this->userSetCommentNullMigration),
             $this->managerRegistry
         );

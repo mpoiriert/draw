@@ -30,14 +30,6 @@ class EventDrivenRetryStrategyTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            RetryStrategyInterface::class,
-            $this->object
-        );
-    }
-
     public function testIsRetryableDefault(): void
     {
         $envelope = new Envelope(new \stdClass());

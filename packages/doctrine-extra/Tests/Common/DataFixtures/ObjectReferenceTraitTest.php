@@ -12,9 +12,6 @@ use PHPUnit\Framework\TestCase;
  */
 class ObjectReferenceTraitTest extends TestCase
 {
-    /**
-     * @var object|ObjectReferenceTrait
-     */
     private object $trait;
 
     /**

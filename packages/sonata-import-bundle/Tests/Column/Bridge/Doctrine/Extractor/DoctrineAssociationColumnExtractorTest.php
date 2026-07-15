@@ -4,7 +4,6 @@ namespace Draw\Bundle\SonataImportBundle\Tests\Column\Bridge\Doctrine\Extractor;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\SonataImportBundle\Column\Bridge\Doctrine\Extractor\DoctrineAssociationColumnExtractor;
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Component\Tester\DoctrineOrmTrait;
@@ -26,17 +25,9 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
         $this->object = new DoctrineAssociationColumnExtractor(
             static::createRegistry(
                 $this->entityManager = static::setUpMySqlWithAttributeDriver([
-                    \dirname((new \ReflectionClass(Column::class))->getFileName()),
+                    \dirname(new \ReflectionClass(Column::class)->getFileName()),
                 ])
             )
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
         );
     }
 
@@ -75,7 +66,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
 
     public function testAssign(): void
     {
-        $import = (new Import())
+        $import = new Import()
             ->setEntityClass(\stdClass::class)
         ;
 
@@ -104,9 +95,9 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
 
     private function createColumn(): Column
     {
-        return (new Column())
+        return new Column()
             ->setImport(
-                (new Import())
+                new Import()
                     ->setEntityClass(Column::class)
             )
         ;

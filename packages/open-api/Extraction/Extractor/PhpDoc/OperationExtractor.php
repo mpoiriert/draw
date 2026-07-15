@@ -23,7 +23,12 @@ use phpDocumentor\Reflection\Types\Void_;
 class OperationExtractor implements ExtractorInterface
 {
     private ContextFactory $contextFactory;
+
     private DocBlockFactoryInterface $docBlockFactory;
+
+    /**
+     * @var array<string, array{int, string}>
+     */
     private array $exceptionResponseCodes = [];
 
     public static function getDefaultPriority(): int
@@ -194,7 +199,7 @@ class OperationExtractor implements ExtractorInterface
                 throw new \UnexpectedValueException();
             }
 
-            $parameterName = trim($paramTag->getVariableName(), '$');
+            $parameterName = trim((string) $paramTag->getVariableName(), '$');
 
             $parameter = $this->findParameterByName($target, $parameterName);
 

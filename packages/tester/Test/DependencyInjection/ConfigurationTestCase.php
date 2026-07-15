@@ -55,6 +55,6 @@ abstract class ConfigurationTestCase extends TestCase
 
     protected function processConfiguration(array $configs): array
     {
-        return (new Processor())->processConfiguration($this->configuration, $configs);
+        return new Processor()->processConfiguration($this->configuration, $configs);
     }
 }

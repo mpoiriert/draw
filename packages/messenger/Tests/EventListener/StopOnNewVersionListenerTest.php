@@ -10,7 +10,6 @@ use Draw\Contracts\Application\Exception\VersionInformationIsNotAccessibleExcept
 use Draw\Contracts\Application\VersionVerificationInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 use Symfony\Component\Messenger\Worker;
@@ -59,11 +58,6 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
         $this->throwable && throw $this->throwable;
 
         return $this->isUpToDate;
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(EventSubscriberInterface::class, $this->service);
     }
 
     public function testGetSubscribedEvents(): void

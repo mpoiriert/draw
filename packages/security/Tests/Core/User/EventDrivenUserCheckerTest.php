@@ -32,14 +32,6 @@ class EventDrivenUserCheckerTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            UserCheckerInterface::class,
-            $this->object
-        );
-    }
-
     public function testCheckPreAuth(): void
     {
         $user = $this->createMock(UserInterface::class);

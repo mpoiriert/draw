@@ -34,7 +34,6 @@ composer-normalize
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-/phpstan.phar
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###

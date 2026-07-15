@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Broker\Command;
 use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Counter\CpuCounter;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,12 +15,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+#[AsCommand(
+    name: 'draw:messenger:start-broker',
+    description: 'Start multiple messenger:consume base on concurrent option. Automatically restart them if stopped.',
+)]
 class StartMessengerBrokerCommand extends Command
 {
-    private const OPTION_VALUE_CONCURRENT_AUTO = 'auto';
+    private const string OPTION_VALUE_CONCURRENT_AUTO = 'auto';
 
     public function __construct(
-        #[Autowire('%draw.symfony_console_path%')]
+        #[Autowire(param: 'draw.symfony_console_path')]
         private string $consolePath,
         private ProcessFactoryInterface $processFactory,
         private EventDispatcherInterface $eventDispatcher,
@@ -31,8 +36,6 @@ class StartMessengerBrokerCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('draw:messenger:start-broker')
-            ->setDescription('Start multiple messenger:consume base on concurrent option. Automatically restart them if stopped.')
             ->addOption(
                 'context',
                 null,

@@ -101,12 +101,9 @@ class VendorAttributeExtractor implements ExtractorInterface
      */
     private function alreadyPresentIn(Vendor $attribute, array $currentAttributes): bool
     {
-        foreach ($currentAttributes as $currentAttribute) {
-            if ($currentAttribute->getVendorName() === $attribute->getVendorName()) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $currentAttributes,
+            static fn (Vendor $currentAttribute): bool => $currentAttribute->getVendorName() === $attribute->getVendorName()
+        );
     }
 }

@@ -19,7 +19,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @internal
@@ -44,14 +43,6 @@ class DoctrineBusMessageListenerTest extends TestCase
         $this->object = new DoctrineBusMessageListener(
             $this->messageBus = $this->createMock(MessageBusInterface::class),
             $this->envelopeFactory = $this->createMock(EnvelopeFactoryInterface::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ResetInterface::class,
-            $this->object
         );
     }
 

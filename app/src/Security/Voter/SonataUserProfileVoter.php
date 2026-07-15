@@ -8,9 +8,9 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class SonataUserProfileVoter implements VoterInterface
 {
-    private const VIEW = 'ROLE_APP\SONATA\ADMIN\USERADMIN_VIEW';
+    private const string VIEW = 'ROLE_APP\SONATA\ADMIN\USERADMIN_VIEW';
 
-    private const EDIT = 'ROLE_APP\SONATA\ADMIN\USERADMIN_EDIT';
+    private const string EDIT = 'ROLE_APP\SONATA\ADMIN\USERADMIN_EDIT';
 
     public function vote(TokenInterface $token, $subject, array $attributes): int
     {

@@ -7,7 +7,6 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\EnvelopeFactor
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
@@ -22,14 +21,6 @@ class EnvelopeFactoryDispatchAfterCurrentBusStampListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new EnvelopeFactoryDispatchAfterCurrentBusStampListener();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
     }
 
     public function testGetSubscribedEvents(): void

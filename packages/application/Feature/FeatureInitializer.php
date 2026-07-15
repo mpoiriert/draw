@@ -18,7 +18,7 @@ class FeatureInitializer
             ->get($feature->getName(), [])
         ;
 
-        $properties = (new \ReflectionObject($feature))->getProperties();
+        $properties = new \ReflectionObject($feature)->getProperties();
 
         foreach ($properties as $property) {
             if (0 === \count($property->getAttributes(Config::class, ArgumentMetadata::IS_INSTANCEOF))) {

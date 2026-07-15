@@ -16,7 +16,7 @@ class AuthCodeMailer implements AuthCodeMailerInterface
     public function sendAuthCode(TwoFactorInterface $user): void
     {
         $this->mailer->send(
-            (new TwoFactorAuthCodeEmail($user->getEmailAuthRecipient(), $user->getEmailAuthCode()))
+            new TwoFactorAuthCodeEmail($user->getEmailAuthRecipient(), $user->getEmailAuthCode())
                 ->htmlTemplate('@DrawUser/Email/2fa_auth_code_email.html.twig')
                 ->context(['auth_code' => $user->getEmailAuthCode()])
         );

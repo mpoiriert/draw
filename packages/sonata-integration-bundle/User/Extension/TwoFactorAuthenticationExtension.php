@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class TwoFactorAuthenticationExtension extends AbstractAdminExtension
 {
-    final public const FIELD_2FA_ENABLED = '2fa_enabled';
+    final public const string FIELD_2FA_ENABLED = '2fa_enabled';
 
     public function __construct(private array $fieldPositions, private Security $security)
     {

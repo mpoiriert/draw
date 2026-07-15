@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
         ;
 
         foreach ($this->integrations as $integration) {
-            $integrationNode = (new ArrayNodeDefinition($integration->getConfigSectionName()))
+            $integrationNode = new ArrayNodeDefinition($integration->getConfigSectionName())
                 ->canBeEnabled()
             ;
 

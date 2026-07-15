@@ -6,7 +6,6 @@ use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -27,14 +26,6 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
         $this->object = new SystemMessengerAuthenticatorListener(
             $this->tokenStorage = $this->createMock(TokenStorageInterface::class),
             $this->systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
         );
     }
 

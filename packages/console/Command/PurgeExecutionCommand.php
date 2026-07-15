@@ -7,30 +7,34 @@ use Doctrine\DBAL\Types\Types;
 use Draw\Component\Console\Entity\Execution;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'draw:console:purge-execution',
+    description: 'Purge the execution table of all records before a specified date interval.',
+)]
 class PurgeExecutionCommand extends Command
 {
-    final public const DEFAULT_DELAY = '-1 month';
-    final public const DEFAULT_WAIT_SECOND = 10;
-    final public const DEFAULT_BATCH_SIZE = 1000;
+    final public const string DEFAULT_DELAY = '-1 month';
+    final public const int DEFAULT_WAIT_SECOND = 10;
+    final public const int DEFAULT_BATCH_SIZE = 1000;
 
-    private ?LoggerInterface $logger;
+    private LoggerInterface $logger;
 
     public function __construct(private Connection $executionConnection, ?LoggerInterface $logger = null)
     {
         parent::__construct();
-        $this->logger = $logger ?: new NullLogger();
+
+        $this->logger = $logger ?? new NullLogger();
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('draw:console:purge-execution')
-            ->setDescription('Purge the execution table of all records before a specified date interval.')
             ->addOption(
                 'delay',
                 null,

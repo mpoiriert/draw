@@ -39,7 +39,7 @@ class SetupCommand extends Command
             }
 
             $manager->persist(
-                (new Migration())
+                new Migration()
                     ->setName($name)
                     ->setState(MigrationWorkflow::PLACE_NEW)
             );

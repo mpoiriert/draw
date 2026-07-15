@@ -30,7 +30,7 @@ class DrawTesterExtension extends Extension
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
         $fileLoader = new Loader\XmlFileLoader($container, $fileLocator);
 
-        $this->configureProfiling($config['profiling'], $fileLoader, $container);
+        $this->configureProfiling($config['profiling'], $fileLoader);
 
         $fileLoader->load('filter.xml');
 
@@ -45,7 +45,7 @@ class DrawTesterExtension extends Extension
         )->setPublic(true);
     }
 
-    private function configureProfiling($config, Loader\FileLoader $fileLoader, ContainerBuilder $container): void
+    private function configureProfiling($config, Loader\FileLoader $fileLoader): void
     {
         if (!$config['enabled']) {
             return;

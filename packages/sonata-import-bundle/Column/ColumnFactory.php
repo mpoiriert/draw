@@ -21,7 +21,7 @@ class ColumnFactory
     {
         $columns = [];
         foreach ($headers as $index => $headerName) {
-            $column = (new Column())
+            $column = new Column()
                 ->setImport($import)
                 ->setIsDate(false)
                 ->setHeaderName($headerName)

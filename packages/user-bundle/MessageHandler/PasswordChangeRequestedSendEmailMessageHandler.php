@@ -36,7 +36,7 @@ class PasswordChangeRequestedSendEmailMessageHandler
         }
 
         $this->mailer->send(
-            (new PasswordChangeRequestedEmail())
+            new PasswordChangeRequestedEmail()
                 ->setUserId($user->getId())
                 ->setLocale(
                     $user instanceof LocalizationAwareInterface

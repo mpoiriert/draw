@@ -3,6 +3,7 @@
 namespace Draw\Component\Log\DependencyInjection\Compiler;
 
 use Draw\Component\Log\DecoratedLogger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Argument\BoundArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -55,8 +56,8 @@ class LoggerDecoratorPass implements CompilerPassInterface
                 if (method_exists($definition, 'getBindings')) {
                     $bindings = $definition->getBindings();
 
-                    if (isset($bindings['Psr\Log\LoggerInterface'])) {
-                        $argument = new Reference($bindings['Psr\Log\LoggerInterface']->getValues()[0]);
+                    if (isset($bindings[LoggerInterface::class])) {
+                        $argument = new Reference($bindings[LoggerInterface::class]->getValues()[0]);
                     } else {
                         $argument = new Reference('logger');
                     }
@@ -72,7 +73,7 @@ class LoggerDecoratorPass implements CompilerPassInterface
                     $values[2] = true;
                     $binding->setValues($values);
 
-                    $bindings['Psr\Log\LoggerInterface'] = $binding;
+                    $bindings[LoggerInterface::class] = $binding;
                     $definition->setBindings($bindings);
                 }
             }
@@ -95,7 +96,7 @@ class LoggerDecoratorPass implements CompilerPassInterface
 
         unset($tag['message']);
 
-        return (new Definition(DecoratedLogger::class))
+        return new Definition(DecoratedLogger::class)
             ->setArgument('defaultContext', $tag)
             ->setArgument('decorateMessage', $message)
             ->addTag('kernel.reset', ['method' => 'reset'])

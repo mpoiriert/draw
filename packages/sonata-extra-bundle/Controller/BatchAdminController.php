@@ -16,7 +16,7 @@ class BatchAdminController extends AbstractAdminController
      * @throws NotFoundHttpException If the HTTP method is not POST
      * @throws \RuntimeException     If the batch action is not defined
      */
-    public function batchAction(Request $request): Response
+    public function batch(Request $request): Response
     {
         if (Request::METHOD_POST !== $restMethod = $request->getMethod()) {
             throw new NotFoundHttpException(\sprintf('Invalid request method given "%s", %s expected', $restMethod, Request::METHOD_POST));

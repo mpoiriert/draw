@@ -3,18 +3,21 @@
 namespace Draw\Component\Tester\Command;
 
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'draw:tester:dump-assert-methods',
+    description: 'Dump all PHPUnit Assert Methods in a json file to use for generation',
+)]
 class DumpAssertMethodsCommand extends Command
 {
     protected function configure(): void
     {
         $this
-            ->setName('draw:tester:dump-assert-methods')
-            ->setDescription('Dump all PHPUnit Assert Methods in a json file to use for generation ')
             ->addArgument('filePath', InputArgument::REQUIRED, 'The file path where to dump.')
         ;
     }

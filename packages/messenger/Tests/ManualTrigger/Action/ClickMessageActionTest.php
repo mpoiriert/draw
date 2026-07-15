@@ -67,14 +67,6 @@ class ClickMessageActionTest extends TestCase
         );
     }
 
-    public function testConstants(): void
-    {
-        static::assertSame(
-            'dMUuid',
-            $this->object::MESSAGE_ID_PARAMETER_NAME
-        );
-    }
-
     #[DataProvider('provideClickEnvelopeErrorCases')]
     public function testClickEnvelopeError(
         ?Envelope $returnedEnveloped,

@@ -72,7 +72,7 @@ trait EventDispatcherTesterTrait
 
         static::cleanEventDispatcherFile($resultFilePath);
 
-        register_shutdown_function('unlink', $resultFilePath);
+        register_shutdown_function(unlink(...), $resultFilePath);
 
         if (!file_exists($expectedFilePath)) {
             copy($resultFilePath, $expectedFilePath);

@@ -8,7 +8,6 @@ use Draw\Component\Messenger\ManualTrigger\Stamp\ManualTriggerStamp;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
@@ -23,14 +22,6 @@ class StampManuallyTriggeredEnvelopeListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->service = new StampManuallyTriggeredEnvelopeListener();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->service
-        );
     }
 
     public function testGetSubscribedEvents(): void

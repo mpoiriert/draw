@@ -74,7 +74,7 @@ SELECT * FROM test
 SELECT * FROM test2
 Failed asserting that 2 matches expected 0.');
 
-        (new DataTester(new SqlMetric(['SELECT * FROM test', 'SELECT * FROM test2'])))
+        new DataTester(new SqlMetric(['SELECT * FROM test', 'SELECT * FROM test2']))
             ->test(SqlAssertionBuilder::create(0))
         ;
     }
@@ -84,7 +84,7 @@ Failed asserting that 2 matches expected 0.');
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No assertion configured.');
 
-        (new DataTester(new SqlMetric([])))
+        new DataTester(new SqlMetric([]))
             ->test(SqlAssertionBuilder::create())
         ;
     }

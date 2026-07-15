@@ -4,9 +4,7 @@ namespace Draw\Component\Messenger\Tests\Transport;
 
 use Doctrine\DBAL\Connection;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\DoctrineTransaction\NoTransaction;
-use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
-use Draw\Component\Messenger\Searchable\SearchableTransportInterface;
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
@@ -22,11 +20,7 @@ use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
-use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
-use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
-use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
-use Symfony\Component\Messenger\Transport\TransportInterface;
 
 /**
  * @internal
@@ -56,43 +50,10 @@ class DrawTransportTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->service = (new DrawTransportFactory($this))->createTransport(
+        $this->service = new DrawTransportFactory($this)->createTransport(
             'draw://default',
             [],
             new PhpSerializer()
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            TransportInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            PurgeableTransportInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            SearchableTransportInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            SetupableTransportInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            MessageCountAwareInterface::class,
-            $this->service
-        );
-
-        static::assertInstanceOf(
-            ListableReceiverInterface::class,
-            $this->service
         );
     }
 

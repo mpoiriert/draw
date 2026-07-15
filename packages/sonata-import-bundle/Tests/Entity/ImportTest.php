@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataImportBundle\Tests\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -12,7 +11,6 @@ use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -27,11 +25,6 @@ class ImportTest extends TestCase
     protected function setUp(): void
     {
         $this->entity = new Import();
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(GroupSequenceProviderInterface::class, $this->entity);
     }
 
     public function testIdMutator(): void
@@ -82,8 +75,7 @@ class ImportTest extends TestCase
 
     public function testColumnsMutator(): void
     {
-        static::assertInstanceOf(Collection::class, $collection = $this->entity->getColumns());
-        static::assertCount(0, $collection);
+        static::assertCount(0, $collection = $this->entity->getColumns());
 
         static::assertSame(
             $this->entity,
@@ -150,6 +142,7 @@ class ImportTest extends TestCase
 
         static::assertNotSame($dateTime, $dateTime = $this->entity->getUpdatedAt());
 
+        /** @var array<string, array> $changeSet */
         $changeSet = ['updatedAt' => []];
         $this->entity->updateTimestamp(
             new PreUpdateEventArgs(

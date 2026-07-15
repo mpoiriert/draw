@@ -22,7 +22,7 @@ class AgainstJsonFileTesterTest extends TestCase
 
     public function testInvoke(): void
     {
-        (new DataTester(self::$data))
+        new DataTester(self::$data)
             ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'))
         ;
     }
@@ -32,14 +32,14 @@ class AgainstJsonFileTesterTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Failed asserting that two objects are equal.');
 
-        (new DataTester((object) ['url' => 'toto']))
+        new DataTester((object) ['url' => 'toto'])
             ->test(new AgainstJsonFileTester(__DIR__.'/fixtures/AgainstJsonFileTesterTest.json'))
         ;
     }
 
     public function testInvokePropertyPathChecksValue(): void
     {
-        (new DataTester(self::$data))
+        new DataTester(self::$data)
             ->test(
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest_testInvoke_propertyPathChecks_equal.json',
@@ -53,7 +53,7 @@ class AgainstJsonFileTesterTest extends TestCase
 
     public function testInvokePropertyPathChecksViaConstraint(): void
     {
-        (new DataTester(self::$data))
+        new DataTester(self::$data)
             ->test(
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest_testInvoke_propertyPathChecks_equal.json',
@@ -71,7 +71,7 @@ class AgainstJsonFileTesterTest extends TestCase
         $this->expectExceptionMessage('Path: url
 Failed asserting that two strings are equal.');
 
-        (new DataTester(self::$data))
+        new DataTester(self::$data)
             ->test(
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
@@ -86,7 +86,7 @@ Failed asserting that two strings are equal.');
     public function testInvokePropertyPathChecksCallable(): void
     {
         $called = false;
-        (new DataTester(self::$data))
+        new DataTester(self::$data)
             ->test(
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
@@ -108,7 +108,7 @@ Failed asserting that two strings are equal.');
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Failed asserting that two strings are equal.');
-        (new DataTester(self::$data))
+        new DataTester(self::$data)
             ->test(
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest.json',
@@ -139,7 +139,7 @@ Data:
             )
         );
 
-        (new DataTester(self::$data))
+        new DataTester(self::$data)
             ->test(new AgainstJsonFileTester($filePath))
         ;
     }

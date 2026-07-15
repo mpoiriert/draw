@@ -58,7 +58,7 @@ class OpenApiController
                 true,
                 $extractionContext
             ),
-            200,
+            Response::HTTP_OK,
             [],
             true
         );

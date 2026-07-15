@@ -1,47 +1,206 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#1 \\$node of method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeBuilder\\:\\:append\\(\\) expects Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeDefinition, Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\NodeParentInterface\\|null given\\.$#"
+			message: '#^Property App\\Entity\\UserAddress\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: app/src/Entity/UserAddress.php
+
+		-
+			message: '#^Property App\\Entity\\UserTag\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: app/src/Entity/UserTag.php
+
+		-
+			message: '#^Property App\\Message\\NewUserMessage\:\:\$user \(App\\Entity\\User\|Draw\\Component\\Messenger\\DoctrineEnvelopeEntityReference\\Stamp\\PropertyReferenceStamp\|null\) is never assigned Draw\\Component\\Messenger\\DoctrineEnvelopeEntityReference\\Stamp\\PropertyReferenceStamp so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: app/src/Message/NewUserMessage.php
+
+		-
+			message: '#^Property App\\Message\\NewUserMessage\:\:\$user \(App\\Entity\\User\|Draw\\Component\\Messenger\\DoctrineEnvelopeEntityReference\\Stamp\\PropertyReferenceStamp\|null\) is never assigned null so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: app/src/Message/NewUserMessage.php
+
+		-
+			message: '#^Property Draw\\Component\\CronJob\\Entity\\CronJob\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: packages/cron-job/Entity/CronJob.php
+
+		-
+			message: '#^Property Draw\\Component\\CronJob\\Entity\\CronJobExecution\:\:\$id \(int\|null\) is never assigned int so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: packages/cron-job/Entity/CronJobExecution.php
+
+		-
+			message: '#^Property Draw\\Component\\CronJob\\Message\\ExecuteCronJobMessage\:\:\$execution \(Draw\\Component\\CronJob\\Entity\\CronJobExecution\|Draw\\Component\\Messenger\\DoctrineEnvelopeEntityReference\\Stamp\\PropertyReferenceStamp\|null\) is never assigned Draw\\Component\\Messenger\\DoctrineEnvelopeEntityReference\\Stamp\\PropertyReferenceStamp so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: packages/cron-job/Message/ExecuteCronJobMessage.php
+
+		-
+			message: '#^Property Draw\\Component\\CronJob\\Message\\ExecuteCronJobMessage\:\:\$execution \(Draw\\Component\\CronJob\\Entity\\CronJobExecution\|Draw\\Component\\Messenger\\DoctrineEnvelopeEntityReference\\Stamp\\PropertyReferenceStamp\|null\) is never assigned null so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: packages/cron-job/Message/ExecuteCronJobMessage.php
+
+		-
+			message: '#^Property Draw\\Component\\EntityMigrator\\Message\\MigrateEntityCommand\:\:\$entity \(Draw\\Component\\EntityMigrator\\Entity\\EntityMigrationInterface\|Draw\\Component\\Messenger\\DoctrineEnvelopeEntityReference\\Stamp\\PropertyReferenceStamp\|null\) is never assigned null so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: packages/entity-migrator/Message/MigrateEntityCommand.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Symfony\\Component\\DependencyInjection\\Definition and ''getBindings'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: packages/log/DependencyInjection/Compiler/LoggerDecoratorPass.php
+
+		-
+			message: '#^Parameter \#1 \$node of method Symfony\\Component\\Config\\Definition\\Builder\\NodeBuilder\:\:append\(\) expects Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition, Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: packages/log/DependencyInjection/LogIntegration.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertEmpty\\(\\) with array\\{object\\{\\}&stdClass, object\\{\\}&stdClass\\} will always evaluate to false\\.$#"
+			message: '#^Property Draw\\Component\\Messenger\\Tests\\EventListener\\StopOnNewVersionListenerTest\:\:\$deployedVersion \(string\|null\) is never assigned string so it can be removed from the property type\.$#'
+			identifier: property.unusedType
 			count: 1
-			path: packages/messenger/Tests/DoctrineMessageBusHook/Entity/MessageHolderTraitTest.php
+			path: packages/messenger/Tests/EventListener/StopOnNewVersionListenerTest.php
 
 		-
-			message: "#^Parameter \\$param of method Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Extraction\\\\Extractor\\\\PhpDoc\\\\PhpDocOperationExtractorStubService\\:\\:invalidTypeParameter\\(\\) has invalid type Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Extraction\\\\Extractor\\\\PhpDoc\\\\toto\\.$#"
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: packages/messenger/Tests/Transport/DrawTransportTest.php
+
+		-
+			message: '#^Call to function class_exists\(\) with ''Doctrine\\\\Persistence\\\\Proxy'' will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: packages/open-api/EventListener/SerializationControllerListener.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: packages/open-api/Tests/Extraction/Extractor/JmsSerializer/PropertiesExtractorTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: packages/open-api/Tests/Extraction/Extractor/OpenApi/RootSchemaExtractorTest.php
+
+		-
+			message: '#^Parameter \$param of method Draw\\Component\\OpenApi\\Tests\\Extraction\\Extractor\\PhpDoc\\PhpDocOperationExtractorStubService\:\:invalidTypeParameter\(\) has invalid type Draw\\Component\\OpenApi\\Tests\\Extraction\\Extractor\\PhpDoc\\toto\.$#'
+			identifier: class.notFound
 			count: 1
 			path: packages/open-api/Tests/Extraction/Extractor/PhpDoc/OperationExtractorTest.php
 
 		-
-			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\TestClass\\:\\:\\$propertyFromBody is unused\\.$#"
+			message: '#^Property Draw\\Component\\OpenApi\\Tests\\Mock\\Model\\TestClass\:\:\$propertyFromBody is unused\.$#'
+			identifier: property.unused
 			count: 1
 			path: packages/open-api/Tests/Mock/Model/TestClass.php
 
 		-
-			message: "#^Property Draw\\\\Component\\\\OpenApi\\\\Tests\\\\Mock\\\\Model\\\\TestClass\\:\\:\\$propertyGroupExclusion is unused\\.$#"
+			message: '#^Property Draw\\Component\\OpenApi\\Tests\\Mock\\Model\\TestClass\:\:\$propertyGroupExclusion is unused\.$#'
+			identifier: property.unused
 			count: 1
 			path: packages/open-api/Tests/Mock/Model/TestClass.php
 
 		-
-			message: "#^Call to static method PHPUnit\\\\Framework\\\\Assert\\:\\:assertInstanceOf\\(\\) with 'DateTime' and null will always evaluate to false\\.$#"
-			count: 2
+			message: '#^Using nullsafe property access "\?\-\>joinColumns" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: packages/sonata-extra-bundle/PreventDelete/PreventDeleteRelationLoader.php
+
+		-
+			message: '#^Trait Draw\\Bundle\\SonataExtraBundle\\Test\\AdminTestHelperTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: packages/sonata-extra-bundle/Test/AdminTestHelperTrait.php
+
+		-
+			message: '#^Call to function class_exists\(\) with ''Knp\\\\DoctrineBehaviors\\\\Contract\\\\Entity\\\\TranslatableInterface'' will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: packages/sonata-import-bundle/DependencyInjection/Configuration.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with \*NEVER\* and DateTime\|null will always evaluate to false\.$#'
+			identifier: staticMethod.impossibleType
+			count: 1
 			path: packages/sonata-import-bundle/Tests/Entity/ImportTest.php
 
 		-
-			message: "#^Class Draw\\\\Bundle\\\\SonataIntegrationBundle\\\\User\\\\Security\\\\AdminLoginAuthenticator extends @final class Symfony\\\\Component\\\\Security\\\\Http\\\\Authenticator\\\\FormLoginAuthenticator\\.$#"
+			message: '#^Parameter \#1 \$expected of static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) contains unresolvable type\.$#'
+			identifier: argument.unresolvableType
+			count: 1
+			path: packages/sonata-import-bundle/Tests/Entity/ImportTest.php
+
+		-
+			message: '#^Class Draw\\Bundle\\SonataIntegrationBundle\\User\\Security\\AdminLoginAuthenticator extends @final class Symfony\\Component\\Security\\Http\\Authenticator\\FormLoginAuthenticator\.$#'
+			identifier: class.extendsFinalByPhpDoc
 			count: 1
 			path: packages/sonata-integration-bundle/User/Security/AdminLoginAuthenticator.php
 
 		-
-			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int\\)\\: bool\\)\\|null, Closure\\(\\)\\: null given\\.$#"
+			message: '#^Trait Draw\\Bundle\\TesterBundle\\Messenger\\MessageHandlerAssertionTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: packages/tester-bundle/Messenger/MessageHandlerAssertionTrait.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function set_error_handler expects \(callable\(int, string, string, int\)\: bool\)\|null, Closure\(\)\: null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: packages/tester-bundle/Tests/bootstrap.php
 
 		-
-			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int\\)\\: bool\\)\\|null, Closure\\(\\)\\: null given\\.$#"
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Draw\\\\Component\\\\Tester\\\\DataTester'' and Draw\\Component\\Tester\\DataTester will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 2
+			path: packages/tester/Tests/DataTesterTest.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and Draw\\Component\\Tester\\DataTester will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: packages/tester/Tests/DataTesterTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: packages/tester/Tests/ExampleTest.php
+
+		-
+			message: '#^Property Draw\\Bundle\\UserBundle\\DTO\\Credential\:\:\$password \(string\|null\) is never assigned string so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: packages/user-bundle/DTO/Credential.php
+
+		-
+			message: '#^Property Draw\\Bundle\\UserBundle\\DTO\\Credential\:\:\$username \(string\|null\) is never assigned string so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: packages/user-bundle/DTO/Credential.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Symfony\\Component\\Console\\Application and ''addCommand'' will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: tests/EntityMigrator/Command/MigrateCommandTest.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function set_error_handler expects \(callable\(int, string, string, int\)\: bool\)\|null, Closure\(\)\: null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: tests/bootstrap.php
 

@@ -52,7 +52,7 @@ class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
 
         $parameter = array_shift($parameters);
 
-        $columnInfo = (new Column())
+        $columnInfo = new Column()
             ->setMappedTo($headerName)
         ;
 
@@ -96,13 +96,10 @@ class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
         }
 
         // More than one parameter and default value is not available it's not a proper setter
-        foreach ($parameters as $parameter) {
-            if (!$parameter->isDefaultValueAvailable()) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all(
+            $parameters,
+            static fn (\ReflectionParameter $parameter): bool => $parameter->isDefaultValueAvailable()
+        );
     }
 
     private function isDate(\ReflectionParameter $reflectionParameter): bool

@@ -29,7 +29,7 @@ class DuplicateDefinitionAliasSchemaCleanerListener implements EventSubscriberIn
         do {
             $definitionSchemasByObject = [];
             foreach ($rootSchema->definitions as $name => $definitionSchema) {
-                $definitionSchemasByObject[parse_url($name)['path']][$name] = $definitionSchema;
+                $definitionSchemasByObject[parse_url((string) $name)['path']][$name] = $definitionSchema;
             }
 
             $replaceSchemas = [];

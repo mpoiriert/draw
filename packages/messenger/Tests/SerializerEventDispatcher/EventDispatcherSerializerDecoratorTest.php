@@ -34,14 +34,6 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            SerializerInterface::class,
-            $this->object
-        );
-    }
-
     public function testDecode(): void
     {
         $data = ['body' => '', 'headers' => ''];

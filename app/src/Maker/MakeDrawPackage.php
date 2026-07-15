@@ -17,7 +17,7 @@ use Twig\Environment;
 class MakeDrawPackage extends AbstractMaker
 {
     public function __construct(
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         private string $kernelProjectDir,
         private Environment $environment,
     ) {
@@ -59,13 +59,13 @@ class MakeDrawPackage extends AbstractMaker
         }
 
         if ('bundle' === $type) {
-            if (!str_ends_with($packageName, '-bundle')) {
+            if (!str_ends_with((string) $packageName, '-bundle')) {
                 $io->error('Package name should end with -bundle');
 
                 return;
             }
         } else {
-            if (str_ends_with($packageName, '-bundle')) {
+            if (str_ends_with((string) $packageName, '-bundle')) {
                 $io->error('Package name should not end with -bundle');
 
                 return;

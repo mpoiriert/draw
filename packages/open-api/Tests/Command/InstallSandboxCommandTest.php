@@ -55,7 +55,7 @@ class InstallSandboxCommandTest extends TestCase
 
         register_shutdown_function(static function () use ($path): void {
             if (is_dir($path)) {
-                (new Filesystem())->remove($path);
+                new Filesystem()->remove($path);
             }
         });
 
@@ -84,7 +84,7 @@ class InstallSandboxCommandTest extends TestCase
 
         register_shutdown_function(static function () use ($path): void {
             if (is_dir($path)) {
-                (new Filesystem())->remove($path);
+                new Filesystem()->remove($path);
             }
         });
 

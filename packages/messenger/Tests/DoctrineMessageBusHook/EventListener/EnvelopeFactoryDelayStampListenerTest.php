@@ -7,7 +7,6 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\EnvelopeFactor
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
@@ -25,14 +24,6 @@ class EnvelopeFactoryDelayStampListenerTest extends TestCase
     {
         $this->object = new EnvelopeFactoryDelayStampListener(
             $this->delay = random_int(\PHP_INT_MIN, \PHP_INT_MAX)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
         );
     }
 

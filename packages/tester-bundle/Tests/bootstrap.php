@@ -9,5 +9,5 @@ use Symfony\Component\ErrorHandler\ErrorHandler;
 // can probably be removed on next Symfony 6.4.x release
 $phpunitsHandler = set_error_handler(static fn () => null);
 restore_exception_handler();
-ErrorHandler::register(null);
+ErrorHandler::register();
 set_error_handler($phpunitsHandler);

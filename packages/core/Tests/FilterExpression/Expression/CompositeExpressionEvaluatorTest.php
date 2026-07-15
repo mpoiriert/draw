@@ -6,7 +6,6 @@ use Draw\Component\Core\FilterExpression\Evaluator;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpression;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator;
 use Draw\Component\Core\FilterExpression\Expression\ConstraintExpression;
-use Draw\Component\Core\FilterExpression\Expression\ExpressionEvaluator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,14 +24,6 @@ class CompositeExpressionEvaluatorTest extends TestCase
     {
         $this->object = new CompositeExpressionEvaluator(
             $this->evaluator = $this->createMock(Evaluator::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ExpressionEvaluator::class,
-            $this->object
         );
     }
 

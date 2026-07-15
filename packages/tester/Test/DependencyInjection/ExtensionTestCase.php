@@ -88,7 +88,7 @@ abstract class ExtensionTestCase extends TestCase
         $actualIds = array_values(
             array_diff(
                 array_keys(self::$containerBuilder->getDefinitions()),
-                array_keys((new ContainerBuilder())->getDefinitions())
+                array_keys(new ContainerBuilder()->getDefinitions())
             )
         );
         asort($actualIds);
@@ -108,7 +108,7 @@ abstract class ExtensionTestCase extends TestCase
         $actualIds = array_values(
             array_diff(
                 array_keys(self::$containerBuilder->getAliases()),
-                array_keys((new ContainerBuilder())->getAliases())
+                array_keys(new ContainerBuilder()->getAliases())
             )
         );
         asort($actualIds);

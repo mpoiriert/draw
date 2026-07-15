@@ -30,7 +30,7 @@ class CompilerPass implements CompilerPassInterface
         ;
 
         foreach ($container->findTaggedServiceIds('messenger.receiver') as $receiverId => $tags) {
-            $transportTester = (new Definition(TransportTester::class))
+            $transportTester = new Definition(TransportTester::class)
                 ->setArgument('$transport', new Reference($receiverId))
                 ->setArgument('$evaluator', new Reference('draw.tester.expression_filter'))
                 ->setPublic(true)

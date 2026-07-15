@@ -3,7 +3,6 @@
 namespace Draw\Component\OpenApi\Tests\Naming;
 
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
-use Draw\Component\OpenApi\Naming\ClassNamingFilterInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -37,19 +36,11 @@ class AliasesClassNamingFilterTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ClassNamingFilterInterface::class,
-            $this->object
-        );
-    }
-
     public function testFilterClassNameNoChange(): void
     {
         static::assertSame(
             $originalClassName = uniqid('class'),
-            $this->object->filterClassName($originalClassName, [], null)
+            $this->object->filterClassName($originalClassName, [])
         );
     }
 

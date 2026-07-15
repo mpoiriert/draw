@@ -3,7 +3,6 @@
 namespace Draw\Bundle\SonataImportBundle\Tests\Column\Bridge\Doctrine\Extractor;
 
 use Draw\Bundle\SonataImportBundle\Column\Bridge\Doctrine\Extractor\DoctrineFieldColumnExtractor;
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
 use Draw\Component\Tester\DoctrineOrmTrait;
@@ -23,17 +22,9 @@ class DoctrineFieldColumnExtractorTest extends TestCase
         $this->object = new DoctrineFieldColumnExtractor(
             static::createRegistry(
                 static::setUpMySqlWithAttributeDriver([
-                    \dirname((new \ReflectionClass(Column::class))->getFileName()),
+                    \dirname(new \ReflectionClass(Column::class)->getFileName()),
                 ])
             )
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
         );
     }
 
@@ -141,9 +132,9 @@ class DoctrineFieldColumnExtractorTest extends TestCase
 
     private function createColumn(): Column
     {
-        return (new Column())
+        return new Column()
             ->setImport(
-                (new Import())
+                new Import()
                     ->setEntityClass(Column::class)
             )
         ;

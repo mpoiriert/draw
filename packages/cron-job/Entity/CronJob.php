@@ -128,7 +128,7 @@ class CronJob implements \Stringable
     public function setSchedule(?string $schedule): self
     {
         if (null !== $schedule) {
-            $schedule = (new CronExpression($schedule))->getExpression();
+            $schedule = new CronExpression($schedule)->getExpression();
         }
 
         $this->schedule = $schedule;
@@ -199,7 +199,7 @@ class CronJob implements \Stringable
     {
         return $this->executions
             ->matching(
-                Criteria::create()
+                Criteria::create(true)
                     ->orderBy(['requestedAt' => 'DESC'])
                     ->setMaxResults(10)
             )
@@ -212,7 +212,7 @@ class CronJob implements \Stringable
             return false;
         }
 
-        return (new CronExpression($this->getSchedule()))->isDue();
+        return new CronExpression($this->getSchedule())->isDue();
     }
 
     public function newExecution(bool $force = false): CronJobExecution

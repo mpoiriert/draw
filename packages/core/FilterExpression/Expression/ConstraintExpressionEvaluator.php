@@ -16,7 +16,7 @@ class ConstraintExpressionEvaluator extends ExpressionEvaluator
 
     public function __construct(?PropertyAccessor $propertyAccessor = null, ?ValidatorInterface $validator = null)
     {
-        $this->validator = $validator ?: (new ValidatorBuilder())->getValidator();
+        $this->validator = $validator ?: new ValidatorBuilder()->getValidator();
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessorBuilder()
             ->enableExceptionOnInvalidPropertyPath()
             ->enableExceptionOnInvalidIndex()

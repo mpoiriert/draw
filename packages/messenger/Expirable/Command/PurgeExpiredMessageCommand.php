@@ -4,6 +4,7 @@ namespace Draw\Component\Messenger\Expirable\Command;
 
 use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Searchable\TransportRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,9 +12,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'draw:messenger:purge-obsolete-messages',
+    description: 'Purge obsolete message from transports.',
+)]
 class PurgeExpiredMessageCommand extends Command
 {
-    final public const DEFAULT_DELAY = '-1 month';
+    final public const string DEFAULT_DELAY = '-1 month';
 
     public function __construct(private TransportRepository $transportRepository)
     {
@@ -23,8 +28,6 @@ class PurgeExpiredMessageCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('draw:messenger:purge-obsolete-messages')
-            ->setDescription('Purge obsolete message from transports.')
             ->addArgument('transport', InputArgument::OPTIONAL, 'Name of the transport to setup', null)
             ->addOption(
                 'delay',

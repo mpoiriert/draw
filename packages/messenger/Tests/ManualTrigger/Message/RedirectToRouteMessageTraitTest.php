@@ -5,7 +5,6 @@ namespace Draw\Component\Messenger\Tests\ManualTrigger\Message;
 use Draw\Component\Messenger\ManualTrigger\Message\RedirectToRouteMessageTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -35,11 +34,6 @@ class RedirectToRouteMessageTraitTest extends TestCase
         ;
 
         $response = $this->getRedirectResponse($urlGenerator);
-
-        static::assertInstanceOf(
-            RedirectResponse::class,
-            $response
-        );
 
         static::assertSame(
             $url,

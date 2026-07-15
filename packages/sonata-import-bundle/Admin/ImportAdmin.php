@@ -31,9 +31,9 @@ class ImportAdmin extends AbstractAdmin
 {
     public function __construct(
         private ImporterInterface $importer,
-        #[Autowire('%draw.sonata_import.classes%')]
+        #[Autowire(param: 'draw.sonata_import.classes')]
         private array $importableClassList,
-        #[Autowire('%draw.sonata_import.skip_value%')]
+        #[Autowire(param: 'draw.sonata_import.skip_value')]
         private string $skipValue = '_SKIP_',
     ) {
         parent::__construct();

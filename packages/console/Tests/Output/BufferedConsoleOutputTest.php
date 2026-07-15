@@ -8,7 +8,6 @@ use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -23,14 +22,6 @@ class BufferedConsoleOutputTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new BufferedConsoleOutput(OutputInterface::VERBOSITY_NORMAL);
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ConsoleOutput::class,
-            $this->object
-        );
     }
 
     public function testSetDecorated(): void

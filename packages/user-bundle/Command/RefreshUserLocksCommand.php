@@ -4,12 +4,20 @@ namespace Draw\Bundle\UserBundle\Command;
 
 use Doctrine\ORM\EntityRepository;
 use Draw\Bundle\UserBundle\Message\RefreshUserLockMessage;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+#[AsCommand(
+    name: 'draw:user:refresh-user-locks',
+    description: <<<'TEXT'
+        Send a [RefreshUserLockMessage] for all user.
+        Configure you messenger routing properly otherwise it will be sync
+        TEXT,
+)]
 class RefreshUserLocksCommand extends Command
 {
     public function __construct(
@@ -17,17 +25,6 @@ class RefreshUserLocksCommand extends Command
         private EntityRepository $drawUserEntityRepository,
     ) {
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->setName('draw:user:refresh-user-locks')
-            ->setDescription(
-                'Send a [RefreshUserLockMessage] for all user.'.\PHP_EOL.
-                'Configure you messenger routing properly otherwise it will be sync'
-            )
-        ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int

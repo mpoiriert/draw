@@ -38,7 +38,7 @@ class AppFixtures extends Fixture
         $this->persistAndFlush(
             $manager,
             [
-                (new Config())
+                new Config()
                     ->setId('acme_demo')
                     ->setValue(['enabled' => false, 'limit' => 10]),
             ]
@@ -47,7 +47,7 @@ class AppFixtures extends Fixture
         $this->persistAndFlush(
             $manager,
             [
-                (new CronJob())
+                new CronJob()
                     ->setName('test')
                     ->setCommand('echo "test"'),
             ]
@@ -56,7 +56,7 @@ class AppFixtures extends Fixture
 
     private function loadTags(): iterable
     {
-        yield 'admin' => (new Tag())
+        yield 'admin' => new Tag()
             ->setName('admin')
             ->translate('en')
                 ->setLabel('Admin')
@@ -66,7 +66,7 @@ class AppFixtures extends Fixture
             ->getTranslatable()
         ;
 
-        yield 'inactive' => (new Tag())
+        yield 'inactive' => new Tag()
             ->setName('inactive')
             ->setActive(false)
             ->translate('en')
@@ -77,7 +77,7 @@ class AppFixtures extends Fixture
             ->getTranslatable()
         ;
 
-        yield 'not-use' => (new Tag())
+        yield 'not-use' => new Tag()
             ->setName('not-use')
             ->translate('en')
                 ->setLabel('NotUse')
@@ -90,44 +90,44 @@ class AppFixtures extends Fixture
 
     private function loadUsers(): iterable
     {
-        yield 'admin' => (new User())
+        yield 'admin' => new User()
             ->setEmail('admin@example.com')
             ->setPlainPassword('admin')
             ->setLevel(User::LEVEL_ADMIN)
             ->setRoles(['ROLE_SUPER_ADMIN'])
             ->setTags([$this->getObjectReference(Tag::class, 'admin')])
             ->addUserTag(
-                (new UserTag())
+                new UserTag()
                     ->setTag($this->getObjectReference(Tag::class, 'admin'))
             )
             ->setAddress(
-                (new Address())
+                new Address()
                     ->setStreet('200 Acme')
             )
             ->addUserAddress(
-                (new UserAddress())
+                new UserAddress()
                     ->setAddress(
-                        (new Address())
+                        new Address()
                             ->setStreet('201 Secondary Acme')
                     )
             )
         ;
 
-        yield (new User())
+        yield new User()
             ->setEmail('2fa-admin@example.com')
             ->setPlainPassword('2fa-admin')
             ->setLevel(User::LEVEL_ADMIN)
             ->setRoles(['ROLE_2FA_ADMIN'])
         ;
 
-        yield (new User())
+        yield new User()
             ->setEmail('need-change-password@example.com')
             ->setNeedChangePassword(true)
             ->setLevel(User::LEVEL_ADMIN)
             ->setRoles(['ROLE_ADMIN'])
         ;
 
-        yield (new User())
+        yield new User()
             ->setEmail('locked@example.com')
             ->setPlainPassword('locked')
             ->setLevel(User::LEVEL_ADMIN)
@@ -138,7 +138,7 @@ class AppFixtures extends Fixture
         $inactiveTag = $this->getObjectReference(Tag::class, 'inactive');
 
         foreach (range(1, 4) as $number) {
-            $user = (new User())
+            $user = new User()
                 ->setEmail('user-'.str_pad((string) $number, 4, '0', \STR_PAD_LEFT).'@example.com')
                 ->setPlainPassword('password')
             ;
@@ -162,31 +162,31 @@ class AppFixtures extends Fixture
 
         $user
             ->setOnDeleteRestrict(
-                $objects[] = (new ChildObject2())->setAttribute2('on-delete-restrict')
+                $objects[] = new ChildObject2()->setAttribute2('on-delete-restrict')
             )
         ;
 
         $user
             ->setOnDeleteCascade(
-                $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade')
+                $objects[] = new ChildObject2()->setAttribute2('on-delete-cascade')
             )
         ;
 
         $user
             ->setOnDeleteSetNull(
-                $objects[] = (new ChildObject2())->setAttribute2('on-delete-set-null')
+                $objects[] = new ChildObject2()->setAttribute2('on-delete-set-null')
             )
         ;
 
         $user
             ->setOnDeleteCascadeConfigOverridden(
-                $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade-config-overridden')
+                $objects[] = new ChildObject2()->setAttribute2('on-delete-cascade-config-overridden')
             )
         ;
 
         $user
             ->setOnDeleteCascadeAttributeOverridden(
-                $objects[] = (new ChildObject2())->setAttribute2('on-delete-cascade-attribute-overridden')
+                $objects[] = new ChildObject2()->setAttribute2('on-delete-cascade-attribute-overridden')
             )
         ;
 

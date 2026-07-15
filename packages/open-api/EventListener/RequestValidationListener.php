@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RequestValidationListener implements EventSubscriberInterface
 {
-    private const PREFIXES_DEFAULT = [
+    private const array PREFIXES_DEFAULT = [
         'query' => '$.query',
         'body' => '$.body',
     ];

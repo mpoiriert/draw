@@ -30,13 +30,11 @@ use Draw\Bundle\SonataIntegrationBundle\User\Extension\TwoFactorAuthenticationEx
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminExtension;
 use Draw\Bundle\SonataIntegrationBundle\User\Twig\UserAdminRuntime;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -45,19 +43,17 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
-        $loader = new Loader\PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $this->configureConfiguration($config['configuration'], $loader, $container);
-        $this->configureConsole($config['console'], $loader, $container);
-        $this->configureCronJob($config['cron_job'], $loader, $container);
-        $this->configureEntityMigrator($config['entity_migrator'], $loader, $container);
-        $this->configureMessenger($config['messenger'], $loader, $container);
-        $this->configureUser($config['user'], $loader, $container);
+        $this->configureConfiguration($config['configuration'], $container);
+        $this->configureConsole($config['console'], $container);
+        $this->configureCronJob($config['cron_job'], $container);
+        $this->configureEntityMigrator($config['entity_migrator'], $container);
+        $this->configureMessenger($config['messenger'], $container);
+        $this->configureUser($config['user'], $container);
     }
 
     private function configureConfiguration(
         array $config,
-        Loader\FileLoader $loader,
         ContainerBuilder $container,
     ): void {
         if (!$config['enabled']) {
@@ -79,7 +75,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
         ;
     }
 
-    private function configureConsole(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    private function configureConsole(array $config, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -102,7 +98,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
         $definition = $container
             ->setDefinition(
                 CommandRegistry::class,
-                (new Definition(CommandRegistry::class))
+                new Definition(CommandRegistry::class)
                     ->setAutowired(true)
                     ->setAutoconfigured(true)
             )
@@ -112,14 +108,14 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             $definition->addMethodCall(
                 'setCommand',
                 [
-                    (new Definition(Command::class))
+                    new Definition(Command::class)
                         ->setArguments($this->arrayToArgumentsArray($configuration)),
                 ]
             );
         }
     }
 
-    private function configureCronJob(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    private function configureCronJob(array $config, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -147,7 +143,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
         }
     }
 
-    private function configureMessenger(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    private function configureMessenger(array $config, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -157,7 +153,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             $container
                 ->setDefinition(
                     FinalizeContextQueueCountEventListener::class,
-                    (new Definition(FinalizeContextQueueCountEventListener::class))
+                    new Definition(FinalizeContextQueueCountEventListener::class)
                         ->setAutowired(true)
                         ->setAutoconfigured(true)
                 )
@@ -187,7 +183,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             $container
                 ->setDefinition(
                     CanShowMessageVoter::class,
-                    (new Definition(CanShowMessageVoter::class))
+                    new Definition(CanShowMessageVoter::class)
                         ->setAutowired(true)
                         ->setAutoconfigured(true)
                 )
@@ -197,7 +193,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
         }
     }
 
-    private function configureEntityMigrator(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    private function configureEntityMigrator(array $config, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -234,7 +230,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
         ;
     }
 
-    private function configureUser(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    private function configureUser(array $config, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -302,7 +298,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             ->addTag('controller.service_arguments')
         ;
 
-        $this->configureUserLock($config['user_lock'], $loader, $container);
+        $this->configureUserLock($config['user_lock'], $container);
 
         if (!$config['2fa']['enabled']) {
             return;
@@ -351,7 +347,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
         ;
     }
 
-    private function configureUserLock(array $config, Loader\FileLoader $loader, ContainerBuilder $container): void
+    private function configureUserLock(array $config, ContainerBuilder $container): void
     {
         if (!$config['enabled']) {
             return;
@@ -492,7 +488,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
 
         $container->setDefinition(
             $config['controller_class'],
-            (new Definition($config['controller_class']))
+            new Definition($config['controller_class'])
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
                 ->addTag('controller.service_arguments')

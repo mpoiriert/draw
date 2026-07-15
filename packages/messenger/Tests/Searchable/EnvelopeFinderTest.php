@@ -100,7 +100,7 @@ class EnvelopeFinderTest extends TestCase
             ->willReturn(new Envelope((object) []))
         ;
 
-        static::assertNotNull($envelope = $this->service->findById($messageId));
+        $envelope = $this->service->findById($messageId);
 
         static::assertNotNull(
             $stamp = $envelope->last(FoundFromTransportStamp::class)

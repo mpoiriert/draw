@@ -29,7 +29,7 @@ class CronJobExecutionTest extends TestCase
         Carbon::setTestNow($now);
 
         $execution = new CronJobExecution(
-            (new CronJob())
+            new CronJob()
                 ->setActive($active)
                 ->setTimeToLive($timeToLive),
             $requestedAt,

@@ -13,6 +13,7 @@ use Draw\Bundle\UserBundle\Entity\UserLock;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -41,7 +42,7 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
         $userLock->setUnlockUntil(null);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             \sprintf('/admin/app/user/%s/unlock', $this->lockedUser->getId())
         );
 
@@ -72,7 +73,7 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
         $this->client->loginUserInAdmin($this->lockedUser);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             \sprintf('/admin/app/user/%s/unlock', $this->admin->getId())
         );
 

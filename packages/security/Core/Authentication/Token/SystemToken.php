@@ -25,12 +25,12 @@ class SystemToken extends AbstractToken
                 return 'system';
             }
 
-            public function getPassword(): ?string
+            public function getPassword(): null
             {
                 return null;
             }
 
-            public function getSalt(): ?string
+            public function getSalt(): null
             {
                 return null;
             }
@@ -39,7 +39,7 @@ class SystemToken extends AbstractToken
             {
             }
 
-            public function getUsername(): ?string
+            public function getUsername(): null
             {
                 return null;
             }

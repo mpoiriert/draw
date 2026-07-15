@@ -174,7 +174,7 @@ class EmailComposerTest extends TestCase
     public function testComposeLocalizeEmail(): void
     {
         $message = new class extends Email implements LocalizeEmailInterface {
-            public function getLocale(): ?string
+            public function getLocale(): string
             {
                 return 'fr';
             }

@@ -79,12 +79,11 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
             $definition->setArguments($this->arrayToArgumentsArray($arguments));
         }
 
-        $this->loadSlowRequest($config['slow_request'], $loader, $container);
+        $this->loadSlowRequest($config['slow_request'], $container);
     }
 
     private function loadSlowRequest(
         array $config,
-        PhpFileLoader $loader,
         ContainerBuilder $container,
     ): void {
         if (!$this->isConfigEnabled($container, $config)) {
@@ -94,7 +93,7 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
         $container
             ->setDefinition(
                 SlowRequestLoggerListener::class,
-                (new Definition(SlowRequestLoggerListener::class))
+                new Definition(SlowRequestLoggerListener::class)
                     ->setAutowired(true)
                     ->setAutoconfigured(true)
             )
@@ -141,7 +140,7 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
                     throw new \InvalidArgumentException(\sprintf('Unknown request matcher "%s".', $key));
                 }
 
-                $requestMatcherDefinitions[] = (new Definition($requestMatcherClass))->setArguments([$value]);
+                $requestMatcherDefinitions[] = new Definition($requestMatcherClass)->setArguments([$value]);
             }
 
             $chainRequestMatcherDefinition->setArgument(

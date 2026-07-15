@@ -54,7 +54,7 @@ class RequestBodyValueResolver implements ValueResolverInterface
     {
         $contentType = $request->headers->get('Content-Type');
         switch (true) {
-            case str_starts_with($contentType, 'application/json'):
+            case str_starts_with((string) $contentType, 'application/json'):
                 // This allows an empty body to be consider as '{}'
                 try {
                     $requestData = json_decode($request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
@@ -63,8 +63,8 @@ class RequestBodyValueResolver implements ValueResolverInterface
                 }
 
                 break;
-            case str_starts_with($contentType, 'multipart/form-data'):
-            case str_starts_with($contentType, 'application/x-www-form-urlencoded'):
+            case str_starts_with((string) $contentType, 'multipart/form-data'):
+            case str_starts_with((string) $contentType, 'application/x-www-form-urlencoded'):
                 $requestData = $request->request->all();
                 break;
             default:

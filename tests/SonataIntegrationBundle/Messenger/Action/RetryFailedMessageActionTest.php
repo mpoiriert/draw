@@ -16,6 +16,7 @@ use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Messenger\Message\RetryFailedMessageMessage;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
@@ -59,7 +60,7 @@ class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInter
         static::assertSame(FailedMessage::class, $failedMessage->getMessageClass());
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             \sprintf('/admin/app/messengermessage/%s/retry', $failedMessage->getId())
         );
 

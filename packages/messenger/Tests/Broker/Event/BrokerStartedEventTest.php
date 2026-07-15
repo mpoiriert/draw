@@ -6,7 +6,6 @@ use Draw\Component\Messenger\Broker\Broker;
 use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @internal
@@ -28,14 +27,6 @@ class BrokerStartedEventTest extends TestCase
             $this->broker = $this->createMock(Broker::class),
             $this->concurrent = random_int(1, \PHP_INT_MAX),
             $this->timeout = random_int(1, \PHP_INT_MAX)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            Event::class,
-            $this->event
         );
     }
 

@@ -2,7 +2,6 @@
 
 namespace Draw\Bundle\SonataImportBundle\Tests\Column\Extractor;
 
-use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Column\Extractor\ExactMatchColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Import\Importer;
@@ -24,14 +23,6 @@ class ExactMatchColumnExtractorTest extends TestCase
     {
         $this->object = new ExactMatchColumnExtractor(
             $this->importer = $this->createMock(Importer::class)
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        static::assertInstanceOf(
-            ColumnExtractorInterface::class,
-            $this->object
         );
     }
 
@@ -63,7 +54,7 @@ class ExactMatchColumnExtractorTest extends TestCase
 
         static::assertNull(
             $this->object->extractDefaultValue(
-                (new Column())
+                new Column()
                     ->setHeaderName('headerName')
                     ->setMappedTo('mappedTo'),
                 ['sample1', 'sample2']
@@ -81,7 +72,7 @@ class ExactMatchColumnExtractorTest extends TestCase
 
         static::assertNull(
             $this->object->extractDefaultValue(
-                (new Column())
+                new Column()
                     ->setHeaderName('headerName'),
                 ['sample3', 'sample4']
             )
@@ -96,7 +87,7 @@ class ExactMatchColumnExtractorTest extends TestCase
             ->willReturn(['headerName'])
         ;
 
-        $column = (new Column())
+        $column = new Column()
             ->setHeaderName('headerName')
         ;
 

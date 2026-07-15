@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -26,7 +26,7 @@ final class LoginController extends AbstractController
     }
 
     #[Route(path: '/resetting/forgot-password', name: 'admin_forgot_password', methods: ['GET', 'POST'])]
-    public function forgotPasswordAction(
+    public function forgotPassword(
         Request $request,
         MailerInterface $mailer,
     ): Response {
@@ -39,7 +39,7 @@ final class LoginController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mailer->send(
-                (new ForgotPasswordEmail($form->get('email')->getData()))
+                new ForgotPasswordEmail($form->get('email')->getData())
                     ->setLocale($request->getLocale())
             );
 
@@ -48,24 +48,24 @@ final class LoginController extends AbstractController
 
         return $this->render(
             '@DrawUser/security/forgot_password.html.twig',
-            ['form' => $form->createView()]
+            ['form' => $form]
         );
     }
 
     #[Route(path: '/resetting/check-email', name: 'admin_check_email')]
-    public function checkEmailAction(): Response
+    public function checkEmail(): Response
     {
         return $this->render('@DrawUser/security/check_email.html.twig');
     }
 
     #[Route(path: '/confirmation', name: 'draw_user_account_confirmation')]
-    public function confirmationAction(): Response
+    public function confirmation(): Response
     {
         return $this->render('@DrawUser/security/confirmation.html.twig');
     }
 
     #[Route(path: '/login', name: 'admin_login')]
-    public function loginAction(): Response
+    public function login(): Response
     {
         if ($this->getUser() instanceof UserInterface) {
             return $this->redirectToRoute('sonata_admin_dashboard');
@@ -80,20 +80,20 @@ final class LoginController extends AbstractController
             '@DrawUser/security/login.html.twig',
             [
                 'last_username' => $this->authenticationUtils->getLastUsername(),
-                'form' => $form->createView(),
+                'form' => $form,
                 'error' => $this->authenticationUtils->getLastAuthenticationError(),
             ]
         );
     }
 
     #[Route(path: '/logout', name: 'admin_logout')]
-    public function logoutAction(): void
+    public function logout(): void
     {
         // Left empty intentionally because this will be handled by Symfony.
     }
 
     #[Route(path: '/change-password', name: 'admin_change_password')]
-    public function changePasswordAction(
+    public function changePassword(
         Request $request,
         UserFeedInterface $userFeed,
         ManagerRegistry $managerRegistry,
@@ -120,7 +120,7 @@ final class LoginController extends AbstractController
 
         return $this->render(
             '@DrawUser/security/reset.html.twig',
-            ['form' => $form->createView()]
+            ['form' => $form]
         );
     }
 
