@@ -33,8 +33,8 @@ class UsersController extends AbstractController
     public function __construct(
         private LoggerInterface $logger,
         private EntityManagerInterface $entityManager,
-        private readonly EntityHandler $entityHandler,
-        private readonly MailerInterface $mailer,
+        private EntityHandler $entityHandler,
+        private MailerInterface $mailer,
     ) {
     }
 
