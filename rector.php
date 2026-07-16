@@ -48,6 +48,9 @@ return RectorConfig::configure()
         Rector\Php83\Rector\ClassConst\AddTypeToConstRector::class => [
             __DIR__.'/packages/fixer/Tests/fixtures',
         ],
+        Rector\Php84\Rector\Class_\DeprecatedAnnotationToDeprecatedAttributeRector::class => [
+            __DIR__.'/packages/open-api/Tests/Extraction/Extractor/PhpDoc/OperationExtractorTest.php',
+        ],
         Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector::class,
 
         // PHPUnit

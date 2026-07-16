@@ -127,6 +127,24 @@ class OperationExtractorTest extends TestCase
         $this->extractStubServiceMethod('invalidTypeParameter', $operation);
     }
 
+    #[DataProvider('provideExtractDeprecatedCases')]
+    public function testExtractDeprecated(string $method): void
+    {
+        $context = $this->extractStubServiceMethod($method);
+
+        static::assertJsonStringEqualsJsonString(
+            file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtractDeprecated.json'),
+            $context->getOpenApi()->dump($context->getRootSchema(), false)
+        );
+    }
+
+    public static function provideExtractDeprecatedCases(): iterable
+    {
+        yield 'attribute' => ['method' => 'deprecatedAttributeOperation'];
+
+        yield 'doc block' => ['method' => 'deprecatedDocBlockOperation'];
+    }
+
     private function extractStubServiceMethod(string $method, ?Operation $operation = null): ExtractionContextInterface
     {
         $reflectionMethod = new \ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', $method);
@@ -176,6 +194,25 @@ class PhpDocOperationExtractorStubService
             throw new ExtractionImpossibleException();
         }
 
+        return $service;
+    }
+
+    /**
+     * @return PhpDocOperationExtractorStubService
+     */
+    #[\Deprecated]
+    public function deprecatedAttributeOperation(self $service)
+    {
+        return $service;
+    }
+
+    /**
+     * @deprecated
+     *
+     * @return PhpDocOperationExtractorStubService
+     */
+    public function deprecatedDocBlockOperation(self $service)
+    {
         return $service;
     }
 

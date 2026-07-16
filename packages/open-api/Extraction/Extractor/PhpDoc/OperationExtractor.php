@@ -85,7 +85,10 @@ class OperationExtractor implements ExtractorInterface
             $target->description = (string) $docBlock->getDescription() ?: null;
         }
 
-        if ($docBlock->getTagsByName('deprecated')) {
+        if (
+            $docBlock->getTagsByName('deprecated')
+            || \count($source->getAttributes(\Deprecated::class, \ReflectionAttribute::IS_INSTANCEOF)) > 0
+        ) {
             $target->deprecated = true;
         }
 
