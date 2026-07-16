@@ -193,12 +193,6 @@ parameters:
 			path: packages/user-bundle/DTO/Credential.php
 
 		-
-			message: '#^Call to function method_exists\(\) with Symfony\\Component\\Console\\Application and ''addCommand'' will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: tests/EntityMigrator/Command/MigrateCommandTest.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function set_error_handler expects \(callable\(int, string, string, int\)\: bool\)\|null, Closure\(\)\: null given\.$#'
 			identifier: argument.type
 			count: 1

@@ -35,6 +35,8 @@ trait CommandTestTrait
 
         if (null === $this->application) {
             $this->application = new Application();
+
+            /* @phpstan-ignore function.impossibleType */
             if (method_exists($this->application, 'addCommand')) {
                 $this->application->addCommand($command);
             } else {
