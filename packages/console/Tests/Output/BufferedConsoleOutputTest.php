@@ -4,7 +4,7 @@ namespace Draw\Component\Console\Tests\Output;
 
 use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[CoversClass(BufferedConsoleOutput::class)]
 class BufferedConsoleOutputTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
     private BufferedConsoleOutput $object;
 
     protected function setUp(): void
@@ -53,7 +53,7 @@ class BufferedConsoleOutputTest extends TestCase
     public function testSetFormatter(): void
     {
         // This is to test we are not in a infinite loop
-        $this->object->setFormatter($this->createMock(OutputFormatterInterface::class));
+        $this->object->setFormatter(static::createStub(OutputFormatterInterface::class));
 
         $this->addToAssertionCount(1);
     }

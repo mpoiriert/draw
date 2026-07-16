@@ -13,9 +13,7 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMes
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use Draw\Component\Messenger\Tests\Stub\Message\PreSendAwareMessageInterface;
-use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -26,31 +24,18 @@ use Symfony\Component\Messenger\MessageBusInterface;
 #[CoversClass(DoctrineBusMessageListener::class)]
 class DoctrineBusMessageListenerTest extends TestCase
 {
-    use MockTrait;
-
-    private DoctrineBusMessageListener $object;
-
-    private EnvelopeFactoryInterface&MockObject $envelopeFactory;
-
-    private MessageBusInterface&MockObject $messageBus;
-
-    private EntityManagerInterface&MockObject $entityManager;
-
-    protected function setUp(): void
-    {
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
-
-        $this->object = new DoctrineBusMessageListener(
-            $this->messageBus = $this->createMock(MessageBusInterface::class),
-            $this->envelopeFactory = $this->createMock(EnvelopeFactoryInterface::class)
-        );
-    }
-
     public function testPostPersist(): void
     {
-        $messageHolder = $this->createMock(MessageHolderInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
-        $this->entityManager
+        $object = new DoctrineBusMessageListener(
+            static::createStub(MessageBusInterface::class),
+            static::createStub(EnvelopeFactoryInterface::class)
+        );
+
+        $messageHolder = static::createStub(MessageHolderInterface::class);
+
+        $entityManager
             ->expects(static::once())
             ->method('getClassMetadata')
             ->with($messageHolder::class)
@@ -59,46 +44,60 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $classMetadata->rootEntityName = $messageHolder::class;
 
-        $this->object->postPersist(
+        $object->postPersist(
             new LifecycleEventArgs(
                 $messageHolder,
-                $this->entityManager
+                $entityManager
             )
         );
 
         static::assertSame(
             [$messageHolder],
-            $this->object->getFlattenMessageHolders()
+            $object->getFlattenMessageHolders()
         );
     }
 
     public function testPostPersistNotMessageHolderEntity(): void
     {
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+
+        $object = new DoctrineBusMessageListener(
+            static::createStub(MessageBusInterface::class),
+            static::createStub(EnvelopeFactoryInterface::class)
+        );
+
         $messageHolder = (object) [];
 
-        $this->entityManager
+        $entityManager
             ->expects(static::never())
             ->method('getClassMetadata')
         ;
 
-        $this->object->postPersist(
+        $object->postPersist(
             new LifecycleEventArgs(
                 $messageHolder,
-                $this->entityManager
+                $entityManager
             )
         );
 
         static::assertSame(
             [],
-            $this->object->getFlattenMessageHolders()
+            $object->getFlattenMessageHolders()
         );
     }
 
     public function testPostLoad(): void
     {
-        $messageHolder = $this->createMock(MessageHolderInterface::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
 
-        $this->entityManager
+        $object = new DoctrineBusMessageListener(
+            static::createStub(MessageBusInterface::class),
+            static::createStub(EnvelopeFactoryInterface::class)
+        );
+
+        $messageHolder = static::createStub(MessageHolderInterface::class);
+
+        $entityManager
             ->expects(static::once())
             ->method('getClassMetadata')
             ->with($messageHolder::class)
@@ -107,65 +106,92 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $classMetadata->rootEntityName = $messageHolder::class;
 
-        $this->object->postLoad(
+        $object->postLoad(
             new LifecycleEventArgs(
                 $messageHolder,
-                $this->entityManager
+                $entityManager
             )
         );
 
         static::assertSame(
             [$messageHolder],
-            $this->object->getFlattenMessageHolders()
+            $object->getFlattenMessageHolders()
         );
     }
 
     public function testOnClearAll(): void
     {
-        $this->addMessageHolder(
-            $this->createMock(MessageHolderInterface::class)
+        $object = new DoctrineBusMessageListener(
+            static::createStub(MessageBusInterface::class),
+            static::createStub(EnvelopeFactoryInterface::class)
         );
 
-        $this->object->onClear(new OnClearEventArgs($this->entityManager));
+        $this->addMessageHolder(
+            $object,
+            static::createStub(MessageHolderInterface::class)
+        );
+
+        $object->onClear(
+            new OnClearEventArgs(static::createStub(EntityManagerInterface::class))
+        );
 
         static::assertSame(
             [],
-            $this->object->getFlattenMessageHolders()
+            $object->getFlattenMessageHolders()
         );
     }
 
     public function testOnClear(): void
     {
-        $this->addMessageHolder(
-            $this->createMock(MessageHolderInterface::class)
+        $object = new DoctrineBusMessageListener(
+            static::createStub(MessageBusInterface::class),
+            static::createStub(EnvelopeFactoryInterface::class)
         );
 
-        $this->object->onClear(new OnClearEventArgs($this->entityManager));
+        $this->addMessageHolder(
+            $object,
+            static::createStub(MessageHolderInterface::class)
+        );
+
+        $object->onClear(
+            new OnClearEventArgs(static::createStub(EntityManagerInterface::class))
+        );
 
         static::assertCount(
             0,
-            $this->object->getFlattenMessageHolders()
+            $object->getFlattenMessageHolders()
         );
     }
 
     public function testPostFlushEmpty(): void
     {
-        $this->envelopeFactory
+        $object = new DoctrineBusMessageListener(
+            $messageBus = $this->createMock(MessageBusInterface::class),
+            $envelopeFactory = $this->createMock(EnvelopeFactoryInterface::class)
+        );
+
+        $envelopeFactory
             ->expects(static::never())
             ->method('createEnvelopes')
         ;
 
-        $this->messageBus
+        $messageBus
             ->expects(static::never())
             ->method('dispatch')
         ;
 
-        $this->object->postFlush();
+        $object->postFlush();
     }
 
     public function testPostFlushOnlyUninitializedProxy(): void
     {
+        $object = new DoctrineBusMessageListener(
+            $messageBus = $this->createMock(MessageBusInterface::class),
+            $envelopeFactory = $this->createMock(EnvelopeFactoryInterface::class)
+        );
+
         $this->addMessageHolder(
+            $object,
             new class implements Proxy, MessageHolderInterface {
                 public function getOnHoldMessages(bool $clear): array
                 {
@@ -183,24 +209,29 @@ class DoctrineBusMessageListenerTest extends TestCase
             }
         );
 
-        $this->envelopeFactory
+        $envelopeFactory
             ->expects(static::never())
             ->method('createEnvelopes')
         ;
 
-        $this->messageBus
+        $messageBus
             ->expects(static::never())
             ->method('dispatch')
         ;
 
-        $this->object->postFlush();
+        $object->postFlush();
     }
 
     public function testPostFlushWithOneMessage(): void
     {
+        $object = new DoctrineBusMessageListener(
+            $messageBus = $this->createMock(MessageBusInterface::class),
+            $envelopeFactory = $this->createMock(EnvelopeFactoryInterface::class)
+        );
+
         $messageHolder = $this->createMock(MessageHolderInterface::class);
 
-        $this->addMessageHolder($messageHolder);
+        $this->addMessageHolder($object, $messageHolder);
 
         $messageHolder->expects(static::once())
             ->method('getOnHoldMessages')
@@ -225,28 +256,33 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->method('preSend')
         ;
 
-        $this->envelopeFactory
+        $envelopeFactory
             ->expects(static::once())
             ->method('createEnvelopes')
             ->with($messageHolder, $messages)
             ->willReturn([$envelope = new Envelope((object) [])])
         ;
 
-        $this->messageBus
+        $messageBus
             ->expects(static::once())
             ->method('dispatch')
             ->with($envelope)
             ->willReturnArgument(0)
         ;
 
-        $this->object->postFlush();
+        $object->postFlush();
     }
 
     public function testPostFlushWithMultipleMessageHolder(): void
     {
+        $object = new DoctrineBusMessageListener(
+            $messageBus = $this->createMock(MessageBusInterface::class),
+            $envelopeFactory = $this->createMock(EnvelopeFactoryInterface::class)
+        );
+
         $messageHolder = $this->createMock(MessageHolderInterface::class);
 
-        $this->addMessageHolder($messageHolder);
+        $this->addMessageHolder($object, $messageHolder);
 
         $messageHolder
             ->expects(static::once())
@@ -257,7 +293,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $messageHolder = $this->createMock(MessageHolderInterface::class);
 
-        $this->addMessageHolder($messageHolder);
+        $this->addMessageHolder($object, $messageHolder);
 
         $messageHolder
             ->expects(static::once())
@@ -266,48 +302,53 @@ class DoctrineBusMessageListenerTest extends TestCase
             ->willReturn([(object) []])
         ;
 
-        $this->envelopeFactory
+        $envelopeFactory
             ->expects(static::exactly(2))
             ->method('createEnvelopes')
             ->willReturn([$envelope = new Envelope((object) [])])
         ;
 
-        $this->messageBus
+        $messageBus
             ->expects(static::exactly(2))
             ->method('dispatch')
             ->with($envelope)
             ->willReturnArgument(0)
         ;
 
-        $this->object->postFlush();
+        $object->postFlush();
     }
 
     public function testReset(): void
     {
-        $messageHolder = $this->createMock(MessageHolderInterface::class);
+        $object = new DoctrineBusMessageListener(
+            static::createStub(MessageBusInterface::class),
+            static::createStub(EnvelopeFactoryInterface::class)
+        );
 
-        $this->addMessageHolder($messageHolder);
+        $messageHolder = static::createStub(MessageHolderInterface::class);
+
+        $this->addMessageHolder($object, $messageHolder);
 
         static::assertSame(
             [$messageHolder],
-            $this->object->getFlattenMessageHolders()
+            $object->getFlattenMessageHolders()
         );
 
-        $this->object->reset();
+        $object->reset();
 
         static::assertSame(
             [],
-            $this->object->getFlattenMessageHolders()
+            $object->getFlattenMessageHolders()
         );
     }
 
-    private function addMessageHolder(MessageHolderInterface $messageHolder): void
+    private function addMessageHolder(DoctrineBusMessageListener $object, MessageHolderInterface $messageHolder): void
     {
-        $messageHolders = ReflectionAccessor::getPropertyValue($this->object, 'messageHolders');
+        $messageHolders = ReflectionAccessor::getPropertyValue($object, 'messageHolders');
         $messageHolders[$messageHolder::class][spl_object_id($messageHolder)] = $messageHolder;
 
         ReflectionAccessor::setPropertyValue(
-            $this->object,
+            $object,
             'messageHolders',
             $messageHolders
         );

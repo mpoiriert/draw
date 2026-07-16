@@ -6,7 +6,6 @@ use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Messenger\Tests\Stub\Transport\FindAwareTransportInterface;
-use Draw\Component\Tester\MockTrait;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -20,8 +19,6 @@ use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
 #[CoversClass(EnvelopeFinder::class)]
 class EnvelopeFinderTest extends TestCase
 {
-    use MockTrait;
-
     private EnvelopeFinder $service;
 
     private TransportRepository&MockObject $transportRepository;

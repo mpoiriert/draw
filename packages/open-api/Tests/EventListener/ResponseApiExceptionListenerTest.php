@@ -10,6 +10,7 @@ use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\Response as OpenResponse;
 use Draw\Component\OpenApi\Schema\Root;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,18 +29,21 @@ class ResponseApiExceptionListenerTest extends TestCase
 {
     private ResponseApiExceptionListener $object;
 
-    private HttpKernelInterface $httpKernel;
+    private HttpKernelInterface&Stub $httpKernel;
+
     private \Exception $exception;
+
     private ExceptionEvent $exceptionEvent;
-    private Request $request;
+
+    private Request&Stub $request;
 
     protected function setUp(): void
     {
         $this->object = new ResponseApiExceptionListener();
 
         $this->exceptionEvent = new ExceptionEvent(
-            $this->httpKernel = $this->createMock(HttpKernelInterface::class),
-            $this->request = $this->createMock(Request::class),
+            $this->httpKernel = static::createStub(HttpKernelInterface::class),
+            $this->request = static::createStub(Request::class),
             HttpKernelInterface::MAIN_REQUEST,
             $this->exception = new \Exception(
                 previous: new \Exception()
@@ -47,7 +51,6 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
 
         $this->request
-            ->expects(static::any())
             ->method('getRequestFormat')
             ->willReturn('json')
         ;
@@ -91,13 +94,12 @@ class ResponseApiExceptionListenerTest extends TestCase
     {
         $this->exceptionEvent = new ExceptionEvent(
             $this->httpKernel,
-            $this->request = $this->createMock(Request::class),
+            $request = static::createStub(Request::class),
             HttpKernelInterface::MAIN_REQUEST,
             $this->exception
         );
 
-        $this->request
-            ->expects(static::any())
+        $request
             ->method('getRequestFormat')
             ->willReturn('html')
         ;

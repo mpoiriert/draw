@@ -11,7 +11,7 @@ use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,7 +29,7 @@ class StartMessengerBrokerCommandTest extends TestCase
 
     private EventDispatcher $eventDispatcher;
 
-    private CpuCounter&MockObject $cpuCounter;
+    private CpuCounter&Stub $cpuCounter;
 
     private string $consolePath;
 
@@ -37,9 +37,9 @@ class StartMessengerBrokerCommandTest extends TestCase
     {
         $this->command = new StartMessengerBrokerCommand(
             $this->consolePath = uniqid('console-path-'),
-            $this->processFactory = $this->createMock(ProcessFactoryInterface::class),
+            $this->processFactory = static::createStub(ProcessFactoryInterface::class),
             $this->eventDispatcher = new EventDispatcher(),
-            $this->cpuCounter = $this->createMock(CpuCounter::class)
+            $this->cpuCounter = static::createStub(CpuCounter::class)
         );
     }
 

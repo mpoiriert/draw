@@ -50,6 +50,9 @@ return RectorConfig::configure()
         ],
         Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector::class,
 
+        // PHPUnit
+        Rector\PHPUnit\PHPUnit120\Rector\Class_\AllowMockObjectsForDataProviderRector::class,
+
         // Symfony
         Rector\Symfony\CodeQuality\Rector\Class_\ControllerMethodInjectionToConstructorRector::class,
         // @see `sonata-project/admin-bundle/src/Route/RouteCollection.php:186`

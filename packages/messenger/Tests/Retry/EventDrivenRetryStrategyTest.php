@@ -5,7 +5,7 @@ namespace Draw\Component\Messenger\Tests\Retry;
 use Draw\Component\Messenger\Retry\Event\GetWaitingTimeEvent;
 use Draw\Component\Messenger\Retry\Event\IsRetryableEvent;
 use Draw\Component\Messenger\Retry\EventDrivenRetryStrategy;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -17,7 +17,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class EventDrivenRetryStrategyTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private EventDrivenRetryStrategy $object;
 

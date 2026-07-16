@@ -41,7 +41,7 @@ class EnvelopeFactoryDelayStampListenerTest extends TestCase
     {
         $this->object->handleEnvelopeCreatedEvent(
             $event = new EnvelopeCreatedEvent(
-                $this->createMock(MessageHolderInterface::class),
+                static::createStub(MessageHolderInterface::class),
                 new Envelope((object) [])
             )
         );

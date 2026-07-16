@@ -34,7 +34,7 @@
         "nesbot/carbon": "^3.8",
         "php": ">=8.5",
         "phpdocumentor/reflection-docblock": "^5.2",
-        "phpunit/phpunit": "^11.3",
+        "phpunit/phpunit": "^12.5",
         "psr/http-message": "^1.0 || ^2.0",
         "psr/log": "^3",
         "ramsey/uuid": "^4.2",
@@ -297,7 +297,7 @@
         ],
         "test:run": [
             "Composer\\Config::disableProcessTimeout",
-            "vendor/bin/phpunit"
+            "vendor/bin/phpunit --display-skipped --display-deprecations --display-notices --display-warnings"
         ],
         "test:run:coverage": [
             "Composer\\Config::disableProcessTimeout",

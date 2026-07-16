@@ -15,10 +15,8 @@ use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
-use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Depends;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -40,15 +38,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class CommandFlowListenerTest extends TestCase
 {
     use DoctrineOrmTrait;
-    use MockTrait;
 
     private static EntityManagerInterface $entityManager;
-
-    private CommandFlowListener $object;
-
-    private EventDispatcherInterface&MockObject $eventDispatcher;
-
-    private LoggerInterface&MockObject $logger;
 
     private ?Execution $execution = null;
 
@@ -61,12 +52,6 @@ class CommandFlowListenerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->object = new CommandFlowListener(
-            self::$entityManager->getConnection(),
-            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
-            $this->logger = $this->createMock(LoggerInterface::class)
-        );
-
         if ($this->execution) {
             self::$entityManager->refresh($this->execution);
         }
@@ -74,6 +59,12 @@ class CommandFlowListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         static::assertSame(
             [
                 LoadExecutionIdEvent::class => [
@@ -90,21 +81,27 @@ class CommandFlowListenerTest extends TestCase
                 Event\ConsoleTerminateEvent::class => ['logCommandTerminate'],
                 Event\ConsoleErrorEvent::class => ['logCommandError'],
             ],
-            $this->object::getSubscribedEvents()
+            $listener::getSubscribedEvents()
         );
     }
 
     public function testConfigureOptions(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $commandEvent = $this->createCommandEvent();
-        $this->object->configureOptions($commandEvent);
+        $listener->configureOptions($commandEvent);
 
         $command = $commandEvent->getCommand();
 
-        $option = $command->getDefinition()->getOption($this->object::OPTION_IGNORE);
+        $option = $command->getDefinition()->getOption($listener::OPTION_IGNORE);
 
         static::assertSame(
-            $this->object::OPTION_IGNORE,
+            $listener::OPTION_IGNORE,
             $option->getName()
         );
 
@@ -125,10 +122,10 @@ class CommandFlowListenerTest extends TestCase
             $option->getDefault()
         );
 
-        $option = $command->getDefinition()->getOption($this->object::OPTION_EXECUTION_ID);
+        $option = $command->getDefinition()->getOption($listener::OPTION_EXECUTION_ID);
 
         static::assertSame(
-            $this->object::OPTION_EXECUTION_ID,
+            $listener::OPTION_EXECUTION_ID,
             $option->getName()
         );
 
@@ -152,10 +149,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testCheckIgnoredCommandsIgnored(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(InputInterface::class),
+            static::createStub(OutputInterface::class)
         );
 
         $command
@@ -164,7 +167,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn('help')
         ;
 
-        $this->object->checkIgnoredCommands($event);
+        $listener->checkIgnoredCommands($event);
 
         static::assertNull($event->getExecutionId());
         static::assertTrue($event->getIgnoreTracking());
@@ -172,10 +175,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testCheckIgnoredCommandsNotIgnored(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(InputInterface::class),
+            static::createStub(OutputInterface::class)
         );
 
         $command
@@ -184,7 +193,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn(uniqid('command-'))
         ;
 
-        $this->object->checkIgnoredCommands($event);
+        $listener->checkIgnoredCommands($event);
 
         static::assertNull($event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
@@ -192,10 +201,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testCheckHelpIgnored(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
+            static::createStub(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(OutputInterface::class)
         );
 
         $input
@@ -212,7 +227,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn(true)
         ;
 
-        $this->object->checkHelp($event);
+        $listener->checkHelp($event);
 
         static::assertNull($event->getExecutionId());
         static::assertTrue($event->getIgnoreTracking());
@@ -220,10 +235,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testCheckHelpNotIgnored(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
+            static::createStub(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(OutputInterface::class)
         );
 
         $input
@@ -233,7 +254,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn(false)
         ;
 
-        $this->object->checkHelp($event);
+        $listener->checkHelp($event);
 
         static::assertNull($event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
@@ -241,16 +262,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testCheckTableExistIgnoredTableDoesNotExists(): void
     {
-        $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+        $listener = new CommandFlowListener(
+            $connection = $this->createMock(Connection::class),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
         );
 
-        $connection = $this->mockProperty(
-            $this->object,
-            'connection',
-            Connection::class
+        $event = new LoadExecutionIdEvent(
+            static::createStub(Command::class),
+            static::createStub(InputInterface::class),
+            static::createStub(OutputInterface::class)
         );
 
         $connection
@@ -266,7 +287,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn(false)
         ;
 
-        $this->object->checkTableExist($event);
+        $listener->checkTableExist($event);
 
         static::assertNull($event->getExecutionId());
         static::assertTrue($event->getIgnoreTracking());
@@ -274,16 +295,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testCheckTableExistIgnoredException(): void
     {
-        $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+        $listener = new CommandFlowListener(
+            $connection = $this->createMock(Connection::class),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
         );
 
-        $connection = $this->mockProperty(
-            $this->object,
-            'connection',
-            Connection::class
+        $event = new LoadExecutionIdEvent(
+            static::createStub(Command::class),
+            static::createStub(InputInterface::class),
+            static::createStub(OutputInterface::class)
         );
 
         $connection
@@ -292,7 +313,7 @@ class CommandFlowListenerTest extends TestCase
             ->willThrowException(new ConnectionException())
         ;
 
-        $this->object->checkTableExist($event);
+        $listener->checkTableExist($event);
 
         static::assertNull($event->getExecutionId());
         static::assertTrue($event->getIgnoreTracking());
@@ -300,20 +321,26 @@ class CommandFlowListenerTest extends TestCase
 
     public function testLoadIdFromInputNotFound(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
+            static::createStub(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(OutputInterface::class)
         );
 
         $input
             ->expects(static::once())
             ->method('hasOption')
-            ->with($this->object::OPTION_EXECUTION_ID)
+            ->with($listener::OPTION_EXECUTION_ID)
             ->willReturn(false)
         ;
 
-        $this->object->loadIdFromInput($event);
+        $listener->loadIdFromInput($event);
 
         static::assertNull($event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
@@ -321,13 +348,19 @@ class CommandFlowListenerTest extends TestCase
 
     public function testLoadIdFromInputExists(): void
     {
-        $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput($id = uniqid('id-')),
-            $this->createMock(OutputInterface::class)
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
         );
 
-        $this->object->loadIdFromInput($event);
+        $event = new LoadExecutionIdEvent(
+            static::createStub(Command::class),
+            $this->createOptionExecutionIdInput($listener, $id = uniqid('id-')),
+            static::createStub(OutputInterface::class)
+        );
+
+        $listener->loadIdFromInput($event);
 
         static::assertSame($id, $event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
@@ -335,10 +368,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testGenerateFromDatabaseIgnoredException(): void
     {
+        $listener = new CommandFlowListener(
+            $connection = $this->createMock(PrimaryReadReplicaConnection::class),
+            static::createStub(EventDispatcherInterface::class),
+            $logger = $this->createMock(LoggerInterface::class)
+        );
+
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(OutputInterface::class)
         );
 
         $command
@@ -359,12 +398,6 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn([])
         ;
 
-        $connection = $this->mockProperty(
-            $this->object,
-            'connection',
-            PrimaryReadReplicaConnection::class
-        );
-
         $connection
             ->expects(static::once())
             ->method('isConnectedToPrimary')
@@ -382,7 +415,7 @@ class CommandFlowListenerTest extends TestCase
             ->method('ensureConnectedToReplica')
         ;
 
-        $this->logger
+        $logger
             ->expects(static::once())
             ->method('error')
             ->with(
@@ -391,7 +424,7 @@ class CommandFlowListenerTest extends TestCase
             )
         ;
 
-        $this->object->generateFromDatabase($event);
+        $listener->generateFromDatabase($event);
 
         static::assertNull($event->getExecutionId());
         static::assertTrue($event->getIgnoreTracking());
@@ -399,10 +432,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testGenerateFromDatabase(): void
     {
+        $listener = new CommandFlowListener(
+            $connection = $this->createMock(PrimaryReadReplicaConnection::class),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(OutputInterface::class)
         );
 
         $command
@@ -422,12 +461,6 @@ class CommandFlowListenerTest extends TestCase
             ->method('getOptions')
             ->willReturn(['null' => null, 'zero' => 0, 'false' => false, 'other' => 'value'])
         ;
-
-        $connection = $this->mockProperty(
-            $this->object,
-            'connection',
-            PrimaryReadReplicaConnection::class
-        );
 
         $connection
             ->expects(static::once())
@@ -491,7 +524,7 @@ class CommandFlowListenerTest extends TestCase
             ->method('ensureConnectedToReplica')
         ;
 
-        $this->object->generateFromDatabase($event);
+        $listener->generateFromDatabase($event);
 
         static::assertIsString($event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
@@ -499,10 +532,16 @@ class CommandFlowListenerTest extends TestCase
 
     public function testGenerateFromDatabaseReal(): Execution
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(OutputInterface::class)
         );
 
         $command
@@ -523,7 +562,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn([])
         ;
 
-        $this->object->generateFromDatabase($event);
+        $listener->generateFromDatabase($event);
 
         static::assertNotNull($id = $event->getExecutionId());
         static::assertFalse($event->getIgnoreTracking());
@@ -535,7 +574,13 @@ class CommandFlowListenerTest extends TestCase
 
     public function testLogCommandStartNoExecutionId(): void
     {
-        $this->eventDispatcher
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
+        $eventDispatcher
             ->expects(static::once())
             ->method('dispatch')
             ->willReturnArgument(0)
@@ -543,8 +588,8 @@ class CommandFlowListenerTest extends TestCase
 
         $event = new ConsoleCommandEvent(
             $command = $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(InputInterface::class),
+            static::createStub(OutputInterface::class)
         );
 
         $command
@@ -552,13 +597,19 @@ class CommandFlowListenerTest extends TestCase
             ->method('getDefinition')
         ;
 
-        $this->object->logCommandStart($event);
+        $listener->logCommandStart($event);
     }
 
     #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandStart(Execution $execution): void
     {
-        $this->eventDispatcher
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
+        $eventDispatcher
             ->expects(static::once())
             ->method('dispatch')
             ->with(
@@ -573,8 +624,8 @@ class CommandFlowListenerTest extends TestCase
 
         $event = new ConsoleCommandEvent(
             $command = $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(InputInterface::class),
+            static::createStub(OutputInterface::class)
         );
 
         $command
@@ -584,13 +635,13 @@ class CommandFlowListenerTest extends TestCase
         ;
 
         $definition->addOption(
-            $option = new InputOption($this->object::OPTION_EXECUTION_ID, null, InputOption::VALUE_REQUIRED)
+            $option = new InputOption($listener::OPTION_EXECUTION_ID, null, InputOption::VALUE_REQUIRED)
         );
 
         $execution->setState(uniqid('state-'));
         self::$entityManager->flush();
 
-        $this->object->logCommandStart($event);
+        $listener->logCommandStart($event);
 
         static::assertSame($execution->getId(), $option->getDefault());
 
@@ -601,10 +652,10 @@ class CommandFlowListenerTest extends TestCase
 
     public function testLogCommandTerminateReplication(): void
     {
-        $connection = $this->mockProperty(
-            $this->object,
-            'connection',
-            PrimaryReadReplicaConnection::class
+        $listener = new CommandFlowListener(
+            $connection = $this->createMock(PrimaryReadReplicaConnection::class),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
         );
 
         $connection
@@ -618,21 +669,32 @@ class CommandFlowListenerTest extends TestCase
             ->method('ensureConnectedToReplica')
         ;
 
+        $connection
+            ->expects(static::once())
+            ->method('executeStatement')
+        ;
+
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput(uniqid('id-')),
-            $this->createMock(OutputInterface::class),
+            static::createStub(Command::class),
+            $this->createOptionExecutionIdInput($listener, uniqid('id-')),
+            static::createStub(OutputInterface::class),
             0
         );
 
-        $this->object->logCommandTerminate($event);
+        $listener->logCommandTerminate($event);
     }
 
     public function testLogCommandTerminateNoExecutionId(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
+            static::createStub(Command::class),
+            static::createStub(InputInterface::class),
             $output = $this->createMock(BufferedConsoleOutput::class),
             0
         );
@@ -642,15 +704,21 @@ class CommandFlowListenerTest extends TestCase
             ->method('fetch')
         ;
 
-        $this->object->logCommandTerminate($event);
+        $listener->logCommandTerminate($event);
     }
 
     #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandTerminate(Execution $execution): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput($execution->getId()),
+            static::createStub(Command::class),
+            $this->createOptionExecutionIdInput($listener, $execution->getId()),
             $output = $this->createMock(BufferedConsoleOutput::class),
             0
         );
@@ -661,7 +729,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn($output = uniqid('output-'))
         ;
 
-        $this->object->logCommandTerminate($event);
+        $listener->logCommandTerminate($event);
 
         self::$entityManager->refresh($execution);
 
@@ -672,9 +740,15 @@ class CommandFlowListenerTest extends TestCase
     #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandTerminateLongOutput(Execution $execution): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput($execution->getId()),
+            static::createStub(Command::class),
+            $this->createOptionExecutionIdInput($listener, $execution->getId()),
             $output = $this->createMock(BufferedConsoleOutput::class),
             0
         );
@@ -688,7 +762,7 @@ class CommandFlowListenerTest extends TestCase
         $execution->setOutput('');
         self::$entityManager->flush();
 
-        $this->object->logCommandTerminate($event);
+        $listener->logCommandTerminate($event);
 
         self::$entityManager->refresh($execution);
 
@@ -701,26 +775,38 @@ class CommandFlowListenerTest extends TestCase
 
     public function testLogCommandErrorNoExecutionId(): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new Event\ConsoleErrorEvent(
-            $this->createMock(InputInterface::class),
-            $this->createMock(BufferedConsoleOutput::class),
+            static::createStub(InputInterface::class),
+            static::createStub(BufferedConsoleOutput::class),
             new \Exception()
         );
 
-        $this->eventDispatcher
+        $eventDispatcher
             ->expects(static::never())
             ->method('dispatch')
         ;
 
-        $this->object->logCommandError($event);
+        $listener->logCommandError($event);
     }
 
     #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandError(Execution $execution): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new Event\ConsoleErrorEvent(
-            $this->createOptionExecutionIdInput($execution->getId()),
-            $this->createMock(BufferedConsoleOutput::class),
+            $this->createOptionExecutionIdInput($listener, $execution->getId()),
+            static::createStub(BufferedConsoleOutput::class),
             $error = new \Exception(),
             $command = $this->createMock(Command::class)
         );
@@ -746,7 +832,7 @@ class CommandFlowListenerTest extends TestCase
             )
         ;
 
-        $this->eventDispatcher
+        $eventDispatcher
             ->expects(static::once())
             ->method('dispatch')
             ->with(
@@ -760,7 +846,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturnArgument(0)
         ;
 
-        $this->object->logCommandError($event);
+        $listener->logCommandError($event);
 
         self::$entityManager->refresh($execution);
 
@@ -772,14 +858,20 @@ class CommandFlowListenerTest extends TestCase
     #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandErrorAutoAcknowledge(Execution $execution): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new Event\ConsoleErrorEvent(
-            $this->createOptionExecutionIdInput($execution->getId()),
-            $this->createMock(BufferedConsoleOutput::class),
+            $this->createOptionExecutionIdInput($listener, $execution->getId()),
+            static::createStub(BufferedConsoleOutput::class),
             new \Exception()
         );
 
         $reason = uniqid('reason-');
-        $this->eventDispatcher
+        $eventDispatcher
             ->expects(static::once())
             ->method('dispatch')
             ->with(
@@ -796,7 +888,7 @@ class CommandFlowListenerTest extends TestCase
         $execution->setState(Execution::STATE_TERMINATED);
         self::$entityManager->flush();
 
-        $this->object->logCommandError($event);
+        $listener->logCommandError($event);
 
         self::$entityManager->refresh($execution);
 
@@ -807,9 +899,15 @@ class CommandFlowListenerTest extends TestCase
     #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandTerminateDisabled(Execution $execution): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput($execution->getId()),
+            static::createStub(Command::class),
+            $this->createOptionExecutionIdInput($listener, $execution->getId()),
             $output = $this->createMock(BufferedConsoleOutput::class),
             ConsoleCommandEvent::RETURN_CODE_DISABLED
         );
@@ -820,7 +918,7 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn(uniqid('output-'))
         ;
 
-        $this->object->logCommandTerminate($event);
+        $listener->logCommandTerminate($event);
 
         self::$entityManager->refresh($execution);
 
@@ -830,9 +928,15 @@ class CommandFlowListenerTest extends TestCase
     #[Depends('testGenerateFromDatabaseReal')]
     public function testLogCommandTerminateDisabledIgnored(Execution $execution): void
     {
+        $listener = new CommandFlowListener(
+            self::$entityManager->getConnection(),
+            static::createStub(EventDispatcherInterface::class),
+            static::createStub(LoggerInterface::class)
+        );
+
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
-            $this->createOptionExecutionIdInput($execution->getId()),
+            static::createStub(Command::class),
+            $this->createOptionExecutionIdInput($listener, $execution->getId()),
             $output = $this->createMock(BufferedConsoleOutput::class),
             ConsoleCommandEvent::RETURN_CODE_DISABLED
         );
@@ -843,9 +947,9 @@ class CommandFlowListenerTest extends TestCase
             ->willReturn(uniqid('output-'))
         ;
 
-        ReflectionAccessor::setPropertyValue($this->object, 'ignoreDisabledCommand', true);
+        ReflectionAccessor::setPropertyValue($listener, 'ignoreDisabledCommand', true);
 
-        $this->object->logCommandTerminate($event);
+        $listener->logCommandTerminate($event);
 
         $execution = self::$entityManager->getRepository(Execution::class)
             ->findOneBy(['id' => $execution->getId()])
@@ -854,21 +958,21 @@ class CommandFlowListenerTest extends TestCase
         static::assertNull($execution);
     }
 
-    private function createOptionExecutionIdInput(string $id): InputInterface
+    private function createOptionExecutionIdInput(CommandFlowListener $listener, string $id): InputInterface
     {
         $input = $this->createMock(InputInterface::class);
 
         $input
             ->expects(static::once())
             ->method('hasOption')
-            ->with($this->object::OPTION_EXECUTION_ID)
+            ->with($listener::OPTION_EXECUTION_ID)
             ->willReturn(true)
         ;
 
         $input
             ->expects(static::once())
             ->method('getOption')
-            ->with($this->object::OPTION_EXECUTION_ID)
+            ->with($listener::OPTION_EXECUTION_ID)
             ->willReturn($id)
         ;
 
@@ -884,8 +988,8 @@ class CommandFlowListenerTest extends TestCase
 
         return new ConsoleCommandEvent(
             $command,
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            static::createStub(InputInterface::class),
+            static::createStub(OutputInterface::class)
         );
     }
 }

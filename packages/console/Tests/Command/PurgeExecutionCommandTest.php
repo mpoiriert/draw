@@ -6,9 +6,8 @@ use Doctrine\DBAL\Connection;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,18 +19,14 @@ use Symfony\Component\Console\Input\InputOption;
 class PurgeExecutionCommandTest extends TestCase
 {
     use CommandTestTrait;
-    use MockTrait;
-
-    private Connection&MockObject $connection;
-
-    private LoggerInterface&MockObject $logger;
+    use DoubleTrait;
 
     protected function setUp(): void
     {
-        $this->connection = $this->createMock(Connection::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
-
-        $this->command = new PurgeExecutionCommand($this->connection, $this->logger);
+        $this->command = new PurgeExecutionCommand(
+            static::createStub(Connection::class),
+            static::createStub(LoggerInterface::class),
+        );
     }
 
     public function getCommandName(): string
@@ -86,11 +81,14 @@ class PurgeExecutionCommandTest extends TestCase
 
     public function testExecute(): void
     {
+        $this->command = new PurgeExecutionCommand(
+            $connection = $this->createMock(Connection::class),
+            $logger = $this->createMock(LoggerInterface::class),
+        );
+
         $date = '2000-01-01 00:00:01';
 
-        $this->logger->expects(
-            static::exactly(3)
-        )
+        $logger->expects(static::exactly(3))
             ->method('debug')
             ->with(
                 ...static::withConsecutive(
@@ -110,7 +108,7 @@ class PurgeExecutionCommandTest extends TestCase
             )
         ;
 
-        $this->connection->expects(static::exactly(2))
+        $connection->expects(static::exactly(2))
             ->method('executeStatement')
             ->with(
                 ...static::withConsecutive(

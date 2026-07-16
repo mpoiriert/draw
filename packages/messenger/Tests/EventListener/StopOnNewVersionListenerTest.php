@@ -181,6 +181,6 @@ class StopOnNewVersionListenerTest extends TestCase implements VersionVerificati
 
         $this->expectExceptionObject($this->throwable);
 
-        $this->service->onBrokerRunningEvent(new BrokerRunningEvent($this->createMock(Broker::class)));
+        $this->service->onBrokerRunningEvent(new BrokerRunningEvent(static::createStub(Broker::class)));
     }
 }

@@ -20,7 +20,7 @@ class SchemaAddDefaultHeadersListenerTest extends TestCase
     {
         $this->object = new SchemaAddDefaultHeadersListener(
             [],
-            $this->createMock(ArrayTransformerInterface::class)
+            static::createStub(ArrayTransformerInterface::class)
         );
     }
 

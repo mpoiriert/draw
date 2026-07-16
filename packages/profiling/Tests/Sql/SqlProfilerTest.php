@@ -3,8 +3,7 @@
 namespace Draw\Component\Profiling\Tests\Sql;
 
 use Draw\Component\Profiling\Sql\SqlProfiler;
-use Draw\Component\Tester\MockTrait;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,13 +11,11 @@ use PHPUnit\Framework\TestCase;
  */
 class SqlProfilerTest extends TestCase
 {
-    use MockTrait;
-
-    private SqlProfiler&MockObject $profiler;
+    private SqlProfiler&Stub $profiler;
 
     protected function setUp(): void
     {
-        $this->profiler = $this->createMock(SqlProfiler::class);
+        $this->profiler = static::createStub(SqlProfiler::class);
         $this->profiler
             ->method('getType')
             ->willReturn(SqlProfiler::PROFILER_TYPE)

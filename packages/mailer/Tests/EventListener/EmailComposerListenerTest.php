@@ -4,7 +4,6 @@ namespace Draw\Component\Mailer\Tests\EventListener;
 
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EventListener\EmailComposerListener;
-use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,8 +22,6 @@ use Symfony\Component\Mime\RawMessage;
 #[CoversClass(EmailComposerListener::class)]
 class EmailComposerListenerTest extends TestCase
 {
-    use MockTrait;
-
     private EmailComposerListener $object;
 
     private EmailComposer&MockObject $emailComposer;
@@ -45,7 +42,7 @@ class EmailComposerListenerTest extends TestCase
 
         $this->object->composeMessage(
             $this->createMessageEvent(
-                $this->createMock(RawMessage::class)
+                static::createStub(RawMessage::class)
             )
         );
     }
@@ -95,7 +92,7 @@ class EmailComposerListenerTest extends TestCase
             ->method('compose')
         ;
 
-        $message = $this->createMock(Message::class);
+        $message = static::createStub(Message::class);
 
         $this->object->composeMessage($this->createMessageEvent($message, true));
     }

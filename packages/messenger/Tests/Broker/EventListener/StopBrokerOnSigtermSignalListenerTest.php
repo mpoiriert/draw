@@ -37,7 +37,7 @@ class StopBrokerOnSigtermSignalListenerTest extends TestCase
         $event
             ->expects(static::once())
             ->method('getBroker')
-            ->willReturn($this->createMock(Broker::class))
+            ->willReturn(static::createStub(Broker::class))
         ;
 
         $this->service->onBrokerStarted($event);

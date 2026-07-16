@@ -6,9 +6,8 @@ use Draw\Component\Mailer\Email\LocalizeEmailInterface;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\Tests\Stub\EmailWriter\EmailWriterStub;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -24,62 +23,58 @@ use Symfony\Component\Translation\Translator;
 #[CoversClass(EmailComposer::class)]
 class EmailComposerTest extends TestCase
 {
-    use MockTrait;
-
-    private EmailComposer $object;
-
-    private ContainerInterface&MockObject $serviceLocator;
-
-    private Translator&MockObject $translator;
-
-    protected function setUp(): void
-    {
-        $this->object = new EmailComposer(
-            $this->serviceLocator = $this->createMock(ContainerInterface::class),
-            $this->translator = $this->createMock(Translator::class)
-        );
-    }
+    use DoubleTrait;
 
     public function testWriterMutator(): void
     {
-        static::assertSame([], $this->object->getWriters(\stdClass::class));
+        $object = new EmailComposer(
+            static::createStub(ContainerInterface::class),
+            static::createStub(Translator::class)
+        );
 
-        $this->object->addWriter(\stdClass::class, $writer1 = uniqid('writer-'), $method1 = uniqid('method-'));
+        static::assertSame([], $object->getWriters(\stdClass::class));
+
+        $object->addWriter(\stdClass::class, $writer1 = uniqid('writer-'), $method1 = uniqid('method-'));
 
         static::assertSame(
             [],
-            $this->object->getWriters(uniqid('other-class-'))
+            $object->getWriters(uniqid('other-class-'))
         );
 
         static::assertSame(
             [
                 [$writer1, $method1],
             ],
-            $this->object->getWriters(\stdClass::class)
+            $object->getWriters(\stdClass::class)
         );
 
-        $this->object->addWriter(\stdClass::class, $writer2 = uniqid('writer-'), $method2 = uniqid('method-'), 1);
+        $object->addWriter(\stdClass::class, $writer2 = uniqid('writer-'), $method2 = uniqid('method-'), 1);
 
         static::assertSame(
             [
                 [$writer2, $method2],
                 [$writer1, $method1],
             ],
-            $this->object->getWriters(\stdClass::class)
+            $object->getWriters(\stdClass::class)
         );
     }
 
     public function testComposeMessage(): void
     {
+        $object = new EmailComposer(
+            $serviceLocator = $this->createMock(ContainerInterface::class),
+            static::createStub(Translator::class)
+        );
+
         $message = new TemplatedEmail();
 
         $envelope = new Envelope(new Address('test@example.com'), [new Address('test@example.com')]);
 
-        $this->object->addWriter(Message::class, $writer1 = uniqid('writer-1-'), 'method1');
-        $this->object->addWriter(Email::class, $writer2 = uniqid('writer-2-'), 'method2');
-        $this->object->addWriter(uniqid('other-class-'), uniqid('writer-'), uniqid('method-'));
+        $object->addWriter(Message::class, $writer1 = uniqid('writer-1-'), 'method1');
+        $object->addWriter(Email::class, $writer2 = uniqid('writer-2-'), 'method2');
+        $object->addWriter(uniqid('other-class-'), uniqid('writer-'), uniqid('method-'));
 
-        $this->serviceLocator
+        $serviceLocator
             ->expects(static::exactly(2))
             ->method('get')
             ->with(
@@ -111,12 +106,17 @@ class EmailComposerTest extends TestCase
             )
         ;
 
-        $this->object->compose($message, $envelope);
+        $object->compose($message, $envelope);
     }
 
     public function testRegisterEmailWriter(): void
     {
-        $message = $this->createMock(Email::class);
+        $object = new EmailComposer(
+            $serviceLocator = $this->createMock(ContainerInterface::class),
+            static::createStub(Translator::class)
+        );
+
+        $message = static::createStub(Email::class);
 
         $envelope = new Envelope(new Address('test@example.com'), [new Address('test@example.com')]);
 
@@ -144,28 +144,28 @@ class EmailComposerTest extends TestCase
             }
         };
 
-        $this->object->registerEmailWriter($emailWriter);
+        $object->registerEmailWriter($emailWriter);
 
         static::assertSame(
             [
                 [$emailWriter, 'compose1'],
             ],
-            $this->object->getWriters(Email::class)
+            $object->getWriters(Email::class)
         );
 
         static::assertSame(
             [
                 [$emailWriter, 'compose2'],
             ],
-            $this->object->getWriters(Message::class)
+            $object->getWriters(Message::class)
         );
 
-        $this->serviceLocator
+        $serviceLocator
             ->expects(static::never())
             ->method('get')
         ;
 
-        $this->object->compose($message, $envelope);
+        $object->compose($message, $envelope);
 
         static::assertSame(1, $emailWriter->compose1CallCounter);
         static::assertSame(1, $emailWriter->compose2CallCounter);
@@ -173,6 +173,11 @@ class EmailComposerTest extends TestCase
 
     public function testComposeLocalizeEmail(): void
     {
+        $object = new EmailComposer(
+            static::createStub(ContainerInterface::class),
+            $translator = $this->createMock(Translator::class)
+        );
+
         $message = new class extends Email implements LocalizeEmailInterface {
             public function getLocale(): string
             {
@@ -180,13 +185,13 @@ class EmailComposerTest extends TestCase
             }
         };
 
-        $this->translator
+        $translator
             ->expects(static::once())
             ->method('getLocale')
             ->willReturn('en')
         ;
 
-        $this->translator
+        $translator
             ->expects(static::exactly(2))
             ->method('setLocale')
             ->with(
@@ -197,7 +202,7 @@ class EmailComposerTest extends TestCase
             )
         ;
 
-        $this->object->compose(
+        $object->compose(
             $message,
             new Envelope(new Address('test@example.com'), [new Address('test@example.com')])
         );

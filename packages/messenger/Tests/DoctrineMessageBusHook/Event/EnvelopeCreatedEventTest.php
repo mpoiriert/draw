@@ -5,7 +5,7 @@ namespace Draw\Component\Messenger\Tests\DoctrineMessageBusHook\Event;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Event\EnvelopeCreatedEvent;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 
@@ -17,14 +17,14 @@ class EnvelopeCreatedEventTest extends TestCase
 {
     private EnvelopeCreatedEvent $object;
 
-    private MessageHolderInterface&MockObject $messageHolder;
+    private MessageHolderInterface&Stub $messageHolder;
 
     private Envelope $envelope;
 
     protected function setUp(): void
     {
         $this->object = new EnvelopeCreatedEvent(
-            $this->messageHolder = $this->createMock(MessageHolderInterface::class),
+            $this->messageHolder = static::createStub(MessageHolderInterface::class),
             $this->envelope = new Envelope((object) [])
         );
     }
