@@ -60,7 +60,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         $namespace = 'Draw\Component\Messenger\\';
-        $rootDirectory = \dirname((new \ReflectionClass(Broker::class))->getFileName(), 2);
+        $rootDirectory = \dirname(new \ReflectionClass(Broker::class)->getFileName(), 2);
 
         $directories = glob($rootDirectory.'/*', \GLOB_ONLYDIR);
 
@@ -102,7 +102,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
         $this->loadBroker($config['broker'], $loader, $container);
         $this->loadDoctrineMessageBusHook($config['doctrine_message_bus_hook'], $loader, $container);
-        $this->loadRetry($config['retry'], $loader, $container);
+        $this->loadRetry($config['retry'], $container);
         $this->loadSerializerEventDispatcher($config['serializer_event_dispatcher'], $loader, $container);
         $this->loadVersioning($config['versioning'], $loader, $container);
 
@@ -150,7 +150,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
         $this->registerClasses(
             $loader,
             'Draw\Component\Messenger\Broker\\',
-            $directory = \dirname((new \ReflectionClass(Broker::class))->getFileName()),
+            $directory = \dirname(new \ReflectionClass(Broker::class)->getFileName()),
             [
                 $directory.'/Broker.php',
             ]
@@ -186,7 +186,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
         $this->registerClasses(
             $loader,
             'Draw\Component\Messenger\DoctrineMessageBusHook\\',
-            \dirname((new \ReflectionClass(EnvelopeFactoryInterface::class))->getFileName(), 2),
+            \dirname(new \ReflectionClass(EnvelopeFactoryInterface::class)->getFileName(), 2),
         );
 
         $container->getDefinition(DoctrineBusMessageListener::class)
@@ -218,7 +218,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
         }
     }
 
-    private function loadRetry(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    private function loadRetry(array $config, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             return;
@@ -230,7 +230,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
                 $decoratorServiceId = 'draw.'.$retryServiceId.'.event_driven.decorated';
                 $container->setDefinition(
                     $decoratorServiceId,
-                    (new Definition(EventDrivenRetryStrategy::class))
+                    new Definition(EventDrivenRetryStrategy::class)
                         ->setDecoratedService($retryServiceId)
                         ->setAutowired(true)
                         ->setArgument('$fallbackRetryStrategy', new Reference($decoratorServiceId.'.inner'))
@@ -248,7 +248,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
         $this->registerClasses(
             $loader,
             'Draw\Component\Messenger\SerializerEventDispatcher\\',
-            \dirname((new \ReflectionClass(EventDispatcherSerializerDecorator::class))->getFileName()),
+            \dirname(new \ReflectionClass(EventDispatcherSerializerDecorator::class)->getFileName()),
         );
 
         foreach ($config['decorate_serializers'] as $key => $serializer) {
@@ -260,7 +260,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
             $container
                 ->setDefinition(
                     'draw.messenger.serializer_event_dispatcher'.$key,
-                    (new Definition($decoratorClass))
+                    new Definition($decoratorClass)
                         ->setAutowired(true)
                         ->setDecoratedService(
                             $serializer,
@@ -281,7 +281,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
         $this->registerClasses(
             $loader,
             'Draw\Component\Messenger\Versioning\\',
-            \dirname((new \ReflectionClass(StopOnNewVersionListener::class))->getFileName(), 2),
+            \dirname(new \ReflectionClass(StopOnNewVersionListener::class)->getFileName(), 2),
         );
 
         if (!$this->isConfigEnabled($container, $config['stop_on_new_version'])) {
@@ -320,7 +320,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
     private function createBrokerNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('broker'))
+        return new ArrayNodeDefinition('broker')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('contexts')
@@ -385,7 +385,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
     private function createDoctrineMessageBusHookNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('doctrine_message_bus_hook'))
+        return new ArrayNodeDefinition('doctrine_message_bus_hook')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('envelope_factory')
@@ -408,7 +408,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
     private function createVersioningNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('versioning'))
+        return new ArrayNodeDefinition('versioning')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('stop_on_new_version')->canBeDisabled()->end()
@@ -418,7 +418,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
     private function createRetryNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('retry'))
+        return new ArrayNodeDefinition('retry')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('event_driven')
@@ -435,7 +435,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
     private function createSerializerEventDispatcherNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('serializer_event_dispatcher'))
+        return new ArrayNodeDefinition('serializer_event_dispatcher')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('decorate_serializers')
@@ -452,7 +452,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
     public function prepend(ContainerBuilder $container, array $config): void
     {
         if (class_exists(Broker::class)) {
-            $installationPath = \dirname((new \ReflectionClass(Broker::class))->getFileName(), 2);
+            $installationPath = \dirname(new \ReflectionClass(Broker::class)->getFileName(), 2);
             $container->prependExtensionConfig(
                 'framework',
                 [

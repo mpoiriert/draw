@@ -63,7 +63,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
     {
         $this->assertSame(
             [
-                (new \ReflectionClass(UserLock::class))->getFileName(),
+                new \ReflectionClass(UserLock::class)->getFileName(),
             ],
             $this
                 ->getContainerBuilder()

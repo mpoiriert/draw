@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Graphviz;
 
-class AttributeBag
+class AttributeBag implements \Stringable
 {
     public function __construct(
         private array $attributes = [],

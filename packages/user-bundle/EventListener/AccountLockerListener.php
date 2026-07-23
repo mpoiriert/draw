@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AccountLockerListener implements EventSubscriberInterface
 {
-    private const INTERCEPTION_REASON = 'account_locked';
+    private const string INTERCEPTION_REASON = 'account_locked';
 
     public static function getSubscribedEvents(): array
     {

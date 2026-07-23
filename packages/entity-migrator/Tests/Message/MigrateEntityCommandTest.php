@@ -8,6 +8,7 @@ use Draw\Component\EntityMigrator\Message\MigrateEntityCommand;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Exception\ObjectNotFoundException;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Stamp\PropertyReferenceStamp;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,12 +19,12 @@ class MigrateEntityCommandTest extends TestCase
 {
     private MigrateEntityCommand $object;
 
-    private EntityMigrationInterface $entityMigration;
+    private EntityMigrationInterface&Stub $entityMigration;
 
     protected function setUp(): void
     {
         $this->object = new MigrateEntityCommand(
-            $this->entityMigration = $this->createMock(EntityMigrationInterface::class)
+            $this->entityMigration = static::createStub(EntityMigrationInterface::class)
         );
     }
 

@@ -20,7 +20,7 @@ class UserAddress
 
     #[ORM\Embedded(class: Address::class)]
     #[Assert\Valid]
-    private ?Address $address;
+    private Address $address;
 
     #[ORM\Column(name: 'position', type: 'integer', nullable: false, options: ['default' => 0])]
     private ?int $position = null;

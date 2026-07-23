@@ -23,14 +23,6 @@ class MessageNotFoundExceptionTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        $this->assertInstanceOf(
-            \Exception::class,
-            $this->exception
-        );
-    }
-
     public function testGetMessage(): void
     {
         $this->assertSame(

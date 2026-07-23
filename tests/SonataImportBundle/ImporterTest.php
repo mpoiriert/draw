@@ -28,13 +28,13 @@ class ImporterTest extends KernelTestCase implements AutowiredInterface
 
         $file = fopen($fileName, 'w+');
 
-        register_shutdown_function('unlink', $fileName);
+        register_shutdown_function(unlink(...), $fileName);
 
-        fputcsv($file, ['name', 'active', 'translation#en.label', 'translation#fr.label']);
+        fputcsv($file, ['name', 'active', 'translation#en.label', 'translation#fr.label'], escape: '\\');
 
-        fputcsv($file, [$name = 'test'.uniqid(), '1', 'testEn', 'testFr']);
+        fputcsv($file, [$name = 'test'.uniqid(), '1', 'testEn', 'testFr'], escape: '\\');
 
-        $import = (new Import())
+        $import = new Import()
             ->setEntityClass(Tag::class)
             ->setInsertWhenNotFound(false)
         ;

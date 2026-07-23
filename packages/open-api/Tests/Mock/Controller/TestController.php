@@ -6,7 +6,7 @@ use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema as OpenApi;
 use Draw\Component\OpenApi\Serializer\Serialization;
 use Draw\Component\OpenApi\Tests\Mock\Model\TestClass;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class TestController

@@ -11,14 +11,10 @@ class ActionableAdminListener
     #[AsEventListener(priority: -1000)]
     public function onControllerEvent(ControllerArgumentsEvent $event): void
     {
-        $admin = null;
-        foreach ($event->getArguments() as $argument) {
-            if ($argument instanceof ActionableAdminInterface) {
-                $admin = $argument;
-
-                break;
-            }
-        }
+        $admin = array_find(
+            $event->getArguments(),
+            static fn ($argument): bool => $argument instanceof ActionableAdminInterface
+        );
 
         if (!$admin instanceof ActionableAdminInterface) {
             return;

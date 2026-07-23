@@ -7,6 +7,7 @@ namespace Draw\Bundle\SonataExtraBundle\Test;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Link;
+use Symfony\Component\HttpFoundation\Request;
 
 trait AdminTestHelperTrait
 {
@@ -76,7 +77,7 @@ trait AdminTestHelperTrait
         string $identifierName = 'id',
     ): Crawler {
         return $client->request(
-            'GET',
+            Request::METHOD_GET,
             \sprintf(
                 '%s?%s',
                 $listUrl,

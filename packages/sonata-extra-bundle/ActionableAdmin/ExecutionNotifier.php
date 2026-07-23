@@ -48,7 +48,7 @@ class ExecutionNotifier implements ResetInterface
             ;
 
             $this->notifier->send(
-                (new SonataNotification($subject))
+                new SonataNotification($subject)
                     ->setSonataFlashType(0 === $count ? 'info' : 'success')
             );
         }

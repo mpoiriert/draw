@@ -3,11 +3,9 @@
 namespace Draw\Component\Log\Tests\Symfony\EventListener;
 
 use Draw\Component\Log\Symfony\EventListener\SlowRequestLoggerListener;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,73 +17,60 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 class SlowRequestLoggerTest extends TestCase
 {
-    private SlowRequestLoggerListener $object;
-
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private LoggerInterface $logger;
-
-    /**
-     * @var RequestMatcherInterface&MockObject
-     */
-    private RequestMatcherInterface $requestMatcher;
-
-    private array $durations = [];
-
-    protected function setUp(): void
-    {
-        $this->requestMatcher = $this->createMock(RequestMatcherInterface::class);
-
-        $this->object = new SlowRequestLoggerListener(
-            $this->logger = $this->createMock(LoggerInterface::class),
-            [
-                ($this->durations[] = 5000) => [$this->requestMatcher],
-                ($this->durations[] = 2000) => [$this->requestMatcher],
-            ]
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        $this->assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->object
-        );
-    }
-
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        $requestMatcher = static::createStub(RequestMatcherInterface::class);
+
+        $object = new SlowRequestLoggerListener(
+            static::createStub(LoggerInterface::class),
+            [
+                5000 => [$requestMatcher],
+                2000 => [$requestMatcher],
+            ]
+        );
+
+        static::assertSame(
             [
                 TerminateEvent::class => ['onKernelTerminate', 2048],
             ],
-            $this->object::getSubscribedEvents()
+            $object::getSubscribedEvents()
         );
     }
 
     public function testOnKernelTerminateMatch(): void
     {
-        $this->requestMatcher
-            ->expects($this->exactly(2))
+        $durations = [];
+
+        $requestMatcher = $this->createMock(RequestMatcherInterface::class);
+
+        $object = new SlowRequestLoggerListener(
+            $logger = $this->createMock(LoggerInterface::class),
+            [
+                ($durations[] = 5000) => [$requestMatcher],
+                ($durations[] = 2000) => [$requestMatcher],
+            ]
+        );
+
+        $requestMatcher
+            ->expects(static::exactly(2))
             ->method('matches')
             ->with($request = new Request())
             ->willReturn(true)
         ;
 
         $event = new TerminateEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             $request,
             new Response()
         );
 
-        $this->logger
-            ->expects($this->once())
+        $logger
+            ->expects(static::once())
             ->method('log')
             ->with(
                 LogLevel::WARNING,
                 'Response time too slow ({duration} milliseconds) for {url}',
-                $this->callback(function (array $parameter) use ($request) {
+                static::callback(function (array $parameter) use ($request, $durations) {
                     $this->assertSame(
                         $parameter['url'],
                         $request->getRequestUri()
@@ -98,7 +83,7 @@ class SlowRequestLoggerTest extends TestCase
                     );
 
                     $this->assertSame(
-                        min($this->durations),
+                        min($durations),
                         $parameter['durationThreshold'],
                     );
 
@@ -107,33 +92,45 @@ class SlowRequestLoggerTest extends TestCase
             )
         ;
 
-        $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($this->durations) / 1000) - 1);
+        $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($durations) / 1000) - 1);
 
-        $this->object->onKernelTerminate($event);
+        $object->onKernelTerminate($event);
     }
 
     public function testOnKernelTerminateNoMatch(): void
     {
-        $this->requestMatcher
-            ->expects($this->exactly(2))
+        $durations = [];
+
+        $requestMatcher = $this->createMock(RequestMatcherInterface::class);
+
+        $object = new SlowRequestLoggerListener(
+            $logger = $this->createMock(LoggerInterface::class),
+            [
+                ($durations[] = 5000) => [$requestMatcher],
+                ($durations[] = 2000) => [$requestMatcher],
+            ]
+        );
+
+        $requestMatcher
+            ->expects(static::exactly(2))
             ->method('matches')
             ->with($request = new Request())
             ->willReturn(false)
         ;
 
         $event = new TerminateEvent(
-            $this->createMock(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             $request,
             new Response()
         );
 
-        $this->logger
-            ->expects($this->never())
+        $logger
+            ->expects(static::never())
             ->method('log')
         ;
 
-        $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($this->durations) / 1000) - 1);
+        $request->server->set('REQUEST_TIME_FLOAT', microtime(true) - (max($durations) / 1000) - 1);
 
-        $this->object->onKernelTerminate($event);
+        $object->onKernelTerminate($event);
     }
 }

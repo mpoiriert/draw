@@ -44,9 +44,9 @@ class SqlProfiler extends \Draw\Component\Profiling\Sql\SqlProfiler
                             $tempValues[] = var_export($tempValue, true);
                         }
                         $value = implode(',', $tempValues);
-                        $sql = implode($value, explode('?', $sql, 2));
+                        $sql = implode($value, explode('?', (string) $sql, 2));
                     } else {
-                        $sql = implode(var_export($value, true), explode('?', $sql, 2));
+                        $sql = implode(var_export($value, true), explode('?', (string) $sql, 2));
                     }
                 }
             }

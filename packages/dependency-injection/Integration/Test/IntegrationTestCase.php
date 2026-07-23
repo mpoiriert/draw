@@ -26,15 +26,14 @@ abstract class IntegrationTestCase extends TestCase
 
     protected function mockExtension(string $name): ExtensionInterface
     {
-        $extension = $this->createMock(ExtensionInterface::class);
+        $extension = static::createStub(ExtensionInterface::class);
 
-        $extension->expects($this->any())
+        $extension
             ->method('getAlias')
             ->willReturn($name)
         ;
 
         $extension
-            ->expects($this->any())
             ->method('getNamespace')
             ->willReturn($name)
         ;
@@ -100,7 +99,7 @@ abstract class IntegrationTestCase extends TestCase
         $treeBuilder = new TreeBuilder($this->integration->getConfigSectionName());
         $this->integration->addConfiguration($treeBuilder->getRootNode());
 
-        return (new Processor())->processConfiguration(
+        return new Processor()->processConfiguration(
             new class($treeBuilder) implements ConfigurationInterface {
                 public function __construct(private TreeBuilder $treeBuilder)
                 {
@@ -139,14 +138,14 @@ abstract class IntegrationTestCase extends TestCase
         $definedServiceIds = array_values(
             array_diff(
                 array_keys($container->getDefinitions()),
-                array_keys((new ContainerBuilder())->getDefinitions())
+                array_keys(new ContainerBuilder()->getDefinitions())
             )
         );
 
         $definedAliasIds = array_values(
             array_diff(
                 array_keys($container->getAliases()),
-                array_keys((new ContainerBuilder())->getAliases())
+                array_keys(new ContainerBuilder()->getAliases())
             )
         );
 
@@ -213,7 +212,7 @@ abstract class IntegrationTestCase extends TestCase
             $expectedParameters,
             array_diff_key(
                 $container->getParameterBag()->all(),
-                (new ContainerBuilder())->getParameterBag()->all()
+                new ContainerBuilder()->getParameterBag()->all()
             ),
             'Defined parameters do not match'
         );

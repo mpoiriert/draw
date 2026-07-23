@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
 
     private function createAutoHelpNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('auto_help'))
+        return new ArrayNodeDefinition('auto_help')
             ->canBeEnabled()
         ;
     }
@@ -55,14 +55,14 @@ class Configuration implements ConfigurationInterface
 
     private function createNotifierNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('notifier'))
+        return new ArrayNodeDefinition('notifier')
             ->canBeEnabled()
         ;
     }
 
     private function createPreventDeleteExtensionNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('prevent_delete_extension'))
+        return new ArrayNodeDefinition('prevent_delete_extension')
             ->canBeEnabled()
             ->children()
                 ->scalarNode('restrict_to_role')->defaultNull()->end()
@@ -72,14 +72,14 @@ class Configuration implements ConfigurationInterface
 
     private function createActionableAdminNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('actionable_admin'))
+        return new ArrayNodeDefinition('actionable_admin')
             ->canBeEnabled()
         ;
     }
 
     private function createAutoActionNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('auto_action'))
+        return new ArrayNodeDefinition('auto_action')
             ->canBeEnabled()
             ->children()
                 ->arrayNode('ignore_admins')
@@ -98,7 +98,7 @@ class Configuration implements ConfigurationInterface
 
     private function createCanSecurityHandlerNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('can_security_handler'))
+        return new ArrayNodeDefinition('can_security_handler')
             ->canBeEnabled()
             ->children()
                 ->booleanNode('grant_by_default')->defaultValue(true)->end()
@@ -147,14 +147,14 @@ class Configuration implements ConfigurationInterface
 
     private function createFixMenuDepthNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('fix_menu_depth'))
+        return new ArrayNodeDefinition('fix_menu_depth')
             ->canBeEnabled()
         ;
     }
 
     private function createListFieldPriorityNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('list_field_priority'))
+        return new ArrayNodeDefinition('list_field_priority')
             ->canBeDisabled()
             ->children()
                 ->integerNode('default_max_field')->defaultNull()->end()
@@ -189,7 +189,7 @@ class Configuration implements ConfigurationInterface
 
     private function createSessionTimeoutNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('session_timeout'))
+        return new ArrayNodeDefinition('session_timeout')
             ->canBeEnabled()
             ->children()
                 ->integerNode('delay')->defaultValue(3600)->end()
@@ -199,7 +199,7 @@ class Configuration implements ConfigurationInterface
 
     private function createWorkflowNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('workflow'))
+        return new ArrayNodeDefinition('workflow')
             ->canBeEnabled()
             ->children()
                 ->variableNode('sonata_admin_extensions')->defaultValue([])->end()

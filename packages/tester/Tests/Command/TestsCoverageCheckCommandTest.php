@@ -18,12 +18,12 @@ class TestsCoverageCheckCommandTest extends TestCase
 {
     use CommandTestTrait;
 
-    private const FIXTURES_FILE = __DIR__.'/fixtures/coverage_example.xml';
+    private const string FIXTURES_FILE = __DIR__.'/fixtures/coverage_example.xml';
 
     /**
      * This is the computed % from the fixture files.
      */
-    private const COMPUTED_PERCENTAGE = 46.46;
+    private const float COMPUTED_PERCENTAGE = 46.46;
 
     public function createCommand(): Command
     {

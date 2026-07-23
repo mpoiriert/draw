@@ -35,7 +35,7 @@ trait IntegrationTrait
         array $exclude = [],
         ?Definition $prototype = null,
     ): void {
-        $prototype = $prototype ?: (new Definition())
+        $prototype = $prototype ?: new Definition()
             ->setAutowired(true)
             ->setAutoconfigured(true)
         ;
@@ -51,7 +51,7 @@ trait IntegrationTrait
             $exclude
         );
 
-        $container = (new \ReflectionProperty($loader, 'container'))
+        $container = new \ReflectionProperty($loader, 'container')
             ->getValue($loader)
         ;
 

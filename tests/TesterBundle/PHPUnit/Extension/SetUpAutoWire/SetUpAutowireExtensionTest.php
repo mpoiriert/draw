@@ -12,6 +12,7 @@ use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireTransportTe
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMock;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowireMockProperty;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -19,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterface
 {
     #[
@@ -55,23 +57,10 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
         );
     }
 
-    public function testAutowiredMock(): void
-    {
-        $this->assertInstanceOf(
-            ManagerRegistry::class,
-            $this->managerRegistry
-        );
-
-        $this->assertInstanceOf(
-            MockObject::class,
-            $this->managerRegistry
-        );
-    }
-
     public function testAutowireMockProperty(): void
     {
-        $this->assertSame(
-            (new \ReflectionProperty($this->userSetCommentNullMigration, 'managerRegistry'))
+        static::assertSame(
+            new \ReflectionProperty($this->userSetCommentNullMigration, 'managerRegistry')
                 ->getValue($this->userSetCommentNullMigration),
             $this->managerRegistry
         );

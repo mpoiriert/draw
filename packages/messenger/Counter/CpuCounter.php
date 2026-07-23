@@ -10,7 +10,7 @@ class CpuCounter
     public function count(): int
     {
         try {
-            return (new CpuCoreCounter())
+            return new CpuCoreCounter()
                 ->getCount()
             ;
         } catch (NumberOfCpuCoreNotFound) {

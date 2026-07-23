@@ -6,7 +6,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\BadgeInterface;
 
 final class JwtPayloadBadge implements BadgeInterface
 {
-    private const KEYS_TO_IGNORE = [
+    private const array KEYS_TO_IGNORE = [
         'exp',
         'nbf',
         'iat',

@@ -2,7 +2,7 @@
 
 namespace Draw\Component\Graphviz;
 
-class Edge
+class Edge implements \Stringable
 {
     use AttributeHolderTrait;
 

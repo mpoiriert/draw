@@ -20,7 +20,7 @@ class CheckPostAuthEventTest extends TestCase
     protected function setUp(): void
     {
         $this->event = new CheckPostAuthEvent(
-            $this->user = $this->createMock(UserInterface::class)
+            $this->user = static::createStub(UserInterface::class)
         );
     }
 

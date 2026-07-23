@@ -60,7 +60,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
                 $delay,
                 $expiresAt,
                 $this->getTags($envelope),
-                \get_class($envelope->getMessage())
+                $envelope->getMessage()::class
             );
         } catch (\Exception $exception) {
             throw new TransportException($exception->getMessage(), 0, $exception);

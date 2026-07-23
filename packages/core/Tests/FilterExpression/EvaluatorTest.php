@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\EqualTo;
  */
 class EvaluatorTest extends TestCase
 {
-    private const SAMPLE_DATA = [
+    private const array SAMPLE_DATA = [
         ['property1' => 'value1'],
         ['property1' => 'value2'],
         ['property1' => 'value3', 'property2' => 'value4'],
@@ -44,43 +44,43 @@ class EvaluatorTest extends TestCase
     public static function provideExecuteCases(): iterable
     {
         yield 'simple-match' => [
-            (new Query())->where(new ConstraintExpression('[property1]', new EqualTo('value1'))),
+            new Query()->where(new ConstraintExpression('[property1]', new EqualTo('value1'))),
             1,
         ];
 
         yield 'no-match' => [
-            (new Query())->where(new ConstraintExpression('[property1]', new EqualTo('value5'))),
+            new Query()->where(new ConstraintExpression('[property1]', new EqualTo('value5'))),
             0,
         ];
 
         yield 'does-not-exists' => [
-            (new Query())->where(new ConstraintExpression('[doesNotExists]', new EqualTo('value5'))),
+            new Query()->where(new ConstraintExpression('[doesNotExists]', new EqualTo('value5'))),
             0,
         ];
 
         yield 'or-match' => [
-            (new Query())
+            new Query()
                 ->where(new ConstraintExpression('[property1]', new EqualTo('value1')))
                 ->orWhere(new ConstraintExpression('[property2]', new EqualTo('value4'))),
             2,
         ];
 
         yield 'or-no-match' => [
-            (new Query())
+            new Query()
                 ->where(new ConstraintExpression('[property1]', new EqualTo('value-1')))
                 ->orWhere(new ConstraintExpression('[property2]', new EqualTo('value-1'))),
             0,
         ];
 
         yield 'and-match' => [
-            (new Query())
+            new Query()
                 ->where(new ConstraintExpression('[property1]', new EqualTo('value3')))
                 ->andWhere(new ConstraintExpression('[property2]', new EqualTo('value4'))),
             1,
         ];
 
         yield 'and-no-match' => [
-            (new Query())
+            new Query()
                 ->where(new ConstraintExpression('[property1]', new EqualTo('value1')))
                 ->andWhere(new ConstraintExpression('[property2]', new EqualTo('value4'))),
             0,

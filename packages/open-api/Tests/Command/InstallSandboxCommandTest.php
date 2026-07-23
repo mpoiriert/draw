@@ -5,7 +5,7 @@ namespace Draw\Component\OpenApi\Tests\Command;
 use Draw\Component\OpenApi\Command\InstallSandboxCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
@@ -19,7 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class InstallSandboxCommandTest extends TestCase
 {
     use CommandTestTrait;
-    use MockTrait;
+    use DoubleTrait;
 
     protected function setUp(): void
     {
@@ -55,7 +55,7 @@ class InstallSandboxCommandTest extends TestCase
 
         register_shutdown_function(static function () use ($path): void {
             if (is_dir($path)) {
-                (new Filesystem())->remove($path);
+                new Filesystem()->remove($path);
             }
         });
 
@@ -84,7 +84,7 @@ class InstallSandboxCommandTest extends TestCase
 
         register_shutdown_function(static function () use ($path): void {
             if (is_dir($path)) {
-                (new Filesystem())->remove($path);
+                new Filesystem()->remove($path);
             }
         });
 

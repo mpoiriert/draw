@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\TagRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
@@ -10,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[
-    ORM\Entity(repositoryClass: 'App\Repository\TagRepository'),
+    ORM\Entity(repositoryClass: TagRepository::class),
     ORM\Table(name: 'draw_acme__tag'),
     ORM\HasLifecycleCallbacks
 ]

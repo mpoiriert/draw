@@ -5,7 +5,6 @@ namespace App\Sonata\Admin;
 use App\Controller\Admin\AddRolesAminAction;
 use App\Controller\Admin\MakeAdminAction;
 use App\Controller\Admin\SetPreferredLocaleAction;
-use App\Entity\Tag;
 use App\Entity\User;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ActionableAdminInterface;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
@@ -93,11 +92,6 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
 
     protected function configureShowFields(ShowMapper $show): void
     {
-        /** @var TagAdmin $tagAdmin */
-        $tagAdmin = $this->getConfigurationPool()
-            ->getAdminByClass(Tag::class)
-        ;
-
         /** @var UserLockAdmin $userLockAdmin */
         $userLockAdmin = $this->getConfigurationPool()
             ->getAdminByClass(UserLock::class)
@@ -207,14 +201,14 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
     public function getActions(): array
     {
         return [
-            'makeAdmin' => (new AdminAction('makeAdmin', true))
+            'makeAdmin' => new AdminAction('makeAdmin', true)
                 ->setController(MakeAdminAction::class)
                 ->setIcon('fa fa-user-plus')
                 ->setBatchController(MakeAdminAction::class),
-            'addRoles' => (new AdminAction('addRoles', true))
+            'addRoles' => new AdminAction('addRoles', true)
                 ->setController(AddRolesAminAction::class)
                 ->setBatchController(AddRolesAminAction::class),
-            'setPreferredLocale' => (new AdminAction('setPreferredLocale', true))
+            'setPreferredLocale' => new AdminAction('setPreferredLocale', true)
                 ->setIcon('fa fa-language')
                 ->setController(SetPreferredLocaleAction::class)
                 ->setRoutePattern(

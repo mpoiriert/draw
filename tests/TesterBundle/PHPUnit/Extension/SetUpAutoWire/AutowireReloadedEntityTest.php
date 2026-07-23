@@ -26,7 +26,7 @@ class AutowireReloadedEntityTest extends KernelTestCase implements AutowiredInte
     #[DoesNotPerformAssertions]
     public function testCreate(): void
     {
-        BaseTemporaryEntityCleaner::$temporaryEntities[] = $tag = (new Tag())
+        BaseTemporaryEntityCleaner::$temporaryEntities[] = $tag = new Tag()
             ->setName('AutowireReloadedEntity')
         ;
 

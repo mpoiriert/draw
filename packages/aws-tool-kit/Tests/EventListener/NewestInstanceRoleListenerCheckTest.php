@@ -5,14 +5,11 @@ namespace Draw\Component\AwsToolKit\Tests\EventListener;
 use Aws\Ec2\Ec2Client;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
-use Draw\Component\Core\Reflection\ReflectionAccessor;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @internal
@@ -20,49 +17,39 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 #[CoversClass(NewestInstanceRoleCheckListener::class)]
 class NewestInstanceRoleListenerCheckTest extends TestCase
 {
-    private NewestInstanceRoleCheckListener $service;
-
-    private ImdsClientInterface&MockObject $imdsClient;
-
-    protected function setUp(): void
-    {
-        $this->service = new NewestInstanceRoleCheckListener(
-            $this->createMock(Ec2Client::class),
-            $this->imdsClient = $this->createMock(ImdsClientInterface::class),
-        );
-    }
-
-    public function testConstruct(): void
-    {
-        $this->assertInstanceOf(
-            EventSubscriberInterface::class,
-            $this->service
-        );
-    }
-
     public function testGetSubscribedEvents(): void
     {
-        $this->assertSame(
+        $service = new NewestInstanceRoleCheckListener(
+            static::createStub(Ec2Client::class),
+            static::createStub(ImdsClientInterface::class),
+        );
+
+        static::assertSame(
             [
                 ConsoleCommandEvent::class => [
                     ['checkNewestInstance', 50],
                 ],
             ],
-            $this->service::getSubscribedEvents()
+            $service::getSubscribedEvents()
         );
     }
 
     public function testCheckNewestInstanceNoOption(): void
     {
-        $this->imdsClient
-            ->expects($this->never())
+        $service = new NewestInstanceRoleCheckListener(
+            static::createStub(Ec2Client::class),
+            $imdsClient = $this->createMock(ImdsClientInterface::class),
+        );
+
+        $imdsClient
+            ->expects(static::never())
             ->method('getCurrentInstanceId')
         ;
 
-        $this->service->checkNewestInstance(
+        $service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
                 null,
-                $this->createInput(false),
+                $this->createInput($service, false),
                 new NullOutput(),
             )
         );
@@ -72,15 +59,20 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testCheckNewestInstanceOptionNull(): void
     {
-        $this->imdsClient
-            ->expects($this->never())
+        $service = new NewestInstanceRoleCheckListener(
+            static::createStub(Ec2Client::class),
+            $imdsClient = $this->createMock(ImdsClientInterface::class),
+        );
+
+        $imdsClient
+            ->expects(static::never())
             ->method('getCurrentInstanceId')
         ;
 
-        $this->service->checkNewestInstance(
+        $service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
                 null,
-                $this->createInput(true),
+                $this->createInput($service, true),
                 new NullOutput(),
             )
         );
@@ -90,17 +82,22 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testCheckNewestInstanceCurrentInstanceIdError(): void
     {
-        $this->imdsClient
-            ->expects($this->once())
+        $service = new NewestInstanceRoleCheckListener(
+            static::createStub(Ec2Client::class),
+            $imdsClient = $this->createMock(ImdsClientInterface::class),
+        );
+
+        $imdsClient
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willThrowException(new \Exception())
         ;
 
-        $this->service->checkNewestInstance(
+        $service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
                 null,
-                $this->createInput(true, uniqid('role-')),
+                $this->createInput($service, true, uniqid('role-')),
                 new NullOutput(),
             )
         );
@@ -110,17 +107,22 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testCheckNewestInstanceCurrentInstanceIdEmpty(): void
     {
-        $this->imdsClient
-            ->expects($this->once())
+        $service = new NewestInstanceRoleCheckListener(
+            static::createStub(Ec2Client::class),
+            $imdsClient = $this->createMock(ImdsClientInterface::class),
+        );
+
+        $imdsClient
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(null)
         ;
 
-        $this->service->checkNewestInstance(
+        $service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
                 null,
-                $this->createInput(true, uniqid('role-')),
+                $this->createInput($service, true, uniqid('role-')),
                 new NullOutput(),
             )
         );
@@ -130,23 +132,39 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testCheckNewestInstanceNoInstance(): void
     {
-        $role = uniqid('role-');
-        $this->imdsClient
-            ->expects($this->once())
+        $service = new NewestInstanceRoleCheckListener(
+            $ec2Client = $this->createMock(Ec2Client::class),
+            $imdsClient = $this->createMock(ImdsClientInterface::class),
+        );
+
+        $imdsClient
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(uniqid('instance-id-'))
         ;
 
-        $this->mockEc2ClientDescribeInstances(
-            $role,
-            []
-        );
+        $ec2Client->expects(static::once())
+            ->method('__call')
+            ->with(
+                'describeInstances',
+                self::provideDescribeInstancesArgs(
+                    $role = uniqid('role-')
+                )
+            )
+            ->willReturn([
+                'Reservations' => [
+                    [
+                        'Instances' => [],
+                    ],
+                ],
+            ])
+        ;
 
-        $this->service->checkNewestInstance(
+        $service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
                 null,
-                $this->createInput(true, $role),
+                $this->createInput($service, true, $role),
                 new NullOutput(),
             )
         );
@@ -156,32 +174,48 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testCheckNewestInstanceNotNewestInstance(): void
     {
-        $role = uniqid('role-');
-        $this->imdsClient
-            ->expects($this->once())
+        $service = new NewestInstanceRoleCheckListener(
+            $ec2Client = $this->createMock(Ec2Client::class),
+            $imdsClient = $this->createMock(ImdsClientInterface::class),
+        );
+
+        $imdsClient
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'))
         ;
 
-        $this->mockEc2ClientDescribeInstances(
-            $role,
-            [
-                [
-                    'LaunchTime' => new \DateTimeImmutable('- 1 day'),
-                    'InstanceId' => $instanceId,
+        $ec2Client->expects(static::once())
+            ->method('__call')
+            ->with(
+                'describeInstances',
+                self::provideDescribeInstancesArgs(
+                    $role = uniqid('role-')
+                )
+            )
+            ->willReturn([
+                'Reservations' => [
+                    [
+                        'Instances' => [
+                            [
+                                'LaunchTime' => new \DateTimeImmutable('- 1 day'),
+                                'InstanceId' => $instanceId,
+                            ],
+                            [
+                                'LaunchTime' => new \DateTimeImmutable(),
+                                'InstanceId' => uniqid('isntance-id-'),
+                            ],
+                        ],
+                    ],
                 ],
-                [
-                    'LaunchTime' => new \DateTimeImmutable(),
-                    'InstanceId' => uniqid('isntance-id-'),
-                ],
-            ]
-        );
+            ])
+        ;
 
-        $this->service->checkNewestInstance(
+        $service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
                 null,
-                $this->createInput(true, $role),
+                $this->createInput($service, true, $role),
                 new NullOutput(),
             )
         );
@@ -191,24 +225,33 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testCheckNewestInstanceError(): void
     {
-        $role = uniqid('role-');
-        $this->imdsClient
-            ->expects($this->once())
+        $service = new NewestInstanceRoleCheckListener(
+            $ec2Client = $this->createMock(Ec2Client::class),
+            $imdsClient = $this->createMock(ImdsClientInterface::class),
+        );
+
+        $imdsClient
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(uniqid('instance-id-'))
         ;
 
-        $this->mockEc2ClientDescribeInstances(
-            $role,
-            [],
-            new \Exception()
-        );
+        $ec2Client->expects(static::once())
+            ->method('__call')
+            ->with(
+                'describeInstances',
+                self::provideDescribeInstancesArgs(
+                    $role = uniqid('role-')
+                )
+            )
+            ->willThrowException(new \Exception())
+        ;
 
-        $this->service->checkNewestInstance(
+        $service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
                 null,
-                $this->createInput(true, $role),
+                $this->createInput($service, true, $role),
                 new NullOutput(),
             )
         );
@@ -218,32 +261,48 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
 
     public function testCheckNewestInstanceNewestInstance(): void
     {
-        $role = uniqid('role-');
-        $this->imdsClient
-            ->expects($this->once())
+        $service = new NewestInstanceRoleCheckListener(
+            $ec2Client = $this->createMock(Ec2Client::class),
+            $imdsClient = $this->createMock(ImdsClientInterface::class),
+        );
+
+        $imdsClient
+            ->expects(static::once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'))
         ;
 
-        $this->mockEc2ClientDescribeInstances(
-            $role,
-            [
-                [
-                    'LaunchTime' => new \DateTimeImmutable(),
-                    'InstanceId' => $instanceId,
+        $ec2Client->expects(static::once())
+            ->method('__call')
+            ->with(
+                'describeInstances',
+                self::provideDescribeInstancesArgs(
+                    $role = uniqid('role-')
+                )
+            )
+            ->willReturn([
+                'Reservations' => [
+                    [
+                        'Instances' => [
+                            [
+                                'LaunchTime' => new \DateTimeImmutable(),
+                                'InstanceId' => $instanceId,
+                            ],
+                            [
+                                'LaunchTime' => new \DateTimeImmutable('- 1 day'),
+                                'InstanceId' => uniqid('instance-id-'),
+                            ],
+                        ],
+                    ],
                 ],
-                [
-                    'LaunchTime' => new \DateTimeImmutable('- 1 day'),
-                    'InstanceId' => uniqid('instance-id-'),
-                ],
-            ]
-        );
+            ])
+        ;
 
-        $this->service->checkNewestInstance(
+        $service->checkNewestInstance(
             $event = new ConsoleCommandEvent(
                 null,
-                $this->createInput(true, $role),
+                $this->createInput($service, true, $role),
                 new NullOutput(),
             )
         );
@@ -251,86 +310,51 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         $this->assertTrue($event->commandShouldRun());
     }
 
-    private function mockEc2ClientDescribeInstances(
-        string $role,
-        array $instances,
-        ?\Exception $error = null,
-    ): void {
-        $ec2Client = $this->getMockBuilder(Ec2Client::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['__call'])
-            ->getMock()
-        ;
-
-        ReflectionAccessor::setPropertyValue(
-            $this->service,
-            'ec2Client',
-            $ec2Client
-        );
-
-        $invocationMocker = $ec2Client
-            ->expects($this->once())
-            ->method('__call')
-            ->with(
-                'describeInstances',
-                [
-                    [
-                        'DryRun' => false,
-                        'Filters' => [
-                            [
-                                'Name' => 'tag:Name',
-                                'Values' => [$role],
-                            ],
-                            [
-                                'Name' => 'instance-state-name',
-                                'Values' => ['running'],
-                            ],
-                        ],
-                    ],
-                ]
-            )
-        ;
-
-        if ($error) {
-            $invocationMocker->willThrowException($error);
-        } else {
-            $invocationMocker
-                ->willReturn(
-                    [
-                        'Reservations' => [
-                            [
-                                'Instances' => $instances,
-                            ],
-                        ],
-                    ]
-                )
-            ;
-        }
-    }
-
-    private function createInput(bool $hasOption, ?string $optionValue = null): InputInterface
-    {
+    private function createInput(
+        NewestInstanceRoleCheckListener $service,
+        bool $hasOption,
+        ?string $optionValue = null,
+    ): InputInterface {
         $input = $this->createMock(InputInterface::class);
 
         $input->expects($this->once())
             ->method('hasOption')
-            ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
+            ->with($service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
             ->willReturn($hasOption)
         ;
 
         if ($hasOption) {
             $input->expects($this->once())
                 ->method('getOption')
-                ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
+                ->with($service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
                 ->willReturn($optionValue)
             ;
         } else {
             $input->expects($this->never())
                 ->method('getOption')
-                ->with($this->service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
+                ->with($service::OPTION_AWS_NEWEST_INSTANCE_ROLE)
             ;
         }
 
         return $input;
+    }
+
+    private static function provideDescribeInstancesArgs(string $role): array
+    {
+        return [
+            [
+                'DryRun' => false,
+                'Filters' => [
+                    [
+                        'Name' => 'tag:Name',
+                        'Values' => [$role],
+                    ],
+                    [
+                        'Name' => 'instance-state-name',
+                        'Values' => ['running'],
+                    ],
+                ],
+            ],
+        ];
     }
 }

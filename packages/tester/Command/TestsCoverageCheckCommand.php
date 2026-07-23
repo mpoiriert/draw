@@ -2,19 +2,22 @@
 
 namespace Draw\Component\Tester\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'draw:tester:coverage-check',
+    description: 'Check the code coverage by the tests',
+)]
 class TestsCoverageCheckCommand extends Command
 {
     protected function configure(): void
     {
         $this
-            ->setName('draw:tester:coverage-check')
-            ->setDescription('Check the code coverage by the tests')
             ->addArgument('clover-xlm-file-path', InputArgument::REQUIRED, 'Clover report file path')
             ->addArgument('coverage', InputArgument::REQUIRED, 'Required coverage in percentage')
         ;

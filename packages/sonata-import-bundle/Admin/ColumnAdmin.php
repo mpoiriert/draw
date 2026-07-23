@@ -71,7 +71,7 @@ class ColumnAdmin extends AbstractAdmin
         $result = [];
         // Iterate over each element in the original array
         foreach ($options as $option) {
-            $parts = explode('.', $option);
+            $parts = explode('.', (string) $option);
             if (1 === \count($parts)) {
                 $result[$option] = $option;
                 continue;

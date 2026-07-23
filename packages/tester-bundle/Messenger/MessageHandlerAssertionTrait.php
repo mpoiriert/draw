@@ -7,9 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 trigger_deprecation('draw/tester-bundle', '0.31.0', 'The "%s" class is deprecated, use "%s" instead.', MessageHandlerAssertionTrait::class, MessageHandlerTesterTrait::class);
 
-/**
- * @deprecated
- */
+#[\Deprecated]
 trait MessageHandlerAssertionTrait
 {
     abstract public static function getContainer(): ContainerInterface;

@@ -25,7 +25,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class PropertiesExtractor implements ExtractorInterface
 {
-    final public const CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY = 'jms-enable-version-exclusion-strategy';
+    final public const string CONTEXT_PARAMETER_ENABLE_VERSION_EXCLUSION_STRATEGY = 'jms-enable-version-exclusion-strategy';
 
     /**
      * @var array|TypeToSchemaHandlerInterface[]
@@ -200,12 +200,9 @@ class PropertiesExtractor implements ExtractorInterface
             $serializationContext->getMetadataStack()->push($metadata);
         }
 
-        foreach ($exclusionStrategies as $strategy) {
-            if (true === $strategy->shouldSkipProperty($item, $serializationContext)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            $exclusionStrategies,
+            static fn (ExclusionStrategyInterface $strategy): bool => $strategy->shouldSkipProperty($item, $serializationContext)
+        );
     }
 }

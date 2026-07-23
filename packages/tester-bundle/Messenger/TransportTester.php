@@ -46,7 +46,7 @@ class TransportTester
             $messages[] = $envelope->getMessage();
         }
 
-        $query = (new Query())
+        $query = new Query()
             ->where(new ConstraintExpression(null, new Type($messageClass)))
         ;
 

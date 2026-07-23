@@ -21,7 +21,7 @@ class ListFieldPriorityExtension extends AbstractAdminExtension
             $options = $admin->getListFieldPriorityOptions();
         }
 
-        return (new OptionsResolver())
+        return new OptionsResolver()
             ->setDefaults([
                 'defaultMaxField' => $this->defaultMaxField,
                 'defaultFieldPriorities' => [],

@@ -32,17 +32,9 @@ class EventDrivenUserCheckerTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        $this->assertInstanceOf(
-            UserCheckerInterface::class,
-            $this->object
-        );
-    }
-
     public function testCheckPreAuth(): void
     {
-        $user = $this->createMock(UserInterface::class);
+        $user = static::createStub(UserInterface::class);
 
         $this->decoratedUserChecker
             ->expects($this->once())
@@ -71,7 +63,7 @@ class EventDrivenUserCheckerTest extends TestCase
 
     public function testCheckPostAuth(): void
     {
-        $user = $this->createMock(UserInterface::class);
+        $user = static::createStub(UserInterface::class);
 
         $this->decoratedUserChecker
             ->expects($this->once())

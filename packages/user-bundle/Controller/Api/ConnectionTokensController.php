@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -21,6 +21,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 // todo refactor to be reusable
 class ConnectionTokensController extends AbstractController
 {
+    public function __construct(
+        private UserProviderInterface $userProvider,
+        private JwtAuthenticator $authenticator,
+        private UserPasswordHasherInterface $passwordEncoder,
+    ) {
+    }
+
     /**
      * Create a token base on the username/password of a user.
      *
@@ -35,27 +42,24 @@ class ConnectionTokensController extends AbstractController
     #[IsGranted(new Expression('not is_granted("IS_AUTHENTICATED_FULLY")'))]
     #[OpenApi\Operation(operationId: 'drawUserBundleCreateConnectionToken', tags: ['Security'])]
     #[Serialization(statusCode: 201)]
-    public function createAction(
+    public function create(
         #[RequestBody]
         Credential $credential,
-        UserProviderInterface $userProvider,
-        JwtAuthenticator $authenticator,
-        UserPasswordHasherInterface $passwordEncoder,
     ): ConnectionToken {
         try {
-            $user = $userProvider->loadUserByIdentifier($credential->getUsername());
+            $user = $this->userProvider->loadUserByIdentifier($credential->getUsername());
         } catch (UserNotFoundException) {
             throw new HttpException(400, 'User not found');
         }
 
         if (
             !$user instanceof PasswordAuthenticatedUserInterface
-            || !$passwordEncoder->isPasswordValid($user, $credential->getPassword())
+            || !$this->passwordEncoder->isPasswordValid($user, $credential->getPassword())
         ) {
             throw new HttpException(403, 'Invalid credential');
         }
 
-        return new ConnectionToken($authenticator->generaToken($user));
+        return new ConnectionToken($this->authenticator->generaToken($user));
     }
 
     /**
@@ -64,9 +68,9 @@ class ConnectionTokensController extends AbstractController
     #[Route(path: '/connection-tokens/refresh', name: 'drawUserBundle_connection_token_refresh', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[OpenApi\Operation(operationId: 'drawUserBundleRefreshConnectionToken', tags: ['Security'])]
-    public function refreshAction(JwtAuthenticator $authenticator): ConnectionToken
+    public function refresh(): ConnectionToken
     {
-        return new ConnectionToken($authenticator->generaToken($this->getUser()));
+        return new ConnectionToken($this->authenticator->generaToken($this->getUser()));
     }
 
     /**
@@ -76,7 +80,7 @@ class ConnectionTokensController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[OpenApi\Operation(operationId: 'drawUserBundleDeleteConnectionToken', tags: ['Security'])]
     #[Serialization(statusCode: 204)]
-    public function clearAction(): void
+    public function clear(): void
     {
     }
 }

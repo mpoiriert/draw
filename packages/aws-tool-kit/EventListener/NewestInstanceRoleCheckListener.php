@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class NewestInstanceRoleCheckListener implements EventSubscriberInterface
 {
-    final public const OPTION_AWS_NEWEST_INSTANCE_ROLE = 'aws-newest-instance-role';
+    final public const string OPTION_AWS_NEWEST_INSTANCE_ROLE = 'aws-newest-instance-role';
 
     private LoggerInterface $logger;
 

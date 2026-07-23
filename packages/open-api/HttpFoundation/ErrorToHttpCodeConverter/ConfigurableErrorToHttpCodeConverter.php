@@ -4,7 +4,7 @@ namespace Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter;
 
 class ConfigurableErrorToHttpCodeConverter implements ErrorToHttpCodeConverterInterface
 {
-    private const DEFAULT_STATUS_CODE = 500;
+    private const int DEFAULT_STATUS_CODE = 500;
 
     /**
      * @var array<string,int>

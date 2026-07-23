@@ -66,7 +66,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             'drawUserEntityRepository'
         );
 
-        $definition = (new Definition())
+        $definition = new Definition()
             ->setAutowired(true)
             ->setAutoconfigured(true)
         ;
@@ -118,10 +118,10 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
         $this->assignParameters($config, $container);
 
         $this->configureEmailWriters($config['email_writers'], $loader, $container);
-        $this->configureAccountLocker($config['account_locker'], $loader, $container);
-        $this->configureEnforce2fa($config['enforce_2fa'], $loader, $container);
-        $this->configureOnBoarding($config['onboarding'], $loader, $container);
-        $this->configureNeedPasswordChangeEnforcer($config['password_change_enforcer'], $loader, $container);
+        $this->configureAccountLocker($config['account_locker'], $container);
+        $this->configureEnforce2fa($config['enforce_2fa'], $container);
+        $this->configureOnBoarding($config['onboarding'], $container);
+        $this->configureNeedPasswordChangeEnforcer($config['password_change_enforcer'], $container);
 
         $userClass = $container->getParameter('draw_user.user_entity_class');
         if (!class_exists($userClass)) {
@@ -220,7 +220,6 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
     private function configureAccountLocker(
         array $config,
-        PhpFileLoader $loader,
         ContainerBuilder $containerBuilder,
     ): void {
         if (!$config['enabled']) {
@@ -229,7 +228,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             $containerBuilder->removeDefinition(RefreshUserLockMessageHandler::class);
             $containerBuilder->removeDefinition(UserLockLifeCycleMessageHandler::class);
             $containerBuilder->removeDefinition(AccountLocker::class);
-            $this->excludeEntitiesPath[] = (new \ReflectionClass(UserLock::class))->getFileName();
+            $this->excludeEntitiesPath[] = new \ReflectionClass(UserLock::class)->getFileName();
 
             return;
         }
@@ -242,7 +241,6 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
     private function configureNeedPasswordChangeEnforcer(
         array $config,
-        PhpFileLoader $loader,
         ContainerBuilder $containerBuilder,
     ): void {
         if (!$config['enabled']) {
@@ -260,7 +258,6 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
     private function configureOnBoarding(
         array $config,
-        PhpFileLoader $loader,
         ContainerBuilder $containerBuilder,
     ): void {
         if (!$config['enabled']) {
@@ -270,7 +267,6 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
 
     private function configureEnforce2fa(
         array $config,
-        PhpFileLoader $loader,
         ContainerBuilder $containerBuilder,
     ): void {
         if (!$config['enabled']) {

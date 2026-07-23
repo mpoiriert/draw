@@ -39,7 +39,7 @@ class ConsoleIntegration implements IntegrationInterface, ContainerBuilderIntegr
             $loader,
             $namespace = 'Draw\Component\Console\\',
             $directory = \dirname(
-                (new \ReflectionClass(PurgeExecutionCommand::class))->getFileName(),
+                new \ReflectionClass(PurgeExecutionCommand::class)->getFileName(),
                 2
             ),
             [

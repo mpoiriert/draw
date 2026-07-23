@@ -41,7 +41,7 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
             $loader,
             $namespace = 'Draw\Component\Mailer\\',
             \dirname(
-                (new \ReflectionClass(EmailComposer::class))->getFileName(),
+                new \ReflectionClass(EmailComposer::class)->getFileName(),
             ),
         );
 
@@ -74,7 +74,7 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
                 ->getDefinition(DefaultFromEmailWriter::class)
                 ->setArgument(
                     '$defaultFrom',
-                    (new Definition(Address::class))
+                    new Definition(Address::class)
                         ->setArguments([$config['default_from']['email'], $config['default_from']['name'] ?? ''])
                 )
             ;
@@ -114,7 +114,7 @@ class MailerIntegration implements IntegrationInterface, ContainerBuilderIntegra
 
     public function prepend(ContainerBuilder $container, array $config): void
     {
-        $installationPath = \dirname((new \ReflectionClass(EmailWriterInterface::class))->getFileName(), 2);
+        $installationPath = \dirname(new \ReflectionClass(EmailWriterInterface::class)->getFileName(), 2);
 
         $this->assertHasExtension($container, 'framework');
 

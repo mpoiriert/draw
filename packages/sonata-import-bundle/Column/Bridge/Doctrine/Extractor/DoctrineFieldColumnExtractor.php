@@ -50,7 +50,7 @@ class DoctrineFieldColumnExtractor extends BaseColumnExtractor
 
         $fieldMapping = $classMetadata->fieldMappings[$headerName];
 
-        $columnInfo = (new Column())
+        $columnInfo = new Column()
             ->setMappedTo($headerName)
             ->setIsDate(str_starts_with($fieldMapping->type, 'date'))
         ;

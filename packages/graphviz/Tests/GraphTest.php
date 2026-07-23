@@ -13,7 +13,7 @@ class GraphTest extends TestCase
 {
     public function testGraphDirectional(): void
     {
-        $graph = (new Graph('test'))
+        $graph = new Graph('test')
             ->addEdge(
                 new Edge('a', 'b', directed: true)
             )

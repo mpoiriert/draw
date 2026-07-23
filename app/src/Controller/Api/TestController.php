@@ -3,7 +3,7 @@
 namespace App\Controller\Api;
 
 use Draw\Component\OpenApi\Schema as OpenApi;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[OpenApi\Tag(name: 'Tags')]
 class TestController

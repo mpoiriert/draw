@@ -21,10 +21,9 @@ class ExpressionTest extends TestCase
             $groups = ['Default']
         );
 
-        $this->assertInstanceOf(ConstraintExpression::class, $expression);
-        $this->assertSame($path, $expression->getPath());
-        $this->assertSame($constraint, $expression->getConstraints());
-        $this->assertSame($groups, $expression->getGroups());
+        static::assertSame($path, $expression->getPath());
+        static::assertSame($constraint, $expression->getConstraints());
+        static::assertSame($groups, $expression->getGroups());
     }
 
     public function testAndX(): void
@@ -34,8 +33,7 @@ class ExpressionTest extends TestCase
             $expression2 = Expression::validate('[property]')
         );
 
-        $this->assertInstanceOf(CompositeExpression::class, $expression);
-        $this->assertSame(CompositeExpression::TYPE_AND, $expression->getType());
+        static::assertSame(CompositeExpression::TYPE_AND, $expression->getType());
 
         $expressions = $expression->getExpressions();
 
@@ -52,8 +50,7 @@ class ExpressionTest extends TestCase
             '[property2]' => 'value2',
         ]);
 
-        $this->assertInstanceOf(CompositeExpression::class, $expression);
-        $this->assertSame(CompositeExpression::TYPE_AND, $expression->getType());
+        static::assertSame(CompositeExpression::TYPE_AND, $expression->getType());
 
         $expressions = $expression->getExpressions();
 
@@ -87,8 +84,7 @@ class ExpressionTest extends TestCase
             $expression2 = Expression::validate('[property]')
         );
 
-        $this->assertInstanceOf(CompositeExpression::class, $expression);
-        $this->assertSame(CompositeExpression::TYPE_OR, $expression->getType());
+        static::assertSame(CompositeExpression::TYPE_OR, $expression->getType());
 
         $expressions = $expression->getExpressions();
 

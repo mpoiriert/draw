@@ -31,7 +31,7 @@ class EmailSubjectFromHtmlTitleListener implements EventSubscriberInterface
             return;
         }
 
-        $crawler = (new Crawler($htmlBody))->filter('html > head > title')->first();
+        $crawler = new Crawler($htmlBody)->filter('html > head > title')->first();
 
         if (0 === \count($crawler)) {
             return;

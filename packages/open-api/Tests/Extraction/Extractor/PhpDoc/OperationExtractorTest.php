@@ -11,7 +11,6 @@ use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Operation;
 use Draw\Component\OpenApi\Schema\PathItem;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use Draw\Component\Tester\MockTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -20,8 +19,6 @@ use PHPUnit\Framework\TestCase;
  */
 class OperationExtractorTest extends TestCase
 {
-    use MockTrait;
-
     private OperationExtractor $phpDocOperationExtractor;
 
     protected function setUp(): void
@@ -37,7 +34,7 @@ class OperationExtractorTest extends TestCase
             $this->phpDocOperationExtractor->canExtract(
                 $source,
                 $type,
-                $context = $this->createMock(ExtractionContextInterface::class)
+                $context = static::createStub(ExtractionContextInterface::class)
             )
         );
 
@@ -130,6 +127,24 @@ class OperationExtractorTest extends TestCase
         $this->extractStubServiceMethod('invalidTypeParameter', $operation);
     }
 
+    #[DataProvider('provideExtractDeprecatedCases')]
+    public function testExtractDeprecated(string $method): void
+    {
+        $context = $this->extractStubServiceMethod($method);
+
+        static::assertJsonStringEqualsJsonString(
+            file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtractDeprecated.json'),
+            $context->getOpenApi()->dump($context->getRootSchema(), false)
+        );
+    }
+
+    public static function provideExtractDeprecatedCases(): iterable
+    {
+        yield 'attribute' => ['method' => 'deprecatedAttributeOperation'];
+
+        yield 'doc block' => ['method' => 'deprecatedDocBlockOperation'];
+    }
+
     private function extractStubServiceMethod(string $method, ?Operation $operation = null): ExtractionContextInterface
     {
         $reflectionMethod = new \ReflectionMethod(__NAMESPACE__.'\PhpDocOperationExtractorStubService', $method);
@@ -179,6 +194,25 @@ class PhpDocOperationExtractorStubService
             throw new ExtractionImpossibleException();
         }
 
+        return $service;
+    }
+
+    /**
+     * @return PhpDocOperationExtractorStubService
+     */
+    #[\Deprecated]
+    public function deprecatedAttributeOperation(self $service)
+    {
+        return $service;
+    }
+
+    /**
+     * @deprecated
+     *
+     * @return PhpDocOperationExtractorStubService
+     */
+    public function deprecatedDocBlockOperation(self $service)
+    {
         return $service;
     }
 

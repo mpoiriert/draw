@@ -47,7 +47,7 @@ class ImporterTest extends TestCase
         $importer = $this->createImporter([$extractor]);
 
         $object = new \stdClass();
-        $column = (new Column())->setMappedTo('label');
+        $column = new Column()->setMappedTo('label');
 
         $this->invokeAssign($importer, $object, $column, '_SKIP_');
 
@@ -61,7 +61,7 @@ class ImporterTest extends TestCase
         $importer = $this->createImporter([$extractor]);
 
         $object = new \stdClass();
-        $column = (new Column())
+        $column = new Column()
             ->setMappedTo('createdAt')
             ->setIsDate(true)
         ;
@@ -77,7 +77,7 @@ class ImporterTest extends TestCase
         $importer = $this->createImporter([$extractor]);
 
         $object = new \stdClass();
-        $column = (new Column())->setMappedTo('label');
+        $column = new Column()->setMappedTo('label');
 
         $this->invokeAssign($importer, $object, $column, 'Real value');
 
@@ -91,7 +91,7 @@ class ImporterTest extends TestCase
         $importer = $this->createImporter([$extractor]);
 
         $object = new \stdClass();
-        $column = (new Column())->setMappedTo('label');
+        $column = new Column()->setMappedTo('label');
 
         $this->invokeAssign($importer, $object, $column, '');
 

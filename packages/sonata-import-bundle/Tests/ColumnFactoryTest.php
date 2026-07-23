@@ -34,7 +34,7 @@ class ColumnFactoryTest extends TestCase
 
     public function testGenerateColumnsDate(): void
     {
-        $import = (new Import())
+        $import = new Import()
             ->setEntityClass(Import::class)
         ;
 

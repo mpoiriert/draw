@@ -119,7 +119,7 @@ class MessengerMessageAdmin extends AbstractAdmin
         $dumper = new HtmlDumper();
         $dumper->setTheme('light');
 
-        return $dumper->dump((new VarCloner())->cloneVar($envelope), true);
+        return $dumper->dump(new VarCloner()->cloneVar($envelope), true);
     }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void

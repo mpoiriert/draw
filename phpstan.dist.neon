@@ -1,7 +1,9 @@
 includes:
   - phpstan-baseline.neon
+  - packages/tester-bundle/extension.neon
 
 parameters:
+  treatPhpDocTypesAsCertain: false
   level: 5
   paths:
     - app

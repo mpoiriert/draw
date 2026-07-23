@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 
 class DefaultActionExtension extends AbstractAdminExtension implements ActionableAdminExtensionInterface
 {
-    private const SUPPORTED_ACTIONS = [
+    private const array SUPPORTED_ACTIONS = [
         'delete' => DeleteAdminAction::class,
     ];
 
@@ -28,7 +28,7 @@ class DefaultActionExtension extends AbstractAdminExtension implements Actionabl
     public function getActions(AdminInterface $admin, array $actions): array
     {
         foreach ($this->actions as $action) {
-            if (\array_key_exists($action, $actions)) {
+            if (\array_key_exists((string) $action, $actions)) {
                 continue;
             }
 

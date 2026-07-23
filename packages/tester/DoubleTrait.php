@@ -7,12 +7,15 @@ use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 
-trait MockTrait
+trait DoubleTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
     abstract protected function createMock(string $originalClassName): MockObject;
+
+    abstract protected static function createStub(string $type): Stub;
 
     /**
      * @template T of object
@@ -32,6 +35,20 @@ trait MockTrait
         return $mock;
     }
 
+    public function stubProperty(object $object, string $property, string $type): Stub
+    {
+        ReflectionAccessor::setPropertyValue(
+            $object,
+            $property,
+            $stub = static::createStub($type)
+        );
+
+        return $stub;
+    }
+
+    /**
+     * @return iterable<int, Callback>
+     */
     public static function withConsecutive(array $firstCallArguments, array ...$consecutiveCallsArguments): iterable
     {
         foreach ($consecutiveCallsArguments as $consecutiveCallArguments) {
@@ -47,8 +64,9 @@ trait MockTrait
         $numberOfArguments = \count($firstCallArguments);
         $mockedMethodCall = 0;
         $callbackCall = 0;
+
         foreach (array_keys($firstCallArguments) as $index) {
-            yield new Callback(
+            yield $index => new Callback(
                 static function (mixed $actualArgument) use ($allConsecutiveCallsArguments, &$mockedMethodCall, &$callbackCall, $index, $numberOfArguments): bool {
                     $previousMockedMethodCall = $mockedMethodCall;
                     ++$callbackCall;

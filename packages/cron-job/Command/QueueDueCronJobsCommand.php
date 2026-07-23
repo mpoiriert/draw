@@ -13,7 +13,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'draw:cron-job:queue-due')]
+#[AsCommand(
+    name: 'draw:cron-job:queue-due',
+    description: 'Queues due cron jobs',
+)]
 class QueueDueCronJobsCommand extends Command
 {
     public function __construct(
@@ -21,13 +24,6 @@ class QueueDueCronJobsCommand extends Command
         private CronJobProcessor $cronJobProcessor,
     ) {
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->setDescription('Queues due cron jobs')
-        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

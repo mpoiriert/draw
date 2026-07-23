@@ -93,8 +93,6 @@ class Graph implements \Stringable
             $result .= "\n  ".implode("\n\n  ", $this->edges)."\n";
         }
 
-        $result .= '}';
-
-        return $result;
+        return $result.'}';
     }
 }

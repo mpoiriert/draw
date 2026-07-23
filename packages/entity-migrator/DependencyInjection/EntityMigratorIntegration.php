@@ -42,7 +42,7 @@ class EntityMigratorIntegration implements IntegrationInterface, ContainerBuilde
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\Component\EntityMigrator\\',
-            \dirname((new \ReflectionClass(Migrator::class))->getFileName()),
+            \dirname(new \ReflectionClass(Migrator::class)->getFileName()),
         );
 
         $this->renameDefinitions(

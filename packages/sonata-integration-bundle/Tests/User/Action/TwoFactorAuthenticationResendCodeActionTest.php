@@ -60,12 +60,12 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
                 return [];
             }
 
-            public function getPassword(): ?string
+            public function getPassword(): null
             {
                 return null;
             }
 
-            public function getSalt(): ?string
+            public function getSalt(): null
             {
                 return null;
             }

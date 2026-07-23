@@ -14,7 +14,7 @@ trait KernelTestCaseAutowireDependentTrait
     {
         \assert($testCase instanceof KernelTestCase);
 
-        $container = (new \ReflectionMethod($testCase, 'getContainer'))->invoke($testCase);
+        $container = new \ReflectionMethod($testCase, 'getContainer')->invoke($testCase);
 
         \assert($container instanceof ContainerInterface);
 

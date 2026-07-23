@@ -129,7 +129,7 @@ trait LockableUserTrait
     }
 
     /**
-     * @return Collection|UserLock[]
+     * @return Collection<UserLock>
      */
     public function getUserLocks(): Collection
     {

@@ -95,7 +95,7 @@ class DoctrineBusMessageListener implements ResetInterface
             return [];
         }
 
-        return \call_user_func_array('array_merge', array_values($this->messageHolders));
+        return \call_user_func_array(array_merge(...), array_values($this->messageHolders));
     }
 
     public function reset(): void

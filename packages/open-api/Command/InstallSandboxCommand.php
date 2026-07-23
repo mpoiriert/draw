@@ -2,6 +2,7 @@
 
 namespace Draw\Component\OpenApi\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,6 +10,10 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[AsCommand(
+    name: 'draw:open-api:install-sandbox',
+    description: 'Install Open Api Sandbox from downloaded zip base on tag version.',
+)]
 class InstallSandboxCommand extends Command
 {
     private Filesystem $filesystem;
@@ -22,9 +27,7 @@ class InstallSandboxCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('draw:open-api:install-sandbox')
             ->addArgument('path', InputArgument::REQUIRED, 'Path were to extract the zip')
-            ->setDescription('Install Open Api Sandbox from downloaded zip base on tag version.')
             ->addOption('tag', null, InputOption::VALUE_REQUIRED, 'Swagger UI tag to install (eg. "v3.52.5")', 'master')
         ;
     }

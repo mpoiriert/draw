@@ -30,7 +30,7 @@ trait JsonResponseAssertionsTrait
 
     public static function assertResponseJsonAgainstFile(string $file, array $propertyPathsCheck = []): void
     {
-        (new DataTester(static::getResponse()->getContent()))
+        new DataTester(static::getResponse()->getContent())
             ->transform('json_decode')
             ->test(
                 new AgainstJsonFileTester(
@@ -43,7 +43,7 @@ trait JsonResponseAssertionsTrait
 
     public static function getJsonResponseDataTester(): DataTester
     {
-        return (new DataTester(static::getResponseContent()))
+        return new DataTester(static::getResponseContent())
             ->transform('json_decode')
         ;
     }

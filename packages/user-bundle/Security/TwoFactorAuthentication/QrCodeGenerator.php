@@ -11,12 +11,12 @@ class QrCodeGenerator
 {
     public function getTotpQrCode(string $qrCodeContent): ResultInterface
     {
-        return (new Builder(
+        return new Builder(
             new SvgWriter(),
             data: $qrCodeContent,
             errorCorrectionLevel: ErrorCorrectionLevel::High,
             size: 200,
             margin: 0,
-        ))->build();
+        )->build();
     }
 }

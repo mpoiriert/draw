@@ -27,7 +27,7 @@ class ExactMatchColumnExtractor extends BaseColumnExtractor
         }
 
         if (\in_array($column->getHeaderName(), $this->importer->getOptions($column), true)) {
-            return (new Column())
+            return new Column()
                 ->setMappedTo($column->getHeaderName())
             ;
         }

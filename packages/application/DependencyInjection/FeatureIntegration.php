@@ -23,7 +23,7 @@ class FeatureIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\Component\Application\Feature\\',
-            \dirname((new \ReflectionClass(FeatureInitializer::class))->getFileName())
+            \dirname(new \ReflectionClass(FeatureInitializer::class)->getFileName())
         );
 
         $this->renameDefinitions(

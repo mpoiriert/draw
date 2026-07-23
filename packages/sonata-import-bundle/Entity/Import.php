@@ -19,13 +19,13 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
 #[Assert\GroupSequenceProvider]
 class Import implements GroupSequenceProviderInterface, \Stringable
 {
-    final public const STATE_NEW = 'new';
+    final public const string STATE_NEW = 'new';
 
-    final public const STATE_CONFIGURATION = 'configuration';
+    final public const string STATE_CONFIGURATION = 'configuration';
 
-    final public const STATE_VALIDATION = 'validation';
+    final public const string STATE_VALIDATION = 'validation';
 
-    final public const STATE_PROCESSED = 'processed';
+    final public const string STATE_PROCESSED = 'processed';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -251,7 +251,7 @@ class Import implements GroupSequenceProviderInterface, \Stringable
      */
     public function getColumnMapping(): array
     {
-        $criteria = Criteria::create()
+        $criteria = Criteria::create(true)
             ->andWhere(Criteria::expr()->neq('isIdentifier', true))
             ->andWhere(Criteria::expr()->neq('isIgnored', true))
         ;
@@ -271,7 +271,7 @@ class Import implements GroupSequenceProviderInterface, \Stringable
     {
         $columns = $this->getColumns()
             ->matching(
-                Criteria::create()
+                Criteria::create(true)
                     ->andWhere(Criteria::expr()->eq('isIdentifier', true))
             )
             ->toArray()

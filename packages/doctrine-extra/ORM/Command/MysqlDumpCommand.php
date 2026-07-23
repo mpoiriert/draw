@@ -3,6 +3,7 @@
 namespace Draw\DoctrineExtra\ORM\Command;
 
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,17 +11,20 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
+#[AsCommand(
+    name: 'draw:doctrine:mysql-dump',
+    description: 'Dump a mysql database to a file',
+)]
 class MysqlDumpCommand extends Command
 {
     public function __construct(private ManagerRegistry $ormManagerRegistry)
     {
-        parent::__construct('draw:doctrine:mysql-dump');
+        parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Dump a mysql database to a file')
             ->addArgument('file', InputArgument::REQUIRED, 'The file path to dump')
             ->addOption('connection', 'c', InputOption::VALUE_REQUIRED, 'The connection to use', 'default')
         ;

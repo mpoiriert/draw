@@ -187,7 +187,7 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
         $this->registerClasses(
             $loader,
             'Draw\Bundle\SonataExtraBundle\ActionableAdmin\\',
-            \dirname((new \ReflectionClass(AdminAction::class))->getFileName()),
+            \dirname(new \ReflectionClass(AdminAction::class)->getFileName()),
         );
     }
 

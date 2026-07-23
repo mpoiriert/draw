@@ -33,7 +33,7 @@ class PasswordChangeEnforcerExtension extends AbstractAdminExtension
 
     public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void
     {
-        if (!(new \ReflectionClass($admin->getClass()))->implementsInterface(PasswordChangeUserInterface::class)) {
+        if (!new \ReflectionClass($admin->getClass())->implementsInterface(PasswordChangeUserInterface::class)) {
             return;
         }
 

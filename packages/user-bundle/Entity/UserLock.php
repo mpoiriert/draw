@@ -11,9 +11,9 @@ use Ramsey\Uuid\Uuid;
 #[ORM\HasLifecycleCallbacks]
 class UserLock implements \Stringable
 {
-    final public const REASON_PASSWORD_EXPIRED = 'password-expired';
+    final public const string REASON_PASSWORD_EXPIRED = 'password-expired';
 
-    final public const REASON_MANUAL_LOCK = 'manual-lock';
+    final public const string REASON_MANUAL_LOCK = 'manual-lock';
 
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'guid')]

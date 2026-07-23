@@ -2,6 +2,8 @@
 
 namespace Draw\Component\Messenger\Tests\DependencyInjection;
 
+use App\Entity\MessengerMessage;
+use App\Entity\MessengerMessageTag;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\Test\IntegrationTestCase;
 use Draw\Component\DependencyInjection\Integration\Test\ServiceConfiguration;
@@ -63,8 +65,8 @@ class MessengerIntegrationTest extends IntegrationTestCase
     public function getDefaultConfiguration(): array
     {
         return [
-            'entity_class' => 'App\Entity\MessengerMessage',
-            'tag_entity_class' => 'App\Entity\MessengerMessageTag',
+            'entity_class' => MessengerMessage::class,
+            'tag_entity_class' => MessengerMessageTag::class,
             'async_routing_configuration' => [
                 'enabled' => false,
             ],
@@ -431,7 +433,7 @@ class MessengerIntegrationTest extends IntegrationTestCase
             ]),
         );
 
-        $installationPath = \dirname((new \ReflectionClass(Broker::class))->getFileName(), 2);
+        $installationPath = \dirname(new \ReflectionClass(Broker::class)->getFileName(), 2);
 
         static::assertContainerExtensionConfiguration(
             $containerBuilder,

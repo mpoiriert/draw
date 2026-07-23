@@ -5,7 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\BaseObject;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\Component\OpenApi\Schema as OpenApi;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[OpenApi\Tag(name: 'BaseObject')]
 class BaseObjectController

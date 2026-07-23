@@ -34,7 +34,7 @@ class SerializationControllerListener implements EventSubscriberInterface
             return;
         }
 
-        $className = $this->getRealClass(\get_class($controller[0]));
+        $className = self::getRealClass($controller[0]::class);
         $object = new \ReflectionClass($className);
         $method = $object->getMethod($controller[1]);
 

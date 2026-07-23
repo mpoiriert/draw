@@ -25,7 +25,7 @@ class ExampleTest extends TestCase
     public function testConciseNew(): void
     {
         // example-start: ConciseNew
-        (new DataTester('A string value'))
+        new DataTester('A string value')
             ->assertSame('A string value')
         ;
         // example-end: ConciseNew
@@ -34,7 +34,7 @@ class ExampleTest extends TestCase
     public function testPath(): void
     {
         // example-start: TestPath
-        (new DataTester((object) ['key' => 'value']))
+        new DataTester((object) ['key' => 'value'])
             ->path('key')
             ->assertSame('value')
         ;
@@ -53,7 +53,7 @@ class ExampleTest extends TestCase
     public function testDeeperPath(): void
     {
         // example-start: DeeperPathTest
-        (new DataTester((object) ['level1' => (object) ['level2' => 'value']]))
+        new DataTester((object) ['level1' => (object) ['level2' => 'value']])
             ->path('level1')
             ->path('level2')->assertSame('value')
         ;
@@ -63,7 +63,7 @@ class ExampleTest extends TestCase
     public function testEach(): void
     {
         // example-start: EachTest
-        (new DataTester(['value1', 'value2']))
+        new DataTester(['value1', 'value2'])
             ->each(
                 static function (DataTester $tester): void {
                     $tester->assertIsString();
@@ -76,7 +76,7 @@ class ExampleTest extends TestCase
     public function testTransform(): void
     {
         // example-start: Transform
-        (new DataTester('{"key":"value"}'))
+        new DataTester('{"key":"value"}')
             ->transform('json_decode')
             ->path('key')->assertSame('value')
         ;
@@ -86,7 +86,7 @@ class ExampleTest extends TestCase
     public function testTransformAssert(): void
     {
         // example-start: AssertTransform
-        (new DataTester('{"key":"value"}'))
+        new DataTester('{"key":"value"}')
             ->assertJson()
             ->transform('json_decode')
             ->path('key')->assertSame('value')
@@ -97,7 +97,7 @@ class ExampleTest extends TestCase
     public function testTransformAssertCustom(): void
     {
         // example-start: AssertTransformCustom
-        (new DataTester('{"key":"value"}'))
+        new DataTester('{"key":"value"}')
             ->assertJson()
             ->transform(static fn ($data) => json_decode((string) $data, true, 512, \JSON_THROW_ON_ERROR))
             ->path('[key]')->assertSame('value')
@@ -108,7 +108,7 @@ class ExampleTest extends TestCase
     public function testIfPathIsReadable(): void
     {
         // example-start: IfPathIsReadable
-        (new DataTester(null))
+        new DataTester(null)
             ->ifPathIsReadable(
                 'notExistingPath',
                 static function (DataTester $tester): void {
@@ -134,7 +134,7 @@ class ExampleTest extends TestCase
                 'active' => false,
             ],
         ];
-        (new DataTester($users))
+        new DataTester($users)
             ->each(
                 static function (DataTester $tester): void {
                     $tester->path('firstName')->assertIsString();
@@ -160,7 +160,7 @@ class ExampleTest extends TestCase
             'referral' => 'Google',
         ];
 
-        (new DataTester($user))
+        new DataTester($user)
             ->test(new UserDataTester())
         ;
         // example-end: TestWithClassCallable
@@ -181,7 +181,7 @@ class ExampleTest extends TestCase
             ],
         ];
 
-        (new DataTester($users))
+        new DataTester($users)
             ->each(new UserDataTester())
         ;
         // example-end: EachWithClassCallableEach

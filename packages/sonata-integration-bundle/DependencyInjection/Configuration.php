@@ -46,7 +46,7 @@ class Configuration implements ConfigurationInterface
     {
         return $this->canBe(Config::class, new ArrayNodeDefinition('configuration'))
             ->append(
-                (new SonataAdminNodeConfiguration(Config::class, 'draw.sonata.group.application', 'admin'))
+                new SonataAdminNodeConfiguration(Config::class, 'draw.sonata.group.application', 'admin')
                     ->addDefaultsIfNotSet()
                     ->labelDefaultValue('config')
                     ->iconDefaultValue('fa fa-server')
@@ -58,7 +58,7 @@ class Configuration implements ConfigurationInterface
     {
         return $this->canBe(Execution::class, new ArrayNodeDefinition('console'))
             ->append(
-                (new SonataAdminNodeConfiguration(Execution::class, 'Command', 'admin'))
+                new SonataAdminNodeConfiguration(Execution::class, 'Command', 'admin')
                     ->addDefaultsIfNotSet()
                     ->pagerTypeDefaultValue('simple')
                     ->controllerClassDefaultValue(ExecutionController::class)
@@ -94,13 +94,13 @@ class Configuration implements ConfigurationInterface
 
     private function createCronJobNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('cron_job'))
+        return new ArrayNodeDefinition('cron_job')
             ->canBeDisabled()
             ->children()
                 ->arrayNode('admin')
                     ->addDefaultsIfNotSet()
                     ->append(
-                        (new SonataAdminNodeConfiguration(CronJob::class, 'Cron Job', 'cron_job'))
+                        new SonataAdminNodeConfiguration(CronJob::class, 'Cron Job', 'cron_job')
                             ->addDefaultsIfNotSet()
                             ->pagerTypeDefaultValue('simple')
                             ->controllerClassDefaultValue(CronJobController::class)
@@ -109,7 +109,7 @@ class Configuration implements ConfigurationInterface
                             ->translationDomainDefaultValue('DrawCronJobAdmin')
                     )
                     ->append(
-                        (new SonataAdminNodeConfiguration(CronJobExecution::class, 'Cron Job', 'cron_job_execution'))
+                        new SonataAdminNodeConfiguration(CronJobExecution::class, 'Cron Job', 'cron_job_execution')
                             ->addDefaultsIfNotSet()
                             ->pagerTypeDefaultValue('simple')
                             ->controllerClassDefaultValue(CronJobExecutionController::class)
@@ -124,10 +124,10 @@ class Configuration implements ConfigurationInterface
 
     private function createEntityMigratorNode(): ArrayNodeDefinition
     {
-        return (new ArrayNodeDefinition('entity_migrator'))
+        return new ArrayNodeDefinition('entity_migrator')
             ->canBeEnabled()
             ->append(
-                (new SonataAdminNodeConfiguration(Migration::class, 'Entity Migrator', 'admin'))
+                new SonataAdminNodeConfiguration(Migration::class, 'Entity Migrator', 'admin')
                     ->addDefaultsIfNotSet()
                     ->translationDomainDefaultValue('DrawEntityMigratorAdmin')
                     ->labelDefaultValue('Migration')
@@ -147,7 +147,7 @@ class Configuration implements ConfigurationInterface
                    ->scalarPrototype()->end()
                 ->end()
                 ->append(
-                    (new SonataAdminNodeConfiguration(MessengerMessage::class, 'Messenger', 'admin'))
+                    new SonataAdminNodeConfiguration(MessengerMessage::class, 'Messenger', 'admin')
                         ->addDefaultsIfNotSet()
                         ->pagerTypeDefaultValue('simple')
                         ->controllerClassDefaultValue(MessageController::class)
@@ -204,7 +204,7 @@ class Configuration implements ConfigurationInterface
                     ->canBeDisabled()
                 ->end()
                 ->append(
-                    (new SonataAdminNodeConfiguration(UserLock::class, 'User', 'admin'))
+                    new SonataAdminNodeConfiguration(UserLock::class, 'User', 'admin')
                         ->addDefaultsIfNotSet()
                         ->pagerTypeDefaultValue('simple')
                         ->iconDefaultValue('fas fa-ba')

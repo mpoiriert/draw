@@ -36,7 +36,7 @@ class SystemMonitoringIntegration implements IntegrationInterface, PrependIntegr
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\Component\Application\SystemMonitoring\\',
-            $directory = \dirname((new \ReflectionClass(System::class))->getFileName()),
+            $directory = \dirname(new \ReflectionClass(System::class)->getFileName()),
             [
                 $directory.'/Error.php',
                 $directory.'/MonitoredService.php',
@@ -56,7 +56,7 @@ class SystemMonitoringIntegration implements IntegrationInterface, PrependIntegr
 
             $container->setDefinition(
                 $serviceId,
-                (new Definition(MonitoredService::class))
+                new Definition(MonitoredService::class)
                     ->setArgument('$name', $serviceStatusProvider['name'])
                     ->setArgument('$serviceStatusProvider', new Reference($serviceStatusProvider['service']))
                     ->setArgument('$contexts', $serviceStatusProvider['contexts'])
