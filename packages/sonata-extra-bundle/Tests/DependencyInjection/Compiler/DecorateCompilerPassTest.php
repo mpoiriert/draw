@@ -29,15 +29,15 @@ class DecorateCompilerPassTest extends TestCase
 
         $definition = $this->containerBuilder->getDefinition('draw.sonata.builder.orm_form');
 
-        static::assertSame(
+        $this->assertSame(
             EventDispatcherFormContractor::class,
             $definition->getClass()
         );
 
-        static::assertTrue($definition->isAutoconfigured());
-        static::assertTrue($definition->isAutowired());
+        $this->assertTrue($definition->isAutoconfigured());
+        $this->assertTrue($definition->isAutowired());
 
-        static::assertSame(
+        $this->assertSame(
             [
                 'sonata.admin.builder.orm_form',
                 'sonata.admin.builder.orm_form.inner',
@@ -46,22 +46,22 @@ class DecorateCompilerPassTest extends TestCase
             $definition->getDecoratedService()
         );
 
-        static::assertSame(
+        $this->assertSame(
             'sonata.admin.builder.orm_form.inner',
             (string) $definition->getArgument('$decoratedFormContractor')
         );
 
         $definition = $this->containerBuilder->getDefinition('draw.sonata.admin.field_description_factory.orm');
 
-        static::assertSame(
+        $this->assertSame(
             SubClassFieldDescriptionFactory::class,
             $definition->getClass()
         );
 
-        static::assertTrue($definition->isAutoconfigured());
-        static::assertTrue($definition->isAutowired());
+        $this->assertTrue($definition->isAutoconfigured());
+        $this->assertTrue($definition->isAutowired());
 
-        static::assertSame(
+        $this->assertSame(
             [
                 'sonata.admin.field_description_factory.orm',
                 'sonata.admin.field_description_factory.orm.inner',
@@ -70,7 +70,7 @@ class DecorateCompilerPassTest extends TestCase
             $definition->getDecoratedService()
         );
 
-        static::assertSame(
+        $this->assertSame(
             'sonata.admin.field_description_factory.orm.inner',
             (string) $definition->getArgument('$decorated')
         );

@@ -24,7 +24,7 @@ class RedirectToRouteMessageTraitTest extends TestCase
         $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
 
         $urlGenerator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('generate')
             ->with(
                 $this->route,
@@ -36,12 +36,12 @@ class RedirectToRouteMessageTraitTest extends TestCase
 
         $response = $this->getRedirectResponse($urlGenerator);
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             RedirectResponse::class,
             $response
         );
 
-        static::assertSame(
+        $this->assertSame(
             $url,
             $response->getTargetUrl()
         );

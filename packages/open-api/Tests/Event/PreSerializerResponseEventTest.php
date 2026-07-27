@@ -33,7 +33,7 @@ class PreSerializerResponseEventTest extends TestCase
 
     public function testGetResult(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->result,
             $this->object->getResult()
         );
@@ -41,7 +41,7 @@ class PreSerializerResponseEventTest extends TestCase
 
     public function testGetSerialization(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->serialization,
             $this->object->getSerialization()
         );
@@ -49,7 +49,7 @@ class PreSerializerResponseEventTest extends TestCase
 
     public function testGetContext(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->serializationContext,
             $this->object->getContext()
         );

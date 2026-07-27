@@ -50,13 +50,13 @@ class RetryFailedMessageActionTest extends WebTestCase implements AutowiredInter
 
         $this->client->loginUserInAdmin($this->admin);
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             MessengerMessage::class,
             $failedMessage = $this->entityManager
                 ->getRepository(MessengerMessage::class)
                 ->findOneBy(['queueName' => 'failed'])
         );
-        static::assertSame(FailedMessage::class, $failedMessage->getMessageClass());
+        $this->assertSame(FailedMessage::class, $failedMessage->getMessageClass());
 
         $this->client->request(
             'GET',

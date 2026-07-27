@@ -34,7 +34,7 @@ class TokenProcessorTest extends TestCase
 
     public function testInvokeNoToken(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [$this->key => null],
             $this->service->__invoke(
                 new LogRecord(
@@ -49,14 +49,14 @@ class TokenProcessorTest extends TestCase
 
     public function testInvokeNotIdentifiedToken(): void
     {
-        $this->tokenStorage->expects(static::once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->willReturn(
                 new NullToken()
             )
         ;
 
-        static::assertSame(
+        $this->assertSame(
             [
                 $this->key => [
                     'authenticated' => false,
@@ -108,7 +108,7 @@ class TokenProcessorTest extends TestCase
             }
         };
 
-        $this->tokenStorage->expects(static::once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->willReturn(
                 new UsernamePasswordToken(
@@ -121,7 +121,7 @@ class TokenProcessorTest extends TestCase
             )
         ;
 
-        static::assertSame(
+        $this->assertSame(
             [
                 $this->key => [
                     'authenticated' => true,

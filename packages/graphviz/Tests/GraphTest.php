@@ -19,7 +19,7 @@ class GraphTest extends TestCase
             )
         ;
 
-        static::assertSame(<<<'TEXT'
+        $this->assertSame(<<<'TEXT'
             digraph test {
               a -> b;
             }
@@ -31,7 +31,7 @@ class GraphTest extends TestCase
     {
         $graph = new Graph('test');
 
-        static::assertSame(
+        $this->assertSame(
             'graph test {}',
             (string) $graph
         );
@@ -41,7 +41,7 @@ class GraphTest extends TestCase
     {
         $graph = new Graph('test', ['rankdir' => 'LR', 'bgcolor' => 'red']);
 
-        static::assertSame(<<<'TEXT'
+        $this->assertSame(<<<'TEXT'
             graph test {
               graph [
                 rankdir="LR",

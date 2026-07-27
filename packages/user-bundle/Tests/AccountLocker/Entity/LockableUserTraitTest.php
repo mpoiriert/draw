@@ -27,33 +27,33 @@ class LockableUserTraitTest extends TestCase
 
     public function testManualLockMutator(): void
     {
-        static::assertFalse(
+        $this->assertFalse(
             $this->object->hasManualLock()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $this->object->getLocks()[UserLock::REASON_MANUAL_LOCK] ?? null
         );
 
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $this->object->setManualLock(true)
         );
 
-        static::assertTrue(
+        $this->assertTrue(
             $this->object->hasManualLock()
         );
 
-        static::assertNotNull(
+        $this->assertNotNull(
             $this->object->getLocks()[UserLock::REASON_MANUAL_LOCK] ?? null
         );
 
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $this->object->setManualLock(false)
         );
 
-        static::assertNull(
+        $this->assertNull(
             $this->object->getLocks()[UserLock::REASON_MANUAL_LOCK] ?? null
         );
     }
@@ -62,14 +62,14 @@ class LockableUserTraitTest extends TestCase
     {
         $lock = new UserLock(uniqid('reason-'));
 
-        static::assertSame(
+        $this->assertSame(
             $lock,
             $this->object->lock($lock)
         );
 
-        static::assertTrue($this->object->getUserLocks()->contains($lock));
+        $this->assertTrue($this->object->getUserLocks()->contains($lock));
 
-        static::assertSame(
+        $this->assertSame(
             $lock,
             $this->object->lock(clone $lock),
             'Must return the current lock since they are the same'
@@ -83,15 +83,15 @@ class LockableUserTraitTest extends TestCase
         $newLock->setExpiresAt(new \DateTimeImmutable('+ 10 days'));
         $newLock->setLockOn(new \DateTimeImmutable('+ 10 days'));
 
-        static::assertSame(
+        $this->assertSame(
             $newLock,
             $this->object->lock($newLock),
             'Must return the new lock since they are different'
         );
 
-        static::assertTrue($this->object->getUserLocks()->contains($newLock));
+        $this->assertTrue($this->object->getUserLocks()->contains($newLock));
 
-        static::assertFalse(
+        $this->assertFalse(
             $this->object->getUserLocks()->contains($lock),
             'Old lock must be remove since the new lock has the same reason'
         );
@@ -99,7 +99,7 @@ class LockableUserTraitTest extends TestCase
 
     public function testUnlock(): void
     {
-        static::assertNull(
+        $this->assertNull(
             $this->object->unlock(uniqid('reason-')),
             'If not lock is found it just return null'
         );
@@ -108,99 +108,99 @@ class LockableUserTraitTest extends TestCase
 
         $this->object->lock($lock);
 
-        static::assertSame(
+        $this->assertSame(
             $lock,
             $this->object->unlock($lock->getReason(), $until = new \DateTimeImmutable())
         );
 
-        static::assertTrue(
+        $this->assertTrue(
             $this->object->getUserLocks()->contains($lock),
             'Lock must be kept since we unlock it only until a specific date'
         );
 
-        static::assertSame(
+        $this->assertSame(
             $until->getTimestamp(),
             $lock->getUnlockUntil()->getTimestamp(),
         );
 
-        static::assertSame(
+        $this->assertSame(
             $lock,
             $this->object->unlock($lock->getReason())
         );
 
-        static::assertFalse(
+        $this->assertFalse(
             $this->object->getUserLocks()->contains($lock),
             'Lock must be remove from user locks since we remove it completely'
         );
 
-        static::assertNull(
+        $this->assertNull(
             $this->object->unlock($lock->getReason())
         );
     }
 
     public function testGeLocks(): void
     {
-        static::assertEmpty($this->object->getLocks());
+        $this->assertEmpty($this->object->getLocks());
 
         $this->object->setManualLock(true);
 
         $locks = $this->object->getLocks();
 
-        static::assertCount(1, $locks);
+        $this->assertCount(1, $locks);
 
         /** @var UserLock $lock */
         $lock = current($locks);
 
-        static::assertArrayHasKey($lock->getReason(), $locks);
+        $this->assertArrayHasKey($lock->getReason(), $locks);
     }
 
     public function testIsLocked(): void
     {
-        static::assertFalse($this->object->isLocked());
+        $this->assertFalse($this->object->isLocked());
 
         $this->object->setManualLock(true);
 
-        static::assertTrue($this->object->isLocked());
+        $this->assertTrue($this->object->isLocked());
 
         /** @var UserLock $lock */
         $lock = current($this->object->getLocks());
 
         $lock->setUnlockUntil(new \DateTimeImmutable('+ 1 days'));
 
-        static::assertFalse($this->object->isLocked());
+        $this->assertFalse($this->object->isLocked());
     }
 
     public function testUserLockMutator(): void
     {
-        static::assertCount(0, $this->object->getUserLocks());
+        $this->assertCount(0, $this->object->getUserLocks());
 
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $this->object->addUserLock($value = new UserLock(uniqid('reason-')))
         );
 
-        static::assertSame(
+        $this->assertSame(
             $value->getId(),
             $this->object->getOnHoldMessages(true)[0]->getUserLockId()
         );
 
-        static::assertCount(1, $this->object->getUserLocks());
-        static::assertSame(
+        $this->assertCount(1, $this->object->getUserLocks());
+        $this->assertSame(
             $value,
             $this->object->getUserLocks()[0]
         );
 
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $value->getUser()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $this->object->removeUserLock($value)
         );
 
-        static::assertCount(0, $this->object->getUserLocks());
+        $this->assertCount(0, $this->object->getUserLocks());
     }
 
     public function tesTemporaryUnlockAll(): void
@@ -209,17 +209,17 @@ class LockableUserTraitTest extends TestCase
 
         $message = $this->object->getOnHoldMessages(true)[0];
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             TemporaryUnlockedMessage::class,
             $message
         );
 
-        static::assertSame(
+        $this->assertSame(
             $until->getTimestamp(),
             $message->until()->getTimestamp()
         );
 
-        static::assertFalse($message->wasLocked());
+        $this->assertFalse($message->wasLocked());
 
         $this->object->setManualLock(true);
 
@@ -227,17 +227,17 @@ class LockableUserTraitTest extends TestCase
 
         $message = $this->object->getOnHoldMessages(true)[0];
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             TemporaryUnlockedMessage::class,
             $message
         );
 
-        static::assertSame(
+        $this->assertSame(
             $until->getTimestamp(),
             $message->until()->getTimestamp()
         );
 
-        static::assertTrue($message->wasLocked());
+        $this->assertTrue($message->wasLocked());
     }
 
     public function testAddUserLockPreventManualLockIsFalse(): void
@@ -246,7 +246,7 @@ class LockableUserTraitTest extends TestCase
 
         $this->object->addUserLock(new UserLock(UserLock::REASON_MANUAL_LOCK));
 
-        static::assertEmpty($this->object->getLocks(), 'Manual lock should not be added if set to false');
+        $this->assertEmpty($this->object->getLocks(), 'Manual lock should not be added if set to false');
     }
 
     public function testRemoveUserLockPreventManualLockIsTrue(): void
@@ -257,7 +257,7 @@ class LockableUserTraitTest extends TestCase
 
         $this->object->removeUserLock($lock);
 
-        static::assertCount(1, $this->object->getLocks(), 'Manual lock should not be removed if set to false');
+        $this->assertCount(1, $this->object->getLocks(), 'Manual lock should not be removed if set to false');
     }
 }
 

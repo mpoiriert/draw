@@ -27,14 +27,14 @@ class ValueIsNotUsedValidatorTest extends KernelTestCase implements AutowiredInt
         ;
 
         if (!$expectError) {
-            static::assertCount(0, $violations);
+            $this->assertCount(0, $violations);
 
             return;
         }
 
-        static::assertCount(1, $violations);
+        $this->assertCount(1, $violations);
 
-        static::assertSame('VALUE_ALREADY_TAKEN', $violations->get(0)->getCode());
+        $this->assertSame('VALUE_ALREADY_TAKEN', $violations->get(0)->getCode());
     }
 
     public static function provideValidateCases(): iterable

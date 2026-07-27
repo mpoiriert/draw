@@ -69,7 +69,7 @@ class ClickMessageActionTest extends TestCase
 
     public function testConstants(): void
     {
-        static::assertSame(
+        $this->assertSame(
             'dMUuid',
             $this->object::MESSAGE_ID_PARAMETER_NAME
         );
@@ -82,22 +82,22 @@ class ClickMessageActionTest extends TestCase
         ?string $translatedMessage,
     ): void {
         $this->messageBus
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('dispatch')
         ;
 
         $this->envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId = uniqid('message-Id'))
             ->willThrowException(new MessageNotFoundException($messageId))
         ;
 
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(
+                $this->callback(
                     function (MessageLinkErrorEvent $event) use ($messageId, $exceptionClass) {
                         $this->assertSame(
                             $this->request,
@@ -125,7 +125,7 @@ class ClickMessageActionTest extends TestCase
 
         if ($translatedMessage) {
             $this->translator
-                ->expects(static::once())
+                ->expects($this->once())
                 ->method('trans')
                 ->with($translatedMessage, [], 'DrawMessenger')
                 ->willReturn($message = uniqid('translation-'))
@@ -133,7 +133,7 @@ class ClickMessageActionTest extends TestCase
         } else {
             $this->request->setSession($this->createMock(SessionInterface::class));
             $this->translator
-                ->expects(static::never())
+                ->expects($this->never())
                 ->method('trans')
             ;
         }
@@ -141,7 +141,7 @@ class ClickMessageActionTest extends TestCase
         $response = \call_user_func($this->object, $messageId, $this->request);
 
         if ($translatedMessage) {
-            static::assertSame(
+            $this->assertSame(
                 [
                     'error' => [$message],
                 ],
@@ -149,12 +149,12 @@ class ClickMessageActionTest extends TestCase
             );
         }
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             RedirectResponse::class,
             $response
         );
 
-        static::assertSame(
+        $this->assertSame(
             '/',
             $response->getTargetUrl()
         );
@@ -186,17 +186,17 @@ class ClickMessageActionTest extends TestCase
         $transportName = uniqid('transport-');
 
         $this->envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId = uniqid('message-Id'))
             ->willReturn(new Envelope((object) [], [new FoundFromTransportStamp($transportName)]))
         ;
 
         $this->messageBus
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(function (Envelope $envelope) use ($transportName) {
+                $this->callback(function (Envelope $envelope) use ($transportName) {
                     $this->assertSame(
                         $transportName,
                         $envelope->last(ReceivedStamp::class)->getTransportName()
@@ -213,40 +213,40 @@ class ClickMessageActionTest extends TestCase
         ;
 
         $this->translator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('trans')
             ->with('link.processed', [], 'DrawMessenger')
             ->willReturn($message = uniqid('translation-'))
         ;
 
         $this->transportRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('get')
             ->with($transportName)
             ->willReturn($transport = $this->createMock(TransportInterface::class))
         ;
 
         $transport
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('ack')
             ->with($envelope)
         ;
 
         $response = \call_user_func($this->object, $messageId, $this->request);
 
-        static::assertSame(
+        $this->assertSame(
             [
                 'success' => [$message],
             ],
             $this->request->getSession()->getFlashBag()->all()
         );
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             RedirectResponse::class,
             $response
         );
 
-        static::assertSame(
+        $this->assertSame(
             '/',
             $response->getTargetUrl()
         );
@@ -257,14 +257,14 @@ class ClickMessageActionTest extends TestCase
         $transportName = uniqid('transport-');
 
         $this->envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId = uniqid('message-Id'))
             ->willReturn(new Envelope((object) [], [new FoundFromTransportStamp($transportName)]))
         ;
 
         $this->messageBus
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->willReturn(
                 $envelope = new Envelope(
@@ -278,24 +278,24 @@ class ClickMessageActionTest extends TestCase
         ;
 
         $this->translator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('trans')
         ;
 
         $this->transportRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('get')
             ->with($transportName)
             ->willReturn($transport = $this->createMock(TransportInterface::class))
         ;
 
         $transport
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('ack')
             ->with($envelope)
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $response,
             \call_user_func($this->object, $messageId, $this->request)
         );
@@ -306,7 +306,7 @@ class ClickMessageActionTest extends TestCase
         $transportName = uniqid('transport-');
 
         $this->envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId = uniqid('message-Id'))
             ->willReturn(
@@ -318,7 +318,7 @@ class ClickMessageActionTest extends TestCase
         ;
 
         $this->messageBus
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->willReturn(
                 new Envelope(
@@ -333,17 +333,17 @@ class ClickMessageActionTest extends TestCase
         ;
 
         $this->translator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('trans')
         ;
 
         $response = new Response();
 
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(
+                $this->callback(
                     function (MessageLinkErrorEvent $event) use ($response, $handler1, $handler2) {
                         $this->assertInstanceOf(
                             \LogicException::class,
@@ -364,7 +364,7 @@ class ClickMessageActionTest extends TestCase
             ->willReturnArgument(0)
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $response,
             \call_user_func($this->object, $messageId, $this->request)
         );

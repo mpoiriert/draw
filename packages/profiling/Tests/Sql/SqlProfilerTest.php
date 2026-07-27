@@ -29,19 +29,19 @@ class SqlProfilerTest extends TestCase
 
     public function testGetType(): void
     {
-        static::assertSame(SqlProfiler::PROFILER_TYPE, $this->profiler->getType());
+        $this->assertSame(SqlProfiler::PROFILER_TYPE, $this->profiler->getType());
     }
 
     public function testGetMetricBuilder(): void
     {
-        static::assertInstanceOf(SqlMetricBuilder::class, $this->profiler->getMetricBuilder());
+        $this->assertInstanceOf(SqlMetricBuilder::class, $this->profiler->getMetricBuilder());
     }
 
     public function testStop(): void
     {
         $metric = $this->profiler->stop();
 
-        static::assertInstanceOf(SqlMetric::class, $metric);
-        static::assertSame(0, $metric->count);
+        $this->assertInstanceOf(SqlMetric::class, $metric);
+        $this->assertSame(0, $metric->count);
     }
 }

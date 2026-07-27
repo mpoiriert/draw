@@ -48,7 +48,7 @@ class SlowRequestLoggerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -56,7 +56,7 @@ class SlowRequestLoggerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 TerminateEvent::class => ['onKernelTerminate', 2048],
             ],
@@ -67,7 +67,7 @@ class SlowRequestLoggerTest extends TestCase
     public function testOnKernelTerminateMatch(): void
     {
         $this->requestMatcher
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('matches')
             ->with($request = new Request())
             ->willReturn(true)
@@ -80,12 +80,12 @@ class SlowRequestLoggerTest extends TestCase
         );
 
         $this->logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('log')
             ->with(
                 LogLevel::WARNING,
                 'Response time too slow ({duration} milliseconds) for {url}',
-                static::callback(function (array $parameter) use ($request) {
+                $this->callback(function (array $parameter) use ($request) {
                     $this->assertSame(
                         $parameter['url'],
                         $request->getRequestUri()
@@ -115,7 +115,7 @@ class SlowRequestLoggerTest extends TestCase
     public function testOnKernelTerminateNoMatch(): void
     {
         $this->requestMatcher
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('matches')
             ->with($request = new Request())
             ->willReturn(false)
@@ -128,7 +128,7 @@ class SlowRequestLoggerTest extends TestCase
         );
 
         $this->logger
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('log')
         ;
 

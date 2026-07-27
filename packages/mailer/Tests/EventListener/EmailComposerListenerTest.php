@@ -39,7 +39,7 @@ class EmailComposerListenerTest extends TestCase
     public function testComposeMessageNotMessage(): void
     {
         $this->emailComposer
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('compose')
         ;
 
@@ -53,14 +53,14 @@ class EmailComposerListenerTest extends TestCase
     public function testComposeMessageComposed(): void
     {
         $this->emailComposer
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('compose')
         ;
 
         $message = $this->createMock(Message::class);
 
         $message
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getHeaders')
             ->willReturn($headers = new Headers())
         ;
@@ -77,7 +77,7 @@ class EmailComposerListenerTest extends TestCase
         $event = $this->createMessageEvent($message);
 
         $this->emailComposer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('compose')
         ;
 
@@ -85,13 +85,13 @@ class EmailComposerListenerTest extends TestCase
 
         $headers = $message->getHeaders();
 
-        static::assertTrue($headers->has('X-DrawEmail'));
+        $this->assertTrue($headers->has('X-DrawEmail'));
     }
 
     public function testComposeMessageQueued(): void
     {
         $this->emailComposer
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('compose')
         ;
 

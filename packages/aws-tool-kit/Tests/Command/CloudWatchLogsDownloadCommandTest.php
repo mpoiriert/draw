@@ -91,7 +91,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         register_shutdown_function('unlink', $output);
 
         $this->cloudWatchLogsClient
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('__call')
             ->with(
                 ...static::withConsecutive(
@@ -141,7 +141,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
             ->test(CommandDataTester::create())
         ;
 
-        static::assertSame(
+        $this->assertSame(
             "Line 1\nLine 2\n",
             file_get_contents($output)
         );
@@ -158,7 +158,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         register_shutdown_function('unlink', $output);
 
         $this->cloudWatchLogsClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('__call')
             ->with(
                 'getLogEvents',
@@ -193,7 +193,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
             ->test(CommandDataTester::create())
         ;
 
-        static::assertSame(
+        $this->assertSame(
             "Before\nLine 1\n",
             file_get_contents($output)
         );

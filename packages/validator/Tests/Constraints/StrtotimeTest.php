@@ -23,12 +23,12 @@ class StrtotimeTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(PhpCallable::class, $this->object);
+        $this->assertInstanceOf(PhpCallable::class, $this->object);
     }
 
     public function testCallable(): void
     {
-        static::assertSame(
+        $this->assertSame(
             'strtotime',
             $this->object->callable
         );
@@ -39,12 +39,12 @@ class StrtotimeTest extends TestCase
         /** @var Type $constraint */
         $constraint = $this->object->returnValueConstraint;
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             Type::class,
             $constraint
         );
 
-        static::assertSame(
+        $this->assertSame(
             'int',
             $constraint->type
         );

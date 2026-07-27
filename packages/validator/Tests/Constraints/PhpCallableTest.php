@@ -23,29 +23,29 @@ class PhpCallableTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             Constraint::class,
             $this->object
         );
 
-        static::assertSame(
+        $this->assertSame(
             'Execution of function with {{ value }} does not return expected result.',
             $this->object->message
         );
 
-        static::assertSame(
+        $this->assertSame(
             'strtotime',
             $this->object->callable
         );
 
-        static::assertTrue($this->object->ignoreNull);
+        $this->assertTrue($this->object->ignoreNull);
 
-        static::assertNull($this->object->returnValueConstraint);
+        $this->assertNull($this->object->returnValueConstraint);
     }
 
     public function testGetDefaultOption(): void
     {
-        static::assertSame(
+        $this->assertSame(
             'callable',
             $this->object->getDefaultOption()
         );
@@ -53,7 +53,7 @@ class PhpCallableTest extends TestCase
 
     public function testGetRequiredOptions(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['callable'],
             $this->object->getRequiredOptions()
         );
@@ -61,7 +61,7 @@ class PhpCallableTest extends TestCase
 
     public function testValidatedBy(): void
     {
-        static::assertSame(
+        $this->assertSame(
             PhpCallableValidator::class,
             $this->object->validatedBy()
         );

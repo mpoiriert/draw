@@ -21,7 +21,7 @@ class PropertyPathColumnExtractorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ColumnExtractorInterface::class,
             $this->object
         );
@@ -29,7 +29,7 @@ class PropertyPathColumnExtractorTest extends TestCase
 
     public function testGetDefaultPriority(): void
     {
-        static::assertSame(
+        $this->assertSame(
             -1000,
             $this->object::getDefaultPriority()
         );
@@ -37,7 +37,7 @@ class PropertyPathColumnExtractorTest extends TestCase
 
     public function testGetOptions(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['test'],
             $this->object->getOptions(
                 new Column(),
@@ -48,7 +48,7 @@ class PropertyPathColumnExtractorTest extends TestCase
 
     public function testExtractDefaultValue(): void
     {
-        static::assertNull(
+        $this->assertNull(
             $this->object->extractDefaultValue(
                 (new Column())
                     ->setMappedTo('test'),
@@ -70,7 +70,7 @@ class PropertyPathColumnExtractorTest extends TestCase
             $value = 'value'
         );
 
-        static::assertSame(
+        $this->assertSame(
             $value,
             $object->test
         );

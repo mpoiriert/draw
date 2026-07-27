@@ -50,7 +50,7 @@ class ImporterTest extends KernelTestCase implements AutowiredInterface
 
         $tag = $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => $name]);
 
-        static::assertNull(
+        $this->assertNull(
             $tag,
             'Should not have been created because insertWhenNotFound is false'
         );
@@ -63,28 +63,28 @@ class ImporterTest extends KernelTestCase implements AutowiredInterface
 
         $tag = $this->entityManager->getRepository(Tag::class)->findOneBy(['name' => $name]);
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             Tag::class,
             $tag
         );
 
         BaseTemporaryEntityCleaner::$temporaryEntities[] = $tag;
 
-        static::assertSame(
+        $this->assertSame(
             $name,
             $tag->getName()
         );
 
-        static::assertTrue(
+        $this->assertTrue(
             $tag->getActive()
         );
 
-        static::assertSame(
+        $this->assertSame(
             'testEn',
             $tag->translate('en')->getLabel()
         );
 
-        static::assertSame(
+        $this->assertSame(
             'testFr',
             $tag->translate('fr')->getLabel()
         );

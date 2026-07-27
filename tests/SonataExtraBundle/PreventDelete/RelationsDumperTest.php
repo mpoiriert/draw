@@ -30,10 +30,10 @@ class RelationsDumperTest extends KernelTestCase implements AutowiredInterface
         if (!file_exists($file) || self::$resetFile) {
             file_put_contents($file, $this->relationsDumper->xmlDump($relations));
 
-            static::fail("The file [{$file}] does not exist or has been reset. Review it to ensure it contains the expected XML structure.");
+            $this->fail("The file [{$file}] does not exist or has been reset. Review it to ensure it contains the expected XML structure.");
         }
 
-        static::assertXmlStringEqualsXmlFile(
+        $this->assertXmlStringEqualsXmlFile(
             $file,
             $this->relationsDumper->xmlDump($relations)
         );

@@ -44,7 +44,7 @@ class BrokerTest extends TestCase
 
     public function testGetContext(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->context,
             $this->service->getContext()
         );
@@ -57,12 +57,12 @@ class BrokerTest extends TestCase
         $receiver = uniqid('receiver-');
 
         $this->eventDispatcher
-            ->expects(static::exactly($concurrent * 4))
+            ->expects($this->exactly($concurrent * 4))
             ->method('dispatch')
             ->with(
                 ...static::withConsecutive(
                     [
-                        static::callback(function (BrokerStartedEvent $event) use ($concurrent, $timeout) {
+                        $this->callback(function (BrokerStartedEvent $event) use ($concurrent, $timeout) {
                             $this->assertSame(
                                 $this->service,
                                 $event->getBroker()
@@ -82,7 +82,7 @@ class BrokerTest extends TestCase
                         }),
                     ],
                     [
-                        static::callback(function (BrokerRunningEvent $event) {
+                        $this->callback(function (BrokerRunningEvent $event) {
                             $this->assertSame(
                                 $this->service,
                                 $event->getBroker()
@@ -92,7 +92,7 @@ class BrokerTest extends TestCase
                         }),
                     ],
                     [
-                        static::callback(function (NewConsumerProcessEvent $event) use ($receiver) {
+                        $this->callback(function (NewConsumerProcessEvent $event) use ($receiver) {
                             static::assertSame(
                                 $this->context,
                                 $event->getContext()
@@ -104,7 +104,7 @@ class BrokerTest extends TestCase
                         }),
                     ],
                     [
-                        static::callback(function (BrokerRunningEvent $event) {
+                        $this->callback(function (BrokerRunningEvent $event) {
                             $this->assertSame(
                                 $this->service,
                                 $event->getBroker()
@@ -121,7 +121,7 @@ class BrokerTest extends TestCase
         ;
 
         $this->processFactory
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
                 [
@@ -138,12 +138,12 @@ class BrokerTest extends TestCase
         ;
 
         $process
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('start')
         ;
 
         $process
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('isRunning')
             ->willReturn(false)
         ;
@@ -157,10 +157,10 @@ class BrokerTest extends TestCase
         $receiver = uniqid('receiver-');
 
         $this->eventDispatcher
-            ->expects(static::any())
+            ->expects($this->any())
             ->method('dispatch')
             ->with(
-                static::callback(function ($event) use ($receiver) {
+                $this->callback(function ($event) use ($receiver) {
                     if ($event instanceof NewConsumerProcessEvent) {
                         $event->setReceivers([$receiver]);
                         $this->service->stop(false);
@@ -173,7 +173,7 @@ class BrokerTest extends TestCase
         ;
 
         $this->processFactory
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
                 [
@@ -190,12 +190,12 @@ class BrokerTest extends TestCase
         ;
 
         $process
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('start')
         ;
 
         $process
-            ->expects(static::exactly(6)) // $concurrent * 3
+            ->expects($this->exactly(6)) // $concurrent * 3
             ->method('isRunning')
             ->willReturnOnConsecutiveCalls(
                 true,
@@ -208,14 +208,14 @@ class BrokerTest extends TestCase
         ;
 
         $process
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('signal')
             ->with(15)
             ->willReturnSelf()
         ;
 
         $process
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('stop')
             ->with(0)
             ->willReturn(0)
@@ -229,7 +229,7 @@ class BrokerTest extends TestCase
         $concurrent = 1;
 
         $this->processFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('create')
         ;
 
@@ -254,10 +254,10 @@ class BrokerTest extends TestCase
         ];
 
         $this->eventDispatcher
-            ->expects(static::any())
+            ->expects($this->any())
             ->method('dispatch')
             ->with(
-                static::callback(function ($event) use ($receiver, $options) {
+                $this->callback(function ($event) use ($receiver, $options) {
                     if ($event instanceof NewConsumerProcessEvent) {
                         $event->setReceivers([$receiver]);
                         $event->setOptions($options);
@@ -272,7 +272,7 @@ class BrokerTest extends TestCase
         ;
 
         $this->processFactory
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
                 [
@@ -296,12 +296,12 @@ class BrokerTest extends TestCase
         ;
 
         $process
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('start')
         ;
 
         $process
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('isRunning')
             ->willReturn(false)
         ;

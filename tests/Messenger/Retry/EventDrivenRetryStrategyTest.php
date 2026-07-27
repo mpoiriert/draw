@@ -19,7 +19,7 @@ class EventDrivenRetryStrategyTest extends TestCase
             ->get('async')
         ;
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventDrivenRetryStrategy::class,
             $service
         );
@@ -29,7 +29,7 @@ class EventDrivenRetryStrategyTest extends TestCase
             'fallbackRetryStrategy'
         );
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             MultiplierRetryStrategy::class,
             $fallbackStrategy
         );

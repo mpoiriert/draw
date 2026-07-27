@@ -26,7 +26,7 @@ class ExpirationStampTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             StampInterface::class,
             $this->entity
         );
@@ -34,7 +34,7 @@ class ExpirationStampTest extends TestCase
 
     public function testGetDateTime(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->expiration->getTimestamp(),
             $this->entity->getDateTime()->getTimestamp()
         );

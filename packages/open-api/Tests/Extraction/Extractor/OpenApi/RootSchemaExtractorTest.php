@@ -23,7 +23,7 @@ class RootSchemaExtractorTest extends TestCase
     {
         $extractor = new JsonRootSchemaExtractor(SerializerBuilder::create()->build());
 
-        static::assertSame(
+        $this->assertSame(
             $expected,
             $extractor->canExtract(
                 $source,
@@ -34,13 +34,13 @@ class RootSchemaExtractorTest extends TestCase
 
         if ($expected) {
             $extractor->extract($source, $type, $context);
-            static::assertTrue(true);
+            $this->assertTrue(true);
         } else {
             try {
                 $extractor->extract($source, $type, $context);
-                static::fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
+                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
             } catch (ExtractionImpossibleException) {
-                static::assertTrue(true);
+                $this->assertTrue(true);
             }
         }
     }

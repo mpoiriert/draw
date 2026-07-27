@@ -29,7 +29,7 @@ class MigrateEntityCommandTest extends TestCase
 
     public function testGetEntity(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->entityMigration,
             $this->object->getEntity()
         );
@@ -49,7 +49,7 @@ class MigrateEntityCommandTest extends TestCase
 
     public function testGetPropertiesWithDoctrineObject(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['entity'],
             $this->object->getPropertiesWithDoctrineObject()
         );

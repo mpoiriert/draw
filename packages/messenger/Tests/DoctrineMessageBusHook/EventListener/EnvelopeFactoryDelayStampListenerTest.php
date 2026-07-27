@@ -30,7 +30,7 @@ class EnvelopeFactoryDelayStampListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -38,7 +38,7 @@ class EnvelopeFactoryDelayStampListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 EnvelopeCreatedEvent::class => 'handleEnvelopeCreatedEvent',
             ],
@@ -55,7 +55,7 @@ class EnvelopeFactoryDelayStampListenerTest extends TestCase
             )
         );
 
-        static::assertSame(
+        $this->assertSame(
             $this->delay,
             $event->getEnvelope()->last(DelayStamp::class)->getDelay()
         );

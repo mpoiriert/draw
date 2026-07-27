@@ -31,7 +31,7 @@ class DecoratedLoggerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             LoggerInterface::class,
             $this->object
         );
@@ -40,7 +40,7 @@ class DecoratedLoggerTest extends TestCase
     public function testLog(): void
     {
         $this->logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),
@@ -55,7 +55,7 @@ class DecoratedLoggerTest extends TestCase
     public function testLogWitContext(): void
     {
         $this->logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),
@@ -76,7 +76,7 @@ class DecoratedLoggerTest extends TestCase
         );
 
         $this->logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),

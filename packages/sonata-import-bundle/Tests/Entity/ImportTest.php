@@ -31,105 +31,105 @@ class ImportTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(GroupSequenceProviderInterface::class, $this->entity);
+        $this->assertInstanceOf(GroupSequenceProviderInterface::class, $this->entity);
     }
 
     public function testIdMutator(): void
     {
-        static::assertNull($this->entity->getId());
-        static::assertSame(
+        $this->assertNull($this->entity->getId());
+        $this->assertSame(
             $this->entity,
             $this->entity->setId(999)
         );
-        static::assertSame(999, $this->entity->getId());
+        $this->assertSame(999, $this->entity->getId());
     }
 
     public function testEntityClassMutator(): void
     {
-        static::assertNull($this->entity->getEntityClass());
+        $this->assertNull($this->entity->getEntityClass());
 
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->setEntityClass($entityClass = 'test')
         );
 
-        static::assertSame($entityClass, $this->entity->getEntityClass());
+        $this->assertSame($entityClass, $this->entity->getEntityClass());
     }
 
     public function testFileContentMutator(): void
     {
-        static::assertNull($this->entity->getFileContent());
+        $this->assertNull($this->entity->getFileContent());
 
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->setFileContent($fileContent = 'file content')
         );
 
-        static::assertSame($fileContent, $this->entity->getFileContent());
+        $this->assertSame($fileContent, $this->entity->getFileContent());
     }
 
     public function testStateMutator(): void
     {
-        static::assertSame(Import::STATE_NEW, $this->entity->getState());
+        $this->assertSame(Import::STATE_NEW, $this->entity->getState());
 
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->setState($state = Import::STATE_CONFIGURATION)
         );
 
-        static::assertSame($state, $this->entity->getState());
+        $this->assertSame($state, $this->entity->getState());
     }
 
     public function testColumnsMutator(): void
     {
-        static::assertInstanceOf(Collection::class, $collection = $this->entity->getColumns());
-        static::assertCount(0, $collection);
+        $this->assertInstanceOf(Collection::class, $collection = $this->entity->getColumns());
+        $this->assertCount(0, $collection);
 
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->addColumn($column = new Column())
         );
 
-        static::assertSame($this->entity, $column->getImport());
+        $this->assertSame($this->entity, $column->getImport());
 
-        static::assertTrue($collection->contains($column));
+        $this->assertTrue($collection->contains($column));
 
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->removeColumn($column)
         );
 
-        static::assertFalse($collection->contains($column));
+        $this->assertFalse($collection->contains($column));
     }
 
     public function testGetUpdatedAtMutator(): void
     {
-        static::assertNull($this->entity->getUpdatedAt());
+        $this->assertNull($this->entity->getUpdatedAt());
 
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->setUpdatedAt($dateTime = new \DateTime())
         );
 
-        static::assertSame($dateTime, $this->entity->getUpdatedAt());
+        $this->assertSame($dateTime, $this->entity->getUpdatedAt());
     }
 
     public function testGetCreatedAtMutator(): void
     {
-        static::assertNull($this->entity->getCreatedAt());
+        $this->assertNull($this->entity->getCreatedAt());
 
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->setCreatedAt($dateTime = new \DateTime())
         );
 
-        static::assertSame($dateTime, $this->entity->getCreatedAt());
+        $this->assertSame($dateTime, $this->entity->getCreatedAt());
     }
 
     public function testUpdateTimeStamp(): void
     {
-        static::assertNull($this->entity->getCreatedAt());
-        static::assertNull($this->entity->getUpdatedAt());
+        $this->assertNull($this->entity->getCreatedAt());
+        $this->assertNull($this->entity->getUpdatedAt());
 
         $this->entity->updateTimestamp(
             new LifecycleEventArgs(
@@ -138,8 +138,8 @@ class ImportTest extends TestCase
             )
         );
 
-        static::assertInstanceOf(\DateTime::class, $this->entity->getCreatedAt());
-        static::assertInstanceOf(\DateTime::class, $dateTime = $this->entity->getUpdatedAt());
+        $this->assertInstanceOf(\DateTime::class, $this->entity->getCreatedAt());
+        $this->assertInstanceOf(\DateTime::class, $dateTime = $this->entity->getUpdatedAt());
 
         $this->entity->updateTimestamp(
             new LifecycleEventArgs(
@@ -148,7 +148,7 @@ class ImportTest extends TestCase
             )
         );
 
-        static::assertNotSame($dateTime, $dateTime = $this->entity->getUpdatedAt());
+        $this->assertNotSame($dateTime, $dateTime = $this->entity->getUpdatedAt());
 
         $changeSet = ['updatedAt' => []];
         $this->entity->updateTimestamp(
@@ -159,12 +159,12 @@ class ImportTest extends TestCase
             )
         );
 
-        static::assertSame($dateTime, $this->entity->getUpdatedAt());
+        $this->assertSame($dateTime, $this->entity->getUpdatedAt());
     }
 
     public function testGetGroupSequence(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['Import', $this->entity->getState()],
             $this->entity->getGroupSequence()
         );
@@ -181,7 +181,7 @@ class ImportTest extends TestCase
         $this->entity->addColumn($column = new Column());
         $column->setIsIgnored(true);
 
-        static::assertSame(
+        $this->assertSame(
             ['Column1' => $column1],
             $this->entity->getColumnMapping()
         );
@@ -192,12 +192,12 @@ class ImportTest extends TestCase
         $constraint = new Callback('validateForProcessing');
         $validator = Validation::createValidator();
 
-        static::assertCount(1, $violations = $validator->validate($this->entity, $constraint));
-        static::assertSame(
+        $this->assertCount(1, $violations = $validator->validate($this->entity, $constraint));
+        $this->assertSame(
             'You need a identifier column.',
             $violations[0]->getMessage()
         );
-        static::assertSame(
+        $this->assertSame(
             'columns',
             $violations[0]->getPropertyPath()
         );
@@ -207,12 +207,12 @@ class ImportTest extends TestCase
         $column->setIsIdentifier(true);
         $column->setIsIgnored(true);
 
-        static::assertCount(1, $violations = $validator->validate($this->entity, $constraint));
-        static::assertSame(
+        $this->assertCount(1, $violations = $validator->validate($this->entity, $constraint));
+        $this->assertSame(
             'Identifier column "Id" cannot be ignored.',
             $violations[0]->getMessage()
         );
-        static::assertSame(
+        $this->assertSame(
             'columns[0]',
             $violations[0]->getPropertyPath()
         );
@@ -220,10 +220,10 @@ class ImportTest extends TestCase
 
     public function testToString(): void
     {
-        static::assertSame('', $this->entity->__toString());
+        $this->assertSame('', $this->entity->__toString());
 
         $this->entity->setId(999);
 
-        static::assertSame('999', $this->entity->__toString());
+        $this->assertSame('999', $this->entity->__toString());
     }
 }

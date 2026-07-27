@@ -23,7 +23,7 @@ class AddTemplateHeaderEmailWriterTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EmailWriterInterface::class,
             $this->object
         );
@@ -31,7 +31,7 @@ class AddTemplateHeaderEmailWriterTest extends TestCase
 
     public function testGetForEmails(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['addHeader' => -255],
             $this->object::getForEmails()
         );
@@ -46,12 +46,12 @@ class AddTemplateHeaderEmailWriterTest extends TestCase
 
         $this->object->addHeader($message);
 
-        static::assertSame(
+        $this->assertSame(
             'html-template',
             $message->getHeaders()->get('X-DrawEmail-HtmlTemplate')->getBodyAsString()
         );
 
-        static::assertSame(
+        $this->assertSame(
             'text-template',
             $message->getHeaders()->get('X-DrawEmail-TextTemplate')->getBodyAsString()
         );

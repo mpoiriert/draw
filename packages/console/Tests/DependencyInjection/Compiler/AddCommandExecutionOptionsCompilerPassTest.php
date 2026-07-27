@@ -34,7 +34,7 @@ class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 
         $this->compilerPass->process($this->containerBuilder);
 
-        static::assertSame(
+        $this->assertSame(
             [],
             $definition->getMethodCalls()
         );
@@ -50,7 +50,7 @@ class AddCommandExecutionOptionsCompilerPassTest extends TestCase
 
         $this->compilerPass->process($this->containerBuilder);
 
-        static::assertSame(
+        $this->assertSame(
             [
                 [
                     'addOption',

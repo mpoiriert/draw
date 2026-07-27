@@ -53,6 +53,6 @@ class OpenApiControllerTest extends WebTestCase implements AutowiredInterface
 
     public function testWriteFile(): void
     {
-        static::assertFalse($this->writeFile, 'Write file true should not be committed.');
+        $this->assertFalse($this->writeFile, 'Write file true should not be committed.');
     }
 }

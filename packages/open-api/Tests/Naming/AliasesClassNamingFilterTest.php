@@ -39,7 +39,7 @@ class AliasesClassNamingFilterTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ClassNamingFilterInterface::class,
             $this->object
         );
@@ -47,7 +47,7 @@ class AliasesClassNamingFilterTest extends TestCase
 
     public function testFilterClassNameNoChange(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $originalClassName = uniqid('class'),
             $this->object->filterClassName($originalClassName, [], null)
         );
@@ -55,7 +55,7 @@ class AliasesClassNamingFilterTest extends TestCase
 
     public function testFilterClassNameNoChangeNewNoChange(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $newClassName = uniqid('class'),
             $this->object->filterClassName(uniqid('class'), [], $newClassName)
         );
@@ -63,7 +63,7 @@ class AliasesClassNamingFilterTest extends TestCase
 
     public function testFilterClassNameRemoveNamespace(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $className = uniqid('class'),
             $this->object->filterClassName($this->aliases['remove-namespace']['class'].$className)
         );
@@ -71,7 +71,7 @@ class AliasesClassNamingFilterTest extends TestCase
 
     public function testFilterClassNameChangeNamespace(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->aliases['change-namespace']['alias'].($className = uniqid('class')),
             $this->object->filterClassName($this->aliases['change-namespace']['class'].$className)
         );
@@ -79,7 +79,7 @@ class AliasesClassNamingFilterTest extends TestCase
 
     public function testFilterClassNameChangeClass(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->aliases['change-full-class-name']['alias'],
             $this->object->filterClassName($this->aliases['change-full-class-name']['class'])
         );

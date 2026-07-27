@@ -21,10 +21,10 @@ class ExpressionTest extends TestCase
             $groups = ['Default']
         );
 
-        static::assertInstanceOf(ConstraintExpression::class, $expression);
-        static::assertSame($path, $expression->getPath());
-        static::assertSame($constraint, $expression->getConstraints());
-        static::assertSame($groups, $expression->getGroups());
+        $this->assertInstanceOf(ConstraintExpression::class, $expression);
+        $this->assertSame($path, $expression->getPath());
+        $this->assertSame($constraint, $expression->getConstraints());
+        $this->assertSame($groups, $expression->getGroups());
     }
 
     public function testAndX(): void
@@ -34,15 +34,15 @@ class ExpressionTest extends TestCase
             $expression2 = Expression::validate('[property]')
         );
 
-        static::assertInstanceOf(CompositeExpression::class, $expression);
-        static::assertSame(CompositeExpression::TYPE_AND, $expression->getType());
+        $this->assertInstanceOf(CompositeExpression::class, $expression);
+        $this->assertSame(CompositeExpression::TYPE_AND, $expression->getType());
 
         $expressions = $expression->getExpressions();
 
-        static::assertCount(2, $expressions);
+        $this->assertCount(2, $expressions);
 
-        static::assertSame($expression1, $expressions[0]);
-        static::assertSame($expression2, $expressions[1]);
+        $this->assertSame($expression1, $expressions[0]);
+        $this->assertSame($expression2, $expressions[1]);
     }
 
     public function testAndWhereEqual(): void
@@ -52,32 +52,32 @@ class ExpressionTest extends TestCase
             '[property2]' => 'value2',
         ]);
 
-        static::assertInstanceOf(CompositeExpression::class, $expression);
-        static::assertSame(CompositeExpression::TYPE_AND, $expression->getType());
+        $this->assertInstanceOf(CompositeExpression::class, $expression);
+        $this->assertSame(CompositeExpression::TYPE_AND, $expression->getType());
 
         $expressions = $expression->getExpressions();
 
-        static::assertCount(2, $expressions);
+        $this->assertCount(2, $expressions);
 
         /** @var ConstraintExpression $expression */
         $expression = $expressions[0];
-        static::assertInstanceOf(ConstraintExpression::class, $expression);
-        static::assertSame('[property1]', $expression->getPath());
-        static::assertNull($expression->getGroups());
+        $this->assertInstanceOf(ConstraintExpression::class, $expression);
+        $this->assertSame('[property1]', $expression->getPath());
+        $this->assertNull($expression->getGroups());
         /** @var EqualTo $constraint */
         $constraint = $expression->getConstraints();
-        static::assertInstanceOf(EqualTo::class, $constraint);
-        static::assertSame('value1', $constraint->value);
+        $this->assertInstanceOf(EqualTo::class, $constraint);
+        $this->assertSame('value1', $constraint->value);
 
         /** @var ConstraintExpression $expression */
         $expression = $expressions[1];
-        static::assertInstanceOf(ConstraintExpression::class, $expression);
-        static::assertSame('[property2]', $expression->getPath());
-        static::assertNull($expression->getGroups());
+        $this->assertInstanceOf(ConstraintExpression::class, $expression);
+        $this->assertSame('[property2]', $expression->getPath());
+        $this->assertNull($expression->getGroups());
         /** @var EqualTo $constraint */
         $constraint = $expression->getConstraints();
-        static::assertInstanceOf(EqualTo::class, $constraint);
-        static::assertSame('value2', $constraint->value);
+        $this->assertInstanceOf(EqualTo::class, $constraint);
+        $this->assertSame('value2', $constraint->value);
     }
 
     public function testOrX(): void
@@ -87,14 +87,14 @@ class ExpressionTest extends TestCase
             $expression2 = Expression::validate('[property]')
         );
 
-        static::assertInstanceOf(CompositeExpression::class, $expression);
-        static::assertSame(CompositeExpression::TYPE_OR, $expression->getType());
+        $this->assertInstanceOf(CompositeExpression::class, $expression);
+        $this->assertSame(CompositeExpression::TYPE_OR, $expression->getType());
 
         $expressions = $expression->getExpressions();
 
-        static::assertCount(2, $expressions);
+        $this->assertCount(2, $expressions);
 
-        static::assertSame($expression1, $expressions[0]);
-        static::assertSame($expression2, $expressions[1]);
+        $this->assertSame($expression1, $expressions[0]);
+        $this->assertSame($expression2, $expressions[1]);
     }
 }

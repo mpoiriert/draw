@@ -31,13 +31,13 @@ class RedirectToRouteMessageHandlerTest extends TestCase
         $message = $this->createMock(RedirectToRouteMessageInterface::class);
 
         $message
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getRedirectResponse')
             ->with($this->urlGenerator)
             ->willReturn($response = new RedirectResponse('/'))
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $response,
             $this->service->handleRedirectToRouteMessage($message)
         );

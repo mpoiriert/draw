@@ -23,7 +23,7 @@ class RoleRestrictedBadgeTest extends TestCase
 
     public function testGetRole(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->role,
             $this->entity->getRole()
         );
@@ -31,13 +31,13 @@ class RoleRestrictedBadgeTest extends TestCase
 
     public function testIsResolved(): void
     {
-        static::assertFalse($this->entity->isResolved());
+        $this->assertFalse($this->entity->isResolved());
     }
 
     public function testMarkResolved(): void
     {
         $this->entity->markResolved();
 
-        static::assertTrue($this->entity->isResolved());
+        $this->assertTrue($this->entity->isResolved());
     }
 }

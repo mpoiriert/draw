@@ -32,7 +32,7 @@ class DrawTransportFactoryTest extends TestCase
             new PhpSerializer()
         );
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             DrawTransport::class,
             $transport
         );
@@ -96,7 +96,7 @@ class DrawTransportFactoryTest extends TestCase
         ksort($expectedResult);
         ksort($result);
 
-        static::assertSame(
+        $this->assertSame(
             $expectedResult,
             $result
         );
@@ -261,7 +261,7 @@ class DrawTransportFactoryTest extends TestCase
     #[DataProvider('provideSupportsCases')]
     public function testSupports(string $dsn, bool $support): void
     {
-        static::assertSame(
+        $this->assertSame(
             $support,
             $this->service->supports($dsn, [])
         );

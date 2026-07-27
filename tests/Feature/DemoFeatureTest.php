@@ -19,7 +19,7 @@ class DemoFeatureTest extends TestCase
 
     public function testGetIsEnabled(): void
     {
-        static::assertFalse(
+        $this->assertFalse(
             $this->object->isEnabled(),
             'The value is coming from the DB'
         );
@@ -27,7 +27,7 @@ class DemoFeatureTest extends TestCase
 
     public function testGetLimit(): void
     {
-        static::assertSame(
+        $this->assertSame(
             10,
             $this->object->getLimit(),
             'The value is coming from the DB'

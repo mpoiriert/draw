@@ -31,7 +31,7 @@ class DoctrineFieldColumnExtractorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ColumnExtractorInterface::class,
             $this->object
         );
@@ -39,7 +39,7 @@ class DoctrineFieldColumnExtractorTest extends TestCase
 
     public function testGetDefaultPriority(): void
     {
-        static::assertSame(
+        $this->assertSame(
             0,
             $this->object::getDefaultPriority()
         );
@@ -47,7 +47,7 @@ class DoctrineFieldColumnExtractorTest extends TestCase
 
     public function testGetOptions(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 'kept',
                 'id',
@@ -75,18 +75,18 @@ class DoctrineFieldColumnExtractorTest extends TestCase
             []
         );
 
-        static::assertNotNull($columnInfo);
-        static::assertSame(
+        $this->assertNotNull($columnInfo);
+        $this->assertSame(
             'headerName',
             $columnInfo->getMappedTo()
         );
-        static::assertFalse(
+        $this->assertFalse(
             $columnInfo->getIsDate()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIdentifier()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIgnored()
         );
     }
@@ -99,18 +99,18 @@ class DoctrineFieldColumnExtractorTest extends TestCase
             []
         );
 
-        static::assertNotNull($columnInfo);
-        static::assertSame(
+        $this->assertNotNull($columnInfo);
+        $this->assertSame(
             'createdAt',
             $columnInfo->getMappedTo()
         );
-        static::assertTrue(
+        $this->assertTrue(
             $columnInfo->getIsDate()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIdentifier()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIgnored()
         );
     }
@@ -123,18 +123,18 @@ class DoctrineFieldColumnExtractorTest extends TestCase
             []
         );
 
-        static::assertNotNull($columnInfo);
-        static::assertSame(
+        $this->assertNotNull($columnInfo);
+        $this->assertSame(
             'id',
             $columnInfo->getMappedTo()
         );
-        static::assertFalse(
+        $this->assertFalse(
             $columnInfo->getIsDate()
         );
-        static::assertTrue(
+        $this->assertTrue(
             $columnInfo->getIsIdentifier()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIgnored()
         );
     }

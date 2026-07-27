@@ -43,7 +43,7 @@ class RequestValidationListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -51,7 +51,7 @@ class RequestValidationListenerTest extends TestCase
 
     public function testSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', -5],
             ],
@@ -70,7 +70,7 @@ class RequestValidationListenerTest extends TestCase
         );
 
         $this->validator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('validate')
         ;
 
@@ -92,7 +92,7 @@ class RequestValidationListenerTest extends TestCase
         $request->attributes->set($name, $bodyObject = (object) []);
 
         $this->validator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('validate')
             ->with($bodyObject, null, ['Default'])
             ->willReturn($this->createMock(ConstraintViolationListInterface::class))
@@ -117,7 +117,7 @@ class RequestValidationListenerTest extends TestCase
         $request->attributes->set($name, $parameterObject = (object) []);
 
         $this->validator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('validate')
             ->with($parameterObject, [], null)
             ->willReturn($this->createMock(ConstraintViolationListInterface::class))
@@ -142,7 +142,7 @@ class RequestValidationListenerTest extends TestCase
         $request->attributes->set($name, (object) []);
 
         $this->validator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('validate')
         ;
 
@@ -173,7 +173,7 @@ class RequestValidationListenerTest extends TestCase
         $queryParameter->constraints = [new NotNull()];
 
         $this->validator
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('validate')
             ->with(
                 ...static::withConsecutive(
@@ -211,7 +211,7 @@ class RequestValidationListenerTest extends TestCase
 
         try {
             $this->object->onKernelController($event);
-            static::fail('Expect exception of type: '.ConstraintViolationListException::class);
+            $this->fail('Expect exception of type: '.ConstraintViolationListException::class);
         } catch (ConstraintViolationListException $error) {
             $violationList = $error->getViolationList();
 
@@ -234,42 +234,42 @@ class RequestValidationListenerTest extends TestCase
         ConstraintViolationInterface $newViolation,
         string $newPropertyPath,
     ): void {
-        static::assertSame(
+        $this->assertSame(
             $originalViolation->getMessage(),
             $newViolation->getMessage()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $originalViolation->getMessageTemplate(),
             $newViolation->getMessageTemplate()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $originalViolation->getParameters(),
             $newViolation->getParameters()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $originalViolation->getRoot(),
             $newViolation->getRoot()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $originalViolation->getInvalidValue(),
             $newViolation->getInvalidValue()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $originalViolation->getPlural(),
             $newViolation->getPlural()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $originalViolation->getCode(),
             $newViolation->getCode()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $newPropertyPath,
             $newViolation->getPropertyPath()
         );

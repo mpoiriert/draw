@@ -32,6 +32,9 @@ $config = (new \PhpCsFixer\Config())
         'php_unit_test_class_requires_covers' => false, // @PhpCsFixer use default 'true' putting covers nothing by default
         'declare_strict_types' => false,
         'attribute_block_no_spaces' => false,
+        'php_unit_test_case_static_method_calls' => [
+            'call_type' => 'this'
+        ],
     ])
     ->setFinder($finder);
 ;

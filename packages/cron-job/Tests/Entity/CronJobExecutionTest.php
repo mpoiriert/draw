@@ -36,7 +36,7 @@ class CronJobExecutionTest extends TestCase
             $forced
         );
 
-        static::assertSame($expectedExecutable, $execution->isExecutable(Carbon::now()->toDateTimeImmutable()));
+        $this->assertSame($expectedExecutable, $execution->isExecutable(Carbon::now()->toDateTimeImmutable()));
     }
 
     public static function provideIsExecutableCases(): iterable

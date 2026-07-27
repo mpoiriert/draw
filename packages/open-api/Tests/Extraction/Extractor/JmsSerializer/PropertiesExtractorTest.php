@@ -50,7 +50,7 @@ class PropertiesExtractorTest extends TestCase
             $source = new \ReflectionClass($source);
         }
 
-        static::assertSame(
+        $this->assertSame(
             $canBeExtract,
             $this->jmsExtractor->canExtract(
                 $source,
@@ -62,9 +62,9 @@ class PropertiesExtractorTest extends TestCase
         if (!$canBeExtract) {
             try {
                 $this->jmsExtractor->extract($source, $type, $context);
-                static::fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
+                $this->fail('should throw a exception of type [Draw\Component\OpenApi\Exception\ExtractionImpossibleException]');
             } catch (ExtractionImpossibleException) {
-                static::assertTrue(true);
+                $this->assertTrue(true);
             }
         }
     }
@@ -98,7 +98,7 @@ class PropertiesExtractorTest extends TestCase
 
         $jsonSchema = $context->getOpenApi()->dump($context->getRootSchema(), false);
 
-        static::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/jmsExtractorTestExtract.json'),
             $jsonSchema
         );

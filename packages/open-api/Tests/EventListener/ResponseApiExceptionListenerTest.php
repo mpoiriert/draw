@@ -47,7 +47,7 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
 
         $this->request
-            ->expects(static::any())
+            ->expects($this->any())
             ->method('getRequestFormat')
             ->willReturn('json')
         ;
@@ -71,17 +71,17 @@ class ResponseApiExceptionListenerTest extends TestCase
             $event = new PreDumpRootSchemaEvent($root)
         );
 
-        static::assertArrayHasKey(
+        $this->assertArrayHasKey(
             'Draw.OpenApi.Error.Validation',
             $event->getSchema()->definitions
         );
 
-        static::assertSame(
+        $this->assertSame(
             $exitingSchema,
             $alreadySetPathItem->get->responses['500']
         );
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             OpenResponse::class,
             $notSetPathItem->get->responses['500']
         );
@@ -97,27 +97,27 @@ class ResponseApiExceptionListenerTest extends TestCase
         );
 
         $this->request
-            ->expects(static::any())
+            ->expects($this->any())
             ->method('getRequestFormat')
             ->willReturn('html')
         ;
 
-        static::assertNull($this->onKernelException());
+        $this->assertNull($this->onKernelException());
     }
 
     public function testOnKernelExceptionJsonResponse(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             Response::class,
             $response = $this->onKernelException()
         );
 
-        static::assertSame(
+        $this->assertSame(
             'application/json',
             $response->headers->get('Content-Type')
         );
 
-        static::assertJson($response->getContent());
+        $this->assertJson($response->getContent());
     }
 
     public function testOnKernelExceptionDefaultDebugFalse(): void
@@ -129,7 +129,7 @@ class ResponseApiExceptionListenerTest extends TestCase
             \JSON_THROW_ON_ERROR
         )['detail'];
 
-        static::assertArrayNotHasKey(
+        $this->assertArrayNotHasKey(
             'stack',
             $exceptionDetail
         );
@@ -148,7 +148,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 
         $expectedKeys = ['class', 'message', 'code', 'file', 'line', 'previous'];
 
-        static::assertEmpty(
+        $this->assertEmpty(
             $extraKeys = array_diff(array_keys($exceptionDetail), $expectedKeys),
             \sprintf(
                 'Unexpected keys: %s',
@@ -156,7 +156,7 @@ class ResponseApiExceptionListenerTest extends TestCase
             )
         );
 
-        static::assertEmpty(
+        $this->assertEmpty(
             $missingKeys = array_diff($expectedKeys, array_keys($exceptionDetail)),
             \sprintf(
                 'Missing keys: %s',
@@ -187,12 +187,12 @@ class ResponseApiExceptionListenerTest extends TestCase
             \JSON_THROW_ON_ERROR
         );
 
-        static::assertArrayHasKey(
+        $this->assertArrayHasKey(
             'detail',
             $responseData
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 'class' => $throwable::class,
                 'message' => $throwable->getMessage(),
@@ -250,7 +250,7 @@ class ResponseApiExceptionListenerTest extends TestCase
             \JSON_THROW_ON_ERROR
         );
 
-        static::assertSame(
+        $this->assertSame(
             $constraint->payload,
             $value->errors[0]->payload
         );

@@ -24,7 +24,7 @@ class ClassPrivateStaticCallFixerTest extends TestCase
     {
         $tokens = Tokens::fromCode($inCode);
         $this->object->fix(new \SplFileInfo('test.php'), $tokens);
-        static::assertSame($outCode, $tokens->generateCode());
+        $this->assertSame($outCode, $tokens->generateCode());
     }
 
     public static function provideFixCases(): iterable

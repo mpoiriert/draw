@@ -21,14 +21,14 @@ class CallToActionEmailTest extends TestCase
 
     public function testCallToActionLinkMutator(): void
     {
-        static::assertNull($this->object->getCallToActionLink());
+        $this->assertNull($this->object->getCallToActionLink());
 
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $this->object->callToActionLink($value = uniqid())
         );
 
-        static::assertSame(
+        $this->assertSame(
             $value,
             $this->object->getCallToActionLink()
         );
@@ -40,7 +40,7 @@ class CallToActionEmailTest extends TestCase
 
         $this->object->callToActionLink($link = uniqid('link-'));
 
-        static::assertSame(
+        $this->assertSame(
             [
                 'key' => 'value',
                 'call_to_action_link' => $link,

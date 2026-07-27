@@ -61,7 +61,7 @@ class DrawUserExtensionTest extends ExtensionTestCase
 
     public function testExcludePathsParameter(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 (new \ReflectionClass(UserLock::class))->getFileName(),
             ],

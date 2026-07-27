@@ -26,7 +26,7 @@ class EnvelopeFactoryDispatchAfterCurrentBusStampListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -34,7 +34,7 @@ class EnvelopeFactoryDispatchAfterCurrentBusStampListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 EnvelopeCreatedEvent::class => 'handleEnvelopeCreatedEvent',
             ],
@@ -51,7 +51,7 @@ class EnvelopeFactoryDispatchAfterCurrentBusStampListenerTest extends TestCase
             )
         );
 
-        static::assertCount(
+        $this->assertCount(
             1,
             $event->getEnvelope()->all(DispatchAfterCurrentBusStamp::class)
         );

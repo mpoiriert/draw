@@ -62,14 +62,14 @@ class QueueDueCronJobsCommandTest extends TestCase
     public function testExecute(array $rawCronJobs, array $expectedDisplay): void
     {
         $this->managerRegistry
-            ->expects(static::any())
+            ->expects($this->any())
             ->method('getRepository')
             ->with(CronJob::class)
             ->willReturn($repository = $this->createMock(EntityRepository::class))
         ;
 
         $repository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findBy')
             ->with(['active' => true])
             ->willReturn(
@@ -90,12 +90,12 @@ class QueueDueCronJobsCommandTest extends TestCase
 
         if (0 === $numDueCronJobs = \count($dueCronJobs)) {
             $this->cronJobProcessor
-                ->expects(static::never())
+                ->expects($this->never())
                 ->method('queue')
             ;
         } else {
             $this->cronJobProcessor
-                ->expects(static::exactly($numDueCronJobs))
+                ->expects($this->exactly($numDueCronJobs))
                 ->method('queue')
                 ->with(
                     ...static::withConsecutive(...array_map(
@@ -176,12 +176,12 @@ class QueueDueCronJobsCommandTest extends TestCase
     {
         $cronJob = $this->createMock(CronJob::class);
         $cronJob
-            ->expects(static::any())
+            ->expects($this->any())
             ->method('getName')
             ->willReturn($name)
         ;
         $cronJob
-            ->expects(static::any())
+            ->expects($this->any())
             ->method('isDue')
             ->willReturn($due)
         ;

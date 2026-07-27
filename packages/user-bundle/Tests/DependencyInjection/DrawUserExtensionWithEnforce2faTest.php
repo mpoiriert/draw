@@ -35,7 +35,7 @@ class DrawUserExtensionWithEnforce2faTest extends DrawUserExtensionTest
 
     public function testTwoFactorAuthenticationSubscriber(): void
     {
-        static::assertSame(
+        $this->assertSame(
             'test-route',
             $this->getContainerBuilder()
                 ->getDefinition(TwoFactorAuthenticationListener::class)

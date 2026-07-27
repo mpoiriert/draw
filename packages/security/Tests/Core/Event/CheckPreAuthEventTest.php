@@ -26,7 +26,7 @@ class CheckPreAuthEventTest extends TestCase
 
     public function testGetUser(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->user,
             $this->event->getUser()
         );

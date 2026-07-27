@@ -16,7 +16,7 @@ class DataTesterTest extends TestCase
     {
         $tester = new DataTester(null);
 
-        static::assertSame(
+        $this->assertSame(
             $tester,
             $tester->assertPathIsNotReadable('toto')
         );
@@ -26,7 +26,7 @@ class DataTesterTest extends TestCase
     {
         $tester = new DataTester((object) ['key' => 'value']);
 
-        static::assertSame(
+        $this->assertSame(
             $tester,
             $tester->assertPathIsReadable('key')
         );
@@ -36,14 +36,14 @@ class DataTesterTest extends TestCase
     {
         $tester = new DataTester((object) ['key' => 'value']);
 
-        static::assertNotSame(
+        $this->assertNotSame(
             $tester,
             $newTester = $tester->path('key'),
             'Return value of path must be a new object.'
         );
 
-        static::assertInstanceOf(DataTester::class, $tester);
-        static::assertSame('value', $newTester->getData());
+        $this->assertInstanceOf(DataTester::class, $tester);
+        $this->assertSame('value', $newTester->getData());
     }
 
     #[Depends('testPath')]
@@ -71,7 +71,7 @@ class DataTesterTest extends TestCase
 
         $tester = new DataTester(null);
 
-        static::assertSame(
+        $this->assertSame(
             $tester,
             $tester->ifPathIsReadable(
                 'toto',
@@ -83,7 +83,7 @@ class DataTesterTest extends TestCase
             )
         );
 
-        static::assertFalse($hasBeenCalled, 'The path is not readable the callable should not have been called.');
+        $this->assertFalse($hasBeenCalled, 'The path is not readable the callable should not have been called.');
     }
 
     #[
@@ -101,7 +101,7 @@ class DataTesterTest extends TestCase
 
         $tester = new DataTester($users);
 
-        static::assertSame(
+        $this->assertSame(
             $tester,
             $tester->each(
                 static function (DataTester $tester) use (&$callbackCount): void {
@@ -110,7 +110,7 @@ class DataTesterTest extends TestCase
             )
         );
 
-        static::assertSame(\count($users), $callbackCount);
+        $this->assertSame(\count($users), $callbackCount);
     }
 
     #[Depends('testPath')]
@@ -118,12 +118,12 @@ class DataTesterTest extends TestCase
     {
         $tester = new DataTester('{"key":"value"}');
 
-        static::assertNotSame(
+        $this->assertNotSame(
             $tester,
             $newTester = $tester->assertJson()->transform('json_decode')
         );
 
-        static::assertInstanceOf(DataTester::class, $newTester);
+        $this->assertInstanceOf(DataTester::class, $newTester);
         $newTester->path('key')->assertSame('value');
     }
 

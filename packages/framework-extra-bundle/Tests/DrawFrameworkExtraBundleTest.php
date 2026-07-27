@@ -40,57 +40,57 @@ class DrawFrameworkExtraBundleTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder
-            ->expects(static::exactly(10))
+            ->expects($this->exactly(10))
             ->method('addCompilerPass')
             ->with(
                 ...static::withConsecutive(
                     [
-                        static::isInstanceOf(TagIfExpressionCompilerPass::class),
+                        $this->isInstanceOf(TagIfExpressionCompilerPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
                     [
-                        static::isInstanceOf(AddNewestInstanceRoleCommandOptionPass::class),
+                        $this->isInstanceOf(AddNewestInstanceRoleCommandOptionPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
                     [
-                        static::isInstanceOf(AddCommandExecutionOptionsCompilerPass::class),
+                        $this->isInstanceOf(AddCommandExecutionOptionsCompilerPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
                     [
-                        static::isInstanceOf(AddPostCronJobExecutionOptionPass::class),
+                        $this->isInstanceOf(AddPostCronJobExecutionOptionPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
                     [
-                        static::isInstanceOf(EntityMigratorCompilerPass::class),
+                        $this->isInstanceOf(EntityMigratorCompilerPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
                     [
-                        static::isInstanceOf(LoggerDecoratorPass::class),
+                        $this->isInstanceOf(LoggerDecoratorPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         -1,
                     ],
                     [
-                        static::isInstanceOf(EmailWriterCompilerPass::class),
+                        $this->isInstanceOf(EmailWriterCompilerPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
                     [
-                        static::isInstanceOf(MessengerTransportNamesCompilerPass::class),
+                        $this->isInstanceOf(MessengerTransportNamesCompilerPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         -1,
                     ],
                     [
-                        static::isInstanceOf(JmsDoctrineObjectConstructionCompilerPass::class),
+                        $this->isInstanceOf(JmsDoctrineObjectConstructionCompilerPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
                     [
-                        static::isInstanceOf(UserCheckerDecoratorPass::class),
+                        $this->isInstanceOf(UserCheckerDecoratorPass::class),
                         PassConfig::TYPE_BEFORE_OPTIMIZATION,
                         0,
                     ],
@@ -100,26 +100,26 @@ class DrawFrameworkExtraBundleTest extends TestCase
         ;
 
         $containerBuilder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('hasExtension')
             ->with('security')
             ->willReturn(true)
         ;
 
         $containerBuilder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getExtension')
             ->with('security')
             ->willReturn($extension = $this->createMock(SecurityExtension::class))
         ;
 
         $extension
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('addAuthenticatorFactory')
             ->with(
                 ...static::withConsecutive(
-                    [static::isInstanceOf(JwtAuthenticatorFactory::class)],
-                    [static::isInstanceOf(MessengerMessageAuthenticatorFactory::class)],
+                    [$this->isInstanceOf(JwtAuthenticatorFactory::class)],
+                    [$this->isInstanceOf(MessengerMessageAuthenticatorFactory::class)],
                 )
             )
         ;

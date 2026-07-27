@@ -34,7 +34,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ColumnExtractorInterface::class,
             $this->object
         );
@@ -42,7 +42,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
 
     public function testGetDefaultPriority(): void
     {
-        static::assertSame(
+        $this->assertSame(
             0,
             $this->object::getDefaultPriority()
         );
@@ -50,7 +50,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
 
     public function testGetOptions(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 'kept',
                 'import.id',
@@ -70,7 +70,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
             []
         );
 
-        static::assertNull($columnInfo);
+        $this->assertNull($columnInfo);
     }
 
     public function testAssign(): void
@@ -88,7 +88,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
 
         $object = new Column();
 
-        static::assertTrue(
+        $this->assertTrue(
             $this->object->assign(
                 $object,
                 $column,
@@ -96,7 +96,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
             )
         );
 
-        static::assertSame(
+        $this->assertSame(
             $import,
             $object->getImport()
         );

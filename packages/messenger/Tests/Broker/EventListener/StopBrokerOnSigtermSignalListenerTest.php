@@ -23,7 +23,7 @@ class StopBrokerOnSigtermSignalListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 BrokerStartedEvent::class => ['onBrokerStarted', 100],
             ],
@@ -35,7 +35,7 @@ class StopBrokerOnSigtermSignalListenerTest extends TestCase
     {
         $event = $this->createMock(BrokerStartedEvent::class);
         $event
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getBroker')
             ->willReturn($this->createMock(Broker::class))
         ;

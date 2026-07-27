@@ -48,7 +48,7 @@ class ResponseSerializerListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -56,7 +56,7 @@ class ResponseSerializerListenerTest extends TestCase
 
     public function testSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 KernelEvents::VIEW => ['onKernelView', 30],
                 KernelEvents::RESPONSE => ['onKernelResponse', 30],
@@ -75,7 +75,7 @@ class ResponseSerializerListenerTest extends TestCase
         );
 
         $this->serializationContextFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('createSerializationContext')
         ;
 
@@ -94,7 +94,7 @@ class ResponseSerializerListenerTest extends TestCase
         $request->setRequestFormat('html');
 
         $this->serializationContextFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('createSerializationContext')
         ;
 
@@ -113,7 +113,7 @@ class ResponseSerializerListenerTest extends TestCase
         $request->setRequestFormat('json');
 
         $this->serializationContextFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('createSerializationContext')
         ;
 
@@ -121,7 +121,7 @@ class ResponseSerializerListenerTest extends TestCase
 
         $response = $event->getResponse();
 
-        static::assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
     public function testOnKernelView(): void
@@ -137,7 +137,7 @@ class ResponseSerializerListenerTest extends TestCase
         $request->setRequestFormat('json');
 
         $this->serializationContextFactory
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('createSerializationContext')
             ->willReturn($context = new SerializationContext())
         ;
@@ -153,10 +153,10 @@ class ResponseSerializerListenerTest extends TestCase
         );
 
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(
+                $this->callback(
                     function (PreSerializerResponseEvent $event) use (
                         $context,
                         $result,
@@ -195,7 +195,7 @@ class ResponseSerializerListenerTest extends TestCase
         ;
 
         $this->serializer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('serialize')
             ->with($result, 'json', $context)
             ->willReturn($jsonResult = json_encode(['key' => uniqid('value-')], \JSON_THROW_ON_ERROR))
@@ -205,15 +205,15 @@ class ResponseSerializerListenerTest extends TestCase
 
         $response = $event->getResponse();
 
-        static::assertInstanceOf(JsonResponse::class, $response);
+        $this->assertInstanceOf(JsonResponse::class, $response);
 
-        static::assertSame(
+        $this->assertSame(
             'application/json',
             $response->headers->get('Content-Type')
         );
 
-        static::assertSame($jsonResult, $response->getContent());
-        static::assertSame($serialization->statusCode, $response->getStatusCode());
+        $this->assertSame($jsonResult, $response->getContent());
+        $this->assertSame($serialization->statusCode, $response->getStatusCode());
     }
 
     public function testOnKernelResponse(): void
@@ -235,13 +235,13 @@ class ResponseSerializerListenerTest extends TestCase
         $headers = ['key' => 'value'];
 
         $responseHeaderBag
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('add')
             ->with($headers)
         ;
 
         $headerBag
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('allPreserveCase')
             ->willReturn($headers)
         ;
@@ -271,7 +271,7 @@ class ResponseSerializerListenerTest extends TestCase
         );
 
         $responseHeaderBag
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('set')
             ->with(
                 $key = uniqid('key-'),

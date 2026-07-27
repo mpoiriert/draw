@@ -37,7 +37,7 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -45,7 +45,7 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 ConsoleCommandEvent::class => [
                     ['addOptions', 255],
@@ -66,10 +66,10 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
 
         $option = $definition->getOption('as-system');
 
-        static::assertNull($option->getShortcut());
-        static::assertTrue(\strlen($option->getDescription()) > 10);
-        static::assertFalse($option->acceptValue());
-        static::assertFalse($option->getDefault());
+        $this->assertNull($option->getShortcut());
+        $this->assertTrue(\strlen($option->getDescription()) > 10);
+        $this->assertFalse($option->acceptValue());
+        $this->assertFalse($option->getDefault());
     }
 
     public function testConnectSystemAutoConnect(): void
@@ -79,19 +79,19 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $this->systemAuthenticator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTokenForSystem')
             ->willReturn($token = $this->createMock(TokenInterface::class))
         ;
 
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;
@@ -106,18 +106,18 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
         $this->tokenStorage
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $this->systemAuthenticator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getTokenForSystem')
         ;
 
         $this->tokenStorage
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('setToken')
         ;
 
@@ -131,18 +131,18 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn($this->createMock(TokenInterface::class))
         ;
 
         $this->systemAuthenticator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getTokenForSystem')
         ;
 
         $this->tokenStorage
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('setToken')
         ;
 
@@ -158,19 +158,19 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $this->object->addOptions($consoleCommandEvent);
 
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $this->systemAuthenticator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTokenForSystem')
             ->willReturn($token = $this->createMock(TokenInterface::class))
         ;
 
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;
@@ -187,19 +187,19 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $this->object->addOptions($consoleCommandEvent);
 
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $this->systemAuthenticator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTokenForSystem')
             ->willReturn($token = $this->createMock(TokenInterface::class))
         ;
 
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;

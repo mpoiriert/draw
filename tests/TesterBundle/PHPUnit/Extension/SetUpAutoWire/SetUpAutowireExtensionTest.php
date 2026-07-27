@@ -41,7 +41,7 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
 
     public function testAutowireService(): void
     {
-        static::assertSame(
+        $this->assertSame(
             static::getContainer()->get(UserSetCommentNullMigration::class),
             $this->userSetCommentNullMigration
         );
@@ -49,7 +49,7 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
 
     public function testAutowiredClient(): void
     {
-        static::assertSame(
+        $this->assertSame(
             static::getClient(),
             $this->client
         );
@@ -57,12 +57,12 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
 
     public function testAutowiredMock(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ManagerRegistry::class,
             $this->managerRegistry
         );
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             MockObject::class,
             $this->managerRegistry
         );
@@ -70,7 +70,7 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
 
     public function testAutowireMockProperty(): void
     {
-        static::assertSame(
+        $this->assertSame(
             (new \ReflectionProperty($this->userSetCommentNullMigration, 'managerRegistry'))
                 ->getValue($this->userSetCommentNullMigration),
             $this->managerRegistry
@@ -79,7 +79,7 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
 
     public function testAutowiredTransportTester(): void
     {
-        static::assertSame(
+        $this->assertSame(
             static::getContainer()->get('messenger.transport.sync.draw.tester'),
             $this->transportTester
         );
@@ -87,7 +87,7 @@ class SetUpAutowireExtensionTest extends WebTestCase implements AutowiredInterfa
 
     public function testAutowiredParameter(): void
     {
-        static::assertSame(
+        $this->assertSame(
             'test_resolved',
             $this->parameter
         );

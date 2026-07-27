@@ -72,7 +72,7 @@ class UserTest extends TestCase implements AutowiredInterface
 
         $envelope = $this->transportTester->getTransport()->get()[0];
 
-        static::assertInstanceOf(NewUserLockMessage::class, $envelope->getMessage());
+        $this->assertInstanceOf(NewUserLockMessage::class, $envelope->getMessage());
 
         $this->transportTester->reset();
         $this->messageBus->dispatch($envelope->with(new ReceivedStamp('sync')));
@@ -81,8 +81,8 @@ class UserTest extends TestCase implements AutowiredInterface
 
         $stamp = $this->transportTester->getTransport()->getSent()[0]->last(SearchableTagStamp::class);
 
-        static::assertTrue($stamp->getEnforceUniqueness());
-        static::assertSame(
+        $this->assertTrue($stamp->getEnforceUniqueness());
+        $this->assertSame(
             [
                 'activateUserLock:'.$userLock->getReason(),
                 'userId:'.$userLock->getUser()->getUserIdentifier(),

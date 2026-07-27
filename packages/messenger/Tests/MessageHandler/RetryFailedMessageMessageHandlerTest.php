@@ -41,7 +41,7 @@ class RetryFailedMessageMessageHandlerTest extends TestCase
     public function testHandleRetryFailedMessageMessage(): void
     {
         $this->processFactory
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('create')
             ->with(
                 [
@@ -55,7 +55,7 @@ class RetryFailedMessageMessageHandlerTest extends TestCase
         ;
 
         $process
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('mustRun')
         ;
 

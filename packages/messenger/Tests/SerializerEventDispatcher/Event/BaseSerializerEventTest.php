@@ -20,12 +20,12 @@ class BaseSerializerEventTest extends TestCase
     {
         $object = new $class($envelope = new Envelope((object) []));
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             BaseSerializerEvent::class,
             $object
         );
 
-        static::assertSame(
+        $this->assertSame(
             $envelope,
             $object->getEnvelope()
         );

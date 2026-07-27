@@ -35,7 +35,7 @@ class DrawSonataExtraExtensionSessionTimeoutEnabledTest extends DrawSonataExtraE
 
     public function testSessionTimeoutDefinition(): void
     {
-        static::assertSame(
+        $this->assertSame(
             900,
             $this->getContainerBuilder()
                 ->getDefinition(SessionTimeoutRequestListener::class)

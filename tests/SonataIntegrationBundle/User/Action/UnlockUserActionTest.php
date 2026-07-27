@@ -63,7 +63,7 @@ class UnlockUserActionTest extends WebTestCase implements AutowiredInterface
             $userLock->getId()
         );
 
-        static::assertEqualsWithDelta(new \DateTimeImmutable('+ 24 hours'), $userLock->getUnlockUntil(), 2);
+        $this->assertEqualsWithDelta(new \DateTimeImmutable('+ 24 hours'), $userLock->getUnlockUntil(), 2);
     }
 
     #[Depends('testUnlock')]

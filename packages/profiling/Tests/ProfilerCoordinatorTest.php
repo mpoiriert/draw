@@ -29,42 +29,42 @@ class ProfilerCoordinatorTest extends TestCase
 
     public function testIsStartedDefault(): void
     {
-        static::assertFalse($this->object->isStarted());
+        $this->assertFalse($this->object->isStarted());
     }
 
     public function testIsStartedAfterStart(): void
     {
         $this->object->startAll();
-        static::assertTrue($this->object->isStarted());
+        $this->assertTrue($this->object->isStarted());
     }
 
     public function testIsStartedAfterStop(): void
     {
         $this->object->startAll();
         $this->object->stopAll();
-        static::assertFalse($this->object->isStarted());
+        $this->assertFalse($this->object->isStarted());
     }
 
     public function testRegisterProfile(): void
     {
-        $this->profiler->expects(static::once())->method('getType')->willReturn(self::PROFILER_TYPE);
+        $this->profiler->expects($this->once())->method('getType')->willReturn(self::PROFILER_TYPE);
         $this->object->registerProfiler($this->profiler);
     }
 
     public function testStarAll(): void
     {
         $this->testRegisterProfile();
-        $this->profiler->expects(static::once())->method('start');
+        $this->profiler->expects($this->once())->method('start');
         $this->object->startAll();
     }
 
     public function testStopAll(): void
     {
         $this->testStarAll();
-        $this->profiler->expects(static::once())->method('stop')->willReturn($result = 'result');
+        $this->profiler->expects($this->once())->method('stop')->willReturn($result = 'result');
         $metrics = $this->object->stopAll();
 
-        static::assertTrue(isset($metrics->{self::PROFILER_TYPE}));
-        static::assertSame($result, $metrics->{self::PROFILER_TYPE});
+        $this->assertTrue(isset($metrics->{self::PROFILER_TYPE}));
+        $this->assertSame($result, $metrics->{self::PROFILER_TYPE});
     }
 }

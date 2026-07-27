@@ -35,7 +35,7 @@ abstract class ConfigurationTestCase extends TestCase
                 '"' => '',
                 'boolean' => 'bool',
             ];
-            static::assertSame(
+            $this->assertSame(
                 str_replace(array_keys($replaces), array_values($replaces), $expectedMessage),
                 str_replace(array_keys($replaces), array_values($replaces), $error->getMessage()),
             );
@@ -47,7 +47,7 @@ abstract class ConfigurationTestCase extends TestCase
 
     public function testDefault(): void
     {
-        static::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             json_encode($this->getDefaultConfiguration()),
             json_encode($this->processConfiguration([[]]))
         );

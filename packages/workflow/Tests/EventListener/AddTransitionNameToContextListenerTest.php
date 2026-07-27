@@ -23,7 +23,7 @@ class AddTransitionNameToContextListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -31,7 +31,7 @@ class AddTransitionNameToContextListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['workflow.transition' => 'addTransitionToContext'],
             $this->object::getSubscribedEvents()
         );
@@ -47,7 +47,7 @@ class AddTransitionNameToContextListenerTest extends TestCase
             )
         );
 
-        static::assertSame(
+        $this->assertSame(
             $transitionName,
             $event->getContext()['_transitionName']
         );

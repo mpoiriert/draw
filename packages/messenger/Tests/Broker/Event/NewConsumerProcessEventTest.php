@@ -32,7 +32,7 @@ class NewConsumerProcessEventTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             Event::class,
             $this->event
         );
@@ -40,7 +40,7 @@ class NewConsumerProcessEventTest extends TestCase
 
     public function testGetContext(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->context,
             $this->event->getContext()
         );
@@ -48,17 +48,17 @@ class NewConsumerProcessEventTest extends TestCase
 
     public function testReceiversMutator(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->receivers,
             $this->event->getReceivers()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $this->event,
             $this->event->setReceivers($value = [uniqid('receiver-1-'), uniqid('receiver-2-')])
         );
 
-        static::assertSame(
+        $this->assertSame(
             $value,
             $this->event->getReceivers()
         );
@@ -66,17 +66,17 @@ class NewConsumerProcessEventTest extends TestCase
 
     public function testOptionsMutator(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->options,
             $this->event->getOptions()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $this->event,
             $this->event->setOptions($value = [uniqid('option-1-'), uniqid('option-2-')])
         );
 
-        static::assertSame(
+        $this->assertSame(
             $value,
             $this->event->getOptions()
         );

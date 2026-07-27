@@ -43,7 +43,7 @@ class PreObjectDeleteBatchEventEventListenerTest extends KernelTestCase implemen
             )
         );
 
-        static::assertFalse(
+        $this->assertFalse(
             $event->shouldDelete(),
             CannotSelfVoter::class.' should prevent deletion of the user.'
         );
@@ -65,7 +65,7 @@ class PreObjectDeleteBatchEventEventListenerTest extends KernelTestCase implemen
             )
         );
 
-        static::assertTrue(
+        $this->assertTrue(
             $event->shouldDelete()
         );
     }

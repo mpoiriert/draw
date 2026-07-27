@@ -23,7 +23,7 @@ class ConstraintExpressionEvaluatorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ExpressionEvaluator::class,
             $this->object
         );

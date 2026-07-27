@@ -41,7 +41,7 @@ class BrokerDefaultValuesListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->service
         );
@@ -49,7 +49,7 @@ class BrokerDefaultValuesListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 NewConsumerProcessEvent::class => ['initializeDefaultValues', 255],
             ],
@@ -71,12 +71,12 @@ class BrokerDefaultValuesListenerTest extends TestCase
 
         $this->service->initializeDefaultValues($event);
 
-        static::assertSame(
+        $this->assertSame(
             $this->contexts[$contextName]['receivers'],
             $event->getReceivers()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $event->getOptions(),
             array_merge(
                 $this->contexts[$contextName]['defaultOptions'],
