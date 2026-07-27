@@ -26,7 +26,7 @@ class FindFromTransportStampTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             StampInterface::class,
             $this->entity
         );
@@ -34,7 +34,7 @@ class FindFromTransportStampTest extends TestCase
 
     public function testGetTransportName(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->transportName,
             $this->entity->getTransportName()
         );

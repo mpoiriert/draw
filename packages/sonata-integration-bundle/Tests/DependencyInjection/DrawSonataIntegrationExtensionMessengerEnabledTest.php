@@ -41,14 +41,14 @@ class DrawSonataIntegrationExtensionMessengerEnabledTest extends DrawSonataInteg
     {
         $definition = $this->getContainerBuilder()->getDefinition(MessengerMessageAdmin::class);
 
-        static::assertSame(
+        $this->assertSame(
             ['setTemplate', ['show', '@DrawSonataIntegration/Messenger/Message/show.html.twig']],
             $definition->getMethodCalls()[0]
         );
 
         $bindings = $definition->getBindings();
 
-        static::assertSame(
+        $this->assertSame(
             self::$queueNames,
             $bindings['$queueNames']->getValues()[0]
         );

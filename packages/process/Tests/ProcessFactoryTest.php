@@ -26,7 +26,7 @@ class ProcessFactoryTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ProcessFactoryInterface::class,
             $this->service
         );
@@ -36,27 +36,27 @@ class ProcessFactoryTest extends TestCase
     {
         $process = $this->service->create(['cd']);
 
-        static::assertInstanceOf(Process::class, $process);
+        $this->assertInstanceOf(Process::class, $process);
 
-        static::assertSame(
+        $this->assertSame(
             "'cd'",
             $process->getCommandLine()
         );
 
-        static::assertSame(
+        $this->assertSame(
             getcwd(),
             $process->getWorkingDirectory()
         );
 
-        static::assertEmpty(
+        $this->assertEmpty(
             $process->getEnv()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $process->getInput()
         );
 
-        static::assertSame(
+        $this->assertSame(
             60.0,
             $process->getTimeout()
         );
@@ -72,29 +72,29 @@ class ProcessFactoryTest extends TestCase
             $timeout = 5.0
         );
 
-        static::assertInstanceOf(Process::class, $process);
+        $this->assertInstanceOf(Process::class, $process);
 
-        static::assertSame(
+        $this->assertSame(
             "'cd'",
             $process->getCommandLine()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $workingDirectory,
             $process->getWorkingDirectory()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $env,
             $process->getEnv()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $input,
             $process->getInput()
         );
 
-        static::assertSame(
+        $this->assertSame(
             $timeout,
             $process->getTimeout()
         );
@@ -104,12 +104,12 @@ class ProcessFactoryTest extends TestCase
     {
         $process = $this->service->createFromShellCommandLine('ls -lah | grep test');
 
-        static::assertInstanceOf(Process::class, $process);
-        static::assertSame('ls -lah | grep test', $process->getCommandLine());
-        static::assertSame(getcwd(), $process->getWorkingDirectory());
-        static::assertEmpty($process->getEnv());
-        static::assertNull($process->getInput());
-        static::assertSame(60.0, $process->getTimeout());
+        $this->assertInstanceOf(Process::class, $process);
+        $this->assertSame('ls -lah | grep test', $process->getCommandLine());
+        $this->assertSame(getcwd(), $process->getWorkingDirectory());
+        $this->assertEmpty($process->getEnv());
+        $this->assertNull($process->getInput());
+        $this->assertSame(60.0, $process->getTimeout());
     }
 
     public function testCreateFromShellCommandLineWithArguments(): void
@@ -122,11 +122,11 @@ class ProcessFactoryTest extends TestCase
             $timeout = 5.0
         );
 
-        static::assertInstanceOf(Process::class, $process);
-        static::assertSame('ls -lah | grep test', $process->getCommandLine());
-        static::assertSame($workingDirectory, $process->getWorkingDirectory());
-        static::assertSame($env, $process->getEnv());
-        static::assertSame($input, $process->getInput());
-        static::assertSame($timeout, $process->getTimeout());
+        $this->assertInstanceOf(Process::class, $process);
+        $this->assertSame('ls -lah | grep test', $process->getCommandLine());
+        $this->assertSame($workingDirectory, $process->getWorkingDirectory());
+        $this->assertSame($env, $process->getEnv());
+        $this->assertSame($input, $process->getInput());
+        $this->assertSame($timeout, $process->getTimeout());
     }
 }

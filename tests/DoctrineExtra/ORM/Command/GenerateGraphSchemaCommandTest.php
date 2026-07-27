@@ -63,7 +63,7 @@ class GenerateGraphSchemaCommandTest extends KernelTestCase implements Autowired
             file_put_contents($file, $display);
         }
 
-        static::assertStringEqualsFile(
+        $this->assertStringEqualsFile(
             $file,
             $display
         );

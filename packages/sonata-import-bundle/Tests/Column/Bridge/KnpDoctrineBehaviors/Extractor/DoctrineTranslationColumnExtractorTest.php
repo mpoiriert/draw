@@ -33,7 +33,7 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ColumnExtractorInterface::class,
             $this->object
         );
@@ -41,7 +41,7 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
 
     public function testGetDefaultPriority(): void
     {
-        static::assertSame(
+        $this->assertSame(
             0,
             $this->object::getDefaultPriority()
         );
@@ -49,7 +49,7 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
 
     public function testGetOptions(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 'kept',
                 'translation#en.label',
@@ -66,7 +66,7 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
     {
         $object = new TranslatableEntity();
 
-        static::assertTrue(
+        $this->assertTrue(
             $this->object
                 ->assign(
                     $object,
@@ -76,12 +76,12 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
                 )
         );
 
-        static::assertSame(
+        $this->assertSame(
             'test',
             $object->translate('fr', false)->getLabel()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $object->translate('en', false)->getLabel()
         );
     }

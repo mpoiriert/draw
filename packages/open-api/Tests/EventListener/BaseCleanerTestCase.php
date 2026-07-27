@@ -20,13 +20,13 @@ abstract class BaseCleanerTestCase extends TestCase
     {
         $openApi = new OpenApi();
         $schema = $openApi->extract(file_get_contents($dirty));
-        static::assertInstanceOf(Root::class, $schema);
+        $this->assertInstanceOf(Root::class, $schema);
 
         $this->clean($event = new CleanEvent($schema, new ExtractionContext($openApi)));
 
         $cleanedSchema = $event->getRootSchema();
 
-        static::assertEqualsCanonicalizing(
+        $this->assertEqualsCanonicalizing(
             json_decode(file_get_contents($clean), true, 512, \JSON_THROW_ON_ERROR),
             json_decode($openApi->dump($cleanedSchema, false), true, 512, \JSON_THROW_ON_ERROR)
         );

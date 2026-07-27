@@ -54,7 +54,7 @@ abstract class ExtensionTestCase extends TestCase
     public function testServiceDefinition(?string $id, ?string $aliasOf = null): void
     {
         if (!$id) {
-            static::markTestSkipped('No service to test');
+            $this->markTestSkipped('No service to test');
         }
 
         $this->assertServiceDefinition($id, $aliasOf);
@@ -70,7 +70,7 @@ abstract class ExtensionTestCase extends TestCase
             self::$definitions[] = $id;
         }
 
-        static::assertTrue(
+        $this->assertTrue(
             self::$containerBuilder->{$aliasOf ? 'hasAlias' : 'hasDefinition'}($id),
             \sprintf(
                 'Service id [%s] is not found',
@@ -79,7 +79,7 @@ abstract class ExtensionTestCase extends TestCase
         );
 
         if ($aliasOf) {
-            static::assertSame($aliasOf, (string) self::$containerBuilder->getAlias($id));
+            $this->assertSame($aliasOf, (string) self::$containerBuilder->getAlias($id));
         }
     }
 
@@ -96,7 +96,7 @@ abstract class ExtensionTestCase extends TestCase
         $expectedIds = self::$definitions;
         asort($expectedIds);
 
-        static::assertSame(
+        $this->assertSame(
             array_values($expectedIds),
             array_values($actualIds),
             'Services available do not match.'
@@ -116,7 +116,7 @@ abstract class ExtensionTestCase extends TestCase
         $expectedIds = self::$aliases;
         asort($expectedIds);
 
-        static::assertSame(
+        $this->assertSame(
             array_values($expectedIds),
             array_values($actualIds),
             'Alias available do not match.'

@@ -32,7 +32,7 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -40,7 +40,7 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 WorkerMessageReceivedEvent::class => 'connectSystem',
             ],
@@ -51,13 +51,13 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
     public function testConnectSystemAlreadyConnected(): void
     {
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn($this->createMock(TokenInterface::class))
         ;
 
         $this->tokenStorage
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('setToken')
         ;
 
@@ -67,19 +67,19 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
     public function testConnectSystemNotConnected(): void
     {
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $this->tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setToken')
             ->with($token = $this->createMock(TokenInterface::class))
         ;
 
         $this->systemAuthenticator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTokenForSystem')
             ->willReturn($token)
         ;

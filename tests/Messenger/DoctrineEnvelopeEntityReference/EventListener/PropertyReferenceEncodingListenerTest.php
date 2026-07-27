@@ -91,9 +91,9 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
 
         $this->entityManager->flush();
 
-        static::assertTrue($this->preEncodeEventCalled);
+        $this->assertTrue($this->preEncodeEventCalled);
 
-        static::assertTrue($this->postEncodeEventCalled);
+        $this->assertTrue($this->postEncodeEventCalled);
     }
 
     #[Depends('testSend')]
@@ -103,9 +103,9 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
 
         $message = $envelope->getMessage();
 
-        static::assertInstanceOf(NewUserMessage::class, $message);
+        $this->assertInstanceOf(NewUserMessage::class, $message);
 
-        static::assertSame(
+        $this->assertSame(
             self::$user->getEmail(),
             $message->getUser()->getEmail()
         );
@@ -123,7 +123,7 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
 
         $message = $envelope->getMessage();
 
-        static::assertInstanceOf(NewUserMessage::class, $message);
+        $this->assertInstanceOf(NewUserMessage::class, $message);
 
         $this->expectException(ObjectNotFoundException::class);
 
@@ -152,9 +152,9 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
 
         $message = $envelope->getMessage();
 
-        static::assertInstanceOf(NewTestDocumentMessage::class, $message);
+        $this->assertInstanceOf(NewTestDocumentMessage::class, $message);
 
-        static::assertSame(
+        $this->assertSame(
             $testDocument,
             $message->getTestDocument()
         );

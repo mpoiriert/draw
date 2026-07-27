@@ -31,13 +31,13 @@ class RequestHeadersProcessorTest extends TestCase
 
         if (null === $requestHeaders) {
             $requestStack
-                ->expects(static::once())
+                ->expects($this->once())
                 ->method('getMainRequest')
                 ->willReturn(null)
             ;
         } else {
             $requestStack
-                ->expects(static::once())
+                ->expects($this->once())
                 ->method('getMainRequest')
                 ->willReturn($mainRequest = new Request())
             ;
@@ -53,13 +53,13 @@ class RequestHeadersProcessorTest extends TestCase
             [uniqid('header-name-') => uniqid()]
         );
 
-        static::assertSame(
+        $this->assertSame(
             $logRecord,
             $service->__invoke($logRecord)
         );
 
         if (null === $expectedHeaders) {
-            static::assertSame(
+            $this->assertSame(
                 [],
                 $logRecord->toArray()['extra']
             );
@@ -67,7 +67,7 @@ class RequestHeadersProcessorTest extends TestCase
             return;
         }
 
-        static::assertSame(
+        $this->assertSame(
             [$key => $expectedHeaders],
             $logRecord->toArray()['extra']
         );
@@ -145,7 +145,7 @@ class RequestHeadersProcessorTest extends TestCase
             [uniqid('header-name-') => uniqid()]
         );
 
-        static::assertSame(
+        $this->assertSame(
             [],
             $logRecord->toArray()['extra']
         );

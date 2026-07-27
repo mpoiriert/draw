@@ -24,14 +24,14 @@ class PreEncodeEventTest extends TestCase
 
     public function testMutator(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->envelope,
             $this->object->getEnvelope()
         );
 
         $this->object->setEnvelope($value = new Envelope((object) []));
 
-        static::assertSame(
+        $this->assertSame(
             $value,
             $this->object->getEnvelope()
         );

@@ -79,7 +79,7 @@ class GenerateDocumentationCommandTest extends TestCase implements AutowiredInte
             );
         }
 
-        static::assertFileEquals(
+        $this->assertFileEquals(
             __DIR__.'/fixtures/GenerateDocumentationCommandTest/testExecution_expectedExport.txt',
             $filePath
         );
@@ -87,7 +87,7 @@ class GenerateDocumentationCommandTest extends TestCase implements AutowiredInte
 
     public function testWriteFile(): void
     {
-        static::assertFalse(
+        $this->assertFalse(
             $this->writeFile,
             'Do not forget to put this variable back to false.'
         );

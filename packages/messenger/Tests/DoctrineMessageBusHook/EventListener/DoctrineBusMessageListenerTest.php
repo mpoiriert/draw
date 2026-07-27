@@ -49,7 +49,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ResetInterface::class,
             $this->object
         );
@@ -60,7 +60,7 @@ class DoctrineBusMessageListenerTest extends TestCase
         $messageHolder = $this->createMock(MessageHolderInterface::class);
 
         $this->entityManager
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getClassMetadata')
             ->with($messageHolder::class)
             ->willReturn($classMetadata = new ClassMetadata(uniqid()))
@@ -75,7 +75,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             )
         );
 
-        static::assertSame(
+        $this->assertSame(
             [$messageHolder],
             $this->object->getFlattenMessageHolders()
         );
@@ -86,7 +86,7 @@ class DoctrineBusMessageListenerTest extends TestCase
         $messageHolder = (object) [];
 
         $this->entityManager
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getClassMetadata')
         ;
 
@@ -97,7 +97,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             )
         );
 
-        static::assertSame(
+        $this->assertSame(
             [],
             $this->object->getFlattenMessageHolders()
         );
@@ -108,7 +108,7 @@ class DoctrineBusMessageListenerTest extends TestCase
         $messageHolder = $this->createMock(MessageHolderInterface::class);
 
         $this->entityManager
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getClassMetadata')
             ->with($messageHolder::class)
             ->willReturn($classMetadata = new ClassMetadata(uniqid()))
@@ -123,7 +123,7 @@ class DoctrineBusMessageListenerTest extends TestCase
             )
         );
 
-        static::assertSame(
+        $this->assertSame(
             [$messageHolder],
             $this->object->getFlattenMessageHolders()
         );
@@ -137,7 +137,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $this->object->onClear(new OnClearEventArgs($this->entityManager));
 
-        static::assertSame(
+        $this->assertSame(
             [],
             $this->object->getFlattenMessageHolders()
         );
@@ -151,7 +151,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $this->object->onClear(new OnClearEventArgs($this->entityManager));
 
-        static::assertCount(
+        $this->assertCount(
             0,
             $this->object->getFlattenMessageHolders()
         );
@@ -160,12 +160,12 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testPostFlushEmpty(): void
     {
         $this->envelopeFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('createEnvelopes')
         ;
 
         $this->messageBus
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('dispatch')
         ;
 
@@ -193,12 +193,12 @@ class DoctrineBusMessageListenerTest extends TestCase
         );
 
         $this->envelopeFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('createEnvelopes')
         ;
 
         $this->messageBus
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('dispatch')
         ;
 
@@ -211,7 +211,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $this->addMessageHolder($messageHolder);
 
-        $messageHolder->expects(static::once())
+        $messageHolder->expects($this->once())
             ->method('getOnHoldMessages')
             ->with(true)
             ->willReturn(
@@ -224,25 +224,25 @@ class DoctrineBusMessageListenerTest extends TestCase
         ;
 
         $message1
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('preSend')
             ->with($messageHolder)
         ;
 
         $message2
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('preSend')
         ;
 
         $this->envelopeFactory
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('createEnvelopes')
             ->with($messageHolder, $messages)
             ->willReturn([$envelope = new Envelope((object) [])])
         ;
 
         $this->messageBus
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with($envelope)
             ->willReturnArgument(0)
@@ -258,7 +258,7 @@ class DoctrineBusMessageListenerTest extends TestCase
         $this->addMessageHolder($messageHolder);
 
         $messageHolder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOnHoldMessages')
             ->with(true)
             ->willReturn([(object) []])
@@ -269,20 +269,20 @@ class DoctrineBusMessageListenerTest extends TestCase
         $this->addMessageHolder($messageHolder);
 
         $messageHolder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOnHoldMessages')
             ->with(true)
             ->willReturn([(object) []])
         ;
 
         $this->envelopeFactory
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('createEnvelopes')
             ->willReturn([$envelope = new Envelope((object) [])])
         ;
 
         $this->messageBus
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('dispatch')
             ->with($envelope)
             ->willReturnArgument(0)
@@ -297,14 +297,14 @@ class DoctrineBusMessageListenerTest extends TestCase
 
         $this->addMessageHolder($messageHolder);
 
-        static::assertSame(
+        $this->assertSame(
             [$messageHolder],
             $this->object->getFlattenMessageHolders()
         );
 
         $this->object->reset();
 
-        static::assertSame(
+        $this->assertSame(
             [],
             $this->object->getFlattenMessageHolders()
         );

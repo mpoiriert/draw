@@ -50,7 +50,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -58,7 +58,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 UserRequestInterceptionEvent::class => [
                     ['checkNeedToEnableTwoFactorAuthentication', 50],
@@ -79,10 +79,10 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         if ($redirect) {
             $user = $event->getUser();
 
-            static::assertInstanceOf(SecurityUserInterface::class, $user);
+            $this->assertInstanceOf(SecurityUserInterface::class, $user);
 
             $this->urlGenerator
-                ->expects(static::once())
+                ->expects($this->once())
                 ->method('generate')
                 ->with(
                     self::ENABLE_ROUTE,
@@ -94,19 +94,19 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         $this->object->checkNeedToEnableTwoFactorAuthentication($event);
 
-        static::assertSame($allowHandingRequest, $event->getAllowHandlingRequest());
+        $this->assertSame($allowHandingRequest, $event->getAllowHandlingRequest());
 
         $response = $event->getResponse();
 
         if (!$redirect) {
-            static::assertNull($response);
+            $this->assertNull($response);
 
             return;
         }
 
-        static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame($url, $response->getTargetUrl());
-        static::assertSame('2fa_need_enabling', $event->getReason());
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame($url, $response->getTargetUrl());
+        $this->assertSame('2fa_need_enabling', $event->getReason());
     }
 
     public static function provideCheckNeedToEnableTwoFactorAuthenticationCases(): iterable
@@ -292,7 +292,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
     public function testAllowHandlingRequestWhenTwoFactorAuthenticationInProgressTrue(): void
     {
         $this->security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('isGranted')
             ->with('IS_AUTHENTICATED_2FA_IN_PROGRESS')
             ->willReturn(true)
@@ -305,13 +305,13 @@ class TwoFactorAuthenticationListenerTest extends TestCase
             )
         );
 
-        static::assertTrue($event->getAllowHandlingRequest());
+        $this->assertTrue($event->getAllowHandlingRequest());
     }
 
     public function testAllowHandlingRequestWhenTwoFactorAuthenticationInProgressFalse(): void
     {
         $this->security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('isGranted')
             ->with('IS_AUTHENTICATED_2FA_IN_PROGRESS')
             ->willReturn(false)
@@ -324,6 +324,6 @@ class TwoFactorAuthenticationListenerTest extends TestCase
             )
         );
 
-        static::assertFalse($event->getAllowHandlingRequest());
+        $this->assertFalse($event->getAllowHandlingRequest());
     }
 }

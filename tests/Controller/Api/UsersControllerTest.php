@@ -81,7 +81,7 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
 
         static::assertResponseIsSuccessful();
 
-        static::assertTrue(
+        $this->assertTrue(
             $this->loggerTester->hasRecord('[UsersController] Create new user', Level::Info)
         );
 
@@ -152,12 +152,12 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
         static::assertHtmlTemplatedEmailCount(1, '@DrawUser/Email/reset_password_email.html.twig');
         static::assertTextTemplatedEmailCount(0, 'toto');
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ForgotPasswordEmail::class,
             static::getHtmlTemplatedMailerEvent()->getMessage()
         );
 
-        static::assertNull(
+        $this->assertNull(
             static::getTextTemplatedMailerEvent()
         );
     }

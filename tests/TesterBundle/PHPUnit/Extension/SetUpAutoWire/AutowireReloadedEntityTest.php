@@ -39,9 +39,9 @@ class AutowireReloadedEntityTest extends KernelTestCase implements AutowiredInte
     #[Depends('testCreate')]
     public function testReload(): void
     {
-        static::assertInstanceOf(Tag::class, self::$tag);
+        $this->assertInstanceOf(Tag::class, self::$tag);
 
-        static::assertSame(
+        $this->assertSame(
             'AutowireReloadedEntity',
             self::$tag->getName()
         );

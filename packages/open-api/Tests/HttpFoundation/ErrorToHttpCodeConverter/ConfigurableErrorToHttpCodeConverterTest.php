@@ -21,7 +21,7 @@ class ConfigurableErrorToHttpCodeConverterTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ErrorToHttpCodeConverterInterface::class,
             $this->errorToHttpCodeConverter
         );
@@ -35,7 +35,7 @@ class ConfigurableErrorToHttpCodeConverterTest extends TestCase
     {
         $this->errorToHttpCodeConverter = new ConfigurableErrorToHttpCodeConverter($errorCodes);
 
-        static::assertSame(
+        $this->assertSame(
             $errorCode,
             $this->errorToHttpCodeConverter->convertToHttpCode($throwable)
         );

@@ -23,12 +23,12 @@ class QueryTest extends TestCase
 
     public function testWhere(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $this->object->where($expression = $this->createMock(Expression::class))
         );
 
-        static::assertSame(
+        $this->assertSame(
             $expression,
             $this->object->getExpression()
         );
@@ -36,12 +36,12 @@ class QueryTest extends TestCase
 
     public function testAndWhereNoExpressionSet(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $this->object->andWhere($expression = $this->createMock(Expression::class))
         );
 
-        static::assertSame(
+        $this->assertSame(
             $expression,
             $this->object->getExpression()
         );
@@ -55,17 +55,17 @@ class QueryTest extends TestCase
         /** @var CompositeExpression $expression */
         $expression = $this->object->getExpression();
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             CompositeExpression::class,
             $expression,
         );
 
-        static::assertSame(
+        $this->assertSame(
             CompositeExpression::TYPE_AND,
             $expression->getType()
         );
 
-        static::assertSame(
+        $this->assertSame(
             [$expression1, $expression2],
             $expression->getExpressions()
         );
@@ -73,12 +73,12 @@ class QueryTest extends TestCase
 
     public function testOrWhereNoExpressionSet(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->object,
             $this->object->orWhere($expression = $this->createMock(Expression::class))
         );
 
-        static::assertSame(
+        $this->assertSame(
             $expression,
             $this->object->getExpression()
         );
@@ -91,17 +91,17 @@ class QueryTest extends TestCase
 
         $expression = $this->object->getExpression();
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             CompositeExpression::class,
             $expression,
         );
 
-        static::assertSame(
+        $this->assertSame(
             CompositeExpression::TYPE_OR,
             $expression->getType()
         );
 
-        static::assertSame(
+        $this->assertSame(
             [$expression1, $expression2],
             $expression->getExpressions()
         );

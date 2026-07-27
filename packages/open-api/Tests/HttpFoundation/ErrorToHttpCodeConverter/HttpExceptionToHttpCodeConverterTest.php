@@ -23,7 +23,7 @@ class HttpExceptionToHttpCodeConverterTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ErrorToHttpCodeConverterInterface::class,
             $this->httpExceptionToHttpCodeConverter
         );
@@ -32,7 +32,7 @@ class HttpExceptionToHttpCodeConverterTest extends TestCase
     #[DataProvider('provideConvertToHttpCodeCases')]
     public function testConvertToHttpCode(\Throwable $throwable, ?int $expectedErrorCode): void
     {
-        static::assertSame(
+        $this->assertSame(
             $expectedErrorCode,
             $this->httpExceptionToHttpCodeConverter->convertToHttpCode($throwable)
         );

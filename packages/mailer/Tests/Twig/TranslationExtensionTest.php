@@ -32,7 +32,7 @@ class TranslationExtensionTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             AbstractExtension::class,
             $this->object
         );
@@ -42,18 +42,18 @@ class TranslationExtensionTest extends TestCase
     {
         $filters = $this->object->getFilters();
 
-        static::assertCount(1, $filters);
+        $this->assertCount(1, $filters);
 
         $filter = $filters[0];
 
-        static::assertInstanceOf(TwigFilter::class, $filter);
+        $this->assertInstanceOf(TwigFilter::class, $filter);
 
-        static::assertSame(
+        $this->assertSame(
             'trans',
             $filter->getName(),
         );
 
-        static::assertSame(
+        $this->assertSame(
             [$this->object, 'trans'],
             $filter->getCallable()
         );
@@ -68,7 +68,7 @@ class TranslationExtensionTest extends TestCase
         $count = random_int(0, \PHP_INT_MAX);
 
         $this->translator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('trans')
             ->with(
                 $message,
@@ -79,7 +79,7 @@ class TranslationExtensionTest extends TestCase
             ->willReturnArgument(0)
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $message,
             $this->object->trans(
                 $message,
@@ -97,7 +97,7 @@ class TranslationExtensionTest extends TestCase
         $message2 = uniqid('message-');
 
         $this->translator
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('trans')
             ->with(
                 ...static::withConsecutive(
@@ -111,7 +111,7 @@ class TranslationExtensionTest extends TestCase
             )
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $result,
             $this->object->trans(
                 [$message1, $message2, uniqid('message-not-use-')],

@@ -45,7 +45,7 @@ class DrawSonataExtraExtensionCanSecurityHandlerEnabledTest extends DrawSonataEx
 
     public function testCanSecurityHandlerDefinition(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 'sonata.admin.security.handler.role',
                 null,

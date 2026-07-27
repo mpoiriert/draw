@@ -30,7 +30,7 @@ class EvaluatorTest extends TestCase
     #[DataProvider('provideExecuteCases')]
     public function testExecute(Query $query, int $expectedCount): void
     {
-        static::assertCount(
+        $this->assertCount(
             $expectedCount,
             iterator_to_array(
                 $this->object->execute(

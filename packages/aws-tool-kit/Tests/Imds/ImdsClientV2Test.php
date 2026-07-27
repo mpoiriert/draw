@@ -33,7 +33,7 @@ class ImdsClientV2Test extends TestCase
     {
         $tokenResponse = $this->createMock(ResponseInterface::class);
         $tokenResponse
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getContent')
             ->with()
             ->willReturn($token = uniqid('token-'))
@@ -41,14 +41,14 @@ class ImdsClientV2Test extends TestCase
 
         $instanceIdResponse = $this->createMock(ResponseInterface::class);
         $instanceIdResponse
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getContent')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'))
         ;
 
         $this->httpClient
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('request')
             ->with(
                 ...static::withConsecutive(
@@ -78,7 +78,7 @@ class ImdsClientV2Test extends TestCase
             )
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $instanceId,
             $this->imdsClientV1->getCurrentInstanceId()
         );

@@ -13,17 +13,17 @@ class FunctionTest extends TestCase
 {
     public function testUseTraitNotExistsTrait(): void
     {
-        static::assertFalse(use_trait(\stdClass::class, 'Trait'));
+        $this->assertFalse(use_trait(\stdClass::class, 'Trait'));
     }
 
     public function testUseTraitDoesNotUseTrait(): void
     {
-        static::assertFalse(use_trait(\stdClass::class, StubTrait::class));
+        $this->assertFalse(use_trait(\stdClass::class, StubTrait::class));
     }
 
     public function testUseTrait(): void
     {
-        static::assertTrue(
+        $this->assertTrue(
             use_trait(
                 new class {
                     use StubTrait;
@@ -35,7 +35,7 @@ class FunctionTest extends TestCase
 
     public function testUseTraitParentClass(): void
     {
-        static::assertTrue(
+        $this->assertTrue(
             use_trait(
                 new class extends StubClass {
                 },

@@ -43,14 +43,14 @@ class PreventDeleteExtensionTest extends TestCase
         );
 
         $this->security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('isGranted')
             ->with('ROLE_ADMIN')
             ->willReturn(false)
         ;
 
         $this->preventDeleteRelationLoader
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getRelationsForObject')
         ;
 

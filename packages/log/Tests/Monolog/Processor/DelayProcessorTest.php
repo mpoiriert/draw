@@ -23,7 +23,7 @@ class DelayProcessorTest extends TestCase
 
     public function testInvoke(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 $this->key => number_format(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2),
             ],
@@ -41,7 +41,7 @@ class DelayProcessorTest extends TestCase
     public function testReset(): void
     {
         $this->delayProcessor->reset();
-        static::assertSame(
+        $this->assertSame(
             [$this->key => '0.00'],
             $this->delayProcessor->__invoke(
                 new LogRecord(
@@ -57,7 +57,7 @@ class DelayProcessorTest extends TestCase
     public function testInvokeDefaultKey(): void
     {
         $this->delayProcessor = new DelayProcessor();
-        static::assertArrayHasKey(
+        $this->assertArrayHasKey(
             'delay',
             $this->delayProcessor->__invoke(
                 new LogRecord(

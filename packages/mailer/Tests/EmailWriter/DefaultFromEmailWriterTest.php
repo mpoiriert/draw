@@ -28,7 +28,7 @@ class DefaultFromEmailWriterTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EmailWriterInterface::class,
             $this->object
         );
@@ -36,7 +36,7 @@ class DefaultFromEmailWriterTest extends TestCase
 
     public function testGetForEmails(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['setDefaultFrom' => -255],
             $this->object::getForEmails()
         );
@@ -46,7 +46,7 @@ class DefaultFromEmailWriterTest extends TestCase
     {
         $this->object->setDefaultFrom($email = new Email());
 
-        static::assertSame(
+        $this->assertSame(
             [$this->address],
             $email->getFrom()
         );
@@ -59,7 +59,7 @@ class DefaultFromEmailWriterTest extends TestCase
 
         $this->object->setDefaultFrom($email);
 
-        static::assertSame(
+        $this->assertSame(
             [$value],
             $email->getFrom()
         );

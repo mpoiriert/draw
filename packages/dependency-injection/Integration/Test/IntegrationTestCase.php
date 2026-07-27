@@ -28,13 +28,13 @@ abstract class IntegrationTestCase extends TestCase
     {
         $extension = $this->createMock(ExtensionInterface::class);
 
-        $extension->expects(static::any())
+        $extension->expects($this->any())
             ->method('getAlias')
             ->willReturn($name)
         ;
 
         $extension
-            ->expects(static::any())
+            ->expects($this->any())
             ->method('getNamespace')
             ->willReturn($name)
         ;
@@ -49,7 +49,7 @@ abstract class IntegrationTestCase extends TestCase
 
     public function testGetConfigSectionName(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->getConfigurationSectionName(),
             $this->integration->getConfigSectionName()
         );
@@ -57,7 +57,7 @@ abstract class IntegrationTestCase extends TestCase
 
     public function testDefaultConfiguration(): void
     {
-        static::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             json_encode($this->processConfiguration()),
             json_encode($this->getDefaultConfiguration()),
         );

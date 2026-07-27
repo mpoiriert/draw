@@ -14,10 +14,10 @@ class ConfigurationTraitTest extends TestCase
 
     public function testTwoFactorAuthenticationEnabledProvidersMutator(): void
     {
-        static::assertSame([], $this->getTwoFactorAuthenticationEnabledProviders());
+        $this->assertSame([], $this->getTwoFactorAuthenticationEnabledProviders());
 
         $this->setTwoFactorAuthenticationEnabledProviders(['totp', 'email', 'totp']);
 
-        static::assertSame(['totp', 'email'], $this->getTwoFactorAuthenticationEnabledProviders());
+        $this->assertSame(['totp', 'email'], $this->getTwoFactorAuthenticationEnabledProviders());
     }
 }

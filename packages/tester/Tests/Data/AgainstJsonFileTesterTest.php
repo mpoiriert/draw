@@ -58,7 +58,7 @@ class AgainstJsonFileTesterTest extends TestCase
                 new AgainstJsonFileTester(
                     __DIR__.'/fixtures/AgainstJsonFileTesterTest_testInvoke_propertyPathChecks_equal.json',
                     [
-                        'url' => static::isString(),
+                        'url' => $this->isString(),
                     ]
                 )
             )
@@ -101,7 +101,7 @@ Failed asserting that two strings are equal.');
                 )
             )
         ;
-        static::assertTrue($called);
+        $this->assertTrue($called);
     }
 
     public function testInvokePropertyPathChecksCallableFail(): void

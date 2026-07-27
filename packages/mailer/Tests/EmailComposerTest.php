@@ -42,16 +42,16 @@ class EmailComposerTest extends TestCase
 
     public function testWriterMutator(): void
     {
-        static::assertSame([], $this->object->getWriters(\stdClass::class));
+        $this->assertSame([], $this->object->getWriters(\stdClass::class));
 
         $this->object->addWriter(\stdClass::class, $writer1 = uniqid('writer-'), $method1 = uniqid('method-'));
 
-        static::assertSame(
+        $this->assertSame(
             [],
             $this->object->getWriters(uniqid('other-class-'))
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 [$writer1, $method1],
             ],
@@ -60,7 +60,7 @@ class EmailComposerTest extends TestCase
 
         $this->object->addWriter(\stdClass::class, $writer2 = uniqid('writer-'), $method2 = uniqid('method-'), 1);
 
-        static::assertSame(
+        $this->assertSame(
             [
                 [$writer2, $method2],
                 [$writer1, $method1],
@@ -80,7 +80,7 @@ class EmailComposerTest extends TestCase
         $this->object->addWriter(uniqid('other-class-'), uniqid('writer-'), uniqid('method-'));
 
         $this->serviceLocator
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('get')
             ->with(
                 ...static::withConsecutive(
@@ -94,7 +94,7 @@ class EmailComposerTest extends TestCase
         ;
 
         $emailWriter
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('method1')
             ->with(
                 $message,
@@ -103,7 +103,7 @@ class EmailComposerTest extends TestCase
         ;
 
         $emailWriter
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('method2')
             ->with(
                 $message,
@@ -146,14 +146,14 @@ class EmailComposerTest extends TestCase
 
         $this->object->registerEmailWriter($emailWriter);
 
-        static::assertSame(
+        $this->assertSame(
             [
                 [$emailWriter, 'compose1'],
             ],
             $this->object->getWriters(Email::class)
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 [$emailWriter, 'compose2'],
             ],
@@ -161,14 +161,14 @@ class EmailComposerTest extends TestCase
         );
 
         $this->serviceLocator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('get')
         ;
 
         $this->object->compose($message, $envelope);
 
-        static::assertSame(1, $emailWriter->compose1CallCounter);
-        static::assertSame(1, $emailWriter->compose2CallCounter);
+        $this->assertSame(1, $emailWriter->compose1CallCounter);
+        $this->assertSame(1, $emailWriter->compose2CallCounter);
     }
 
     public function testComposeLocalizeEmail(): void
@@ -181,13 +181,13 @@ class EmailComposerTest extends TestCase
         };
 
         $this->translator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getLocale')
             ->willReturn('en')
         ;
 
         $this->translator
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('setLocale')
             ->with(
                 ...static::withConsecutive(

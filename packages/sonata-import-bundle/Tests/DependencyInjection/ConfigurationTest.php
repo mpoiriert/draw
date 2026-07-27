@@ -31,7 +31,7 @@ class ConfigurationTest extends ConfigurationTestCase
     {
         $config = $this->processConfiguration([['skip_value' => '*SKIP*']]);
 
-        static::assertSame('*SKIP*', $config['skip_value']);
+        $this->assertSame('*SKIP*', $config['skip_value']);
     }
 
     public static function provideInvalidConfigurationCases(): iterable

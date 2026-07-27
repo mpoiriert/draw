@@ -47,7 +47,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -55,7 +55,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 RequestEvent::class => [
                     ['onKernelRequestInvalidate', 9],
@@ -79,13 +79,13 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $request->setSession($session = $this->createMock(Session::class));
 
-        $session->expects(static::once())
+        $session->expects($this->once())
             ->method('get')
             ->with('draw_sonata_integration_last_used')
             ->willReturn(time() - 3601)
         ;
 
-        $session->expects(static::once())
+        $session->expects($this->once())
             ->method('invalidate')
         ;
 
@@ -186,7 +186,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $this->object->onKernelResponseSetLastUsed($event);
 
-        static::assertEqualsWithDelta(
+        $this->assertEqualsWithDelta(
             time(),
             $session->get('draw_sonata_integration_last_used'),
             1
@@ -258,12 +258,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $response->setContent('<meta data-sonata-admin/><title>value</title>');
 
-        $this->security->expects(static::once())
+        $this->security->expects($this->once())
             ->method('getUser')
             ->willReturn($this->createMock(UserInterface::class))
         ;
 
-        $this->urlGenerator->expects(static::exactly(2))
+        $this->urlGenerator->expects($this->exactly(2))
             ->method('generate')
             ->with(
                 ...static::withConsecutive(
@@ -279,7 +279,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $this->object->onKernelResponseAddDialog($event);
 
-        static::assertSame(
+        $this->assertSame(
             '<meta data-sonata-admin/>
   <script type="text/javascript">
     const sessionHandler = new SessionExpirationHandler(3600,"/admin/keep-alive","/admin/login");
@@ -296,12 +296,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
         ?UserInterface $user = null,
         int $requestType = HttpKernelInterface::MAIN_REQUEST,
     ): void {
-        $this->security->expects(static::once())
+        $this->security->expects($this->once())
             ->method('getUser')
             ->willReturn($user)
         ;
 
-        $this->urlGenerator->expects(static::never())
+        $this->urlGenerator->expects($this->never())
             ->method('generate')
         ;
 
@@ -316,7 +316,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             )
         );
 
-        static::assertSame(
+        $this->assertSame(
             $previousContent,
             $response->getContent()
         );

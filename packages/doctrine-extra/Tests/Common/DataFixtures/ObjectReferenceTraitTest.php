@@ -41,7 +41,7 @@ class ObjectReferenceTraitTest extends TestCase
     public function testAddObjectReference(): void
     {
         $this->referenceRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('addReference')
             ->with(
                 \sprintf(
@@ -59,7 +59,7 @@ class ObjectReferenceTraitTest extends TestCase
     public function testHasObjectReference(): void
     {
         $this->referenceRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('hasReference')
             ->with(
                 \sprintf(
@@ -72,7 +72,7 @@ class ObjectReferenceTraitTest extends TestCase
             ->willReturn(false)
         ;
 
-        static::assertFalse(
+        $this->assertFalse(
             $this->trait->hasObjectReference($class, $name)
         );
     }
@@ -80,7 +80,7 @@ class ObjectReferenceTraitTest extends TestCase
     public function testGetObjectReference(): void
     {
         $this->referenceRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getReference')
             ->with(
                 \sprintf(
@@ -93,7 +93,7 @@ class ObjectReferenceTraitTest extends TestCase
             ->willReturn($object = new \stdClass())
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $object,
             $this->trait->getObjectReference($class, $name)
         );
@@ -102,7 +102,7 @@ class ObjectReferenceTraitTest extends TestCase
     public function testSetObjectReference(): void
     {
         $this->referenceRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setReference')
             ->with(
                 \sprintf(

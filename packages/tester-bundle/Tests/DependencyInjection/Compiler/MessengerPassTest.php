@@ -52,12 +52,12 @@ class MessengerPassTest extends TestCase
 
         $this->compilerPass->process($containerBuilder);
 
-        static::assertSame(
+        $this->assertSame(
             $argument,
             $handleMessagesMappingProviderDefinition->getArgument(0)
         );
 
-        static::assertSame(
+        $this->assertSame(
             $argument,
             $handlerConfigurationDumperDefinition->getArgument(0)
         );

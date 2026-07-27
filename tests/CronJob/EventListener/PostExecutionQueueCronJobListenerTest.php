@@ -47,7 +47,7 @@ class PostExecutionQueueCronJobListenerTest extends KernelTestCase implements Au
             )
         ;
 
-        static::assertSame(
+        $this->assertSame(
             Command::SUCCESS,
             $result
         );
@@ -76,7 +76,7 @@ class PostExecutionQueueCronJobListenerTest extends KernelTestCase implements Au
             )
         ;
 
-        static::assertSame(
+        $this->assertSame(
             Command::FAILURE,
             $result
         );

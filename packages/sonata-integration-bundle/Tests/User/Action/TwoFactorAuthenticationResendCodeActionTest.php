@@ -81,13 +81,13 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
         };
 
         $this->codeGenerator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('generateAndSend')
             ->with($user)
         ;
 
         $this->urlGenerator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('generate')
             ->with('admin_2fa_login', ['preferProvider' => 'email'])
             ->willReturn($url = uniqid('https://'))
@@ -95,7 +95,7 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
 
         $securityMock = $this->createMock(Security::class);
         $securityMock
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getUser')
             ->willReturn($user)
         ;
@@ -105,12 +105,12 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
             $securityMock
         );
 
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             RedirectResponse::class,
             $result
         );
 
-        static::assertSame(
+        $this->assertSame(
             $url,
             $result->getTargetUrl()
         );

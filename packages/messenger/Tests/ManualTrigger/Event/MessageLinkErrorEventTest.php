@@ -34,7 +34,7 @@ class MessageLinkErrorEventTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             Event::class,
             $this->event
         );
@@ -42,7 +42,7 @@ class MessageLinkErrorEventTest extends TestCase
 
     public function testGetRequest(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->request,
             $this->event->getRequest()
         );
@@ -50,7 +50,7 @@ class MessageLinkErrorEventTest extends TestCase
 
     public function testGetMessageId(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->messageId,
             $this->event->getMessageId()
         );
@@ -58,7 +58,7 @@ class MessageLinkErrorEventTest extends TestCase
 
     public function testGetError(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->error,
             $this->event->getError()
         );
@@ -66,20 +66,20 @@ class MessageLinkErrorEventTest extends TestCase
 
     public function testResponseMutator(): void
     {
-        static::assertFalse($this->event->isPropagationStopped());
+        $this->assertFalse($this->event->isPropagationStopped());
 
-        static::assertNull($this->event->getResponse());
+        $this->assertNull($this->event->getResponse());
 
-        static::assertSame(
+        $this->assertSame(
             $this->event,
             $this->event->setResponse($value = new Response())
         );
 
-        static::assertSame(
+        $this->assertSame(
             $value,
             $this->event->getResponse()
         );
 
-        static::assertTrue($this->event->isPropagationStopped());
+        $this->assertTrue($this->event->isPropagationStopped());
     }
 }

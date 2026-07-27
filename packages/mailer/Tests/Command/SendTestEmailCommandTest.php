@@ -51,10 +51,10 @@ class SendTestEmailCommandTest extends TestCase
     {
         $to = uniqid('email-').'@example.com';
         $this->mailer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('send')
             ->with(
-                static::callback(
+                $this->callback(
                     function (Email $email) use ($to) {
                         $this->assertSame('Test', $email->getSubject());
                         $this->assertSame('This email as been sent as part of a test.', $email->getTextBody());

@@ -29,7 +29,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -37,7 +37,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public function testSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 KernelEvents::CONTROLLER => ['onKernelController', 5],
             ],
@@ -58,7 +58,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
             ->onKernelController($event)
         ;
 
-        static::assertEmpty($request->attributes->all());
+        $this->assertEmpty($request->attributes->all());
     }
 
     public function testOnKernelControllerInvoke(): void
@@ -74,7 +74,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $this->object->onKernelController($event);
 
-        static::assertSame($value, $request->attributes->get('test'));
+        $this->assertSame($value, $request->attributes->get('test'));
     }
 
     public function testOnKernelControllerAttributeConflict(): void
@@ -203,7 +203,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
         $this->object->onKernelController($controllerEvent);
 
-        static::assertSame(
+        $this->assertSame(
             $expectedValue,
             $request->attributes->get('expectedValue')
         );

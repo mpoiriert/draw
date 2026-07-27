@@ -29,7 +29,7 @@ class AddUserToContextListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -37,7 +37,7 @@ class AddUserToContextListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['workflow.transition' => 'addUserToContext'],
             $this->object::getSubscribedEvents()
         );
@@ -56,7 +56,7 @@ class AddUserToContextListenerTest extends TestCase
 
         $this->object->addUserToContext($transitionEvent);
 
-        static::assertSame(
+        $this->assertSame(
             $originalContext,
             $transitionEvent->getContext()
         );
@@ -74,14 +74,14 @@ class AddUserToContextListenerTest extends TestCase
         ]);
 
         $this->security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getUser')
             ->willReturn($user = $this->createMock(UserInterface::class))
         ;
 
         $this->object->addUserToContext($transitionEvent);
 
-        static::assertSame(
+        $this->assertSame(
             array_merge(
                 $originalContext,
                 ['_user' => $user]

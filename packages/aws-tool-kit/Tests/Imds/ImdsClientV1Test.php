@@ -29,7 +29,7 @@ class ImdsClientV1Test extends TestCase
     public function testGetCurrentInstanceId(): void
     {
         $this->httpClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('request')
             ->with(
                 'GET',
@@ -39,13 +39,13 @@ class ImdsClientV1Test extends TestCase
         ;
 
         $response
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getContent')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'))
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $instanceId,
             $this->imdsClientV1->getCurrentInstanceId()
         );

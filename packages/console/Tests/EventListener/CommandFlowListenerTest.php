@@ -75,7 +75,7 @@ class CommandFlowListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -83,7 +83,7 @@ class CommandFlowListenerTest extends TestCase
 
     public function testGetSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 LoadExecutionIdEvent::class => [
                     ['checkIgnoredCommands'],
@@ -112,48 +112,48 @@ class CommandFlowListenerTest extends TestCase
 
         $option = $command->getDefinition()->getOption($this->object::OPTION_IGNORE);
 
-        static::assertSame(
+        $this->assertSame(
             $this->object::OPTION_IGNORE,
             $option->getName()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $option->getShortcut()
         );
 
-        static::assertFalse(
+        $this->assertFalse(
             $option->isValueRequired()
         );
 
-        static::assertSame(
+        $this->assertSame(
             'Flag to ignore login of the execution to the databases.',
             $option->getDescription()
         );
 
-        static::assertFalse(
+        $this->assertFalse(
             $option->getDefault()
         );
 
         $option = $command->getDefinition()->getOption($this->object::OPTION_EXECUTION_ID);
 
-        static::assertSame(
+        $this->assertSame(
             $this->object::OPTION_EXECUTION_ID,
             $option->getName()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $option->getShortcut()
         );
 
-        static::assertTrue(
+        $this->assertTrue(
             $option->isValueRequired()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $option->getDefault()
         );
 
-        static::assertSame(
+        $this->assertSame(
             'The existing execution id of the command. Use internally by draw/console.',
             $option->getDescription()
         );
@@ -168,15 +168,15 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $command
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getName')
             ->willReturn('help')
         ;
 
         $this->object->checkIgnoredCommands($event);
 
-        static::assertNull($event->getExecutionId());
-        static::assertTrue($event->getIgnoreTracking());
+        $this->assertNull($event->getExecutionId());
+        $this->assertTrue($event->getIgnoreTracking());
     }
 
     public function testCheckIgnoredCommandsNotIgnored(): void
@@ -188,15 +188,15 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $command
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getName')
             ->willReturn(uniqid('command-'))
         ;
 
         $this->object->checkIgnoredCommands($event);
 
-        static::assertNull($event->getExecutionId());
-        static::assertFalse($event->getIgnoreTracking());
+        $this->assertNull($event->getExecutionId());
+        $this->assertFalse($event->getIgnoreTracking());
     }
 
     public function testCheckHelpIgnored(): void
@@ -208,14 +208,14 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('hasOption')
             ->with('help')
             ->willReturn(true)
         ;
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOption')
             ->with('help')
             ->willReturn(true)
@@ -223,8 +223,8 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->checkHelp($event);
 
-        static::assertNull($event->getExecutionId());
-        static::assertTrue($event->getIgnoreTracking());
+        $this->assertNull($event->getExecutionId());
+        $this->assertTrue($event->getIgnoreTracking());
     }
 
     public function testCheckHelpNotIgnored(): void
@@ -236,7 +236,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('hasOption')
             ->with('help')
             ->willReturn(false)
@@ -244,8 +244,8 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->checkHelp($event);
 
-        static::assertNull($event->getExecutionId());
-        static::assertFalse($event->getIgnoreTracking());
+        $this->assertNull($event->getExecutionId());
+        $this->assertFalse($event->getIgnoreTracking());
     }
 
     public function testCheckTableExistIgnoredTableDoesNotExists(): void
@@ -263,13 +263,13 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('createSchemaManager')
             ->willReturn($schemaManager = $this->createMock(MySQLSchemaManager::class))
         ;
 
         $schemaManager
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('tablesExist')
             ->with(['command__execution'])
             ->willReturn(false)
@@ -277,8 +277,8 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->checkTableExist($event);
 
-        static::assertNull($event->getExecutionId());
-        static::assertTrue($event->getIgnoreTracking());
+        $this->assertNull($event->getExecutionId());
+        $this->assertTrue($event->getIgnoreTracking());
     }
 
     public function testCheckTableExistIgnoredException(): void
@@ -296,15 +296,15 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('createSchemaManager')
             ->willThrowException(new ConnectionException())
         ;
 
         $this->object->checkTableExist($event);
 
-        static::assertNull($event->getExecutionId());
-        static::assertTrue($event->getIgnoreTracking());
+        $this->assertNull($event->getExecutionId());
+        $this->assertTrue($event->getIgnoreTracking());
     }
 
     public function testLoadIdFromInputNotFound(): void
@@ -316,7 +316,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('hasOption')
             ->with($this->object::OPTION_EXECUTION_ID)
             ->willReturn(false)
@@ -324,8 +324,8 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->loadIdFromInput($event);
 
-        static::assertNull($event->getExecutionId());
-        static::assertFalse($event->getIgnoreTracking());
+        $this->assertNull($event->getExecutionId());
+        $this->assertFalse($event->getIgnoreTracking());
     }
 
     public function testLoadIdFromInputExists(): void
@@ -338,8 +338,8 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->loadIdFromInput($event);
 
-        static::assertSame($id, $event->getExecutionId());
-        static::assertFalse($event->getIgnoreTracking());
+        $this->assertSame($id, $event->getExecutionId());
+        $this->assertFalse($event->getIgnoreTracking());
     }
 
     public function testGenerateFromDatabaseIgnoredException(): void
@@ -351,19 +351,19 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $command
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getName')
             ->willReturn(uniqid('command-'))
         ;
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getArguments')
             ->willReturn([])
         ;
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOptions')
             ->willReturn([])
         ;
@@ -375,24 +375,24 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('isConnectedToPrimary')
             ->willReturn(false)
         ;
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('insert')
             ->willThrowException($error = new \Exception())
         ;
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('ensureConnectedToReplica')
         ;
 
         $this->logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('error')
             ->with(
                 'Command flow listener error while generating execution id',
@@ -402,8 +402,8 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->generateFromDatabase($event);
 
-        static::assertNull($event->getExecutionId());
-        static::assertTrue($event->getIgnoreTracking());
+        $this->assertNull($event->getExecutionId());
+        $this->assertTrue($event->getIgnoreTracking());
     }
 
     public function testGenerateFromDatabase(): void
@@ -415,19 +415,19 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $command
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getName')
             ->willReturn($commandName = uniqid('command-'))
         ;
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getArguments')
             ->willReturn(['keyName' => 'keyValue'])
         ;
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOptions')
             ->willReturn(['null' => null, 'zero' => 0, 'false' => false, 'other' => 'value'])
         ;
@@ -439,17 +439,17 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('isConnectedToPrimary')
             ->willReturn(false)
         ;
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('insert')
             ->with(
                 'command__execution',
-                static::callback(function (array $arguments) use ($commandName) {
+                $this->callback(function (array $arguments) use ($commandName) {
                     $this->assertCount(7, $arguments);
 
                     $this->assertIsString($arguments['id']);
@@ -496,14 +496,14 @@ class CommandFlowListenerTest extends TestCase
         ;
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('ensureConnectedToReplica')
         ;
 
         $this->object->generateFromDatabase($event);
 
-        static::assertIsString($event->getExecutionId());
-        static::assertFalse($event->getIgnoreTracking());
+        $this->assertIsString($event->getExecutionId());
+        $this->assertFalse($event->getIgnoreTracking());
     }
 
     public function testGenerateFromDatabaseReal(): Execution
@@ -515,27 +515,27 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $command
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getName')
             ->willReturn(uniqid('command-'))
         ;
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getArguments')
             ->willReturn([])
         ;
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOptions')
             ->willReturn([])
         ;
 
         $this->object->generateFromDatabase($event);
 
-        static::assertNotNull($id = $event->getExecutionId());
-        static::assertFalse($event->getIgnoreTracking());
+        $this->assertNotNull($id = $event->getExecutionId());
+        $this->assertFalse($event->getIgnoreTracking());
 
         $this->execution = self::$entityManager->find(Execution::class, $id);
 
@@ -545,7 +545,7 @@ class CommandFlowListenerTest extends TestCase
     public function testLogCommandStartNoExecutionId(): void
     {
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->willReturnArgument(0)
         ;
@@ -557,7 +557,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $command
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getDefinition')
         ;
 
@@ -568,10 +568,10 @@ class CommandFlowListenerTest extends TestCase
     public function testLogCommandStart(Execution $execution): void
     {
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(static function (LoadExecutionIdEvent $event) use ($execution) {
+                $this->callback(static function (LoadExecutionIdEvent $event) use ($execution) {
                     $event->setExecutionId($execution->getId());
 
                     return true;
@@ -587,7 +587,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $command
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getDefinition')
             ->willReturn($definition = new InputDefinition())
         ;
@@ -601,11 +601,11 @@ class CommandFlowListenerTest extends TestCase
 
         $this->object->logCommandStart($event);
 
-        static::assertSame($execution->getId(), $option->getDefault());
+        $this->assertSame($execution->getId(), $option->getDefault());
 
         self::$entityManager->refresh($execution);
 
-        static::assertSame(Execution::STATE_STARTED, $execution->getState());
+        $this->assertSame(Execution::STATE_STARTED, $execution->getState());
     }
 
     public function testLogCommandTerminateReplication(): void
@@ -617,13 +617,13 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('isConnectedToPrimary')
             ->willReturn(false)
         ;
 
         $connection
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('ensureConnectedToReplica')
         ;
 
@@ -647,7 +647,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $output
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('fetch')
         ;
 
@@ -665,7 +665,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $output
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('fetch')
             ->willReturn($output = uniqid('output-'))
         ;
@@ -674,8 +674,8 @@ class CommandFlowListenerTest extends TestCase
 
         self::$entityManager->refresh($execution);
 
-        static::assertSame(Execution::STATE_TERMINATED, $execution->getState());
-        static::assertSame($output, $execution->getOutput());
+        $this->assertSame(Execution::STATE_TERMINATED, $execution->getState());
+        $this->assertSame($output, $execution->getOutput());
     }
 
     #[Depends('testGenerateFromDatabaseReal')]
@@ -689,7 +689,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $output
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('fetch')
             ->willReturn(str_repeat('Z', 50001))
         ;
@@ -701,8 +701,8 @@ class CommandFlowListenerTest extends TestCase
 
         self::$entityManager->refresh($execution);
 
-        static::assertSame(Execution::STATE_TERMINATED, $execution->getState());
-        static::assertStringContainsString(
+        $this->assertSame(Execution::STATE_TERMINATED, $execution->getState());
+        $this->assertStringContainsString(
             str_repeat('Z', 40000)."\n\n[OUTPUT WAS TOO BIG]\n\nTail of log:\n\n".str_repeat('Z', 10000),
             $execution->getOutput()
         );
@@ -717,7 +717,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $this->eventDispatcher
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('dispatch')
         ;
 
@@ -735,7 +735,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $command
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getApplication')
             ->willReturn($application = $this->createMock(Application::class))
         ;
@@ -743,11 +743,11 @@ class CommandFlowListenerTest extends TestCase
         $outputString = uniqid('output-string-');
 
         $application
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('renderThrowable')
             ->with(
                 $error,
-                static::callback(static function (BufferedOutput $output) use ($outputString) {
+                $this->callback(static function (BufferedOutput $output) use ($outputString) {
                     $output->write($outputString);
 
                     return true;
@@ -756,10 +756,10 @@ class CommandFlowListenerTest extends TestCase
         ;
 
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(function (CommandErrorEvent $event) use ($execution, $outputString) {
+                $this->callback(function (CommandErrorEvent $event) use ($execution, $outputString) {
                     $this->assertSame($execution->getId(), $event->getExecutionId());
                     $this->assertSame($outputString, $event->getOutputString());
 
@@ -773,9 +773,9 @@ class CommandFlowListenerTest extends TestCase
 
         self::$entityManager->refresh($execution);
 
-        static::assertSame(Execution::STATE_ERROR, $execution->getState());
-        static::assertStringEndsWith($outputString, $execution->getOutput());
-        static::assertNull($execution->getAutoAcknowledgeReason());
+        $this->assertSame(Execution::STATE_ERROR, $execution->getState());
+        $this->assertStringEndsWith($outputString, $execution->getOutput());
+        $this->assertNull($execution->getAutoAcknowledgeReason());
     }
 
     #[Depends('testGenerateFromDatabaseReal')]
@@ -789,10 +789,10 @@ class CommandFlowListenerTest extends TestCase
 
         $reason = uniqid('reason-');
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(static function (CommandErrorEvent $event) use ($reason) {
+                $this->callback(static function (CommandErrorEvent $event) use ($reason) {
                     $event->acknowledge($reason);
 
                     return true;
@@ -809,8 +809,8 @@ class CommandFlowListenerTest extends TestCase
 
         self::$entityManager->refresh($execution);
 
-        static::assertSame(Execution::STATE_AUTO_ACKNOWLEDGE, $execution->getState());
-        static::assertSame($reason, $execution->getAutoAcknowledgeReason());
+        $this->assertSame(Execution::STATE_AUTO_ACKNOWLEDGE, $execution->getState());
+        $this->assertSame($reason, $execution->getAutoAcknowledgeReason());
     }
 
     #[Depends('testGenerateFromDatabaseReal')]
@@ -824,7 +824,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $output
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('fetch')
             ->willReturn(uniqid('output-'))
         ;
@@ -833,7 +833,7 @@ class CommandFlowListenerTest extends TestCase
 
         self::$entityManager->refresh($execution);
 
-        static::assertSame(Execution::STATE_DISABLED, $execution->getState());
+        $this->assertSame(Execution::STATE_DISABLED, $execution->getState());
     }
 
     #[Depends('testGenerateFromDatabaseReal')]
@@ -847,7 +847,7 @@ class CommandFlowListenerTest extends TestCase
         );
 
         $output
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('fetch')
             ->willReturn(uniqid('output-'))
         ;
@@ -860,7 +860,7 @@ class CommandFlowListenerTest extends TestCase
             ->findOneBy(['id' => $execution->getId()])
         ;
 
-        static::assertNull($execution);
+        $this->assertNull($execution);
     }
 
     private function createOptionExecutionIdInput(string $id): InputInterface
@@ -868,14 +868,14 @@ class CommandFlowListenerTest extends TestCase
         $input = $this->createMock(InputInterface::class);
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('hasOption')
             ->with($this->object::OPTION_EXECUTION_ID)
             ->willReturn(true)
         ;
 
         $input
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOption')
             ->with($this->object::OPTION_EXECUTION_ID)
             ->willReturn($id)

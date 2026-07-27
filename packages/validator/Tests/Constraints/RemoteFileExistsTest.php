@@ -22,7 +22,7 @@ class RemoteFileExistsTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             Constraint::class,
             $this->object
         );
@@ -30,7 +30,7 @@ class RemoteFileExistsTest extends TestCase
 
     public function testGetTargets(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->object::PROPERTY_CONSTRAINT,
             $this->object->getTargets()
         );

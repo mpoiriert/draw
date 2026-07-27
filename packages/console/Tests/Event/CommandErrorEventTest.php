@@ -29,7 +29,7 @@ class CommandErrorEventTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             Event::class,
             $this->event
         );
@@ -37,7 +37,7 @@ class CommandErrorEventTest extends TestCase
 
     public function testGetExecutionId(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->executionId,
             $this->event->getExecutionId()
         );
@@ -45,7 +45,7 @@ class CommandErrorEventTest extends TestCase
 
     public function testGetOutputString(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->outputString,
             $this->event->getOutputString()
         );
@@ -53,22 +53,22 @@ class CommandErrorEventTest extends TestCase
 
     public function testAcknowledge(): void
     {
-        static::assertNull($this->event->getAutoAcknowledgeReason());
+        $this->assertNull($this->event->getAutoAcknowledgeReason());
 
-        static::assertFalse($this->event->isAutoAcknowledge());
+        $this->assertFalse($this->event->isAutoAcknowledge());
 
-        static::assertSame(
+        $this->assertSame(
             $this->event,
             $this->event->acknowledge($reason = uniqid('reason-'))
         );
 
-        static::assertSame(
+        $this->assertSame(
             $reason,
             $this->event->getAutoAcknowledgeReason()
         );
 
-        static::assertTrue($this->event->isAutoAcknowledge());
+        $this->assertTrue($this->event->isAutoAcknowledge());
 
-        static::assertTrue($this->event->isPropagationStopped());
+        $this->assertTrue($this->event->isPropagationStopped());
     }
 }

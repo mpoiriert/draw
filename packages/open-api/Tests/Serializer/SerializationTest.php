@@ -37,7 +37,7 @@ class SerializationTest extends TestCase
 
     public function testStatusConstructorValue(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->statusCode,
             $this->object->statusCode
         );
@@ -45,7 +45,7 @@ class SerializationTest extends TestCase
 
     public function testSerializerGroupsConstructorValue(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->serializerGroups,
             $this->object->serializerGroups
         );
@@ -53,7 +53,7 @@ class SerializationTest extends TestCase
 
     public function testSerializerEnableMaxDepthChecksConstructorValue(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->serializerEnableMaxDepthChecks,
             $this->object->serializerEnableMaxDepthChecks
         );
@@ -61,7 +61,7 @@ class SerializationTest extends TestCase
 
     public function testSerializerVersionConstructorValue(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->serializerVersion,
             $this->object->serializerVersion
         );
@@ -69,7 +69,7 @@ class SerializationTest extends TestCase
 
     public function testContextAttributesConstructorValue(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->contextAttributes,
             $this->object->contextAttributes
         );

@@ -146,7 +146,7 @@ class LogIntegrationTest extends IntegrationTestCase
 
                         static::assertInstanceOf(Definition::class, $chainRequestMatcherDefinition);
 
-                        self::assertRequestMatcherDefinitions(
+                        static::assertRequestMatcherDefinitions(
                             $chainRequestMatcherDefinition->getArgument('$matchers'),
                             [
                                 [HostRequestMatcher::class, ['example.com']],
@@ -165,7 +165,7 @@ class LogIntegrationTest extends IntegrationTestCase
 
                         static::assertInstanceOf(Definition::class, $chainRequestMatcherDefinition);
 
-                        self::assertRequestMatcherDefinitions(
+                        static::assertRequestMatcherDefinitions(
                             $chainRequestMatcherDefinition->getArgument('$matchers'),
                             [
                                 [PathRequestMatcher::class, ['^/admin']],

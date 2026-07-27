@@ -27,7 +27,7 @@ class RemoteFileExistsValidatorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintValidatorInterface::class,
             $this->object
         );
@@ -53,7 +53,7 @@ class RemoteFileExistsValidatorTest extends TestCase
         $validator = Validation::createValidator();
 
         $violations = $validator->validate($file, [new RemoteFileExists()]);
-        static::assertCount($violationsCount, $violations);
+        $this->assertCount($violationsCount, $violations);
     }
 
     /**

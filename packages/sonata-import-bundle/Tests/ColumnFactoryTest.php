@@ -48,16 +48,16 @@ class ColumnFactoryTest extends TestCase
 
         $columns = $import->getColumns()->toArray();
 
-        static::assertCount(1, $columns);
+        $this->assertCount(1, $columns);
 
         $column = $columns[0];
 
-        static::assertInstanceOf(Column::class, $column);
+        $this->assertInstanceOf(Column::class, $column);
 
-        static::assertSame('createdAt', $column->getHeaderName());
-        static::assertSame('createdAt', $column->getMappedTo());
-        static::assertFalse($column->getIsIdentifier());
-        static::assertFalse($column->getIsIgnored());
-        static::assertTrue($column->getIsDate());
+        $this->assertSame('createdAt', $column->getHeaderName());
+        $this->assertSame('createdAt', $column->getMappedTo());
+        $this->assertFalse($column->getIsIdentifier());
+        $this->assertFalse($column->getIsIgnored());
+        $this->assertTrue($column->getIsDate());
     }
 }

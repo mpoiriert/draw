@@ -28,7 +28,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
 
     public function testVoteNoSubject(): void
     {
-        static::assertSame(
+        $this->assertSame(
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
                 $this->createMock(TokenInterface::class),
@@ -40,7 +40,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
 
     public function testVoteNotProperSubject(): void
     {
-        static::assertSame(
+        $this->assertSame(
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
                 $this->createMock(TokenInterface::class),
@@ -52,7 +52,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
 
     public function testVoteWithRelationOtherAttribute(): void
     {
-        static::assertSame(
+        $this->assertSame(
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
                 $this->createMock(TokenInterface::class),
@@ -64,7 +64,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
 
     public function testVoteWithRelation(): void
     {
-        static::assertSame(
+        $this->assertSame(
             VoterInterface::ACCESS_DENIED,
             $this->object->vote(
                 $this->createMock(TokenInterface::class),
@@ -76,7 +76,7 @@ class RelationPreventDeleteCanVoterTest extends KernelTestCase
 
     public function testVoteNoRelation(): void
     {
-        static::assertSame(
+        $this->assertSame(
             VoterInterface::ACCESS_ABSTAIN,
             $this->object->vote(
                 $this->createMock(TokenInterface::class),

@@ -29,7 +29,7 @@ class TypeSchemaExtractorTest extends TestCase
     {
         $context = $this->createMock(ExtractionContextInterface::class);
 
-        static::assertSame(
+        $this->assertSame(
             $canBeExtract,
             $this->object->canExtract($source, $type, $context)
         );
@@ -93,7 +93,7 @@ class TypeSchemaExtractorTest extends TestCase
 
         $jsonSchema = $context->getOpenApi()->dump($context->getRootSchema(), false);
 
-        static::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/typeSchemaExtractorTestExtract.json'),
             $jsonSchema
         );

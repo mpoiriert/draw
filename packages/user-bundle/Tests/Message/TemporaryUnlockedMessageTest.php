@@ -33,12 +33,12 @@ class TemporaryUnlockedMessageTest extends TestCase
 
     public function testWasLocked(): void
     {
-        static::assertSame($this->wasLocked, $this->object->wasLocked());
+        $this->assertSame($this->wasLocked, $this->object->wasLocked());
     }
 
     public function testUntil(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->until->getTimestamp(),
             $this->object->until()->getTimestamp()
         );
@@ -46,7 +46,7 @@ class TemporaryUnlockedMessageTest extends TestCase
 
     public function testGetUserIdentifier(): void
     {
-        static::assertNull($this->object->getUserIdentifier());
+        $this->assertNull($this->object->getUserIdentifier());
 
         $this->object->preSend(
             new class implements MessageHolderInterface, LockableUserInterface {
@@ -61,6 +61,6 @@ class TemporaryUnlockedMessageTest extends TestCase
             }
         );
 
-        static::assertSame('identifier', $this->object->getUserIdentifier());
+        $this->assertSame('identifier', $this->object->getUserIdentifier());
     }
 }

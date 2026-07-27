@@ -27,7 +27,7 @@ class SchemaAddDefaultHeadersListenerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             EventSubscriberInterface::class,
             $this->object
         );
@@ -35,7 +35,7 @@ class SchemaAddDefaultHeadersListenerTest extends TestCase
 
     public function testSubscribedEvents(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 PreDumpRootSchemaEvent::class => ['addHeaders', 255],
             ],

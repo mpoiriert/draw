@@ -37,7 +37,7 @@ class DrawUserExtensionWithEmailWritersEnabledTest extends DrawUserExtensionTest
 
     public function testUserOnboardingEmailWriterConfiguration(): void
     {
-        static::assertSame(
+        $this->assertSame(
             '+ 24 hours',
             $this->getContainerBuilder()
                 ->getDefinition(UserOnboardingEmailWriter::class)

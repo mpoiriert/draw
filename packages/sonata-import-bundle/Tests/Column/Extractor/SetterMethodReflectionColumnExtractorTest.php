@@ -24,7 +24,7 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ColumnExtractorInterface::class,
             $this->object
         );
@@ -32,7 +32,7 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
 
     public function testGetDefaultPriority(): void
     {
-        static::assertSame(
+        $this->assertSame(
             0,
             $this->object::getDefaultPriority()
         );
@@ -40,7 +40,7 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
 
     public function testGetOptions(): void
     {
-        static::assertSame(
+        $this->assertSame(
             [
                 'kept',
                 'test',
@@ -61,18 +61,18 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
             []
         );
 
-        static::assertNotNull($columnInfo);
-        static::assertSame(
+        $this->assertNotNull($columnInfo);
+        $this->assertSame(
             'test',
             $columnInfo->getMappedTo()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIdentifier()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsDate()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIgnored()
         );
     }
@@ -85,18 +85,18 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
             []
         );
 
-        static::assertNotNull($columnInfo);
-        static::assertSame(
+        $this->assertNotNull($columnInfo);
+        $this->assertSame(
             'date',
             $columnInfo->getMappedTo()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIdentifier()
         );
-        static::assertTrue(
+        $this->assertTrue(
             $columnInfo->getIsDate()
         );
-        static::assertNull(
+        $this->assertNull(
             $columnInfo->getIsIgnored()
         );
     }
@@ -109,7 +109,7 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
             []
         );
 
-        static::assertNull($columnInfo);
+        $this->assertNull($columnInfo);
     }
 
     private function createColumn(): Column

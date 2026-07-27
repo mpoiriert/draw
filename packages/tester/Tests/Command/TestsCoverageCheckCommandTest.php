@@ -73,7 +73,7 @@ class TestsCoverageCheckCommandTest extends TestCase
     {
         $commandTester = $this->executeCommand(self::FIXTURES_FILE, $against = 50);
 
-        static::assertSame(1, $commandTester->getStatusCode());
+        $this->assertSame(1, $commandTester->getStatusCode());
 
         $display = $commandTester->getDisplay();
 
@@ -82,7 +82,7 @@ class TestsCoverageCheckCommandTest extends TestCase
         ];
 
         foreach ($lines as $line) {
-            static::assertStringContainsString(
+            $this->assertStringContainsString(
                 $line,
                 $display
             );
@@ -93,7 +93,7 @@ class TestsCoverageCheckCommandTest extends TestCase
     {
         $commandTester = $this->executeCommand(self::FIXTURES_FILE, $against = 40);
 
-        static::assertSame(0, $commandTester->getStatusCode());
+        $this->assertSame(0, $commandTester->getStatusCode());
 
         $display = $commandTester->getDisplay();
 
@@ -105,7 +105,7 @@ class TestsCoverageCheckCommandTest extends TestCase
         ];
 
         foreach ($lines as $line) {
-            static::assertStringContainsString(
+            $this->assertStringContainsString(
                 $line,
                 $display
             );

@@ -36,7 +36,7 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             SerializerInterface::class,
             $this->object
         );
@@ -47,14 +47,14 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
         $data = ['body' => '', 'headers' => ''];
 
         $this->serializer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('decode')
             ->with($data)
             ->willReturn($envelope = new Envelope((object) []))
         ;
 
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
                 new PostDecodeEvent($envelope)
@@ -62,7 +62,7 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
             ->willReturnArgument(0)
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $envelope,
             $this->object->decode($data)
         );
@@ -73,7 +73,7 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
         $envelope = new Envelope((object) []);
 
         $this->eventDispatcher
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('dispatch')
             ->with(
                 ...static::withConsecutive(
@@ -85,13 +85,13 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
         ;
 
         $this->serializer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('encode')
             ->with($envelope)
             ->willReturn($data = ['body' => '', 'headers' => ''])
         ;
 
-        static::assertSame(
+        $this->assertSame(
             $data,
             $this->object->encode($envelope)
         );

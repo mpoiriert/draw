@@ -29,7 +29,7 @@ class ExactMatchColumnExtractorTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             ColumnExtractorInterface::class,
             $this->object
         );
@@ -37,7 +37,7 @@ class ExactMatchColumnExtractorTest extends TestCase
 
     public function testGetDefaultPriority(): void
     {
-        static::assertSame(
+        $this->assertSame(
             -1000,
             $this->object::getDefaultPriority()
         );
@@ -45,7 +45,7 @@ class ExactMatchColumnExtractorTest extends TestCase
 
     public function testGetOptions(): void
     {
-        static::assertSame(
+        $this->assertSame(
             ['test'],
             $this->object->getOptions(
                 new Column(),
@@ -57,11 +57,11 @@ class ExactMatchColumnExtractorTest extends TestCase
     public function testExtractDefaultValueAlreadySet(): void
     {
         $this->importer
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getOptions')
         ;
 
-        static::assertNull(
+        $this->assertNull(
             $this->object->extractDefaultValue(
                 (new Column())
                     ->setHeaderName('headerName')
@@ -74,12 +74,12 @@ class ExactMatchColumnExtractorTest extends TestCase
     public function testExtractDefaultValueNotInOptions(): void
     {
         $this->importer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOptions')
             ->willReturn(['headerName1', 'headerName2'])
         ;
 
-        static::assertNull(
+        $this->assertNull(
             $this->object->extractDefaultValue(
                 (new Column())
                     ->setHeaderName('headerName'),
@@ -91,7 +91,7 @@ class ExactMatchColumnExtractorTest extends TestCase
     public function testExtractDefaultValueInOptions(): void
     {
         $this->importer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOptions')
             ->willReturn(['headerName'])
         ;
@@ -105,24 +105,24 @@ class ExactMatchColumnExtractorTest extends TestCase
             ['sample5', 'sample6']
         );
 
-        static::assertSame(
+        $this->assertSame(
             'headerName',
             $column->getMappedTo()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $column->getHeaderName()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $column->getIsIdentifier()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $column->getIsIgnored()
         );
 
-        static::assertNull(
+        $this->assertNull(
             $column->getIsDate()
         );
     }

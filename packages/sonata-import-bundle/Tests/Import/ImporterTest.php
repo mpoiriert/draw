@@ -22,23 +22,23 @@ class ImporterTest extends TestCase
     {
         $importer = $this->createImporter();
 
-        static::assertSame('_SKIP_', $importer->getSkipValue());
-        static::assertTrue($importer->isSkipValue('_SKIP_'));
-        static::assertFalse($importer->isSkipValue(''));
-        static::assertFalse($importer->isSkipValue(null));
-        static::assertFalse($importer->isSkipValue(0));
-        static::assertFalse($importer->isSkipValue('skip'));
-        static::assertFalse($importer->isSkipValue(' _SKIP_ '));
-        static::assertFalse($importer->isSkipValue(new \DateTime()));
+        $this->assertSame('_SKIP_', $importer->getSkipValue());
+        $this->assertTrue($importer->isSkipValue('_SKIP_'));
+        $this->assertFalse($importer->isSkipValue(''));
+        $this->assertFalse($importer->isSkipValue(null));
+        $this->assertFalse($importer->isSkipValue(0));
+        $this->assertFalse($importer->isSkipValue('skip'));
+        $this->assertFalse($importer->isSkipValue(' _SKIP_ '));
+        $this->assertFalse($importer->isSkipValue(new \DateTime()));
     }
 
     public function testIsSkipValueCustomMarker(): void
     {
         $importer = $this->createImporter(skipValue: '*SKIP*');
 
-        static::assertSame('*SKIP*', $importer->getSkipValue());
-        static::assertTrue($importer->isSkipValue('*SKIP*'));
-        static::assertFalse($importer->isSkipValue('_SKIP_'));
+        $this->assertSame('*SKIP*', $importer->getSkipValue());
+        $this->assertTrue($importer->isSkipValue('*SKIP*'));
+        $this->assertFalse($importer->isSkipValue('_SKIP_'));
     }
 
     public function testAssignValueSkipsExtractorsForMarker(): void
@@ -51,8 +51,8 @@ class ImporterTest extends TestCase
 
         $this->invokeAssign($importer, $object, $column, '_SKIP_');
 
-        static::assertSame(0, $extractor->callCount, 'Extractors must not be invoked for skip values.');
-        static::assertObjectNotHasProperty('label', $object);
+        $this->assertSame(0, $extractor->callCount, 'Extractors must not be invoked for skip values.');
+        $this->assertObjectNotHasProperty('label', $object);
     }
 
     public function testAssignValueSkipsBeforeDateCoercion(): void
@@ -68,7 +68,7 @@ class ImporterTest extends TestCase
 
         $this->invokeAssign($importer, $object, $column, '_SKIP_');
 
-        static::assertSame(0, $extractor->callCount);
+        $this->assertSame(0, $extractor->callCount);
     }
 
     public function testAssignValueRunsExtractorsForRegularValue(): void
@@ -81,8 +81,8 @@ class ImporterTest extends TestCase
 
         $this->invokeAssign($importer, $object, $column, 'Real value');
 
-        static::assertSame(1, $extractor->callCount);
-        static::assertSame('Real value', $extractor->lastValue);
+        $this->assertSame(1, $extractor->callCount);
+        $this->assertSame('Real value', $extractor->lastValue);
     }
 
     public function testAssignValueEmptyStringIsNotASkip(): void
@@ -95,8 +95,8 @@ class ImporterTest extends TestCase
 
         $this->invokeAssign($importer, $object, $column, '');
 
-        static::assertSame(1, $extractor->callCount, 'Empty string must still be passed to extractors so the field can be cleared.');
-        static::assertSame('', $extractor->lastValue);
+        $this->assertSame(1, $extractor->callCount, 'Empty string must still be passed to extractors so the field can be cleared.');
+        $this->assertSame('', $extractor->lastValue);
     }
 
     #[DataProvider('provideIsSkipValueRejectsNonExactMatchesCases')]
@@ -104,7 +104,7 @@ class ImporterTest extends TestCase
     {
         $importer = $this->createImporter();
 
-        static::assertFalse($importer->isSkipValue($value));
+        $this->assertFalse($importer->isSkipValue($value));
     }
 
     public static function provideIsSkipValueRejectsNonExactMatchesCases(): iterable
@@ -128,9 +128,9 @@ class ImporterTest extends TestCase
     {
         return new Importer(
             $extractors,
-            static::createStub(\Doctrine\Persistence\ManagerRegistry::class),
-            static::createStub(ColumnFactory::class),
-            static::createStub(NotifierInterface::class),
+            $this->createStub(\Doctrine\Persistence\ManagerRegistry::class),
+            $this->createStub(ColumnFactory::class),
+            $this->createStub(NotifierInterface::class),
             $skipValue,
         );
     }

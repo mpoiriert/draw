@@ -75,7 +75,7 @@ class InstallSandboxCommandTest extends TestCase
             )
         ;
 
-        static::assertDirectoryExists($path);
+        $this->assertDirectoryExists($path);
     }
 
     public function testExecuteZipError(): void
@@ -95,7 +95,7 @@ class InstallSandboxCommandTest extends TestCase
         );
 
         $filesystem
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dumpFile')
         ;
 

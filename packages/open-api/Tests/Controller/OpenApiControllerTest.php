@@ -51,14 +51,14 @@ class OpenApiControllerTest extends TestCase
     public function testApiDocAction(): void
     {
         $this->openApi
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('dump')
         ;
 
         $route = uniqid('route-');
 
         $this->urlGenerator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('generate')
             ->with(
                 $route,
@@ -75,9 +75,9 @@ class OpenApiControllerTest extends TestCase
 
         $response = $this->object->apiDocAction($request);
 
-        static::assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
 
-        static::assertSame(
+        $this->assertSame(
             $this->sandboxUrl.'/index.html?url='.$url,
             $response->getTargetUrl()
         );
@@ -89,7 +89,7 @@ class OpenApiControllerTest extends TestCase
         $version = uniqid('version-');
 
         $this->urlGenerator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('generate')
             ->with(
                 $route,
@@ -113,23 +113,23 @@ class OpenApiControllerTest extends TestCase
         $version = uniqid('version-');
 
         $this->schemaBuilder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('build')
             ->with(
-                static::isInstanceOf(ExtractionContextInterface::class)
+                $this->isInstanceOf(ExtractionContextInterface::class)
             )
             ->willReturn($rootSchema = new Root())
         ;
 
         $this->openApi
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dump')
             ->with($rootSchema)
             ->willReturn($rootSchemaJson = json_encode(['version' => $version], \JSON_THROW_ON_ERROR))
         ;
 
         $this->urlGenerator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('generate')
         ;
 
@@ -138,8 +138,8 @@ class OpenApiControllerTest extends TestCase
 
         $response = $this->object->apiDocAction($request, $version);
 
-        static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertSame(200, $response->getStatusCode());
-        static::assertSame($rootSchemaJson, $response->getContent());
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame($rootSchemaJson, $response->getContent());
     }
 }

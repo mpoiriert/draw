@@ -48,13 +48,13 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
     #[Depends('testCreateUser')]
     public function testLoginRedirectEnable2fa(): void
     {
-        static::assertTrue(self::$user->needToEnableTotpAuthenticationEnabled());
+        $this->assertTrue(self::$user->needToEnableTotpAuthenticationEnabled());
 
         $this->client->followRedirects();
 
         $crawler = $this->loginToAdmin();
 
-        static::assertStringContainsString(
+        $this->assertStringContainsString(
             '/admin/app/user/'.self::$user->getId().'/enable-2fa',
             $crawler->getUri(),
             'User must be redirect to enable 2fa url'
@@ -75,7 +75,7 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
 
         $this->reloadUser();
 
-        static::assertSame([], self::$user->getTwoFactorAuthenticationEnabledProviders());
+        $this->assertSame([], self::$user->getTwoFactorAuthenticationEnabledProviders());
     }
 
     public function testEnable2faInAdminInvalidCode(): void
@@ -96,9 +96,9 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
                 ->form(['enable2fa_form[code]' => '111111'], 'POST')
         );
 
-        static::assertStringContainsString('/enable-2fa', $crawler->getUri());
+        $this->assertStringContainsString('/enable-2fa', $crawler->getUri());
 
-        static::assertStringContainsString(
+        $this->assertStringContainsString(
             'Invalid code provided',
             static::getResponseContent()
         );
@@ -116,16 +116,16 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
                 ->form(['enable2fa_form[code]' => '123456'], 'POST')
         );
 
-        static::assertStringContainsString('/admin/dashboard', $crawler->getUri());
+        $this->assertStringContainsString('/admin/dashboard', $crawler->getUri());
 
-        static::assertStringContainsString(
+        $this->assertStringContainsString(
             '2FA successfully enabled.',
             static::getResponseContent()
         );
 
         $this->reloadUser();
 
-        static::assertTrue(self::$user->isTotpAuthenticationEnabled());
+        $this->assertTrue(self::$user->isTotpAuthenticationEnabled());
     }
 
     #[Depends('testEnable2faInAdmin')]
@@ -139,12 +139,12 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
                 ->form(['_auth_code' => '11111'], 'POST')
         );
 
-        static::assertStringContainsString(
+        $this->assertStringContainsString(
             'The verification code is not valid.',
             static::getResponseContent()
         );
 
-        static::assertStringContainsString('/2fa', $crawler->getUri());
+        $this->assertStringContainsString('/2fa', $crawler->getUri());
     }
 
     #[Depends('testEnable2faInAdmin')]
@@ -160,7 +160,7 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
                 ->form(['_auth_code' => '123456'], 'POST')
         );
 
-        static::assertStringContainsString('/admin/dashboard', $crawler->getUri());
+        $this->assertStringContainsString('/admin/dashboard', $crawler->getUri());
     }
 
     #[Depends('testEnable2faInAdmin')]
@@ -186,11 +186,11 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
             \sprintf(self::ADMIN_URL.'/app/user/%s/disable-2fa', self::$user->getId())
         );
 
-        static::assertStringContainsString('/edit', $crawler->getUri());
+        $this->assertStringContainsString('/edit', $crawler->getUri());
 
-        static::assertStringContainsString('2FA successfully disabled.', static::getResponseContent());
+        $this->assertStringContainsString('2FA successfully disabled.', static::getResponseContent());
 
-        static::assertFalse($this->reloadUser()->isTotpAuthenticationEnabled());
+        $this->assertFalse($this->reloadUser()->isTotpAuthenticationEnabled());
     }
 
     private function reloadUser(): User

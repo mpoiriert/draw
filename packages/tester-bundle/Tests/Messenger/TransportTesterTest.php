@@ -20,7 +20,7 @@ class TransportTesterTest extends TestCase implements AutowiredInterface
 
     public function testGetTransport(): void
     {
-        static::assertSame(
+        $this->assertSame(
             static::getContainer()->get('messenger.transport.memory'),
             $this->transportTester->getTransport()
         );

@@ -13,8 +13,8 @@ class SqlMetricTest extends TestCase
     public function test(): void
     {
         $metric = new SqlMetric(['query']);
-        static::assertSame(1, $metric->count);
-        static::assertSame(
+        $this->assertSame(1, $metric->count);
+        $this->assertSame(
             ['query'],
             $metric->queries
         );

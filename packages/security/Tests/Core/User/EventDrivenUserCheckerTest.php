@@ -34,7 +34,7 @@ class EventDrivenUserCheckerTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertInstanceOf(
+        $this->assertInstanceOf(
             UserCheckerInterface::class,
             $this->object
         );
@@ -45,16 +45,16 @@ class EventDrivenUserCheckerTest extends TestCase
         $user = $this->createMock(UserInterface::class);
 
         $this->decoratedUserChecker
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('checkPreAuth')
             ->with($user)
         ;
 
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(function (CheckPreAuthEvent $event) use ($user) {
+                $this->callback(function (CheckPreAuthEvent $event) use ($user) {
                     $this->assertSame(
                         $user,
                         $event->getUser()
@@ -74,16 +74,16 @@ class EventDrivenUserCheckerTest extends TestCase
         $user = $this->createMock(UserInterface::class);
 
         $this->decoratedUserChecker
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('checkPostAuth')
             ->with($user)
         ;
 
         $this->eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
-                static::callback(function (CheckPostAuthEvent $event) use ($user) {
+                $this->callback(function (CheckPostAuthEvent $event) use ($user) {
                     $this->assertSame(
                         $user,
                         $event->getUser()

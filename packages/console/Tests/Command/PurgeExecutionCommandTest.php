@@ -89,7 +89,7 @@ class PurgeExecutionCommandTest extends TestCase
         $date = '2000-01-01 00:00:01';
 
         $this->logger->expects(
-            static::exactly(3)
+            $this->exactly(3)
         )
             ->method('debug')
             ->with(
@@ -110,7 +110,7 @@ class PurgeExecutionCommandTest extends TestCase
             )
         ;
 
-        $this->connection->expects(static::exactly(2))
+        $this->connection->expects($this->exactly(2))
             ->method('executeStatement')
             ->with(
                 ...static::withConsecutive(
