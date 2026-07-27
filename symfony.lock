@@ -44,9 +44,6 @@
     "dasprid/enum": {
         "version": "1.0.3"
     },
-    "doctrine/cache": {
-        "version": "2.1.1"
-    },
     "doctrine/collections": {
         "version": "1.6.8"
     },

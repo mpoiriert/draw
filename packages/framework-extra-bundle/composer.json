@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=8.5",
+        "php": ">=8.2",
         "ext-json": "*",
         "draw/core": "^0.39",
         "draw/dependency-injection": "^0.39",
