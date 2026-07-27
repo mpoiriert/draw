@@ -1,4 +1,4 @@
-FROM php:8.5-fpm-bookworm
+FROM php:8.2-fpm-bookworm
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends vim curl debconf subversion git apt-transport-https apt-utils \

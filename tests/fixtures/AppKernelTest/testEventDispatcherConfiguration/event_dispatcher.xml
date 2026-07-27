@@ -252,6 +252,9 @@
   <event name="scheb_two_factor.authentication.code_reused">
     <callable type="function" name="handle" class="Scheb\TwoFactorBundle\Security\Http\EventListener\ThrowExceptionOnTwoFactorCodeReuseListener" priority="-256"/>
   </event>
+  <event name="scheb_two_factor.authentication.code_valid">
+    <callable type="function" name="rememberCode" class="Scheb\TwoFactorBundle\Security\Http\EventListener\CheckTwoFactorCodeReuseListener" priority="0"/>
+  </event>
   <event name="scheb_two_factor.authentication.form">
     <callable type="function" name="onTwoFactorForm" class="Scheb\TwoFactorBundle\Security\TwoFactor\Provider\TwoFactorProviderPreparationListener" priority="0"/>
   </event>

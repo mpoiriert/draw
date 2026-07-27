@@ -9,7 +9,7 @@
         "symfony"
     ],
     "require": {
-        "php": ">=8.5",
+        "php": ">=8.2",
         "draw/core": "^0.39",
         "symfony/dom-crawler": "^6.4.0",
         "symfony/css-selector": "^6.4.0",
