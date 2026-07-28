@@ -53,7 +53,7 @@ class ProfilerCoordinatorTest extends TestCase
     {
         $profiler = $this->doTestStartAll();
         $profiler
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('stop')
             ->willReturn($result = 'result')
         ;
@@ -68,7 +68,7 @@ class ProfilerCoordinatorTest extends TestCase
     {
         $profiler = $this->createMock(ProfilerInterface::class);
         $profiler
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getType')
             ->willReturn(self::PROFILER_TYPE)
         ;
@@ -82,7 +82,7 @@ class ProfilerCoordinatorTest extends TestCase
     {
         $profiler = $this->doTestRegisterProfile();
         $profiler
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('start')
         ;
 

@@ -39,7 +39,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerUnParsableController(): void
     {
         $event = new ControllerEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             $request = new Request(),
             null
@@ -55,7 +55,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerInvoke(): void
     {
         $event = new ControllerEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $this,
             $request = new Request(),
             null
@@ -71,7 +71,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerAttributeConflict(): void
     {
         $event = new ControllerEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $this,
             $request = new Request(),
             null
@@ -184,7 +184,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelController(string $methodName, mixed $value, mixed $expectedValue): void
     {
         $controllerEvent = new ControllerEvent(
-            static::createStub(KernelInterface::class),
+            $this->createStub(KernelInterface::class),
             [$this, $methodName],
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST
@@ -202,7 +202,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
 
     public static function provideOnKernelControllerCases(): iterable
     {
-        foreach (new \ReflectionClass(static::class)->getMethods() as $reflectionMethod) {
+        foreach ((new \ReflectionClass(static::class))->getMethods() as $reflectionMethod) {
             if (str_starts_with($reflectionMethod->getName(), 'actionTest')) {
                 $parameters = $reflectionMethod->getParameters();
 
@@ -218,7 +218,7 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     public function testOnKernelControllerInvalidArrayCollectionFormat(): void
     {
         $controllerEvent = new ControllerEvent(
-            static::createStub(KernelInterface::class),
+            $this->createStub(KernelInterface::class),
             [$this, 'multiAction'],
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST

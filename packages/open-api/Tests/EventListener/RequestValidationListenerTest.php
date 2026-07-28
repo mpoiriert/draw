@@ -31,10 +31,10 @@ class RequestValidationListenerTest extends TestCase
     public function testSubscribedEvents(): void
     {
         $object = new RequestValidationListener(
-            static::createStub(ValidatorInterface::class)
+            $this->createStub(ValidatorInterface::class)
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', -5],
             ],
@@ -49,7 +49,7 @@ class RequestValidationListenerTest extends TestCase
         );
 
         $event = new ControllerArgumentsEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             new Request(),
@@ -57,7 +57,7 @@ class RequestValidationListenerTest extends TestCase
         );
 
         $validator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('validate')
         ;
 
@@ -71,7 +71,7 @@ class RequestValidationListenerTest extends TestCase
         );
 
         $event = new ControllerArgumentsEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             $request = new Request(),
@@ -83,10 +83,10 @@ class RequestValidationListenerTest extends TestCase
         $request->attributes->set($name, $bodyObject = (object) []);
 
         $validator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('validate')
             ->with($bodyObject, null, ['Default'])
-            ->willReturn(static::createStub(ConstraintViolationListInterface::class))
+            ->willReturn($this->createStub(ConstraintViolationListInterface::class))
         ;
 
         $object->onKernelController($event);
@@ -99,7 +99,7 @@ class RequestValidationListenerTest extends TestCase
         );
 
         $event = new ControllerArgumentsEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             $request = new Request(),
@@ -112,10 +112,10 @@ class RequestValidationListenerTest extends TestCase
         $request->attributes->set($name, $parameterObject = (object) []);
 
         $validator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('validate')
             ->with($parameterObject, [], null)
-            ->willReturn(static::createStub(ConstraintViolationListInterface::class))
+            ->willReturn($this->createStub(ConstraintViolationListInterface::class))
         ;
 
         $object->onKernelController($event);
@@ -128,7 +128,7 @@ class RequestValidationListenerTest extends TestCase
         );
 
         $event = new ControllerArgumentsEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             $request = new Request(),
@@ -141,7 +141,7 @@ class RequestValidationListenerTest extends TestCase
         $request->attributes->set($name, (object) []);
 
         $validator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('validate')
         ;
 
@@ -155,7 +155,7 @@ class RequestValidationListenerTest extends TestCase
         );
 
         $event = new ControllerArgumentsEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             $request = new Request(),
@@ -176,7 +176,7 @@ class RequestValidationListenerTest extends TestCase
         $queryParameter->constraints = [new NotNull()];
 
         $validator
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('validate')
             ->with(
                 ...static::withConsecutive(
@@ -214,7 +214,7 @@ class RequestValidationListenerTest extends TestCase
 
         try {
             $object->onKernelController($event);
-            static::fail('Expect exception of type: '.ConstraintViolationListException::class);
+            $this->fail('Expect exception of type: '.ConstraintViolationListException::class);
         } catch (ConstraintViolationListException $error) {
             $violationList = $error->getViolationList();
 

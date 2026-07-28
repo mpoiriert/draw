@@ -223,7 +223,7 @@ class PreventDeleteRelationLoader
     private function preventDeleteFromPropertyAttribute(string $sourceEntity, string $fieldName): ?PreventDelete
     {
         try {
-            $attributes = new \ReflectionProperty($sourceEntity, $fieldName)
+            $attributes = (new \ReflectionProperty($sourceEntity, $fieldName))
                 ->getAttributes(PreventDelete::class, \ReflectionAttribute::IS_INSTANCEOF)
             ;
 

@@ -19,34 +19,34 @@ class VersionManagerTest extends TestCase
     public function testGetRunningVersionNotFound(): void
     {
         $service = new VersionManager(
-            static::createStub(ConfigurationRegistryInterface::class),
+            $this->createStub(ConfigurationRegistryInterface::class),
             $eventDispatcher = $this->createMock(EventDispatcherInterface::class)
         );
 
         $eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with($this->isInstanceOf(FetchRunningVersionEvent::class))
             ->willReturnArgument(0)
         ;
 
-        static::assertNull($service->getRunningVersion());
+        $this->assertNull($service->getRunningVersion());
 
         // Multiple call will not trigger multiple event
-        static::assertNull($service->getRunningVersion());
+        $this->assertNull($service->getRunningVersion());
     }
 
     public function testGetRunningVersion(): void
     {
         $service = new VersionManager(
-            static::createStub(ConfigurationRegistryInterface::class),
+            $this->createStub(ConfigurationRegistryInterface::class),
             $eventDispatcher = $this->createMock(EventDispatcherInterface::class)
         );
 
         $version = uniqid('version-');
 
         $eventDispatcher
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with(
                 $this->callback(static function (FetchRunningVersionEvent $event) use ($version) {
@@ -68,7 +68,7 @@ class VersionManagerTest extends TestCase
     {
         $service = new VersionManager(
             $configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
-            static::createStub(EventDispatcherInterface::class)
+            $this->createStub(EventDispatcherInterface::class)
         );
 
         $version = uniqid('version-');
@@ -80,7 +80,7 @@ class VersionManagerTest extends TestCase
         );
 
         $configurationRegistry
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('set')
             ->with($service::CONFIG, $version)
         ;
@@ -92,11 +92,11 @@ class VersionManagerTest extends TestCase
     {
         $service = new VersionManager(
             $configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
-            static::createStub(EventDispatcherInterface::class)
+            $this->createStub(EventDispatcherInterface::class)
         );
 
         $configurationRegistry
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('get')
             ->with($service::CONFIG)
             ->willReturn($version = uniqid('version-'))
@@ -112,11 +112,11 @@ class VersionManagerTest extends TestCase
     {
         $service = new VersionManager(
             $configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
-            static::createStub(EventDispatcherInterface::class)
+            $this->createStub(EventDispatcherInterface::class)
         );
 
         $configurationRegistry
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('get')
             ->with($service::CONFIG)
             ->willReturn($version = uniqid('version-'))
@@ -128,18 +128,18 @@ class VersionManagerTest extends TestCase
             $version
         );
 
-        static::assertTrue($service->isUpToDate());
+        $this->assertTrue($service->isUpToDate());
     }
 
     public function testIsUpToDateFalse(): void
     {
         $service = new VersionManager(
             $configurationRegistry = $this->createMock(ConfigurationRegistryInterface::class),
-            static::createStub(EventDispatcherInterface::class)
+            $this->createStub(EventDispatcherInterface::class)
         );
 
         $configurationRegistry
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('get')
             ->with($service::CONFIG)
             ->willReturn(uniqid('version-'))
@@ -151,6 +151,6 @@ class VersionManagerTest extends TestCase
             uniqid('version-')
         );
 
-        static::assertFalse($service->isUpToDate());
+        $this->assertFalse($service->isUpToDate());
     }
 }

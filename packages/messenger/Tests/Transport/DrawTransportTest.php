@@ -50,7 +50,7 @@ class DrawTransportTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->service = new DrawTransportFactory($this)->createTransport(
+        $this->service = (new DrawTransportFactory($this))->createTransport(
             'draw://default',
             [],
             new PhpSerializer()

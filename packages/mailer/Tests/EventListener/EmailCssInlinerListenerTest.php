@@ -38,7 +38,7 @@ class EmailCssInlinerListenerTest extends TestCase
     public function testInlineEmailCssNotEmail(): void
     {
         $event = new MessageEvent(
-            static::createStub(RawMessage::class),
+            $this->createStub(RawMessage::class),
             new Envelope(new Address('test@example.com'), [new Address('test@example.com')]),
             uniqid('transport-')
         );

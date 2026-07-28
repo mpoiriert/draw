@@ -15,7 +15,7 @@ class SqlProfilerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->profiler = static::createStub(SqlProfiler::class);
+        $this->profiler = $this->createStub(SqlProfiler::class);
         $this->profiler
             ->method('getType')
             ->willReturn(SqlProfiler::PROFILER_TYPE)
@@ -31,6 +31,6 @@ class SqlProfilerTest extends TestCase
     {
         $metric = $this->profiler->stop();
 
-        static::assertSame(0, $metric->count);
+        $this->assertSame(0, $metric->count);
     }
 }

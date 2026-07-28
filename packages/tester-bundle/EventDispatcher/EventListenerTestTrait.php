@@ -6,7 +6,9 @@ use PHPUnit\Framework\TestCase;
 
 trigger_deprecation('draw/tester-bundle', '0.10.44', 'The "%s" class is deprecated, use "%s" instead.', EventListenerTestTrait::class, EventDispatcherTesterTrait::class);
 
-#[\Deprecated]
+/**
+ * @deprecated
+ */
 trait EventListenerTestTrait
 {
     public static function assertEventListenersRegistered(string $className, array $expectedEvents): void

@@ -27,7 +27,7 @@ class TypeSchemaExtractorTest extends TestCase
     #[DataProvider('provideCanExtractCases')]
     public function testCanExtract(mixed $source, mixed $type, bool $canBeExtract): void
     {
-        $context = static::createStub(ExtractionContextInterface::class);
+        $context = $this->createStub(ExtractionContextInterface::class);
 
         $this->assertSame(
             $canBeExtract,

@@ -24,8 +24,8 @@ class PurgeExecutionCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->command = new PurgeExecutionCommand(
-            static::createStub(Connection::class),
-            static::createStub(LoggerInterface::class),
+            $this->createStub(Connection::class),
+            $this->createStub(LoggerInterface::class),
         );
     }
 
@@ -88,7 +88,7 @@ class PurgeExecutionCommandTest extends TestCase
 
         $date = '2000-01-01 00:00:01';
 
-        $logger->expects(static::exactly(3))
+        $logger->expects($this->exactly(3))
             ->method('debug')
             ->with(
                 ...static::withConsecutive(
@@ -108,7 +108,7 @@ class PurgeExecutionCommandTest extends TestCase
             )
         ;
 
-        $connection->expects(static::exactly(2))
+        $connection->expects($this->exactly(2))
             ->method('executeStatement')
             ->with(
                 ...static::withConsecutive(

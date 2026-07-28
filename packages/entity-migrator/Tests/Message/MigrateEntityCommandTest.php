@@ -24,7 +24,7 @@ class MigrateEntityCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new MigrateEntityCommand(
-            $this->entityMigration = static::createStub(EntityMigrationInterface::class)
+            $this->entityMigration = $this->createStub(EntityMigrationInterface::class)
         );
     }
 

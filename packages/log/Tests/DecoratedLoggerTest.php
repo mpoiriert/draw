@@ -20,7 +20,7 @@ class DecoratedLoggerTest extends TestCase
         );
 
         $logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),
@@ -41,7 +41,7 @@ class DecoratedLoggerTest extends TestCase
         );
 
         $logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),
@@ -62,7 +62,7 @@ class DecoratedLoggerTest extends TestCase
         );
 
         $logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),

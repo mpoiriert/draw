@@ -39,7 +39,7 @@ final class LoginController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mailer->send(
-                new ForgotPasswordEmail($form->get('email')->getData())
+                (new ForgotPasswordEmail($form->get('email')->getData()))
                     ->setLocale($request->getLocale())
             );
 

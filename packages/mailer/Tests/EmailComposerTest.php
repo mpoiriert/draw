@@ -28,11 +28,11 @@ class EmailComposerTest extends TestCase
     public function testWriterMutator(): void
     {
         $object = new EmailComposer(
-            static::createStub(ContainerInterface::class),
-            static::createStub(Translator::class)
+            $this->createStub(ContainerInterface::class),
+            $this->createStub(Translator::class)
         );
 
-        static::assertSame([], $object->getWriters(\stdClass::class));
+        $this->assertSame([], $object->getWriters(\stdClass::class));
 
         $object->addWriter(\stdClass::class, $writer1 = uniqid('writer-'), $method1 = uniqid('method-'));
 
@@ -63,7 +63,7 @@ class EmailComposerTest extends TestCase
     {
         $object = new EmailComposer(
             $serviceLocator = $this->createMock(ContainerInterface::class),
-            static::createStub(Translator::class)
+            $this->createStub(Translator::class)
         );
 
         $message = new TemplatedEmail();
@@ -75,7 +75,7 @@ class EmailComposerTest extends TestCase
         $object->addWriter(uniqid('other-class-'), uniqid('writer-'), uniqid('method-'));
 
         $serviceLocator
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('get')
             ->with(
                 ...static::withConsecutive(
@@ -113,10 +113,10 @@ class EmailComposerTest extends TestCase
     {
         $object = new EmailComposer(
             $serviceLocator = $this->createMock(ContainerInterface::class),
-            static::createStub(Translator::class)
+            $this->createStub(Translator::class)
         );
 
-        $message = static::createStub(Email::class);
+        $message = $this->createStub(Email::class);
 
         $envelope = new Envelope(new Address('test@example.com'), [new Address('test@example.com')]);
 
@@ -161,7 +161,7 @@ class EmailComposerTest extends TestCase
         );
 
         $serviceLocator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('get')
         ;
 
@@ -174,7 +174,7 @@ class EmailComposerTest extends TestCase
     public function testComposeLocalizeEmail(): void
     {
         $object = new EmailComposer(
-            static::createStub(ContainerInterface::class),
+            $this->createStub(ContainerInterface::class),
             $translator = $this->createMock(Translator::class)
         );
 
@@ -186,13 +186,13 @@ class EmailComposerTest extends TestCase
         };
 
         $translator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getLocale')
             ->willReturn('en')
         ;
 
         $translator
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('setLocale')
             ->with(
                 ...static::withConsecutive(

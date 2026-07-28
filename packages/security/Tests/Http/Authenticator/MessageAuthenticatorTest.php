@@ -39,26 +39,26 @@ class MessageAuthenticatorTest extends TestCase
         $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getUser')
             ->willReturn(null)
         ;
 
         $envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId)
             ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))))
         ;
 
         $userProvider
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
-            ->willReturn(static::createStub(UserInterface::class))
+            ->willReturn($this->createStub(UserInterface::class))
         ;
 
-        static::assertTrue($service->supports($request));
+        $this->assertTrue($service->supports($request));
     }
 
     public function testSupportsDifferentUser(): void
@@ -73,37 +73,37 @@ class MessageAuthenticatorTest extends TestCase
         $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getUser')
-            ->willReturn(static::createStub(UserInterface::class))
+            ->willReturn($this->createStub(UserInterface::class))
         ;
 
         $envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId)
             ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))))
         ;
 
         $userProvider
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
-            ->willReturn(static::createStub(UserInterface::class))
+            ->willReturn($this->createStub(UserInterface::class))
         ;
 
-        static::assertTrue($service->supports($request));
+        $this->assertTrue($service->supports($request));
     }
 
     public function testSupportsNoMessageParameter(): void
     {
         $service = new MessageAuthenticator(
-            static::createStub(EnvelopeFinder::class),
-            static::createStub(UserProviderInterface::class),
-            static::createStub(Security::class),
+            $this->createStub(EnvelopeFinder::class),
+            $this->createStub(UserProviderInterface::class),
+            $this->createStub(Security::class),
         );
 
-        static::assertFalse($service->supports(new Request()));
+        $this->assertFalse($service->supports(new Request()));
     }
 
     public function testSupportsSameUser(): void
@@ -118,62 +118,62 @@ class MessageAuthenticatorTest extends TestCase
         $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getUser')
-            ->willReturn($user = static::createStub(UserInterface::class))
+            ->willReturn($user = $this->createStub(UserInterface::class))
         ;
 
         $envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId)
             ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))))
         ;
 
         $userProvider
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
             ->willReturn($user)
         ;
 
-        static::assertFalse($service->supports($request));
+        $this->assertFalse($service->supports($request));
     }
 
     public function testSupportsNoMessage(): void
     {
         $service = new MessageAuthenticator(
             $envelopeFinder = $this->createMock(EnvelopeFinder::class),
-            static::createStub(UserProviderInterface::class),
-            static::createStub(Security::class),
+            $this->createStub(UserProviderInterface::class),
+            $this->createStub(Security::class),
         );
 
         $request = new Request();
         $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId)
             ->willThrowException(new MessageNotFoundException($messageId))
         ;
 
-        static::assertFalse($service->supports($request));
+        $this->assertFalse($service->supports($request));
     }
 
     public function testAuthenticateNoMessage(): void
     {
         $service = new MessageAuthenticator(
             $envelopeFinder = $this->createMock(EnvelopeFinder::class),
-            static::createStub(UserProviderInterface::class),
-            static::createStub(Security::class),
+            $this->createStub(UserProviderInterface::class),
+            $this->createStub(Security::class),
         );
 
         $request = new Request();
         $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId)
             ->willThrowException(new MessageNotFoundException($messageId))
@@ -190,14 +190,14 @@ class MessageAuthenticatorTest extends TestCase
         $service = new MessageAuthenticator(
             $envelopeFinder = $this->createMock(EnvelopeFinder::class),
             $userProvider = $this->createMock(UserProviderInterface::class),
-            static::createStub(Security::class),
+            $this->createStub(Security::class),
         );
 
         $request = new Request();
         $request->query->set('dMUuid', $messageId = uniqid('message-id'));
 
         $envelopeFinder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findById')
             ->with($messageId)
             ->willReturn(new Envelope($this->createAutoConnectMessage($userIdentifier = uniqid('user-id-'))))
@@ -212,7 +212,7 @@ class MessageAuthenticatorTest extends TestCase
         ;
 
         $userProvider
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
             ->willReturn($user)
@@ -241,15 +241,15 @@ class MessageAuthenticatorTest extends TestCase
     public function testOnAuthenticationSuccess(): void
     {
         $service = new MessageAuthenticator(
-            static::createStub(EnvelopeFinder::class),
-            static::createStub(UserProviderInterface::class),
-            static::createStub(Security::class),
+            $this->createStub(EnvelopeFinder::class),
+            $this->createStub(UserProviderInterface::class),
+            $this->createStub(Security::class),
         );
 
-        static::assertNull(
+        $this->assertNull(
             $service->onAuthenticationSuccess(
                 new Request(),
-                static::createStub(TokenInterface::class),
+                $this->createStub(TokenInterface::class),
                 uniqid('firewall-')
             )
         );
@@ -258,12 +258,12 @@ class MessageAuthenticatorTest extends TestCase
     public function testOnAuthenticationFailure(): void
     {
         $service = new MessageAuthenticator(
-            static::createStub(EnvelopeFinder::class),
-            static::createStub(UserProviderInterface::class),
-            static::createStub(Security::class),
+            $this->createStub(EnvelopeFinder::class),
+            $this->createStub(UserProviderInterface::class),
+            $this->createStub(Security::class),
         );
 
-        static::assertNull(
+        $this->assertNull(
             $service->onAuthenticationFailure(
                 new Request(),
                 new CustomUserMessageAuthenticationException()
@@ -279,15 +279,15 @@ class MessageAuthenticatorTest extends TestCase
     public function testCreateToken(): void
     {
         $service = new MessageAuthenticator(
-            static::createStub(EnvelopeFinder::class),
-            static::createStub(UserProviderInterface::class),
-            static::createStub(Security::class),
+            $this->createStub(EnvelopeFinder::class),
+            $this->createStub(UserProviderInterface::class),
+            $this->createStub(Security::class),
         );
 
-        $passport = static::createStub(Passport::class);
+        $passport = $this->createStub(Passport::class);
         $passport
             ->method('getUser')
-            ->willReturn($user = static::createStub(UserInterface::class))
+            ->willReturn($user = $this->createStub(UserInterface::class))
         ;
 
         $user
@@ -323,7 +323,7 @@ class MessageAuthenticatorTest extends TestCase
 
     private function createAutoConnectMessage(string $userIdentifier): AutoConnectInterface
     {
-        $message = static::createStub(AutoConnectInterface::class);
+        $message = $this->createStub(AutoConnectInterface::class);
 
         $message
             ->method('getUserIdentifier')

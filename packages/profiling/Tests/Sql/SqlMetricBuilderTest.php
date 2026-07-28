@@ -23,8 +23,8 @@ class SqlMetricBuilderTest extends TestCase
         $this->metricBuilder->addLog(new SqlLog('query'));
         $metric = $this->metricBuilder->build();
 
-        static::assertSame(1, $metric->count);
-        static::assertSame(
+        $this->assertSame(1, $metric->count);
+        $this->assertSame(
             ['query'],
             $metric->queries
         );

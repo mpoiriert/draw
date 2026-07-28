@@ -42,7 +42,7 @@ class EmailComposerListenerTest extends TestCase
 
         $this->object->composeMessage(
             $this->createMessageEvent(
-                static::createStub(RawMessage::class)
+                $this->createStub(RawMessage::class)
             )
         );
     }
@@ -92,7 +92,7 @@ class EmailComposerListenerTest extends TestCase
             ->method('compose')
         ;
 
-        $message = static::createStub(Message::class);
+        $message = $this->createStub(Message::class);
 
         $this->object->composeMessage($this->createMessageEvent($message, true));
     }

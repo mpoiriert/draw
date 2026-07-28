@@ -24,7 +24,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->command = new CloudWatchLogsDownloadCommand(
-            static::createStub(CloudWatchLogsClient::class)
+            $this->createStub(CloudWatchLogsClient::class)
         );
     }
 
@@ -81,7 +81,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         register_shutdown_function(unlink(...), $output);
 
         $cloudWatchLogsClient
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('__call')
             ->with(
                 ...static::withConsecutive(
@@ -152,7 +152,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         register_shutdown_function(unlink(...), $output);
 
         $cloudWatchLogsClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('__call')
             ->with(
                 'getLogEvents',

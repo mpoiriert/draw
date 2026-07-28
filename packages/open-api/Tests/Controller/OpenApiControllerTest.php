@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -29,20 +30,20 @@ class OpenApiControllerTest extends TestCase
     {
         $object = new OpenApiController(
             $openApi = $this->createMock(OpenApi::class),
-            static::createStub(SchemaBuilderInterface::class),
+            $this->createStub(SchemaBuilderInterface::class),
             $urlGenerator = $this->createMock(UrlGeneratorInterface::class),
             $this->sandboxUrl
         );
 
         $openApi
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('dump')
         ;
 
         $route = uniqid('route-');
 
         $urlGenerator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('generate')
             ->with(
                 $route,
@@ -70,8 +71,8 @@ class OpenApiControllerTest extends TestCase
     public function testApiDocActionVersioned(): void
     {
         $object = new OpenApiController(
-            static::createStub(OpenApi::class),
-            static::createStub(SchemaBuilderInterface::class),
+            $this->createStub(OpenApi::class),
+            $this->createStub(SchemaBuilderInterface::class),
             $urlGenerator = $this->createMock(UrlGeneratorInterface::class),
             $this->sandboxUrl
         );
@@ -80,7 +81,7 @@ class OpenApiControllerTest extends TestCase
         $version = uniqid('version-');
 
         $urlGenerator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('generate')
             ->with(
                 $route,
@@ -111,7 +112,7 @@ class OpenApiControllerTest extends TestCase
         $version = uniqid('version-');
 
         $schemaBuilder
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('build')
             ->with(
                 $this->isInstanceOf(ExtractionContextInterface::class)
@@ -120,14 +121,14 @@ class OpenApiControllerTest extends TestCase
         ;
 
         $openApi
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dump')
             ->with($rootSchema)
             ->willReturn($rootSchemaJson = json_encode(['version' => $version], \JSON_THROW_ON_ERROR))
         ;
 
         $urlGenerator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('generate')
         ;
 
@@ -137,7 +138,7 @@ class OpenApiControllerTest extends TestCase
         $response = $object->apiDocAction($request, $version);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), (string) $response->getContent());
         $this->assertSame($rootSchemaJson, $response->getContent());
     }
 }

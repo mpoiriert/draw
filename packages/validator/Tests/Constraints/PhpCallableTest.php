@@ -22,7 +22,7 @@ class PhpCallableTest extends TestCase
 
     public function testConstruct(): void
     {
-        static::assertSame(
+        $this->assertSame(
             'Execution of function with {{ value }} does not return expected result.',
             $this->object->message
         );

@@ -34,7 +34,7 @@ class EventDrivenUserCheckerTest extends TestCase
 
     public function testCheckPreAuth(): void
     {
-        $user = static::createStub(UserInterface::class);
+        $user = $this->createStub(UserInterface::class);
 
         $this->decoratedUserChecker
             ->expects($this->once())
@@ -63,7 +63,7 @@ class EventDrivenUserCheckerTest extends TestCase
 
     public function testCheckPostAuth(): void
     {
-        $user = static::createStub(UserInterface::class);
+        $user = $this->createStub(UserInterface::class);
 
         $this->decoratedUserChecker
             ->expects($this->once())

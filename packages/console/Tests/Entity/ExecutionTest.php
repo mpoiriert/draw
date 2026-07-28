@@ -23,7 +23,7 @@ class ExecutionTest extends TestCase
 
     public function testIdMutator(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->setId($value = uniqid('id-'))
         );
@@ -188,7 +188,7 @@ class ExecutionTest extends TestCase
 
     public function testUpdateTimestampNotSet(): void
     {
-        $this->entity->updateTimestamp(static::createStub(PreUpdateEventArgs::class));
+        $this->entity->updateTimestamp($this->createStub(PreUpdateEventArgs::class));
 
         $this->assertEqualsWithDelta(
             $this->entity->getCreatedAt(),
@@ -201,7 +201,7 @@ class ExecutionTest extends TestCase
     {
         $this->entity->setUpdatedAt($value = new \DateTimeImmutable('- 1 days'));
 
-        $this->entity->updateTimestamp(static::createStub(PreUpdateEventArgs::class));
+        $this->entity->updateTimestamp($this->createStub(PreUpdateEventArgs::class));
 
         $this->assertNotEqualsWithDelta(
             $value,

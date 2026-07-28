@@ -20,12 +20,12 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $object = new SystemConsoleAuthenticatorListener(
-            static::createStub(TokenStorageInterface::class),
-            static::createStub(SystemAuthenticatorInterface::class),
+            $this->createStub(TokenStorageInterface::class),
+            $this->createStub(SystemAuthenticatorInterface::class),
             true
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 ConsoleCommandEvent::class => [
                     ['addOptions', 255],
@@ -39,8 +39,8 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
     public function testAddOptions(): void
     {
         $object = new SystemConsoleAuthenticatorListener(
-            static::createStub(TokenStorageInterface::class),
-            static::createStub(SystemAuthenticatorInterface::class),
+            $this->createStub(TokenStorageInterface::class),
+            $this->createStub(SystemAuthenticatorInterface::class),
             true
         );
 
@@ -69,19 +69,19 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $systemAuthenticator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTokenForSystem')
-            ->willReturn($token = static::createStub(TokenInterface::class))
+            ->willReturn($token = $this->createStub(TokenInterface::class))
         ;
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;
@@ -100,18 +100,18 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
         $tokenStorage
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $systemAuthenticator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getTokenForSystem')
         ;
 
         $tokenStorage
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('setToken')
         ;
 
@@ -129,18 +129,18 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
-            ->willReturn(static::createStub(TokenInterface::class))
+            ->willReturn($this->createStub(TokenInterface::class))
         ;
 
         $systemAuthenticator
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getTokenForSystem')
         ;
 
         $tokenStorage
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('setToken')
         ;
 
@@ -160,19 +160,19 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $object->addOptions($consoleCommandEvent);
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $systemAuthenticator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTokenForSystem')
-            ->willReturn($token = static::createStub(TokenInterface::class))
+            ->willReturn($token = $this->createStub(TokenInterface::class))
         ;
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;
@@ -193,19 +193,19 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $object->addOptions($consoleCommandEvent);
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $systemAuthenticator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTokenForSystem')
-            ->willReturn($token = static::createStub(TokenInterface::class))
+            ->willReturn($token = $this->createStub(TokenInterface::class))
         ;
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;

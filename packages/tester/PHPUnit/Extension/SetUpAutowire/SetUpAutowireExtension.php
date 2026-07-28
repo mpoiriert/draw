@@ -51,8 +51,6 @@ class SetUpAutowireExtension implements Extension
                     }
 
                     foreach ($this->getPropertyAttributes($testCase) as [$property, $autowire]) {
-                        \assert($autowire instanceof AutowireInterface);
-
                         if ($autowire instanceof AutowireConfigurableInterface) {
                             $autowire->configure($this->parameters);
                         }
@@ -75,11 +73,11 @@ class SetUpAutowireExtension implements Extension
                     if (!\array_key_exists($className, $this->propertyAttributes)) {
                         $autowireAttributes = [];
 
-                        foreach (new \ReflectionObject($testCase)->getProperties() as $property) {
+                        foreach ((new \ReflectionObject($testCase))->getProperties() as $property) {
                             foreach ($property->getAttributes() as $attribute) {
                                 $attributeClass = $attribute->getName();
 
-                                if (!new \ReflectionClass($attributeClass)->implementsInterface(AutowireInterface::class)) {
+                                if (!(new \ReflectionClass($attributeClass))->implementsInterface(AutowireInterface::class)) {
                                     continue;
                                 }
 

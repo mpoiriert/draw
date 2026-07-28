@@ -42,8 +42,8 @@ class ResponseApiExceptionListenerTest extends TestCase
         $this->object = new ResponseApiExceptionListener();
 
         $this->exceptionEvent = new ExceptionEvent(
-            $this->httpKernel = static::createStub(HttpKernelInterface::class),
-            $this->request = static::createStub(Request::class),
+            $this->httpKernel = $this->createStub(HttpKernelInterface::class),
+            $this->request = $this->createStub(Request::class),
             HttpKernelInterface::MAIN_REQUEST,
             $this->exception = new \Exception(
                 previous: new \Exception()
@@ -94,7 +94,7 @@ class ResponseApiExceptionListenerTest extends TestCase
     {
         $this->exceptionEvent = new ExceptionEvent(
             $this->httpKernel,
-            $request = static::createStub(Request::class),
+            $request = $this->createStub(Request::class),
             HttpKernelInterface::MAIN_REQUEST,
             $this->exception
         );

@@ -23,7 +23,7 @@
         "symfony/workflow": "^6.4.0"
     },
     "require-dev": {
-        "codraw/tester": "^0.39",
+        "draw/tester": "^0.39",
         "phpunit/phpunit": "^12.5"
     },
     "minimum-stability": "dev",

@@ -28,12 +28,12 @@ class TwoFactorAuthenticationListenerTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $object = new TwoFactorAuthenticationListener(
-            static::createStub(UrlGeneratorInterface::class),
-            static::createStub(Security::class),
+            $this->createStub(UrlGeneratorInterface::class),
+            $this->createStub(Security::class),
             self::ENABLE_ROUTE
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 UserRequestInterceptionEvent::class => [
                     ['checkNeedToEnableTwoFactorAuthentication', 50],
@@ -50,7 +50,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         bool $allowHandingRequest,
         bool $redirect,
     ): void {
-        $urlGenerator = static::createStub(UrlGeneratorInterface::class);
+        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $url = null;
 
         if ($redirect) {
@@ -60,7 +60,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
             $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
             $urlGenerator
-                ->expects(static::once())
+                ->expects($this->once())
                 ->method('generate')
                 ->with(
                     self::ENABLE_ROUTE,
@@ -72,7 +72,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         $object = new TwoFactorAuthenticationListener(
             $urlGenerator,
-            static::createStub(Security::class),
+            $this->createStub(Security::class),
             self::ENABLE_ROUTE
         );
 
@@ -276,13 +276,13 @@ class TwoFactorAuthenticationListenerTest extends TestCase
     public function testAllowHandlingRequestWhenTwoFactorAuthenticationInProgressTrue(): void
     {
         $object = new TwoFactorAuthenticationListener(
-            static::createStub(UrlGeneratorInterface::class),
+            $this->createStub(UrlGeneratorInterface::class),
             $security = $this->createMock(Security::class),
             self::ENABLE_ROUTE
         );
 
         $security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('isGranted')
             ->with('IS_AUTHENTICATED_2FA_IN_PROGRESS')
             ->willReturn(true)
@@ -290,7 +290,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         $object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
             $event = new UserRequestInterceptionEvent(
-                static::createStub(SecurityUserInterface::class),
+                $this->createStub(SecurityUserInterface::class),
                 new Request()
             )
         );
@@ -301,13 +301,13 @@ class TwoFactorAuthenticationListenerTest extends TestCase
     public function testAllowHandlingRequestWhenTwoFactorAuthenticationInProgressFalse(): void
     {
         $object = new TwoFactorAuthenticationListener(
-            static::createStub(UrlGeneratorInterface::class),
+            $this->createStub(UrlGeneratorInterface::class),
             $security = $this->createMock(Security::class),
             self::ENABLE_ROUTE
         );
 
         $security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('isGranted')
             ->with('IS_AUTHENTICATED_2FA_IN_PROGRESS')
             ->willReturn(false)
@@ -315,7 +315,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         $object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
             $event = new UserRequestInterceptionEvent(
-                static::createStub(SecurityUserInterface::class),
+                $this->createStub(SecurityUserInterface::class),
                 new Request()
             )
         );

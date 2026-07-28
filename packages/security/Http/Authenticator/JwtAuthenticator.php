@@ -47,7 +47,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         if (0 === $expiration || null === $expiration) {
             $expiration = null;
         } elseif (\is_int($expiration)) {
-            $expiration = new \DateTimeImmutable()->setTimestamp($expiration);
+            $expiration = (new \DateTimeImmutable())->setTimestamp($expiration);
         } else {
             $expiration = new \DateTimeImmutable($expiration);
         }

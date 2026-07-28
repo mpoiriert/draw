@@ -31,7 +31,7 @@ class SendTestEmailCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->mailer->send(
-            new Email()
+            (new Email())
                 ->subject('Test')
                 ->text('This email as been sent as part of a test.')
                 ->to($input->getArgument('to'))

@@ -25,7 +25,7 @@ class BrokerStartedEventTest extends TestCase
     protected function setUp(): void
     {
         $this->event = new BrokerStartedEvent(
-            $this->broker = static::createStub(Broker::class),
+            $this->broker = $this->createStub(Broker::class),
             $this->concurrent = random_int(1, \PHP_INT_MAX),
             $this->timeout = random_int(1, \PHP_INT_MAX)
         );

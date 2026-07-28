@@ -42,7 +42,7 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
             ->setArgument('$expiration', $config['expiration'])
             ->setArgument(
                 '$encoder',
-                new Definition(JwtEncoder::class)
+                (new Definition(JwtEncoder::class))
                     ->setArgument('$key', $config['key'])
                     ->setArgument('$algorithm', $config['algorithm'])
                     ->setArgument('$privateKey', $config['private_key'])

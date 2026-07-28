@@ -25,7 +25,7 @@ class RootSchemaExtractorTest extends TestCase
             $extractor->canExtract(
                 $source,
                 $type,
-                $context = static::createStub(ExtractionContextInterface::class)
+                $context = $this->createStub(ExtractionContextInterface::class)
             )
         );
 

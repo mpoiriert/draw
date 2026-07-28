@@ -73,7 +73,7 @@ class ImportTest extends TestCase
     public function testColumnsMutator(): void
     {
         $collection = $this->entity->getColumns();
-        static::assertCount(0, $collection);
+        $this->assertCount(0, $collection);
 
         $this->assertSame(
             $this->entity,
@@ -124,7 +124,7 @@ class ImportTest extends TestCase
         $this->entity->updateTimestamp(
             new LifecycleEventArgs(
                 $this->entity,
-                static::createStub(EntityManagerInterface::class)
+                $this->createStub(EntityManagerInterface::class)
             )
         );
 
@@ -134,7 +134,7 @@ class ImportTest extends TestCase
         $this->entity->updateTimestamp(
             new LifecycleEventArgs(
                 $this->entity,
-                static::createStub(ObjectManager::class)
+                $this->createStub(ObjectManager::class)
             )
         );
 
@@ -145,7 +145,7 @@ class ImportTest extends TestCase
         $this->entity->updateTimestamp(
             new PreUpdateEventArgs(
                 $this->entity,
-                static::createStub(EntityManagerInterface::class),
+                $this->createStub(EntityManagerInterface::class),
                 $changeSet
             )
         );

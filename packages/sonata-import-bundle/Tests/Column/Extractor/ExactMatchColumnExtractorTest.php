@@ -17,10 +17,10 @@ class ExactMatchColumnExtractorTest extends TestCase
     public function testGetDefaultPriority(): void
     {
         $object = new ExactMatchColumnExtractor(
-            static::createStub(Importer::class)
+            $this->createStub(Importer::class)
         );
 
-        static::assertSame(
+        $this->assertSame(
             -1000,
             $object::getDefaultPriority()
         );
@@ -29,10 +29,10 @@ class ExactMatchColumnExtractorTest extends TestCase
     public function testGetOptions(): void
     {
         $object = new ExactMatchColumnExtractor(
-            static::createStub(Importer::class)
+            $this->createStub(Importer::class)
         );
 
-        static::assertSame(
+        $this->assertSame(
             ['test'],
             $object->getOptions(
                 new Column(),
@@ -48,13 +48,13 @@ class ExactMatchColumnExtractorTest extends TestCase
         );
 
         $importer
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getOptions')
         ;
 
-        static::assertNull(
+        $this->assertNull(
             $object->extractDefaultValue(
-                new Column()
+                (new Column())
                     ->setHeaderName('headerName')
                     ->setMappedTo('mappedTo'),
                 ['sample1', 'sample2']
@@ -69,14 +69,14 @@ class ExactMatchColumnExtractorTest extends TestCase
         );
 
         $importer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOptions')
             ->willReturn(['headerName1', 'headerName2'])
         ;
 
-        static::assertNull(
+        $this->assertNull(
             $object->extractDefaultValue(
-                new Column()
+                (new Column())
                     ->setHeaderName('headerName'),
                 ['sample3', 'sample4']
             )
@@ -90,12 +90,12 @@ class ExactMatchColumnExtractorTest extends TestCase
         );
 
         $importer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getOptions')
             ->willReturn(['headerName'])
         ;
 
-        $column = new Column()
+        $column = (new Column())
             ->setHeaderName('headerName')
         ;
 

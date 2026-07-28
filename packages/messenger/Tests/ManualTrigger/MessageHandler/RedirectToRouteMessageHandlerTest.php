@@ -23,7 +23,7 @@ class RedirectToRouteMessageHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->service = new RedirectToRouteMessageHandler(
-            $this->urlGenerator = static::createStub(UrlGeneratorInterface::class)
+            $this->urlGenerator = $this->createStub(UrlGeneratorInterface::class)
         );
     }
 

@@ -52,7 +52,7 @@ class PropertiesExtractorTest extends TestCase
             $this->jmsExtractor->canExtract(
                 $source,
                 $type,
-                $context = static::createStub(ExtractionContextInterface::class)
+                $context = $this->createStub(ExtractionContextInterface::class)
             )
         );
 

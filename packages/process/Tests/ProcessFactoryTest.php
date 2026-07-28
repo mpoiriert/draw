@@ -27,7 +27,7 @@ class ProcessFactoryTest extends TestCase
     {
         $process = $this->service->create(['cd']);
 
-        static::assertSame(
+        $this->assertSame(
             "'cd'",
             $process->getCommandLine()
         );
@@ -61,7 +61,7 @@ class ProcessFactoryTest extends TestCase
             $timeout = 5.0
         );
 
-        static::assertSame(
+        $this->assertSame(
             "'cd'",
             $process->getCommandLine()
         );
@@ -91,11 +91,11 @@ class ProcessFactoryTest extends TestCase
     {
         $process = $this->service->createFromShellCommandLine('ls -lah | grep test');
 
-        static::assertSame('ls -lah | grep test', $process->getCommandLine());
-        static::assertSame(getcwd(), $process->getWorkingDirectory());
-        static::assertEmpty($process->getEnv());
-        static::assertNull($process->getInput());
-        static::assertSame(60.0, $process->getTimeout());
+        $this->assertSame('ls -lah | grep test', $process->getCommandLine());
+        $this->assertSame(getcwd(), $process->getWorkingDirectory());
+        $this->assertEmpty($process->getEnv());
+        $this->assertNull($process->getInput());
+        $this->assertSame(60.0, $process->getTimeout());
     }
 
     public function testCreateFromShellCommandLineWithArguments(): void
@@ -108,10 +108,10 @@ class ProcessFactoryTest extends TestCase
             $timeout = 5.0
         );
 
-        static::assertSame('ls -lah | grep test', $process->getCommandLine());
-        static::assertSame($workingDirectory, $process->getWorkingDirectory());
-        static::assertSame($env, $process->getEnv());
-        static::assertSame($input, $process->getInput());
-        static::assertSame($timeout, $process->getTimeout());
+        $this->assertSame('ls -lah | grep test', $process->getCommandLine());
+        $this->assertSame($workingDirectory, $process->getWorkingDirectory());
+        $this->assertSame($env, $process->getEnv());
+        $this->assertSame($input, $process->getInput());
+        $this->assertSame($timeout, $process->getTimeout());
     }
 }

@@ -29,14 +29,14 @@ class DoctrineBusMessageListenerTest extends TestCase
         $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $object = new DoctrineBusMessageListener(
-            static::createStub(MessageBusInterface::class),
-            static::createStub(EnvelopeFactoryInterface::class)
+            $this->createStub(MessageBusInterface::class),
+            $this->createStub(EnvelopeFactoryInterface::class)
         );
 
-        $messageHolder = static::createStub(MessageHolderInterface::class);
+        $messageHolder = $this->createStub(MessageHolderInterface::class);
 
         $entityManager
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getClassMetadata')
             ->with($messageHolder::class)
             ->willReturn($classMetadata = new ClassMetadata(uniqid()))
@@ -62,14 +62,14 @@ class DoctrineBusMessageListenerTest extends TestCase
         $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $object = new DoctrineBusMessageListener(
-            static::createStub(MessageBusInterface::class),
-            static::createStub(EnvelopeFactoryInterface::class)
+            $this->createStub(MessageBusInterface::class),
+            $this->createStub(EnvelopeFactoryInterface::class)
         );
 
         $messageHolder = (object) [];
 
         $entityManager
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getClassMetadata')
         ;
 
@@ -91,14 +91,14 @@ class DoctrineBusMessageListenerTest extends TestCase
         $entityManager = $this->createMock(EntityManagerInterface::class);
 
         $object = new DoctrineBusMessageListener(
-            static::createStub(MessageBusInterface::class),
-            static::createStub(EnvelopeFactoryInterface::class)
+            $this->createStub(MessageBusInterface::class),
+            $this->createStub(EnvelopeFactoryInterface::class)
         );
 
-        $messageHolder = static::createStub(MessageHolderInterface::class);
+        $messageHolder = $this->createStub(MessageHolderInterface::class);
 
         $entityManager
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getClassMetadata')
             ->with($messageHolder::class)
             ->willReturn($classMetadata = new ClassMetadata(uniqid()))
@@ -122,17 +122,17 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testOnClearAll(): void
     {
         $object = new DoctrineBusMessageListener(
-            static::createStub(MessageBusInterface::class),
-            static::createStub(EnvelopeFactoryInterface::class)
+            $this->createStub(MessageBusInterface::class),
+            $this->createStub(EnvelopeFactoryInterface::class)
         );
 
         $this->addMessageHolder(
             $object,
-            static::createStub(MessageHolderInterface::class)
+            $this->createStub(MessageHolderInterface::class)
         );
 
         $object->onClear(
-            new OnClearEventArgs(static::createStub(EntityManagerInterface::class))
+            new OnClearEventArgs($this->createStub(EntityManagerInterface::class))
         );
 
         $this->assertSame(
@@ -144,17 +144,17 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testOnClear(): void
     {
         $object = new DoctrineBusMessageListener(
-            static::createStub(MessageBusInterface::class),
-            static::createStub(EnvelopeFactoryInterface::class)
+            $this->createStub(MessageBusInterface::class),
+            $this->createStub(EnvelopeFactoryInterface::class)
         );
 
         $this->addMessageHolder(
             $object,
-            static::createStub(MessageHolderInterface::class)
+            $this->createStub(MessageHolderInterface::class)
         );
 
         $object->onClear(
-            new OnClearEventArgs(static::createStub(EntityManagerInterface::class))
+            new OnClearEventArgs($this->createStub(EntityManagerInterface::class))
         );
 
         $this->assertCount(
@@ -171,12 +171,12 @@ class DoctrineBusMessageListenerTest extends TestCase
         );
 
         $envelopeFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('createEnvelopes')
         ;
 
         $messageBus
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('dispatch')
         ;
 
@@ -210,12 +210,12 @@ class DoctrineBusMessageListenerTest extends TestCase
         );
 
         $envelopeFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('createEnvelopes')
         ;
 
         $messageBus
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('dispatch')
         ;
 
@@ -257,14 +257,14 @@ class DoctrineBusMessageListenerTest extends TestCase
         ;
 
         $envelopeFactory
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('createEnvelopes')
             ->with($messageHolder, $messages)
             ->willReturn([$envelope = new Envelope((object) [])])
         ;
 
         $messageBus
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('dispatch')
             ->with($envelope)
             ->willReturnArgument(0)
@@ -303,13 +303,13 @@ class DoctrineBusMessageListenerTest extends TestCase
         ;
 
         $envelopeFactory
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('createEnvelopes')
             ->willReturn([$envelope = new Envelope((object) [])])
         ;
 
         $messageBus
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('dispatch')
             ->with($envelope)
             ->willReturnArgument(0)
@@ -321,11 +321,11 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testReset(): void
     {
         $object = new DoctrineBusMessageListener(
-            static::createStub(MessageBusInterface::class),
-            static::createStub(EnvelopeFactoryInterface::class)
+            $this->createStub(MessageBusInterface::class),
+            $this->createStub(EnvelopeFactoryInterface::class)
         );
 
-        $messageHolder = static::createStub(MessageHolderInterface::class);
+        $messageHolder = $this->createStub(MessageHolderInterface::class);
 
         $this->addMessageHolder($object, $messageHolder);
 

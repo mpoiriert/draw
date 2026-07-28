@@ -29,7 +29,7 @@ class DoctrineConfigurationRegistryTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$entityManager = static::setUpMySqlWithAttributeDriver(
-            [\dirname(new \ReflectionClass(Config::class)->getFileName())]
+            [\dirname((new \ReflectionClass(Config::class))->getFileName())]
         );
 
         self::$entityManager

@@ -23,10 +23,10 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $service = new RoleRestrictedAuthenticatorListener(
-            static::createStub(RoleHierarchyInterface::class),
+            $this->createStub(RoleHierarchyInterface::class),
         );
 
-        static::assertSame(
+        $this->assertSame(
             [CheckPassportEvent::class => ['checkPassport', -1]],
             $service::getSubscribedEvents()
         );
@@ -41,12 +41,12 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
         );
 
         $roleHierarchy
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getReachableRoleNames')
         ;
 
         $user
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getRoles')
         ;
 
@@ -64,13 +64,13 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
         );
 
         $user
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getRoles')
             ->willReturn($roles = ['ROLE_USER'])
         ;
 
         $roleHierarchy
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getReachableRoleNames')
             ->with($roles)
             ->willReturn($roles)
@@ -93,13 +93,13 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
         );
 
         $user
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getRoles')
             ->willReturn($roles = ['ROLE_USER'])
         ;
 
         $roleHierarchy
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getReachableRoleNames')
             ->with($roles)
             ->willReturn([...$roles, ...[$role = uniqid('ROLE_')]])
@@ -117,7 +117,7 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
     private function createCheckPassportEvent(UserInterface $user, array $badges = []): CheckPassportEvent
     {
         return new CheckPassportEvent(
-            static::createStub(AuthenticatorInterface::class),
+            $this->createStub(AuthenticatorInterface::class),
             new SelfValidatingPassport(
                 new UserBadge(
                     uniqid('user-identifier-'),

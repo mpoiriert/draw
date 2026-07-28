@@ -20,7 +20,7 @@ class TranslationExtensionTest extends TestCase
     public function testGetFilters(): void
     {
         $object = new TranslationExtension(
-            static::createStub(TranslatorInterface::class)
+            $this->createStub(TranslatorInterface::class)
         );
 
         $filters = $object->getFilters();
@@ -36,7 +36,7 @@ class TranslationExtensionTest extends TestCase
             $filter->getName(),
         );
 
-        static::assertSame(
+        $this->assertSame(
             [$object, 'trans'],
             $filter->getCallable()
         );
@@ -55,7 +55,7 @@ class TranslationExtensionTest extends TestCase
         $count = random_int(0, \PHP_INT_MAX);
 
         $translator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('trans')
             ->with(
                 $message,
@@ -88,7 +88,7 @@ class TranslationExtensionTest extends TestCase
         $message2 = uniqid('message-');
 
         $translator
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('trans')
             ->with(
                 ...static::withConsecutive(

@@ -26,7 +26,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->command = new PurgeExpiredMessageCommand(
-            static::createStub(TransportRepository::class),
+            $this->createStub(TransportRepository::class),
         );
     }
 
@@ -60,7 +60,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
         );
 
         $transportRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('has')
             ->with($transport = uniqid('transport-invalid-'))
             ->willReturn(false)
@@ -79,13 +79,13 @@ class PurgeExpiredMessageCommandTest extends TestCase
         );
 
         $transportRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTransportNames')
             ->willReturn($transportNames = [uniqid('transport1-'), uniqid('transport2-')])
         ;
 
         $transportRepository
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('get')
             ->with(
                 ...static::withConsecutive(
@@ -140,14 +140,14 @@ class PurgeExpiredMessageCommandTest extends TestCase
         );
 
         $transportRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('has')
             ->with($transportName = uniqid('transport-'))
             ->willReturn(true)
         ;
 
         $transportRepository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('get')
             ->with($transportName)
             ->willReturn(

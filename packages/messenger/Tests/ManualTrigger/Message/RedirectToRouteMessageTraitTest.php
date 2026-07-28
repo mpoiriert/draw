@@ -35,7 +35,7 @@ class RedirectToRouteMessageTraitTest extends TestCase
 
         $response = $this->getRedirectResponse($urlGenerator);
 
-        static::assertSame(
+        $this->assertSame(
             $url,
             $response->getTargetUrl()
         );

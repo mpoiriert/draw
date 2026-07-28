@@ -24,7 +24,7 @@ class UpdateDeployedVersionCommand extends Command
     {
         $this->versionManager->updateDeployedVersion();
 
-        new SymfonyStyle($input, $output)
+        (new SymfonyStyle($input, $output))
             ->success('Deployed Version set to: '.$this->versionManager->getRunningVersion())
         ;
 

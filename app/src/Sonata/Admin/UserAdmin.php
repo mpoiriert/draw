@@ -201,14 +201,14 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
     public function getActions(): array
     {
         return [
-            'makeAdmin' => new AdminAction('makeAdmin', true)
+            'makeAdmin' => (new AdminAction('makeAdmin', true))
                 ->setController(MakeAdminAction::class)
                 ->setIcon('fa fa-user-plus')
                 ->setBatchController(MakeAdminAction::class),
-            'addRoles' => new AdminAction('addRoles', true)
+            'addRoles' => (new AdminAction('addRoles', true))
                 ->setController(AddRolesAminAction::class)
                 ->setBatchController(AddRolesAminAction::class),
-            'setPreferredLocale' => new AdminAction('setPreferredLocale', true)
+            'setPreferredLocale' => (new AdminAction('setPreferredLocale', true))
                 ->setIcon('fa fa-language')
                 ->setController(SetPreferredLocaleAction::class)
                 ->setRoutePattern(

@@ -34,7 +34,7 @@ class OperationExtractorTest extends TestCase
             $this->phpDocOperationExtractor->canExtract(
                 $source,
                 $type,
-                $context = static::createStub(ExtractionContextInterface::class)
+                $context = $this->createStub(ExtractionContextInterface::class)
             )
         );
 
@@ -132,7 +132,7 @@ class OperationExtractorTest extends TestCase
     {
         $context = $this->extractStubServiceMethod($method);
 
-        static::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             file_get_contents(__DIR__.'/fixture/phpDocOperationExtractorExtract_testExtractDeprecated.json'),
             $context->getOpenApi()->dump($context->getRootSchema(), false)
         );

@@ -27,8 +27,8 @@ class QueueCronJobByNameCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->command = new QueueCronJobByNameCommand(
-            static::createStub(ManagerRegistry::class),
-            static::createStub(CronJobProcessor::class)
+            $this->createStub(ManagerRegistry::class),
+            $this->createStub(CronJobProcessor::class)
         );
     }
 
@@ -55,21 +55,21 @@ class QueueCronJobByNameCommandTest extends TestCase
         );
 
         $managerRegistry
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getRepository')
             ->with(CronJob::class)
             ->willReturn($repository = $this->createMock(EntityRepository::class))
         ;
 
         $repository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => $cronJobName = 'Existing Cron Job'])
             ->willReturn($cronJob = new CronJob())
         ;
 
         $cronJobProcessor
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('queue')
             ->with($cronJob, true)
         ;
@@ -96,21 +96,21 @@ class QueueCronJobByNameCommandTest extends TestCase
         );
 
         $managerRegistry
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getRepository')
             ->with(CronJob::class)
             ->willReturn($repository = $this->createMock(EntityRepository::class))
         ;
 
         $repository
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => $cronJobName = 'Invalid Cron Job'])
             ->willReturn(null)
         ;
 
         $cronJobProcessor
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('queue')
         ;
 

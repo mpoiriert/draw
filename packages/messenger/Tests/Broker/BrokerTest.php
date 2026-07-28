@@ -36,11 +36,11 @@ class BrokerTest extends TestCase
         $service = new Broker(
             $this->context,
             $this->consolePath,
-            static::createStub(ProcessFactoryInterface::class),
-            static::createStub(EventDispatcherInterface::class)
+            $this->createStub(ProcessFactoryInterface::class),
+            $this->createStub(EventDispatcherInterface::class)
         );
 
-        static::assertSame(
+        $this->assertSame(
             $this->context,
             $service->getContext()
         );
@@ -60,12 +60,12 @@ class BrokerTest extends TestCase
         $receiver = uniqid('receiver-');
 
         $eventDispatcher
-            ->expects(static::exactly($concurrent * 4))
+            ->expects($this->exactly($concurrent * 4))
             ->method('dispatch')
             ->with(
                 ...static::withConsecutive(
                     [
-                        static::callback(function (BrokerStartedEvent $event) use ($service, $concurrent, $timeout) {
+                        $this->callback(function (BrokerStartedEvent $event) use ($service, $concurrent, $timeout) {
                             $this->assertSame(
                                 $service,
                                 $event->getBroker()
@@ -85,7 +85,7 @@ class BrokerTest extends TestCase
                         }),
                     ],
                     [
-                        static::callback(function (BrokerRunningEvent $event) use ($service) {
+                        $this->callback(function (BrokerRunningEvent $event) use ($service) {
                             $this->assertSame(
                                 $service,
                                 $event->getBroker()
@@ -107,7 +107,7 @@ class BrokerTest extends TestCase
                         }),
                     ],
                     [
-                        static::callback(function (BrokerRunningEvent $event) use ($service) {
+                        $this->callback(function (BrokerRunningEvent $event) use ($service) {
                             $this->assertSame(
                                 $service,
                                 $event->getBroker()
@@ -124,7 +124,7 @@ class BrokerTest extends TestCase
         ;
 
         $processFactory
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
                 [
@@ -167,10 +167,10 @@ class BrokerTest extends TestCase
         $receiver = uniqid('receiver-');
 
         $eventDispatcher
-            ->expects(static::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('dispatch')
             ->with(
-                static::callback(static function ($event) use ($service, $receiver) {
+                $this->callback(static function ($event) use ($service, $receiver) {
                     if ($event instanceof NewConsumerProcessEvent) {
                         $event->setReceivers([$receiver]);
                         $service->stop(false);
@@ -183,7 +183,7 @@ class BrokerTest extends TestCase
         ;
 
         $processFactory
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
                 [
@@ -240,13 +240,13 @@ class BrokerTest extends TestCase
             $this->context,
             $this->consolePath,
             $processFactory = $this->createMock(ProcessFactoryInterface::class),
-            static::createStub(EventDispatcherInterface::class)
+            $this->createStub(EventDispatcherInterface::class)
         );
 
         $concurrent = 1;
 
         $processFactory
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('create')
         ;
 
@@ -278,10 +278,10 @@ class BrokerTest extends TestCase
         ];
 
         $eventDispatcher
-            ->expects(static::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('dispatch')
             ->with(
-                static::callback(static function ($event) use ($service, $receiver, $options) {
+                $this->callback(static function ($event) use ($service, $receiver, $options) {
                     if ($event instanceof NewConsumerProcessEvent) {
                         $event->setReceivers([$receiver]);
                         $event->setOptions($options);
@@ -296,7 +296,7 @@ class BrokerTest extends TestCase
         ;
 
         $processFactory
-            ->expects(static::exactly($concurrent))
+            ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
                 [

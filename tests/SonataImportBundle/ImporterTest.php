@@ -34,7 +34,7 @@ class ImporterTest extends KernelTestCase implements AutowiredInterface
 
         fputcsv($file, [$name = 'test'.uniqid(), '1', 'testEn', 'testFr'], escape: '\\');
 
-        $import = new Import()
+        $import = (new Import())
             ->setEntityClass(Tag::class)
             ->setInsertWhenNotFound(false)
         ;

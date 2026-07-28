@@ -79,9 +79,9 @@ class DoctrineTranslationColumnExtractorTest extends TestCase
 
     private function createColumn(): Column
     {
-        return new Column()
+        return (new Column())
             ->setImport(
-                new Import()
+                (new Import())
                     ->setEntityClass(TranslatableEntity::class)
             )
         ;

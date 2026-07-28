@@ -25,7 +25,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
         $this->object = new DoctrineAssociationColumnExtractor(
             static::createRegistry(
                 $this->entityManager = static::setUpMySqlWithAttributeDriver([
-                    \dirname(new \ReflectionClass(Column::class)->getFileName()),
+                    \dirname((new \ReflectionClass(Column::class))->getFileName()),
                 ])
             )
         );
@@ -66,7 +66,7 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
 
     public function testAssign(): void
     {
-        $import = new Import()
+        $import = (new Import())
             ->setEntityClass(\stdClass::class)
         ;
 
@@ -95,9 +95,9 @@ class DoctrineAssociationColumnExtractorTest extends TestCase
 
     private function createColumn(): Column
     {
-        return new Column()
+        return (new Column())
             ->setImport(
-                new Import()
+                (new Import())
                     ->setEntityClass(Column::class)
             )
         ;

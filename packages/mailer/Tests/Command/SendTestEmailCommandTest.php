@@ -22,7 +22,7 @@ class SendTestEmailCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->command = new SendTestEmailCommand(
-            static::createStub(MailerInterface::class)
+            $this->createStub(MailerInterface::class)
         );
     }
 
@@ -52,7 +52,7 @@ class SendTestEmailCommandTest extends TestCase
 
         $to = uniqid('email-').'@example.com';
         $mailer
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('send')
             ->with(
                 $this->callback(

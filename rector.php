@@ -35,6 +35,11 @@ return RectorConfig::configure()
         symfonyConfigs: true,
     )
     ->withSkip([
+        // Dead code
+        Rector\DeadCode\Rector\Property\RemoveDefaultValueFromAssignedPropertyRector::class => [
+            __DIR__.'/packages/open-api/Schema/',
+        ],
+
         // PHP
         Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector::class,
         Rector\Php81\Rector\Property\ReadOnlyPropertyRector::class,
@@ -51,7 +56,6 @@ return RectorConfig::configure()
         Rector\Php84\Rector\Class_\DeprecatedAnnotationToDeprecatedAttributeRector::class => [
             __DIR__.'/packages/open-api/Tests/Extraction/Extractor/PhpDoc/OperationExtractorTest.php',
         ],
-        Rector\Php85\Rector\Property\AddOverrideAttributeToOverriddenPropertiesRector::class,
 
         // PHPUnit
         Rector\PHPUnit\PHPUnit120\Rector\Class_\AllowMockObjectsForDataProviderRector::class,

@@ -41,7 +41,7 @@ class DoctrineExtraIntegration implements IntegrationInterface
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\DoctrineExtra\ORM\\',
-            \dirname(new \ReflectionClass(EntityHandler::class)->getFileName()),
+            \dirname((new \ReflectionClass(EntityHandler::class))->getFileName()),
         );
 
         if (!interface_exists(ManagerRegistry::class)) {

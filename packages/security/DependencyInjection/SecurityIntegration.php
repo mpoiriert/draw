@@ -57,7 +57,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
             $loader,
             $namespace = 'Draw\Component\Security\Core\\',
             $directory = \dirname(
-                new \ReflectionClass(SystemAuthenticatorInterface::class)->getFileName(),
+                (new \ReflectionClass(SystemAuthenticatorInterface::class))->getFileName(),
                 2
             ),
             [
@@ -108,7 +108,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\Component\Security\Jwt\\',
-            \dirname(new \ReflectionClass(JwtEncoder::class)->getFileName())
+            \dirname((new \ReflectionClass(JwtEncoder::class))->getFileName())
         );
 
         if (!$this->isConfigEnabled($container, $config['jwt']['encoder'])) {
@@ -133,7 +133,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
         $this->registerClasses(
             $loader,
             $namespace = 'Draw\Component\Security\Core\Authorization\Voter\\',
-            \dirname(new \ReflectionClass(AbstainRoleHierarchyVoter::class)->getFileName())
+            \dirname((new \ReflectionClass(AbstainRoleHierarchyVoter::class))->getFileName())
         );
 
         if (!$this->isConfigEnabled($container, $config['voters']['abstain_role_hierarchy'])) {
@@ -157,7 +157,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
             $loader,
             $namespace = 'Draw\Component\Security\Http\\',
             $directory = \dirname(
-                new \ReflectionClass(JwtAuthenticator::class)->getFileName(),
+                (new \ReflectionClass(JwtAuthenticator::class))->getFileName(),
                 2
             ),
             [

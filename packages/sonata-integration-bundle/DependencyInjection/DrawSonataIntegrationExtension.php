@@ -98,7 +98,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
         $definition = $container
             ->setDefinition(
                 CommandRegistry::class,
-                new Definition(CommandRegistry::class)
+                (new Definition(CommandRegistry::class))
                     ->setAutowired(true)
                     ->setAutoconfigured(true)
             )
@@ -108,7 +108,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             $definition->addMethodCall(
                 'setCommand',
                 [
-                    new Definition(Command::class)
+                    (new Definition(Command::class))
                         ->setArguments($this->arrayToArgumentsArray($configuration)),
                 ]
             );
@@ -153,7 +153,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             $container
                 ->setDefinition(
                     FinalizeContextQueueCountEventListener::class,
-                    new Definition(FinalizeContextQueueCountEventListener::class)
+                    (new Definition(FinalizeContextQueueCountEventListener::class))
                         ->setAutowired(true)
                         ->setAutoconfigured(true)
                 )
@@ -183,7 +183,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
             $container
                 ->setDefinition(
                     CanShowMessageVoter::class,
-                    new Definition(CanShowMessageVoter::class)
+                    (new Definition(CanShowMessageVoter::class))
                         ->setAutowired(true)
                         ->setAutoconfigured(true)
                 )
@@ -488,7 +488,7 @@ class DrawSonataIntegrationExtension extends Extension implements PrependExtensi
 
         $container->setDefinition(
             $config['controller_class'],
-            new Definition($config['controller_class'])
+            (new Definition($config['controller_class']))
                 ->setAutoconfigured(true)
                 ->setAutowired(true)
                 ->addTag('controller.service_arguments')

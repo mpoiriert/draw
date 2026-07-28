@@ -19,17 +19,17 @@ class SlowRequestLoggerTest extends TestCase
 {
     public function testGetSubscribedEvents(): void
     {
-        $requestMatcher = static::createStub(RequestMatcherInterface::class);
+        $requestMatcher = $this->createStub(RequestMatcherInterface::class);
 
         $object = new SlowRequestLoggerListener(
-            static::createStub(LoggerInterface::class),
+            $this->createStub(LoggerInterface::class),
             [
                 5000 => [$requestMatcher],
                 2000 => [$requestMatcher],
             ]
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 TerminateEvent::class => ['onKernelTerminate', 2048],
             ],
@@ -52,25 +52,25 @@ class SlowRequestLoggerTest extends TestCase
         );
 
         $requestMatcher
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('matches')
             ->with($request = new Request())
             ->willReturn(true)
         ;
 
         $event = new TerminateEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             new Response()
         );
 
         $logger
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('log')
             ->with(
                 LogLevel::WARNING,
                 'Response time too slow ({duration} milliseconds) for {url}',
-                static::callback(function (array $parameter) use ($request, $durations) {
+                $this->callback(function (array $parameter) use ($request, $durations) {
                     $this->assertSame(
                         $parameter['url'],
                         $request->getRequestUri()
@@ -112,20 +112,20 @@ class SlowRequestLoggerTest extends TestCase
         );
 
         $requestMatcher
-            ->expects(static::exactly(2))
+            ->expects($this->exactly(2))
             ->method('matches')
             ->with($request = new Request())
             ->willReturn(false)
         ;
 
         $event = new TerminateEvent(
-            static::createStub(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             new Response()
         );
 
         $logger
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('log')
         ;
 

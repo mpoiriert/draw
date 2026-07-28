@@ -21,7 +21,7 @@
         "symfony/validator": "^6.4.0"
     },
     "require-dev": {
-        "codraw/profiling": "^0.39",
+        "draw/profiling": "^0.39",
         "phpunit/phpunit": "^12.5",
         "symfony/messenger": "^6.4.0",
         "symfony/yaml": "^6.4.0"

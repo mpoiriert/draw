@@ -38,7 +38,7 @@ class EmailSubjectFromHtmlTitleListenerTest extends TestCase
     {
         $this->object->assignSubjectFromHtmlTitle(
             $this->createMessageEvent(
-                static::createStub(RawMessage::class)
+                $this->createStub(RawMessage::class)
             )
         );
 

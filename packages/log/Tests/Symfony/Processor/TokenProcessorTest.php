@@ -20,11 +20,11 @@ class TokenProcessorTest extends TestCase
     public function testInvokeNoToken(): void
     {
         $service = new TokenProcessor(
-            static::createStub(TokenStorageInterface::class),
+            $this->createStub(TokenStorageInterface::class),
             $key = uniqid()
         );
 
-        static::assertSame(
+        $this->assertSame(
             [$key => null],
             $service->__invoke(
                 new LogRecord(
@@ -44,7 +44,7 @@ class TokenProcessorTest extends TestCase
             $key = uniqid()
         );
 
-        $tokenStorage->expects(static::once())
+        $tokenStorage->expects($this->once())
             ->method('getToken')
             ->willReturn(
                 new NullToken()
@@ -108,7 +108,7 @@ class TokenProcessorTest extends TestCase
             $key = uniqid()
         );
 
-        $tokenStorage->expects(static::once())
+        $tokenStorage->expects($this->once())
             ->method('getToken')
             ->willReturn(
                 new UsernamePasswordToken(

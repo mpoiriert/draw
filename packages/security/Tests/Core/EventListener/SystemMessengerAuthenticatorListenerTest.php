@@ -17,11 +17,11 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $object = new SystemMessengerAuthenticatorListener(
-            static::createStub(TokenStorageInterface::class),
-            static::createStub(SystemAuthenticatorInterface::class)
+            $this->createStub(TokenStorageInterface::class),
+            $this->createStub(SystemAuthenticatorInterface::class)
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 WorkerMessageReceivedEvent::class => 'connectSystem',
             ],
@@ -33,17 +33,17 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
     {
         $object = new SystemMessengerAuthenticatorListener(
             $tokenStorage = $this->createMock(TokenStorageInterface::class),
-            static::createStub(SystemAuthenticatorInterface::class)
+            $this->createStub(SystemAuthenticatorInterface::class)
         );
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
-            ->willReturn(static::createStub(TokenInterface::class))
+            ->willReturn($this->createStub(TokenInterface::class))
         ;
 
         $tokenStorage
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('setToken')
         ;
 
@@ -58,19 +58,19 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
         );
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
         $tokenStorage
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('setToken')
-            ->with($token = static::createStub(TokenInterface::class))
+            ->with($token = $this->createStub(TokenInterface::class))
         ;
 
         $systemAuthenticator
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getTokenForSystem')
             ->willReturn($token)
         ;

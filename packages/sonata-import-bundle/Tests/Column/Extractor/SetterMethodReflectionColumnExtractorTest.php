@@ -105,9 +105,9 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
 
     private function createColumn(): Column
     {
-        return new Column()
+        return (new Column())
             ->setImport(
-                new Import()
+                (new Import())
                     ->setEntityClass(SetterClassStub::class)
             )
         ;

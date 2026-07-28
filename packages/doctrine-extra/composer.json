@@ -15,15 +15,15 @@
         }
     ],
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.3"
     },
     "require-dev": {
         "doctrine/orm": "^3.6",
         "doctrine/dbal": "^4.4",
         "doctrine/collections": "^2.2",
         "doctrine/data-fixtures": "^2.0",
-        "codraw/dependency-injection": "^0.39",
-        "codraw/graphviz": "^0.39",
+        "draw/dependency-injection": "^0.39",
+        "draw/graphviz": "^0.39",
         "phpunit/phpunit": "^12.5"
     },
     "suggest": {

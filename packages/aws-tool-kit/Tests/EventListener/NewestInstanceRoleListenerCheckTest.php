@@ -20,11 +20,11 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $service = new NewestInstanceRoleCheckListener(
-            static::createStub(Ec2Client::class),
-            static::createStub(ImdsClientInterface::class),
+            $this->createStub(Ec2Client::class),
+            $this->createStub(ImdsClientInterface::class),
         );
 
-        static::assertSame(
+        $this->assertSame(
             [
                 ConsoleCommandEvent::class => [
                     ['checkNewestInstance', 50],
@@ -37,12 +37,12 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     public function testCheckNewestInstanceNoOption(): void
     {
         $service = new NewestInstanceRoleCheckListener(
-            static::createStub(Ec2Client::class),
+            $this->createStub(Ec2Client::class),
             $imdsClient = $this->createMock(ImdsClientInterface::class),
         );
 
         $imdsClient
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getCurrentInstanceId')
         ;
 
@@ -60,12 +60,12 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     public function testCheckNewestInstanceOptionNull(): void
     {
         $service = new NewestInstanceRoleCheckListener(
-            static::createStub(Ec2Client::class),
+            $this->createStub(Ec2Client::class),
             $imdsClient = $this->createMock(ImdsClientInterface::class),
         );
 
         $imdsClient
-            ->expects(static::never())
+            ->expects($this->never())
             ->method('getCurrentInstanceId')
         ;
 
@@ -83,12 +83,12 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     public function testCheckNewestInstanceCurrentInstanceIdError(): void
     {
         $service = new NewestInstanceRoleCheckListener(
-            static::createStub(Ec2Client::class),
+            $this->createStub(Ec2Client::class),
             $imdsClient = $this->createMock(ImdsClientInterface::class),
         );
 
         $imdsClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willThrowException(new \Exception())
@@ -108,12 +108,12 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     public function testCheckNewestInstanceCurrentInstanceIdEmpty(): void
     {
         $service = new NewestInstanceRoleCheckListener(
-            static::createStub(Ec2Client::class),
+            $this->createStub(Ec2Client::class),
             $imdsClient = $this->createMock(ImdsClientInterface::class),
         );
 
         $imdsClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(null)
@@ -138,17 +138,17 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         );
 
         $imdsClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(uniqid('instance-id-'))
         ;
 
-        $ec2Client->expects(static::once())
+        $ec2Client->expects($this->once())
             ->method('__call')
             ->with(
                 'describeInstances',
-                self::provideDescribeInstancesArgs(
+                static::provideDescribeInstancesArgs(
                     $role = uniqid('role-')
                 )
             )
@@ -180,17 +180,17 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         );
 
         $imdsClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'))
         ;
 
-        $ec2Client->expects(static::once())
+        $ec2Client->expects($this->once())
             ->method('__call')
             ->with(
                 'describeInstances',
-                self::provideDescribeInstancesArgs(
+                static::provideDescribeInstancesArgs(
                     $role = uniqid('role-')
                 )
             )
@@ -231,17 +231,17 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         );
 
         $imdsClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn(uniqid('instance-id-'))
         ;
 
-        $ec2Client->expects(static::once())
+        $ec2Client->expects($this->once())
             ->method('__call')
             ->with(
                 'describeInstances',
-                self::provideDescribeInstancesArgs(
+                static::provideDescribeInstancesArgs(
                     $role = uniqid('role-')
                 )
             )
@@ -267,17 +267,17 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
         );
 
         $imdsClient
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getCurrentInstanceId')
             ->with()
             ->willReturn($instanceId = uniqid('instance-id-'))
         ;
 
-        $ec2Client->expects(static::once())
+        $ec2Client->expects($this->once())
             ->method('__call')
             ->with(
                 'describeInstances',
-                self::provideDescribeInstancesArgs(
+                static::provideDescribeInstancesArgs(
                     $role = uniqid('role-')
                 )
             )

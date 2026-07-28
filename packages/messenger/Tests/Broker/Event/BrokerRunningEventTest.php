@@ -21,7 +21,7 @@ class BrokerRunningEventTest extends TestCase
     protected function setUp(): void
     {
         $this->event = new BrokerRunningEvent(
-            $this->broker = static::createStub(Broker::class)
+            $this->broker = $this->createStub(Broker::class)
         );
     }
 

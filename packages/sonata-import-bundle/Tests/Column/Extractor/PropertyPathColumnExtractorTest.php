@@ -41,7 +41,7 @@ class PropertyPathColumnExtractorTest extends TestCase
     {
         $this->assertNull(
             $this->object->extractDefaultValue(
-                new Column()
+                (new Column())
                     ->setMappedTo('test'),
                 []
             )
@@ -56,7 +56,7 @@ class PropertyPathColumnExtractorTest extends TestCase
 
         $this->object->assign(
             $object,
-            new Column()
+            (new Column())
                 ->setMappedTo('test'),
             $value = 'value'
         );

@@ -52,7 +52,7 @@ class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
 
         $parameter = array_shift($parameters);
 
-        $columnInfo = new Column()
+        $columnInfo = (new Column())
             ->setMappedTo($headerName)
         ;
 
@@ -80,8 +80,6 @@ class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
         }
 
         $parameter = array_shift($parameters);
-
-        \assert($parameter instanceof \ReflectionParameter);
 
         $type = $parameter->getType();
 

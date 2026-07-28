@@ -53,7 +53,7 @@ class BufferedConsoleOutputTest extends TestCase
     public function testSetFormatter(): void
     {
         // This is to test we are not in a infinite loop
-        $this->object->setFormatter(static::createStub(OutputFormatterInterface::class));
+        $this->object->setFormatter($this->createStub(OutputFormatterInterface::class));
 
         $this->addToAssertionCount(1);
     }

@@ -24,7 +24,7 @@ class EnvelopeCreatedEventTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new EnvelopeCreatedEvent(
-            $this->messageHolder = static::createStub(MessageHolderInterface::class),
+            $this->messageHolder = $this->createStub(MessageHolderInterface::class),
             $this->envelope = new Envelope((object) [])
         );
     }

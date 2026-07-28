@@ -12,7 +12,7 @@ trait DrawMessageTagTrait
         targetEntity: DrawMessageInterface::class,
         inversedBy: 'tags',
     )]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?DrawMessageInterface $message = null;
 
     #[ORM\Id]

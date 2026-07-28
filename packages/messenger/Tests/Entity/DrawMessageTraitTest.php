@@ -22,7 +22,7 @@ class DrawMessageTraitTest extends TestCase
 
     public function testIdMutator(): void
     {
-        static::assertSame(
+        $this->assertSame(
             $this->entity,
             $this->entity->setId($value = uniqid())
         );
@@ -137,7 +137,7 @@ class DrawMessageTraitTest extends TestCase
 
         $this->assertSame(
             $this->entity,
-            $this->entity->addTag($value = static::createStub(DrawMessageTagInterface::class))
+            $this->entity->addTag($value = $this->createStub(DrawMessageTagInterface::class))
         );
 
         $this->assertCount(1, $this->entity->getTags());

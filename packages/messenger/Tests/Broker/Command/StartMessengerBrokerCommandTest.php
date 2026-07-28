@@ -37,9 +37,9 @@ class StartMessengerBrokerCommandTest extends TestCase
     {
         $this->command = new StartMessengerBrokerCommand(
             $this->consolePath = uniqid('console-path-'),
-            $this->processFactory = static::createStub(ProcessFactoryInterface::class),
+            $this->processFactory = $this->createStub(ProcessFactoryInterface::class),
             $this->eventDispatcher = new EventDispatcher(),
-            $this->cpuCounter = static::createStub(CpuCounter::class)
+            $this->cpuCounter = $this->createStub(CpuCounter::class)
         );
     }
 

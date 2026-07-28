@@ -20,7 +20,7 @@ class CheckPreAuthEventTest extends TestCase
     protected function setUp(): void
     {
         $this->event = new CheckPreAuthEvent(
-            $this->user = static::createStub(UserInterface::class)
+            $this->user = $this->createStub(UserInterface::class)
         );
     }
 

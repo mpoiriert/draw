@@ -34,7 +34,7 @@ class BasicEnvelopeFactoryTest extends TestCase
 
     public function testCreateEnvelopes(): void
     {
-        $messageHolder = static::createStub(MessageHolderInterface::class);
+        $messageHolder = $this->createStub(MessageHolderInterface::class);
         $messages = [
             (object) [],
             (object) [],

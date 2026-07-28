@@ -19,7 +19,7 @@
         "symfony/process": "^6.4.0"
     },
     "require-dev": {
-        "codraw/dependency-injection": "^0.39",
+        "draw/dependency-injection": "^0.39",
         "phpunit/phpunit": "^12.5"
     },
     "minimum-stability": "dev",

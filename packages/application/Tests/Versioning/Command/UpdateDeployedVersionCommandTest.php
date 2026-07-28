@@ -20,7 +20,7 @@ class UpdateDeployedVersionCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->command = new UpdateDeployedVersionCommand(
-            static::createStub(VersionManager::class)
+            $this->createStub(VersionManager::class)
         );
     }
 
@@ -46,12 +46,12 @@ class UpdateDeployedVersionCommandTest extends TestCase
         );
 
         $versionManager
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('updateDeployedVersion')
         ;
 
         $versionManager
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getRunningVersion')
             ->willReturn($deployedVersion = uniqid('version-'))
         ;

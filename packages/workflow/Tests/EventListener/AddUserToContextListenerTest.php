@@ -17,10 +17,10 @@ class AddUserToContextListenerTest extends TestCase
     public function testGetSubscribedEvents(): void
     {
         $object = new AddUserToContextListener(
-            static::createStub(Security::class)
+            $this->createStub(Security::class)
         );
 
-        static::assertSame(
+        $this->assertSame(
             ['workflow.transition' => 'addUserToContext'],
             $object::getSubscribedEvents()
         );
@@ -29,12 +29,12 @@ class AddUserToContextListenerTest extends TestCase
     public function testAddUserToContextNoUser(): void
     {
         $object = new AddUserToContextListener(
-            static::createStub(Security::class)
+            $this->createStub(Security::class)
         );
 
         $transitionEvent = new TransitionEvent(
             new \stdClass(),
-            static::createStub(Marking::class),
+            $this->createStub(Marking::class),
         );
 
         $transitionEvent->setContext($originalContext = [
@@ -57,7 +57,7 @@ class AddUserToContextListenerTest extends TestCase
 
         $transitionEvent = new TransitionEvent(
             new \stdClass(),
-            static::createStub(Marking::class),
+            $this->createStub(Marking::class),
         );
 
         $transitionEvent->setContext($originalContext = [
@@ -65,9 +65,9 @@ class AddUserToContextListenerTest extends TestCase
         ]);
 
         $security
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('getUser')
-            ->willReturn($user = static::createStub(UserInterface::class))
+            ->willReturn($user = $this->createStub(UserInterface::class))
         ;
 
         $object->addUserToContext($transitionEvent);

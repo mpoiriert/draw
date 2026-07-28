@@ -66,7 +66,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             'drawUserEntityRepository'
         );
 
-        $definition = new Definition()
+        $definition = (new Definition())
             ->setAutowired(true)
             ->setAutoconfigured(true)
         ;
@@ -228,7 +228,7 @@ class DrawUserExtension extends Extension implements PrependExtensionInterface
             $containerBuilder->removeDefinition(RefreshUserLockMessageHandler::class);
             $containerBuilder->removeDefinition(UserLockLifeCycleMessageHandler::class);
             $containerBuilder->removeDefinition(AccountLocker::class);
-            $this->excludeEntitiesPath[] = new \ReflectionClass(UserLock::class)->getFileName();
+            $this->excludeEntitiesPath[] = (new \ReflectionClass(UserLock::class))->getFileName();
 
             return;
         }

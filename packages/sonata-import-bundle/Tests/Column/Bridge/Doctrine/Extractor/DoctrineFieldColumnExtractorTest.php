@@ -22,7 +22,7 @@ class DoctrineFieldColumnExtractorTest extends TestCase
         $this->object = new DoctrineFieldColumnExtractor(
             static::createRegistry(
                 static::setUpMySqlWithAttributeDriver([
-                    \dirname(new \ReflectionClass(Column::class)->getFileName()),
+                    \dirname((new \ReflectionClass(Column::class))->getFileName()),
                 ])
             )
         );
@@ -132,9 +132,9 @@ class DoctrineFieldColumnExtractorTest extends TestCase
 
     private function createColumn(): Column
     {
-        return new Column()
+        return (new Column())
             ->setImport(
-                new Import()
+                (new Import())
                     ->setEntityClass(Column::class)
             )
         ;
