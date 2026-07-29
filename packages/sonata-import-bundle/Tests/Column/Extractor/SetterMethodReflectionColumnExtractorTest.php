@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataImportBundle\Tests\Column\Extractor;
 
+use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Column\Extractor\SetterMethodReflectionColumnExtractor;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
@@ -19,6 +20,14 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new SetterMethodReflectionColumnExtractor();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ColumnExtractorInterface::class,
+            $this->object
+        );
     }
 
     public function testGetDefaultPriority(): void

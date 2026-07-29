@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Tests\Exception;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Messenger\Exception\ExceptionInterface;
 
 /**
  * @internal
@@ -20,6 +21,14 @@ class MessageNotFoundExceptionTest extends TestCase
     {
         $this->exception = new MessageNotFoundException(
             $this->messageId = uniqid('message-id-'),
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ExceptionInterface::class,
+            $this->exception
         );
     }
 

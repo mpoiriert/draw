@@ -23,6 +23,14 @@ class ProcessFactoryTest extends TestCase
         $this->service = new ProcessFactory();
     }
 
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ProcessFactoryInterface::class,
+            $this->service
+        );
+    }
+
     public function testCreateDefault(): void
     {
         $process = $this->service->create(['cd']);

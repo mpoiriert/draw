@@ -6,6 +6,7 @@ use Draw\Component\Validator\Constraints\PhpCallable;
 use Draw\Component\Validator\Constraints\PhpCallableValidator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * @internal
@@ -22,6 +23,11 @@ class PhpCallableTest extends TestCase
 
     public function testConstruct(): void
     {
+        $this->assertInstanceOf(
+            Constraint::class,
+            $this->object
+        );
+
         $this->assertSame(
             'Execution of function with {{ value }} does not return expected result.',
             $this->object->message

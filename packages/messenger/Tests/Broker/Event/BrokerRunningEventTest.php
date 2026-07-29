@@ -7,6 +7,7 @@ use Draw\Component\Messenger\Broker\Event\BrokerRunningEvent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @internal
@@ -22,6 +23,14 @@ class BrokerRunningEventTest extends TestCase
     {
         $this->event = new BrokerRunningEvent(
             $this->broker = $this->createStub(Broker::class)
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            Event::class,
+            $this->event
         );
     }
 

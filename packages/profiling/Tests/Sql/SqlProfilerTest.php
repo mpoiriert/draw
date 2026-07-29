@@ -2,8 +2,8 @@
 
 namespace Draw\Component\Profiling\Tests\Sql;
 
+use Draw\Component\Profiling\Sql\SqlMetricBuilder;
 use Draw\Component\Profiling\Sql\SqlProfiler;
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -11,15 +11,20 @@ use PHPUnit\Framework\TestCase;
  */
 class SqlProfilerTest extends TestCase
 {
-    private SqlProfiler&Stub $profiler;
+    private SqlProfiler $profiler;
 
     protected function setUp(): void
     {
-        $this->profiler = $this->createStub(SqlProfiler::class);
-        $this->profiler
-            ->method('getType')
-            ->willReturn(SqlProfiler::PROFILER_TYPE)
-        ;
+        $this->profiler = new class extends SqlProfiler {
+            public function start(): void
+            {
+            }
+        };
+    }
+
+    public function testGetMetricBuilder(): void
+    {
+        $this->assertInstanceOf(SqlMetricBuilder::class, $this->profiler->getMetricBuilder());
     }
 
     public function testGetType(): void
@@ -29,8 +34,9 @@ class SqlProfilerTest extends TestCase
 
     public function testStop(): void
     {
-        $metric = $this->profiler->stop();
-
-        $this->assertSame(0, $metric->count);
+        $this->assertSame(
+            0,
+            $this->profiler->stop()->count
+        );
     }
 }

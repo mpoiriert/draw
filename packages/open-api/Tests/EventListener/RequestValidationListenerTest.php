@@ -7,8 +7,11 @@ use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema\QueryParameter;
 use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -24,30 +27,42 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @internal
  */
 #[CoversClass(RequestValidationListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class RequestValidationListenerTest extends TestCase
 {
     use DoubleTrait;
 
+    private RequestValidationListener $object;
+
+    private ValidatorInterface&MockObject $validator;
+
+    protected function setUp(): void
+    {
+        $this->object = new RequestValidationListener(
+            $this->validator = $this->createMock(ValidatorInterface::class)
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
+        );
+    }
+
     public function testSubscribedEvents(): void
     {
-        $object = new RequestValidationListener(
-            $this->createStub(ValidatorInterface::class)
-        );
-
         $this->assertSame(
             [
                 KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', -5],
             ],
-            $object::getSubscribedEvents()
+            $this->object::getSubscribedEvents()
         );
     }
 
     public function testOnKernelControllerNoValidation(): void
     {
-        $object = new RequestValidationListener(
-            $validator = $this->createMock(ValidatorInterface::class)
-        );
-
         $event = new ControllerArgumentsEvent(
             $this->createStub(HttpKernelInterface::class),
             'gettype',
@@ -56,20 +71,16 @@ class RequestValidationListenerTest extends TestCase
             null
         );
 
-        $validator
+        $this->validator
             ->expects($this->never())
             ->method('validate')
         ;
 
-        $object->onKernelController($event);
+        $this->object->onKernelController($event);
     }
 
     public function testOnKernelControllerBodyValidationNoError(): void
     {
-        $object = new RequestValidationListener(
-            $validator = $this->createMock(ValidatorInterface::class)
-        );
-
         $event = new ControllerArgumentsEvent(
             $this->createStub(HttpKernelInterface::class),
             'gettype',
@@ -82,22 +93,18 @@ class RequestValidationListenerTest extends TestCase
         $requestBody->argumentName = $name = uniqid('name-');
         $request->attributes->set($name, $bodyObject = (object) []);
 
-        $validator
+        $this->validator
             ->expects($this->once())
             ->method('validate')
             ->with($bodyObject, null, ['Default'])
             ->willReturn($this->createStub(ConstraintViolationListInterface::class))
         ;
 
-        $object->onKernelController($event);
+        $this->object->onKernelController($event);
     }
 
     public function testOnKernelControllerQueryParametersValidationNoError(): void
     {
-        $object = new RequestValidationListener(
-            $validator = $this->createMock(ValidatorInterface::class)
-        );
-
         $event = new ControllerArgumentsEvent(
             $this->createStub(HttpKernelInterface::class),
             'gettype',
@@ -111,22 +118,18 @@ class RequestValidationListenerTest extends TestCase
         $queryParameter->name = $name = uniqid('name-');
         $request->attributes->set($name, $parameterObject = (object) []);
 
-        $validator
+        $this->validator
             ->expects($this->once())
             ->method('validate')
             ->with($parameterObject, [], null)
             ->willReturn($this->createStub(ConstraintViolationListInterface::class))
         ;
 
-        $object->onKernelController($event);
+        $this->object->onKernelController($event);
     }
 
     public function testOnKernelControllerDoNotValidate(): void
     {
-        $object = new RequestValidationListener(
-            $validator = $this->createMock(ValidatorInterface::class)
-        );
-
         $event = new ControllerArgumentsEvent(
             $this->createStub(HttpKernelInterface::class),
             'gettype',
@@ -140,20 +143,16 @@ class RequestValidationListenerTest extends TestCase
 
         $request->attributes->set($name, (object) []);
 
-        $validator
+        $this->validator
             ->expects($this->never())
             ->method('validate')
         ;
 
-        $object->onKernelController($event);
+        $this->object->onKernelController($event);
     }
 
     public function testOnKernelControllerWithError(): void
     {
-        $object = new RequestValidationListener(
-            $validator = $this->createMock(ValidatorInterface::class)
-        );
-
         $event = new ControllerArgumentsEvent(
             $this->createStub(HttpKernelInterface::class),
             'gettype',
@@ -175,7 +174,7 @@ class RequestValidationListenerTest extends TestCase
         $request->attributes->set($name, $parameterObject = (object) []);
         $queryParameter->constraints = [new NotNull()];
 
-        $validator
+        $this->validator
             ->expects($this->exactly(2))
             ->method('validate')
             ->with(
@@ -213,7 +212,7 @@ class RequestValidationListenerTest extends TestCase
         );
 
         try {
-            $object->onKernelController($event);
+            $this->object->onKernelController($event);
             $this->fail('Expect exception of type: '.ConstraintViolationListException::class);
         } catch (ConstraintViolationListException $error) {
             $violationList = $error->getViolationList();

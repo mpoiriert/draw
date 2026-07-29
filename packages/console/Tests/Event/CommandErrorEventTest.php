@@ -5,6 +5,7 @@ namespace Draw\Component\Console\Tests\Event;
 use Draw\Component\Console\Event\CommandErrorEvent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @internal
@@ -23,6 +24,14 @@ class CommandErrorEventTest extends TestCase
         $this->event = new CommandErrorEvent(
             $this->executionId = uniqid('id-'),
             $this->outputString = uniqid('output-')
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            Event::class,
+            $this->event
         );
     }
 

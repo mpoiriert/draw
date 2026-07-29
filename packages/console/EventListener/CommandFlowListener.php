@@ -273,11 +273,11 @@ class CommandFlowListener implements EventSubscriberInterface
             return;
         }
 
-        if (mb_strlen((string) $outputString) > 50000) {
+        if (\is_string($outputString) && mb_strlen($outputString) > 50000) {
             $outputString = \sprintf(
                 "%s\n\n[OUTPUT WAS TOO BIG]\n\nTail of log:\n\n%s",
-                mb_substr((string) $outputString, 0, 40000),
-                mb_substr((string) $outputString, -10000)
+                mb_substr($outputString, 0, 40000),
+                mb_substr($outputString, -10000)
             );
         }
 

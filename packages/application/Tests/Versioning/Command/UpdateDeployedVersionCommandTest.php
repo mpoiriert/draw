@@ -6,21 +6,26 @@ use Draw\Component\Application\Versioning\Command\UpdateDeployedVersionCommand;
 use Draw\Component\Application\Versioning\VersionManager;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
 #[CoversClass(UpdateDeployedVersionCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class UpdateDeployedVersionCommandTest extends TestCase
 {
     use CommandTestTrait;
 
+    private VersionManager&MockObject $versionManager;
+
     protected function setUp(): void
     {
         $this->command = new UpdateDeployedVersionCommand(
-            $this->createStub(VersionManager::class)
+            $this->versionManager = $this->createMock(VersionManager::class)
         );
     }
 
@@ -41,16 +46,12 @@ class UpdateDeployedVersionCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $this->command = new UpdateDeployedVersionCommand(
-            $versionManager = $this->createMock(VersionManager::class)
-        );
-
-        $versionManager
+        $this->versionManager
             ->expects($this->once())
             ->method('updateDeployedVersion')
         ;
 
-        $versionManager
+        $this->versionManager
             ->expects($this->once())
             ->method('getRunningVersion')
             ->willReturn($deployedVersion = uniqid('version-'))

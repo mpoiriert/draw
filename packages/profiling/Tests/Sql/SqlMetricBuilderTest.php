@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Profiling\Tests\Sql;
 
+use Draw\Component\Profiling\MetricBuilderInterface;
 use Draw\Component\Profiling\Sql\SqlLog;
 use Draw\Component\Profiling\Sql\SqlMetricBuilder;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +17,11 @@ class SqlMetricBuilderTest extends TestCase
     protected function setUp(): void
     {
         $this->metricBuilder = new SqlMetricBuilder();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(MetricBuilderInterface::class, $this->metricBuilder);
     }
 
     public function testBuild(): void

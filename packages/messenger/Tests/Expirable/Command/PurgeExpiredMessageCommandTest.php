@@ -9,7 +9,9 @@ use Draw\Component\Messenger\Tests\Stub\Transport\PurgeAwareTransportInterface;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -18,15 +20,18 @@ use Symfony\Component\Console\Input\InputOption;
  * @internal
  */
 #[CoversClass(PurgeExpiredMessageCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class PurgeExpiredMessageCommandTest extends TestCase
 {
     use CommandTestTrait;
     use DoubleTrait;
 
+    private TransportRepository&MockObject $transportRepository;
+
     protected function setUp(): void
     {
         $this->command = new PurgeExpiredMessageCommand(
-            $this->createStub(TransportRepository::class),
+            $this->transportRepository = $this->createMock(TransportRepository::class),
         );
     }
 
@@ -55,11 +60,7 @@ class PurgeExpiredMessageCommandTest extends TestCase
 
     public function testExecuteInvalidTransport(): void
     {
-        $this->command = new PurgeExpiredMessageCommand(
-            $transportRepository = $this->createMock(TransportRepository::class),
-        );
-
-        $transportRepository
+        $this->transportRepository
             ->expects($this->once())
             ->method('has')
             ->with($transport = uniqid('transport-invalid-'))
@@ -74,17 +75,13 @@ class PurgeExpiredMessageCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $this->command = new PurgeExpiredMessageCommand(
-            $transportRepository = $this->createMock(TransportRepository::class),
-        );
-
-        $transportRepository
+        $this->transportRepository
             ->expects($this->once())
             ->method('getTransportNames')
             ->willReturn($transportNames = [uniqid('transport1-'), uniqid('transport2-')])
         ;
 
-        $transportRepository
+        $this->transportRepository
             ->expects($this->exactly(2))
             ->method('get')
             ->with(
@@ -135,18 +132,14 @@ class PurgeExpiredMessageCommandTest extends TestCase
 
     public function testExecuteWithInputs(): void
     {
-        $this->command = new PurgeExpiredMessageCommand(
-            $transportRepository = $this->createMock(TransportRepository::class),
-        );
-
-        $transportRepository
+        $this->transportRepository
             ->expects($this->once())
             ->method('has')
             ->with($transportName = uniqid('transport-'))
             ->willReturn(true)
         ;
 
-        $transportRepository
+        $this->transportRepository
             ->expects($this->once())
             ->method('get')
             ->with($transportName)

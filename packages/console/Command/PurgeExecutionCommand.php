@@ -23,13 +23,11 @@ class PurgeExecutionCommand extends Command
     final public const int DEFAULT_WAIT_SECOND = 10;
     final public const int DEFAULT_BATCH_SIZE = 1000;
 
-    private LoggerInterface $logger;
-
-    public function __construct(private Connection $executionConnection, ?LoggerInterface $logger = null)
-    {
+    public function __construct(
+        private Connection $executionConnection,
+        private ?LoggerInterface $logger = new NullLogger(),
+    ) {
         parent::__construct();
-
-        $this->logger = $logger ?? new NullLogger();
     }
 
     protected function configure(): void

@@ -7,6 +7,7 @@ use Draw\Component\OpenApi\Schema\QueryParameter;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -24,6 +25,14 @@ class RequestQueryParameterFetcherListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new RequestQueryParameterFetcherListener();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
+        );
     }
 
     public function testSubscribedEvents(): void

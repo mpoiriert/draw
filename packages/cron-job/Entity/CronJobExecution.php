@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[
     ORM\Entity,
     ORM\Table(name: 'cron_job__cron_job_execution'),
-    ORM\Index(fields: ['state'], name: 'state'),
+    ORM\Index(name: 'state', fields: ['state']),
 ]
 class CronJobExecution implements \Stringable
 {

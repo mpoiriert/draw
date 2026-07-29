@@ -3,6 +3,7 @@
 namespace Draw\Component\OpenApi\Tests\Naming;
 
 use Draw\Component\OpenApi\Naming\AliasesClassNamingFilter;
+use Draw\Component\OpenApi\Naming\ClassNamingFilterInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -33,6 +34,14 @@ class AliasesClassNamingFilterTest extends TestCase
                     'alias' => uniqid('newNamespace\\').'\\',
                 ],
             ]
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ClassNamingFilterInterface::class,
+            $this->object
         );
     }
 

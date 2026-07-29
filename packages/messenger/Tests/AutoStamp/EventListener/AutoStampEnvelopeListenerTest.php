@@ -6,6 +6,7 @@ use Draw\Component\Messenger\AutoStamp\EventListener\AutoStampEnvelopeListener;
 use Draw\Component\Messenger\AutoStamp\Message\StampingAwareInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 
@@ -22,6 +23,14 @@ class AutoStampEnvelopeListenerTest extends TestCase implements StampingAwareInt
     protected function setUp(): void
     {
         $this->object = new AutoStampEnvelopeListener();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
+        );
     }
 
     public function testGetSubscribedEvents(): void

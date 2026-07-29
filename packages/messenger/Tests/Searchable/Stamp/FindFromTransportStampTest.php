@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Tests\Searchable\Stamp;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @internal
@@ -20,6 +21,14 @@ class FindFromTransportStampTest extends TestCase
     {
         $this->entity = new FoundFromTransportStamp(
             $this->transportName = uniqid('transport-')
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            StampInterface::class,
+            $this->entity
         );
     }
 

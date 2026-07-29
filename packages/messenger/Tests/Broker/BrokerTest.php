@@ -8,7 +8,9 @@ use Draw\Component\Messenger\Broker\Event\BrokerStartedEvent;
 use Draw\Component\Messenger\Broker\Event\NewConsumerProcessEvent;
 use Draw\Component\Tester\DoubleTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -17,57 +19,54 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @internal
  */
 #[CoversClass(Broker::class)]
+#[AllowMockObjectsWithoutExpectations]
 class BrokerTest extends TestCase
 {
     use DoubleTrait;
+
+    private Broker $service;
 
     private string $context;
 
     private string $consolePath;
 
+    private ProcessFactoryInterface&MockObject $processFactory;
+
+    private EventDispatcherInterface&MockObject $eventDispatcher;
+
     protected function setUp(): void
     {
-        $this->context = uniqid('context-');
-        $this->consolePath = uniqid('console/bin-');
+        $this->service = new Broker(
+            $this->context = uniqid('context-'),
+            $this->consolePath = uniqid('console/bin-'),
+            $this->processFactory = $this->createMock(ProcessFactoryInterface::class),
+            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
+        );
     }
 
     public function testGetContext(): void
     {
-        $service = new Broker(
-            $this->context,
-            $this->consolePath,
-            $this->createStub(ProcessFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class)
-        );
-
         $this->assertSame(
             $this->context,
-            $service->getContext()
+            $this->service->getContext()
         );
     }
 
     public function testStart(): void
     {
-        $service = new Broker(
-            $this->context,
-            $this->consolePath,
-            $processFactory = $this->createMock(ProcessFactoryInterface::class),
-            $eventDispatcher = $this->createMock(EventDispatcherInterface::class)
-        );
-
         $concurrent = 1;
         $timeout = random_int(1, 10);
         $receiver = uniqid('receiver-');
 
-        $eventDispatcher
+        $this->eventDispatcher
             ->expects($this->exactly($concurrent * 4))
             ->method('dispatch')
             ->with(
                 ...static::withConsecutive(
                     [
-                        $this->callback(function (BrokerStartedEvent $event) use ($service, $concurrent, $timeout) {
+                        $this->callback(function (BrokerStartedEvent $event) use ($concurrent, $timeout) {
                             $this->assertSame(
-                                $service,
+                                $this->service,
                                 $event->getBroker()
                             );
 
@@ -85,9 +84,9 @@ class BrokerTest extends TestCase
                         }),
                     ],
                     [
-                        $this->callback(function (BrokerRunningEvent $event) use ($service) {
+                        $this->callback(function (BrokerRunningEvent $event) {
                             $this->assertSame(
-                                $service,
+                                $this->service,
                                 $event->getBroker()
                             );
 
@@ -107,13 +106,13 @@ class BrokerTest extends TestCase
                         }),
                     ],
                     [
-                        $this->callback(function (BrokerRunningEvent $event) use ($service) {
+                        $this->callback(function (BrokerRunningEvent $event) {
                             $this->assertSame(
-                                $service,
+                                $this->service,
                                 $event->getBroker()
                             );
 
-                            $service->stop();
+                            $this->service->stop();
 
                             return true;
                         }),
@@ -123,7 +122,7 @@ class BrokerTest extends TestCase
             ->willReturnArgument(0)
         ;
 
-        $processFactory
+        $this->processFactory
             ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
@@ -151,29 +150,22 @@ class BrokerTest extends TestCase
             ->willReturn(false)
         ;
 
-        $service->start($concurrent, $timeout);
+        $this->service->start($concurrent, $timeout);
     }
 
     public function testStartWithForceStop(): void
     {
-        $service = new Broker(
-            $this->context,
-            $this->consolePath,
-            $processFactory = $this->createMock(ProcessFactoryInterface::class),
-            $eventDispatcher = $this->createMock(EventDispatcherInterface::class)
-        );
-
         $concurrent = 2;
         $receiver = uniqid('receiver-');
 
-        $eventDispatcher
-            ->expects($this->atLeastOnce())
+        $this->eventDispatcher
+            ->expects($this->any())
             ->method('dispatch')
             ->with(
-                $this->callback(static function ($event) use ($service, $receiver) {
+                $this->callback(function ($event) use ($receiver) {
                     if ($event instanceof NewConsumerProcessEvent) {
                         $event->setReceivers([$receiver]);
-                        $service->stop(false);
+                        $this->service->stop(false);
                     }
 
                     return true;
@@ -182,7 +174,7 @@ class BrokerTest extends TestCase
             ->willReturnArgument(0)
         ;
 
-        $processFactory
+        $this->processFactory
             ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
@@ -231,21 +223,14 @@ class BrokerTest extends TestCase
             ->willReturn(0)
         ;
 
-        $service->start($concurrent, 0);
+        $this->service->start($concurrent, 0);
     }
 
     public function testStartNoReceiver(): void
     {
-        $service = new Broker(
-            $this->context,
-            $this->consolePath,
-            $processFactory = $this->createMock(ProcessFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class)
-        );
-
         $concurrent = 1;
 
-        $processFactory
+        $this->processFactory
             ->expects($this->never())
             ->method('create')
         ;
@@ -256,18 +241,11 @@ class BrokerTest extends TestCase
             NewConsumerProcessEvent::class.'::preventStart'
         ));
 
-        $service->start($concurrent);
+        $this->service->start($concurrent);
     }
 
     public function testStartForBuildOptions(): void
     {
-        $service = new Broker(
-            $this->context,
-            $this->consolePath,
-            $processFactory = $this->createMock(ProcessFactoryInterface::class),
-            $eventDispatcher = $this->createMock(EventDispatcherInterface::class)
-        );
-
         $concurrent = 1;
         $timeout = random_int(1, 10);
         $receiver = uniqid('receiver-');
@@ -277,16 +255,16 @@ class BrokerTest extends TestCase
             'value' => 'value',
         ];
 
-        $eventDispatcher
-            ->expects($this->atLeastOnce())
+        $this->eventDispatcher
+            ->expects($this->any())
             ->method('dispatch')
             ->with(
-                $this->callback(static function ($event) use ($service, $receiver, $options) {
+                $this->callback(function ($event) use ($receiver, $options) {
                     if ($event instanceof NewConsumerProcessEvent) {
                         $event->setReceivers([$receiver]);
                         $event->setOptions($options);
                         // This is to make sure we reach NewConsumerProcessEvent only once.
-                        $service->stop();
+                        $this->service->stop();
                     }
 
                     return true;
@@ -295,7 +273,7 @@ class BrokerTest extends TestCase
             ->willReturnArgument(0)
         ;
 
-        $processFactory
+        $this->processFactory
             ->expects($this->exactly($concurrent))
             ->method('create')
             ->with(
@@ -330,6 +308,6 @@ class BrokerTest extends TestCase
             ->willReturn(false)
         ;
 
-        $service->start($concurrent, $timeout);
+        $this->service->start($concurrent, $timeout);
     }
 }

@@ -11,7 +11,9 @@ use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,15 +22,30 @@ use Symfony\Component\Console\Input\InputArgument;
  * @internal
  */
 #[CoversClass(QueueCronJobByNameCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class QueueCronJobByNameCommandTest extends TestCase
 {
     use CommandTestTrait;
 
+    private ManagerRegistry&MockObject $managerRegistry;
+
+    private CronJobProcessor&MockObject $cronJobProcessor;
+
+    private EntityRepository&MockObject $repository;
+
     protected function setUp(): void
     {
+        $this->managerRegistry = $this->createMock(ManagerRegistry::class);
+        $this->managerRegistry
+            ->expects($this->any())
+            ->method('getRepository')
+            ->with(CronJob::class)
+            ->willReturn($this->repository = $this->createMock(EntityRepository::class))
+        ;
+
         $this->command = new QueueCronJobByNameCommand(
-            $this->createStub(ManagerRegistry::class),
-            $this->createStub(CronJobProcessor::class)
+            $this->managerRegistry,
+            $this->cronJobProcessor = $this->createMock(CronJobProcessor::class)
         );
     }
 
@@ -49,26 +66,14 @@ class QueueCronJobByNameCommandTest extends TestCase
 
     public function testExecuteWithExistingCronJob(): void
     {
-        $this->command = new QueueCronJobByNameCommand(
-            $managerRegistry = $this->createMock(ManagerRegistry::class),
-            $cronJobProcessor = $this->createMock(CronJobProcessor::class)
-        );
-
-        $managerRegistry
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with(CronJob::class)
-            ->willReturn($repository = $this->createMock(EntityRepository::class))
-        ;
-
-        $repository
+        $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => $cronJobName = 'Existing Cron Job'])
             ->willReturn($cronJob = new CronJob())
         ;
 
-        $cronJobProcessor
+        $this->cronJobProcessor
             ->expects($this->once())
             ->method('queue')
             ->with($cronJob, true)
@@ -90,26 +95,14 @@ class QueueCronJobByNameCommandTest extends TestCase
 
     public function testExecuteWithoutExistingCronJob(): void
     {
-        $this->command = new QueueCronJobByNameCommand(
-            $managerRegistry = $this->createMock(ManagerRegistry::class),
-            $cronJobProcessor = $this->createMock(CronJobProcessor::class)
-        );
-
-        $managerRegistry
-            ->expects($this->once())
-            ->method('getRepository')
-            ->with(CronJob::class)
-            ->willReturn($repository = $this->createMock(EntityRepository::class))
-        ;
-
-        $repository
+        $this->repository
             ->expects($this->once())
             ->method('findOneBy')
             ->with(['name' => $cronJobName = 'Invalid Cron Job'])
             ->willReturn(null)
         ;
 
-        $cronJobProcessor
+        $this->cronJobProcessor
             ->expects($this->never())
             ->method('queue')
         ;

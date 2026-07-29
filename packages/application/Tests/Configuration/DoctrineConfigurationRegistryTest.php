@@ -8,6 +8,7 @@ use Draw\Component\Application\Configuration\DoctrineConfigurationRegistry;
 use Draw\Component\Application\Configuration\Entity\Config;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
+use Draw\Contracts\Application\ConfigurationRegistryInterface;
 use Draw\Contracts\Application\Exception\ConfigurationIsNotAccessibleException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -44,6 +45,11 @@ class DoctrineConfigurationRegistryTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new DoctrineConfigurationRegistry(static::createRegistry(self::$entityManager));
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(ConfigurationRegistryInterface::class, $this->object);
     }
 
     public function testHasNotSet(): void

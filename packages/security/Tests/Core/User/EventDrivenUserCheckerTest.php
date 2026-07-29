@@ -5,6 +5,7 @@ namespace Draw\Component\Security\Tests\Core\User;
 use Draw\Component\Security\Core\Event\CheckPostAuthEvent;
 use Draw\Component\Security\Core\Event\CheckPreAuthEvent;
 use Draw\Component\Security\Core\User\EventDrivenUserChecker;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +17,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @internal
  */
 #[CoversClass(EventDrivenUserChecker::class)]
+#[AllowMockObjectsWithoutExpectations]
 class EventDrivenUserCheckerTest extends TestCase
 {
     private EventDrivenUserChecker $object;
@@ -29,6 +31,14 @@ class EventDrivenUserCheckerTest extends TestCase
         $this->object = new EventDrivenUserChecker(
             $this->decoratedUserChecker = $this->createMock(UserCheckerInterface::class),
             $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class)
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            UserCheckerInterface::class,
+            $this->object
         );
     }
 

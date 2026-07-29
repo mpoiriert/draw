@@ -5,6 +5,7 @@ namespace Draw\Component\Messenger\Tests\Expirable\Stamp;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @internal
@@ -20,6 +21,14 @@ class ExpirationStampTest extends TestCase
     {
         $this->entity = new ExpirationStamp(
             $this->expiration = new \DateTimeImmutable()
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            StampInterface::class,
+            $this->entity
         );
     }
 

@@ -21,8 +21,61 @@ class ExecutionTest extends TestCase
         $this->entity = new Execution();
     }
 
+    public function testConstants(): void
+    {
+        $this->assertSame(
+            'initialized',
+            $this->entity::STATE_INITIALIZED
+        );
+
+        $this->assertSame(
+            'started',
+            $this->entity::STATE_STARTED
+        );
+
+        $this->assertSame(
+            'error',
+            $this->entity::STATE_ERROR
+        );
+
+        $this->assertSame(
+            'terminated',
+            $this->entity::STATE_TERMINATED
+        );
+
+        $this->assertSame(
+            'disabled',
+            $this->entity::STATE_DISABLED
+        );
+
+        $this->assertSame(
+            'acknowledge',
+            $this->entity::STATE_ACKNOWLEDGE
+        );
+
+        $this->assertSame(
+            'auto_acknowledge',
+            $this->entity::STATE_AUTO_ACKNOWLEDGE
+        );
+
+        $this->assertSame(
+            [
+                $this->entity::STATE_INITIALIZED,
+                $this->entity::STATE_STARTED,
+                $this->entity::STATE_DISABLED,
+                $this->entity::STATE_ERROR,
+                $this->entity::STATE_TERMINATED,
+                $this->entity::STATE_ACKNOWLEDGE,
+                $this->entity::STATE_AUTO_ACKNOWLEDGE,
+            ],
+            $this->entity::STATES,
+        );
+    }
+
     public function testIdMutator(): void
     {
+        $this->assertNotNull($this->entity->getId());
+
         $this->assertSame(
             $this->entity,
             $this->entity->setId($value = uniqid('id-'))

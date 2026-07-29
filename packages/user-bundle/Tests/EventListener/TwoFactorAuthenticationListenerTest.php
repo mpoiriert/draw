@@ -11,8 +11,11 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOne
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ConfigurationTrait;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 use Draw\Component\Security\Core\Security;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -21,18 +24,36 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class TwoFactorAuthenticationListenerTest extends TestCase
 {
     private const string ENABLE_ROUTE = 'route';
 
-    public function testGetSubscribedEvents(): void
+    private TwoFactorAuthenticationListener $object;
+
+    private UrlGeneratorInterface&MockObject $urlGenerator;
+
+    private Security&MockObject $security;
+
+    protected function setUp(): void
     {
-        $object = new TwoFactorAuthenticationListener(
-            $this->createStub(UrlGeneratorInterface::class),
-            $this->createStub(Security::class),
+        $this->object = new TwoFactorAuthenticationListener(
+            $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class),
+            $this->security = $this->createMock(Security::class),
             self::ENABLE_ROUTE
         );
+    }
 
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
+        );
+    }
+
+    public function testGetSubscribedEvents(): void
+    {
         $this->assertSame(
             [
                 UserRequestInterceptionEvent::class => [
@@ -40,7 +61,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                     ['allowHandlingRequestWhenTwoFactorAuthenticationInProgress', 1000],
                 ],
             ],
-            $object::getSubscribedEvents()
+            $this->object::getSubscribedEvents()
         );
     }
 
@@ -50,16 +71,13 @@ class TwoFactorAuthenticationListenerTest extends TestCase
         bool $allowHandingRequest,
         bool $redirect,
     ): void {
-        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
         $url = null;
-
         if ($redirect) {
             $user = $event->getUser();
 
             $this->assertInstanceOf(SecurityUserInterface::class, $user);
 
-            $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-            $urlGenerator
+            $this->urlGenerator
                 ->expects($this->once())
                 ->method('generate')
                 ->with(
@@ -70,13 +88,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
             ;
         }
 
-        $object = new TwoFactorAuthenticationListener(
-            $urlGenerator,
-            $this->createStub(Security::class),
-            self::ENABLE_ROUTE
-        );
-
-        $object->checkNeedToEnableTwoFactorAuthentication($event);
+        $this->object->checkNeedToEnableTwoFactorAuthentication($event);
 
         $this->assertSame($allowHandingRequest, $event->getAllowHandlingRequest());
 
@@ -275,20 +287,14 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
     public function testAllowHandlingRequestWhenTwoFactorAuthenticationInProgressTrue(): void
     {
-        $object = new TwoFactorAuthenticationListener(
-            $this->createStub(UrlGeneratorInterface::class),
-            $security = $this->createMock(Security::class),
-            self::ENABLE_ROUTE
-        );
-
-        $security
+        $this->security
             ->expects($this->once())
             ->method('isGranted')
             ->with('IS_AUTHENTICATED_2FA_IN_PROGRESS')
             ->willReturn(true)
         ;
 
-        $object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
+        $this->object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
             $event = new UserRequestInterceptionEvent(
                 $this->createStub(SecurityUserInterface::class),
                 new Request()
@@ -300,20 +306,14 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
     public function testAllowHandlingRequestWhenTwoFactorAuthenticationInProgressFalse(): void
     {
-        $object = new TwoFactorAuthenticationListener(
-            $this->createStub(UrlGeneratorInterface::class),
-            $security = $this->createMock(Security::class),
-            self::ENABLE_ROUTE
-        );
-
-        $security
+        $this->security
             ->expects($this->once())
             ->method('isGranted')
             ->with('IS_AUTHENTICATED_2FA_IN_PROGRESS')
             ->willReturn(false)
         ;
 
-        $object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
+        $this->object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
             $event = new UserRequestInterceptionEvent(
                 $this->createStub(SecurityUserInterface::class),
                 new Request()

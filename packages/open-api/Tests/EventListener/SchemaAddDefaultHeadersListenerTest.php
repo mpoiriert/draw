@@ -7,6 +7,7 @@ use Draw\Component\OpenApi\EventListener\SchemaAddDefaultHeadersListener;
 use JMS\Serializer\ArrayTransformerInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @internal
@@ -21,6 +22,14 @@ class SchemaAddDefaultHeadersListenerTest extends TestCase
         $this->object = new SchemaAddDefaultHeadersListener(
             [],
             $this->createStub(ArrayTransformerInterface::class)
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
         );
     }
 

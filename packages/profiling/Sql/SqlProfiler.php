@@ -6,7 +6,7 @@ use Draw\Component\Profiling\ProfilerInterface;
 
 abstract class SqlProfiler implements ProfilerInterface
 {
-    final public const PROFILER_TYPE = 'sql';
+    final public const string PROFILER_TYPE = 'sql';
 
     protected ?SqlMetricBuilder $metricBuilder = null;
 

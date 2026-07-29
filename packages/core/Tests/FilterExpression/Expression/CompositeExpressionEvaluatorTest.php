@@ -6,61 +6,72 @@ use Draw\Component\Core\FilterExpression\Evaluator;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpression;
 use Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator;
 use Draw\Component\Core\FilterExpression\Expression\ConstraintExpression;
+use Draw\Component\Core\FilterExpression\Expression\ExpressionEvaluator;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
 #[CoversClass(CompositeExpressionEvaluator::class)]
+#[AllowMockObjectsWithoutExpectations]
 class CompositeExpressionEvaluatorTest extends TestCase
 {
+    private CompositeExpressionEvaluator $object;
+
+    private Evaluator&MockObject $evaluator;
+
+    protected function setUp(): void
+    {
+        $this->object = new CompositeExpressionEvaluator(
+            $this->evaluator = $this->createMock(Evaluator::class)
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ExpressionEvaluator::class,
+            $this->object
+        );
+    }
+
     public function testEvaluateInvalidExpression(): void
     {
-        $object = new CompositeExpressionEvaluator(
-            $this->createStub(Evaluator::class)
-        );
-
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expression of class ['.ConstraintExpression::class.'] is not supported');
 
-        $object->evaluate(null, new ConstraintExpression(null));
+        $this->object->evaluate(null, new ConstraintExpression(null));
     }
 
     public function testEvaluateNoExpression(): void
     {
-        $object = new CompositeExpressionEvaluator(
-            $evaluator = $this->createMock(Evaluator::class)
-        );
-
-        $evaluator
+        $this->evaluator
             ->expects($this->never())
             ->method('evaluate')
         ;
 
         $this->assertTrue(
-            $object->evaluate(null, new CompositeExpression(CompositeExpression::TYPE_AND, []))
+            $this->object->evaluate(null, new CompositeExpression(CompositeExpression::TYPE_AND, []))
         );
     }
 
     public function testEvaluateInvalidType(): void
     {
-        $object = new CompositeExpressionEvaluator(
-            $evaluator = $this->createMock(Evaluator::class)
-        );
-
         $type = uniqid('type');
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsupported CompositeExpression type ['.$type.']');
 
-        $evaluator
+        $this->evaluator
             ->expects($this->never())
             ->method('evaluate')
         ;
 
         $this->assertTrue(
-            $object->evaluate(null, new CompositeExpression($type, []))
+            $this->object->evaluate(null, new CompositeExpression($type, []))
         );
     }
 }

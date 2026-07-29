@@ -7,7 +7,10 @@ use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Draw\Component\Security\Tests\Stub\JwtAuthenticatableUserInterface;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +21,7 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -28,78 +32,73 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @internal
  */
 #[CoversClass(JwtAuthenticator::class)]
+#[AllowMockObjectsWithoutExpectations]
 class JwtAuthenticatorTest extends TestCase
 {
+    use DoubleTrait;
+
+    private JwtAuthenticator $object;
+
+    private JwtEncoder&MockObject $jwtEncoder;
+
+    private UserProviderInterface&MockObject $userProvider;
+
     private string $userIdentifierPayloadKey;
+
+    private TranslatorInterface&MockObject $translator;
 
     private static string $userIdentifierGetter = 'getJwtIdentifier';
 
     protected function setUp(): void
     {
-        $this->userIdentifierPayloadKey = uniqid('key');
+        $this->userProvider = $this->createMock(UserProviderInterface::class);
+
+        $this->object = new JwtAuthenticator(
+            $this->jwtEncoder = $this->createMock(JwtEncoder::class),
+            $this->userProvider,
+            $this->userIdentifierPayloadKey = uniqid('key'),
+            self::$userIdentifierGetter,
+            $this->translator = $this->createMock(TranslatorInterface::class)
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            AuthenticatorInterface::class,
+            $this->object
+        );
     }
 
     public function testSupports(): void
     {
-        $object = new JwtAuthenticator(
-            $this->createStub(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class)
-        );
-
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.uniqid('jwt-'));
 
-        $this->assertTrue($object->supports($request));
+        $this->assertTrue($this->object->supports($request));
     }
 
     public function testSupportsInvalidToken(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class)
-        );
-
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.uniqid('jwt-'));
 
-        $jwtEncoder
+        $this->jwtEncoder
             ->expects($this->once())
             ->method('decode')
             ->willThrowException(new \UnexpectedValueException())
         ;
 
-        $this->assertFalse($object->supports($request));
+        $this->assertFalse($this->object->supports($request));
     }
 
     public function testSupportsNoToken(): void
     {
-        $object = new JwtAuthenticator(
-            $this->createStub(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class)
-        );
-
-        $this->assertFalse($object->supports(new Request()));
+        $this->assertFalse($this->object->supports(new Request()));
     }
 
     public function testGenerateToken(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class)
-        );
-
         $user = $this->createMock(JwtAuthenticatableUserInterface::class);
 
         $user
@@ -108,7 +107,7 @@ class JwtAuthenticatorTest extends TestCase
             ->willReturn($userId = uniqid('id'))
         ;
 
-        $jwtEncoder
+        $this->jwtEncoder
             ->expects($this->once())
             ->method('encode')
             ->with([$this->userIdentifierPayloadKey => $userId], null)
@@ -117,7 +116,7 @@ class JwtAuthenticatorTest extends TestCase
 
         $this->assertSame(
             $token,
-            $object->generaToken(
+            $this->object->generaToken(
                 $user,
                 0
             )
@@ -126,12 +125,9 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateTokenDefaultNull(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class),
+        ReflectionAccessor::setPropertyValue(
+            $this->object,
+            'expiration',
             null
         );
 
@@ -143,7 +139,7 @@ class JwtAuthenticatorTest extends TestCase
             ->willReturn($userId = uniqid('id'))
         ;
 
-        $jwtEncoder
+        $this->jwtEncoder
             ->expects($this->once())
             ->method('encode')
             ->with([$this->userIdentifierPayloadKey => $userId], null)
@@ -152,7 +148,7 @@ class JwtAuthenticatorTest extends TestCase
 
         $this->assertSame(
             $token,
-            $object->generaToken(
+            $this->object->generaToken(
                 $user
             )
         );
@@ -160,14 +156,6 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateTokenWithExpiration(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class)
-        );
-
         $user = $this->createMock(JwtAuthenticatableUserInterface::class);
 
         $user
@@ -176,8 +164,8 @@ class JwtAuthenticatorTest extends TestCase
             ->willReturn($userId = uniqid('id'))
         ;
 
-        $jwtEncoder
-            ->expects($this->atLeastOnce())
+        $this->jwtEncoder
+            ->expects($this->once())
             ->method('encode')
             ->with(
                 [$this->userIdentifierPayloadKey => $userId],
@@ -188,7 +176,7 @@ class JwtAuthenticatorTest extends TestCase
 
         $this->assertSame(
             $token,
-            $object->generaToken(
+            $this->object->generaToken(
                 $user
             )
         );
@@ -196,15 +184,6 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testGenerateTokenWithExtraPayload(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class),
-            null
-        );
-
         $user = $this->createMock(JwtAuthenticatableUserInterface::class);
 
         $user
@@ -217,7 +196,7 @@ class JwtAuthenticatorTest extends TestCase
             'extra-data' => uniqid('value-'),
         ];
 
-        $jwtEncoder
+        $this->jwtEncoder
             ->expects($this->once())
             ->method('encode')
             ->with(
@@ -228,7 +207,7 @@ class JwtAuthenticatorTest extends TestCase
 
         $this->assertSame(
             $token,
-            $object->generaToken(
+            $this->object->generaToken(
                 $user,
                 null,
                 $extraPayload
@@ -238,20 +217,11 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testAuthenticate(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $userProvider = static::createMock(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class),
-            null
-        );
-
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
 
-        $jwtEncoder
-            ->expects($this->atLeastOnce())
+        $this->jwtEncoder
+            ->expects($this->any())
             ->method('decode')
             ->with($token)
             ->willReturn((object) [$this->userIdentifierPayloadKey => $userId = uniqid('id-')])
@@ -265,14 +235,14 @@ class JwtAuthenticatorTest extends TestCase
             ->willReturn($userId)
         ;
 
-        $userProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserByIdentifier')
             ->with($userId)
             ->willReturn($user)
         ;
 
-        $passport = $object->authenticate($request);
+        $passport = $this->object->authenticate($request);
 
         $this->assertInstanceOf(
             SelfValidatingPassport::class,
@@ -294,20 +264,11 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testAuthenticateWithExtraPayload(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $userProvider = static::createMock(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class),
-            null
-        );
-
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
 
-        $jwtEncoder
-            ->expects($this->atLeastOnce())
+        $this->jwtEncoder
+            ->expects($this->any())
             ->method('decode')
             ->with($token)
             ->willReturn(
@@ -326,14 +287,14 @@ class JwtAuthenticatorTest extends TestCase
             ->willReturn($userId)
         ;
 
-        $userProvider
+        $this->userProvider
             ->expects($this->once())
             ->method('loadUserByIdentifier')
             ->with($userId)
             ->willReturn($user)
         ;
 
-        $passport = $object->authenticate($request);
+        $passport = $this->object->authenticate($request);
 
         $jwtPayloadBadge = $passport->getBadge(JwtPayloadBadge::class);
 
@@ -349,20 +310,11 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testAuthenticateUserNotFound(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class),
-            null
-        );
-
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
 
-        $jwtEncoder
-            ->expects($this->atLeastOnce())
+        $this->jwtEncoder
+            ->expects($this->any())
             ->method('decode')
             ->with($token)
             ->willReturn((object) [])
@@ -371,25 +323,16 @@ class JwtAuthenticatorTest extends TestCase
         $this->expectException(UserNotFoundException::class);
         $this->expectExceptionMessage('Token attribute ['.$this->userIdentifierPayloadKey.'] not found');
 
-        $object->authenticate($request);
+        $this->object->authenticate($request);
     }
 
     public function testAuthenticateInvalidPayload(): void
     {
-        $object = new JwtAuthenticator(
-            $jwtEncoder = $this->createMock(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class),
-            null
-        );
-
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
 
-        $jwtEncoder
-            ->expects($this->atLeastOnce())
+        $this->jwtEncoder
+            ->expects($this->any())
             ->method('decode')
             ->with($token)
             ->willThrowException(new \UnexpectedValueException())
@@ -397,22 +340,13 @@ class JwtAuthenticatorTest extends TestCase
 
         $this->expectException(\UnexpectedValueException::class);
 
-        $object->authenticate($request);
+        $this->object->authenticate($request);
     }
 
     public function testOnAuthenticationSuccess(): void
     {
-        $object = new JwtAuthenticator(
-            $this->createStub(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class),
-            null
-        );
-
         $this->assertNull(
-            $object->onAuthenticationSuccess(
+            $this->object->onAuthenticationSuccess(
                 new Request(),
                 $this->createStub(TokenInterface::class),
                 uniqid('firewall-')
@@ -422,16 +356,7 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testOnAuthenticationFailure(): void
     {
-        $object = new JwtAuthenticator(
-            $this->createStub(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $translator = static::createMock(TranslatorInterface::class),
-            null
-        );
-
-        $translator
+        $this->translator
             ->expects($this->once())
             ->method('trans')
             ->with(
@@ -451,7 +376,7 @@ class JwtAuthenticatorTest extends TestCase
         );
 
         try {
-            $object->onAuthenticationFailure(
+            $this->object->onAuthenticationFailure(
                 new Request(),
                 $previous
             );
@@ -472,22 +397,13 @@ class JwtAuthenticatorTest extends TestCase
 
     public function testOnAuthenticationFailureNoTranslator(): void
     {
-        $object = new JwtAuthenticator(
-            $this->createStub(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $translator = static::createMock(TranslatorInterface::class),
-            null
-        );
-
-        $translator
+        $this->translator
             ->expects($this->never())
             ->method('trans')
         ;
 
         ReflectionAccessor::setPropertyValue(
-            $object,
+            $this->object,
             'translator',
             null
         );
@@ -501,7 +417,7 @@ class JwtAuthenticatorTest extends TestCase
         $this->expectExceptionMessage($translatedMessage);
 
         try {
-            $object->onAuthenticationFailure(
+            $this->object->onAuthenticationFailure(
                 new Request(),
                 new CustomUserMessageAuthenticationException(
                     $message,
@@ -525,27 +441,20 @@ class JwtAuthenticatorTest extends TestCase
      */
     public function testCreateToken(): void
     {
-        $object = new JwtAuthenticator(
-            $this->createStub(JwtEncoder::class),
-            $this->createStub(UserProviderInterface::class),
-            $this->userIdentifierPayloadKey,
-            self::$userIdentifierGetter,
-            $this->createStub(TranslatorInterface::class),
-            null
-        );
-
-        $passport = $this->createStub(Passport::class);
+        $passport = $this->createMock(Passport::class);
         $passport
+            ->expects($this->any())
             ->method('getUser')
-            ->willReturn($user = $this->createStub(UserInterface::class))
+            ->willReturn($user = $this->createMock(UserInterface::class))
         ;
 
         $user
+            ->expects($this->any())
             ->method('getRoles')
             ->willReturn($roles = [uniqid('ROLE_')])
         ;
 
-        $token = $object->createToken(
+        $token = $this->object->createToken(
             $passport,
             $firewallName = uniqid('firewall-')
         );

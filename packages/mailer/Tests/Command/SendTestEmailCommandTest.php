@@ -5,7 +5,9 @@ namespace Draw\Component\Mailer\Tests\Command;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Mailer\MailerInterface;
@@ -15,14 +17,17 @@ use Symfony\Component\Mime\Email;
  * @internal
  */
 #[CoversClass(SendTestEmailCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class SendTestEmailCommandTest extends TestCase
 {
     use CommandTestTrait;
 
+    private MailerInterface&MockObject $mailer;
+
     protected function setUp(): void
     {
         $this->command = new SendTestEmailCommand(
-            $this->createStub(MailerInterface::class)
+            $this->mailer = $this->createMock(MailerInterface::class)
         );
     }
 
@@ -46,12 +51,8 @@ class SendTestEmailCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $this->command = new SendTestEmailCommand(
-            $mailer = $this->createMock(MailerInterface::class)
-        );
-
         $to = uniqid('email-').'@example.com';
-        $mailer
+        $this->mailer
             ->expects($this->once())
             ->method('send')
             ->with(

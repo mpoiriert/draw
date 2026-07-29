@@ -8,8 +8,11 @@ use Draw\Component\OpenApi\Serializer\Serialization;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,35 +27,48 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @internal
  */
 #[CoversClass(ResponseSerializerListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class ResponseSerializerListenerTest extends TestCase
 {
-    public function testSubscribedEvents(): void
+    private ResponseSerializerListener $object;
+
+    private SerializerInterface&MockObject $serializer;
+
+    private SerializationContextFactoryInterface&MockObject $serializationContextFactory;
+
+    private EventDispatcherInterface&MockObject $eventDispatcher;
+
+    protected function setUp(): void
     {
-        $object = new ResponseSerializerListener(
-            $this->createStub(SerializerInterface::class),
-            $this->createStub(SerializationContextFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class),
+        $this->object = new ResponseSerializerListener(
+            $this->serializer = $this->createMock(SerializerInterface::class),
+            $this->serializationContextFactory = $this->createMock(SerializationContextFactoryInterface::class),
+            $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class),
             false
         );
+    }
 
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
+        );
+    }
+
+    public function testSubscribedEvents(): void
+    {
         $this->assertSame(
             [
                 KernelEvents::VIEW => ['onKernelView', 30],
                 KernelEvents::RESPONSE => ['onKernelResponse', 30],
             ],
-            $object::getSubscribedEvents()
+            $this->object::getSubscribedEvents()
         );
     }
 
     public function testOnKernelViewAlreadyResponse(): void
     {
-        $object = new ResponseSerializerListener(
-            $this->createStub(SerializerInterface::class),
-            $serializationContextFactory = $this->createMock(SerializationContextFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class),
-            false
-        );
-
         $event = new ViewEvent(
             $this->createStub(HttpKernelInterface::class),
             new Request(),
@@ -60,23 +76,16 @@ class ResponseSerializerListenerTest extends TestCase
             new Response()
         );
 
-        $serializationContextFactory
+        $this->serializationContextFactory
             ->expects($this->never())
             ->method('createSerializationContext')
         ;
 
-        $object->onKernelView($event);
+        $this->object->onKernelView($event);
     }
 
     public function testOnKernelViewRequestNotJson(): void
     {
-        $object = new ResponseSerializerListener(
-            $this->createStub(SerializerInterface::class),
-            $serializationContextFactory = $this->createMock(SerializationContextFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class),
-            false
-        );
-
         $event = new ViewEvent(
             $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
@@ -86,23 +95,16 @@ class ResponseSerializerListenerTest extends TestCase
 
         $request->setRequestFormat('html');
 
-        $serializationContextFactory
+        $this->serializationContextFactory
             ->expects($this->never())
             ->method('createSerializationContext')
         ;
 
-        $object->onKernelView($event);
+        $this->object->onKernelView($event);
     }
 
     public function testOnKernelViewResponseNull(): void
     {
-        $object = new ResponseSerializerListener(
-            $this->createStub(SerializerInterface::class),
-            $serializationContextFactory = $this->createMock(SerializationContextFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class),
-            false
-        );
-
         $event = new ViewEvent(
             $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
@@ -112,12 +114,12 @@ class ResponseSerializerListenerTest extends TestCase
 
         $request->setRequestFormat('json');
 
-        $serializationContextFactory
+        $this->serializationContextFactory
             ->expects($this->never())
             ->method('createSerializationContext')
         ;
 
-        $object->onKernelView($event);
+        $this->object->onKernelView($event);
 
         $response = $event->getResponse();
 
@@ -126,13 +128,6 @@ class ResponseSerializerListenerTest extends TestCase
 
     public function testOnKernelView(): void
     {
-        $object = new ResponseSerializerListener(
-            $serializer = $this->createMock(SerializerInterface::class),
-            $serializationContextFactory = $this->createMock(SerializationContextFactoryInterface::class),
-            $eventDispatcher = $this->createMock(EventDispatcherInterface::class),
-            false
-        );
-
         $result = (object) [];
         $event = new ViewEvent(
             $this->createStub(HttpKernelInterface::class),
@@ -143,7 +138,7 @@ class ResponseSerializerListenerTest extends TestCase
 
         $request->setRequestFormat('json');
 
-        $serializationContextFactory
+        $this->serializationContextFactory
             ->expects($this->once())
             ->method('createSerializationContext')
             ->willReturn($context = new SerializationContext())
@@ -159,7 +154,7 @@ class ResponseSerializerListenerTest extends TestCase
             )
         );
 
-        $eventDispatcher
+        $this->eventDispatcher
             ->expects($this->once())
             ->method('dispatch')
             ->with(
@@ -201,14 +196,14 @@ class ResponseSerializerListenerTest extends TestCase
             )
         ;
 
-        $serializer
+        $this->serializer
             ->expects($this->once())
             ->method('serialize')
             ->with($result, 'json', $context)
             ->willReturn($jsonResult = json_encode(['key' => uniqid('value-')], \JSON_THROW_ON_ERROR))
         ;
 
-        $object->onKernelView($event);
+        $this->object->onKernelView($event);
 
         $response = $event->getResponse();
 
@@ -225,13 +220,6 @@ class ResponseSerializerListenerTest extends TestCase
 
     public function testOnKernelResponse(): void
     {
-        $object = new ResponseSerializerListener(
-            $this->createStub(SerializerInterface::class),
-            $this->createStub(SerializationContextFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class),
-            false
-        );
-
         $responseEvent = new ResponseEvent(
             $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
@@ -260,18 +248,11 @@ class ResponseSerializerListenerTest extends TestCase
             ->willReturn($headers)
         ;
 
-        $object->onKernelResponse($responseEvent);
+        $this->object->onKernelResponse($responseEvent);
     }
 
     public function testSetResponseHeaderInvalidResponseHeaderBag(): void
     {
-        $object = new ResponseSerializerListener(
-            $this->createStub(SerializerInterface::class),
-            $this->createStub(SerializationContextFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class),
-            false
-        );
-
         $request = new Request();
 
         $request->attributes->set('_responseHeaderBag', (object) []);
@@ -279,18 +260,11 @@ class ResponseSerializerListenerTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The current attribute value of [_responseHeaderBag] is invalid');
 
-        $object::setResponseHeader($request, uniqid('key-'), ['values']);
+        $this->object::setResponseHeader($request, uniqid('key-'), ['values']);
     }
 
     public function testSetResponseHeader(): void
     {
-        $object = new ResponseSerializerListener(
-            $this->createStub(SerializerInterface::class),
-            $this->createStub(SerializationContextFactoryInterface::class),
-            $this->createStub(EventDispatcherInterface::class),
-            false
-        );
-
         $request = new Request();
 
         $request->attributes->set(
@@ -308,6 +282,6 @@ class ResponseSerializerListenerTest extends TestCase
             )
         ;
 
-        $object::setResponseHeader($request, $key, $values, false);
+        $this->object::setResponseHeader($request, $key, $values, false);
     }
 }

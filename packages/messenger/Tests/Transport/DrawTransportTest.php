@@ -4,7 +4,9 @@ namespace Draw\Component\Messenger\Tests\Transport;
 
 use Doctrine\DBAL\Connection;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\DoctrineTransaction\NoTransaction;
+use Draw\Component\Messenger\Expirable\PurgeableTransportInterface;
 use Draw\Component\Messenger\Expirable\Stamp\ExpirationStamp;
+use Draw\Component\Messenger\Searchable\SearchableTransportInterface;
 use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
@@ -20,7 +22,11 @@ use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
+use Symfony\Component\Messenger\Transport\Receiver\ListableReceiverInterface;
+use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Messenger\Transport\Serialization\PhpSerializer;
+use Symfony\Component\Messenger\Transport\SetupableTransportInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 
 /**
  * @internal
@@ -54,6 +60,39 @@ class DrawTransportTest extends TestCase
             'draw://default',
             [],
             new PhpSerializer()
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            TransportInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            PurgeableTransportInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            SearchableTransportInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            SetupableTransportInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            MessageCountAwareInterface::class,
+            $this->service
+        );
+
+        $this->assertInstanceOf(
+            ListableReceiverInterface::class,
+            $this->service
         );
     }
 

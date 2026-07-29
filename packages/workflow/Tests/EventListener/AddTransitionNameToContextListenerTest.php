@@ -4,6 +4,7 @@ namespace Draw\Component\Workflow\Tests\EventListener;
 
 use Draw\Component\Workflow\EventListener\AddTransitionNameToContextListener;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\TransitionEvent;
 use Symfony\Component\Workflow\Marking;
 use Symfony\Component\Workflow\Transition;
@@ -18,6 +19,14 @@ class AddTransitionNameToContextListenerTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new AddTransitionNameToContextListener();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
+        );
     }
 
     public function testGetSubscribedEvents(): void

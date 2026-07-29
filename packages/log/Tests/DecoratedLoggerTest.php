@@ -3,74 +3,90 @@
 namespace Draw\Component\Log\Tests;
 
 use Draw\Component\Log\DecoratedLogger;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class DecoratedLoggerTest extends TestCase
 {
+    private DecoratedLogger $object;
+
+    private LoggerInterface&MockObject $logger;
+
+    private array $defaultContext;
+
+    private string $decorateMessage;
+
+    protected function setUp(): void
+    {
+        $this->object = new DecoratedLogger(
+            $this->logger = $this->createMock(LoggerInterface::class),
+            $this->defaultContext = ['key' => uniqid()],
+            $this->decorateMessage = uniqid().' {message}'
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            LoggerInterface::class,
+            $this->object
+        );
+    }
+
     public function testLog(): void
     {
-        $object = new DecoratedLogger(
-            $logger = $this->createMock(LoggerInterface::class),
-            $defaultContext = ['key' => uniqid()],
-            $decorateMessage = uniqid().' {message}'
-        );
-
-        $logger
+        $this->logger
             ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),
-                str_replace('{message}', $message = uniqid(), $decorateMessage),
-                $defaultContext,
+                str_replace('{message}', $message = uniqid(), $this->decorateMessage),
+                $this->defaultContext,
             )
         ;
 
-        $object->log($level, $message);
+        $this->object->log($level, $message);
     }
 
     public function testLogWitContext(): void
     {
-        $object = new DecoratedLogger(
-            $logger = $this->createMock(LoggerInterface::class),
-            $defaultContext = ['key' => uniqid()],
-            $decorateMessage = uniqid().' {message}'
-        );
-
-        $logger
+        $this->logger
             ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),
-                str_replace('{message}', $message = uniqid(), $decorateMessage),
-                array_merge($defaultContext, $context = ['otherKey' => uniqid()]),
+                str_replace('{message}', $message = uniqid(), $this->decorateMessage),
+                array_merge($this->defaultContext, $context = ['otherKey' => uniqid()]),
             )
         ;
 
-        $object->log($level, $message, $context);
+        $this->object->log($level, $message, $context);
     }
 
     public function testLogNoMessageToken(): void
     {
-        $object = new DecoratedLogger(
-            $logger = $this->createMock(LoggerInterface::class),
-            $defaultContext = ['key' => uniqid()],
-            $decorateMessage = uniqid()
+        $this->object = new DecoratedLogger(
+            $this->logger = $this->createMock(LoggerInterface::class),
+            $this->defaultContext = ['key' => uniqid()],
+            $this->decorateMessage = uniqid()
         );
 
-        $logger
+        $this->logger
             ->expects($this->once())
             ->method('log')
             ->with(
                 $level = uniqid(),
-                $decorateMessage.' '.$message = uniqid(),
-                $defaultContext,
+                $this->decorateMessage.' '.$message = uniqid(),
+                $this->defaultContext,
             )
         ;
 
-        $object->log($level, $message);
+        $this->object->log($level, $message);
     }
 }

@@ -3,8 +3,11 @@
 namespace Draw\Component\Tester;
 
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -13,7 +16,20 @@ trait DoubleTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
-    abstract protected function createMock(string $originalClassName): MockObject;
+    /**
+     * Creates a mock object for the specified interface or class.
+     *
+     * @template RealInstanceType of object
+     *
+     * @param class-string<RealInstanceType> $type
+     *
+     * @return MockObject&RealInstanceType
+     *
+     * @throws InvalidArgumentException
+     * @throws MockObjectException
+     * @throws NoPreviousThrowableException
+     */
+    abstract protected function createMock(string $type): MockObject;
 
     abstract protected static function createStub(string $type): Stub;
 

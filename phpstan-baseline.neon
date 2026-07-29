@@ -25,12 +25,6 @@ parameters:
 			path: app/src/Message/NewUserMessage.php
 
 		-
-			message: '#^Unsafe call to private method Draw\\Component\\AwsToolKit\\Tests\\EventListener\\NewestInstanceRoleListenerCheckTest\:\:provideDescribeInstancesArgs\(\) through static\:\:\.$#'
-			identifier: staticClassAccess.privateMethod
-			count: 4
-			path: packages/aws-tool-kit/Tests/EventListener/NewestInstanceRoleListenerCheckTest.php
-
-		-
 			message: '#^Unsafe call to private method Draw\\Component\\Core\\Tests\\Reflection\\ReflectionAccessorTest\:\:privateStaticFunction\(\) through static\:\:\.$#'
 			identifier: staticClassAccess.privateMethod
 			count: 2

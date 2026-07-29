@@ -12,9 +12,10 @@ use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
 use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 
@@ -22,16 +23,21 @@ use Symfony\Component\Console\Command\Command;
  * @internal
  */
 #[CoversClass(QueueDueCronJobsCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class QueueDueCronJobsCommandTest extends TestCase
 {
     use CommandTestTrait;
     use DoubleTrait;
 
+    private ManagerRegistry&MockObject $managerRegistry;
+
+    private CronJobProcessor&MockObject $cronJobProcessor;
+
     protected function setUp(): void
     {
         $this->command = new QueueDueCronJobsCommand(
-            $this->createStub(ManagerRegistry::class),
-            $this->createStub(CronJobProcessor::class)
+            $this->managerRegistry = $this->createMock(ManagerRegistry::class),
+            $this->cronJobProcessor = $this->createMock(CronJobProcessor::class)
         );
     }
 
@@ -57,13 +63,8 @@ class QueueDueCronJobsCommandTest extends TestCase
     #[DataProvider('provideExecuteCases')]
     public function testExecute(array $rawCronJobs, array $expectedDisplay): void
     {
-        $this->command = new QueueDueCronJobsCommand(
-            $managerRegistry = $this->createMock(ManagerRegistry::class),
-            $cronJobProcessor = $this->createMock(CronJobProcessor::class)
-        );
-
-        $managerRegistry
-            ->expects($this->once())
+        $this->managerRegistry
+            ->expects($this->any())
             ->method('getRepository')
             ->with(CronJob::class)
             ->willReturn($repository = $this->createMock(EntityRepository::class))
@@ -75,7 +76,7 @@ class QueueDueCronJobsCommandTest extends TestCase
             ->with(['active' => true])
             ->willReturn(
                 $cronJobs = array_map(
-                    fn (array $rawCronJob): CronJob&Stub => $this->createCronJob(
+                    fn (array $rawCronJob): CronJob&MockObject => $this->createCronJob(
                         $rawCronJob['name'],
                         $rawCronJob['due']
                     ),
@@ -90,12 +91,12 @@ class QueueDueCronJobsCommandTest extends TestCase
         );
 
         if (0 === $numDueCronJobs = \count($dueCronJobs)) {
-            $cronJobProcessor
+            $this->cronJobProcessor
                 ->expects($this->never())
                 ->method('queue')
             ;
         } else {
-            $cronJobProcessor
+            $this->cronJobProcessor
                 ->expects($this->exactly($numDueCronJobs))
                 ->method('queue')
                 ->with(
@@ -173,14 +174,16 @@ class QueueDueCronJobsCommandTest extends TestCase
         ];
     }
 
-    private function createCronJob(string $name, bool $due): CronJob&Stub
+    private function createCronJob(string $name, bool $due): CronJob&MockObject
     {
-        $cronJob = $this->createStub(CronJob::class);
+        $cronJob = $this->createMock(CronJob::class);
         $cronJob
+            ->expects($this->any())
             ->method('getName')
             ->willReturn($name)
         ;
         $cronJob
+            ->expects($this->any())
             ->method('isDue')
             ->willReturn($due)
         ;

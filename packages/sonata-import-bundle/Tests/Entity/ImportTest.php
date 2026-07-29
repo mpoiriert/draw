@@ -10,6 +10,7 @@ use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -22,6 +23,11 @@ class ImportTest extends TestCase
     protected function setUp(): void
     {
         $this->entity = new Import();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(GroupSequenceProviderInterface::class, $this->entity);
     }
 
     public function testIdMutator(): void

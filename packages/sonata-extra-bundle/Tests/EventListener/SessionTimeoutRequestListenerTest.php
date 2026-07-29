@@ -5,10 +5,13 @@ namespace Draw\Bundle\SonataExtraBundle\Tests\EventListener;
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Draw\Component\Security\Core\Security;
 use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -25,17 +28,35 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @internal
  */
 #[CoversClass(SessionTimeoutRequestListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class SessionTimeoutRequestListenerTest extends TestCase
 {
     use DoubleTrait;
 
+    private SessionTimeoutRequestListener $object;
+
+    private MockObject&UrlGeneratorInterface $urlGenerator;
+
+    private MockObject&Security $security;
+
+    protected function setUp(): void
+    {
+        $this->object = new SessionTimeoutRequestListener(
+            $this->security = $this->createMock(Security::class),
+            $this->urlGenerator = $this->createMock(UrlGeneratorInterface::class),
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
+        );
+    }
+
     public function testGetSubscribedEvents(): void
     {
-        $object = new SessionTimeoutRequestListener(
-            $this->createStub(Security::class),
-            $this->createStub(UrlGeneratorInterface::class),
-        );
-
         $this->assertSame(
             [
                 RequestEvent::class => [
@@ -46,17 +67,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
                     ['onKernelResponseAddDialog', -2000],
                 ],
             ],
-            $object::getSubscribedEvents()
+            $this->object::getSubscribedEvents()
         );
     }
 
     public function testOnKernelRequestInvalidate(): void
     {
-        $object = new SessionTimeoutRequestListener(
-            $this->createStub(Security::class),
-            $this->createStub(UrlGeneratorInterface::class),
-        );
-
         $requestEvent = new RequestEvent(
             $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
@@ -75,25 +91,20 @@ class SessionTimeoutRequestListenerTest extends TestCase
             ->method('invalidate')
         ;
 
-        $object->onKernelRequestInvalidate($requestEvent);
+        $this->object->onKernelRequestInvalidate($requestEvent);
     }
 
     #[DoesNotPerformAssertions]
     #[DataProvider('provideOnKernelRequestInvalidateNotInvalidateCases')]
     public function testOnKernelRequestInvalidateNotInvalidate(Request $request, int $requestType): void
     {
-        $object = new SessionTimeoutRequestListener(
-            $this->createStub(Security::class),
-            $this->createStub(UrlGeneratorInterface::class),
-        );
-
         $requestEvent = new RequestEvent(
             $this->createStub(HttpKernelInterface::class),
             $request,
             $requestType
         );
 
-        $object->onKernelRequestInvalidate($requestEvent);
+        $this->object->onKernelRequestInvalidate($requestEvent);
     }
 
     public static function provideOnKernelRequestInvalidateNotInvalidateCases(): iterable
@@ -166,11 +177,6 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
     public function testOnKernelResponseSetLastUsed(): void
     {
-        $object = new SessionTimeoutRequestListener(
-            $this->createStub(Security::class),
-            $this->createStub(UrlGeneratorInterface::class),
-        );
-
         $event = new ResponseEvent(
             $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
@@ -180,7 +186,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $request->setSession($session = new Session(new MockArraySessionStorage()));
 
-        $object->onKernelResponseSetLastUsed($event);
+        $this->object->onKernelResponseSetLastUsed($event);
 
         $this->assertEqualsWithDelta(
             time(),
@@ -195,11 +201,6 @@ class SessionTimeoutRequestListenerTest extends TestCase
         Request $request,
         int $requestType = HttpKernelInterface::MAIN_REQUEST,
     ): void {
-        $object = new SessionTimeoutRequestListener(
-            $this->createStub(Security::class),
-            $this->createStub(UrlGeneratorInterface::class),
-        );
-
         $event = new ResponseEvent(
             $this->createStub(HttpKernelInterface::class),
             $request,
@@ -207,7 +208,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             new Response()
         );
 
-        $object->onKernelResponseSetLastUsed($event);
+        $this->object->onKernelResponseSetLastUsed($event);
     }
 
     public static function provideOnKernelResponseSetLastUsedNoSetCases(): iterable
@@ -248,11 +249,6 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
     public function testOnKernelResponseAddDialog(): void
     {
-        $object = new SessionTimeoutRequestListener(
-            $security = $this->createMock(Security::class),
-            $urlGenerator = $this->createMock(UrlGeneratorInterface::class),
-        );
-
         $event = new ResponseEvent(
             $this->createStub(HttpKernelInterface::class),
             new Request(),
@@ -264,12 +260,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $response->setContent('<meta data-sonata-admin/><title>value</title>');
 
-        $security->expects($this->once())
+        $this->security->expects($this->once())
             ->method('getUser')
             ->willReturn($this->createStub(UserInterface::class))
         ;
 
-        $urlGenerator->expects($this->exactly(2))
+        $this->urlGenerator->expects($this->exactly(2))
             ->method('generate')
             ->with(
                 ...static::withConsecutive(
@@ -283,7 +279,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             )
         ;
 
-        $object->onKernelResponseAddDialog($event);
+        $this->object->onKernelResponseAddDialog($event);
 
         $this->assertSame(
             '<meta data-sonata-admin/>
@@ -302,23 +298,18 @@ class SessionTimeoutRequestListenerTest extends TestCase
         ?UserInterface $user = null,
         int $requestType = HttpKernelInterface::MAIN_REQUEST,
     ): void {
-        $object = new SessionTimeoutRequestListener(
-            $security = $this->createMock(Security::class),
-            $urlGenerator = $this->createMock(UrlGeneratorInterface::class),
-        );
-
-        $security->expects($this->once())
+        $this->security->expects($this->once())
             ->method('getUser')
             ->willReturn($user)
         ;
 
-        $urlGenerator->expects($this->never())
+        $this->urlGenerator->expects($this->never())
             ->method('generate')
         ;
 
         $previousContent = $response->getContent();
 
-        $object->onKernelResponseAddDialog(
+        $this->object->onKernelResponseAddDialog(
             new ResponseEvent(
                 $this->createStub(HttpKernelInterface::class),
                 new Request(),

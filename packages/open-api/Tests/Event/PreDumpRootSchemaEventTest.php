@@ -6,6 +6,7 @@ use Draw\Component\OpenApi\Event\PreDumpRootSchemaEvent;
 use Draw\Component\OpenApi\Schema\Root;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @internal
@@ -21,6 +22,14 @@ class PreDumpRootSchemaEventTest extends TestCase
     {
         $this->object = new PreDumpRootSchemaEvent(
             $this->schema = new Root()
+        );
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            Event::class,
+            $this->object
         );
     }
 

@@ -44,7 +44,7 @@ class MakeDrawPackage extends AbstractMaker
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
         $type = $input->getArgument('type');
-        $packageName = $input->getArgument('name');
+        $packageName = (string) $input->getArgument('name');
 
         if (!\in_array($type, ['component', 'bundle'], true)) {
             $io->error('Invalid package type');
@@ -59,13 +59,13 @@ class MakeDrawPackage extends AbstractMaker
         }
 
         if ('bundle' === $type) {
-            if (!str_ends_with((string) $packageName, '-bundle')) {
+            if (!str_ends_with($packageName, '-bundle')) {
                 $io->error('Package name should end with -bundle');
 
                 return;
             }
         } else {
-            if (str_ends_with((string) $packageName, '-bundle')) {
+            if (str_ends_with($packageName, '-bundle')) {
                 $io->error('Package name should not end with -bundle');
 
                 return;

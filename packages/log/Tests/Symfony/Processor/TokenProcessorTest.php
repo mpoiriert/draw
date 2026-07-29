@@ -7,6 +7,8 @@ use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Component\Log\Symfony\Processor\TokenProcessor;
 use Monolog\Level;
 use Monolog\LogRecord;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -15,18 +17,28 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class TokenProcessorTest extends TestCase
 {
+    private TokenProcessor $service;
+
+    private TokenStorageInterface&MockObject $tokenStorage;
+
+    private string $key;
+
+    protected function setUp(): void
+    {
+        $this->service = new TokenProcessor(
+            $this->tokenStorage = $this->createMock(TokenStorageInterface::class),
+            $this->key = uniqid()
+        );
+    }
+
     public function testInvokeNoToken(): void
     {
-        $service = new TokenProcessor(
-            $this->createStub(TokenStorageInterface::class),
-            $key = uniqid()
-        );
-
         $this->assertSame(
-            [$key => null],
-            $service->__invoke(
+            [$this->key => null],
+            $this->service->__invoke(
                 new LogRecord(
                     new \DateTimeImmutable(),
                     'test',
@@ -39,12 +51,7 @@ class TokenProcessorTest extends TestCase
 
     public function testInvokeNotIdentifiedToken(): void
     {
-        $service = new TokenProcessor(
-            $tokenStorage = $this->createMock(TokenStorageInterface::class),
-            $key = uniqid()
-        );
-
-        $tokenStorage->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->willReturn(
                 new NullToken()
@@ -53,13 +60,13 @@ class TokenProcessorTest extends TestCase
 
         $this->assertSame(
             [
-                $key => [
+                $this->key => [
                     'authenticated' => false,
                     'roles' => [],
                     'user_identifier' => '',
                 ],
             ],
-            $service->__invoke(
+            $this->service->__invoke(
                 new LogRecord(
                     new \DateTimeImmutable(),
                     'test',
@@ -103,12 +110,7 @@ class TokenProcessorTest extends TestCase
             }
         };
 
-        $service = new TokenProcessor(
-            $tokenStorage = $this->createMock(TokenStorageInterface::class),
-            $key = uniqid()
-        );
-
-        $tokenStorage->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->willReturn(
                 new UsernamePasswordToken(
@@ -123,14 +125,14 @@ class TokenProcessorTest extends TestCase
 
         $this->assertSame(
             [
-                $key => [
+                $this->key => [
                     'authenticated' => true,
                     'roles' => $roles,
                     'user_identifier' => $user->getUserIdentifier(),
                     'user_id' => (string) $user->getId(),
                 ],
             ],
-            $service->__invoke(
+            $this->service->__invoke(
                 new LogRecord(
                     new \DateTimeImmutable(),
                     'test',

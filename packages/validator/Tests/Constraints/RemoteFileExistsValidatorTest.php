@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
@@ -22,6 +23,14 @@ class RemoteFileExistsValidatorTest extends TestCase
     protected function setUp(): void
     {
         $this->object = new RemoteFileExistsValidator();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ConstraintValidatorInterface::class,
+            $this->object
+        );
     }
 
     public function testValidateInvalidConstraint(): void

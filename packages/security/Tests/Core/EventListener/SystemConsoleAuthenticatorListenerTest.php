@@ -1,30 +1,52 @@
 <?php
 
-namespace Draw\Component\Security\Tests\Core\EventListener;
+namespace Core\EventListener;
 
+use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class SystemConsoleAuthenticatorListenerTest extends TestCase
 {
-    public function testGetSubscribedEvents(): void
+    private SystemConsoleAuthenticatorListener $object;
+
+    private TokenStorageInterface&MockObject $tokenStorage;
+
+    private SystemAuthenticatorInterface&MockObject $systemAuthenticator;
+
+    protected function setUp(): void
     {
-        $object = new SystemConsoleAuthenticatorListener(
-            $this->createStub(TokenStorageInterface::class),
-            $this->createStub(SystemAuthenticatorInterface::class),
+        $this->object = new SystemConsoleAuthenticatorListener(
+            $this->tokenStorage = $this->createMock(TokenStorageInterface::class),
+            $this->systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class),
             true
         );
+    }
 
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            EventSubscriberInterface::class,
+            $this->object
+        );
+    }
+
+    public function testGetSubscribedEvents(): void
+    {
         $this->assertSame(
             [
                 ConsoleCommandEvent::class => [
@@ -32,21 +54,15 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
                     ['connectSystem', 0],
                 ],
             ],
-            $object::getSubscribedEvents()
+            $this->object::getSubscribedEvents()
         );
     }
 
     public function testAddOptions(): void
     {
-        $object = new SystemConsoleAuthenticatorListener(
-            $this->createStub(TokenStorageInterface::class),
-            $this->createStub(SystemAuthenticatorInterface::class),
-            true
-        );
-
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
-        $object->addOptions($consoleCommandEvent);
+        $this->object->addOptions($consoleCommandEvent);
 
         $definition = $consoleCommandEvent->getCommand()->getDefinition();
 
@@ -60,157 +76,137 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
 
     public function testConnectSystemAutoConnect(): void
     {
-        $object = new SystemConsoleAuthenticatorListener(
-            $tokenStorage = $this->createMock(TokenStorageInterface::class),
-            $systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class),
-            true
-        );
+        ReflectionAccessor::setPropertiesValue($this->object, ['systemAutoLogin' => true]);
 
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
-        $systemAuthenticator
+        $this->systemAuthenticator
             ->expects($this->once())
             ->method('getTokenForSystem')
-            ->willReturn($token = $this->createStub(TokenInterface::class))
+            ->willReturn($token = $this->createMock(TokenInterface::class))
         ;
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;
 
-        $object->connectSystem($consoleCommandEvent);
+        $this->object->connectSystem($consoleCommandEvent);
     }
 
     public function testConnectSystemAutoConnectDisabled(): void
     {
-        $object = new SystemConsoleAuthenticatorListener(
-            $tokenStorage = $this->createMock(TokenStorageInterface::class),
-            $systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class),
-            false
-        );
+        ReflectionAccessor::setPropertiesValue($this->object, ['systemAutoLogin' => false]);
 
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->never())
             ->method('getToken')
             ->willReturn(null)
         ;
 
-        $systemAuthenticator
+        $this->systemAuthenticator
             ->expects($this->never())
             ->method('getTokenForSystem')
         ;
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->never())
             ->method('setToken')
         ;
 
-        $object->connectSystem($consoleCommandEvent);
+        $this->object->connectSystem($consoleCommandEvent);
     }
 
     public function testConnectSystemAutoConnectAlreadyConnected(): void
     {
-        $object = new SystemConsoleAuthenticatorListener(
-            $tokenStorage = $this->createMock(TokenStorageInterface::class),
-            $systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class),
-            true
-        );
+        ReflectionAccessor::setPropertiesValue($this->object, ['systemAutoLogin' => true]);
 
         $consoleCommandEvent = $this->createConsoleCommandEvent();
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
             ->willReturn($this->createStub(TokenInterface::class))
         ;
 
-        $systemAuthenticator
+        $this->systemAuthenticator
             ->expects($this->never())
             ->method('getTokenForSystem')
         ;
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->never())
             ->method('setToken')
         ;
 
-        $object->connectSystem($consoleCommandEvent);
+        $this->object->connectSystem($consoleCommandEvent);
     }
 
     public function testConnectSystemAutoConnectWithOption(): void
     {
-        $object = new SystemConsoleAuthenticatorListener(
-            $tokenStorage = $this->createMock(TokenStorageInterface::class),
-            $systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class),
-            false
-        );
+        ReflectionAccessor::setPropertiesValue($this->object, ['systemAutoLogin' => false]);
 
         $consoleCommandEvent = $this->createConsoleCommandEvent(['--as-system' => true]);
 
-        $object->addOptions($consoleCommandEvent);
+        $this->object->addOptions($consoleCommandEvent);
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
-        $systemAuthenticator
+        $this->systemAuthenticator
             ->expects($this->once())
             ->method('getTokenForSystem')
-            ->willReturn($token = $this->createStub(TokenInterface::class))
+            ->willReturn($token = $this->createMock(TokenInterface::class))
         ;
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;
 
-        $object->connectSystem($consoleCommandEvent);
+        $this->object->connectSystem($consoleCommandEvent);
     }
 
     public function testConnectSystemAutoConnectWithOptionAndSystemAutoLogin(): void
     {
-        $object = new SystemConsoleAuthenticatorListener(
-            $tokenStorage = $this->createMock(TokenStorageInterface::class),
-            $systemAuthenticator = $this->createMock(SystemAuthenticatorInterface::class),
-            false
-        );
+        ReflectionAccessor::setPropertiesValue($this->object, ['systemAutoLogin' => true]);
 
         $consoleCommandEvent = $this->createConsoleCommandEvent(['--as-system' => true]);
 
-        $object->addOptions($consoleCommandEvent);
+        $this->object->addOptions($consoleCommandEvent);
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
             ->willReturn(null)
         ;
 
-        $systemAuthenticator
+        $this->systemAuthenticator
             ->expects($this->once())
             ->method('getTokenForSystem')
-            ->willReturn($token = $this->createStub(TokenInterface::class))
+            ->willReturn($token = $this->createMock(TokenInterface::class))
         ;
 
-        $tokenStorage
+        $this->tokenStorage
             ->expects($this->once())
             ->method('setToken')
             ->with($token)
         ;
 
-        $object->connectSystem($consoleCommandEvent);
+        $this->object->connectSystem($consoleCommandEvent);
     }
 
     protected function createConsoleCommandEvent(array $input = []): ConsoleCommandEvent

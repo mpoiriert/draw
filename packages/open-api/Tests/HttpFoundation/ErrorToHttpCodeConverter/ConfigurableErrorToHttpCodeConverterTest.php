@@ -3,6 +3,7 @@
 namespace Draw\Component\OpenApi\Tests\HttpFoundation\ErrorToHttpCodeConverter;
 
 use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ConfigurableErrorToHttpCodeConverter;
+use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ErrorToHttpCodeConverterInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -16,6 +17,14 @@ class ConfigurableErrorToHttpCodeConverterTest extends TestCase
     protected function setUp(): void
     {
         $this->errorToHttpCodeConverter = new ConfigurableErrorToHttpCodeConverter();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->assertInstanceOf(
+            ErrorToHttpCodeConverterInterface::class,
+            $this->errorToHttpCodeConverter
+        );
     }
 
     /**

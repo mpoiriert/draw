@@ -12,6 +12,7 @@ parameters:
   excludePaths:
   	- packages/fixer/Tests/fixtures/*
   ignoreErrors:
+      - identifier: 'method.alreadyNarrowedType'
       - '#Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface::getFlashBag\(\).#'
       #- '#provideTestArgument\(\) return type has no value type specified in iterable type (iterable|array).#'
       #- '#provideTestOption\(\) return type has no value type specified in iterable type (iterable|array).#'
