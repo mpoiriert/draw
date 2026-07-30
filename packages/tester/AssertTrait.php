@@ -396,18 +396,6 @@ trait AssertTrait
     }
     // example-end: assertStringMatchesFormat
 
-    // example-start: assertStringNotMatchesFormat
-    /**
-     * Asserts that a string does not match a given format string.
-     */
-    public function assertStringNotMatchesFormat(string $format, string $message = ''): self
-    {
-        Assert::assertStringNotMatchesFormat($format, $this->getData(), $message);
-
-        return $this;
-    }
-    // example-end: assertStringNotMatchesFormat
-
     // example-start: assertStringStartsWith
     /**
      * Asserts that a string starts with a given prefix.

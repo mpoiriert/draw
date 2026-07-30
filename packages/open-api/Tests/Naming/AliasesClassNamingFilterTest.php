@@ -49,7 +49,7 @@ class AliasesClassNamingFilterTest extends TestCase
     {
         $this->assertSame(
             $originalClassName = uniqid('class'),
-            $this->object->filterClassName($originalClassName, [], null)
+            $this->object->filterClassName($originalClassName, [])
         );
     }
 

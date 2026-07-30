@@ -6,7 +6,6 @@ use Draw\Component\Process\ProcessFactory;
 use Draw\Contracts\Process\ProcessFactoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Process\Process;
 
 /**
  * @internal
@@ -35,8 +34,6 @@ class ProcessFactoryTest extends TestCase
     public function testCreateDefault(): void
     {
         $process = $this->service->create(['cd']);
-
-        $this->assertInstanceOf(Process::class, $process);
 
         $this->assertSame(
             "'cd'",
@@ -72,8 +69,6 @@ class ProcessFactoryTest extends TestCase
             $timeout = 5.0
         );
 
-        $this->assertInstanceOf(Process::class, $process);
-
         $this->assertSame(
             "'cd'",
             $process->getCommandLine()
@@ -104,7 +99,6 @@ class ProcessFactoryTest extends TestCase
     {
         $process = $this->service->createFromShellCommandLine('ls -lah | grep test');
 
-        $this->assertInstanceOf(Process::class, $process);
         $this->assertSame('ls -lah | grep test', $process->getCommandLine());
         $this->assertSame(getcwd(), $process->getWorkingDirectory());
         $this->assertEmpty($process->getEnv());
@@ -122,7 +116,6 @@ class ProcessFactoryTest extends TestCase
             $timeout = 5.0
         );
 
-        $this->assertInstanceOf(Process::class, $process);
         $this->assertSame('ls -lah | grep test', $process->getCommandLine());
         $this->assertSame($workingDirectory, $process->getWorkingDirectory());
         $this->assertSame($env, $process->getEnv());

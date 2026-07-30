@@ -9,7 +9,7 @@ use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
     ORM\Entity,
     ORM\Table(name: 'acme__user_tag')
 ]
-class UserTag
+class UserTag implements \Stringable
 {
     #[
         ORM\Id,

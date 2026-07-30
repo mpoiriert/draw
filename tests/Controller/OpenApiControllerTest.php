@@ -42,7 +42,7 @@ class OpenApiControllerTest extends WebTestCase implements AutowiredInterface
             file_put_contents(
                 $file,
                 json_encode(
-                    json_decode($content, null, 512, \JSON_THROW_ON_ERROR),
+                    json_decode((string) $content, null, 512, \JSON_THROW_ON_ERROR),
                     \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES
                 )
             );

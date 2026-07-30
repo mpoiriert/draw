@@ -26,9 +26,10 @@ final class ReflectionAccessor
     {
         $property = self::getPropertyReflection($objectOrClass, $propertyName);
 
-        $property->isStatic()
-            ? $property->setValue($value)
-            : $property->setValue($objectOrClass, $value);
+        $property->setValue(
+            $property->isStatic() ? null : $objectOrClass,
+            $value
+        );
     }
 
     /**

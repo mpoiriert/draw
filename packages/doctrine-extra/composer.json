@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.3"
     },
     "require-dev": {
         "doctrine/orm": "^3.6",
@@ -24,7 +24,7 @@
         "doctrine/data-fixtures": "^2.0",
         "draw/dependency-injection": "^0.39",
         "draw/graphviz": "^0.39",
-        "phpunit/phpunit": "^11.3 || ^12.0"
+        "phpunit/phpunit": "^12.5"
     },
     "suggest": {
         "draw/graphviz": "To generate graph of the database schema"

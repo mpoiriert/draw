@@ -139,7 +139,7 @@ class DrawMessageTraitTest extends TestCase
 
         $this->assertSame(
             $this->entity,
-            $this->entity->addTag($value = $this->createMock(DrawMessageTagInterface::class))
+            $this->entity->addTag($value = $this->createStub(DrawMessageTagInterface::class))
         );
 
         $this->assertCount(1, $this->entity->getTags());

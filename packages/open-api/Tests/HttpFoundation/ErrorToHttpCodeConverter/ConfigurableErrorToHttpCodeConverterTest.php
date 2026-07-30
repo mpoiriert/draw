@@ -74,8 +74,12 @@ class ConfigurableErrorToHttpCodeConverterTest extends TestCase
         ];
 
         $exception = new class extends \Exception implements \JsonSerializable {
-            public function jsonSerialize(): void
+            public function jsonSerialize(): array
             {
+                return [
+                    'message' => $this->getMessage(),
+                    'code' => $this->getCode(),
+                ];
             }
         };
 

@@ -26,15 +26,14 @@ abstract class IntegrationTestCase extends TestCase
 
     protected function mockExtension(string $name): ExtensionInterface
     {
-        $extension = $this->createMock(ExtensionInterface::class);
+        $extension = $this->createStub(ExtensionInterface::class);
 
-        $extension->expects($this->any())
+        $extension
             ->method('getAlias')
             ->willReturn($name)
         ;
 
         $extension
-            ->expects($this->any())
             ->method('getNamespace')
             ->willReturn($name)
         ;

@@ -4,6 +4,7 @@ namespace Draw\Component\Security\Tests\Core\EventListener;
 
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class SystemMessengerAuthenticatorListenerTest extends TestCase
 {
     private SystemMessengerAuthenticatorListener $object;
@@ -53,7 +55,7 @@ class SystemMessengerAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
-            ->willReturn($this->createMock(TokenInterface::class))
+            ->willReturn($this->createStub(TokenInterface::class))
         ;
 
         $this->tokenStorage

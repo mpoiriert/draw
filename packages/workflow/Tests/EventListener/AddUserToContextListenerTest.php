@@ -4,6 +4,7 @@ namespace Draw\Component\Workflow\Tests\EventListener;
 
 use Draw\Component\Security\Core\Security;
 use Draw\Component\Workflow\EventListener\AddUserToContextListener;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,11 +15,12 @@ use Symfony\Component\Workflow\Marking;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class AddUserToContextListenerTest extends TestCase
 {
     private AddUserToContextListener $object;
 
-    private MockObject&Security $security;
+    private Security&MockObject $security;
 
     protected function setUp(): void
     {
@@ -47,7 +49,7 @@ class AddUserToContextListenerTest extends TestCase
     {
         $transitionEvent = new TransitionEvent(
             new \stdClass(),
-            $this->createMock(Marking::class),
+            $this->createStub(Marking::class),
         );
 
         $transitionEvent->setContext($originalContext = [
@@ -66,7 +68,7 @@ class AddUserToContextListenerTest extends TestCase
     {
         $transitionEvent = new TransitionEvent(
             new \stdClass(),
-            $this->createMock(Marking::class),
+            $this->createStub(Marking::class),
         );
 
         $transitionEvent->setContext($originalContext = [

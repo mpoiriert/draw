@@ -2,18 +2,21 @@
 
 namespace Draw\Component\Tester\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'draw:tester:generate-asserts-documentation-page',
+    description: 'Generate the assert documentation base on the methods available',
+)]
 class GenerateAssertsDocumentationPageCommand extends Command
 {
     protected function configure(): void
     {
         $this
-            ->setName('draw:tester:generate-asserts-documentation-page')
-            ->setDescription('Generate the assert documentation base on the methods available')
             ->addArgument(
                 'assertMethodsFilePath',
                 InputArgument::OPTIONAL,
@@ -50,7 +53,7 @@ that is normally pass trough the **PHPUnit Assert** methods.
 
             $file .= "
 {$methodName}
-".str_pad('', \strlen($methodName), '^').'
+".str_pad('', \strlen((string) $methodName), '^').'
 
 .. literalinclude:: ../AssertTrait.php
    :name: assert-'.str_replace('assert', '', $methodName).'

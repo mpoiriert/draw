@@ -8,6 +8,7 @@ use Draw\Component\OpenApi\Serializer\Serialization;
 use JMS\Serializer\ContextFactory\SerializationContextFactoryInterface;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @internal
  */
 #[CoversClass(ResponseSerializerListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class ResponseSerializerListenerTest extends TestCase
 {
     private ResponseSerializerListener $object;
@@ -68,7 +70,7 @@ class ResponseSerializerListenerTest extends TestCase
     public function testOnKernelViewAlreadyResponse(): void
     {
         $event = new ViewEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             new Response()
@@ -85,7 +87,7 @@ class ResponseSerializerListenerTest extends TestCase
     public function testOnKernelViewRequestNotJson(): void
     {
         $event = new ViewEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             null
@@ -104,7 +106,7 @@ class ResponseSerializerListenerTest extends TestCase
     public function testOnKernelViewResponseNull(): void
     {
         $event = new ViewEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             null
@@ -128,7 +130,7 @@ class ResponseSerializerListenerTest extends TestCase
     {
         $result = (object) [];
         $event = new ViewEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             $result
@@ -219,7 +221,7 @@ class ResponseSerializerListenerTest extends TestCase
     public function testOnKernelResponse(): void
     {
         $responseEvent = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             $response = new Response()

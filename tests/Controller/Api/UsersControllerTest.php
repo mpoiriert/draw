@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -55,7 +56,7 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
     public function testUsersAction(): void
     {
         $this->client
-            ->request('GET', '/api/users')
+            ->request(Request::METHOD_GET, '/api/users')
         ;
 
         static::assertResponseIsSuccessful();
@@ -180,7 +181,7 @@ class UsersControllerTest extends WebTestCase implements AutowiredInterface
 
         $this->client
             ->request(
-                'POST',
+                Request::METHOD_POST,
                 '/api/users',
                 server: ['CONTENT_TYPE' => 'application/xml'],
                 content: '<test />'

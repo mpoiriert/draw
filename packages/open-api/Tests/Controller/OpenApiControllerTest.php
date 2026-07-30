@@ -7,34 +7,28 @@ use Draw\Component\OpenApi\Extraction\ExtractionContextInterface;
 use Draw\Component\OpenApi\OpenApi;
 use Draw\Component\OpenApi\Schema\Root;
 use Draw\Component\OpenApi\SchemaBuilder\SchemaBuilderInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class OpenApiControllerTest extends TestCase
 {
     private OpenApiController $object;
 
-    /**
-     * @var OpenApi&MockObject
-     */
-    private OpenApi $openApi;
+    private OpenApi&MockObject $openApi;
 
-    /**
-     * @var SchemaBuilderInterface&MockObject
-     */
-    private SchemaBuilderInterface $schemaBuilder;
+    private SchemaBuilderInterface&MockObject $schemaBuilder;
 
-    /**
-     * @var UrlGeneratorInterface&MockObject
-     */
-    private UrlGeneratorInterface $urlGenerator;
+    private UrlGeneratorInterface&MockObject $urlGenerator;
 
     private string $sandboxUrl;
 
@@ -139,7 +133,7 @@ class OpenApiControllerTest extends TestCase
         $response = $this->object->apiDocAction($request, $version);
 
         $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), (string) $response->getContent());
         $this->assertSame($rootSchemaJson, $response->getContent());
     }
 }

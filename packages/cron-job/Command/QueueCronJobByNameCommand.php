@@ -14,7 +14,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-#[AsCommand(name: 'draw:cron-job:queue-by-name')]
+#[AsCommand(
+    name: 'draw:cron-job:queue-by-name',
+    description: 'Queues cron job by name',
+)]
 class QueueCronJobByNameCommand extends Command
 {
     public function __construct(
@@ -27,7 +30,6 @@ class QueueCronJobByNameCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Queues cron job by name')
             ->addArgument('name', InputArgument::REQUIRED, 'Cron job name')
         ;
     }

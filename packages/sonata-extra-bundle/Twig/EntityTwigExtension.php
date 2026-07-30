@@ -18,8 +18,8 @@ class EntityTwigExtension extends AbstractExtension
     public function getFilters(): array
     {
         return [
-            new TwigFilter('entity_to_string', [$this, 'entityToString']),
-            new TwigFilter('translate_label', [$this, 'translateLabel']),
+            new TwigFilter('entity_to_string', $this->entityToString(...)),
+            new TwigFilter('translate_label', $this->translateLabel(...)),
         ];
     }
 

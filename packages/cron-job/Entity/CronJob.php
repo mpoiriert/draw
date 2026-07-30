@@ -199,7 +199,7 @@ class CronJob implements \Stringable
     {
         return $this->executions
             ->matching(
-                Criteria::create()
+                Criteria::create(true)
                     ->orderBy(['requestedAt' => 'DESC'])
                     ->setMaxResults(10)
             )

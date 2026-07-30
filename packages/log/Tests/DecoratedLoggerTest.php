@@ -3,6 +3,7 @@
 namespace Draw\Component\Log\Tests;
 
 use Draw\Component\Log\DecoratedLogger;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -10,6 +11,7 @@ use Psr\Log\LoggerInterface;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class DecoratedLoggerTest extends TestCase
 {
     private DecoratedLogger $object;

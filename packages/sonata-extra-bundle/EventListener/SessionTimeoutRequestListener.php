@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SessionTimeoutRequestListener implements EventSubscriberInterface
 {
-    private const LAST_USED_SESSION_ATTRIBUTE = 'draw_sonata_integration_last_used';
+    private const string LAST_USED_SESSION_ATTRIBUTE = 'draw_sonata_integration_last_used';
 
     public static function getSubscribedEvents(): array
     {
@@ -80,7 +80,7 @@ class SessionTimeoutRequestListener implements EventSubscriberInterface
             return;
         }
 
-        if (!str_starts_with($response->headers->get('Content-type', ''), 'text/html')) {
+        if (!str_starts_with((string) $response->headers->get('Content-type', ''), 'text/html')) {
             return;
         }
 

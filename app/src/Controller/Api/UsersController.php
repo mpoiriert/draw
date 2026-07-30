@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 /**
@@ -30,8 +30,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 )]
 class UsersController extends AbstractController
 {
-    public function __construct(private LoggerInterface $logger)
-    {
+    public function __construct(
+        private LoggerInterface $logger,
+        private EntityManagerInterface $entityManager,
+        private EntityHandler $entityHandler,
+        private MailerInterface $mailer,
+    ) {
     }
 
     /**
@@ -40,15 +44,14 @@ class UsersController extends AbstractController
     #[Route(path: '/users', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userCreate')]
-    public function createAction(
+    public function create(
         #[RequestBody]
         User $target,
-        EntityManagerInterface $entityManager,
     ): User {
         $this->logger->info('Create new user');
 
-        $entityManager->persist($target);
-        $entityManager->flush();
+        $this->entityManager->persist($target);
+        $this->entityManager->flush();
 
         return $target;
     }
@@ -58,7 +61,7 @@ class UsersController extends AbstractController
      */
     #[Route(path: '/me', name: 'me', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'me')]
-    public function meAction(): User
+    public function me(): User
     {
         return $this->getUser();
     }
@@ -68,7 +71,7 @@ class UsersController extends AbstractController
      */
     #[Route(path: '/me-simple', name: 'meSimple', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'meSimple')]
-    public function meSimpleAction(): SimpleUser
+    public function meSimple(): SimpleUser
     {
         return new SimpleUser($this->getUser());
     }
@@ -80,12 +83,11 @@ class UsersController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userEdit')]
     #[OpenApi\PathParameter(name: 'id', description: 'The user id to edit', type: 'integer')]
-    public function editAction(
+    public function edit(
         #[RequestBody(propertiesMap: ['id' => 'id'])]
         User $target,
-        EntityManagerInterface $entityManager,
     ): User {
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         return $target;
     }
@@ -96,15 +98,14 @@ class UsersController extends AbstractController
     #[Route(path: '/users/{id}/tags', methods: ['PUT'])]
     #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userSetTags')]
-    public function setTagsAction(
+    public function setTags(
         User $target,
         #[RequestBody(type: 'array<App\Entity\Tag>')]
         array $tags,
-        EntityManagerInterface $entityManager,
     ): array {
         $target->setTags($tags);
 
-        $entityManager->flush();
+        $this->entityManager->flush();
 
         return $target->getTags()->toArray();
     }
@@ -121,10 +122,10 @@ class UsersController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     #[OpenApi\Operation(operationId: 'userDelete')]
     #[Serialization(statusCode: 204)]
-    public function deleteAction(User $target, EntityManagerInterface $entityManager): void
+    public function delete(User $target): void
     {
-        $entityManager->remove($target);
-        $entityManager->flush();
+        $this->entityManager->remove($target);
+        $this->entityManager->flush();
     }
 
     /**
@@ -134,9 +135,9 @@ class UsersController extends AbstractController
      */
     #[Route(path: '/users', methods: ['GET'])]
     #[OpenApi\Operation(operationId: 'userList')]
-    public function listAction(EntityHandler $entityHandler): array
+    public function list(): array
     {
-        return $entityHandler->findAll(User::class);
+        return $this->entityHandler->findAll(User::class);
     }
 
     /**
@@ -146,8 +147,8 @@ class UsersController extends AbstractController
      */
     #[Route(path: '/users/{id}/reset-password-email', methods: ['POST'])]
     #[OpenApi\Operation(operationId: 'userSendResetPasswordEmail')]
-    public function sendResetPasswordEmail(User $target, MailerInterface $mailer): void
+    public function sendResetPasswordEmail(User $target): void
     {
-        $mailer->send(new ForgotPasswordEmail($target->getEmail()));
+        $this->mailer->send(new ForgotPasswordEmail($target->getEmail()));
     }
 }

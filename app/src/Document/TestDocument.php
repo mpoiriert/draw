@@ -3,7 +3,7 @@
 namespace App\Document;
 
 use App\Message\NewTestDocumentMessage;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ODM\MongoDB\Mapping\Attribute as ODM;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
 

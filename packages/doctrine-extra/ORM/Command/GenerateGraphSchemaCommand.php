@@ -5,12 +5,17 @@ namespace Draw\DoctrineExtra\ORM\Command;
 use Doctrine\ORM\EntityManagerInterface;
 use Draw\DoctrineExtra\ORM\GraphSchema\Context;
 use Draw\DoctrineExtra\ORM\GraphSchema\GraphGenerator;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(
+    name: 'draw:doctrine:generate-graph-schema',
+    description: 'Get dot from database schema.',
+)]
 class GenerateGraphSchemaCommand extends Command
 {
     public function __construct(
@@ -23,9 +28,7 @@ class GenerateGraphSchemaCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('draw:doctrine:generate-graph-schema')
             ->addArgument('context-name', InputArgument::OPTIONAL, 'The context name to use.', 'default')
-            ->setDescription('Get dot from database schema.')
             ->setHelp(\sprintf('Usage: bin/console %s | dot -Tsvg -o /tmp/databse.svg', $this->getName()))
         ;
     }

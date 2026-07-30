@@ -5,6 +5,7 @@ namespace Core\EventListener;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
@@ -18,13 +19,14 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class SystemConsoleAuthenticatorListenerTest extends TestCase
 {
     private SystemConsoleAuthenticatorListener $object;
 
-    private MockObject&TokenStorageInterface $tokenStorage;
+    private TokenStorageInterface&MockObject $tokenStorage;
 
-    private MockObject&SystemAuthenticatorInterface $systemAuthenticator;
+    private SystemAuthenticatorInterface&MockObject $systemAuthenticator;
 
     protected function setUp(): void
     {
@@ -133,7 +135,7 @@ class SystemConsoleAuthenticatorListenerTest extends TestCase
         $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
-            ->willReturn($this->createMock(TokenInterface::class))
+            ->willReturn($this->createStub(TokenInterface::class))
         ;
 
         $this->systemAuthenticator

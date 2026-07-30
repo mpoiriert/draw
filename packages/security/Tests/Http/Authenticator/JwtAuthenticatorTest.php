@@ -7,7 +7,8 @@ use Draw\Component\Security\Http\Authenticator\JwtAuthenticator;
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\JwtPayloadBadge;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use Draw\Component\Security\Tests\Stub\JwtAuthenticatableUserInterface;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -31,9 +32,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @internal
  */
 #[CoversClass(JwtAuthenticator::class)]
+#[AllowMockObjectsWithoutExpectations]
 class JwtAuthenticatorTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private JwtAuthenticator $object;
 
@@ -346,7 +348,7 @@ class JwtAuthenticatorTest extends TestCase
         $this->assertNull(
             $this->object->onAuthenticationSuccess(
                 new Request(),
-                $this->createMock(TokenInterface::class),
+                $this->createStub(TokenInterface::class),
                 uniqid('firewall-')
             )
         );

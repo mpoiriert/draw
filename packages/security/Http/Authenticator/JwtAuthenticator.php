@@ -82,7 +82,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         if (!$request->headers->has('Authorization')) {
             return null;
         }
-        if (!preg_match('/Bearer\s(\S+)/', $request->headers->get('Authorization'), $matches)) {
+        if (!preg_match('/Bearer\s(\S+)/', (string) $request->headers->get('Authorization'), $matches)) {
             return null;
         }
 

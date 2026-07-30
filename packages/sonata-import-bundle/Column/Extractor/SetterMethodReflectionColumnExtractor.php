@@ -81,8 +81,6 @@ class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
 
         $parameter = array_shift($parameters);
 
-        \assert($parameter instanceof \ReflectionParameter);
-
         $type = $parameter->getType();
 
         if (!$type instanceof \ReflectionNamedType) {
@@ -96,13 +94,10 @@ class SetterMethodReflectionColumnExtractor extends BaseColumnExtractor
         }
 
         // More than one parameter and default value is not available it's not a proper setter
-        foreach ($parameters as $parameter) {
-            if (!$parameter->isDefaultValueAvailable()) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all(
+            $parameters,
+            static fn (\ReflectionParameter $parameter): bool => $parameter->isDefaultValueAvailable()
+        );
     }
 
     private function isDate(\ReflectionParameter $reflectionParameter): bool

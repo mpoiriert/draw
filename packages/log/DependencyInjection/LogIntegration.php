@@ -79,12 +79,11 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
             $definition->setArguments($this->arrayToArgumentsArray($arguments));
         }
 
-        $this->loadSlowRequest($config['slow_request'], $loader, $container);
+        $this->loadSlowRequest($config['slow_request'], $container);
     }
 
     private function loadSlowRequest(
         array $config,
-        PhpFileLoader $loader,
         ContainerBuilder $container,
     ): void {
         if (!$this->isConfigEnabled($container, $config)) {

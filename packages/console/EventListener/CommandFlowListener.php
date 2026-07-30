@@ -20,9 +20,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class CommandFlowListener implements EventSubscriberInterface
 {
-    final public const OPTION_EXECUTION_ID = 'draw-execution-id';
+    final public const string OPTION_EXECUTION_ID = 'draw-execution-id';
 
-    final public const OPTION_IGNORE = 'draw-execution-ignore';
+    final public const string OPTION_IGNORE = 'draw-execution-ignore';
 
     private array $commandsToIgnore = [
         'help',
@@ -273,7 +273,7 @@ class CommandFlowListener implements EventSubscriberInterface
             return;
         }
 
-        if (mb_strlen((string) $outputString) > 50000) {
+        if (\is_string($outputString) && mb_strlen($outputString) > 50000) {
             $outputString = \sprintf(
                 "%s\n\n[OUTPUT WAS TOO BIG]\n\nTail of log:\n\n%s",
                 mb_substr($outputString, 0, 40000),

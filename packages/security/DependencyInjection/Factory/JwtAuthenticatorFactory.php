@@ -57,9 +57,6 @@ class JwtAuthenticatorFactory implements AuthenticatorFactoryInterface
         return $serviceId;
     }
 
-    /**
-     * @param NodeDefinition|ArrayNodeDefinition $builder
-     */
     public function addConfiguration(NodeDefinition $builder): void
     {
         if (!$builder instanceof ArrayNodeDefinition) {

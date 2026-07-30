@@ -130,13 +130,6 @@ class RequestHeadersProcessorTest extends TestCase
 
     public function testInvokeNoRequestStack(): void
     {
-        $service = new RequestHeadersProcessor(
-            null,
-            [],
-            [],
-            uniqid()
-        );
-
         $logRecord = new LogRecord(
             new \DateTimeImmutable(),
             'test',

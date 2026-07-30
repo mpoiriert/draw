@@ -152,7 +152,7 @@ class PreventDelete
 
         \assert($entityManager instanceof EntityManagerInterface);
 
-        $paths = explode('.', $this->getPath());
+        $paths = explode('.', (string) $this->getPath());
 
         $queryBuilder = $entityManager->createQueryBuilder()
             ->from($this->getRelatedClass(), 'root')

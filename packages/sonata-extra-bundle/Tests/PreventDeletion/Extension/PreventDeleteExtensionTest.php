@@ -29,7 +29,7 @@ class PreventDeleteExtensionTest extends TestCase
     {
         $this->object = new PreventDeleteExtension(
             $this->preventDeleteRelationLoader = $this->createMock(PreventDeleteRelationLoader::class),
-            $this->createMock(ManagerRegistry::class),
+            $this->createStub(ManagerRegistry::class),
             $this->security = $this->createMock(Security::class),
         );
     }
@@ -55,9 +55,9 @@ class PreventDeleteExtensionTest extends TestCase
         ;
 
         $showMapper = new ShowMapper(
-            $this->createMock(ShowBuilderInterface::class),
+            $this->createStub(ShowBuilderInterface::class),
             new FieldDescriptionCollection(),
-            $this->createMock(AdminInterface::class),
+            $this->createStub(AdminInterface::class),
         );
 
         $this->object->configureShowFields($showMapper);

@@ -7,7 +7,8 @@ use Draw\Component\AwsToolKit\Command\CloudWatchLogsDownloadCommand;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -18,10 +19,11 @@ use Symfony\Component\Console\Input\InputOption;
  * @internal
  */
 #[CoversClass(CloudWatchLogsDownloadCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class CloudWatchLogsDownloadCommandTest extends TestCase
 {
     use CommandTestTrait;
-    use MockTrait;
+    use DoubleTrait;
 
     private CloudWatchLogsClient&MockObject $cloudWatchLogsClient;
 
@@ -88,7 +90,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         $endTime = new \DateTimeImmutable('2001-01-02 00:00:01');
         $output = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($output, "Before\n");
-        register_shutdown_function('unlink', $output);
+        register_shutdown_function(unlink(...), $output);
 
         $this->cloudWatchLogsClient
             ->expects($this->exactly(2))
@@ -155,7 +157,7 @@ class CloudWatchLogsDownloadCommandTest extends TestCase
         $endTime = new \DateTimeImmutable('2001-01-02 00:00:01');
         $output = sys_get_temp_dir().'/'.uniqid().'.txt';
         file_put_contents($output, "Before\n");
-        register_shutdown_function('unlink', $output);
+        register_shutdown_function(unlink(...), $output);
 
         $this->cloudWatchLogsClient
             ->expects($this->once())

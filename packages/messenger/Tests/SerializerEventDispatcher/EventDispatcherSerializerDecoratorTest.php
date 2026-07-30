@@ -6,7 +6,8 @@ use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostDecodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\EventDispatcherSerializerDecorator;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
@@ -16,9 +17,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class EventDispatcherSerializerDecoratorTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private EventDispatcherSerializerDecorator $object;
 

@@ -3,18 +3,21 @@
 namespace Draw\Component\Tester\Command;
 
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'draw:tester:generate-trait',
+    description: 'Generate the assert trait base on the methods available',
+)]
 class GenerateTraitCommand extends Command
 {
     protected function configure(): void
     {
         $this
-            ->setName('draw:tester:generate-trait')
-            ->setDescription('Generate the assert trait base on the methods available')
             ->addArgument(
                 'assertMethodsFilePath',
                 InputArgument::OPTIONAL,

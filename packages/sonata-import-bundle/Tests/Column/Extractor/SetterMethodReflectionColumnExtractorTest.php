@@ -125,14 +125,14 @@ class SetterMethodReflectionColumnExtractorTest extends TestCase
 
 class SetterClassStub
 {
-    private function setPrivate(string $test): void
+    private function setPrivate(): void
     {
     }
 
     protected function setProtected(string $test): void
     {
         // This is only to prevent phpstan to complain about unused method
-        $this->setPrivate($test);
+        $this->setPrivate();
     }
 
     public static function setStatic(string $test): void

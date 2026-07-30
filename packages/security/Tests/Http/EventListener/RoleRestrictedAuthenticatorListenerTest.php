@@ -4,6 +4,7 @@ namespace Draw\Component\Security\Tests\Http\EventListener;
 
 use Draw\Component\Security\Http\Authenticator\Passport\Badge\RoleRestrictedBadge;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,7 @@ use Symfony\Component\Security\Http\Event\CheckPassportEvent;
  * @internal
  */
 #[CoversClass(RoleRestrictedAuthenticatorListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class RoleRestrictedAuthenticatorListenerTest extends TestCase
 {
     private RoleRestrictedAuthenticatorListener $service;
@@ -120,7 +122,7 @@ class RoleRestrictedAuthenticatorListenerTest extends TestCase
     private function createCheckPassportEvent(array $badges = []): CheckPassportEvent
     {
         return new CheckPassportEvent(
-            $this->createMock(AuthenticatorInterface::class),
+            $this->createStub(AuthenticatorInterface::class),
             new SelfValidatingPassport(
                 new UserBadge(
                     uniqid('user-identifier-'),

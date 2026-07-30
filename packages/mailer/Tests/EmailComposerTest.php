@@ -6,7 +6,8 @@ use Draw\Component\Mailer\Email\LocalizeEmailInterface;
 use Draw\Component\Mailer\EmailComposer;
 use Draw\Component\Mailer\EmailWriter\EmailWriterInterface;
 use Draw\Component\Mailer\Tests\Stub\EmailWriter\EmailWriterStub;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -22,9 +23,10 @@ use Symfony\Component\Translation\Translator;
  * @internal
  */
 #[CoversClass(EmailComposer::class)]
+#[AllowMockObjectsWithoutExpectations]
 class EmailComposerTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private EmailComposer $object;
 
@@ -116,7 +118,7 @@ class EmailComposerTest extends TestCase
 
     public function testRegisterEmailWriter(): void
     {
-        $message = $this->createMock(Email::class);
+        $message = $this->createStub(Email::class);
 
         $envelope = new Envelope(new Address('test@example.com'), [new Address('test@example.com')]);
 
@@ -174,7 +176,7 @@ class EmailComposerTest extends TestCase
     public function testComposeLocalizeEmail(): void
     {
         $message = new class extends Email implements LocalizeEmailInterface {
-            public function getLocale(): ?string
+            public function getLocale(): string
             {
                 return 'fr';
             }

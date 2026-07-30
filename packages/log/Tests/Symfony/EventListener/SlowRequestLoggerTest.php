@@ -3,6 +3,7 @@
 namespace Draw\Component\Log\Tests\Symfony\EventListener;
 
 use Draw\Component\Log\Symfony\EventListener\SlowRequestLoggerListener;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -17,19 +18,14 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class SlowRequestLoggerTest extends TestCase
 {
     private SlowRequestLoggerListener $object;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private LoggerInterface $logger;
+    private LoggerInterface&MockObject $logger;
 
-    /**
-     * @var RequestMatcherInterface&MockObject
-     */
-    private RequestMatcherInterface $requestMatcher;
+    private RequestMatcherInterface&MockObject $requestMatcher;
 
     private array $durations = [];
 
@@ -74,7 +70,7 @@ class SlowRequestLoggerTest extends TestCase
         ;
 
         $event = new TerminateEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             new Response()
         );
@@ -122,7 +118,7 @@ class SlowRequestLoggerTest extends TestCase
         ;
 
         $event = new TerminateEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             new Response()
         );

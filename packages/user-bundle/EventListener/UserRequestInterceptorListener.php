@@ -16,9 +16,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class UserRequestInterceptorListener implements EventSubscriberInterface
 {
-    private const REQUEST_INTERCEPTION_ORIGINAL_URL = 'request-interception-original-url';
+    private const string REQUEST_INTERCEPTION_ORIGINAL_URL = 'request-interception-original-url';
 
-    private const INTERCEPTION_REASON = 'original_request_url';
+    private const string INTERCEPTION_REASON = 'original_request_url';
 
     public static function getSubscribedEvents(): array
     {

@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 
 class DrawTransportFactory extends DoctrineTransportFactory
 {
-    private const DEFAULT_OPTIONS = [
+    private const array DEFAULT_OPTIONS = [
         'table_name' => 'draw_messenger__message',
         'tag_table_name' => '', // Will append _tag to the table_name
         'queue_name' => 'default',

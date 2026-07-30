@@ -12,13 +12,14 @@ use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @internal
  */
 class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterface
 {
-    final public const ADMIN_URL = '/admin';
+    final public const string ADMIN_URL = '/admin';
 
     #[AutowireClient]
     private KernelBrowser $client;
@@ -182,7 +183,7 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
         );
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             \sprintf(self::ADMIN_URL.'/app/user/%s/disable-2fa', self::$user->getId())
         );
 
@@ -203,8 +204,8 @@ class TwoFactorAuthorizationTest extends WebTestCase implements AutowiredInterfa
 
     private function loginToAdmin(): Crawler
     {
-        $this->client->request('GET', self::ADMIN_URL.'/logout');
-        $crawler = $this->client->request('GET', self::ADMIN_URL.'/login');
+        $this->client->request(Request::METHOD_GET, self::ADMIN_URL.'/logout');
+        $crawler = $this->client->request(Request::METHOD_GET, self::ADMIN_URL.'/login');
 
         return $this->client->submit(
             $crawler

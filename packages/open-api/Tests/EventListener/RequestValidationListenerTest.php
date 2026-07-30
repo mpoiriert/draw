@@ -6,7 +6,8 @@ use Draw\Component\OpenApi\EventListener\RequestValidationListener;
 use Draw\Component\OpenApi\Exception\ConstraintViolationListException;
 use Draw\Component\OpenApi\Request\ValueResolver\RequestBody;
 use Draw\Component\OpenApi\Schema\QueryParameter;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,9 +27,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @internal
  */
 #[CoversClass(RequestValidationListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class RequestValidationListenerTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private RequestValidationListener $object;
 
@@ -62,7 +64,7 @@ class RequestValidationListenerTest extends TestCase
     public function testOnKernelControllerNoValidation(): void
     {
         $event = new ControllerArgumentsEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             new Request(),
@@ -80,7 +82,7 @@ class RequestValidationListenerTest extends TestCase
     public function testOnKernelControllerBodyValidationNoError(): void
     {
         $event = new ControllerArgumentsEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             $request = new Request(),
@@ -95,7 +97,7 @@ class RequestValidationListenerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($bodyObject, null, ['Default'])
-            ->willReturn($this->createMock(ConstraintViolationListInterface::class))
+            ->willReturn($this->createStub(ConstraintViolationListInterface::class))
         ;
 
         $this->object->onKernelController($event);
@@ -104,7 +106,7 @@ class RequestValidationListenerTest extends TestCase
     public function testOnKernelControllerQueryParametersValidationNoError(): void
     {
         $event = new ControllerArgumentsEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             $request = new Request(),
@@ -120,7 +122,7 @@ class RequestValidationListenerTest extends TestCase
             ->expects($this->once())
             ->method('validate')
             ->with($parameterObject, [], null)
-            ->willReturn($this->createMock(ConstraintViolationListInterface::class))
+            ->willReturn($this->createStub(ConstraintViolationListInterface::class))
         ;
 
         $this->object->onKernelController($event);
@@ -129,7 +131,7 @@ class RequestValidationListenerTest extends TestCase
     public function testOnKernelControllerDoNotValidate(): void
     {
         $event = new ControllerArgumentsEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             $request = new Request(),
@@ -152,7 +154,7 @@ class RequestValidationListenerTest extends TestCase
     public function testOnKernelControllerWithError(): void
     {
         $event = new ControllerArgumentsEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             'gettype',
             [],
             $request = new Request(),

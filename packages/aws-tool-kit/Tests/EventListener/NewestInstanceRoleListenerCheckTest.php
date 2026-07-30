@@ -6,6 +6,7 @@ use Aws\Ec2\Ec2Client;
 use Draw\Component\AwsToolKit\EventListener\NewestInstanceRoleCheckListener;
 use Draw\Component\AwsToolKit\Imds\ImdsClientInterface;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -18,6 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @internal
  */
 #[CoversClass(NewestInstanceRoleCheckListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class NewestInstanceRoleListenerCheckTest extends TestCase
 {
     private NewestInstanceRoleCheckListener $service;
@@ -27,7 +29,7 @@ class NewestInstanceRoleListenerCheckTest extends TestCase
     protected function setUp(): void
     {
         $this->service = new NewestInstanceRoleCheckListener(
-            $this->createMock(Ec2Client::class),
+            $this->createStub(Ec2Client::class),
             $this->imdsClient = $this->createMock(ImdsClientInterface::class),
         );
     }

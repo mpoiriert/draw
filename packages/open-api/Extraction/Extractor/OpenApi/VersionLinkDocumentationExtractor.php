@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class VersionLinkDocumentationExtractor implements ExtractorInterface
 {
-    private const VENDOR_DATA_FLAG = 'X-DrawOpenApi-VersionLinkDocumentation';
+    private const string VENDOR_DATA_FLAG = 'X-DrawOpenApi-VersionLinkDocumentation';
 
     public function __construct(private array $versions, private UrlGeneratorInterface $urlGenerator)
     {

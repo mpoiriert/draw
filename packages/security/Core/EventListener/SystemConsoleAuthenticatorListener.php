@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class SystemConsoleAuthenticatorListener implements EventSubscriberInterface
 {
-    final public const OPTION_AS_SYSTEM = 'as-system';
+    final public const string OPTION_AS_SYSTEM = 'as-system';
 
     public static function getSubscribedEvents(): array
     {

@@ -102,7 +102,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
 
         $this->loadBroker($config['broker'], $loader, $container);
         $this->loadDoctrineMessageBusHook($config['doctrine_message_bus_hook'], $loader, $container);
-        $this->loadRetry($config['retry'], $loader, $container);
+        $this->loadRetry($config['retry'], $container);
         $this->loadSerializerEventDispatcher($config['serializer_event_dispatcher'], $loader, $container);
         $this->loadVersioning($config['versioning'], $loader, $container);
 
@@ -218,7 +218,7 @@ class MessengerIntegration implements IntegrationInterface, ContainerBuilderInte
         }
     }
 
-    private function loadRetry(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    private function loadRetry(array $config, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             return;

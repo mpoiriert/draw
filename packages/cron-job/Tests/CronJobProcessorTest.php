@@ -13,8 +13,9 @@ use Draw\Component\CronJob\Entity\CronJobExecution;
 use Draw\Component\CronJob\Event\PostCronJobExecutionEvent;
 use Draw\Component\CronJob\Event\PreCronJobExecutionEvent;
 use Draw\Component\CronJob\Message\ExecuteCronJobMessage;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use Draw\Contracts\Process\ProcessFactoryInterface;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,9 +30,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @internal
  */
 #[CoversClass(CronJobProcessor::class)]
+#[AllowMockObjectsWithoutExpectations]
 class CronJobProcessorTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private CronJobProcessor $cronJobProcessor;
 

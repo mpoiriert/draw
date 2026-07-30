@@ -11,7 +11,8 @@ use Draw\Component\CronJob\CronJobProcessor;
 use Draw\Component\CronJob\Entity\CronJob;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -22,10 +23,11 @@ use Symfony\Component\Console\Command\Command;
  * @internal
  */
 #[CoversClass(QueueDueCronJobsCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class QueueDueCronJobsCommandTest extends TestCase
 {
     use CommandTestTrait;
-    use MockTrait;
+    use DoubleTrait;
 
     private ManagerRegistry&MockObject $managerRegistry;
 

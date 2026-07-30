@@ -15,12 +15,12 @@ use Symfony\Component\Workflow\Transition;
 
 class WorkflowExtension extends AbstractAdminExtension implements ActionableAdminExtensionInterface
 {
-    private Registry $registry;
     private array $options;
 
-    public function __construct(Registry $registry, array $options = [])
-    {
-        $this->registry = $registry;
+    public function __construct(
+        private Registry $registry,
+        array $options = [],
+    ) {
         $this->configureOptions($resolver = new OptionsResolver());
         $this->options = $resolver->resolve($options);
     }

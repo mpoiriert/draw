@@ -6,8 +6,9 @@ use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Security\Core\Security;
 use Draw\Component\Security\Http\Authenticator\MessageAuthenticator;
 use Draw\Component\Security\Http\Message\AutoConnectInterface;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -28,9 +29,10 @@ use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
  * @internal
  */
 #[CoversClass(MessageAuthenticator::class)]
+#[AllowMockObjectsWithoutExpectations]
 class MessageAuthenticatorTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private MessageAuthenticator $service;
 
@@ -81,7 +83,7 @@ class MessageAuthenticatorTest extends TestCase
             ->expects($this->once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
-            ->willReturn($this->createMock(UserInterface::class))
+            ->willReturn($this->createStub(UserInterface::class))
         ;
 
         $this->assertTrue($this->service->supports($request));
@@ -95,7 +97,7 @@ class MessageAuthenticatorTest extends TestCase
         $this->security
             ->expects($this->once())
             ->method('getUser')
-            ->willReturn($this->createMock(UserInterface::class))
+            ->willReturn($this->createStub(UserInterface::class))
         ;
 
         $this->envelopeFinder
@@ -109,7 +111,7 @@ class MessageAuthenticatorTest extends TestCase
             ->expects($this->once())
             ->method('loadUserByIdentifier')
             ->with($userIdentifier)
-            ->willReturn($this->createMock(UserInterface::class))
+            ->willReturn($this->createStub(UserInterface::class))
         ;
 
         $this->assertTrue($this->service->supports($request));
@@ -233,7 +235,7 @@ class MessageAuthenticatorTest extends TestCase
         $this->assertNull(
             $this->service->onAuthenticationSuccess(
                 new Request(),
-                $this->createMock(TokenInterface::class),
+                $this->createStub(TokenInterface::class),
                 uniqid('firewall-')
             )
         );

@@ -357,10 +357,10 @@ class OpenApiIntegration implements IntegrationInterface, ContainerBuilderIntegr
             ->setArgument('$serializeNull', new Parameter('draw_open_api.response.serialize_null'))
         ;
 
-        $this->configResponseExceptionHandler($config['exceptionHandler'], $loader, $container);
+        $this->configResponseExceptionHandler($config['exceptionHandler'], $container);
     }
 
-    private function configResponseExceptionHandler(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    private function configResponseExceptionHandler(array $config, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             $container->removeDefinition(ResponseApiExceptionListener::class);

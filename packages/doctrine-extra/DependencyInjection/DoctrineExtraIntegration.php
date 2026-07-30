@@ -25,7 +25,7 @@ class DoctrineExtraIntegration implements IntegrationInterface
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
     {
         $this->loadORM($config['orm'], $loader, $container);
-        $this->loadMongoODM($config['mongodb_odm'], $loader, $container);
+        $this->loadMongoODM($config['mongodb_odm'], $container);
     }
 
     private function loadORM(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -57,7 +57,7 @@ class DoctrineExtraIntegration implements IntegrationInterface
         );
     }
 
-    private function loadMongoODM(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    private function loadMongoODM(array $config, ContainerBuilder $container): void
     {
         if (!$this->isConfigEnabled($container, $config)) {
             return;

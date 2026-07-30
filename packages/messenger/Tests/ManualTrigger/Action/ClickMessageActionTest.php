@@ -9,6 +9,7 @@ use Draw\Component\Messenger\Searchable\EnvelopeFinder;
 use Draw\Component\Messenger\Searchable\Stamp\FoundFromTransportStamp;
 use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Contracts\Messenger\Exception\MessageNotFoundException;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -33,6 +34,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @internal
  */
 #[CoversClass(ClickMessageAction::class)]
+#[AllowMockObjectsWithoutExpectations]
 class ClickMessageActionTest extends TestCase
 {
     private ClickMessageAction $object;
@@ -131,7 +133,7 @@ class ClickMessageActionTest extends TestCase
                 ->willReturn($message = uniqid('translation-'))
             ;
         } else {
-            $this->request->setSession($this->createMock(SessionInterface::class));
+            $this->request->setSession($this->createStub(SessionInterface::class));
             $this->translator
                 ->expects($this->never())
                 ->method('trans')

@@ -79,7 +79,7 @@ class ResponseSerializerListener implements EventSubscriberInterface
         $this->eventDispatcher->dispatch(new PreSerializerResponseEvent($result, $serialization, $context));
 
         $data = $this->serializer->serialize($result, $requestFormat, $context);
-        $response = new JsonResponse($data, 200, ['Content-Type' => 'application/'.$requestFormat], true);
+        $response = new JsonResponse($data, Response::HTTP_OK, ['Content-Type' => 'application/'.$requestFormat], true);
 
         if ($serialization->statusCode) {
             $response->setStatusCode($serialization->statusCode);

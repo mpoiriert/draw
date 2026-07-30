@@ -112,7 +112,7 @@ class OpenApi
     public function validate(Schema $schema): void
     {
         $result = Validation::createValidatorBuilder()
-            ->enableAnnotationMapping()
+            ->enableAttributeMapping()
             ->getValidator()
             ->validate($schema, null, [Constraint::DEFAULT_GROUP])
         ;

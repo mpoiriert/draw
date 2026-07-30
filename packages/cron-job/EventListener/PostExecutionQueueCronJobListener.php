@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
  */
 class PostExecutionQueueCronJobListener
 {
-    final public const OPTION_POST_EXECUTION_QUEUE_CRON_JOB = 'draw-post-execution-queue-cron-job';
+    final public const string OPTION_POST_EXECUTION_QUEUE_CRON_JOB = 'draw-post-execution-queue-cron-job';
 
     public function __construct(
         private CronJobProcessor $cronJobProcessor,

@@ -17,7 +17,7 @@ use Twig\Environment;
 class MakeDrawPackage extends AbstractMaker
 {
     public function __construct(
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         private string $kernelProjectDir,
         private Environment $environment,
     ) {
@@ -44,7 +44,7 @@ class MakeDrawPackage extends AbstractMaker
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
         $type = $input->getArgument('type');
-        $packageName = $input->getArgument('name');
+        $packageName = (string) $input->getArgument('name');
 
         if (!\in_array($type, ['component', 'bundle'], true)) {
             $io->error('Invalid package type');

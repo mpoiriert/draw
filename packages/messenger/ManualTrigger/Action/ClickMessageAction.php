@@ -21,7 +21,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ClickMessageAction
 {
-    final public const MESSAGE_ID_PARAMETER_NAME = 'dMUuid';
+    final public const string MESSAGE_ID_PARAMETER_NAME = 'dMUuid';
 
     public function __construct(
         private MessageBusInterface $messageBus,

@@ -11,6 +11,7 @@ use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOne
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ConfigurationTrait;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
 use Draw\Component\Security\Core\Security;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -23,21 +24,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class TwoFactorAuthenticationListenerTest extends TestCase
 {
-    private const ENABLE_ROUTE = 'route';
+    private const string ENABLE_ROUTE = 'route';
 
     private TwoFactorAuthenticationListener $object;
 
-    /**
-     * @var UrlGeneratorInterface|MockObject
-     */
-    private UrlGeneratorInterface $urlGenerator;
+    private UrlGeneratorInterface&MockObject $urlGenerator;
 
-    /**
-     * @var Security|MockObject
-     */
-    private Security $security;
+    private Security&MockObject $security;
 
     protected function setUp(): void
     {
@@ -122,12 +118,12 @@ class TwoFactorAuthenticationListenerTest extends TestCase
                         return [];
                     }
 
-                    public function getPassword(): ?string
+                    public function getPassword(): null
                     {
                         return null;
                     }
 
-                    public function getSalt(): ?string
+                    public function getSalt(): null
                     {
                         return null;
                     }
@@ -300,7 +296,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         $this->object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
             $event = new UserRequestInterceptionEvent(
-                $this->createMock(SecurityUserInterface::class),
+                $this->createStub(SecurityUserInterface::class),
                 new Request()
             )
         );
@@ -319,7 +315,7 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
         $this->object->allowHandlingRequestWhenTwoFactorAuthenticationInProgress(
             $event = new UserRequestInterceptionEvent(
-                $this->createMock(SecurityUserInterface::class),
+                $this->createStub(SecurityUserInterface::class),
                 new Request()
             )
         );

@@ -47,7 +47,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
     {
         $this->loadCore($config, $loader, $container);
         $this->loadJwt($config, $loader, $container);
-        $this->loadHttp($config, $loader, $container);
+        $this->loadHttp($loader, $container);
         $this->loadVoters($config, $loader, $container);
     }
 
@@ -151,7 +151,7 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
         );
     }
 
-    private function loadHttp(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
+    private function loadHttp(PhpFileLoader $loader, ContainerBuilder $container): void
     {
         $this->registerClasses(
             $loader,

@@ -5,12 +5,11 @@ namespace Draw\Bundle\SonataIntegrationBundle\User\Action;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RequestPasswordChangeAction extends AbstractController
 {
-    public function __invoke(AdminInterface $admin, Request $request, ?TranslatorInterface $translator)
+    public function __invoke(AdminInterface $admin, ?TranslatorInterface $translator)
     {
         $user = $admin->getSubject();
         $admin->checkAccess('request_password_change', $user);

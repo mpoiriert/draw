@@ -51,8 +51,6 @@ class SetUpAutowireExtension implements Extension
                     }
 
                     foreach ($this->getPropertyAttributes($testCase) as [$property, $autowire]) {
-                        \assert($autowire instanceof AutowireInterface);
-
                         if ($autowire instanceof AutowireConfigurableInterface) {
                             $autowire->configure($this->parameters);
                         }

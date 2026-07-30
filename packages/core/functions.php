@@ -17,12 +17,9 @@ if (!\function_exists(__NAMESPACE__.'\use_trait')) {
             $allTraits = array_merge($allTraits, $traits);
         } while ($class = get_parent_class($class));
 
-        foreach (array_unique($allTraits) as $usedTrait) {
-            if (use_trait($usedTrait, $trait)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any(
+            array_unique($allTraits),
+            static fn ($usedTrait): bool => use_trait($usedTrait, $trait)
+        );
     }
 }

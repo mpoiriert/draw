@@ -12,19 +12,13 @@ use PHPUnit\Framework\TestCase;
  */
 class ProfilerCoordinatorTest extends TestCase
 {
-    private const PROFILER_TYPE = 'test';
+    private const string PROFILER_TYPE = 'test';
 
     private ProfilerCoordinator $object;
-
-    /**
-     * @var ProfilerInterface&MockObject
-     */
-    private ProfilerInterface $profiler;
 
     protected function setUp(): void
     {
         $this->object = new ProfilerCoordinator();
-        $this->profiler = $this->createMock(ProfilerInterface::class);
     }
 
     public function testIsStartedDefault(): void
@@ -47,24 +41,53 @@ class ProfilerCoordinatorTest extends TestCase
 
     public function testRegisterProfile(): void
     {
-        $this->profiler->expects($this->once())->method('getType')->willReturn(self::PROFILER_TYPE);
-        $this->object->registerProfiler($this->profiler);
+        $this->doTestRegisterProfile();
     }
 
     public function testStarAll(): void
     {
-        $this->testRegisterProfile();
-        $this->profiler->expects($this->once())->method('start');
-        $this->object->startAll();
+        $this->doTestStartAll();
     }
 
     public function testStopAll(): void
     {
-        $this->testStarAll();
-        $this->profiler->expects($this->once())->method('stop')->willReturn($result = 'result');
+        $profiler = $this->doTestStartAll();
+        $profiler
+            ->expects($this->once())
+            ->method('stop')
+            ->willReturn($result = 'result')
+        ;
+
         $metrics = $this->object->stopAll();
 
         $this->assertTrue(isset($metrics->{self::PROFILER_TYPE}));
         $this->assertSame($result, $metrics->{self::PROFILER_TYPE});
+    }
+
+    private function doTestRegisterProfile(): ProfilerInterface&MockObject
+    {
+        $profiler = $this->createMock(ProfilerInterface::class);
+        $profiler
+            ->expects($this->once())
+            ->method('getType')
+            ->willReturn(self::PROFILER_TYPE)
+        ;
+
+        $this->object->registerProfiler($profiler);
+
+        return $profiler;
+    }
+
+    private function doTestStartAll(): ProfilerInterface&MockObject
+    {
+        $profiler = $this->doTestRegisterProfile();
+        $profiler
+            ->expects($this->once())
+            ->method('start')
+        ;
+
+        $this->object->startAll();
+
+        return $profiler;
     }
 }

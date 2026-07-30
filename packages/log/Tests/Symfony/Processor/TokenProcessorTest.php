@@ -7,6 +7,7 @@ use Draw\Bundle\UserBundle\Entity\SecurityUserTrait;
 use Draw\Component\Log\Symfony\Processor\TokenProcessor;
 use Monolog\Level;
 use Monolog\LogRecord;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
@@ -16,6 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 /**
  * @internal
  */
+#[AllowMockObjectsWithoutExpectations]
 class TokenProcessorTest extends TestCase
 {
     private TokenProcessor $service;

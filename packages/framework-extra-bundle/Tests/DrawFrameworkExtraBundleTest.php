@@ -15,7 +15,7 @@ use Draw\Component\OpenApi\DependencyInjection\Compiler\JmsDoctrineObjectConstru
 use Draw\Component\Security\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Component\Security\DependencyInjection\Factory\JwtAuthenticatorFactory;
 use Draw\Component\Security\DependencyInjection\Factory\MessengerMessageAuthenticatorFactory;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -26,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class DrawFrameworkExtraBundleTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private DrawFrameworkExtraBundle $bundle;
 

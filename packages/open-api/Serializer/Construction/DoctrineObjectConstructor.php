@@ -16,9 +16,9 @@ use Metadata\MetadataFactoryInterface;
  */
 class DoctrineObjectConstructor implements ObjectConstructorInterface
 {
-    final public const ON_MISSING_NULL = 'null';
-    final public const ON_MISSING_EXCEPTION = 'exception';
-    final public const ON_MISSING_FALLBACK = 'fallback';
+    final public const string ON_MISSING_NULL = 'null';
+    final public const string ON_MISSING_EXCEPTION = 'exception';
+    final public const string ON_MISSING_FALLBACK = 'fallback';
 
     public function __construct(
         private ManagerRegistry $managerRegistry,

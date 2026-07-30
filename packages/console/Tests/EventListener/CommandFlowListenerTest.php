@@ -15,7 +15,8 @@ use Draw\Component\Console\EventListener\CommandFlowListener;
 use Draw\Component\Console\Output\BufferedConsoleOutput;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Tester\DoctrineOrmTrait;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -38,10 +39,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  * @internal
  */
 #[CoversClass(CommandFlowListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class CommandFlowListenerTest extends TestCase
 {
     use DoctrineOrmTrait;
-    use MockTrait;
+    use DoubleTrait;
 
     private static EntityManagerInterface $entityManager;
 
@@ -163,8 +165,8 @@ class CommandFlowListenerTest extends TestCase
     {
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(InputInterface::class),
+            $this->createStub(OutputInterface::class)
         );
 
         $command
@@ -183,8 +185,8 @@ class CommandFlowListenerTest extends TestCase
     {
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(InputInterface::class),
+            $this->createStub(OutputInterface::class)
         );
 
         $command
@@ -202,9 +204,9 @@ class CommandFlowListenerTest extends TestCase
     public function testCheckHelpIgnored(): void
     {
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(OutputInterface::class)
         );
 
         $input
@@ -230,9 +232,9 @@ class CommandFlowListenerTest extends TestCase
     public function testCheckHelpNotIgnored(): void
     {
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(OutputInterface::class)
         );
 
         $input
@@ -251,9 +253,9 @@ class CommandFlowListenerTest extends TestCase
     public function testCheckTableExistIgnoredTableDoesNotExists(): void
     {
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(Command::class),
+            $this->createStub(InputInterface::class),
+            $this->createStub(OutputInterface::class)
         );
 
         $connection = $this->mockProperty(
@@ -284,9 +286,9 @@ class CommandFlowListenerTest extends TestCase
     public function testCheckTableExistIgnoredException(): void
     {
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(Command::class),
+            $this->createStub(InputInterface::class),
+            $this->createStub(OutputInterface::class)
         );
 
         $connection = $this->mockProperty(
@@ -310,9 +312,9 @@ class CommandFlowListenerTest extends TestCase
     public function testLoadIdFromInputNotFound(): void
     {
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(OutputInterface::class)
         );
 
         $input
@@ -331,9 +333,9 @@ class CommandFlowListenerTest extends TestCase
     public function testLoadIdFromInputExists(): void
     {
         $event = new LoadExecutionIdEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $this->createOptionExecutionIdInput($id = uniqid('id-')),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(OutputInterface::class)
         );
 
         $this->object->loadIdFromInput($event);
@@ -347,7 +349,7 @@ class CommandFlowListenerTest extends TestCase
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(OutputInterface::class)
         );
 
         $command
@@ -411,7 +413,7 @@ class CommandFlowListenerTest extends TestCase
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(OutputInterface::class)
         );
 
         $command
@@ -511,7 +513,7 @@ class CommandFlowListenerTest extends TestCase
         $event = new LoadExecutionIdEvent(
             $command = $this->createMock(Command::class),
             $input = $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(OutputInterface::class)
         );
 
         $command
@@ -552,8 +554,8 @@ class CommandFlowListenerTest extends TestCase
 
         $event = new ConsoleCommandEvent(
             $command = $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(InputInterface::class),
+            $this->createStub(OutputInterface::class)
         );
 
         $command
@@ -582,8 +584,8 @@ class CommandFlowListenerTest extends TestCase
 
         $event = new ConsoleCommandEvent(
             $command = $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(InputInterface::class),
+            $this->createStub(OutputInterface::class)
         );
 
         $command
@@ -628,9 +630,9 @@ class CommandFlowListenerTest extends TestCase
         ;
 
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $this->createOptionExecutionIdInput(uniqid('id-')),
-            $this->createMock(OutputInterface::class),
+            $this->createStub(OutputInterface::class),
             0
         );
 
@@ -640,8 +642,8 @@ class CommandFlowListenerTest extends TestCase
     public function testLogCommandTerminateNoExecutionId(): void
     {
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
-            $this->createMock(InputInterface::class),
+            $this->createStub(Command::class),
+            $this->createStub(InputInterface::class),
             $output = $this->createMock(BufferedConsoleOutput::class),
             0
         );
@@ -658,7 +660,7 @@ class CommandFlowListenerTest extends TestCase
     public function testLogCommandTerminate(Execution $execution): void
     {
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $this->createOptionExecutionIdInput($execution->getId()),
             $output = $this->createMock(BufferedConsoleOutput::class),
             0
@@ -682,7 +684,7 @@ class CommandFlowListenerTest extends TestCase
     public function testLogCommandTerminateLongOutput(Execution $execution): void
     {
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $this->createOptionExecutionIdInput($execution->getId()),
             $output = $this->createMock(BufferedConsoleOutput::class),
             0
@@ -711,8 +713,8 @@ class CommandFlowListenerTest extends TestCase
     public function testLogCommandErrorNoExecutionId(): void
     {
         $event = new Event\ConsoleErrorEvent(
-            $this->createMock(InputInterface::class),
-            $this->createMock(BufferedConsoleOutput::class),
+            $this->createStub(InputInterface::class),
+            $this->createStub(BufferedConsoleOutput::class),
             new \Exception()
         );
 
@@ -729,7 +731,7 @@ class CommandFlowListenerTest extends TestCase
     {
         $event = new Event\ConsoleErrorEvent(
             $this->createOptionExecutionIdInput($execution->getId()),
-            $this->createMock(BufferedConsoleOutput::class),
+            $this->createStub(BufferedConsoleOutput::class),
             $error = new \Exception(),
             $command = $this->createMock(Command::class)
         );
@@ -783,7 +785,7 @@ class CommandFlowListenerTest extends TestCase
     {
         $event = new Event\ConsoleErrorEvent(
             $this->createOptionExecutionIdInput($execution->getId()),
-            $this->createMock(BufferedConsoleOutput::class),
+            $this->createStub(BufferedConsoleOutput::class),
             new \Exception()
         );
 
@@ -817,7 +819,7 @@ class CommandFlowListenerTest extends TestCase
     public function testLogCommandTerminateDisabled(Execution $execution): void
     {
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $this->createOptionExecutionIdInput($execution->getId()),
             $output = $this->createMock(BufferedConsoleOutput::class),
             ConsoleCommandEvent::RETURN_CODE_DISABLED
@@ -840,7 +842,7 @@ class CommandFlowListenerTest extends TestCase
     public function testLogCommandTerminateDisabledIgnored(Execution $execution): void
     {
         $event = new Event\ConsoleTerminateEvent(
-            $this->createMock(Command::class),
+            $this->createStub(Command::class),
             $this->createOptionExecutionIdInput($execution->getId()),
             $output = $this->createMock(BufferedConsoleOutput::class),
             ConsoleCommandEvent::RETURN_CODE_DISABLED
@@ -893,8 +895,8 @@ class CommandFlowListenerTest extends TestCase
 
         return new ConsoleCommandEvent(
             $command,
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class)
+            $this->createStub(InputInterface::class),
+            $this->createStub(OutputInterface::class)
         );
     }
 }

@@ -6,7 +6,8 @@ use Doctrine\DBAL\Connection;
 use Draw\Component\Console\Command\PurgeExecutionCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -17,10 +18,11 @@ use Symfony\Component\Console\Input\InputOption;
  * @internal
  */
 #[CoversClass(PurgeExecutionCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class PurgeExecutionCommandTest extends TestCase
 {
     use CommandTestTrait;
-    use MockTrait;
+    use DoubleTrait;
 
     private Connection&MockObject $connection;
 
@@ -88,9 +90,8 @@ class PurgeExecutionCommandTest extends TestCase
     {
         $date = '2000-01-01 00:00:01';
 
-        $this->logger->expects(
-            $this->exactly(3)
-        )
+        $this->logger
+            ->expects($this->exactly(3))
             ->method('debug')
             ->with(
                 ...static::withConsecutive(
@@ -110,7 +111,8 @@ class PurgeExecutionCommandTest extends TestCase
             )
         ;
 
-        $this->connection->expects($this->exactly(2))
+        $this->connection
+            ->expects($this->exactly(2))
             ->method('executeStatement')
             ->with(
                 ...static::withConsecutive(

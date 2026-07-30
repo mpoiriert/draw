@@ -31,12 +31,9 @@ class AggregatedEnvelopeFilter implements EnvelopeFilterInterface
 
     public function __invoke(Envelope $envelope): bool
     {
-        foreach ($this->filters as $filter) {
-            if (!$filter($envelope)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all(
+            $this->filters,
+            static fn (EnvelopeFilterInterface $filter): bool => $filter($envelope)
+        );
     }
 }

@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class CannotSelfVoter implements VoterInterface
 {
-    private const SUPPORTED_ATTRIBUTES = [
+    private const array SUPPORTED_ATTRIBUTES = [
         'SONATA_CAN_DELETE',
         'SONATA_CAN_MAKE_ADMIN',
         'SONATA_CAN_ADD_ROLES',

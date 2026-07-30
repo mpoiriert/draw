@@ -8,7 +8,8 @@ use Draw\Component\Messenger\Searchable\TransportRepository;
 use Draw\Component\Messenger\Tests\Stub\Transport\PurgeAwareTransportInterface;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -19,10 +20,11 @@ use Symfony\Component\Console\Input\InputOption;
  * @internal
  */
 #[CoversClass(PurgeExpiredMessageCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class PurgeExpiredMessageCommandTest extends TestCase
 {
     use CommandTestTrait;
-    use MockTrait;
+    use DoubleTrait;
 
     private TransportRepository&MockObject $transportRepository;
 

@@ -17,13 +17,10 @@ final class MustNotBeStampedEnvelopeFilter implements EnvelopeFilterInterface
 
     public function __invoke(Envelope $envelope): bool
     {
-        foreach ($this->stampClasses as $stamp) {
-            if ($envelope->last($stamp)) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_all(
+            $this->stampClasses,
+            static fn (string $stamp): bool => !$envelope->last($stamp)
+        );
     }
 
     public static function sentToFailureTransport(): self

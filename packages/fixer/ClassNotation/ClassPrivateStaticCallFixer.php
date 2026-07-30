@@ -100,27 +100,14 @@ class Foo {
         $nextToken = $tokens[$nextIndex];
 
         if ('(' === $nextToken->getContent()) {
-            $type = 'method';
-        } elseif (str_starts_with($referencedName, '$')) {
-            $type = 'property';
-        } else {
-            $type = 'constant';
+            return $this->hasPrivateAccessor($tokens, $referencedName, \T_FUNCTION);
         }
 
-        $result = false;
-        switch ($type) {
-            case 'method':
-                $result = $this->hasPrivateAccessor($tokens, $referencedName, \T_FUNCTION);
-                break;
-            case 'property':
-                $result = $this->hasPrivateAccessor($tokens, $referencedName, \T_VARIABLE);
-                break;
-            case 'constant':
-                $result = $this->hasPrivateAccessor($tokens, $referencedName, \T_CONST);
-                break;
+        if (str_starts_with($referencedName, '$')) {
+            return $this->hasPrivateAccessor($tokens, $referencedName, \T_VARIABLE);
         }
 
-        return $result;
+        return $this->hasPrivateAccessor($tokens, $referencedName, \T_CONST);
     }
 
     private function hasPrivateAccessor(Tokens $tokens, string $methodName, int $givenKind): bool

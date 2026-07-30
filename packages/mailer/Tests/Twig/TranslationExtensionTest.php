@@ -3,7 +3,8 @@
 namespace Draw\Component\Mailer\Tests\Twig;
 
 use Draw\Component\Mailer\Twig\TranslationExtension;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -15,9 +16,10 @@ use Twig\TwigFilter;
  * @internal
  */
 #[CoversClass(TranslationExtension::class)]
+#[AllowMockObjectsWithoutExpectations]
 class TranslationExtensionTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private TranslationExtension $object;
 

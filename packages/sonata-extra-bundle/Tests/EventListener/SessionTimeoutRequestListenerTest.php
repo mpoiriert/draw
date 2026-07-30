@@ -4,7 +4,8 @@ namespace Draw\Bundle\SonataExtraBundle\Tests\EventListener;
 
 use Draw\Bundle\SonataExtraBundle\EventListener\SessionTimeoutRequestListener;
 use Draw\Component\Security\Core\Security;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
@@ -27,9 +28,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @internal
  */
 #[CoversClass(SessionTimeoutRequestListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class SessionTimeoutRequestListenerTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private SessionTimeoutRequestListener $object;
 
@@ -72,7 +74,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
     public function testOnKernelRequestInvalidate(): void
     {
         $requestEvent = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -97,7 +99,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
     public function testOnKernelRequestInvalidateNotInvalidate(Request $request, int $requestType): void
     {
         $requestEvent = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             $requestType
         );
@@ -176,7 +178,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
     public function testOnKernelResponseSetLastUsed(): void
     {
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request = new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             new Response()
@@ -200,7 +202,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
         int $requestType = HttpKernelInterface::MAIN_REQUEST,
     ): void {
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             $requestType,
             new Response()
@@ -248,7 +250,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
     public function testOnKernelResponseAddDialog(): void
     {
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             new Request(),
             HttpKernelInterface::MAIN_REQUEST,
             $response = new Response()
@@ -260,7 +262,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $this->security->expects($this->once())
             ->method('getUser')
-            ->willReturn($this->createMock(UserInterface::class))
+            ->willReturn($this->createStub(UserInterface::class))
         ;
 
         $this->urlGenerator->expects($this->exactly(2))
@@ -309,7 +311,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
         $this->object->onKernelResponseAddDialog(
             new ResponseEvent(
-                $this->createMock(HttpKernelInterface::class),
+                $this->createStub(HttpKernelInterface::class),
                 new Request(),
                 $requestType,
                 $response
@@ -334,12 +336,12 @@ class SessionTimeoutRequestListenerTest extends TestCase
                 return [];
             }
 
-            public function getPassword(): ?string
+            public function getPassword(): null
             {
                 return null;
             }
 
-            public function getSalt(): ?string
+            public function getSalt(): null
             {
                 return null;
             }
@@ -348,7 +350,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
             {
             }
 
-            public function getUsername(): ?string
+            public function getUsername(): null
             {
                 return null;
             }

@@ -13,7 +13,7 @@ class RetryFailedMessageMessageHandler
 {
     public function __construct(
         private ProcessFactoryInterface $processFactory,
-        #[Autowire('%draw.symfony_console_path%')]
+        #[Autowire(param: 'draw.symfony_console_path')]
         private string $consolePath,
     ) {
     }

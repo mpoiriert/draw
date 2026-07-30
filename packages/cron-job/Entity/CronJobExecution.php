@@ -9,18 +9,18 @@ use Doctrine\ORM\Mapping as ORM;
 #[
     ORM\Entity,
     ORM\Table(name: 'cron_job__cron_job_execution'),
-    ORM\Index(fields: ['state'], name: 'state'),
+    ORM\Index(name: 'state', fields: ['state']),
 ]
 class CronJobExecution implements \Stringable
 {
-    public const STATE_REQUESTED = 'requested';
-    public const STATE_RUNNING = 'running';
-    public const STATE_TERMINATED = 'terminated';
-    public const STATE_ERRORED = 'errored';
-    public const STATE_SKIPPED = 'skipped';
-    public const STATE_ACKNOWLEDGED = 'acknowledged';
+    public const string STATE_REQUESTED = 'requested';
+    public const string STATE_RUNNING = 'running';
+    public const string STATE_TERMINATED = 'terminated';
+    public const string STATE_ERRORED = 'errored';
+    public const string STATE_SKIPPED = 'skipped';
+    public const string STATE_ACKNOWLEDGED = 'acknowledged';
 
-    public const STATES = [
+    public const array STATES = [
         self::STATE_REQUESTED,
         self::STATE_RUNNING,
         self::STATE_TERMINATED,
@@ -37,13 +37,13 @@ class CronJobExecution implements \Stringable
     private ?int $id = null;
 
     #[ORM\Column(name: 'requested_at', type: 'datetime_immutable', nullable: false)]
-    private ?\DateTimeImmutable $requestedAt = null;
+    private \DateTimeImmutable $requestedAt;
 
     #[ORM\Column(name: 'state', type: 'string', length: 20, nullable: false, options: ['default' => self::STATE_REQUESTED])]
     private string $state = self::STATE_REQUESTED;
 
     #[ORM\Column(name: '`force`', type: 'boolean', nullable: false, options: ['default' => false])]
-    private bool $force = false;
+    private bool $force;
 
     #[ORM\Column(name: 'execution_started_at', type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $executionStartedAt = null;
@@ -72,7 +72,7 @@ class CronJobExecution implements \Stringable
             onDelete: 'CASCADE',
         )
     ]
-    private ?CronJob $cronJob = null;
+    private CronJob $cronJob;
 
     public function __construct(
         CronJob $cronJob,
@@ -89,7 +89,7 @@ class CronJobExecution implements \Stringable
         return $this->id;
     }
 
-    public function getRequestedAt(): ?\DateTimeImmutable
+    public function getRequestedAt(): \DateTimeImmutable
     {
         return $this->requestedAt;
     }
@@ -171,7 +171,7 @@ class CronJobExecution implements \Stringable
         return $this;
     }
 
-    public function getCronJob(): ?CronJob
+    public function getCronJob(): CronJob
     {
         return $this->cronJob;
     }
@@ -180,16 +180,12 @@ class CronJobExecution implements \Stringable
     {
         $cronJob = $this->getCronJob();
 
-        if (!$this->isForce() && !$cronJob?->isActive()) {
+        if (!$this->isForce() && !$cronJob->isActive()) {
             return false;
         }
 
         if (0 === ($timeToLive = $cronJob->getTimeToLive())) {
             return true;
-        }
-
-        if (null === $this->getRequestedAt()) {
-            return false;
         }
 
         return $dateTime->getTimestamp() <= $this->getRequestedAt()->getTimestamp() + $timeToLive;
@@ -249,7 +245,7 @@ class CronJobExecution implements \Stringable
             ', ',
             array_filter(
                 [
-                    $this->getRequestedAt()?->format('Y-m-d H:i:s.u') ?? '-',
+                    $this->getRequestedAt()->format('Y-m-d H:i:s.u') ?? '-',
                     $this->getExitCode(),
                     $this->getExecutionDelay(),
                 ]

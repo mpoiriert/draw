@@ -45,12 +45,8 @@ class DataAccessor
 
     /**
      * Transform the data and return a new instance of Tester with the transformed data.
-     *
-     * @param callable $callable The callable that will transform the data
-     *
-     * @return static
      */
-    public function transform(callable $callable): self
+    public function transform(callable $callable): static
     {
         return new static($callable($this->getData()));
     }
@@ -59,10 +55,8 @@ class DataAccessor
      * Return a new Tester instance with the path value as data.
      *
      * @param string|PropertyPathInterface $path
-     *
-     * @return static
      */
-    public function path($path): self
+    public function path($path): static
     {
         return new static(static::getPropertyAccessor()->getValue($this->data, $path));
     }

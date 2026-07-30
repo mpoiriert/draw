@@ -46,7 +46,7 @@ class EnvelopeFactoryDispatchAfterCurrentBusStampListenerTest extends TestCase
     {
         $this->object->handleEnvelopeCreatedEvent(
             $event = new EnvelopeCreatedEvent(
-                $this->createMock(MessageHolderInterface::class),
+                $this->createStub(MessageHolderInterface::class),
                 new Envelope((object) [])
             )
         );

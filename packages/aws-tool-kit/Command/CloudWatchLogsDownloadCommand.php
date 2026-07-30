@@ -3,12 +3,17 @@
 namespace Draw\Component\AwsToolKit\Command;
 
 use Aws\CloudWatchLogs\CloudWatchLogsClient;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'draw:aws:cloud-watch-logs:download',
+    description: 'Download logs from cloud watch locally base on it\'s log group name, log stream name and a start time/end time',
+)]
 class CloudWatchLogsDownloadCommand extends Command
 {
     public function __construct(private ?CloudWatchLogsClient $cloudWatchClient)
@@ -19,8 +24,6 @@ class CloudWatchLogsDownloadCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('draw:aws:cloud-watch-logs:download')
-            ->setDescription('Download logs from cloud watch locally base on it\'s log group name, log stream name and a start time/end time')
             ->addArgument('logGroupName', InputArgument::REQUIRED, 'The log group name')
             ->addArgument('logStreamName', InputArgument::REQUIRED, 'The log stream name')
             ->addArgument('output', InputArgument::REQUIRED, 'The output file name')
@@ -36,8 +39,8 @@ class CloudWatchLogsDownloadCommand extends Command
             throw new \RuntimeException(\sprintf('Service [%s] is required for command [%s] to run.', CloudWatchLogsClient::class, static::class));
         }
 
-        $startTime = strtotime($input->getOption('startTime')) * 1000;
-        $endTime = strtotime($input->getOption('endTime')) * 1000;
+        $startTime = strtotime((string) $input->getOption('startTime')) * 1000;
+        $endTime = strtotime((string) $input->getOption('endTime')) * 1000;
 
         $arguments = [
             'startFromHead' => true,

@@ -5,6 +5,7 @@ namespace Draw\Component\Mailer\Tests\Command;
 use Draw\Component\Mailer\Command\SendTestEmailCommand;
 use Draw\Component\Tester\Application\CommandDataTester;
 use Draw\Component\Tester\Application\CommandTestTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +17,7 @@ use Symfony\Component\Mime\Email;
  * @internal
  */
 #[CoversClass(SendTestEmailCommand::class)]
+#[AllowMockObjectsWithoutExpectations]
 class SendTestEmailCommandTest extends TestCase
 {
     use CommandTestTrait;

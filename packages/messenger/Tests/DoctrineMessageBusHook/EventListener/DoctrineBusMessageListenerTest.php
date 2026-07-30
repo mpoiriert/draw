@@ -13,7 +13,8 @@ use Draw\Component\Messenger\DoctrineMessageBusHook\EventListener\DoctrineBusMes
 use Draw\Component\Messenger\DoctrineMessageBusHook\Message\LifeCycleAwareMessageInterface;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderInterface;
 use Draw\Component\Messenger\Tests\Stub\Message\PreSendAwareMessageInterface;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,9 +26,10 @@ use Symfony\Contracts\Service\ResetInterface;
  * @internal
  */
 #[CoversClass(DoctrineBusMessageListener::class)]
+#[AllowMockObjectsWithoutExpectations]
 class DoctrineBusMessageListenerTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private DoctrineBusMessageListener $object;
 
@@ -57,7 +59,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
     public function testPostPersist(): void
     {
-        $messageHolder = $this->createMock(MessageHolderInterface::class);
+        $messageHolder = $this->createStub(MessageHolderInterface::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -105,7 +107,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
     public function testPostLoad(): void
     {
-        $messageHolder = $this->createMock(MessageHolderInterface::class);
+        $messageHolder = $this->createStub(MessageHolderInterface::class);
 
         $this->entityManager
             ->expects($this->once())
@@ -132,7 +134,7 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testOnClearAll(): void
     {
         $this->addMessageHolder(
-            $this->createMock(MessageHolderInterface::class)
+            $this->createStub(MessageHolderInterface::class)
         );
 
         $this->object->onClear(new OnClearEventArgs($this->entityManager));
@@ -146,7 +148,7 @@ class DoctrineBusMessageListenerTest extends TestCase
     public function testOnClear(): void
     {
         $this->addMessageHolder(
-            $this->createMock(MessageHolderInterface::class)
+            $this->createStub(MessageHolderInterface::class)
         );
 
         $this->object->onClear(new OnClearEventArgs($this->entityManager));
@@ -293,7 +295,7 @@ class DoctrineBusMessageListenerTest extends TestCase
 
     public function testReset(): void
     {
-        $messageHolder = $this->createMock(MessageHolderInterface::class);
+        $messageHolder = $this->createStub(MessageHolderInterface::class);
 
         $this->addMessageHolder($messageHolder);
 

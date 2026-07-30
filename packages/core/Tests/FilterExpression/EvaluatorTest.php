@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\EqualTo;
  */
 class EvaluatorTest extends TestCase
 {
-    private const SAMPLE_DATA = [
+    private const array SAMPLE_DATA = [
         ['property1' => 'value1'],
         ['property1' => 'value2'],
         ['property1' => 'value3', 'property2' => 'value4'],

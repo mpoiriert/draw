@@ -11,7 +11,7 @@ use Draw\Component\Messenger\Searchable\Stamp\SearchableTagStamp;
 use Draw\Component\Messenger\Tests\TestCase;
 use Draw\Component\Messenger\Transport\DrawTransport;
 use Draw\Component\Messenger\Transport\DrawTransportFactory;
-use Draw\Component\Tester\MockTrait;
+use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\AfterClass;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -35,7 +35,7 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 #[NoTransaction]
 class DrawTransportTest extends TestCase
 {
-    use MockTrait;
+    use DoubleTrait;
 
     private DrawTransport $service;
 
