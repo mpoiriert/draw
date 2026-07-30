@@ -19,8 +19,8 @@
         "psr/log": "^3"
     },
     "require-dev": {
-        "draw/dependency-injection": "^0.39",
-        "draw/user-bundle": "^0.39",
+        "draw/dependency-injection": "^0.40",
+        "draw/user-bundle": "^0.40",
         "monolog/monolog": "^3.5.0",
         "phpunit/phpunit": "^12.5",
         "symfony/event-dispatcher": "^7.4.0",

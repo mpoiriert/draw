@@ -9,7 +9,7 @@
     ],
     "require": {
         "doctrine/dbal": "^4.4",
-        "draw/core": "^0.39",
+        "draw/core": "^0.40",
         "psr/log": "^3",
         "ramsey/uuid": "^4.2",
         "sensiolabs/ansi-to-html": "^1.2",
@@ -18,8 +18,8 @@
     },
     "require-dev": {
         "doctrine/orm": "^3.6",
-        "draw/dependency-injection": "^0.39",
-        "draw/tester": "^0.39",
+        "draw/dependency-injection": "^0.40",
+        "draw/tester": "^0.40",
         "phpunit/phpunit": "^12.5",
         "symfony/cache": "^7.4.0",
         "symfony/var-exporter": "^7.4.0"

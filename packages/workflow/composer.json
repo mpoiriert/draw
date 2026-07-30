@@ -19,8 +19,8 @@
         "symfony/workflow": "^7.4.0"
     },
     "require-dev": {
-        "draw/security": "^0.39",
-        "draw/dependency-injection": "^0.39",
+        "draw/security": "^0.40",
+        "draw/dependency-injection": "^0.40",
         "phpunit/phpunit": "^12.5",
         "symfony/security-core": "^7.4.0"
     },
