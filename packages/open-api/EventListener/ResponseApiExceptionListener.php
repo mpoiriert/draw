@@ -8,7 +8,7 @@ use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ConfigurableE
 use Draw\Component\OpenApi\HttpFoundation\ErrorToHttpCodeConverter\ErrorToHttpCodeConverterInterface;
 use Draw\Component\OpenApi\Schema\Response;
 use Draw\Component\OpenApi\Schema\Schema;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -22,7 +22,7 @@ final class ResponseApiExceptionListener
         /**
          * @var iterable<ErrorToHttpCodeConverterInterface>
          */
-        #[TaggedIterator(ErrorToHttpCodeConverterInterface::class)]
+        #[AutowireIterator(ErrorToHttpCodeConverterInterface::class)]
         private iterable $errorToHttpCodeConverters = [],
         private bool $debug = false,
         private string $violationKey = 'errors',

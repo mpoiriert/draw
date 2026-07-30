@@ -44,7 +44,7 @@
       <handler service="draw.messenger.message_handler.retry_failed_message_message_handler" method="handleRetryFailedMessageMessage"/>
     </message>
     <message name="Symfony\Component\Console\Messenger\RunCommandMessage">
-      <handler service="console.messenger.execute_command_handler" method="_invoke"/>
+      <handler service="console.messenger.execute_command_handler" method="_invoke" sign="1"/>
     </message>
     <message name="Symfony\Component\HttpClient\Messenger\PingWebhookMessage">
       <handler service="http_client.messenger.ping_webhook_handler" method="_invoke"/>
@@ -58,6 +58,9 @@
     <message name="Symfony\Component\Notifier\Message\ChatMessage">
       <handler service="chatter.messenger.chat_handler" method="_invoke"/>
     </message>
+    <message name="Symfony\Component\Notifier\Message\DesktopMessage">
+      <handler service="texter.messenger.desktop_handler" method="_invoke"/>
+    </message>
     <message name="Symfony\Component\Notifier\Message\PushMessage">
       <handler service="texter.messenger.push_handler" method="_invoke"/>
     </message>
@@ -65,7 +68,7 @@
       <handler service="texter.messenger.sms_handler" method="_invoke"/>
     </message>
     <message name="Symfony\Component\Process\Messenger\RunProcessMessage">
-      <handler service="process.messenger.process_message_handler" method="_invoke"/>
+      <handler service="process.messenger.process_message_handler" method="_invoke" sign="1"/>
     </message>
   </bus>
 </busses>

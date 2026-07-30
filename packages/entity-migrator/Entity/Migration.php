@@ -2,6 +2,7 @@
 
 namespace Draw\Component\EntityMigrator\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\EntityMigrator\Workflow\MigrationWorkflow;
 
@@ -15,17 +16,17 @@ class Migration implements \Stringable
     #[
         ORM\Id,
         ORM\GeneratedValue,
-        ORM\Column(type: 'integer')
+        ORM\Column(type: Types::INTEGER)
     ]
     private int $id;
 
     #[
-        ORM\Column(type: 'string', length: 255, nullable: false)
+        ORM\Column(type: Types::STRING, length: 255, nullable: false)
     ]
     private string $name;
 
     #[
-        ORM\Column(type: 'string', length: 255, nullable: false)
+        ORM\Column(type: Types::STRING, length: 255, nullable: false)
     ]
     private string $state;
 

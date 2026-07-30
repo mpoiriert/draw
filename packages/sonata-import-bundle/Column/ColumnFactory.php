@@ -4,7 +4,7 @@ namespace Draw\Bundle\SonataImportBundle\Column;
 
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class ColumnFactory
 {
@@ -12,7 +12,7 @@ class ColumnFactory
         /**
          * @param iterable<ColumnExtractorInterface> $columnExtractors
          */
-        #[TaggedIterator(ColumnExtractorInterface::class)]
+        #[AutowireIterator(ColumnExtractorInterface::class)]
         private iterable $columnExtractors = [],
     ) {
     }

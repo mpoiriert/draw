@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Message\NewUserMessage;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 use Draw\Bundle\UserBundle\Entity\LockableUserInterface;
@@ -73,12 +74,12 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
 
     #[
         ORM\Id,
-        ORM\Column(name: 'id', type: 'guid')
+        ORM\Column(name: 'id', type: Types::GUID)
     ]
     #[Serializer\ReadOnlyProperty]
     private ?string $id = null;
 
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
     /**
@@ -90,7 +91,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     )]
     private Collection $tags;
 
-    #[ORM\Column(type: 'string', nullable: false, options: ['default' => 'user'])]
+    #[ORM\Column(type: Types::STRING, nullable: false, options: ['default' => 'user'])]
     private string $level = 'user';
 
     #[ORM\Embedded(class: Address::class, columnPrefix: 'address_')]
@@ -110,10 +111,10 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     /**
      * User date of birth.
      */
-    #[ORM\Column(name: 'date_of_birth', type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(name: 'date_of_birth', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $dateOfBirth = null;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: Types::TEXT)]
     private string $comment = '';
 
     #[
@@ -166,7 +167,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     #[Assert\NotNull]
     private string $requiredReadOnly = 'value';
 
-    #[ORM\Column(type: 'string', nullable: false, options: ['default' => 'en'])]
+    #[ORM\Column(type: Types::STRING, nullable: false, options: ['default' => 'en'])]
     private string $preferredLocale = 'en';
 
     public function __construct()
@@ -230,7 +231,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     }
 
     /**
-     * @return Collection<Tag>
+     * @return Collection<int, Tag>
      */
     public function getTags(): Collection
     {
@@ -252,7 +253,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     }
 
     /**
-     * @return Collection<UserTag>
+     * @return Collection<int, UserTag>
      */
     public function getUserTags(): Collection
     {
@@ -291,7 +292,7 @@ class User implements MessageHolderInterface, SecurityUserInterface, TwoFactorAu
     }
 
     /**
-     * @return Collection<UserAddress>
+     * @return Collection<int, UserAddress>
      */
     public function getUserAddresses(): Collection
     {

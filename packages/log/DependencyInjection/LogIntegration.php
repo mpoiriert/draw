@@ -163,6 +163,16 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
 
     public function addConfiguration(ArrayNodeDefinition $node): void
     {
+        $requestMatcherNode = $this
+            ->createRequestMatcherNode('request_matchers')
+                ->children()
+                    ->scalarNode('duration')->end()
+                ->end()
+            ->end()
+        ;
+
+        \assert($requestMatcherNode instanceof ArrayNodeDefinition);
+
         $node
              ->children()
                 ->arrayNode('slow_request')
@@ -171,14 +181,7 @@ class LogIntegration implements IntegrationInterface, ContainerBuilderIntegratio
                     ->fixXmlConfig('request_matcher', 'request_matchers')
                     ->children()
                         ->integerNode('default_duration')->min(0)->defaultValue(10000)->end()
-                        ->append(
-                            $this
-                                ->createRequestMatcherNode('request_matchers')
-                                    ->children()
-                                        ->scalarNode('duration')->end()
-                                    ->end()
-                                ->end()
-                        )
+                        ->append($requestMatcherNode)
                     ->end()
                 ->end()
                 ->booleanNode('enable_all_processors')->defaultFalse()->end()

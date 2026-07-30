@@ -5,22 +5,15 @@ namespace Draw\Component\Mailer\Twig;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Attribute\AsTwigFilter;
 
-class TranslationExtension extends AbstractExtension
+class TranslationExtension
 {
     public function __construct(private TranslatorInterface $translator)
     {
     }
 
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('trans', [$this, 'trans']),
-        ];
-    }
-
+    #[AsTwigFilter(name: 'trans')]
     public function trans(string|\Stringable|array|TranslatableInterface|null $messages, string|array $arguments = [], ?string $domain = null, ?string $locale = null, ?int $count = null): ?string
     {
         if (!\is_array($messages)) {

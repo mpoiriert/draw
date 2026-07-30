@@ -243,7 +243,7 @@ class ResponseApiExceptionListenerTest extends TestCase
 
     public function testOnKernelExceptionPayload(): void
     {
-        $this->createConstraintListExceptionEvent($constraint = new NotNull(['payload' => uniqid('payload-')]));
+        $this->createConstraintListExceptionEvent($constraint = new NotNull(payload: uniqid('payload-')));
 
         $value = json_decode(
             $this->onKernelException(new ResponseApiExceptionListener())->getContent(),

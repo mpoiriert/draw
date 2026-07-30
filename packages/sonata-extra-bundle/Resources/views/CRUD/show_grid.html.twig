@@ -13,15 +13,13 @@
                 {% if field.type != 'grid' %}
                     {% set colCount = colCount +1 %}
                     <th>
-                        {% apply spaceless %}
-                            {% if field.label is not same as(false) %}
-                                {% if field.translationDomain is same as(false) %}
-                                    {{ field.label }}
-                                {% else %}
-                                    {{ field.label|trans({}, field.translationDomain) }}
-                                {% endif %}
-                            {% endif %}
-                        {% endapply %}
+                        {%- if field.label is not same as(false) -%}
+                            {%- if field.translationDomain is same as(false) -%}
+                                {{- field.label -}}
+                            {%- else -%}
+                                {{- field.label|trans({}, field.translationDomain) -}}
+                            {%- endif -%}
+                        {%- endif -%}
                     </th>
                 {% endif %}
             {% endfor %}

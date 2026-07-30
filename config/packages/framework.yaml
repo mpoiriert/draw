@@ -25,6 +25,13 @@ framework:
 
     http_client: ~
 
+    property_info:
+        enabled: true
+        with_constructor_extractor: false
+
+    profiler:
+        collect_serializer_data: true
+
 when@test:
     framework:
         test: true

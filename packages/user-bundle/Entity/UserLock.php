@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\Core\DateTimeUtils;
 use Ramsey\Uuid\Uuid;
@@ -16,26 +17,26 @@ class UserLock implements \Stringable
     final public const string REASON_MANUAL_LOCK = 'manual-lock';
 
     #[ORM\Id]
-    #[ORM\Column(name: 'id', type: 'guid')]
+    #[ORM\Column(name: 'id', type: Types::GUID)]
     private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: LockableUserInterface::class, inversedBy: 'userLocks')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?LockableUserInterface $user = null;
 
-    #[ORM\Column(name: 'reason', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'reason', type: Types::STRING, length: 255, nullable: false)]
     private ?string $reason = null;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE, nullable: false)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(name: 'lock_on', type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(name: 'lock_on', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $lockOn = null;
 
-    #[ORM\Column(name: 'expires_at', type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(name: 'expires_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $expiresAt = null;
 
-    #[ORM\Column(name: 'unlock_until', type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(name: 'unlock_until', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $unlockUntil = null;
 
     public function __construct(?string $reason = null)

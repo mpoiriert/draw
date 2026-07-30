@@ -57,16 +57,16 @@ class PhpCallableValidatorTest extends TestCase
         $violations = $validator->validate(
             $value,
             [
-                new PhpCallable([
-                    'callable' => static function ($value) {
+                new PhpCallable(
+                    static function ($value) {
                         if ($value instanceof \Exception) {
                             throw $value;
                         }
 
                         return $value;
                     },
-                    'returnValueConstraint' => $returnValueConstraint,
-                ]),
+                    $returnValueConstraint
+                ),
             ]
         );
 

@@ -1,0 +1,55 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    Draw\Bundle\SonataExtraBundle\:
+        resource: '../..'
+        exclude:
+            - '../../{vendor,Annotation,Builder,Configuration,DependencyInjection,Entity,Event,Tests,ActionableAdmin}'
+            - '../../Notifier/Notification'
+            - '../../{DrawSonataExtraBundle.php}'
+
+    Draw\Bundle\SonataExtraBundle\Doctrine\Filter\InFilter:
+        tags:
+            - { name: sonata.admin.filter.type }
+
+    Draw\Bundle\SonataExtraBundle\Doctrine\Filter\RelativeDateTimeFilter:
+        tags:
+            - { name: sonata.admin.filter.type }
+
+    Draw\Bundle\SonataExtraBundle\Extension\AutoActionExtension:
+        tags:
+            - { name: sonata.admin.extension, global: true, priority: -999 }
+
+    Draw\Bundle\SonataExtraBundle\Extension\BatchActionExtension:
+        tags:
+            - { name: sonata.admin.extension, global: true }
+
+    Draw\Bundle\SonataExtraBundle\Extension\DoctrineInheritanceExtension:
+        tags:
+            - { name: sonata.admin.extension, global: true }
+
+    Draw\Bundle\SonataExtraBundle\Extension\ListFieldPriorityExtension:
+        tags:
+            - { name: sonata.admin.extension, global: true, priority: -999 }
+
+    Draw\Bundle\SonataExtraBundle\Extension\GridExtension:
+        arguments:
+            $guesser: '@sonata.admin.guesser.orm_show_chain'
+        tags:
+            - { name: sonata.admin.extension, global: true }
+
+    Draw\Bundle\SonataExtraBundle\Security\Handler\CanSecurityHandler:
+        decorates: 'sonata.admin.security.handler.role'
+        arguments:
+            - '@.inner'
+
+    Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader:
+        arguments:
+            $cacheDirectory: '%kernel.cache_dir%'
+
+    Draw\Bundle\SonataExtraBundle\Block\MonitoringBlockService:
+        tags:
+            - { name: sonata.block }

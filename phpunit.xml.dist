@@ -29,7 +29,7 @@
         </testsuite>
     </testsuites>
     <coverage/>
-    <source>
+    <source ignoreSuppressionOfDeprecations="true">
         <include>
             <directory>./packages/*</directory>
             <directory>./src</directory>

@@ -47,7 +47,7 @@ class Root implements VendorExtensionSupportInterface
      *
      * @var string[]
      */
-    #[Assert\Choice(['http', 'https', 'ws', 'wss'], multiple: true)]
+    #[Assert\Choice(choices: ['http', 'https', 'ws', 'wss'], multiple: true)]
     #[JMS\Type('array<string>')]
     public ?array $schemes = null;
 

@@ -4,6 +4,7 @@ namespace App\Security\Voter;
 
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class CannotSelfVoter implements VoterInterface
@@ -14,7 +15,7 @@ class CannotSelfVoter implements VoterInterface
         'SONATA_CAN_ADD_ROLES',
     ];
 
-    public function vote(TokenInterface $token, $subject, array $attributes): int
+    public function vote(TokenInterface $token, $subject, array $attributes, ?Vote $vote = null): int
     {
         foreach ($attributes as $attribute) {
             if (!$this->supports($attribute, $subject)) {

@@ -10,10 +10,11 @@
     "require": {
         "php": ">=8.3",
         "draw/dependency-injection": "^0.39",
-        "symfony/browser-kit": "^6.4.0",
-        "symfony/framework-bundle": "^6.4.0",
-        "symfony/expression-language": "^6.4.0",
-        "symfony/string": "^6.4.0"
+        "symfony/browser-kit": "^7.4.0",
+        "symfony/framework-bundle": "^7.4.0",
+        "symfony/expression-language": "^7.4.0",
+        "symfony/string": "^7.4.0",
+        "symfony/yaml": "^7.4.0"
     },
     "require-dev": {
         "cweagans/composer-patches": "^1.7",
@@ -22,7 +23,7 @@
         "phpunit/phpunit": "^12.5",
         "sonata-project/admin-bundle": "^4.8",
         "sonata-project/doctrine-orm-admin-bundle": "^4.2",
-        "symfony/notifier": "^6.4.0"
+        "symfony/notifier": "^7.4.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -18,13 +18,13 @@ trait JWTLoginTrait
         return $this;
     }
 
-    public function loginUser(object $user, string $firewallContext = 'main'): static
+    public function loginUser(object $user, string $firewallContext = 'main', array $tokenAttributes = []): static
     {
         if ($user instanceof UserInterface) {
             $this->server['HTTP_AUTHORIZATION'] = 'Bearer '.$this->jwtAuthenticator->generaToken($user);
         }
 
-        return parent::loginUser($user, $firewallContext);
+        return parent::loginUser($user, $firewallContext, $tokenAttributes);
     }
 
     public function logout(): void

@@ -4,6 +4,7 @@ namespace Draw\Bundle\UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Message\NewUserLockMessage;
 use Draw\Bundle\UserBundle\Message\TemporaryUnlockedMessage;
@@ -13,7 +14,7 @@ use function Draw\Component\Core\use_trait;
 
 trait LockableUserTrait
 {
-    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => '0'])]
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => '0'])]
     private bool $manualLock = false;
 
     #[ORM\OneToMany(

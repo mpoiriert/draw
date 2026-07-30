@@ -4,11 +4,11 @@
     <ul>
         {% for val in value %}
             <li>
-                {% if field_description.options.entry_callback is defined %}
-                    {{ field_description.options.entry_callback.call(admin, val) | raw | spaceless }}
-                {% else %}
-                    {{ val | spaceless }}
-                {% endif %}
+                {%- if field_description.options.entry_callback is defined -%}
+                    {{- field_description.options.entry_callback.call(admin, val) | raw -}}
+                {%- else -%}
+                    {{- val -}}
+                {%- endif -%}
             </li>
         {% endfor %}
     </ul>

@@ -25,7 +25,7 @@ class MysqlImportFileCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('files', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The files to import', null)
+            ->addArgument('files', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'The files to import')
             ->addOption('connection', 'c', InputOption::VALUE_REQUIRED, 'The connection to use', 'default')
         ;
     }

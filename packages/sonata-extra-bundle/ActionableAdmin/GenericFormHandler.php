@@ -100,6 +100,8 @@ class GenericFormHandler
             ;
         }
 
+        $data = $request->request->all();
+
         $formBuilder = $this->formFactory
             ->createNamedBuilder('', data: ['form' => $data])
             ->add('fromGenericFormHandler', HiddenType::class, ['data' => true])
@@ -114,8 +116,8 @@ class GenericFormHandler
                 HiddenType::class,
                 [
                     'data' => json_encode([
-                        'idx' => $request->get('idx'),
-                        'all_elements' => $request->get('all_elements'),
+                        'idx' => $data['idx'],
+                        'all_elements' => $data['all_elements'],
                         'action' => $action,
                     ]),
                 ]

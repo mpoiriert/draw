@@ -12,11 +12,11 @@ class Strtotime extends PhpCallable
 {
     public ?string $message = 'The value {{ value }} is not valid to use in strtotime.';
 
-    public $callable = 'strtotime';
-
-    public function __construct($options = null)
+    public function __construct()
     {
-        parent::__construct(['callable' => $this->callable] + (array) $options);
-        $this->returnValueConstraint = new Type(['type' => 'int']);
+        parent::__construct(
+            callable: 'strtotime',
+            returnValueConstraint: new Type('int'),
+        );
     }
 }

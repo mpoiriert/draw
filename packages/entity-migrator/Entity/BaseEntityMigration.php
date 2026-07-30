@@ -2,6 +2,7 @@
 
 namespace Draw\Component\EntityMigrator\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\EntityMigrator\MigrationTargetEntityInterface;
 use Draw\Component\EntityMigrator\Workflow\EntityMigrationWorkflow;
@@ -13,7 +14,7 @@ abstract class BaseEntityMigration implements EntityMigrationInterface, \Stringa
     #[
         ORM\Id,
         ORM\GeneratedValue,
-        ORM\Column(type: 'bigint')
+        ORM\Column(type: Types::BIGINT)
     ]
     protected ?int $id = null;
 
@@ -26,17 +27,17 @@ abstract class BaseEntityMigration implements EntityMigrationInterface, \Stringa
     protected Migration $migration;
 
     #[
-        ORM\Column(type: 'string', nullable: false, options: ['default' => EntityMigrationWorkflow::PLACE_NEW])
+        ORM\Column(type: Types::STRING, nullable: false, options: ['default' => EntityMigrationWorkflow::PLACE_NEW])
     ]
     protected string $state = EntityMigrationWorkflow::PLACE_NEW;
 
     #[
-        ORM\Column(type: 'json', nullable: true)
+        ORM\Column(type: Types::JSON, nullable: true)
     ]
     protected array $transitionLogs = [];
 
     #[
-        ORM\Column(type: 'datetime_immutable', nullable: false)
+        ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: false)
     ]
     protected \DateTimeImmutable $createdAt;
 

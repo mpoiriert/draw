@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\SonataImportBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,7 @@ class Column
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Import::class, inversedBy: 'columns')]
@@ -24,34 +25,34 @@ class Column
     /**
      * Name of the header.
      */
-    #[ORM\Column(name: 'header_name', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'header_name', type: Types::STRING, length: 255, nullable: false)]
     private ?string $headerName = null;
 
     /**
      * Sample.
      */
-    #[ORM\Column(name: 'sample', type: 'text', nullable: false)]
+    #[ORM\Column(name: 'sample', type: Types::TEXT, nullable: false)]
     private ?string $sample = null;
 
-    #[ORM\Column(name: 'is_identifier', type: 'boolean', options: ['default' => 0])]
+    #[ORM\Column(name: 'is_identifier', type: Types::BOOLEAN, options: ['default' => 0])]
     private ?bool $isIdentifier = null;
 
-    #[ORM\Column(name: 'is_ignored', type: 'boolean', options: ['default' => 0])]
+    #[ORM\Column(name: 'is_ignored', type: Types::BOOLEAN, options: ['default' => 0])]
     private ?bool $isIgnored = null;
 
     /**
      * To which attribute this column mapped to. If not mapped it must be ignored.
      */
-    #[ORM\Column(name: 'mapped_to', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'mapped_to', type: Types::STRING, nullable: true)]
     private ?string $mappedTo = null;
 
-    #[ORM\Column(name: 'is_date', type: 'boolean', nullable: false, options: ['default' => 0])]
+    #[ORM\Column(name: 'is_date', type: Types::BOOLEAN, nullable: false, options: ['default' => 0])]
     private ?bool $isDate = null;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: false)]
     private ?\DateTime $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: false)]
     private ?\DateTime $updatedAt = null;
 
     public function getId(): ?int

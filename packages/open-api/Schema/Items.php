@@ -18,7 +18,7 @@ class Items implements GroupSequenceProviderInterface
      * Files and models are not allowed.
      */
     #[Assert\NotNull]
-    #[Assert\Choice(['string', 'number', 'integer', 'boolean', 'array', 'file'])]
+    #[Assert\Choice(choices: ['string', 'number', 'integer', 'boolean', 'array', 'file'])]
     public ?string $type = null;
 
     /**
@@ -41,7 +41,7 @@ class Items implements GroupSequenceProviderInterface
      *
      *   Default value is csv.
      */
-    #[Assert\Choice(['csv', 'ssv', 'tsv', 'pipes'])]
+    #[Assert\Choice(choices: ['csv', 'ssv', 'tsv', 'pipes'])]
     #[JMS\SerializedName('collectionFormat')]
     public ?string $collectionFormat = null;
 

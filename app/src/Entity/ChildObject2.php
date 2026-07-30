@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 class ChildObject2 extends BaseObject
 {
-    #[ORM\Column(name: 'attribute_2', type: 'string')]
+    #[ORM\Column(name: 'attribute_2', type: Types::STRING)]
     private ?string $attribute2 = null;
 
     public function getAttribute2(): ?string

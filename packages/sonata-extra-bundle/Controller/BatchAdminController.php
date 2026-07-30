@@ -90,7 +90,7 @@ class BatchAdminController extends AbstractAdminController
 
     private function createForwardRequest(Request $request): Request
     {
-        $encodedData = $request->get('data');
+        $encodedData = $request->request->get('data');
 
         $forwardedRequest = $request->duplicate();
 
@@ -119,7 +119,7 @@ class BatchAdminController extends AbstractAdminController
 
         switch (true) {
             case true !== ($batchAction['ask_confirmation'] ?? true):
-            case 'ok' === $request->get('confirmation', false):
+            case 'ok' === $request->request->get('confirmation', false):
                 return null;
             default:
                 $data = $request->request->all();

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
@@ -29,22 +30,22 @@ class Import implements GroupSequenceProviderInterface, \Stringable
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id', type: 'integer', options: ['unsigned' => true])]
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
     private ?int $id = null;
 
     /**
      * The class (or class alias) of the entity you want to import.
      */
-    #[ORM\Column(name: 'entity_class', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'entity_class', type: Types::STRING, length: 255, nullable: false)]
     private ?string $entityClass = null;
 
-    #[ORM\Column(name: 'insert_when_not_found', type: 'boolean', nullable: false, options: ['default' => false])]
+    #[ORM\Column(name: 'insert_when_not_found', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
     private bool $insertWhenNotFound = false;
 
     /**
      * The content of the file to import.
      */
-    #[ORM\Column(name: 'file_content', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'file_content', type: Types::TEXT, nullable: true)]
     private ?string $fileContent = null;
 
     /**
@@ -55,13 +56,13 @@ class Import implements GroupSequenceProviderInterface, \Stringable
     #[Assert\Valid]
     private Selectable&Collection $columns;
 
-    #[ORM\Column(name: 'state', type: 'string', length: 40, nullable: false, options: ['default' => 'new'])]
+    #[ORM\Column(name: 'state', type: Types::STRING, length: 40, nullable: false, options: ['default' => 'new'])]
     private string $state = self::STATE_NEW;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_MUTABLE, nullable: false)]
     private ?\DateTime $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime', nullable: false)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_MUTABLE, nullable: false)]
     private ?\DateTime $updatedAt = null;
 
     public function __construct()

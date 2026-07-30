@@ -24,7 +24,7 @@ class DeleteAction
         $objectActionExecutioner->options[CsrfTokenValidatorListener::INTENTION] = 'sonata.delete';
 
         if (\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_DELETE], true)) {
-            $objectActionExecutioner->options[CsrfTokenValidatorListener::TOKEN] = $request->get('_sonata_csrf_token');
+            $objectActionExecutioner->options[CsrfTokenValidatorListener::TOKEN] = $request->request->get('_sonata_csrf_token');
         }
 
         return $objectActionExecutioner

@@ -17,7 +17,7 @@ class Parameter extends BaseParameter implements GroupSequenceProviderInterface
      * and the parameter MUST be in "formData".
      */
     #[Assert\NotNull]
-    #[Assert\Choice(['string', 'number', 'integer', 'boolean', 'array', 'file'])]
+    #[Assert\Choice(choices: ['string', 'number', 'integer', 'boolean', 'array', 'file'])]
     public ?string $type = null;
 
     /**
@@ -43,7 +43,7 @@ class Parameter extends BaseParameter implements GroupSequenceProviderInterface
      *
      *   Default value is csv.
      */
-    #[Assert\Choice(['csv', 'ssv', 'tsv', 'pipes', 'multi'])]
+    #[Assert\Choice(choices: ['csv', 'ssv', 'tsv', 'pipes', 'multi'])]
     #[JMS\SerializedName('collectionFormat')]
     public ?string $collectionFormat = null;
 

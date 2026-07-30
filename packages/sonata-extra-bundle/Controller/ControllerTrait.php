@@ -72,7 +72,7 @@ trait ControllerTrait
         }
 
         $valid = $this->container->get('security.csrf.token_manager')
-            ->isTokenValid(new CsrfToken($intention, $request->get('_sonata_csrf_token')))
+            ->isTokenValid(new CsrfToken($intention, $request->request->get('_sonata_csrf_token')))
         ;
 
         if (!$valid) {

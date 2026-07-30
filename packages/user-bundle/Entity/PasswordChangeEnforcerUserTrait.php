@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Message\PasswordChangeRequestedMessage;
 use Draw\Component\Messenger\DoctrineMessageBusHook\Model\MessageHolderTrait;
@@ -10,7 +11,7 @@ use function Draw\Component\Core\use_trait;
 
 trait PasswordChangeEnforcerUserTrait
 {
-    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => '0'])]
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => '0'])]
     private bool $needChangePassword = false;
 
     public function requestPasswordChange(): void

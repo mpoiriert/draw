@@ -9,7 +9,7 @@ class ConstraintViolationListException extends ValidatorException
 {
     public function __construct(private ConstraintViolationListInterface $violationList)
     {
-        parent::__construct(method_exists($violationList, '__toString') ? $violationList->__toString() : '');
+        parent::__construct($violationList->__toString());
     }
 
     public function getViolationList(): ConstraintViolationListInterface

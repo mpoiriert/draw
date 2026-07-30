@@ -9,7 +9,7 @@ use Draw\Bundle\SonataExtraBundle\ActionableAdmin\ObjectActionExecutioner;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AddRolesAminAction
+class AddRolesAdminAction
 {
     public function __invoke(
         ObjectActionExecutioner $objectActionExecutioner,

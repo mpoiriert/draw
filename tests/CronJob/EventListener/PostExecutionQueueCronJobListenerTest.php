@@ -31,7 +31,7 @@ class PostExecutionQueueCronJobListenerTest extends KernelTestCase implements Au
     public function postAutowire(): void
     {
         $this->application = new Application(static::$kernel);
-        $this->application->add($this->command);
+        $this->application->addCommand($this->command);
         $this->application->setAutoExit(false);
     }
 

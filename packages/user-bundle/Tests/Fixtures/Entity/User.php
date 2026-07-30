@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Tests\Fixtures\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\ByTimeBaseOneTimePasswordTrait;
 use Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity\TwoFactorAuthenticationUserInterface;
@@ -13,10 +14,10 @@ class User implements TwoFactorAuthenticationUserInterface
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'username', type: 'string')]
+    #[ORM\Column(name: 'username', type: Types::STRING)]
     private ?string $username = null;
 
     public function getId(): ?int

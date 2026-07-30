@@ -5,24 +5,16 @@ namespace Draw\Bundle\SonataExtraBundle\Twig;
 use Doctrine\Common\Util\ClassUtils;
 use Draw\Bundle\SonataExtraBundle\ActionableAdmin\AdminAction;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Attribute\AsTwigFilter;
 
-class EntityTwigExtension extends AbstractExtension
+class EntityTwigExtension
 {
     public function __construct(
         private TranslatorInterface $translator,
     ) {
     }
 
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('entity_to_string', $this->entityToString(...)),
-            new TwigFilter('translate_label', $this->translateLabel(...)),
-        ];
-    }
-
+    #[AsTwigFilter(name: 'entity_to_string')]
     public function entityToString($entity): string
     {
         if (method_exists($entity, '__toString')) {
@@ -32,6 +24,7 @@ class EntityTwigExtension extends AbstractExtension
         return \sprintf('%s:%s', ClassUtils::getClass($entity), spl_object_hash($entity));
     }
 
+    #[AsTwigFilter(name: 'translate_label')]
     public function translateLabel(array|AdminAction $data): string
     {
         if ($data instanceof AdminAction) {

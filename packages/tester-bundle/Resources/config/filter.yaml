@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    draw.tester.expression_filter:
+        class: Draw\Component\Core\FilterExpression\Evaluator
+        public: true
+
+    Draw\Component\Core\FilterExpression\Expression\CompositeExpressionEvaluator:
+        arguments:
+            $evaluator: '@draw.tester.expression_filter'
+
+    Draw\Component\Core\FilterExpression\Expression\ConstraintExpressionEvaluator: ~

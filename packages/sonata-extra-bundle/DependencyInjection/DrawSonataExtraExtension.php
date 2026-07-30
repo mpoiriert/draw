@@ -45,8 +45,8 @@ class DrawSonataExtraExtension extends Extension implements PrependExtensionInte
     {
         $config = $this->processConfiguration($this->getConfiguration($configs, $container), $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yaml');
 
         $this->loadActionableAdmin($config['actionable_admin'], $container);
 

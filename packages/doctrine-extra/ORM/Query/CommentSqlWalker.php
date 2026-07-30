@@ -6,9 +6,8 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\AST\DeleteStatement;
 use Doctrine\ORM\Query\AST\SelectStatement;
 use Doctrine\ORM\Query\AST\UpdateStatement;
-use Doctrine\ORM\Query\SqlWalker;
 
-class CommentSqlWalker extends SqlWalker
+class CommentSqlWalker extends Query\SqlOutputWalker
 {
     public static function addComment(Query $query, string $comment): Query
     {
@@ -20,19 +19,25 @@ class CommentSqlWalker extends SqlWalker
         return $query;
     }
 
-    public function walkSelectStatement(SelectStatement $AST): string
+    public function getFinalizer(DeleteStatement|UpdateStatement|SelectStatement $AST): Query\Exec\SqlFinalizer
     {
-        return $this->getQueryWithCalleeComment(parent::walkSelectStatement($AST));
+        if ($AST instanceof SelectStatement) {
+            return new Query\Exec\SingleSelectSqlFinalizer(
+                $this->getQueryWithCalleeComment($this->createSqlForFinalizer($AST))
+            );
+        }
+
+        return parent::getFinalizer($AST);
     }
 
-    public function walkUpdateStatement(UpdateStatement $AST): string
+    public function walkUpdateStatement(UpdateStatement $updateStatement): string
     {
-        return $this->getQueryWithCalleeComment(parent::walkUpdateStatement($AST));
+        return $this->getQueryWithCalleeComment(parent::walkUpdateStatement($updateStatement));
     }
 
-    public function walkDeleteStatement(DeleteStatement $AST): string
+    public function walkDeleteStatement(DeleteStatement $deleteStatement): string
     {
-        return $this->getQueryWithCalleeComment(parent::walkDeleteStatement($AST));
+        return $this->getQueryWithCalleeComment(parent::walkDeleteStatement($deleteStatement));
     }
 
     private function getQueryWithCalleeComment(string $query): string

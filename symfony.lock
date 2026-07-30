@@ -692,9 +692,6 @@
     "symfony/runtime": {
         "version": "v5.4.3"
     },
-    "symfony/security-acl": {
-        "version": "v3.2.0"
-    },
     "symfony/security-bundle": {
         "version": "5.4",
         "recipe": {

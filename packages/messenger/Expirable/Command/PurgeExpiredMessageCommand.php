@@ -28,7 +28,7 @@ class PurgeExpiredMessageCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('transport', InputArgument::OPTIONAL, 'Name of the transport to setup', null)
+            ->addArgument('transport', InputArgument::OPTIONAL, 'Name of the transport to setup')
             ->addOption(
                 'delay',
                 null,

@@ -30,17 +30,17 @@ class MessageAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): ?bool
     {
+        $user = $this->getMessageUser($this->extractMessageIdFromRequest($request));
+
         return match (true) {
-            null === $user = $this->getMessageUser($request->get($this->requestParameterKey)), !$this->isDifferentUser($user) => false,
+            null === $user, !$this->isDifferentUser($user) => false,
             default => true,
         };
     }
 
     public function authenticate(Request $request): Passport
     {
-        $messageId = $request->get($this->requestParameterKey);
-
-        if (!$user = $this->getMessageUser($messageId)) {
+        if (!$user = $this->getMessageUser($messageId = $this->extractMessageIdFromRequest($request))) {
             throw new CustomUserMessageAuthenticationException('Invalid message id.');
         }
 
@@ -81,5 +81,16 @@ class MessageAuthenticator extends AbstractAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         return null;
+    }
+
+    private function extractMessageIdFromRequest(Request $request): ?string
+    {
+        return $request->attributes->get(
+            $this->requestParameterKey,
+            $request->query->get(
+                $this->requestParameterKey,
+                $request->request->get($this->requestParameterKey)
+            )
+        );
     }
 }
