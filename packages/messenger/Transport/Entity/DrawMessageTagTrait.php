@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Messenger\Transport\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait DrawMessageTagTrait
@@ -17,7 +18,7 @@ trait DrawMessageTagTrait
 
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: Types::STRING)]
     private ?string $name = null;
 
     public function setName(string $name): self

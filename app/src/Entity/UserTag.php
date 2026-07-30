@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDelete;
 
@@ -14,7 +15,7 @@ class UserTag implements \Stringable
     #[
         ORM\Id,
         ORM\GeneratedValue,
-        ORM\Column(name: 'id', type: 'integer')
+        ORM\Column(name: 'id', type: Types::INTEGER)
     ]
     private ?int $id = null;
 

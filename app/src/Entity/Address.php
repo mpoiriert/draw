@@ -2,21 +2,22 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Embeddable]
 class Address
 {
-    #[ORM\Column(name: 'street', type: 'string', options: ['default' => ''])]
+    #[ORM\Column(name: 'street', type: Types::STRING, options: ['default' => ''])]
     private ?string $street = '';
 
-    #[ORM\Column(name: 'postal_code', type: 'string', options: ['default' => ''])]
+    #[ORM\Column(name: 'postal_code', type: Types::STRING, options: ['default' => ''])]
     private ?string $postalCode = '';
 
-    #[ORM\Column(name: 'city', type: 'string', options: ['default' => ''])]
+    #[ORM\Column(name: 'city', type: Types::STRING, options: ['default' => ''])]
     private ?string $city = '';
 
-    #[ORM\Column(name: 'country', type: 'string', options: ['default' => ''])]
+    #[ORM\Column(name: 'country', type: Types::STRING, options: ['default' => ''])]
     private ?string $country = '';
 
     public function getStreet(): ?string

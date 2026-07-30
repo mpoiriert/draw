@@ -2,16 +2,17 @@
 
 namespace Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 trait ByEmailTrait
 {
     use ConfigurationTrait;
 
-    #[ORM\Column(type: 'string', nullable: true)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $emailAuthCode = null;
 
-    #[ORM\Column(name: 'email_auth_code_generated_at', type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(name: 'email_auth_code_generated_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $emailAuthCodeGeneratedAt = null;
 
     public function isEmailAuthEnabled(): bool

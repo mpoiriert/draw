@@ -27,6 +27,9 @@ class AppKernel extends Kernel
                         'memory' => 'in-memory://',
                     ],
                 ],
+                'property_info' => [
+                    'with_constructor_extractor' => false,
+                ],
             ]
         );
 

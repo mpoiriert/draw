@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TagRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
@@ -23,7 +24,7 @@ class Tag implements \Stringable, TranslatableInterface
     #[
         ORM\Id,
         ORM\GeneratedValue,
-        ORM\Column(name: 'id', type: 'bigint')
+        ORM\Column(name: 'id', type: Types::BIGINT)
     ]
     #[Serializer\Expose]
     private ?int $id = null;
@@ -36,7 +37,7 @@ class Tag implements \Stringable, TranslatableInterface
     #[Serializer\Expose]
     private ?string $name = null;
 
-    #[ORM\Column(name: 'active', type: 'boolean', options: ['default' => 1])]
+    #[ORM\Column(name: 'active', type: Types::BOOLEAN, options: ['default' => 1])]
     #[Serializer\Expose]
     private bool $active = true;
 

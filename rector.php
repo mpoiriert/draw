@@ -31,6 +31,7 @@ return RectorConfig::configure()
     ->withPreparedSets(
         deadCode: true,
         privatization: true,
+        // doctrineCodeQuality: true,
         symfonyCodeQuality: true,
         symfonyConfigs: true,
     )

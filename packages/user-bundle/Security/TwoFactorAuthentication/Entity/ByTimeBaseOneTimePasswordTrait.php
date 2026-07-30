@@ -2,6 +2,7 @@
 
 namespace Draw\Bundle\UserBundle\Security\TwoFactorAuthentication\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
@@ -10,7 +11,7 @@ trait ByTimeBaseOneTimePasswordTrait
 {
     use ConfigurationTrait;
 
-    #[ORM\Column(name: 'totp_secret', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'totp_secret', type: Types::STRING, nullable: true)]
     private ?string $totpSecret = null;
 
     public function getTotpSecret(): ?string

@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Console\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Draw\Component\Core\DateTimeUtils;
@@ -44,37 +45,37 @@ class Execution implements \Stringable
     ];
 
     #[ORM\Id]
-    #[ORM\Column(name: 'id', type: 'guid')]
+    #[ORM\Column(name: 'id', type: Types::GUID)]
     private ?string $id = null;
 
     /**
      * This is the command name when created through the dashboard.
      */
-    #[ORM\Column(name: 'command', type: 'string', length: 40, nullable: false, options: ['default' => 'N/A'])]
+    #[ORM\Column(name: 'command', type: Types::STRING, length: 40, nullable: false, options: ['default' => 'N/A'])]
     private ?string $command = null;
 
-    #[ORM\Column(name: 'command_name', type: 'string', length: 255, nullable: false)]
+    #[ORM\Column(name: 'command_name', type: Types::STRING, length: 255, nullable: false)]
     private ?string $commandName = null;
 
-    #[ORM\Column(name: 'state', type: 'string', length: 40, nullable: false)]
+    #[ORM\Column(name: 'state', type: Types::STRING, length: 40, nullable: false)]
     private ?string $state = null;
 
-    #[ORM\Column(name: 'input', type: 'json', nullable: false)]
+    #[ORM\Column(name: 'input', type: Types::JSON, nullable: false)]
     private array $input = [];
 
     /**
      * The execution output of the command.
      */
-    #[ORM\Column(name: 'output', type: 'text', nullable: false, options: ['default' => ''])]
+    #[ORM\Column(name: 'output', type: Types::TEXT, nullable: false, options: ['default' => ''])]
     private string $output = '';
 
-    #[ORM\Column(name: 'created_at', type: 'datetime_immutable', nullable: false)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE, nullable: false)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(name: 'updated_at', type: 'datetime_immutable', nullable: false)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE, nullable: false)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(name: 'auto_acknowledge_reason', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'auto_acknowledge_reason', type: Types::STRING, nullable: true)]
     private ?string $autoAcknowledgeReason = null;
 
     #[ORM\PrePersist]

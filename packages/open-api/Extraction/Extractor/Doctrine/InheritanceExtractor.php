@@ -12,9 +12,9 @@ use Draw\Component\OpenApi\Schema\Schema;
 
 class InheritanceExtractor implements ExtractorInterface
 {
-    public const VENDOR_DATA_DOCTRINE_ROOT_ENTITY_CLASS = 'X-DrawOpenApi-DoctrineRootEntityClass';
-    public const VENDOR_DATA_DOCTRINE_ENTITY_CLASS = 'X-DrawOpenApi-DoctrineEntityClass';
-    public const VENDOR_DATA_DOCTRINE_IS_ROOT_ENTITY = 'X-DrawOpenApi-DoctrineIsRootEntity';
+    public const string VENDOR_DATA_DOCTRINE_ROOT_ENTITY_CLASS = 'X-DrawOpenApi-DoctrineRootEntityClass';
+    public const string VENDOR_DATA_DOCTRINE_ENTITY_CLASS = 'X-DrawOpenApi-DoctrineEntityClass';
+    public const string VENDOR_DATA_DOCTRINE_IS_ROOT_ENTITY = 'X-DrawOpenApi-DoctrineIsRootEntity';
 
     public function __construct(private ManagerRegistry $managerRegistry)
     {
@@ -66,7 +66,7 @@ class InheritanceExtractor implements ExtractorInterface
 
         if ($metaData->isRootEntity()) {
             $target->setVendorDataKey(self::VENDOR_DATA_DOCTRINE_IS_ROOT_ENTITY, true);
-            $target->discriminator = $metaData->discriminatorColumn['name'];
+            $target->discriminator = $metaData->discriminatorColumn->name;
             $target->required[] = $target->discriminator;
             foreach ($metaData->discriminatorMap as $class) {
                 $schema = new Schema();
@@ -74,13 +74,13 @@ class InheritanceExtractor implements ExtractorInterface
                 $schema->setVendorDataKey(self::VENDOR_DATA_DOCTRINE_ROOT_ENTITY_CLASS, $source->name);
                 $openApi->extract($class, $schema, $extractionContext);
             }
-            $target->properties[$metaData->discriminatorColumn['name']] = $property = new Schema();
+            $target->properties[$metaData->discriminatorColumn->name] = $property = new Schema();
             $property->type = 'string';
             $property->description = 'The concrete class of the inheritance.';
             $property->enum = array_keys($metaData->discriminatorMap);
         } else {
-            if (isset($target->properties[$metaData->discriminatorColumn['name']])) {
-                $property = $target->properties[$metaData->discriminatorColumn['name']];
+            if (isset($target->properties[$metaData->discriminatorColumn->name])) {
+                $property = $target->properties[$metaData->discriminatorColumn->name];
                 $property->description = 'Discriminator property. Value will be ';
                 $property->type = 'string';
                 $property->enum = [$metaData->discriminatorValue];

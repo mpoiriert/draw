@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,7 +12,7 @@ class UserAddress
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Column(name: 'id', type: Types::INTEGER)]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userAddresses')]
@@ -22,7 +23,7 @@ class UserAddress
     #[Assert\Valid]
     private Address $address;
 
-    #[ORM\Column(name: 'position', type: 'integer', nullable: false, options: ['default' => 0])]
+    #[ORM\Column(name: 'position', type: Types::INTEGER, nullable: false, options: ['default' => 0])]
     private ?int $position = null;
 
     public function __construct()

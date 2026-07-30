@@ -4,6 +4,7 @@ namespace Draw\Component\Messenger\Transport\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -11,31 +12,31 @@ trait DrawMessageTrait
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
-    #[ORM\Column(name: 'id', type: 'guid')]
+    #[ORM\Column(name: 'id', type: Types::GUID)]
     private ?string $id = null;
 
-    #[ORM\Column(name: 'message_class', type: 'string')]
+    #[ORM\Column(name: 'message_class', type: Types::STRING)]
     private ?string $messageClass = null;
 
-    #[ORM\Column(name: 'body', type: 'text')]
+    #[ORM\Column(name: 'body', type: Types::TEXT)]
     private ?string $body = null;
 
-    #[ORM\Column(name: 'headers', type: 'text')]
+    #[ORM\Column(name: 'headers', type: Types::TEXT)]
     private ?string $headers = null;
 
-    #[ORM\Column(name: 'queue_name', type: 'string')]
+    #[ORM\Column(name: 'queue_name', type: Types::STRING)]
     private ?string $queueName = null;
 
-    #[ORM\Column(name: 'created_at', type: 'datetime_immutable')]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(name: 'available_at', type: 'datetime_immutable')]
+    #[ORM\Column(name: 'available_at', type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $availableAt = null;
 
-    #[ORM\Column(name: 'delivered_at', type: 'datetime_immutable')]
+    #[ORM\Column(name: 'delivered_at', type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $deliveredAt = null;
 
-    #[ORM\Column(name: 'expires_at', type: 'datetime_immutable')]
+    #[ORM\Column(name: 'expires_at', type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $expiresAt = null;
 
     /**

@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\ReadableCollection;
 use Doctrine\Common\Collections\Selectable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,42 +23,42 @@ class CronJob implements \Stringable
     #[
         ORM\Id,
         ORM\GeneratedValue,
-        ORM\Column(name: 'id', type: 'integer'),
+        ORM\Column(name: 'id', type: Types::INTEGER),
     ]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'name', type: 'string', length: 255, unique: true, nullable: false)]
+    #[ORM\Column(name: 'name', type: Types::STRING, length: 255, unique: true, nullable: false)]
     #[
         Assert\NotNull,
         Assert\Length(min: 1, max: 255),
     ]
     private ?string $name = null;
 
-    #[ORM\Column(name: 'active', type: 'boolean', nullable: false, options: ['default' => false])]
+    #[ORM\Column(name: 'active', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
     private bool $active = false;
 
-    #[ORM\Column(name: 'command', type: 'text', nullable: false)]
+    #[ORM\Column(name: 'command', type: Types::TEXT, nullable: false)]
     #[Assert\NotNull]
     private ?string $command = null;
 
-    #[ORM\Column(name: 'schedule', type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(name: 'schedule', type: Types::STRING, length: 255, nullable: true)]
     private ?string $schedule = null;
 
-    #[ORM\Column(name: 'time_to_live', type: 'integer', nullable: false, options: ['default' => 0])]
+    #[ORM\Column(name: 'time_to_live', type: Types::INTEGER, nullable: false, options: ['default' => 0])]
     #[
         Assert\NotNull,
         Assert\GreaterThanOrEqual(0),
     ]
     private int $timeToLive = 0;
 
-    #[ORM\Column(name: 'execution_timeout', type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'execution_timeout', type: Types::INTEGER, nullable: true)]
     private ?int $executionTimeout = null;
 
-    #[ORM\Column(name: 'priority', type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'priority', type: Types::INTEGER, nullable: true)]
     #[Assert\Range(min: 0, max: 255)]
     private ?int $priority = null;
 
-    #[ORM\Column(name: 'notes', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'notes', type: Types::TEXT, nullable: true)]
     private ?string $notes = null;
 
     /**

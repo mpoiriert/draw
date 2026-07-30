@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Draw\Component\CronJob\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[
@@ -32,32 +33,32 @@ class CronJobExecution implements \Stringable
     #[
         ORM\Id,
         ORM\GeneratedValue,
-        ORM\Column(name: 'id', type: 'integer'),
+        ORM\Column(name: 'id', type: Types::INTEGER),
     ]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'requested_at', type: 'datetime_immutable', nullable: false)]
+    #[ORM\Column(name: 'requested_at', type: Types::DATETIME_IMMUTABLE, nullable: false)]
     private \DateTimeImmutable $requestedAt;
 
-    #[ORM\Column(name: 'state', type: 'string', length: 20, nullable: false, options: ['default' => self::STATE_REQUESTED])]
+    #[ORM\Column(name: 'state', type: Types::STRING, length: 20, nullable: false, options: ['default' => self::STATE_REQUESTED])]
     private string $state = self::STATE_REQUESTED;
 
-    #[ORM\Column(name: '`force`', type: 'boolean', nullable: false, options: ['default' => false])]
+    #[ORM\Column(name: '`force`', type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
     private bool $force;
 
-    #[ORM\Column(name: 'execution_started_at', type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(name: 'execution_started_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $executionStartedAt = null;
 
-    #[ORM\Column(name: 'execution_ended_at', type: 'datetime_immutable', nullable: true)]
+    #[ORM\Column(name: 'execution_ended_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $executionEndedAt = null;
 
-    #[ORM\Column(name: 'execution_delay', type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'execution_delay', type: Types::INTEGER, nullable: true)]
     private ?int $executionDelay = null;
 
-    #[ORM\Column(name: 'exit_code', type: 'integer', nullable: true)]
+    #[ORM\Column(name: 'exit_code', type: Types::INTEGER, nullable: true)]
     private ?int $exitCode = null;
 
-    #[ORM\Column(name: 'error', type: 'text', nullable: true)]
+    #[ORM\Column(name: 'error', type: Types::TEXT, nullable: true)]
     private ?string $error = null;
 
     #[

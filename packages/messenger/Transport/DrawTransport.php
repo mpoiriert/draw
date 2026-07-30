@@ -197,7 +197,7 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         $schema = $this->getSchema();
 
         $tableNames = array_map(
-            static fn (Table $table): string => $table->getName(),
+            static fn (Table $table): string => $table->getObjectName()->toString(),
             $schema->getTables()
         );
 
@@ -206,10 +206,6 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
         $assetFilter = $configuration->getSchemaAssetsFilter();
         $configuration->setSchemaAssetsFilter(
             static function ($tableName) use ($tableNames): bool {
-                if ($tableName instanceof AbstractAsset) {
-                    $tableName = $tableName->getName();
-                }
-
                 if (!\is_string($tableName)) {
                     throw new \TypeError(\sprintf('The table name must be an instance of "%s" or a string ("%s" given).', AbstractAsset::class, get_debug_type($tableName)));
                 }
