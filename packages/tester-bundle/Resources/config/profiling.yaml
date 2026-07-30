@@ -1,0 +1,21 @@
+services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+        public: false
+
+    Draw\Bundle\TesterBundle\Profiling\Sql\QueryCollector: ~
+
+    Draw\Bundle\TesterBundle\Profiling\Sql\ProfilingMiddleware:
+        tags:
+            - { name: doctrine.middleware }
+
+    Draw\Bundle\TesterBundle\Profiling\SqlProfiler: ~
+
+    Draw\Component\Profiling\Sql\SqlProfiler:
+        alias: Draw\Bundle\TesterBundle\Profiling\SqlProfiler
+
+    Draw\Component\Profiling\ProfilerCoordinator:
+        public: true
+        arguments:
+            - !tagged_iterator 'Draw\Component\Profiling\ProfilerInterface'

@@ -244,12 +244,12 @@ class CronJobProcessorTest extends TestCase
 
         $process = $this->createMock(Process::class);
         $process
-            ->expects($this->any())
+            ->expects($this->once())
             ->method('getExitCode')
             ->willReturn($exitCode = 127)
         ;
         $process
-            ->expects($this->any())
+            ->expects($this->once())
             ->method('mustRun')
             ->willThrowException(
                 new \Exception(

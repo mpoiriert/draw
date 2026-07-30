@@ -130,9 +130,10 @@ class TwoFactorAuthenticationListenerTest extends TestCase
 
                     public function getUserIdentifier(): string
                     {
-                        return '';
+                        return uniqid('id-');
                     }
 
+                    #[\Deprecated]
                     public function eraseCredentials(): void
                     {
                     }

@@ -19,7 +19,7 @@ class ExecutionController extends CRUDController
     {
         $this->admin->checkAccess('create');
 
-        if (!$request->get('command') && $request->isMethod('get')) {
+        if (!$request->query->get('command') && $request->isMethod(Request::METHOD_GET)) {
             return $this->renderWithExtraParams(
                 '@DrawSonataIntegration/Console/Execution/select_command.html.twig',
                 [

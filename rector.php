@@ -73,8 +73,5 @@ return RectorConfig::configure()
             __DIR__.'/packages/sonata-integration-bundle/User/Controller/TwoFactorAuthenticationController.php',
             __DIR__.'/packages/sonata-import-bundle/Controller/ImportController.php',
         ],
-        Rector\Symfony\Symfony61\Rector\Class_\MagicClosureTwigExtensionToNativeMethodsRector::class => [
-            __DIR__.'/packages/mailer/Twig/TranslationExtension.php',
-        ],
     ])
 ;

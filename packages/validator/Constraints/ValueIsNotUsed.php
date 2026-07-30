@@ -2,22 +2,27 @@
 
 namespace Draw\Component\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 class ValueIsNotUsed extends Constraint
 {
-    public const CODE = 'VALUE_ALREADY_TAKEN';
+    public const string CODE = 'VALUE_ALREADY_TAKEN';
 
+    public string $message = 'Value "{{ value }}" is already used.';
+
+    #[HasNamedArguments]
     public function __construct(
         public string $entityClass,
         public string $field,
-        public string $message = 'Value "{{ value }}" is already used.',
         ?array $groups = null,
         $payload = null,
-        array $options = [],
     ) {
-        parent::__construct($options, $groups, $payload);
+        parent::__construct(
+            groups: $groups,
+            payload: $payload
+        );
     }
 
     public function getTargets(): string|array

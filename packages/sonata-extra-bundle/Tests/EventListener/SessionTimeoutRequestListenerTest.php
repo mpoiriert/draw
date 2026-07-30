@@ -346,6 +346,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
                 return null;
             }
 
+            #[\Deprecated]
             public function eraseCredentials(): void
             {
             }
@@ -357,7 +358,7 @@ class SessionTimeoutRequestListenerTest extends TestCase
 
             public function getUserIdentifier(): string
             {
-                return '';
+                return uniqid('id-');
             }
         };
 

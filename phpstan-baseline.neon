@@ -55,12 +55,6 @@ parameters:
 			path: packages/cron-job/Message/ExecuteCronJobMessage.php
 
 		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with DateTimeImmutable will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 1
-			path: packages/cron-job/Tests/MessageHandler/ExecuteCronJobMessageHandlerTest.php
-
-		-
 			message: '#^Property Draw\\Component\\EntityMigrator\\Message\\MigrateEntityCommand\:\:\$entity \(Draw\\Component\\EntityMigrator\\Entity\\EntityMigrationInterface\|Draw\\Component\\Messenger\\DoctrineEnvelopeEntityReference\\Stamp\\PropertyReferenceStamp\|null\) is never assigned null so it can be removed from the property type\.$#'
 			identifier: property.unusedType
 			count: 1
@@ -73,12 +67,6 @@ parameters:
 			path: packages/log/DependencyInjection/Compiler/LoggerDecoratorPass.php
 
 		-
-			message: '#^Parameter \#1 \$node of method Symfony\\Component\\Config\\Definition\\Builder\\NodeBuilder\:\:append\(\) expects Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition, Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/log/DependencyInjection/LogIntegration.php
-
-		-
 			message: '#^Unsafe call to private method Draw\\Component\\Log\\Tests\\DependencyInjection\\LogIntegrationTest\:\:assertRequestMatcherDefinitions\(\) through static\:\:\.$#'
 			identifier: staticClassAccess.privateMethod
 			count: 2
@@ -89,12 +77,6 @@ parameters:
 			identifier: property.unusedType
 			count: 1
 			path: packages/messenger/Tests/EventListener/StopOnNewVersionListenerTest.php
-
-		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 1
-			path: packages/messenger/Tests/Transport/DrawTransportTest.php
 
 		-
 			message: '#^Unsafe call to private method Draw\\Component\\Messenger\\Transport\\DrawTransport\:\:formatDateTime\(\) through static\:\:\.$#'
@@ -113,18 +95,6 @@ parameters:
 			identifier: staticClassAccess.privateMethod
 			count: 1
 			path: packages/open-api/EventListener/SerializationControllerListener.php
-
-		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 1
-			path: packages/open-api/Tests/Extraction/Extractor/JmsSerializer/PropertiesExtractorTest.php
-
-		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 2
-			path: packages/open-api/Tests/Extraction/Extractor/OpenApi/RootSchemaExtractorTest.php
 
 		-
 			message: '#^Parameter \$param of method Draw\\Component\\OpenApi\\Tests\\Extraction\\Extractor\\PhpDoc\\PhpDocOperationExtractorStubService\:\:invalidTypeParameter\(\) has invalid type Draw\\Component\\OpenApi\\Tests\\Extraction\\Extractor\\PhpDoc\\toto\.$#'
@@ -187,34 +157,22 @@ parameters:
 			path: packages/sonata-integration-bundle/User/Security/AdminLoginAuthenticator.php
 
 		-
+			message: '#^Trait Draw\\Bundle\\TesterBundle\\EventDispatcher\\EventListenerTestTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: packages/tester-bundle/EventDispatcher/EventListenerTestTrait.php
+
+		-
 			message: '#^Trait Draw\\Bundle\\TesterBundle\\Messenger\\MessageHandlerAssertionTrait is used zero times and is not analysed\.$#'
 			identifier: trait.unused
 			count: 1
 			path: packages/tester-bundle/Messenger/MessageHandlerAssertionTrait.php
 
 		-
-			message: '#^Parameter \#1 \$callback of function set_error_handler expects \(callable\(int, string, string, int\)\: bool\)\|null, Closure\(\)\: null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: packages/tester-bundle/Tests/bootstrap.php
-
-		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Draw\\\\Component\\\\Tester\\\\DataTester'' and Draw\\Component\\Tester\\DataTester will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 2
-			path: packages/tester/Tests/DataTesterTest.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between null and Draw\\Component\\Tester\\DataTester will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: packages/tester/Tests/DataTesterTest.php
-
-		-
-			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: method.alreadyNarrowedType
-			count: 1
-			path: packages/tester/Tests/ExampleTest.php
 
 		-
 			message: '#^Property Draw\\Bundle\\UserBundle\\DTO\\Credential\:\:\$password \(string\|null\) is never assigned string so it can be removed from the property type\.$#'
@@ -227,10 +185,3 @@ parameters:
 			identifier: property.unusedType
 			count: 1
 			path: packages/user-bundle/DTO/Credential.php
-
-		-
-			message: '#^Parameter \#1 \$callback of function set_error_handler expects \(callable\(int, string, string, int\)\: bool\)\|null, Closure\(\)\: null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: tests/bootstrap.php
-

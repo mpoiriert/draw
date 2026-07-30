@@ -43,22 +43,6 @@ class PhpCallableTest extends TestCase
         $this->assertNull($this->object->returnValueConstraint);
     }
 
-    public function testGetDefaultOption(): void
-    {
-        $this->assertSame(
-            'callable',
-            $this->object->getDefaultOption()
-        );
-    }
-
-    public function testGetRequiredOptions(): void
-    {
-        $this->assertSame(
-            ['callable'],
-            $this->object->getRequiredOptions()
-        );
-    }
-
     public function testValidatedBy(): void
     {
         $this->assertSame(

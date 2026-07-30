@@ -26,14 +26,23 @@ class WorkflowTransitionAction
         return $objectActionExecutioner
             ->execute(
                 [
-                    'execution' => fn (object $object) => $this->executeTransition($objectActionExecutioner, $workflowRegistry->get($object), $object, $request->get('transition')),
+                    'execution' => fn (object $object): ?Response => $this->executeTransition(
+                        $objectActionExecutioner,
+                        $workflowRegistry->get($object),
+                        $object,
+                        $request->query->get('transition')
+                    ),
                 ]
             )
         ;
     }
 
-    private function executeTransition(ObjectActionExecutioner $objectActionExecutioner, WorkflowInterface $workflow, object $object, ?string $transition): ?Response
-    {
+    private function executeTransition(
+        ObjectActionExecutioner $objectActionExecutioner,
+        WorkflowInterface $workflow,
+        object $object,
+        ?string $transition,
+    ): ?Response {
         if (null === $transition) {
             throw new BadRequestHttpException('missing transition to apply');
         }

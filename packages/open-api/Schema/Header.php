@@ -26,7 +26,7 @@ class Header
      * The type of the object. The value MUST be one of "string",.
      */
     #[Assert\NotNull]
-    #[Assert\Choice(['string', 'number', 'integer', 'boolean', 'array'])]
+    #[Assert\Choice(choices: ['string', 'number', 'integer', 'boolean', 'array'])]
     public ?string $type = null;
 
     /**
@@ -50,7 +50,7 @@ class Header
      *
      * Default value is csv.
      */
-    #[Assert\Choice(['csv', 'ssv', 'tsv', 'pipes'])]
+    #[Assert\Choice(choices: ['csv', 'ssv', 'tsv', 'pipes'])]
     #[JMS\SerializedName('collectionFormat')]
     public ?string $collectionFormat = null;
 

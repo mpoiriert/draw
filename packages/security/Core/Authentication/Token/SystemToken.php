@@ -35,6 +35,7 @@ class SystemToken extends AbstractToken
                 return null;
             }
 
+            #[\Deprecated]
             public function eraseCredentials(): void
             {
             }

@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -16,32 +17,22 @@ class PhpCallable extends Constraint
     public ?string $message = 'Execution of function with {{ value }} does not return expected result.';
 
     /**
-     * The php callable.
-     *
-     * @var callable
+     * @param callable        $callable              the php callable
+     * @param bool            $ignoreNull            if we must validate null value or not
+     * @param Constraint|null $returnValueConstraint A constraint to validate the return value of the callable. Some callable will throw a exception other will return false, null or predefined value when input is invalid.
      */
-    public $callable;
-
-    /**
-     * If we must validate null value or not.
-     */
-    public bool $ignoreNull = true;
-
-    /**
-     * A constraint to validate the return value of the callable.
-     *
-     * Some callable will throw a exception other will return false, null or predefined value when input is invalid
-     */
-    public ?Constraint $returnValueConstraint = null;
-
-    public function getDefaultOption(): ?string
-    {
-        return 'callable';
-    }
-
-    public function getRequiredOptions(): array
-    {
-        return ['callable'];
+    #[HasNamedArguments]
+    public function __construct(
+        public mixed $callable,
+        public ?Constraint $returnValueConstraint = null,
+        public bool $ignoreNull = true,
+        ?array $groups = null,
+        mixed $payload = null,
+    ) {
+        parent::__construct(
+            groups: $groups,
+            payload: $payload
+        );
     }
 
     public function getTargets(): string|array

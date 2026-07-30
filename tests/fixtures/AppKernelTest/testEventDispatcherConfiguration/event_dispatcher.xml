@@ -129,12 +129,17 @@
   </event>
   <event name="Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent">
     <callable type="function" name="connectSystem" class="Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener" priority="0"/>
+    <callable type="function" name="resetBefore" class="Symfony\Component\Messenger\EventListener\ResetMemoryUsageListener" priority="-1024"/>
+  </event>
+  <event name="Symfony\Component\Messenger\Event\WorkerMessageSkipEvent">
+    <callable type="function" name="onMessageSkip" class="Symfony\Component\Messenger\EventListener\SendFailedMessageToFailureTransportListener" priority="-100"/>
   </event>
   <event name="Symfony\Component\Messenger\Event\WorkerRunningEvent">
     <callable type="function" name="onWorkerRunning" class="Symfony\Component\Messenger\EventListener\DispatchPcntlSignalListener" priority="100"/>
     <callable type="function" name="onWorkerRunning" class="Symfony\Component\Messenger\EventListener\StopWorkerOnRestartSignalListener" priority="0"/>
     <callable type="function" name="onWorkerRunning" class="Symfony\Component\Messenger\EventListener\StopWorkerOnCustomStopExceptionListener" priority="0"/>
     <callable type="function" name="onWorkerRunning" class="Draw\Component\Messenger\Versioning\EventListener\StopOnNewVersionListener" priority="0"/>
+    <callable type="function" name="collectAfter" class="Symfony\Component\Messenger\EventListener\ResetMemoryUsageListener" priority="-1024"/>
   </event>
   <event name="Symfony\Component\Messenger\Event\WorkerStartedEvent">
     <callable type="function" name="onWorkerStarted" class="Symfony\Component\Messenger\EventListener\StopWorkerOnRestartSignalListener" priority="0"/>
@@ -187,9 +192,10 @@
     <callable type="function" name="onKernelController" class="Draw\Component\OpenApi\EventListener\SerializationControllerListener" priority="0"/>
   </event>
   <event name="kernel.controller_arguments">
+    <callable type="function" name="onKernelControllerArguments" class="Symfony\Component\HttpKernel\EventListener\IsSignatureValidAttributeListener" priority="30"/>
+    <callable type="function" name="onKernelControllerArguments" class="Symfony\Component\Security\Http\EventListener\IsCsrfTokenValidAttributeListener" priority="25"/>
     <callable type="function" name="onKernelControllerArguments" class="Symfony\Component\Security\Http\EventListener\IsGrantedAttributeListener" priority="20"/>
     <callable type="function" name="onKernelControllerArguments" class="Symfony\Component\HttpKernel\EventListener\CacheAttributeListener" priority="10"/>
-    <callable type="function" name="onKernelControllerArguments" class="Container__cleaned__\RequestPayloadValueResolverGhost__cleaned__" priority="0"/>
     <callable type="function" name="onControllerArguments" class="Symfony\Component\HttpKernel\EventListener\ErrorListener" priority="0"/>
     <callable type="function" name="onKernelController" class="Draw\Component\OpenApi\EventListener\RequestValidationListener" priority="-5"/>
     <callable type="function" name="onControllerEvent" class="Draw\Bundle\SonataExtraBundle\ActionableAdmin\EventListener\ActionableAdminListener" priority="-1000"/>
@@ -212,6 +218,7 @@
     <callable type="function" name="configure" class="Symfony\Component\HttpKernel\EventListener\DebugHandlersListener" priority="2048"/>
     <callable type="function" name="onKernelRequest" class="Symfony\Component\HttpKernel\EventListener\ValidateRequestListener" priority="256"/>
     <callable type="function" name="onKernelRequest" class="Nelmio\CorsBundle\EventListener\CorsListener" priority="250"/>
+    <callable type="function" name="onKernelRequest" class="Symfony\Bridge\Doctrine\Middleware\IdleConnection\Listener" priority="192"/>
     <callable type="function" name="onKernelRequest" class="Symfony\Component\HttpKernel\EventListener\SessionListener" priority="128"/>
     <callable type="function" name="setDefaultLocale" class="Symfony\Component\HttpKernel\EventListener\LocaleListener" priority="100"/>
     <callable type="function" name="onKernelRequest" class="Symfony\Component\HttpKernel\EventListener\RouterListener" priority="32"/>

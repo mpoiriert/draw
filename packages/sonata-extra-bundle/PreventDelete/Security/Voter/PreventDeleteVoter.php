@@ -5,6 +5,7 @@ namespace Draw\Bundle\SonataExtraBundle\PreventDelete\Security\Voter;
 use Doctrine\Persistence\ManagerRegistry;
 use Draw\Bundle\SonataExtraBundle\PreventDelete\PreventDeleteRelationLoader;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class PreventDeleteVoter implements VoterInterface
@@ -15,7 +16,7 @@ class PreventDeleteVoter implements VoterInterface
     ) {
     }
 
-    public function vote(TokenInterface $token, $subject, array $attributes): int
+    public function vote(TokenInterface $token, $subject, array $attributes, ?Vote $vote = null): int
     {
         if (!$subject) {
             return VoterInterface::ACCESS_ABSTAIN;

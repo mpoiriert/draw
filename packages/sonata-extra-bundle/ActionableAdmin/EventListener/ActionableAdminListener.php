@@ -22,7 +22,7 @@ class ActionableAdminListener
 
         $request = $event->getRequest();
 
-        $objectId = $request->get($admin->getIdParameter());
+        $objectId = $request->attributes->get($admin->getIdParameter());
 
         $object = $admin->getObject($objectId);
 

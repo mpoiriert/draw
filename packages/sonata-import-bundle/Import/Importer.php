@@ -10,7 +10,7 @@ use Draw\Bundle\SonataImportBundle\Column\ColumnExtractorInterface;
 use Draw\Bundle\SonataImportBundle\Column\ColumnFactory;
 use Draw\Bundle\SonataImportBundle\Entity\Column;
 use Draw\Bundle\SonataImportBundle\Entity\Import;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
@@ -26,7 +26,7 @@ class Importer implements ImporterInterface
         /**
          * @var iterable<ColumnExtractorInterface>
          */
-        #[TaggedIterator(ColumnExtractorInterface::class)]
+        #[AutowireIterator(ColumnExtractorInterface::class)]
         private iterable $columnsExtractors,
         private ManagerRegistry $managerRegistry,
         private ColumnFactory $columnFactory,

@@ -46,7 +46,7 @@ class EventDispatcherSerializerDecoratorTest extends TestCase
 
     public function testDecode(): void
     {
-        $data = ['body' => '', 'headers' => ''];
+        $data = ['body' => '', 'headers' => []];
 
         $this->serializer
             ->expects($this->once())

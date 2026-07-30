@@ -70,13 +70,14 @@ class TwoFactorAuthenticationResendCodeActionTest extends TestCase
                 return null;
             }
 
+            #[\Deprecated]
             public function eraseCredentials(): void
             {
             }
 
             public function getUserIdentifier(): string
             {
-                return '';
+                return uniqid('id-');
             }
         };
 

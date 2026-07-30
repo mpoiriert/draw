@@ -28,11 +28,11 @@ class DrawTesterExtension extends Extension
         ;
 
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config');
-        $fileLoader = new Loader\XmlFileLoader($container, $fileLocator);
+        $fileLoader = new Loader\YamlFileLoader($container, $fileLocator);
 
         $this->configureProfiling($config['profiling'], $fileLoader);
 
-        $fileLoader->load('filter.xml');
+        $fileLoader->load('filter.yaml');
 
         $container->setDefinition(
             HandleMessagesMappingProvider::class,
@@ -51,6 +51,6 @@ class DrawTesterExtension extends Extension
             return;
         }
 
-        $fileLoader->load('profiling.xml');
+        $fileLoader->load('profiling.yaml');
     }
 }

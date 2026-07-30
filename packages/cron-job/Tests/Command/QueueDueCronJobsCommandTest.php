@@ -64,7 +64,7 @@ class QueueDueCronJobsCommandTest extends TestCase
     public function testExecute(array $rawCronJobs, array $expectedDisplay): void
     {
         $this->managerRegistry
-            ->expects($this->any())
+            ->expects($this->once())
             ->method('getRepository')
             ->with(CronJob::class)
             ->willReturn($repository = $this->createMock(EntityRepository::class))

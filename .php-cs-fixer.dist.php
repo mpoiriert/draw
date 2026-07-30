@@ -6,6 +6,7 @@ $finder = (new \PhpCsFixer\Finder)
     ->exclude('bin')
     ->exclude('packages/fixer/Tests/fixtures/ClassPrivateStaticCallFixerTest')
     ->exclude('packages/fixer/Tests/fixtures/ClassStaticCallFixerTest')
+    ->notPath('config/reference.php')
 ;
 
 $config = (new \PhpCsFixer\Config())

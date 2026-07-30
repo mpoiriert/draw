@@ -2,7 +2,7 @@
 
 namespace App\Sonata\Admin;
 
-use App\Controller\Admin\AddRolesAminAction;
+use App\Controller\Admin\AddRolesAdminAction;
 use App\Controller\Admin\MakeAdminAction;
 use App\Controller\Admin\SetPreferredLocaleAction;
 use App\Entity\User;
@@ -23,7 +23,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Translation\TranslatableMessage;
 
 #[AutoconfigureTag(
     name: 'sonata.admin',
@@ -162,7 +161,7 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
                         ChoiceType::class,
                         [
                             'choices' => ['email' => 'email', 'totp' => 'totp'],
-                            'choice_label' => static fn ($choice) => new TranslatableMessage('enabledProviders.choice.'.$choice),
+                            'choice_label' => static fn (string $choice): string => 'enabledProviders.choice.'.$choice,
                             'multiple' => true,
                             'expanded' => true,
                         ]
@@ -206,8 +205,8 @@ class UserAdmin extends AbstractAdmin implements ListPriorityAwareAdminInterface
                 ->setIcon('fa fa-user-plus')
                 ->setBatchController(MakeAdminAction::class),
             'addRoles' => (new AdminAction('addRoles', true))
-                ->setController(AddRolesAminAction::class)
-                ->setBatchController(AddRolesAminAction::class),
+                ->setController(AddRolesAdminAction::class)
+                ->setBatchController(AddRolesAdminAction::class),
             'setPreferredLocale' => (new AdminAction('setPreferredLocale', true))
                 ->setIcon('fa fa-language')
                 ->setController(SetPreferredLocaleAction::class)

@@ -41,6 +41,11 @@ class MakeDrawPackage extends AbstractMaker
     {
     }
 
+    public static function getCommandDescription(): string
+    {
+        return 'Generates a new "draw" package.';
+    }
+
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
         $type = $input->getArgument('type');

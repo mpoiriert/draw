@@ -19,7 +19,7 @@ class SetPreferredLocaleAction
     ): Response {
         return $objectActionExecutioner->execute(
             static function (User $user) use ($request, $objectActionExecutioner): void {
-                $user->setPreferredLocale($request->get('_locale') ?? 'en');
+                $user->setPreferredLocale($request->attributes->get('_locale') ?? 'en');
 
                 $objectActionExecutioner->getAdmin()->update($user);
             }

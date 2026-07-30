@@ -9,6 +9,7 @@ trait EventDispatcherTesterTrait
 {
     protected static array $eventDispatcherFileCleaners = [
         [EventDispatcherTesterTrait::class, 'cleanEventDispatcherFileContainerReference'],
+        [EventDispatcherTesterTrait::class, 'removeRequestPayloadValueResolverReference'],
     ];
 
     protected static function cleanEventDispatcherFile(string $filePath): void
@@ -27,7 +28,7 @@ trait EventDispatcherTesterTrait
      *
      * The result after cleaning will be:
      *
-     * <callable type="function" name="onKernelControllerArguments" class="Container\RequestPayloadValueResolverGhost" priority="0"/>
+     * <callable type="function" name="onKernelControllerArguments" class="Container__cleaned__\RequestPayloadValueResolverGhost__cleaned__" priority="0"/>
      *
      * Clean when the class name contains Container and Ghost in its name.
      */
@@ -48,6 +49,35 @@ trait EventDispatcherTesterTrait
                 $class = preg_replace('/(?<=Container)[A-Za-z0-9]+|(?<=Ghost)[A-Za-z0-9]+/', '__cleaned__', $class);
                 $node->setAttribute('class', $class);
             }
+        }
+
+        $dom->save($filePath);
+    }
+
+    /**
+     * `RequestPayloadValueResolver` depends on PHP version.
+     *
+     * PHP 8.3:
+     * <callable type="function" name="onKernelControllerArguments" class="Container__cleaned__\RequestPayloadValueResolverGhost__cleaned__" priority="0"/>
+     *
+     * PHP >= 8.4:
+     * <callable type="function" name="onKernelControllerArguments" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestPayloadValueResolver" priority="0"/>
+     *
+     * This should not have any impact.
+     */
+    public static function removeRequestPayloadValueResolverReference(string $filePath): void
+    {
+        $dom = new \DOMDocument();
+        $dom->load($filePath);
+
+        $xpath = new \DOMXPath($dom);
+
+        $nodes = $xpath->query('//callable[@class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestPayloadValueResolver" or @class="Container__cleaned__\RequestPayloadValueResolverGhost__cleaned__"]');
+
+        foreach ($nodes as $node) {
+            \assert($node instanceof \DOMElement);
+
+            $node->remove();
         }
 
         $dom->save($filePath);

@@ -121,6 +121,7 @@ trait SecurityUserTrait
         return null;
     }
 
+    #[\Deprecated]
     public function eraseCredentials(): void
     {
         $this->plainPassword = null;
