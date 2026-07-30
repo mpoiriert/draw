@@ -19,8 +19,8 @@
         "psr/log": "^3"
     },
     "require-dev": {
-        "draw/dependency-injection": "^0.40",
-        "draw/user-bundle": "^0.40",
+        "draw/dependency-injection": "^0.41",
+        "draw/user-bundle": "^0.41",
         "monolog/monolog": "^3.5.0",
         "phpunit/phpunit": "^12.5",
         "symfony/event-dispatcher": "^7.4.0",
@@ -37,7 +37,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.38-dev"
+            "dev-master": "0.41-dev"
         }
     }
 }

@@ -19,8 +19,8 @@
         "symfony/workflow": "^7.4.0"
     },
     "require-dev": {
-        "draw/security": "^0.40",
-        "draw/dependency-injection": "^0.40",
+        "draw/security": "^0.41",
+        "draw/dependency-injection": "^0.41",
         "phpunit/phpunit": "^12.5",
         "symfony/security-core": "^7.4.0"
     },
@@ -33,7 +33,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.38-dev"
+            "dev-master": "0.41-dev"
         }
     }
 }

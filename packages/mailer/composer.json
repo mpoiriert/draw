@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": ">=8.3",
-        "draw/core": "^0.40",
+        "draw/core": "^0.41",
         "symfony/dom-crawler": "^7.4.0",
         "symfony/css-selector": "^7.4.0",
         "symfony/console": "^7.4.0",
@@ -20,8 +20,8 @@
         "twig/twig": "^3.3"
     },
     "require-dev": {
-        "draw/dependency-injection": "^0.40",
-        "draw/tester": "^0.40",
+        "draw/dependency-injection": "^0.41",
+        "draw/tester": "^0.41",
         "pelago/emogrifier": "^8.0",
         "phpunit/phpunit": "^12.5"
     },
@@ -34,7 +34,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.38-dev"
+            "dev-master": "0.41-dev"
         }
     }
 }
