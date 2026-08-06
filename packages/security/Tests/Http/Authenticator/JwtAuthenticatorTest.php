@@ -10,6 +10,7 @@ use Draw\Component\Security\Tests\Stub\JwtAuthenticatableUserInterface;
 use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -326,7 +327,8 @@ class JwtAuthenticatorTest extends TestCase
         $this->object->authenticate($request);
     }
 
-    public function testAuthenticateInvalidPayload(): void
+    #[DataProvider('provideAuthenticateInvalidPayloadCases')]
+    public function testAuthenticateInvalidPayload(\Throwable $decodeException): void
     {
         $request = new Request();
         $request->headers->set('Authorization', 'Bearer '.$token = uniqid('jwt-'));
@@ -335,12 +337,23 @@ class JwtAuthenticatorTest extends TestCase
             ->expects($this->any())
             ->method('decode')
             ->with($token)
-            ->willThrowException(new \UnexpectedValueException())
+            ->willThrowException($decodeException)
         ;
 
         $this->expectException(\UnexpectedValueException::class);
 
         $this->object->authenticate($request);
+    }
+
+    public static function provideAuthenticateInvalidPayloadCases(): iterable
+    {
+        yield [
+            'decodeException' => new \UnexpectedValueException(),
+        ];
+
+        yield [
+            'decodeException' => new \DomainException('Syntax error, malformed JSON'),
+        ];
     }
 
     public function testOnAuthenticationSuccess(): void
