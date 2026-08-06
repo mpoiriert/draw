@@ -82,6 +82,7 @@ class JwtAuthenticator extends AbstractAuthenticator
         if (!$request->headers->has('Authorization')) {
             return null;
         }
+
         if (!preg_match('/Bearer\s(\S+)/', (string) $request->headers->get('Authorization'), $matches)) {
             return null;
         }
@@ -92,7 +93,7 @@ class JwtAuthenticator extends AbstractAuthenticator
             $this->encoder->decode($token);
 
             return $token;
-        } catch (\UnexpectedValueException) {
+        } catch (\UnexpectedValueException|\DomainException) {
             return null;
         }
     }
