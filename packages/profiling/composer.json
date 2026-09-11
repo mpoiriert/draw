@@ -16,7 +16,7 @@
         }
     ],
     "require-dev": {
-        "draw/tester": "^0.41",
+        "draw/tester": "^0.42",
         "phpunit/phpunit": "^12.5"
     },
     "minimum-stability": "dev",
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.41-dev"
+            "dev-master": "0.42-dev"
         }
     }
 }
