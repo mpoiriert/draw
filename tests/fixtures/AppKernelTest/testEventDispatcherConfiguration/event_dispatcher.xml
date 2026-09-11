@@ -182,6 +182,7 @@
     <callable type="function" name="logCommandTerminate" class="Draw\Component\Console\EventListener\CommandFlowListener" priority="0"/>
     <callable type="function" name="onConsoleTerminate" class="Symfony\Component\Console\EventListener\ErrorListener" priority="-128"/>
     <callable type="function" name="triggerCronJob" class="Draw\Component\CronJob\EventListener\PostExecutionQueueCronJobListener" priority="-1000"/>
+    <callable type="function" name="removeCommandData" class="Symfony\Bridge\Monolog\Processor\ConsoleCommandProcessor" priority="-2048"/>
   </event>
   <event name="kernel.controller">
     <callable type="function" name="onKernelController" class="Draw\Component\OpenApi\EventListener\RequestQueryParameterFetcherListener" priority="5"/>
@@ -196,6 +197,7 @@
     <callable type="function" name="onKernelControllerArguments" class="Symfony\Component\Security\Http\EventListener\IsCsrfTokenValidAttributeListener" priority="25"/>
     <callable type="function" name="onKernelControllerArguments" class="Symfony\Component\Security\Http\EventListener\IsGrantedAttributeListener" priority="20"/>
     <callable type="function" name="onKernelControllerArguments" class="Symfony\Component\HttpKernel\EventListener\CacheAttributeListener" priority="10"/>
+    
     <callable type="function" name="onControllerArguments" class="Symfony\Component\HttpKernel\EventListener\ErrorListener" priority="0"/>
     <callable type="function" name="onKernelController" class="Draw\Component\OpenApi\EventListener\RequestValidationListener" priority="-5"/>
     <callable type="function" name="onControllerEvent" class="Draw\Bundle\SonataExtraBundle\ActionableAdmin\EventListener\ActionableAdminListener" priority="-1000"/>

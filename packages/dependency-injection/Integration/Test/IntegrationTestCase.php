@@ -11,6 +11,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
@@ -137,7 +138,15 @@ abstract class IntegrationTestCase extends TestCase
     ): void {
         $definedServiceIds = array_values(
             array_diff(
-                array_keys($container->getDefinitions()),
+                array_keys(
+                    // Interfaces and abstract classes picked up by the PSR-4 scan are kept so
+                    // Symfony can read their #[Autoconfigure] attributes at compile time; they
+                    // are not services, so they are not part of what an integration exposes.
+                    array_filter(
+                        $container->getDefinitions(),
+                        static fn (Definition $definition): bool => !$definition->hasTag('container.excluded'),
+                    )
+                ),
                 array_keys((new ContainerBuilder())->getDefinitions())
             )
         );

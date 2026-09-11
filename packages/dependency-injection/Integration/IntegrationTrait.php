@@ -58,10 +58,35 @@ trait IntegrationTrait
         \assert($container instanceof ContainerBuilder);
 
         foreach ($container->getDefinitions() as $id => $definition) {
-            if ($definition->hasTag('container.excluded')) {
-                $container->removeDefinition($id);
+            if (!$definition->hasTag('container.excluded')) {
+                continue;
             }
+
+            // Interfaces and abstract classes discovered by the PSR-4 scan still carry
+            // #[Autoconfigure] / #[AutoconfigureTag] that RegisterAutoconfigureAttributesPass
+            // reads at compile time. Since symfony/dependency-injection 7.4.16 the attribute is
+            // no longer processed eagerly by FileLoader::registerClasses(), so dropping these
+            // definitions here means the attribute is never seen and the tag is never applied.
+            // Symfony removes them itself later, in RemoveAbstractDefinitionsPass.
+            if ($this->isAbstractType($definition->getClass())) {
+                continue;
+            }
+
+            $container->removeDefinition($id);
         }
+    }
+
+    private function isAbstractType(?string $class): bool
+    {
+        if (null === $class) {
+            return false;
+        }
+
+        if (interface_exists($class)) {
+            return true;
+        }
+
+        return class_exists($class) && (new \ReflectionClass($class))->isAbstract();
     }
 
     protected function assertHasExtension(
