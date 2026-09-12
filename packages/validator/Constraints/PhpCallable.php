@@ -20,12 +20,14 @@ class PhpCallable extends Constraint
      * @param callable        $callable              the php callable
      * @param bool            $ignoreNull            if we must validate null value or not
      * @param Constraint|null $returnValueConstraint A constraint to validate the return value of the callable. Some callable will throw a exception other will return false, null or predefined value when input is invalid.
+     * @param string|null     $message               the violation message, defaulting to the one declared by the constraint
      */
     #[HasNamedArguments]
     public function __construct(
         public mixed $callable,
         public ?Constraint $returnValueConstraint = null,
         public bool $ignoreNull = true,
+        ?string $message = null,
         ?array $groups = null,
         mixed $payload = null,
     ) {
@@ -33,6 +35,10 @@ class PhpCallable extends Constraint
             groups: $groups,
             payload: $payload
         );
+
+        if (null !== $message) {
+            $this->message = $message;
+        }
     }
 
     public function getTargets(): string|array

@@ -16,13 +16,18 @@ class ValueIsNotUsed extends Constraint
     public function __construct(
         public string $entityClass,
         public string $field,
+        ?string $message = null,
         ?array $groups = null,
-        $payload = null,
+        mixed $payload = null,
     ) {
         parent::__construct(
             groups: $groups,
             payload: $payload
         );
+
+        if (null !== $message) {
+            $this->message = $message;
+        }
     }
 
     public function getTargets(): string|array

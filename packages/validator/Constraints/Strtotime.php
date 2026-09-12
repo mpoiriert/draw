@@ -2,6 +2,7 @@
 
 namespace Draw\Component\Validator\Constraints;
 
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -12,11 +13,18 @@ class Strtotime extends PhpCallable
 {
     public ?string $message = 'The value {{ value }} is not valid to use in strtotime.';
 
-    public function __construct()
-    {
+    #[HasNamedArguments]
+    public function __construct(
+        ?string $message = null,
+        ?array $groups = null,
+        mixed $payload = null,
+    ) {
         parent::__construct(
             callable: 'strtotime',
             returnValueConstraint: new Type('int'),
+            message: $message,
+            groups: $groups,
+            payload: $payload,
         );
     }
 }

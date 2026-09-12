@@ -34,6 +34,22 @@ class StrtotimeTest extends TestCase
         );
     }
 
+    public function testDefaultMessage(): void
+    {
+        $this->assertSame(
+            'The value {{ value }} is not valid to use in strtotime.',
+            $this->object->message
+        );
+    }
+
+    public function testMessageCanBeOverridden(): void
+    {
+        $this->assertSame(
+            'Custom message.',
+            (new Strtotime(message: 'Custom message.'))->message
+        );
+    }
+
     public function testReturnValueConstraint(): void
     {
         /** @var Type $constraint */
