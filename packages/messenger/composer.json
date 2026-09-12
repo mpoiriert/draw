@@ -21,8 +21,8 @@
         "ext-json": "*",
         "doctrine/dbal": "^4.4",
         "doctrine/persistence": "^2.2 || ^3.0",
-        "draw/contracts": "^0.42",
-        "draw/core": "^0.42",
+        "draw/contracts": "^0.43",
+        "draw/core": "^0.43",
         "symfony/doctrine-bridge": "^7.4.0",
         "symfony/doctrine-messenger": "^7.4.0",
         "symfony/event-dispatcher": "^7.4.0",
@@ -37,8 +37,8 @@
         "ext-pcntl": "*",
         "colinodell/psr-testlogger": "^1.1",
         "doctrine/orm": "^3.6",
-        "draw/dependency-injection": "^0.42",
-        "draw/tester": "^0.42",
+        "draw/dependency-injection": "^0.43",
+        "draw/tester": "^0.43",
         "phpunit/phpunit": "^12.5",
         "psr/log": "^3"
     },
@@ -55,7 +55,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.42-dev"
+            "dev-master": "0.43-dev"
         }
     }
 }
