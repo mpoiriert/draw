@@ -14,7 +14,6 @@ use Draw\Component\Messenger\DependencyInjection\Compiler\MessengerTransportName
 use Draw\Component\OpenApi\DependencyInjection\Compiler\JmsDoctrineObjectConstructionCompilerPass;
 use Draw\Component\Security\DependencyInjection\Compiler\UserCheckerDecoratorPass;
 use Draw\Component\Security\DependencyInjection\Factory\JwtAuthenticatorFactory;
-use Draw\Component\Security\DependencyInjection\Factory\MessengerMessageAuthenticatorFactory;
 use Draw\Component\Tester\DoubleTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
@@ -114,14 +113,9 @@ class DrawFrameworkExtraBundleTest extends TestCase
         ;
 
         $extension
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('addAuthenticatorFactory')
-            ->with(
-                ...static::withConsecutive(
-                    [$this->isInstanceOf(JwtAuthenticatorFactory::class)],
-                    [$this->isInstanceOf(MessengerMessageAuthenticatorFactory::class)],
-                )
-            )
+            ->with($this->isInstanceOf(JwtAuthenticatorFactory::class))
         ;
 
         $this->bundle->build($containerBuilder);

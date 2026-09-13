@@ -2515,6 +2515,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             enabled?: bool|Param, // Default: false
  *             roles?: list<scalar|Param|null>,
  *         },
+ *         messenger_authentication_enabled?: bool|Param, // Default: true
  *         messenger_authentication?: bool|array{
  *             enabled?: bool|Param, // Default: false
  *             system_auto_login?: bool|Param, // Default: true
