@@ -18,32 +18,32 @@
     "require": {
         "php": ">=8.3",
         "ext-json": "*",
-        "draw/core": "^0.43",
-        "draw/dependency-injection": "^0.43",
+        "draw/core": "^0.44",
+        "draw/dependency-injection": "^0.44",
         "symfony/config": "^7.4.0",
         "symfony/dependency-injection": "^7.4.0",
         "symfony/http-kernel": "^7.4.0"
     },
     "require-dev": {
-        "draw/application": "^0.43",
-        "draw/aws-tool-kit": "^0.43",
-        "draw/console": "^0.43",
-        "draw/contracts": "^0.43",
-        "draw/cron-job": "^0.43",
-        "draw/doctrine-extra": "^0.43",
-        "draw/entity-migrator": "^0.43",
-        "draw/log": "^0.43",
-        "draw/mailer": "^0.43",
-        "draw/messenger": "^0.43",
-        "draw/open-api": "^0.43",
-        "draw/process": "^0.43",
-        "draw/sonata-integration-bundle": "^0.43",
-        "draw/security": "^0.43",
-        "draw/tester": "^0.43",
-        "draw/tester-bundle": "^0.43",
-        "draw/user-bundle": "^0.43",
-        "draw/validator": "^0.43",
-        "draw/workflow": "^0.43",
+        "draw/application": "^0.44",
+        "draw/aws-tool-kit": "^0.44",
+        "draw/console": "^0.44",
+        "draw/contracts": "^0.44",
+        "draw/cron-job": "^0.44",
+        "draw/doctrine-extra": "^0.44",
+        "draw/entity-migrator": "^0.44",
+        "draw/log": "^0.44",
+        "draw/mailer": "^0.44",
+        "draw/messenger": "^0.44",
+        "draw/open-api": "^0.44",
+        "draw/process": "^0.44",
+        "draw/sonata-integration-bundle": "^0.44",
+        "draw/security": "^0.44",
+        "draw/tester": "^0.44",
+        "draw/tester-bundle": "^0.44",
+        "draw/user-bundle": "^0.44",
+        "draw/validator": "^0.44",
+        "draw/workflow": "^0.44",
         "monolog/monolog": "^3.5.0",
         "pelago/emogrifier": "^8.0",
         "phpunit/phpunit": "^12.5",
@@ -63,7 +63,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.43-dev"
+            "dev-master": "0.44-dev"
         }
     }
 }
