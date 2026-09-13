@@ -5,6 +5,8 @@ namespace Draw\Component\Security\DependencyInjection;
 use Draw\Component\DependencyInjection\Integration\ContainerBuilderIntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationInterface;
 use Draw\Component\DependencyInjection\Integration\IntegrationTrait;
+use Draw\Component\DependencyInjection\Integration\PrependIntegrationInterface;
+use Draw\Component\Messenger\DependencyInjection\MessengerIntegration;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticator;
 use Draw\Component\Security\Core\Authentication\SystemAuthenticatorInterface;
 use Draw\Component\Security\Core\Authorization\Voter\AbstainRoleHierarchyVoter;
@@ -20,7 +22,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-class SecurityIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface
+class SecurityIntegration implements IntegrationInterface, ContainerBuilderIntegrationInterface, PrependIntegrationInterface
 {
     use IntegrationTrait;
 
@@ -33,14 +35,33 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
     {
         $container->addCompilerPass(new UserCheckerDecoratorPass());
 
-        if ($container->hasExtension('security')) {
-            $extension = $container->getExtension('security');
-
-            \assert($extension instanceof SecurityExtension);
-
-            $extension->addAuthenticatorFactory(new JwtAuthenticatorFactory());
-            $extension->addAuthenticatorFactory(new MessengerMessageAuthenticatorFactory());
+        if ($securityExtension = $this->getSecurityExtension($container)) {
+            $securityExtension->addAuthenticatorFactory(new JwtAuthenticatorFactory());
         }
+    }
+
+    public function prepend(ContainerBuilder $container, array $config): void
+    {
+        if (!$config['messenger_authentication_enabled']) {
+            return;
+        }
+
+        if ($securityExtension = $this->getSecurityExtension($container)) {
+            $securityExtension->addAuthenticatorFactory(new MessengerMessageAuthenticatorFactory());
+        }
+    }
+
+    private function getSecurityExtension(ContainerBuilder $container): ?SecurityExtension
+    {
+        if (!$container->hasExtension('security')) {
+            return null;
+        }
+
+        $extension = $container->getExtension('security');
+
+        \assert($extension instanceof SecurityExtension);
+
+        return $extension;
     }
 
     public function load(array $config, PhpFileLoader $loader, ContainerBuilder $container): void
@@ -185,6 +206,10 @@ class SecurityIntegration implements IntegrationInterface, ContainerBuilderInteg
                             ->scalarPrototype()->defaultValue('ROLE_SYSTEM')->end()
                         ->end()
                     ->end()
+                ->end()
+                ->booleanNode('messenger_authentication_enabled')
+                    ->info('Register the [draw_messenger_message] authenticator factory. Requires draw/messenger.')
+                    ->defaultValue(class_exists(MessengerIntegration::class))
                 ->end()
                 ->arrayNode('messenger_authentication')
                     ->canBeEnabled()

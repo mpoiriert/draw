@@ -11,10 +11,15 @@ use Draw\Component\Security\Core\Authorization\Voter\AbstainRoleHierarchyVoter;
 use Draw\Component\Security\Core\EventListener\SystemConsoleAuthenticatorListener;
 use Draw\Component\Security\Core\EventListener\SystemMessengerAuthenticatorListener;
 use Draw\Component\Security\Core\Security;
+use Draw\Component\Security\DependencyInjection\Factory\JwtAuthenticatorFactory;
+use Draw\Component\Security\DependencyInjection\Factory\MessengerMessageAuthenticatorFactory;
 use Draw\Component\Security\DependencyInjection\SecurityIntegration;
 use Draw\Component\Security\Http\EventListener\RoleRestrictedAuthenticatorListener;
 use Draw\Component\Security\Jwt\JwtEncoder;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -42,6 +47,7 @@ class SecurityIntegrationTest extends IntegrationTestCase
                 'enabled' => false,
                 'system_auto_login' => false,
             ],
+            'messenger_authentication_enabled' => true,
             'messenger_authentication' => [
                 'enabled' => false,
                 'system_auto_login' => true,
@@ -224,5 +230,57 @@ class SecurityIntegrationTest extends IntegrationTestCase
                 ],
             ],
         ];
+    }
+
+    #[
+        TestWith([true, true], 'enabled registers the factory'),
+        TestWith([false, false], 'disabled keeps the factory out'),
+    ]
+    public function testPrependRegistersMessengerAuthenticatorFactory(
+        bool $enabled,
+        bool $expected,
+    ): void {
+        $container = new ContainerBuilder();
+        $container->registerExtension($securityExtension = new SecurityExtension());
+
+        $this->integration->prepend(
+            $container,
+            $this->processConfiguration([['messenger_authentication_enabled' => $enabled]]),
+        );
+
+        $this->assertSame(
+            $expected,
+            \in_array(
+                MessengerMessageAuthenticatorFactory::class,
+                $this->getRegisteredAuthenticatorFactoryClasses($securityExtension),
+                true
+            )
+        );
+    }
+
+    public function testBuildContainerRegistersJwtAuthenticatorFactory(): void
+    {
+        $container = new ContainerBuilder();
+        $container->registerExtension($securityExtension = new SecurityExtension());
+
+        $this->integration->buildContainer($container);
+
+        $this->assertContains(
+            JwtAuthenticatorFactory::class,
+            $this->getRegisteredAuthenticatorFactoryClasses($securityExtension)
+        );
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    private function getRegisteredAuthenticatorFactoryClasses(SecurityExtension $securityExtension): array
+    {
+        $property = new \ReflectionProperty(SecurityExtension::class, 'factories');
+
+        return array_map(
+            static fn (array $factory): string => $factory[1]::class,
+            $property->getValue($securityExtension)
+        );
     }
 }
