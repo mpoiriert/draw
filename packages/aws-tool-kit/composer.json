@@ -13,9 +13,9 @@
         "symfony/event-dispatcher": "^7.4.0"
     },
     "require-dev": {
-        "draw/core": "^0.43.1",
-        "draw/dependency-injection": "^0.43.1",
-        "draw/tester": "^0.43.1",
+        "draw/core": "^0.44",
+        "draw/dependency-injection": "^0.44",
+        "draw/tester": "^0.44",
         "phpunit/phpunit": "^12.5",
         "symfony/cache": "^7.4.0",
         "symfony/http-client": "^7.4.0",
