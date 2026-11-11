@@ -3,6 +3,7 @@
 namespace Draw\Component\Messenger\Transport;
 
 use Doctrine\DBAL\Connection as DBALConnection;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Schema\AbstractAsset;
 use Doctrine\DBAL\Schema\PrimaryKeyConstraint;
@@ -20,6 +21,7 @@ use Symfony\Component\Messenger\Bridge\Doctrine\Transport\Connection;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineReceivedStamp;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Messenger\Stamp\RedeliveryStamp;
@@ -70,22 +72,59 @@ class DrawTransport extends DoctrineTransport implements PurgeableTransportInter
     }
 
     /**
-     * Override because doctrine transport do not filter by delivered_at date.
+     * Override because doctrine transport do not filter by delivered_at date
+     * and, since symfony/doctrine-messenger 7.4.23, only finds integer ids.
      */
     public function find($id): ?Envelope
     {
-        if ($this->driverConnection->getDatabasePlatform() instanceof MySQLPlatform) {
-            $tableName = $this->connection->getConfiguration()['table_name'];
-            $this->driverConnection->executeStatement(
-                \sprintf(
-                    'DELETE FROM %s WHERE id = ? AND delivered_at >= ?',
-                    $tableName
-                ),
-                [$id, '9999-12-31']
-            );
+        $configuration = $this->connection->getConfiguration();
+
+        try {
+            if ($this->driverConnection->getDatabasePlatform() instanceof MySQLPlatform) {
+                $this->driverConnection->executeStatement(
+                    \sprintf(
+                        'DELETE FROM %s WHERE id = ? AND delivered_at >= ?',
+                        $configuration['table_name']
+                    ),
+                    [$id, '9999-12-31']
+                );
+            }
+
+            $data = $this->driverConnection->createQueryBuilder()
+                ->select('m.id', 'm.body', 'm.headers')
+                ->from($configuration['table_name'], 'm')
+                ->andWhere('m.id = ?')
+                ->andWhere('m.queue_name = ?')
+                ->setParameters([(string) $id, $configuration['queue_name']])
+                ->executeQuery()
+                ->fetchAssociative()
+            ;
+        } catch (DBALException $exception) {
+            throw new TransportException($exception->getMessage(), 0, $exception);
         }
 
-        return parent::find($id);
+        if (false === $data) {
+            return null;
+        }
+
+        try {
+            $envelope = $this->serializer->decode([
+                'body' => $data['body'],
+                'headers' => json_decode($data['headers'], true, 512, \JSON_THROW_ON_ERROR),
+            ]);
+        } catch (MessageDecodingFailedException $exception) {
+            $this->connection->reject($data['id']);
+
+            throw $exception;
+        }
+
+        return $envelope
+            ->withoutAll(TransportMessageIdStamp::class)
+            ->with(
+                new DoctrineReceivedStamp($data['id']),
+                new TransportMessageIdStamp($data['id'])
+            )
+        ;
     }
 
     private function cleanQueue(Envelope $envelope): void
