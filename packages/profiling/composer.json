@@ -16,7 +16,7 @@
         }
     ],
     "require-dev": {
-        "draw/tester": "^0.44",
+        "draw/tester": "^0.43.1",
         "phpunit/phpunit": "^12.5"
     },
     "minimum-stability": "dev",
