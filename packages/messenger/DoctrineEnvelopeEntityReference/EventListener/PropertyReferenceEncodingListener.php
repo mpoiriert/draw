@@ -33,12 +33,16 @@ class PropertyReferenceEncodingListener
             return;
         }
 
-        if ($envelope->last(SentToFailureTransportStamp::class)) {
-            // This will prevent removing original stamps from the message
-            return;
+        // The failure transport keeps the original stamps: the entity may have been deleted since
+        // the message was dispatched, and its reference must survive.
+        if (null === $envelope->last(SentToFailureTransportStamp::class)) {
+            $envelope = $envelope->withoutAll(PropertyReferenceStamp::class);
         }
 
-        $envelope = $envelope->withoutAll(PropertyReferenceStamp::class);
+        $stampedProperties = array_map(
+            static fn (PropertyReferenceStamp $stamp): string => $stamp->getPropertyName(),
+            $envelope->all(PropertyReferenceStamp::class),
+        );
 
         $stamps = [];
 
@@ -57,6 +61,17 @@ class PropertyReferenceEncodingListener
                 $propertyName,
                 null
             );
+
+            if (\in_array($propertyName, $stampedProperties, true)) {
+                continue;
+            }
+
+            // The entity was not found on decode, the property holds its reference.
+            if ($object instanceof PropertyReferenceStamp) {
+                $stamps[] = $object;
+
+                continue;
+            }
 
             $metadata = $this->getManagerForClass($object::class)
                 ->getClassMetadata($object::class)

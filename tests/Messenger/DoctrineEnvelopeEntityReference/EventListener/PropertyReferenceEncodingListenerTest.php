@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Draw\Bundle\TesterBundle\PHPUnit\Extension\SetUpAutowire\AutowireService;
 use Draw\Component\Core\Reflection\ReflectionAccessor;
 use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Exception\ObjectNotFoundException;
+use Draw\Component\Messenger\DoctrineEnvelopeEntityReference\Stamp\PropertyReferenceStamp;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PostEncodeEvent;
 use Draw\Component\Messenger\SerializerEventDispatcher\Event\PreEncodeEvent;
 use Draw\Component\Tester\PHPUnit\Extension\SetUpAutowire\AutowiredInterface;
@@ -17,6 +18,9 @@ use Draw\Contracts\Messenger\EnvelopeFinderInterface;
 use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Stamp\SentToFailureTransportStamp;
+use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
 /**
  * @internal
@@ -31,6 +35,9 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
 
     #[AutowireService]
     private EventDispatcherInterface $eventDispatcher;
+
+    #[AutowireService('messenger.transport.native_php_serializer')]
+    private SerializerInterface $serializer;
 
     private bool $preEncodeEventCalled = false;
 
@@ -157,6 +164,78 @@ class PropertyReferenceEncodingListenerTest extends KernelTestCase implements Au
         $this->assertSame(
             $testDocument,
             $message->getTestDocument()
+        );
+    }
+
+    public function testFailureTransportStoresOnlyTheEntityReference(): void
+    {
+        $user = (new User())
+            ->setEmail(uniqid().'@example.com')
+        ;
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        $referenceStamp = new PropertyReferenceStamp(
+            'user',
+            User::class,
+            [
+                'id' => $user->getId(),
+            ]
+        );
+
+        $encoded = $this->serializer->encode(
+            new Envelope(new NewUserMessage($user), [
+                $referenceStamp,
+                new SentToFailureTransportStamp('async'),
+            ])
+        );
+
+        $this->assertStringNotContainsString($user->getEmail(), $encoded['body']);
+
+        $decoded = $this->serializer->decode($encoded);
+
+        $this->assertSame(
+            [(array) $referenceStamp],
+            array_map(
+                static fn (PropertyReferenceStamp $stamp): array => (array) $stamp,
+                $decoded->all(PropertyReferenceStamp::class)
+            )
+        );
+
+        $this->assertSame($user, $decoded->getMessage()->getUser());
+    }
+
+    public function testEncodingKeepsTheReferenceOfADeletedEntity(): void
+    {
+        // On decode, a deleted entity leaves its reference stamp in the property.
+        $referenceStamp = new PropertyReferenceStamp(
+            'user',
+            User::class,
+            [
+                'id' => '00000000-0000-0000-0000-000000000000',
+            ]
+        );
+
+        $message = new NewUserMessage(new User());
+
+        ReflectionAccessor::setPropertyValue($message, 'user', $referenceStamp);
+
+        $decoded = $this->serializer->decode(
+            $this->serializer->encode(new Envelope($message))
+        );
+
+        $this->assertSame(
+            [(array) $referenceStamp],
+            array_map(
+                static fn (PropertyReferenceStamp $stamp): array => (array) $stamp,
+                $decoded->all(PropertyReferenceStamp::class)
+            )
+        );
+
+        $this->assertSame(
+            (array) $referenceStamp,
+            (array) ReflectionAccessor::getPropertyValue($decoded->getMessage(), 'user')
         );
     }
 }
